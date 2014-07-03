@@ -1,0 +1,18 @@
+@import url(http://fonts.googleapis.com/css?family=Special+Elite);
+
+body { 
+  background: #E9E0D6;
+}
+
+.headline {
+  font-family: 'Special Elite', cursive;
+  font-size: 100px;
+  font-weight: 500;
+  color: #3c3935;
+
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -50px;
+}
