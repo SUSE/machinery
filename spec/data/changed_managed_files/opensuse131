@@ -1,0 +1,10 @@
+# Changed managed files [192.168.122.238] (2014-05-21 17:00:14)
+
+  * /etc/cron.daily/mdadm (deleted)
+  * /sys (mode)
+  * /usr/share/bash/helpfiles/cd (deleted)
+  * /usr/share/bash/helpfiles/read (md5)
+  * /var/lib/ca-certificates/openssl (mode)
+  * /var/lib/ca-certificates/pem (mode)
+  * /var/lock (mode)
+

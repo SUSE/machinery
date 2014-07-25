@@ -1,0 +1,16 @@
+drwxr-xr-x root/lp           0 2014-01-27 15:10 etc/etc_mydir/
+-rw------- root/lp         130 2013-12-27 15:13 etc/etc_mydir/printers.conf
+-rw------- root/lp         130 2013-12-27 14:49 etc/etc_mydir/printers.conf.O
+-rw-r--r-- root/root      2773 2013-02-07 10:06 etc/etc_mydir/client.conf.rpmnew
+-rw-r--r-- root/root         0 2013-10-09 16:50 etc/etc_mydir/client.conf
+-rw-r----- root/lp         278 2014-01-14 16:32 etc/etc_mydir/snmp.conf
+drwxr-xr-x lp/lp             0 2014-01-14 16:32 etc/etc_mydir/interfaces/
+drwxr-xr-x root/lp           0 2014-01-14 16:32 etc/etc_mydir/ppd/
+-rw-r--r-- root/root        25 2007-12-05 15:56 etc/etc_mydir/client.conf.yast2.save
+-rw-r----- root/root      5575 2014-01-14 16:33 etc/etc_mydir/cupsd.conf.default
+-rw-r--r-- root/root      2084 2014-01-15 19:28 etc/etc_mydir/pstotiff.types
+-rw-r--r-- root/root        18 2007-12-05 15:56 etc/etc_mydir/lpoptions
+-rw-r----- root/lp        5567 2014-01-14 16:33 etc/etc_mydir/cupsd.conf
+drwx------ root/lp           0 2014-01-14 16:32 etc/etc_mydir/ssl/
+-rw-r--r-- root/root      1448 2013-09-28 06:04 etc/etc_mydir/gstoraster.convs
+-rw-r--r-- root/root       778 2014-01-15 19:28 etc/etc_mydir/pstotiff.convs

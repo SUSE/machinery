@@ -1,0 +1,5 @@
+var/lib/rpm/*
+etc/passwd*
+etc/shadow*
+etc/group*
+etc/fstab

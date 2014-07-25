@@ -1,0 +1,17 @@
+drwxr-xr-x root/root         0 2014-02-19 00:55 mydir/
+drwxr-xr-x root/root         0 2014-02-12 14:09 mydir/emil\016emil/
+lrwxrwxrwx root/root         0 2014-02-19 00:12 mydir/link -> to
+drwxr-xr-x root/root         0 2014-02-12 14:10 mydir/emil\\emil/
+-rw-r--r-- root/root         0 2014-02-12 12:05 mydir/emilnemil
+drwxr-xr-x root/root         0 2014-02-12 12:10 mydir/emil\033emil/
+drwxr-xr-x root/root         0 2014-02-12 14:09 mydir/emil\022emil/
+drwxr-xr-x root/root         0 2014-02-12 14:10 mydir/emiläemil/
+-rw-r--r-- root/root         0 2014-02-12 12:06 mydir/emil\remil
+-rw-r--r-- root/root      1040 2013-09-25 14:16 mydir/emil.dud
+drwxr-xr-x root/root         0 2014-02-12 14:10 mydir/emil"emil/
+-rw-r--r-- root/root         0 2014-02-18 19:25 mydir/emil emil
+drwxr-xr-x root/root         0 2014-02-12 14:10 mydir/emil\\'emil/
+drwxr-xr-x root/root         0 2014-02-19 00:55 mydir/hans/
+-rw-r--r-- root/root         0 2014-02-19 00:55 mydir/hans/file
+-rw-r--r-- root/root      5164 2013-07-16 13:00 mydir/emil2.dud
+-rw-r--r-- root/root         0 2014-02-12 12:06 mydir/emil\\nemil

@@ -1,0 +1,4 @@
+# Filter all messages for bundled gems. This is necessary because content of
+# gems violates many rpmlint checks.
+addFilter("/bundle/ruby/[^/]+/gems/")
+

@@ -1,0 +1,1230 @@
+{
+  "packages": [
+    {
+      "name": "ConsoleKit",
+      "version": "0.2.10"
+    },
+    {
+      "name": "PolicyKit",
+      "version": "0.9"
+    },
+    {
+      "name": "aaa_base",
+      "version": "11"
+    },
+    {
+      "name": "audit-libs",
+      "version": "1.8"
+    },
+    {
+      "name": "augeas-lenses",
+      "version": "0.9.0"
+    },
+    {
+      "name": "autoyast2",
+      "version": "2.17.69"
+    },
+    {
+      "name": "autoyast2-installation",
+      "version": "2.17.69"
+    },
+    {
+      "name": "bash",
+      "version": "3.2"
+    },
+    {
+      "name": "bind-libs",
+      "version": "9.6ESVR7P4"
+    },
+    {
+      "name": "bind-utils",
+      "version": "9.6ESVR7P4"
+    },
+    {
+      "name": "branding-SLES",
+      "version": "11"
+    },
+    {
+      "name": "bridge-utils",
+      "version": "1.4"
+    },
+    {
+      "name": "bzip2",
+      "version": "1.0.5"
+    },
+    {
+      "name": "checkmedia",
+      "version": "3.0"
+    },
+    {
+      "name": "coreutils",
+      "version": "8.12"
+    },
+    {
+      "name": "cpio",
+      "version": "2.9"
+    },
+    {
+      "name": "cpio-lang",
+      "version": "2.9"
+    },
+    {
+      "name": "cracklib",
+      "version": "2.8.12"
+    },
+    {
+      "name": "cracklib-dict-full",
+      "version": "2.8.12"
+    },
+    {
+      "name": "cron",
+      "version": "4.1"
+    },
+    {
+      "name": "cryptsetup",
+      "version": "1.0.5_SVNr46"
+    },
+    {
+      "name": "curl",
+      "version": "7.19.7"
+    },
+    {
+      "name": "cyrus-sasl",
+      "version": "2.1.22"
+    },
+    {
+      "name": "dbus-1",
+      "version": "1.2.10"
+    },
+    {
+      "name": "dbus-1-glib",
+      "version": "0.76"
+    },
+    {
+      "name": "device-mapper",
+      "version": "1.02.77"
+    },
+    {
+      "name": "dhcpcd",
+      "version": "3.2.3"
+    },
+    {
+      "name": "diffutils",
+      "version": "2.8.7"
+    },
+    {
+      "name": "dirmngr",
+      "version": "1.0.2"
+    },
+    {
+      "name": "dmraid",
+      "version": "1.0.0.rc16"
+    },
+    {
+      "name": "e2fsprogs",
+      "version": "1.41.9"
+    },
+    {
+      "name": "elfutils",
+      "version": "0.152"
+    },
+    {
+      "name": "expat",
+      "version": "2.0.1"
+    },
+    {
+      "name": "fbset",
+      "version": "2.1"
+    },
+    {
+      "name": "file",
+      "version": "4.24"
+    },
+    {
+      "name": "filesystem",
+      "version": "11.1"
+    },
+    {
+      "name": "fillup",
+      "version": "1.42"
+    },
+    {
+      "name": "findutils",
+      "version": "4.4.0"
+    },
+    {
+      "name": "gawk",
+      "version": "3.1.8"
+    },
+    {
+      "name": "gdbm",
+      "version": "1.8.3"
+    },
+    {
+      "name": "glib2",
+      "version": "2.22.5"
+    },
+    {
+      "name": "glib2-branding-SLES",
+      "version": "2.16"
+    },
+    {
+      "name": "glib2-lang",
+      "version": "2.22.5"
+    },
+    {
+      "name": "glibc",
+      "version": "2.11.3"
+    },
+    {
+      "name": "glibc-locale",
+      "version": "2.11.3"
+    },
+    {
+      "name": "gpg2",
+      "version": "2.0.9"
+    },
+    {
+      "name": "gpg2-lang",
+      "version": "2.0.9"
+    },
+    {
+      "name": "grep",
+      "version": "2.7"
+    },
+    {
+      "name": "grub",
+      "version": "0.97"
+    },
+    {
+      "name": "gzip",
+      "version": "1.3.12"
+    },
+    {
+      "name": "hal",
+      "version": "0.5.12"
+    },
+    {
+      "name": "haveged",
+      "version": "1.3"
+    },
+    {
+      "name": "hwinfo",
+      "version": "15.50"
+    },
+    {
+      "name": "info",
+      "version": "4.12"
+    },
+    {
+      "name": "initviocons",
+      "version": "0.5"
+    },
+    {
+      "name": "insserv",
+      "version": "1.12.0"
+    },
+    {
+      "name": "iproute2",
+      "version": "2.6.29.1"
+    },
+    {
+      "name": "kbd",
+      "version": "1.14.1"
+    },
+    {
+      "name": "kernel-default",
+      "version": "3.0.76"
+    },
+    {
+      "name": "kernel-default-base",
+      "version": "3.0.76"
+    },
+    {
+      "name": "keyutils-libs",
+      "version": "1.2"
+    },
+    {
+      "name": "kpartx",
+      "version": "0.4.9"
+    },
+    {
+      "name": "krb5",
+      "version": "1.6.3"
+    },
+    {
+      "name": "less",
+      "version": "424b"
+    },
+    {
+      "name": "libacl",
+      "version": "2.2.47"
+    },
+    {
+      "name": "libaio",
+      "version": "0.3.109"
+    },
+    {
+      "name": "libasm1",
+      "version": "0.152"
+    },
+    {
+      "name": "libattr",
+      "version": "2.4.43"
+    },
+    {
+      "name": "libaugeas0",
+      "version": "0.9.0"
+    },
+    {
+      "name": "libblkid1",
+      "version": "2.19.1"
+    },
+    {
+      "name": "libblocxx6",
+      "version": "2.1.0.342"
+    },
+    {
+      "name": "libbz2-1",
+      "version": "1.0.5"
+    },
+    {
+      "name": "libcap2",
+      "version": "2.11"
+    },
+    {
+      "name": "libcom_err2",
+      "version": "1.41.9"
+    },
+    {
+      "name": "libcryptsetup0",
+      "version": "1.0.5_SVNr46"
+    },
+    {
+      "name": "libcurl4",
+      "version": "7.19.7"
+    },
+    {
+      "name": "libdb-4_5",
+      "version": "4.5.20"
+    },
+    {
+      "name": "libdw1",
+      "version": "0.152"
+    },
+    {
+      "name": "libebl1",
+      "version": "0.152"
+    },
+    {
+      "name": "libelf1",
+      "version": "0.152"
+    },
+    {
+      "name": "libexpat1",
+      "version": "2.0.1"
+    },
+    {
+      "name": "libext2fs2",
+      "version": "1.41.9"
+    },
+    {
+      "name": "libgcc_s1",
+      "version": "4.7.2_20130108"
+    },
+    {
+      "name": "libgcrypt11",
+      "version": "1.5.0"
+    },
+    {
+      "name": "libglib-2_0-0",
+      "version": "2.22.5"
+    },
+    {
+      "name": "libgobject-2_0-0",
+      "version": "2.22.5"
+    },
+    {
+      "name": "libgpg-error0",
+      "version": "1.10"
+    },
+    {
+      "name": "libgthread-2_0-0",
+      "version": "2.22.5"
+    },
+    {
+      "name": "libidn",
+      "version": "1.10"
+    },
+    {
+      "name": "libksba",
+      "version": "1.0.4"
+    },
+    {
+      "name": "libldap-2_4-2",
+      "version": "2.4.26"
+    },
+    {
+      "name": "libldapcpp1",
+      "version": "0.3.0"
+    },
+    {
+      "name": "liblzma5",
+      "version": "5.0.3"
+    },
+    {
+      "name": "libncurses5",
+      "version": "5.6"
+    },
+    {
+      "name": "libnscd",
+      "version": "2.0.2"
+    },
+    {
+      "name": "libopenssl0_9_8",
+      "version": "0.9.8j"
+    },
+    {
+      "name": "libreadline5",
+      "version": "5.2"
+    },
+    {
+      "name": "libreiserfs",
+      "version": "0.3.0.5"
+    },
+    {
+      "name": "libselinux1",
+      "version": "2.0.91"
+    },
+    {
+      "name": "libsepol1",
+      "version": "2.0.41"
+    },
+    {
+      "name": "libsmbios2",
+      "version": "2.0.2"
+    },
+    {
+      "name": "libstdc++6",
+      "version": "4.7.2_20130108"
+    },
+    {
+      "name": "libudev0",
+      "version": "147"
+    },
+    {
+      "name": "libusb-0_1-4",
+      "version": "0.1.12"
+    },
+    {
+      "name": "libuuid1",
+      "version": "2.19.1"
+    },
+    {
+      "name": "libxcrypt",
+      "version": "3.0.3"
+    },
+    {
+      "name": "libxml2",
+      "version": "2.7.6"
+    },
+    {
+      "name": "libxslt",
+      "version": "1.1.24"
+    },
+    {
+      "name": "libzio",
+      "version": "0.9"
+    },
+    {
+      "name": "libzypp",
+      "version": "9.34.0"
+    },
+    {
+      "name": "limal",
+      "version": "1.5.3"
+    },
+    {
+      "name": "limal-perl",
+      "version": "1.5.3"
+    },
+    {
+      "name": "login",
+      "version": "3.41"
+    },
+    {
+      "name": "logrotate",
+      "version": "3.7.7"
+    },
+    {
+      "name": "lsof",
+      "version": "4.80"
+    },
+    {
+      "name": "lsscsi",
+      "version": "0.23"
+    },
+    {
+      "name": "lvm2",
+      "version": "2.02.98"
+    },
+    {
+      "name": "master-boot-code",
+      "version": "1.14"
+    },
+    {
+      "name": "mdadm",
+      "version": "3.2.6"
+    },
+    {
+      "name": "mingetty",
+      "version": "1.0.7s"
+    },
+    {
+      "name": "mkinitrd",
+      "version": "2.4.2"
+    },
+    {
+      "name": "module-init-tools",
+      "version": "3.11.1"
+    },
+    {
+      "name": "mtools",
+      "version": "3.9.11"
+    },
+    {
+      "name": "multipath-tools",
+      "version": "0.4.9"
+    },
+    {
+      "name": "ncurses-utils",
+      "version": "5.6"
+    },
+    {
+      "name": "net-tools",
+      "version": "1.60"
+    },
+    {
+      "name": "netcfg",
+      "version": "11.2"
+    },
+    {
+      "name": "openldap2-client",
+      "version": "2.4.26"
+    },
+    {
+      "name": "openslp",
+      "version": "1.2.0"
+    },
+    {
+      "name": "openssh",
+      "version": "6.2p2"
+    },
+    {
+      "name": "openssl",
+      "version": "0.9.8j"
+    },
+    {
+      "name": "openssl-certs",
+      "version": "1.85"
+    },
+    {
+      "name": "pam",
+      "version": "1.1.5"
+    },
+    {
+      "name": "pam-config",
+      "version": "0.79"
+    },
+    {
+      "name": "pam-modules",
+      "version": "11"
+    },
+    {
+      "name": "parted",
+      "version": "2.3"
+    },
+    {
+      "name": "pciutils",
+      "version": "3.1.7"
+    },
+    {
+      "name": "pciutils-ids",
+      "version": "2013.2.11"
+    },
+    {
+      "name": "pcre",
+      "version": "7.8"
+    },
+    {
+      "name": "perl",
+      "version": "5.10.0"
+    },
+    {
+      "name": "perl-Bootloader",
+      "version": "0.4.89.55"
+    },
+    {
+      "name": "perl-Config-Crontab",
+      "version": "1.21"
+    },
+    {
+      "name": "perl-Config-IniFiles",
+      "version": "2.39"
+    },
+    {
+      "name": "perl-Digest-SHA1",
+      "version": "2.11"
+    },
+    {
+      "name": "perl-Module-Build",
+      "version": "0.2808.01"
+    },
+    {
+      "name": "perl-Parse-RecDescent",
+      "version": "1.96.0"
+    },
+    {
+      "name": "perl-Test-Simple",
+      "version": "0.72"
+    },
+    {
+      "name": "perl-URI",
+      "version": "1.37"
+    },
+    {
+      "name": "perl-X500-DN",
+      "version": "0.29"
+    },
+    {
+      "name": "perl-XML-Parser",
+      "version": "2.36"
+    },
+    {
+      "name": "perl-XML-Simple",
+      "version": "2.18"
+    },
+    {
+      "name": "perl-XML-XPath",
+      "version": "1.13"
+    },
+    {
+      "name": "perl-base",
+      "version": "5.10.0"
+    },
+    {
+      "name": "perl-gettext",
+      "version": "1.05"
+    },
+    {
+      "name": "permissions",
+      "version": "2013.1.7"
+    },
+    {
+      "name": "pinentry",
+      "version": "0.7.5"
+    },
+    {
+      "name": "pm-utils",
+      "version": "0.99.4.20071229"
+    },
+    {
+      "name": "pmtools",
+      "version": "20071116"
+    },
+    {
+      "name": "polkit-default-privs",
+      "version": "0.1_200812111413"
+    },
+    {
+      "name": "popt",
+      "version": "1.7"
+    },
+    {
+      "name": "postfix",
+      "version": "2.9.4"
+    },
+    {
+      "name": "procps",
+      "version": "3.2.7"
+    },
+    {
+      "name": "psmisc",
+      "version": "22.7"
+    },
+    {
+      "name": "pth",
+      "version": "2.0.7"
+    },
+    {
+      "name": "pwdutils",
+      "version": "3.2.15"
+    },
+    {
+      "name": "release-notes-sles",
+      "version": "11.3.22"
+    },
+    {
+      "name": "rpm",
+      "version": "4.4.2.3"
+    },
+    {
+      "name": "rsync",
+      "version": "3.0.4"
+    },
+    {
+      "name": "satsolver-tools",
+      "version": "0.17.7"
+    },
+    {
+      "name": "sed",
+      "version": "4.1.5"
+    },
+    {
+      "name": "setserial",
+      "version": "2.17"
+    },
+    {
+      "name": "sles-release",
+      "version": "11.3"
+    },
+    {
+      "name": "sles-release-DVD",
+      "version": "11.3"
+    },
+    {
+      "name": "subscription-tools",
+      "version": "1.0"
+    },
+    {
+      "name": "sudo",
+      "version": "1.7.6p2"
+    },
+    {
+      "name": "sysconfig",
+      "version": "0.71.61"
+    },
+    {
+      "name": "syslinux",
+      "version": "3.82"
+    },
+    {
+      "name": "sysvinit",
+      "version": "2.86"
+    },
+    {
+      "name": "tar",
+      "version": "1.26"
+    },
+    {
+      "name": "tcpd",
+      "version": "7.6"
+    },
+    {
+      "name": "terminfo-base",
+      "version": "5.6"
+    },
+    {
+      "name": "timezone",
+      "version": "2013b"
+    },
+    {
+      "name": "tunctl",
+      "version": "20070815"
+    },
+    {
+      "name": "udev",
+      "version": "147"
+    },
+    {
+      "name": "unzip",
+      "version": "6.00"
+    },
+    {
+      "name": "update-alternatives",
+      "version": "1.14.19"
+    },
+    {
+      "name": "util-linux",
+      "version": "2.19.1"
+    },
+    {
+      "name": "util-linux-lang",
+      "version": "2.19.1"
+    },
+    {
+      "name": "vim",
+      "version": "7.2"
+    },
+    {
+      "name": "vim-base",
+      "version": "7.2"
+    },
+    {
+      "name": "vlan",
+      "version": "1.9"
+    },
+    {
+      "name": "xz",
+      "version": "5.0.3"
+    },
+    {
+      "name": "yast2",
+      "version": "2.17.129"
+    },
+    {
+      "name": "yast2-add-on",
+      "version": "2.17.31"
+    },
+    {
+      "name": "yast2-bootloader",
+      "version": "2.17.96"
+    },
+    {
+      "name": "yast2-core",
+      "version": "2.17.45"
+    },
+    {
+      "name": "yast2-country",
+      "version": "2.17.54"
+    },
+    {
+      "name": "yast2-country-data",
+      "version": "2.17.54"
+    },
+    {
+      "name": "yast2-dbus-client",
+      "version": "2.17.0"
+    },
+    {
+      "name": "yast2-dbus-server",
+      "version": "2.17.5"
+    },
+    {
+      "name": "yast2-firewall",
+      "version": "2.17.13"
+    },
+    {
+      "name": "yast2-hardware-detection",
+      "version": "2.17.2"
+    },
+    {
+      "name": "yast2-installation",
+      "version": "2.17.108"
+    },
+    {
+      "name": "yast2-ldap",
+      "version": "2.17.8"
+    },
+    {
+      "name": "yast2-ldap-client",
+      "version": "2.17.37"
+    },
+    {
+      "name": "yast2-libyui",
+      "version": "2.21.1"
+    },
+    {
+      "name": "yast2-mouse",
+      "version": "2.16.1"
+    },
+    {
+      "name": "yast2-ncurses",
+      "version": "2.17.22"
+    },
+    {
+      "name": "yast2-ncurses-pkg",
+      "version": "2.17.20"
+    },
+    {
+      "name": "yast2-network",
+      "version": "2.17.195"
+    },
+    {
+      "name": "yast2-online-update",
+      "version": "2.17.23"
+    },
+    {
+      "name": "yast2-packager",
+      "version": "2.17.107"
+    },
+    {
+      "name": "yast2-pam",
+      "version": "2.17.3"
+    },
+    {
+      "name": "yast2-perl-bindings",
+      "version": "2.17.2"
+    },
+    {
+      "name": "yast2-pkg-bindings",
+      "version": "2.17.59"
+    },
+    {
+      "name": "yast2-runlevel",
+      "version": "2.17.9"
+    },
+    {
+      "name": "yast2-schema",
+      "version": "2.17.5"
+    },
+    {
+      "name": "yast2-security",
+      "version": "2.17.16"
+    },
+    {
+      "name": "yast2-storage",
+      "version": "2.17.142"
+    },
+    {
+      "name": "yast2-storage-lib",
+      "version": "2.17.142"
+    },
+    {
+      "name": "yast2-trans-en_US",
+      "version": "2.17.34"
+    },
+    {
+      "name": "yast2-trans-stats",
+      "version": "2.15.0"
+    },
+    {
+      "name": "yast2-transfer",
+      "version": "2.16.3"
+    },
+    {
+      "name": "yast2-users",
+      "version": "2.17.54"
+    },
+    {
+      "name": "yast2-xml",
+      "version": "2.16.1"
+    },
+    {
+      "name": "yast2-ycp-ui-bindings",
+      "version": "2.21.1"
+    },
+    {
+      "name": "zlib",
+      "version": "1.2.7"
+    },
+    {
+      "name": "zypper",
+      "version": "1.6.307"
+    }
+  ],
+  "meta": {
+    "packages": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "patterns": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "repositories": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "unmanaged-files": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "config-files": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "services": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "changed-managed-files": {
+      "modified": "2014-04-14T13:08:09Z"
+    },
+    "os": {
+      "modified": "2014-04-14T13:08:09Z"
+    }
+  },
+  "patterns": [
+    {
+      "name": "Minimal",
+      "version": "11-38.44.33",
+      "repository": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138"
+    }
+  ],
+  "repositories": [
+    {
+      "alias": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138",
+      "name": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138",
+      "repo_type": "yast2",
+      "url": "http://example.com/SLES11-SP3",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99
+    }
+  ],
+  "unmanaged-files": [
+    {
+      "name": "/etc/unmanaged-file",
+      "file_type": "file",
+      "user": "root",
+      "group": "root",
+      "size": 8,
+      "mode": "644"
+    },
+    {
+      "name": "/etc/unmanaged-tree/",
+      "file_type": "dir",
+      "user": "root",
+      "group": "root",
+      "size": 339,
+      "mode": "644",
+      "files": 2
+    }
+  ],
+  "config-files": [
+    {
+      "name": "/etc/crontab",
+      "package_name": "cron",
+      "package_version": "4.1",
+      "changes": [
+        "md5"
+      ],
+      "uid": 0,
+      "gid": 0,
+      "user": "root",
+      "group": "root",
+      "mode": "644"
+    }
+  ],
+  "services": {
+    "init_system": "sysvinit",
+    "services": [
+      {
+        "name": "arpd",
+        "state": "off"
+      },
+      {
+        "name": "autoyast",
+        "state": "off"
+      },
+      {
+        "name": "boot.cgroup",
+        "state": "off"
+      },
+      {
+        "name": "boot.cleanup",
+        "state": "on"
+      },
+      {
+        "name": "boot.clock",
+        "state": "on"
+      },
+      {
+        "name": "boot.compliance",
+        "state": "on"
+      },
+      {
+        "name": "boot.crypto",
+        "state": "off"
+      },
+      {
+        "name": "boot.crypto-early",
+        "state": "off"
+      },
+      {
+        "name": "boot.debugfs",
+        "state": "on"
+      },
+      {
+        "name": "boot.device-mapper",
+        "state": "on"
+      },
+      {
+        "name": "boot.dmraid",
+        "state": "off"
+      },
+      {
+        "name": "boot.efivars",
+        "state": "on"
+      },
+      {
+        "name": "boot.ipconfig",
+        "state": "on"
+      },
+      {
+        "name": "boot.klog",
+        "state": "on"
+      },
+      {
+        "name": "boot.ldconfig",
+        "state": "on"
+      },
+      {
+        "name": "boot.loadmodules",
+        "state": "on"
+      },
+      {
+        "name": "boot.localfs",
+        "state": "on"
+      },
+      {
+        "name": "boot.localnet",
+        "state": "on"
+      },
+      {
+        "name": "boot.lvm",
+        "state": "off"
+      },
+      {
+        "name": "boot.lvm_monitor",
+        "state": "on"
+      },
+      {
+        "name": "boot.md",
+        "state": "off"
+      },
+      {
+        "name": "boot.multipath",
+        "state": "off"
+      },
+      {
+        "name": "boot.proc",
+        "state": "on"
+      },
+      {
+        "name": "boot.rootfsck",
+        "state": "on"
+      },
+      {
+        "name": "boot.swap",
+        "state": "on"
+      },
+      {
+        "name": "boot.sysctl",
+        "state": "on"
+      },
+      {
+        "name": "boot.udev",
+        "state": "on"
+      },
+      {
+        "name": "boot.udev_retry",
+        "state": "on"
+      },
+      {
+        "name": "cron",
+        "state": "on"
+      },
+      {
+        "name": "dbus",
+        "state": "on"
+      },
+      {
+        "name": "fbset",
+        "state": "on"
+      },
+      {
+        "name": "haldaemon",
+        "state": "on"
+      },
+      {
+        "name": "haveged",
+        "state": "on"
+      },
+      {
+        "name": "kbd",
+        "state": "on"
+      },
+      {
+        "name": "lvm_wait_merge_snapshot",
+        "state": "on"
+      },
+      {
+        "name": "mdadmd",
+        "state": "off"
+      },
+      {
+        "name": "multipathd",
+        "state": "off"
+      },
+      {
+        "name": "network",
+        "state": "on"
+      },
+      {
+        "name": "network-remotefs",
+        "state": "on"
+      },
+      {
+        "name": "postfix",
+        "state": "on"
+      },
+      {
+        "name": "powerd",
+        "state": "off"
+      },
+      {
+        "name": "purge-kernels",
+        "state": "on"
+      },
+      {
+        "name": "random",
+        "state": "on"
+      },
+      {
+        "name": "raw",
+        "state": "off"
+      },
+      {
+        "name": "rpasswdd",
+        "state": "off"
+      },
+      {
+        "name": "rpmconfigcheck",
+        "state": "off"
+      },
+      {
+        "name": "rsyncd",
+        "state": "off"
+      },
+      {
+        "name": "setserial",
+        "state": "off"
+      },
+      {
+        "name": "skeleton.compat",
+        "state": "off"
+      },
+      {
+        "name": "sshd",
+        "state": "on"
+      }
+    ]
+  },
+  "changed-managed-files": [
+    {
+      "name": "/usr/share/bash/helpfiles/cd",
+      "package_name": "bash",
+      "package_version": "3.2",
+      "changes": [
+        "deleted"
+      ],
+      "package_file_flag": ""
+    },
+    {
+      "name": "/usr/share/bash/helpfiles/read",
+      "package_name": "bash",
+      "package_version": "3.2",
+      "changes": [
+        "md5"
+      ],
+      "package_file_flag": "",
+      "mode": "644",
+      "uid": 0,
+      "gid": 0,
+      "user": "root",
+      "group": "root"
+    }
+  ],
+  "os": {
+    "name": "SUSE Linux Enterprise Server 11",
+    "version": "11 SP3",
+    "architecture": "i686"
+  }
+}

@@ -1,0 +1,7 @@
+# Ignore everything in this directory. It's all generated RPM stuff.
+*
+
+# Keep this .gitignore file, though. That way we'll always have this package/
+# directory around and don't have to take care of creating it in the different
+# tasks first.
+!.gitignore

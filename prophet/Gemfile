@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+gem "multipart-post", "1.2.0"
+gem "octokit", "1.25.0"
+gem "prophet"

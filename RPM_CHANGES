@@ -1,0 +1,119 @@
+# Machinery RPM Changelog
+
+* add gem2rpm as build requirement to follow common gem packaging style
+
+## Version 0.17.3 - Wed Jul 23 16:29:52 CEST 2014 - thardeck@suse.de
+
+* update to version 0.17.3
+* switch to new ruby packaging style for SLES12
+
+## Version 0.17.2 - Thu Jul 17 11:32:43 CEST 2014 - thardeck@suse.de
+
+* update to version 0.17.2
+
+## Version 0.17.1 - Tue Jul 15 13:29:15 CEST 2014 - thardeck@suse.de
+
+* update to version 0.17.1
+* switch from Thor to Git-Like Interface Command Line Parser
+
+## Version 0.17.0 - Tue Jul 01 13:16:10 CEST 2014 - thardeck@suse.de
+
+* update to version 0.17.0
+* add {rb_default_ruby_abi} macro to SLES12 build requirements
+* do not include the json gem in SLES12 (it is part of Ruby 2.1)
+
+## Version 0.16.0 - Mon Jun 16 15:08:24 CEST 2014 - thardeck@suse.de
+
+* update to version 0.16.0
+
+## Version 0.15.0 - Mon Jun 02 14:20:58 CEST 2014 - thardeck@suse.de
+
+* update to version 0.15.0
+
+## Version 0.14.0 - Mon May 19 18:18:48 CEST 2014 - thardeck@suse.de
+
+* update to version 0.14.0
+
+## Version 0.13.0 - Tue May 06 13:49:51 CEST 2014 - thardeck@suse.de
+
+* update to version 0.13.0
+
+## Version 0.12.1 - Tue Apr 29 10:40:00 CEST 2014 - thardeck@suse.de
+
+* update to version 0.12.1
+
+## Version 0.12.0 - Tue Apr 29 10:21:41 CEST 2014 - thardeck@suse.de
+
+* update to version 0.12.0
+* renamed package to machinery
+* require ruby >= 2.0
+* recommend Kiwi instead of requiring it
+* bundle the required gems with the rpm
+
+## Version 0.11.0 - Tue Apr 22 13:00:43 CEST 2014 - thardeck@suse.de
+
+* update to version 0.11.0
+
+## Version 0.10.3 - Tue Apr 08 12:50:32 CEST 2014 - thardeck@suse.de
+
+* update to version 0.10.3
+
+## Version 0.10.2 - Mon Apr 07 13:15:59 CEST 2014 - thardeck@suse.de
+
+* update to version 0.10.2
+* make the files COPYING and NEWS available in the doc directory
+
+## Version 0.10.1 - Mon Apr 07 12:46:21 CEST 2014 - thardeck@suse.de
+
+* update to version 0.10.1
+
+## Version 0.10.0 - Mon Apr 07 09:00:21 CEST 2014 - thardeck@suse.de
+
+* update to version 0.10.0
+
+## Version 0.9.2 - Thu Mar 27 13:44:14 CET 2014 - thardeck@suse.de
+
+* update to version 0.9.2
+* revert Nokogiri requirement because of a scheduled fix for the 13.1 ruby package
+* adapt rubygem-json requirement to allow the openSUSE 13.1 version
+
+## Version 0.9.1 - Tue Mar 25 12:57:07 CET 2014 - thardeck@suse.de
+
+* update to version 0.9.1
+
+## Version 0.9.0 - Mon Mar 24 17:56:13 CET 2014 - thardeck@suse.de
+
+* update to version 0.9.0
+* add requirement for version 1.5.9 of Nokogiri
+
+## Version 0.8.0 - Tue Mar 11 12:11:46 CET 2014 - thardeck@suse.de
+
+* update to version 0.8.0
+* add db45-utils, db48-utils, and grub as a requirement for cross distribution building
+
+## Version 0.7.0 - Mon Feb 24 16:21:51 CET 2014 - thardeck@suse.de
+
+* update to version 0.7.0
+
+## Version 0.6.0 - Mon Feb 10 17:20:04 CET 2014 - thardeck@suse.de
+
+* update to version 0.6.0
+* license under GPLv3
+
+## Version 0.5.0 - Mon Jan 27 14:53:29 CET 2014 - thardeck@suse.de
+
+* update to version 0.5.0
+* add kiwi and kiwi-desc-vmxboot as requirement
+
+## Version 0.4.0 - Mon Jan 13 18:14:40 CET 2014 - thardeck@suse.de
+
+* update to version 0.4.0
+
+## Version 0.3.1 - Fri Jan 10 14:42:53 CET 2014 - thardeck@suse.de
+
+* update to version 0.3.1
+
+## Version 0.1.0 - Tue Dec 17 14:06:59 CET 2013 - aduffeck@suse.de
+
+* update to version 0.1.0
+* install man page system wide

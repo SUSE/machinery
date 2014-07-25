@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<!DOCTYPE profile>
+<profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
+  <bootloader>
+    <device_map config:type="list">
+      <device_map_entry>
+        <firmware>hd0</firmware>
+        <linux>/dev/vda</linux>
+      </device_map_entry>
+    </device_map>
+    <global>
+      <activate>true</activate>
+      <default>openSUSE 13.1</default>
+      <generic_mbr>true</generic_mbr>
+      <lines_cache_id>2</lines_cache_id>
+      <timeout config:type="integer">8</timeout>
+    </global>
+    <loader_type>grub2</loader_type>
+    <sections config:type="list">
+      <section>
+        <append>resume=/dev/vda1 splash=silent quiet showopts</append>
+        <image>/boot/vmlinuz-3.11.3-1-desktop</image>
+        <lines_cache_id>0</lines_cache_id>
+        <menuentry>openSUSE 13.1</menuentry>
+        <name>openSUSE 13.1</name>
+        <root>/dev/vda2</root>
+        <type>image</type>
+        <usage>Linux</usage>
+      </section>
+      <section>
+        <append>showopts apm=off noresume nosmp maxcpus=0 edd=off powersaved=off nohz=off highres=off processor.max_cstate=1 nomodeset x11failsafe</append>
+        <image>(hd0,1)/boot/vmlinuz-2.6.37.1-1.2-default</image>
+        <initrd>(hd0,1)/boot/initrd-2.6.37.1-1.2-default</initrd>
+        <lines_cache_id>1</lines_cache_id>
+        <name>Failsafe -- openSUSE 11.4 - 2.6.37.1-1.2</name>
+        <original_name>failsafe</original_name>
+        <root>/dev/vda2</root>
+        <type>image</type>
+      </section>
+    </sections>
+  </bootloader>
+  <general>
+    <mode>
+      <confirm config:type="boolean">false</confirm>
+    </mode>
+  </general>
+  <scripts>
+    <init-scripts config:type="list">
+      <script>
+        <chrooted config:type="boolean">true</chrooted>
+        <interpreter>shell</interpreter>
+        <source><![CDATA[
+  chkconfig sshd on
+  rcsshd start
+]]></source>
+      </script>
+    </init-scripts>
+  </scripts>
+  <networking>
+    <dhcp_options>
+      <dhclient_client_id></dhclient_client_id>
+      <dhclient_hostname_option>AUTO</dhclient_hostname_option>
+    </dhcp_options>
+    <dns>
+      <dhcp_hostname config:type="boolean">true</dhcp_hostname>
+      <domain>vagrantup.com</domain>
+      <hostname>vagrant-opensuse</hostname>
+      <resolv_conf_policy>auto</resolv_conf_policy>
+      <searchlist config:type="list">
+        <search>vagrantup.com</search>
+      </searchlist>
+      <write_hostname config:type="boolean">true</write_hostname>
+    </dns>
+    <interfaces config:type="list">
+      <interface>
+        <bootproto>dhcp</bootproto>
+        <device>eth0</device>
+        <name>82540EM Gigabit Ethernet Controller</name>
+        <startmode>nfsroot</startmode>
+        <usercontrol>no</usercontrol>
+      </interface>
+    </interfaces>
+  </networking>
+  <partitioning config:type="list">
+    <drive>
+      <device>/dev/vda</device>
+      <initialize config:type="boolean">true</initialize>
+      <use>all</use>
+    </drive>
+  </partitioning>
+  <report>
+    <errors>
+      <log config:type="boolean">true</log>
+      <show config:type="boolean">true</show>
+      <timeout config:type="integer">0</timeout>
+    </errors>
+    <messages>
+      <log config:type="boolean">true</log>
+      <show config:type="boolean">true</show>
+      <timeout config:type="integer">0</timeout>
+    </messages>
+    <warnings>
+      <log config:type="boolean">true</log>
+      <show config:type="boolean">true</show>
+      <timeout config:type="integer">0</timeout>
+    </warnings>
+    <yesno_messages>
+      <log config:type="boolean">true</log>
+      <show config:type="boolean">true</show>
+      <timeout config:type="integer">0</timeout>
+    </yesno_messages>
+  </report>
+  <software>
+    <install_recommended config:type="boolean">false</install_recommended>
+    <packages config:type="list">
+      <package>aaa_base</package>
+      <package>bash</package>
+      <package>coreutils</package>
+      <package>cracklib-dict-full</package>
+      <package>device-mapper</package>
+      <package>dhcpcd</package>
+      <package>e2fsprogs</package>
+      <package>elfutils</package>
+      <package>filesystem</package>
+      <package>gcc</package>
+      <package>glibc</package>
+      <package>grub2</package>
+      <package>ifplugd</package>
+      <package>initviocons</package>
+      <package>insserv</package>
+      <package>iputils</package>
+      <package>kbd</package>
+      <package>kernel-default</package>
+      <package>klogd</package>
+      <package>less</package>
+      <package>login</package>
+      <package>mkinitrd</package>
+      <package>module-init-tools</package>
+      <package>ncurses-utils</package>
+      <package>openssh</package>
+      <package>openssl-certs</package>
+      <package>pam</package>
+      <package>pam-modules</package>
+      <package>procps</package>
+      <package>pwdutils</package>
+      <package>rpcbind</package>
+      <package>rpm</package>
+      <package>sudo</package>
+      <package>sysconfig</package>
+      <package>tar</package>
+      <package>timezone</package>
+      <package>vim</package>
+      <package>vim-base</package>
+      <package>w3m</package>
+      <package>zypper</package>
+      <package>rsync</package>
+      <package>ca-certificates-mozilla</package>
+      <package>glibc-locale</package>
+      <package>yast2-network</package>
+      <package>yast2-users</package>
+      <package>libyui-ncurses-pkg5</package>
+      <package>cronie</package>
+    </packages>
+    <patterns config:type="list">
+      <pattern>base</pattern>
+    </patterns>
+    <remove-packages config:type="list">
+      <package>libyui-gtk-pkg5</package>
+      <package>libyui-gtk5</package>
+      <package>Mesa</package>
+      <package>libcairo2</package>
+      <package>libgtk-3-0</package>
+      <package>gtk3-tools</package>
+      <package>libpango-1_0-0</package>
+      <package>libcairo-gobject2</package>
+      <package>pango-tools</package>
+      <package>wallpaper-branding-openSUSE-13.1</package>
+      <package>subversion</package>
+      <package>tcl</package>
+      <package>tk</package>
+      <package>libXft2</package>
+      <package>libtool</package>
+      <package>fontconfig</package>
+      <package>gitk</package>
+      <package>git-gui</package>
+    </remove-packages>
+  </software>
+  <users config:type="list">
+    <user>
+      <encrypted config:type="boolean">false</encrypted>
+      <fullname>vagrant</fullname>
+      <gid>100</gid>
+      <home>/home/vagrant</home>
+      <shell>/bin/bash</shell>
+      <uid>1000</uid>
+      <user_password>vagrant</user_password>
+      <username>vagrant</username>
+    </user>
+    <user>
+      <encrypted config:type="boolean">false</encrypted>
+      <fullname>root</fullname>
+      <gid>0</gid>
+      <home>/root</home>
+      <shell>/bin/bash</shell>
+      <uid>0</uid>
+      <user_password>vagrant</user_password>
+      <username>root</username>
+    </user>
+  </users>
+</profile>

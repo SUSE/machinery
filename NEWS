@@ -1,0 +1,104 @@
+# Machinery Release Notes
+
+
+## Version 0.17.2 - Thu Jul 17 11:32:43 CEST 2014 - thardeck@suse.de
+
+* Removed incomplete bash completion support
+
+## Version 0.17.1 - Tue Jul 15 13:29:15 CEST 2014 - thardeck@suse.de
+
+* Fixed bnc#883028 - check for Kiwi dependencies
+* Fixed inspection of systems without repositories
+* Fixed misleading help descriptions
+
+## Version 0.17.0 - Tue Jul 01 13:16:10 CEST 2014 - thardeck@suse.de
+
+* Added bash completion support
+* Kiwi export now includes a how-to
+* Added the option "--exclude-scope" to allow omission of scopes
+
+## Version 0.16.0 - Mon Jun 16 15:08:24 CEST 2014 - thardeck@suse.de
+
+* Adapted the diff format according to user feedback
+* Added `clone` command to copy system descriptions
+
+## Version 0.15.0 - Mon Jun 02 14:20:58 CEST 2014 - thardeck@suse.de
+
+* Added `analyze` command with the option "--operation=config-file-diffs" to generate the diff of changed config files by downloading the packages. The diff can be shown by running `show` with the option "--show-diffs"
+* Added `compare` command to see the differences between two systems descriptions
+
+## Version 0.14.0 - Mon May 19 18:18:48 CEST 2014 - thardeck@suse.de
+
+* Added support for building SLES 12 images
+* Optimized extraction of unmanaged files from SLES 12 systems
+* The scope command line option now accepts abbreviated scope names
+
+## Version 0.13.0 - Tue May 06 13:49:51 CEST 2014 - thardeck@suse.de
+
+* Added inspection for systemd services
+* Added deployment of build images to OpenStack cloud
+
+## Version 0.12.0 - Tue Apr 29 10:21:41 CEST 2014 - thardeck@suse.de
+
+* Added inspection of users
+* Added inspection of groups
+
+## Version 0.11.0 - Tue Apr 22 13:00:43 CEST 2014 - thardeck@suse.de
+
+* Inspector for repository credentials implemented
+* Added command to export SLE11 system descriptions as Kiwi image descriptions
+
+## Version 0.10.3 - Tue Apr 08 12:50:32 CEST 2014 - thardeck@suse.de
+
+* Added SLES 12 support for the inspector services
+
+## Version 0.10.1 - Mon Apr 07 12:46:21 CEST 2014 - thardeck@suse.de
+
+* Added SLES 12 support for the inspector patterns
+
+## Version 0.10.0 - Mon Apr 07 09:00:21 CEST 2014 - thardeck@suse.de
+
+* Made Machinery run on SLES12
+* Added SLES 12 support for the inspectors packages, repositories, os, config-files, changed-managed-files and unmanaged-files
+
+## Version 0.9.0 - Mon Mar 24 17:56:13 CET 2014 - thardeck@suse.de
+
+* Inspector for changed managed files implemented
+* Extraction of unmanaged-files meta data implemented
+* Graceful handling of inspection errors
+
+## Version 0.8.0 - Tue Mar 11 12:11:46 CET 2014 - thardeck@suse.de
+
+* Added logging
+* Inspector for unmanaged-files implemented
+* Extraction of unmanaged-files implemented
+
+## Version 0.7.0 - Mon Feb 24 16:21:51 CET 2014 - thardeck@suse.de
+
+* Inspector for the operating system and version implemented
+* Inspector for installed services implemented
+* Timestamps are now shown with each scope
+
+## Version 0.6.0 - Mon Feb 10 17:20:04 CET 2014 - thardeck@suse.de
+
+* Inspected config-files can now be included in the build image
+* Improved documentation of the scopes
+* Added merging of system description scopes for each system
+* Added summary output for inspection results
+* Added show command to output the system description data
+* Added list command to list system descriptions
+* Added clean command to remove system descriptions
+
+## Version 0.5.0 - Mon Jan 27 14:53:29 CET 2014 - thardeck@suse.de
+
+* Added command to build SLES11SP3 qcow2 images based on inspected repositories and packages
+
+## Version 0.4.0 - Mon Jan 13 18:14:40 CET 2014 - thardeck@suse.de
+
+* Inspector for changed configuration files implemented
+* Inspector for patterns implemented
+
+## Version 0.1.0 - Tue Dec 17 14:06:59 CET 2013 - aduffeck@suse.de
+
+* Package and repository inspection of SLES 11 systems
+

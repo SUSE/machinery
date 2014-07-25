@@ -1,0 +1,10 @@
+-rw-r--r-- root/root         1 2014-03-06 01:33 myfile
+-rw-rwS--- hans/users        5 2014-03-06 01:26 myfile_setgid
+-rw-rws--- news/news         5 2014-03-06 01:26 myfile_setgid_x
+-r-S------ anna/users        5 2014-03-06 01:26 myfile_setuid
+-r-s------ emil/users        5 2014-03-06 01:26 myfile_setuid_x
+-rw-rw---T fritz/users       5 2014-03-06 01:26 myfile_sticky
+-rw-rw---t emil/users        5 2014-03-06 01:26 myfile_sticky_x
+lrwxrwxrwx root/root         0 2014-03-06 01:44 my link -> nirgendwo
+-rw-r--r-- emil/users       10 2014-03-06 01:34 etc/etc_myfile
+-rw-r--r-- emil/users     1024 2014-03-06 01:36 usr/X11R6/x11_myfile

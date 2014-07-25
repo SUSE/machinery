@@ -1,0 +1,8 @@
+# Changed configuration files [192.168.122.238] (2014-05-21 17:00:14)
+
+  * /etc/crontab (md5)
+  * /etc/default/grub (mode, md5)
+  * /etc/ssh/sshd_config (md5)
+  * /etc/sudoers (md5)
+  * /etc/zypp/zypp.conf (md5)
+

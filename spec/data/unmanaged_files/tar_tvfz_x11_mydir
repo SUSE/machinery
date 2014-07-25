@@ -1,0 +1,13 @@
+drwxr-xr-x root/root         0 2014-03-06 16:05 usr/X11R6/x11_mydir/
+drwxr-xr-x root/root         0 2007-07-16 16:44 usr/X11R6/x11_mydir/share/
+drwxr-xr-x root/root         0 2007-07-23 19:31 usr/X11R6/x11_mydir/share/icons/
+drwxr-xr-x root/root         0 2007-07-16 16:27 usr/X11R6/x11_mydir/share/locale/
+drwxr-xr-x root/root         0 2001-04-24 17:48 usr/X11R6/x11_mydir/share/locale/it/
+drwxr-xr-x root/root         0 2001-04-25 12:27 usr/X11R6/x11_mydir/share/locale/it/LC_MESSAGES/
+drwxr-xr-x root/root         0 2001-04-24 17:48 usr/X11R6/x11_mydir/share/locale/tr/
+drwxr-xr-x root/root         0 2001-04-25 12:27 usr/X11R6/x11_mydir/share/locale/tr/LC_MESSAGES/
+drwxr-xr-x root/root         0 2001-04-24 17:48 usr/X11R6/x11_mydir/share/locale/sv/
+drwxr-xr-x root/root         0 2001-04-25 12:27 usr/X11R6/x11_mydir/share/locale/sv/LC_MESSAGES/
+drwxr-xr-x root/root         0 2001-04-24 17:48 usr/X11R6/x11_mydir/share/locale/cs/
+drwxr-xr-x root/root         0 2001-04-25 12:27 usr/X11R6/x11_mydir/share/locale/cs/LC_MESSAGES/
+-rwxr-xr-x root/root   1000000 2001-04-25 12:46 usr/X11R6/x11_mydir/share/locale/cs/LC_MESSAGES/file
