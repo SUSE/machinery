@@ -24,6 +24,9 @@ zypper --non-interactive install --no-recommends kiwi kiwi-desc-vmxboot kiwi-too
 # Install bundler, rspec and the junit formatter (for jenkins)
 gem install bundler rspec rspec_junit_formatter
 
+# Generate a SSH identity
+su vagrant -c "mkdir -p /home/vagrant/.ssh; echo -e  'y\n'|ssh-keygen -q -t rsa -N '' -f /home/vagrant/.ssh/id_rsa"
+
 # checkout and setup machinery and pennyworth
 su vagrant -c "cd && git clone https://github.com/SUSE/machinery.git"
 su vagrant -c "cd && git clone https://github.com/SUSE/pennyworth.git"
