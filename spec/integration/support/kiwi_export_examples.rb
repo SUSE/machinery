@@ -19,7 +19,7 @@ shared_examples "kiwi export" do
   describe "export-kiwi" do
     it "creates a kiwi description" do
       @machinery.inject_directory(
-        "spec/data/descriptions/jeos/",
+        File.join(Machinery::ROOT, "spec/data/descriptions/jeos/"),
         "/home/vagrant/.machinery/",
         owner: "vagrant",
         group: "users"
