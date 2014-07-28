@@ -51,8 +51,7 @@ built image. The list of filters is shown at the beginning of the build.
 
 ### BUILD SUPPORT MATRIX
 
-  When building images with machinery the build platform also called as
-  buildhost can build images for the following combination of platforms:
+The following combinations of build platforms and built systems are supported:
 
   * SUSE Linux Enterprise 12
 
