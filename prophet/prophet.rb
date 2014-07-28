@@ -91,9 +91,6 @@ Prophet.setup do |config|
     system("cd ..; rake spec:unit")
     config.success = ($? == 0)
 
-    system("cd ../../pennyworth; rspec")
-    config.success &&= ($? == 0)
-
     log.info "Tests are #{config.success ? 'passing' : 'failing'}."
   end
 
