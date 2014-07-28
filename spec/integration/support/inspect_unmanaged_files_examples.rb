@@ -31,13 +31,13 @@ shared_examples "inspect unmanaged files" do |base|
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
         @machinery.run_command(
-          "cd; machinery/machinery/bin/machinery inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
+          "cd; machinery/bin/machinery inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
           as: "vagrant"
         )
       end
 
       actual_output = @machinery.run_command(
-        "cd; machinery/machinery/bin/machinery show #{@subject_system.ip} --scope=unmanaged-files",
+        "cd; machinery/bin/machinery show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant", stdout: :capture
       )
       # Remove timestamp, so comparison doesn't fail on that.
@@ -55,7 +55,7 @@ shared_examples "inspect unmanaged files" do |base|
 
     it "extracts meta data of unmanaged files" do
       actual_output = @machinery.run_command(
-        "cd; machinery/machinery/bin/machinery show #{@subject_system.ip} --scope=unmanaged-files",
+        "cd; machinery/bin/machinery show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant", stdout: :capture
       )
 
@@ -75,7 +75,7 @@ shared_examples "inspect unmanaged files" do |base|
 
       measure("Get list of unmanaged-files") do
         entries = @machinery.run_command(
-          "cd; machinery/machinery/bin/machinery show #{@subject_system.ip} --scope=unmanaged-files",
+          "cd; machinery/bin/machinery show #{@subject_system.ip} --scope=unmanaged-files",
           as: "vagrant", stdout: :capture
         )
       end
