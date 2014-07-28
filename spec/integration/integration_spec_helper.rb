@@ -25,7 +25,7 @@ def prepare_machinery_for_host(system, ip, opts = {})
   }.merge(opts)
 
   system.run_command(
-    "cd; machinery/pennyworth/bin/pennyworth copy-ssh-keys #{ip} -p #{opts[:password]}; ",
+    "cd; pennyworth/bin/pennyworth copy-ssh-keys #{ip} -p #{opts[:password]}; ",
     as: opts[:user]
   )
 
