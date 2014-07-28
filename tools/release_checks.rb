@@ -22,7 +22,7 @@ require "uri"
 module ReleaseChecks
   def check
     check_tag
-#    check_jenkins_state
+    check_jenkins_state
   end
 
   private
@@ -42,7 +42,7 @@ module ReleaseChecks
   end
 
   def check_jenkins_state
-    uri = URI.parse("http://example.com")
+    uri = URI.parse("https://ci.opensuse.org/job/machinery-unit/lastStableBuild/api/json")
 
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Get.new(uri.request_uri)
