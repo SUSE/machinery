@@ -38,9 +38,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define :machinery_131 do |machinery_131|
-    machinery_131.vm.synced_folder "../../../../machinery", "/home/vagrant/machinery/machinery", :type => "rsync", :rsync__exclude => "spec/", :owner => "vagrant", :group => "users"
-    machinery_131.vm.synced_folder "../../../../pennyworth/lib", "/home/vagrant/machinery/pennyworth/lib", :type => "rsync", :owner => "vagrant", :group => "users"
-    machinery_131.vm.synced_folder "../../../../pennyworth/bin", "/home/vagrant/machinery/pennyworth/bin", :type => "rsync", :owner => "vagrant", :group => "users"
+    machinery_131.vm.synced_folder "../../../../machinery", "/home/vagrant/machinery", :type => "rsync", :rsync__exclude => "spec/", :owner => "vagrant", :group => "users"
+    machinery_131.vm.synced_folder "../../../../pennyworth/lib", "/home/vagrant/pennyworth/lib", :type => "rsync", :owner => "vagrant", :group => "users"
+    machinery_131.vm.synced_folder "../../../../pennyworth/bin", "/home/vagrant/pennyworth/bin", :type => "rsync", :owner => "vagrant", :group => "users"
     machinery_131.vm.box = "machinery_opensuse13.1_kvm"
     machinery_131.vm.network :private_network, :network_name => "default"
 
@@ -53,8 +53,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     script = <<-EOF
         su vagrant -c "mkdir /home/vagrant/.machinery/"
-        su vagrant -c "cd /home/vagrant/machinery/machinery; bundle install"
-        su vagrant -c "cd /home/vagrant/machinery/pennyworth; bundle install"
+        su vagrant -c "cd /home/vagrant/machinery; bundle install"
+        su vagrant -c "cd /home/vagrant/pennyworth; bundle install"
     EOF
 
     machinery_131.vm.provision "shell", inline: script
