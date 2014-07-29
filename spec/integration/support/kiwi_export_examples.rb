@@ -27,7 +27,7 @@ shared_examples "kiwi export" do
 
       measure("export to kiwi") do
         @machinery.run_command(
-          "cd; machinery/machinery/bin/machinery export-kiwi jeos --kiwi-dir=/tmp/jeos",
+          "cd; machinery/bin/machinery export-kiwi jeos --kiwi-dir=/tmp/jeos",
           as: "vagrant"
         )
       end
