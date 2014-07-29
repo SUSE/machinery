@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Machinery - A Systems Management Toolkit for Linux</title>
+    <link href="css/custom.css" rel="stylesheet" />
+    <link href="favicon.png" rel="shortcut icon" />
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body id='manpage'>
+    <div class="col-md-10 col-md-offset-1">
+      <div id="back">
+        <a href="index.html"> <img src="img/hand3.png" class="hand3"> <div class="goback">Go back to the website</div></a>
+      </div>
+      <div class='mp'>
+<h1>Machinery — A Systems Management Toolkit for Linux</h1>
+<!--
+
+General procedure:
+
+1. Add the short description of a new command into the COMMANDS section
+2. Copy the subcommand-template.1.md to machinery-SUBCOMMAND.1.md
+3. Insert your description in your machinery-SUBCOMMAND.1.md file
+
+-->
+
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>machinery</code> SUBCOMMAND [options] <br />
+<code>machinery</code> help [SUBCOMMAND]</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>Machinery is a systems management toolkit for Linux. It supports configuration
+discovery, system validation, and service migration. Machinery is based on the
+idea of an universal system description. Machinery has a set of commands which
+work with this system description. These commands can be combined to form work
+flows. Machinery is targeted at the system administrator of the data center.</p>
+
+<h2 id="CONCEPTUAL-OVERVIEW">CONCEPTUAL OVERVIEW</h2>
+
+<p>Machinery's core concept is the complete representation of a system by a
+universal system description.
+System descriptions are managed independently of the described
+systems which allows for system state conservation and offline preparation of
+modifications.</p>
+
+<p>Machinery's subcommands work on the system description as the connecting
+element.
+System descriptions are obtained by inspecting systems, importing from other
+formats, manual creation or merging other descriptions.
+Machinery can store and modify system descriptions to allow changes to
+described state of the system.
+System descriptions can be compared to find similarities and differences
+between them or analyzed to deepen the knowledge about particular aspects of
+the system.
+System descriptions may be exported to other formats and can be used to
+migrate or replicate systems.</p>
+
+<p>Subcommands can be combined in different ways to accomodate higher-level work
+flows and use cases.
+These are some implemented and planned use cases:</p>
+
+<p>Migrate a physical system to a virtual environment:</p>
+
+<ul>
+<li>Inspect a system to obtain a system description</li>
+<li>Export the system description to a Kiwi configuration</li>
+<li>Build a cloud image from the configuration</li>
+<li>Deploy the image to the cloud</li>
+</ul>
+
+
+<p>Migrate a system while changing the configuration:</p>
+
+<ul>
+<li>Inspect a system to obtain a system description</li>
+<li>Modify the system description</li>
+<li>Build image for deployment</li>
+</ul>
+
+
+<p>Using Machinery as an extension from other formats:</p>
+
+<ul>
+<li>Import AutoYaST profile as system description</li>
+<li>Build image for deployment</li>
+</ul>
+
+
+<p>Machinery provides an extensible set of tools which can be combined to create
+higher-level work flows.
+It is designed for environments which focus on automation, integration
+of diverse tools and accountable management.
+Machinery integrates with existing configuration management solutions to
+address use cases currently not covered by them.</p>
+
+<h3 id="The-machinery-Command">The machinery Command</h3>
+
+<p>Machinery is implemented as a command line tool named <code>machinery</code>. The
+<code>machinery</code> command has several subcommands for specific tasks. All
+subcommands work with the same system description identified by an optional
+name which can be used by all subcommands.</p>
+
+<h3 id="Scopes">Scopes</h3>
+
+<p>The system description is structured into "scopes". A scope covers a specific
+part of the configuration of the inspected system such as installed packages,
+repositories, or configuration files.</p>
+
+<p>For example, if you are only interested in the installed packages, limit the
+scope to <code>packages</code>. This will output only the requested information.</p>
+
+<p>Machinery supports the following scopes:</p>
+
+<ul>
+<li><p>os</p>
+
+<p>Contains information about the operating system, name, version, and
+architecture of the inspected system.</p></li>
+<li><p>packages</p>
+
+<p>Contains information on all installed RPM packages installed on the
+inspected system.</p></li>
+<li><p>config-files</p>
+
+<p>Contains all configuration files which have been changed since they were
+installed.
+Configuration files are all those files which are marked as such in the
+package which has installed them. A configuration file is considered changed
+if either its content or its Linux permission bits have changed.</p></li>
+<li><p>unmanaged-files</p>
+
+<p>Contains the names and contents of all files which are not part of any RPM
+package. The list of unmanaged files contains only plain files and
+directories. Special files like device nodes, named pipes and Unix domain
+sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/sys</code>, <code>/dev</code>,
+<code>/.snapshots/</code>, and <code>/var/run</code> are ignored, too. If a directory is in this
+list, no file or directory below it belongs to a RPM package.</p>
+
+<p>Meta data information of unmanaged files is only available if the files were
+extracted during inspection.</p>
+
+<p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from
+the system and stored in the system description. Depending on the content of
+the inspected system, the amount of data stored may be huge.</p></li>
+<li><p>changed-managed-files</p>
+
+<p>Contains the names and contents of all non-configuration files which have
+been changed compared to the files in the package.</p></li>
+<li><p>patterns</p>
+
+<p>Contains all patterns installed on the inspected system. A pattern is a
+collection of software packages.
+The meaning of software patterns depends on the package manager of the
+distribution. Therefore, the pattern scope on SUSE based systems uses the
+<code>zypper</code> command to obtain the information about installed pattern names.</p></li>
+<li><p>repositories</p>
+
+<p>Contains all information about software repositories configured on the
+inspected system. The information about repositories depends on the package
+manager of the distribution. Thus on SUSE-based systems the <code>zypper</code> command
+is used. Machinery collects the following information from each configured repository:</p>
+
+<ul>
+<li><p>The alias name of the repository.</p></li>
+<li><p>The repository type, rpm-md and YaST types that are used on SUSE systems.</p></li>
+<li><p>The path to the repository. This could be a local path, a remote location,
+a device, or a file.</p></li>
+<li><p>A boolean flag that indicates if this repository is in use or not.</p></li>
+<li><p>A boolean flag that indicates if this repository should update the locally
+stored metadata files with metadata files from the origin automatically or
+not.</p></li>
+<li><p>A boolean flag that indicates if packages which would be installed from
+this repository should be checked by their gpg key or not.</p></li>
+<li><p>A numeric value for a priority. The priority of a repository is compared
+to the priorities of all other activated repositories. Values can
+range from 1 (highest) to 99 (lowest, default).</p></li>
+</ul>
+</li>
+<li><p>services</p>
+
+<p>Services are applications running in the background doing continuous work
+or waiting for requests to do work.
+The scope determines which services are configured to be started in which
+runlevel. It uses the <code>chkconfig</code> command to obtain that information.
+The xinetd services that are also displayed by <code>chkconfig</code> are switched
+on/off by editing config files and are ignored in this context.</p></li>
+<li><p>users</p>
+
+<p>Contains information about the system users including user and group ids,
+login information, such as password hashes and - if available - additional
+password properties.</p></li>
+<li><p>groups</p>
+
+<p>Contains information about the system groups such as group attributes and the
+list of group members.</p></li>
+</ul>
+
+
+<h3 id="Use-Cases">Use Cases</h3>
+
+<p>Some of the important use cases of Machinery are:</p>
+
+<ul>
+<li><p>Inspecting a System and Collecting Information</p>
+
+<p>Collecting a variety of information. Limit the gathered
+information with scopes (see section about scopes). Each inspection step
+updates the system description.</p></li>
+<li><p>Reviewing System Description</p>
+
+<p>After a successful inspection, the system description can be displayed on
+the console or the output can be fed into other tools.</p></li>
+<li><p>Cloning a System</p>
+
+<p>An inspected system can be cloned. The inspection step returns a system
+description which is used as the basis for cloning physical or virtual
+instances. Machinery can build a system image from the description, which
+can then for example be deployed to a cloud.</p></li>
+</ul>
+
+
+<h2 id="OPTIONS-FOR-ALL-SUBCOMMANDS">OPTIONS FOR ALL SUBCOMMANDS</h2>
+
+<dl>
+<dt><code>--version</code></dt><dd><p>Displays version of <code>machinery</code> tool. Exit when done.</p></dd>
+<dt class="flush"><code>--debug</code></dt><dd><p>Enable debug mode. Machinery writes additional information into the log
+file which can be useful to track down problems.</p></dd>
+</dl>
+
+
+<h1>analyze — Analyze System Description</h1>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery analyze</code> NAME -o | --operation=OPERATION</p>
+
+<p><code>machinery</code> help analyze</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>analyze</code> subcommand analyzes an existing system description and enriches
+it with additional information. Supported operations are:</p>
+
+<dl>
+<dt><code>config-file-diffs</code></dt><dd>Generates the diffs between the extracted changed config files from the
+system and the original versions from the RPM packages.
+The diffs can be shown using <code>machinery show --show-diffs</code></dd>
+</dl>
+
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-o OPERATION</code>, <code>--operation=OPERATION</code> (required)</dt><dd>The analyze operation to perform.</dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Analyze the config file diffs for the <code>myhost</code> system description:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> analyze myhost --operation=config-file-diffs</p></dd>
+</dl>
+
+
+<h2 id="build-Build-Image-from-System-Description">build — Build Image from System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery build</code> NAME -i IMAGE-DIR | --image-dir=IMAGE-DIR</p>
+
+<p><code>machinery</code> help build</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>build</code> command builds an image from a system description. The image is a
+system image in the qcow2 format, which can be used with the KVM hypervisor.
+It can be run locally or deployed to a cloud environment.</p>
+
+<p><code>machinery</code> uses the image building command line tool
+<a href="http://en.opensuse.org/Portal:KIWI">KIWI</a> to perform the actual build. KIWI
+data is stored to a temporary directory and cleaned up after the build. The KIWI
+log is shown as output of the <code>build</code> command format for showing progress and
+diagnosing errors.</p>
+
+<p>When building an image, Machinery filters some files from the system
+description, which would break the built image. The list of filters is shown
+at the beginning of the build.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Use specified system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-i IMAGE-DIR</code>, <code>--image-dir=IMAGE-DIR</code> (required)</dt><dd><p>Save image file under specified path.</p></dd>
+<dt><code>-d</code>, <code>--enable-dhcp</code> (optional)</dt><dd><p>Enable DHCP client on first network card of built image</p></dd>
+<dt><code>-s</code>, <code>--enable-ssh</code> (optional)</dt><dd><p>Enable SSH service in built image</p></dd>
+</dl>
+
+
+<h3 id="PREREQUISITES">PREREQUISITES</h3>
+
+<ul>
+<li><p>The <code>build</code> command requires the packages <code>kiwi</code> and <code>kiwi-desc-vmbxoot</code>.</p></li>
+<li><p>All repositories in the system description must be accessible from the
+build machine on which <code>machinery build</code> is called.</p></li>
+<li><p>The following combination of platforms is supported for builds:</p>
+
+<p>Building SUSE Linux Enterprise 11 and 12 images and openSUSE 13.1 images
+on openSUSE 13.1</p>
+
+<p>Building SUSE Linux Enterprise 12 images on SUSE Linux Enterprise 12</p></li>
+</ul>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<ul>
+<li><p>To build an image from the system description named "tux" and to save the
+image under the <code>/tmp/tux/</code> directory:</p>
+
+<p>$ <code>machinery</code> build tux -i /tmp/tux/</p></li>
+</ul>
+
+
+<h2 id="clone-Clone-System-Description">clone — Clone System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery clone</code>
+    FROM_NAME TO_NAME</p>
+
+<p><code>machinery</code> help clone</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>clone</code> command clones a stored system description. It creates a new
+description named TO_NAME containing the same content as the description
+FROM_NAME.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>FROM_NAME</code> (required)</dt><dd><p>Name of the source system description.</p></dd>
+<dt><code>TO_NAME</code> (required)</dt><dd><p>Name of the target system description.</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Create a clone of the system description <code>earth</code> under the name <code>moon</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> clone earth moon</p></dd>
+</dl>
+
+
+<h2 id="compare-Compare-System-Descriptions">compare — Compare System Descriptions</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery compare</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-all] NAME1 NAME2</p>
+
+<p><code>machinery</code> help compare</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>compare</code> command compares stored system descriptions. The scope option can
+be used to limit the output to the given scopes.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME1</code> (required)</dt><dd><p>First system description to compare.</p></dd>
+<dt><code>NAME2</code> (required)</dt><dd><p>Second system description to compare.</p></dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional)</dt><dd><p>Limit output to the specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>-e SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional)</dt><dd><p>Skip output of the specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>--no-pager</code> (optional)</dt><dd><p>Do not pipe output into a pager.</p></dd>
+<dt><code>--show-all</code> (optional)</dt><dd><p>Show also common properties of the descriptions (not only the differences).</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<ul>
+<li><p>Compare system descriptions saved as <code>earth</code> and <code>moon</code>:</p>
+
+<p>$ <code>machinery</code> compare earth moon</p></li>
+<li><p>Compare system descriptions, but limit the scope to repositories only:</p>
+
+<p>$ <code>machinery</code> compare earth moon -s repositories</p></li>
+<li><p>Compare lists of changed managed files and include the common ones in the
+list:</p>
+
+<p>$ <code>machinery</code> compare earth moon --scope=changed-managed-files --show-all</p></li>
+</ul>
+
+
+<h2 id="deploy-Deploy-Image-to-OpenStack-Cloud">deploy — Deploy Image to OpenStack Cloud</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery deploy</code> NAME -c CONFIG_FILE | --cloud-config=CONFIG_FILE
+   [-i IMAGE_DIR | --image-dir=IMAGE_DIR]
+   [-n CLOUD_IMAGE_NAME | --cloud-image-name=CLOUD_IMAGE_NAME]
+   [-s | --insecure ]</p>
+
+<p><code>machinery</code> help [deploy]</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>deploy</code> command builds and deploys an image to an OpenStack cloud.
+This command is particularly useful for testing, debugging, or for validation.</p>
+
+<blockquote><h4 id="NOTE-Set-Password-for-Unattended-Work">NOTE: Set Password for Unattended Work</h4>
+
+<p>Machinery asks for a password when sourcing the configuration
+file. This interrupts the work flow and the user has to enter
+this password.
+If you prefer to leave it uninterrupted and unattented, remove
+the following line in your cloud configuration file (see the <code>-c</code> option):</p>
+
+<p>  read -s OS_PASSWORD_INPUT</p>
+
+<p>and set the password in the <code>OS_PASSWORD</code> variable:</p>
+
+<pre><code>export OS_PASSWORD=YOUR_PASSWORD
+</code></pre></blockquote>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-c CONFIG_FILE</code>, <code>--cloud-config=CONFIG_FILE</code> (required)</dt><dd><p>Path to file where the cloud config (openrc.sh) is located.
+The configuration file is sourced by Machinery.</p></dd>
+<dt><code>-i IMAGE_DIR</code>, <code>--image-dir=IMAGE_DIR</code> (optional)</dt><dd><p>Image file under specific path.</p></dd>
+<dt><code>-n CLOUD_IMAGE_NAME</code>, <code>--cloud-image-name=CLOUD_IMAGE_NAME</code> (required)</dt><dd><p>Name of the image in the cloud.</p></dd>
+<dt><code>-s</code>, <code>--insecure</code> (optional)</dt><dd><p>Allow to make "insecure" HTTPS requests, without checking the SSL
+certificate when uploading to the cloud.</p></dd>
+</dl>
+
+
+<h3 id="PREREQUISITES">PREREQUISITES</h3>
+
+<ul>
+<li>The <code>deploy</code> command requires the packages <code>kiwi</code> for building the image
+and <code>python-glanceclient</code> for uploading the image to the cloud.</li>
+</ul>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<ul>
+<li><p>Build an image under the system description named <code>jeos</code>.
+Deploy it to the OpenStack cloud name <code>tux-cloud</code> by using the
+configuration file <code>openrc.sh</code> in directory <code>tux</code>:</p>
+
+<p>$ <code>machinery</code> deploy jeos -n tux-cloud -c tux/openrc.sh</p></li>
+</ul>
+
+
+<h2 id="export-kiwi-Export-System-Description-as-KIWI-Image-Description">export-kiwi — Export System Description as KIWI Image Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery export-kiwi</code> -k | --kiwi-dir NAME
+   --force</p>
+
+<p><code>machinery</code> help export-kiwi</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>export-kiwi</code> subcommand exports a stored system description as a KIWI
+image description.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-k KIWI_DIR</code>, <code>--kiwi-dir=KIWI_DIR</code> (required)</dt><dd><p>Write the KIWI image description to the specified directory. The directory
+will be created if it does not exist yet.</p></dd>
+<dt><code>--force</code> (optional)</dt><dd><p>Overwrite existing system description</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Export the <code>myhost</code> system description to <code>/tmp/export</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> export-kiwi myhost --kiwi-dir=/tmp/export</p></dd>
+</dl>
+
+
+<h2 id="inspect-Inspect-Running-System">inspect — Inspect Running System</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery inspect</code> <a href="#OPTIONS" title="OPTIONS" data-bare-link="true">OPTIONS</a> HOSTNAME</p>
+
+<p><code>machinery</code> help inspect</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>inspect</code> command inspects a running system and generates a system
+description from the gathered data.</p>
+
+<p>The system data is structured into scopes, controlled by the
+<code>--scope</code> option.</p>
+
+<p><strong>Note</strong>:
+Machinery will always inspect all specified scopes, and skip scopes which
+trigger errors.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>HOSTNAME</code> (required)</dt><dd>The host name of the system to be inspected. The host name will also be
+used as the name of the stored system description unless another name is
+provided with the <code>--name</code> option.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-n NAME</code>, <code>--name=NAME</code> (optional)</dt><dd><p>Store the system description under the specified name.</p></dd>
+<dt><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional)</dt><dd><p>Inspect system for specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>-e SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional)</dt><dd><p>Inspect system for all scopes except the specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>-x</code>, <code>--extract-files</code> (optional)</dt><dd><p>Extract changed configuration and unmanaged files from the inspected system.
+Shortcut for the combination of <code>--extract-changed-config-files</code>,
+<code>--extract-unmanaged-files</code>, and <code>--extract-changed-managed-files</code></p></dd>
+<dt><code>--extract-changed-config-files</code> (optional)</dt><dd><p>Extract changed configuration files from the inspected system.</p></dd>
+<dt><code>--extract-unmanaged-files</code> (optional)</dt><dd><p>Extract unmanaged files from the inspected system.</p></dd>
+<dt><code>--extract-changed-managed-files</code> (optional)</dt><dd><p>Extract changed managed files from inspected system.</p></dd>
+</dl>
+
+
+<h3 id="PREREQUISITES">PREREQUISITES</h3>
+
+<ul>
+<li><p>Inspecting a local system requires running <code>machinery</code> as root.</p></li>
+<li><p>Inspecting a remote system requires passwordless SSH login as root on the
+inspected system.
+Use <code>ssh-agent</code> or asymmetric keys (you can transfer the current SSH key
+via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root@HOSTNAME</code>)</p></li>
+<li><p>The system to be inspected needs to have the following commands:</p>
+
+<ul>
+<li><code>rpm</code></li>
+<li><code>zypper</code></li>
+<li><code>rsync</code></li>
+<li><code>chkconfig</code></li>
+<li><code>cat</code></li>
+<li><code>sed</code></li>
+<li><code>find</code></li>
+<li><code>tar</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<ul>
+<li><p>Inspect remote system <code>myhost</code> and save system description under name
+'MySystem':</p>
+
+<p>$ <code>machinery</code> inspect --name=MySystem myhost</p></li>
+<li><p>Inspect the installed packages of your local system and save system description
+under the name 'localhost' (you need to become root):</p>
+
+<p># <code>machinery</code> inspect --scope="packages" localhost</p></li>
+<li><p>Extracts changed managed files and saves them in the same way as changed
+configuration files are saved:</p>
+
+<p>$ <code>machinery</code> inspect --scope=changed-managed-files --extract-files myhost</p></li>
+</ul>
+
+
+<h2 id="list-List-System-Descriptions">list — List System Descriptions</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery list</code></p>
+
+<p><code>machinery</code> help list</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>List all available system descriptions in the internal database.
+The list is sorted alphabetically and contains a name and the
+scopes for each system.</p>
+
+<p>The option <code>--verbose</code> additionally prints the inspection dates
+of each scope.</p>
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Lists all available system descriptions:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> list</p></dd>
+<dt>Same as previous command, but additionally prints the date of each scope:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> list --verbose</p></dd>
+</dl>
+
+
+<h2 id="remove-Remove-System-Description">remove — Remove System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery remove</code> [--all]
+    NAME</p>
+
+<p><code>machinery</code> help remove</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>remove</code> command removes a stored system description.</p>
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>--all</code> (optional)</dt><dd>Remove all stored system descriptions.</dd>
+</dl>
+
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Remove specified system description.</dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Remove the system description stored as <code>earth</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> remove earth</p></dd>
+<dt>Remove all stored system descriptions:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> remove --all</p></dd>
+</dl>
+
+
+<h2 id="show-Show-System-Description">show — Show System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] NAME</p>
+
+<p><code>machinery</code> help show</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>show</code> command displays a stored system description.
+Scopes are supported and limit the output to the given scope.
+The hostname of the inspected system and the last modification
+in local time are shown in the title of each scope section.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Use specified system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional)</dt><dd><p>Limit output to the specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.
+If displaying information related to a scope fails, <code>show</code> will print an error message what has failed.
+In case of an error, no content is displayed.</p></dd>
+<dt><code>-e EXCLUDE-SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional)</dt><dd><p>Skip output of the specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>--no-pager</code> (optional)</dt><dd><p>Do not pipe output into a pager.</p></dd>
+<dt><code>--show-diffs</code> (optional)</dt><dd><p>Include the generated diffs in the output if available (see <code>machinery help analyze</code>
+for more information).</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Show the system description taken from the last inspection, saved as <code>earth</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> show earth</p></dd>
+<dt>Show the system description, but limit the scope to repositories only:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> show earth -s repositories</p></dd>
+<dt>Show the list of changed managed files:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> show earth --scope=changed-managed-files</p></dd>
+</dl>
+
+
+<h2 id="FILES-AND-DEVICES">FILES AND DEVICES</h2>
+
+<dl>
+<dt><code>~/.machinery/machinery.log</code>:</dt><dd><p></p>
+
+<p>Central log file, in the format date, time, process id, and log message.</p></dd>
+<dt><code>eth0</code> (SLE11) and <code>lan0</code> (SLE12):</dt><dd><p></p>
+
+<p>First network device is used when DHCP in built image is enabled.</p></dd>
+</dl>
+
+
+<h2 id="ENVIRONMENT">ENVIRONMENT</h2>
+
+<dl>
+<dt><code>MACHINERY_LOG_FILE</code>:</dt><dd><p></p>
+
+<p>Location of Machinery's log file (defaults to <code>~/.machinery/machinery.log</code>)</p></dd>
+</dl>
+
+
+<h2 id="COPYRIGHT">COPYRIGHT</h2>
+
+<p>Copyright (c) 2013-2014 <a href="http://www.suse.com">SUSE LLC</a></p>
+
+</div>
+
+    </div>
+  </body>
+</html>

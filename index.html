@@ -2,11 +2,323 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Machinery</title>
-    <link href="machinery.css" rel="stylesheet" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Machinery - A Systems Management Toolkit for Linux</title>
+    <meta name="description" content="A systems management toolkit for Linux. Machinery supports configuration discovery, system validation,and service migration.">
+    <meta name="keywords" content="linux,machinery,suse,suse linux, system validation, service migration, configuration discovery, system administrator">
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/custom.css" rel="stylesheet" />
+    <link href="css/fixed-positioning.css" rel="stylesheet" type="text/css" />
     <link href="favicon.png" rel="shortcut icon" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body>
-    <h1 class="headline" align="center">Machinery</h1>
+    <div class="gear hidden-xs" data-0="transform:rotate(0deg)" data-5050="transform:rotate(700deg)"><img src="img/gear.png"></div>
+    <div class="gear3 hidden-xs" data-0="transform:rotate(0deg)" data-5050="transform:rotate(-700deg)"><img src="img/gear3.png"></div>
+    <div class="gear2 hidden-xs" data-0="transform:rotate(0deg)" data-5050="transform:rotate(2700deg)"><img src="img/gear2.png"></div>
+    <div id="menu" style="padding-top:150px">
+      <h1 class="index">Index<h1>
+      <ul>
+        <li> <a href="#section1">Introduction</a></li>
+        <li> <a href="#section2">Features</a></li>
+        <li> <a href="#section3">System description</a></li>
+        <li><a href="#section4">Philosophy</a></li>
+      </ul>
+      <div class="man">
+        <a id="man" href="manual.html" align="center">show the man page<br><img class="manb" src="img/book.png"></a>
+      </div>
+    </div>
+    
+    <img id="menu-btn1" src="img/navig.png" width="30px" height="30px">
+
+    <a href="#" class="scrollToTop">Scroll to top</a>
+
+    <div class="all-container">
+      <div class="container-fluid home-img" id="section1">
+        <!-- section 1 -->
+        <div class="row suse-experiment">
+          <div class="col-md-4">
+            <div class="line1"></div>
+          </div>
+          <div class="col-md-4 col-xs-12" align="center">
+            a SUSE Technology Experiment
+          </div>
+          <div class="col-md-4">
+            <div class="line2"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 col-xs-12" >
+            <h1 class="headline" align="center">Machinery</h1>
+
+            <div class="pull-left" id="no-underline"> 
+
+              <div>
+                <div class="git">
+                  <button type="button" class="btn btn-default"><a href="http://software.opensuse.org/ymp/systemsmanagement:machinery/openSUSE_13.1/machinery.ymp?base=openSUSE%3A13.1&query=machinery">Install on openSUSE 13.1<a/>
+                  </button> 
+                </div>
+              </div>
+
+              <div>
+                <div class="install">
+                  <button type="button" class="btn btn-default"><a href="http://github.com/SUSE/machinery">Get the source<a/>
+                  </button> 
+                </div>
+              </div>
+
+              <div class="gem dropdown">
+                <a class="btn btn-default" data-toggle="dropdown" id="dropdownMenu1">
+                  More... 
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu gemmaleft" role="menu" aria-labelledby="dropdownMenu1" id="gemma" align="left">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/wiki/Installation">Install on other systems</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="manual.html">Read the man page</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/wiki">Read the Wiki</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/issues/new">Report a bug</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/blob/master/CONTRIBUTING.md">Contribute</a></li>
+                </ul>
+              </div>
+
+            </div>
+
+            <div>
+            <div class="wrap-typewriter">
+              <div class="test" data-text="<p>A systems management toolkit for Linux.</p><p>Machinery supports <a href='#properties1'> configuration discovery</a>, <br/><a href='#properties2'>system validation</a>, <br/>and <a href='#properties3'>service migration</a>. </p><p>Machinery is based on the idea of an <br/><a href='#section3'> universal system description</a>.<br/>It is transparent,<br/>extensible, and crafted beautifully.</p><p>Machinery is made for the system administrator of the data center. Read more about the <a href='#section4'>philosophy</a> behind it."></div>
+            </div><!-- close typewriter --></div>
+          </div>
+
+
+
+      
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 continue" align="center">
+           <a href="#section2">Scroll for more information<img src="img/hand2.png" class="hand2"></a>
+          </div> 
+        </div> 
+
+      </div><!-- close section -->
+
+
+      <!-- section 2 -->
+      <div class="row parallax-img-container" id="section2">
+        <div class="col-md-8 col-md-offset-2 hidden-xs properties" data-20="top:100%; opacity:1" data-150="top:0%;" >
+          <h2 class="title-parallax">Configuration discovery</h2>
+          <div id="properties1"></div>
+          <img src="img/configuration-discovery.png" class="propertiesOJ"  data-200="opacity:0" data-600="opacity:1">
+          <p class="text-parallax">Inspect a system, extract configuration and installed software. Write a description which can be used to replicate the system, to track its history, or to use it as a reference for other systems.</p>
+          <br>
+          <a href="#properties2"><img src="img/hand.png" class="hand"></a>
+        </div>
+
+        <div class="col-xs-10 visible-xs">
+          <h2 class="title-parallax">Configuration discovery</h2>
+          <img src="img/configuration-discovery.png" class="propertiesOJ" data-500="opacity:0" data-900="opacity:1">
+          <p class="text-parallax">Inspect a system, extract configuration and installed software. Write a description which can be used to replicate the system, to track its history, or to use it as a reference for other systems.</p>
+          <br>
+          <a href="#properties2m"><img src="img/hand.png" class="hand"></a>
+        </div> 
+        
+        <div class="col-md-8 col-md-offset-2 hidden-xs properties"  data-700="top:100%;opacity:1" data-800="top:0%;">
+          <h2 class="title-parallax">System validation</h2>
+          <div id="properties2"></div>
+          <img src="img/system-validation.png" class="propertiesOJ" data-1400="opacity:0" data-1600="opacity:1">
+          <p class="text-parallax">Validate systems by comparing against a known good state. Capture reference configuration in template descriptions. Track changes of configuration or installed files over time or compared to other systems.</p>
+          <br>
+          <a href="#properties3"><img src="img/hand.png" class="hand"></a>     
+        </div>
+ 
+        <div class="col-xs-10 visible-xs" id="properties2m">
+          <h2 class="title-parallax">System validation</h2> 
+          <img src="img/system-validation.png" class="propertiesOJ"  data-1700="opacity:0" data-1900="opacity:1">
+          <p class="text-parallax">Validate systems by comparing against a known good state. Capture reference configuration in template descriptions. Track changes of configuration or installed files over time or compared to other systems.</p>
+          <br>
+          <a href="#properties3m"><img src="img/hand.png" class="hand"></a>     
+        </div>
+
+        <div class="col-md-8 col-md-offset-2 hidden-xs properties"  data-800="top:100%;opacity:1" data-1000="top:0%;">
+          <h2 class="title-parallax">Service migration</h2>
+          <div id="properties3"></div>
+          <img src="img/service-migration.png" class="propertiesOJ"  data-700="opacity:0" data-800="opacity:1">
+          <p class="text-parallax">Migrate your services from one kind of system to another. Migrate physical systems to the cloud. Migrate from one operating system version to another. Do this in a repeatable, documented way, which can be adapted to your needs.</p>
+          <br>
+          <a href="#section3"><img src="img/hand.png" class="hand"></a>     
+        </div>
+
+        <div class="col-xs-10 visible-xs" id="properties3m">
+          <h2 class="title-parallax">Service migration</h2>
+          <img src="img/service-migration.png" class="propertiesOJ" data-3000="opacity:0" data-3700="opacity:1">
+          <p class="text-parallax">Migrate your services from one kind of system to another. Migrate physical systems to the cloud. Migrate from one operating system version to another. Do this in a repeatable, documented way, which can be adapted to your needs.</p>
+          <br>
+          <a href="#section3"><img src="img/hand.png" class="hand"></a>     
+        </div>
+        <!-- parallax img -->
+        <img class="parallax-move" data-vertical-position="900" data-horizontal-position="100" src="img/background/1.png">
+        <img class="parallax-move" data-vertical-position="1600" data-horizontal-position="700" src="img/background/2.png">
+        <img class="parallax-move" data-vertical-position="0" data-horizontal-position="10" src="img/background/3.png">
+        <img class="parallax-move" data-vertical-position="500" data-horizontal-position="500" src="img/background/4.png">
+        <img class="parallax-move" data-vertical-position="400" src="img/background/5.png">
+        <img class="parallax-move" data-vertical-position="300" data-horizontal-position="100" src="img/background/6.png">
+        <img class="parallax-move" data-vertical-position="100" src="img/background/7.png">
+      </div>
+
+
+      <!-- section 3 -->
+      <div class="row" id="section3">
+        <div class="col-md-12 list-usd">
+          <div class="uni">Universal System Description</div>
+                        <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0"><div type="button" class="btn btn-default USDbutton">The tools</div></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1"><div type="button" class="btn btn-default USDbutton">Physical to cloud</div></li>
+              <li data-target="#carousel-example-generic" data-slide-to="2"><div type="button" class="btn btn-default USDbutton">From SLE 11 to SLE 12</div></li>
+            </ol>
+          
+          </div>
+
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner">
+    <div class="item active">
+
+         <div class="col-md-1"></div>
+        <div class="col-md-4 col-xs-12">
+          <div class="usecase">
+            <div class="text-gallery">
+                    <div class="usecase-title">
+                     The tools
+                    </div>
+      The system administrator is in the center. Machinery offers a set of tools, which the administrator can combine to work flows. They work on a universal description of a system, which connects the tools. See examples for some use cases here.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 img-forusercase">
+          <img src="img/usecase-default.png">
+        </div>
+    </div><!-- close item 1 -->
+
+
+    <div class="item">
+
+      <div class="col-md-1"></div>
+        <div class="col-md-4 col-xs-12">
+          <div class="usecase">
+            <div class="text-gallery">
+                <div class="usecase-title">
+                  Use case: Physical to cloud
+                </div>
+      Migrate a system from a physical system to the cloud. Inspect the physical system and create a system description. Export the description to a configuration for <a href="http://en.opensuse.org/Portal:KIWI">Kiwi</a> to build an image suitable for the cloud.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 img-forusercase">
+          <img src="img/usecase2.png">
+        </div>
+
+    
+    </div>
+
+    <div class="item">
+
+      <div class="col-md-1"></div>
+        <div class="col-md-4 col-xs-12">
+          <div class="usecase">
+            <div class="text-gallery">
+                    <div class="usecase-title">
+                      Use case: From SLE 11 to SLE 12
+                    </div>
+      Migrate a system from SLES 11 to SLES 12. Inspect the system to be migrated and create a system description. Let machinery adapt the description to SLES 12. Build an image to deploy the system.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12 img-forusercase">
+          <img src="img/usecase2.png">
+        </div>
+
+    </div>
+
+
+
+  </div>
+  
+</div>
+            
+
+
+
+        <div class="row">
+          <div class="col-md-12 continue" align="center">
+            <a href="#section4">Go to philosophy<img src="img/hand2.png" class="hand2"></a>
+          </div> 
+        </div> 
+
+
+
+
+
+      </div><!-- close section 3 -->
+    </div>
+
+
+      <!-- section 4 -->
+      <div class="row" id="section4">
+        <div class="col-md-3">
+        </div>
+
+        <div class="col-md-6 philo">
+          <div class="philo-text">
+            <h1 class="headline-philosophy" align="center">Philosophy</h1>
+            <img src="img/moustache.png" class="moustache">
+            <h2>Made for the system administrator of the data center</h2>
+            <p>Machinery is made for the system administrator managing many machines in the data center. It helps in an environment where a high degree of automation, integration of diverse tools, and accountable management are key.</p>
+            <h2>Universal system description</h2>
+            <p>The architecture and design of Machinery is based on the idea of a universal system description. This describes the content of a system. The description can be stored, compared to other descriptions, analyzed, modified, or used to replicate a system from a description. You can call it "offline systems management".</p>
+            <h2>Integrate, not duplicate</h2>
+            <p>Machinery is not another configuration management system or monitoring tool. We don't intend to duplicate something which is already there. We want to fill the gaps and address use cases which aren't covered by existing tools. We want to integrate with other tools and bring together what people use.</p>
+            <h2>Open toolbox</h2>
+            <p>Machinery is an open toolbox. It provides a framework and building blocks for covering a variety of advanced systems management use cases. It's meant to be extensible and to provide a foundation for adding more functionality needed by specific users and their work flows. We welcome contributions.</p>            <h2>Agile development</h2>
+            <p>Machinery is an open source project, and there is a team behind it at <a href="http://suse.com">SUSE</a>. We develop it in an agile fashion. We do two-week sprints and do frequent stable releases. Needs of users drive our priorities. We value feedback and try to address it as good as we can. We strive to continually improve, not only the software, but also how we create it.</p>
+            <h2>Technical excellence</h2>
+            <p>We hold ourself to high technical standards. We do mandatory code reviews, test-driven development, continuous integration and builds. We follow technical trends and consciously choose tools and frameworks.</p>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+        </div>
+
+        <div class="col-md-offset-3 col-md-6 footer">
+          <a href="mailto:machinery@lists.suse.com">Questions, Feedback, Suggestions</a>
+          <div class="credit">© <a href="http://suse.com">SUSE</a> 2014</div>
+        </div>
+
+
+      </div>
+    </div>
+    <!--====== JQuery Libraries ========== -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <script src="js/parallaxImg.js" type="text/javascript"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/custom.js"></script>
+    <!-- smooth Nav -->
+    <!-- parallax -->
+    <script type="text/javascript" src="js/skrollr.min.js"></script>
+    <script type="text/javascript">
+      var s = skrollr.init();
+    </script>
+    
   </body>
 </html>
