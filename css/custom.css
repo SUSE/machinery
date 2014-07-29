@@ -711,8 +711,13 @@ font-size: 16px;
   color: #3c3935;
   font-family: 'Special Elite', cursive;
   margin-right: 2em;
+  
 }
 
+.carousel-indicators{
+  margin-left: 0px;
+  position: static;
+}
 
 /* Bootstrap fixes */
 .row {
@@ -731,3 +736,8 @@ font-size: 16px;
   font-size: 1.6em;
   font-weight: bold;
 }
+
+#section1 a.btn.btn-default {
+  text-decoration: none;
+}
+
