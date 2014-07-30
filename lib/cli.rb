@@ -42,6 +42,10 @@ class Cli
       command = ARGV & @commands.keys.map(&:to_s)
       run(command << "--help")
       exit 1
+    when Machinery::Errors::MachineryError
+      Machinery.logger.error(e.message)
+      STDERR.puts e.message
+      exit 1
     when SystemExit
       raise
     when SignalException
