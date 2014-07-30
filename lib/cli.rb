@@ -59,10 +59,14 @@ class Cli
       STDERR.puts e.to_s
       exit 1
     else
+      Machinery.logger.error("Machinery experienced an unexpected error:")
       Machinery.logger.error(e.message)
-      Machinery.logger.debug(e.backtrace.join("\n"))
-      STDERR.puts e.to_s
-      exit 1
+      Machinery.logger.error(e.backtrace.join("\n"))
+
+      STDERR.puts "Machinery experienced an unexpected error. Please file a " \
+        "bug report at https://github.com/SUSE/machinery/issues/new."
+      STDERR.puts "\nDetails:"
+      raise
     end
 
     true
