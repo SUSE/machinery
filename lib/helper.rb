@@ -20,7 +20,7 @@ module Machinery
     begin
       Cheetah.run("rpm", "-q", package)
     rescue
-      raise(Machinery::MissingRequirementsError.new("You need the package '#{package}'. You can install it by running `zypper install #{package}`"))
+      raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}'. You can install it by running `zypper install #{package}`"))
     end
   end
 
@@ -31,7 +31,7 @@ module Machinery
         " Supported image build target(s) on buildhost " +
         "'#{system_description.buildhost.os_name}' are: " +
         "'#{system_description.buildhost.can_build}'"
-      raise(Machinery::UnsupportedHostForImageError.new(message))
+      raise(Machinery::Errors::UnsupportedBuildTarget.new(message))
     end
   end
 end

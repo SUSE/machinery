@@ -128,7 +128,7 @@ class KiwiConfig
     end
 
     if !scopes.empty?
-      raise Machinery::SystemDescriptionIncomplete.new(
+      raise Machinery::Errors::SystemDescriptionIncomplete.new(
         "Cannot create kiwi config. " \
         "The following scopes #{scopes.join(",")} are part of the system " \
         "description but the corresponding files weren't extracted during " \
@@ -155,7 +155,7 @@ EOF
         boot = "vmxboot/suse-SLES11"
         bootloader = "grub"
       else
-        raise Machinery::UnsupportedOperatingSystem.new(
+        raise Machinery::Errors::UnsupportedOperatingSystem.new(
           "Building is not possible because the operating system " \
           "'#{@system_description.os.name}' is not supported."
         )
@@ -295,7 +295,7 @@ EOF
                 # Don't do anything because these states are not supposed
                 # to be permanent.
               else
-                raise Machinery::UnknownSystemdUnitState.new(
+                raise Machinery::Errors::UnknownSystemdUnitState.new(
                   "The systemd unit state #{service.state} is unknown."
                 )
             end

@@ -44,9 +44,9 @@ describe Machinery do
   end
 
   describe ".check_package" do
-    it "raises an Machinery::MissingRequirementsError error if the rpm-package isn't found" do
+    it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
       package = "does_not_exist"
-      expect { Machinery::check_package(package) }.to raise_error(Machinery::MissingRequirementsError, /#{package}/)
+      expect { Machinery::check_package(package) }.to raise_error(Machinery::Errors::MissingRequirement, /#{package}/)
     end
 
     it "doesn't raise an error if the package exists" do
@@ -68,7 +68,7 @@ describe Machinery do
     }
 
     it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do
-      expect { Machinery::check_build_compatible_host(system_description) }.to raise_error(Machinery::UnsupportedHostForImageError, /#{system_description.os.name}/)
+      expect { Machinery::check_build_compatible_host(system_description) }.to raise_error(Machinery::Errors::UnsupportedBuildTarget, /#{system_description.os.name}/)
     end
 
     it "doesn't raise if host and image builds a valid combination" do

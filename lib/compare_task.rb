@@ -26,7 +26,7 @@ class CompareTask
     end
 
     if failed_scopes.length > 0
-      raise Machinery::UnknownRendererError.new(
+      raise Machinery::Errors::UnknownRenderer.new(
         "The following scopes are not supported: #{failed_scopes.join(",")}. " \
         "Valid scopes are: #{Inspector.all_scopes.join(",")}."
       )

@@ -26,7 +26,7 @@ module Machinery
         begin
           check_package("less")
           IO.popen("$PAGER", "w") { |f| f.puts output }
-        rescue Machinery::MissingRequirementsError
+        rescue Machinery::Errors::MissingRequirement
           puts output
         end
       else
@@ -34,7 +34,7 @@ module Machinery
         if $?.success?
           IO.popen("$PAGER", "w") { |f| f.puts output }
         else
-          raise(Machinery::InvalidPagerError.new("'#{ENV['PAGER']}' could not " \
+          raise(Machinery::Errors::InvalidPager.new("'#{ENV['PAGER']}' could not " \
             "be executed. Use the --no-pager option or modify your $PAGER " \
             "bash environment variable to display output.")
           )

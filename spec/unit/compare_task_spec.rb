@@ -289,7 +289,7 @@ Compared descriptions are identical.
 
       expect {
         subject.compare(description1, description2, ["unknown"])
-      }.to raise_error(Machinery::UnknownRendererError)
+      }.to raise_error(Machinery::Errors::UnknownRenderer)
     end
   end
 end

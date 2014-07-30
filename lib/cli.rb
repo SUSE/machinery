@@ -75,7 +75,7 @@ class Cli
     if scopes
       if exclude_scopes
         # scope and exclude-scope
-        raise Machinery::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
+        raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
       else
         # scope only
         scope_list = scopes.split(/[, ]/)
@@ -88,7 +88,7 @@ class Cli
           if Inspector.all_scopes.include?(e)
             scope_list.delete(e)
           else
-            raise Machinery::UnknownRendererError.new(
+            raise Machinery::Errors::UnknownRenderer.new(
                 "The following scope is not supported: #{e}. " \
                 "Valid scopes are: #{Inspector.all_scopes.join(",")}."
             )
@@ -100,7 +100,7 @@ class Cli
       end
     end
     if scope_list.empty?
-      raise Machinery::InvalidCommandLine.new( "No scopes to process. Nothing to do.")
+      raise Machinery::Errors::InvalidCommandLine.new( "No scopes to process. Nothing to do.")
     end
     scope_list
   end
@@ -131,9 +131,9 @@ class Cli
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
         else
-          raise RuntimeError.new(
-              "The operation '#{options[:operation]}' is not supported. " \
-          "Valid operations are: config-file-diffs."
+          raise Machinery::Errors::InvalidCommandLine.new(
+            "The operation '#{options[:operation]}' is not supported. " \
+            "Valid operations are: config-file-diffs."
           )
       end
     end

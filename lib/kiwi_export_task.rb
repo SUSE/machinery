@@ -21,7 +21,7 @@ class KiwiExportTask
       if options[:force]
         FileUtils.rm_r(kiwi_dir)
       else
-        raise Machinery::DirectoryAlreadyExistsError.new(
+        raise Machinery::Errors::DirectoryAlreadyExists.new(
           "The output directory '#{kiwi_dir}' already exists." \
           " You can force overwriting it with the '--force' option."
         )

@@ -125,7 +125,7 @@ describe AnalyzeConfigFileDiffsTask do
       task = AnalyzeConfigFileDiffsTask.new
       expect {
         task.analyze(SystemDescription.new("foo"))
-      }.to raise_error(Machinery::SystemDescriptionIncomplete)
+      }.to raise_error(Machinery::Errors::SystemDescriptionIncomplete)
     end
   end
 

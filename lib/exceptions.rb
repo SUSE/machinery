@@ -16,26 +16,41 @@
 # you may find current contact information at www.suse.com
 
 module Machinery
-  class ValidationError < StandardError; end
-  class UnknownInspectorError < StandardError; end
-  class SshConnectionFailed < StandardError; end
-  class SystemDescriptionNotFoundError < StandardError; end
-  class SystemDescriptionAlreadyExistsError < StandardError; end
-  class SystemRequirementError < StandardError; end
-  class RsyncFailed < StandardError; end
-  class SystemDescriptionIncomplete < StandardError; end
-  class UnsupportedOperatingSystem < StandardError; end
-  class UnknownRendererError < StandardError; end
-  class FileNotFoundError < StandardError; end
-  class FailedScopeError < StandardError; end
-  class DirectoryAlreadyExistsError < StandardError; end
-  class MissingRequirementsError < StandardError; end
-  class BuildError < StandardError; end
-  class BrokenMetaData < StandardError; end
-  class UnknownSystemdUnitState < StandardError; end
-  class SystemDescriptionNameInvalid < StandardError; end
-  class InvalidSystemDescription < StandardError; end
-  class InvalidPagerError < StandardError; end
-  class InvalidCommandLine < StandardError; end
-  class UnsupportedHostForImageError < StandardError; end
+  module Errors
+    # Superclass for all "expected" errors in Machinery.
+    # "Expected" errors are errors which are caused by the environment or input
+    # data and are not caused by bugs in the machinery codebase.
+    #
+    # Those errors will be handled specially by the machinery tool, e.g. by not
+    # showing a backtrace.
+    class MachineryError < StandardError; end
+
+    class SystemDescriptionValidationFailed < MachineryError; end
+    class SystemDescriptionNotFound < MachineryError; end
+    class SystemDescriptionAlreadyExists < MachineryError; end
+    class SystemDescriptionIncomplete < MachineryError; end
+    class SystemDescriptionNameInvalid < MachineryError; end
+    class SystemDescriptionInvalid < MachineryError; end
+
+    class UnknownInspector < MachineryError; end
+    class UnknownRenderer < MachineryError; end
+    class ScopeFailed < MachineryError; end
+
+    class MissingSystemRequirement < MachineryError; end
+    class UnsupportedOperatingSystem < MachineryError; end
+    class MissingRequirement < MachineryError; end
+
+    class BuildFailed < MachineryError; end
+    class UnsupportedBuildTarget < MachineryError; end
+
+    class SshConnectionFailed < MachineryError; end
+    class RsyncFailed < MachineryError; end
+
+    class FileNotFound < MachineryError; end
+    class DirectoryAlreadyExists < MachineryError; end
+    class BrokenMetaData < MachineryError; end
+    class UnknownSystemdUnitState < MachineryError; end
+    class InvalidPager < MachineryError; end
+    class InvalidCommandLine < MachineryError; end
+  end
 end

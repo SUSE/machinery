@@ -32,13 +32,13 @@ class LocalSystem < System
   end
 
   # Retrieves files specified in filelist from the local system and raises an
-  # Machinery::RsyncFailed exception when it's not successful. Destination is
+  # Machinery::Errors::RsyncFailed exception when it's not successful. Destination is
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     begin
       LoggedCheetah.run("rsync",  "--chmod=go-rwx", "--files-from=-", "/", destination, :stdout => :capture, :stdin => filelist.join("\n") )
     rescue Cheetah::ExecutionFailed => e
-      raise Machinery::RsyncFailed.new(
+      raise Machinery::Errors::RsyncFailed.new(
       "Could not rsync files from localhost. \n" \
       "Error: #{e}\n" \
       "If you lack read permissions on some files you may want to retry as user root or specify\n" \

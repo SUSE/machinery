@@ -74,11 +74,11 @@ class RemoteSystem < System
   end
 
   # Tries to connect to the remote system as root (without a password or passphrase)
-  # and raises an Machinery::SshConnectionFailed exception when it's not successful.
+  # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def connect
     LoggedCheetah.run "ssh", "-q", "-o", "BatchMode=yes", "root@#{host}"
   rescue Cheetah::ExecutionFailed
-    raise Machinery::SshConnectionFailed.new(
+    raise Machinery::Errors::SshConnectionFailed.new(
       "Could not establish SSH connection to host '#{host}'. Please make sure that " \
       "you can connect non-interactively as root, e.g. using ssh-agent."
     )
@@ -86,14 +86,14 @@ class RemoteSystem < System
 
 
   # Retrieves files specified in filelist from the remote system and raises an
-  # Machinery::RsyncFailed exception when it's not successful. Destination is
+  # Machinery::Errors::RsyncFailed exception when it's not successful. Destination is
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     source="root@#{host}:/"
     begin
       LoggedCheetah.run("rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", source, destination, :stdout => :capture, :stdin => filelist.join("\n") )
     rescue Cheetah::ExecutionFailed  => e
-      raise Machinery::RsyncFailed.new(
+      raise Machinery::Errors::RsyncFailed.new(
       "Could not rsync files from host '#{host}'.\n" \
       "Error: #{e}"
     )
