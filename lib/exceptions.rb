@@ -34,7 +34,6 @@ module Machinery
   class BrokenMetaData < StandardError; end
   class UnknownSystemdUnitState < StandardError; end
   class SystemDescriptionNameInvalid < StandardError; end
-  class InvalidOsUpgradePath < StandardError; end
   class InvalidSystemDescription < StandardError; end
   class InvalidPagerError < StandardError; end
   class InvalidCommandLine < StandardError; end
