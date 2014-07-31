@@ -95,7 +95,7 @@ class InspectTask
       puts "Inspecting #{inspector.scope}..."
       begin
         summary = inspector.inspect(system, description, options)
-      rescue StandardError => e
+      rescue Machinery::Errors::MachineryError => e
         puts "Inspection of scope #{inspector.scope} failed!"
         failed_inspections[inspector.scope] = e
         next
