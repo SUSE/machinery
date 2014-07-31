@@ -412,7 +412,7 @@ describe KiwiConfig do
       expect {
         KiwiConfig.new(system_description_with_content)
       }.to raise_error(
-         Machinery::Errors::UnsupportedOperatingSystem,
+         Machinery::Errors::KiwiExportFailed,
          /Unknown Operating System/
       )
     end
@@ -507,7 +507,7 @@ describe KiwiConfig do
       system_description_with_systemd_services.services.services.first["state"] = "not_known"
       expect {
         KiwiConfig.new(system_description_with_systemd_services)
-      }.to raise_error(Machinery::Errors::UnknownSystemdUnitState, /not_known/)
+      }.to raise_error(Machinery::Errors::KiwiExportFailed, /not_known/)
     end
 
     it "sets the target distribution and bootloader for SLES11" do
@@ -540,7 +540,7 @@ describe KiwiConfig do
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionIncomplete, /#{scope}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{scope}/)
     end
 
     it "throws an error if changed managed files are part of the system description but don't exist on the filesystem" do
@@ -548,7 +548,7 @@ describe KiwiConfig do
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionIncomplete, /#{scope}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{scope}/)
     end
 
     it "throws an error if unmanaged files are part of the system description but don't exist on the filesystem" do
@@ -556,7 +556,7 @@ describe KiwiConfig do
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionIncomplete, /#{scope}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{scope}/)
     end
 
     it "applies 'pre-process' config" do

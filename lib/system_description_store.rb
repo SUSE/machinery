@@ -81,7 +81,7 @@ class SystemDescriptionStore
     end
 
     if list.include?(to)
-      raise Machinery::Errors::SystemDescriptionAlreadyExists.new(
+      raise Machinery::Errors::SystemDescriptionError.new(
         "A System description with the name \"#{to}\" does already exist."
       )
     end
@@ -126,13 +126,13 @@ class SystemDescriptionStore
 
   def validate_name(name)
     if ! /^[\w\.:-]*$/.match(name)
-      raise Machinery::Errors::SystemDescriptionNameInvalid.new(
+      raise Machinery::Errors::SystemDescriptionError.new(
         "System description name \"#{name}\" is invalid. Only \"a-zA-Z0-9_:.-\" are valid characters."
       )
     end
 
     if name.start_with?(".")
-      raise Machinery::Errors::SystemDescriptionNameInvalid.new(
+      raise Machinery::Errors::SystemDescriptionError.new(
         "System description name \"#{name}\" is invalid. A dot is not allowed as first character."
       )
     end

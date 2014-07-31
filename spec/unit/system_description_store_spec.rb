@@ -94,8 +94,8 @@ describe SystemDescriptionStore do
 
     it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
       store = SystemDescriptionStore.new
-      expect { store.save(SystemDescription.from_json("invalid/slash", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionNameInvalid)
-      expect { store.save(SystemDescription.from_json(".invalid_dot", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionNameInvalid)
+      expect { store.save(SystemDescription.from_json("invalid/slash", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect { store.save(SystemDescription.from_json(".invalid_dot", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end
 
@@ -169,7 +169,7 @@ describe SystemDescriptionStore do
       expect(store.list).to include(new_name)
       expect {
         store.copy(test_name, new_name)
-      }.to raise_error(Machinery::Errors::SystemDescriptionAlreadyExists, /#{new_name}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{new_name}/)
     end
   end
 

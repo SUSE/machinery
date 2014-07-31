@@ -108,7 +108,7 @@ describe ConfigFilesRenderer do
 
         expect {
           subject.render(system_description, show_diffs: true)
-        }.to raise_error(Machinery::Errors::SystemDescriptionIncomplete)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError)
       end
     end
   end

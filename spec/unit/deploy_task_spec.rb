@@ -85,7 +85,7 @@ describe DeployTask do
       expect(File.exists?(image_dir)).to be(false)
       expect{
         deploy_task.deploy(system_description, cloud_config_file, image_dir: "/tmp/doesnotexist")
-      }.to raise_error(Machinery::Errors::FileNotFound, /image dir/)
+      }.to raise_error(Machinery::Errors::DeployFailed, /image dir/)
     end
 
     it "raises an exception if system description doesn't equal the meta data" do
@@ -97,13 +97,13 @@ describe DeployTask do
     it "raises an exception if the image mentioned in the meta data doesn't exist" do
       expect{
         deploy_task.deploy(system_description, cloud_config_file, image_dir: "/image_is_missing")
-      }.to raise_error(Machinery::Errors::FileNotFound, /image file '.*' does not exist/)
+      }.to raise_error(Machinery::Errors::DeployFailed, /image file '.*' does not exist/)
     end
 
     it "raises an exception if the cloud config file is missing" do
       expect{
         deploy_task.deploy(system_description, "/tmp/doesnotexist.sh", image_dir: image_dir)
-      }.to raise_error(Machinery::Errors::FileNotFound, /cloud config file.*could not be found/)
+      }.to raise_error(Machinery::Errors::DeployFailed, /cloud config file.*could not be found/)
     end
   end
 end

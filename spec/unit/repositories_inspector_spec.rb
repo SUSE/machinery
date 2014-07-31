@@ -180,11 +180,11 @@ password=0a0918c876ef4a1d9c352e5c47421235
       system = double
       expect(system).to receive(:check_requirement).with(
         "zypper", "--version"
-      ).and_raise(Machinery::Errors::MissingSystemRequirement)
+      ).and_raise(Machinery::Errors::MissingRequirement)
 
       inspector = RepositoriesInspector.new
       expect{inspector.inspect(system, description)}.to raise_error(
-        Machinery::Errors::MissingSystemRequirement)
+        Machinery::Errors::MissingRequirement)
     end
 
     it "returns sorted data" do

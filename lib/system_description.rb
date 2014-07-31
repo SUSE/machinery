@@ -34,7 +34,7 @@ class SystemDescription < Machinery::Object
     json_hash = JSON.parse(json)
 
     if !json_hash.is_a?(Hash)
-      raise Machinery::Errors::SystemDescriptionInvalid.new(
+      raise Machinery::Errors::SystemDescriptionError.new(
         "System descriptions must have a hash as the root element"
       )
     end
@@ -89,7 +89,7 @@ class SystemDescription < Machinery::Object
     end
 
     unless missing.empty?
-      raise Machinery::Errors::SystemDescriptionIncomplete.new(
+      raise Machinery::Errors::SystemDescriptionError.new(
         "The system description misses the following section(s): #{missing.join(", ")}."
       )
     end
@@ -130,7 +130,7 @@ class SystemDescription < Machinery::Object
       message = "Unsupported build host distribution " +
         "'#{buildhost_os_name}'. " +
         "Supported are '#{OsBuild.supported_buildhost}'"
-      raise(Machinery::Errors::UnsupportedBuildTarget.new(message))
+      raise(Machinery::Errors::BuildFailed.new(message))
     end
 
     OsBuild.instance_for(buildhost_os_name, self.os.name)

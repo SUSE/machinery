@@ -25,32 +25,22 @@ module Machinery
     # showing a backtrace.
     class MachineryError < StandardError; end
 
-    class SystemDescriptionValidationFailed < MachineryError; end
-    class SystemDescriptionNotFound < MachineryError; end
-    class SystemDescriptionAlreadyExists < MachineryError; end
-    class SystemDescriptionIncomplete < MachineryError; end
-    class SystemDescriptionNameInvalid < MachineryError; end
-    class SystemDescriptionInvalid < MachineryError; end
-
     class UnknownInspector < MachineryError; end
     class UnknownRenderer < MachineryError; end
-    class ScopeFailed < MachineryError; end
+    class InvalidPager < MachineryError; end
+    class InvalidCommandLine < MachineryError; end
 
-    class MissingSystemRequirement < MachineryError; end
-    class UnsupportedOperatingSystem < MachineryError; end
     class MissingRequirement < MachineryError; end
 
+    class SystemDescriptionError < MachineryError; end
+    class SystemDescriptionNotFound < SystemDescriptionError; end
+
     class BuildFailed < MachineryError; end
-    class UnsupportedBuildTarget < MachineryError; end
+    class DeployFailed < MachineryError; end
+    class InspectionFailed < MachineryError; end
+    class KiwiExportFailed < MachineryError; end
 
     class SshConnectionFailed < MachineryError; end
     class RsyncFailed < MachineryError; end
-
-    class FileNotFound < MachineryError; end
-    class DirectoryAlreadyExists < MachineryError; end
-    class BrokenMetaData < MachineryError; end
-    class UnknownSystemdUnitState < MachineryError; end
-    class InvalidPager < MachineryError; end
-    class InvalidCommandLine < MachineryError; end
   end
 end

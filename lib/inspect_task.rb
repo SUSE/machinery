@@ -31,7 +31,7 @@ class InspectTask
     if !failed_inspections.empty?
       puts "\n"
       message = failed_inspections.map { |scope, msg| "Errors while inspecting #{scope}:\n#{msg}" }.join("\n\n")
-      raise Machinery::Errors::ScopeFailed.new(message)
+      raise Machinery::Errors::InspectionFailed.new(message)
     end
     description
   end
@@ -40,7 +40,7 @@ class InspectTask
 
   def check_root(system, current_user)
     if system.requires_root? && !current_user.is_root?
-      raise Machinery::Errors::MissingSystemRequirement,
+      raise Machinery::Errors::MissingRequirement,
             "Need to be root to inspect local system."
     end
   end
