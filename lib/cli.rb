@@ -51,24 +51,38 @@ class Cli
     when SignalException
       Machinery.logger.info "Machinery was aborted with signal #{e.signo}."
       exit 1
-    when Cheetah::ExecutionFailed
-      Machinery.logger.error(e.message)
-      Machinery.logger.debug(e.backtrace.join("\n"))
-      Machinery.logger.debug("Standard output:\n #{e.stdout}")
-      Machinery.logger.debug("Error output:\n #{e.stderr}")
-      STDERR.puts e.to_s
-      exit 1
     else
-      Machinery.logger.error("Machinery experienced an unexpected error:")
-      Machinery.logger.error(e.message)
-      Machinery.logger.error(e.backtrace.join("\n"))
-
       STDERR.puts "Machinery experienced an unexpected error. Please file a " \
         "bug report at https://github.com/SUSE/machinery/issues/new."
-      STDERR.puts "\nDetails:"
-      raise
-    end
+      if e.is_a?(Cheetah::ExecutionFailed)
+        result = ""
+        result << "#{e.message}\n"
+        result << "\n"
 
+        if e.stderr && !e.stderr.empty?
+          result << "Error output:\n"
+          result << "#{e.stderr}\n"
+        end
+
+        if e.stdout && !e.stdout.empty?
+          result << "Standard output:\n"
+          result << "#{e.stdout}\n\n"
+        end
+
+        if e.backtrace && !e.backtrace.empty?
+          result << "Backtrace:\n"
+          result << "#{e.backtrace.join("\n")}\n\n"
+        end
+        Machinery.logger.error(result)
+        STDERR.puts result
+        exit 1
+      else
+        Machinery.logger.error("Machinery experienced an unexpected error:")
+        Machinery.logger.error(e.message)
+        Machinery.logger.error(e.backtrace.join("\n"))
+        raise
+      end
+    end
     true
   end
 
