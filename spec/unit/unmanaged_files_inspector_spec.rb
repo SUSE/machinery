@@ -245,8 +245,8 @@ describe UnmanagedFilesInspector do
     end
 
     def expect_inspect_unmanaged(system,add_files,extract)
-      UnmanagedFilesInspector.any_instance.stub(:max_depth).and_return(3)
-      UnmanagedFilesInspector.any_instance.stub(:start_depth).and_return(3)
+      allow_any_instance_of(UnmanagedFilesInspector).to receive(:max_depth).and_return(3)
+      allow_any_instance_of(UnmanagedFilesInspector).to receive(:start_depth).and_return(3)
       expect_requirements(system)
       if(extract)
         expect(system).to receive(:check_requirement).with(
