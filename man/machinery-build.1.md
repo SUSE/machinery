@@ -20,9 +20,8 @@ data is stored to a temporary directory and cleaned up after the build. The KIWI
 log is shown as output of the `build` command format for showing progress and
 diagnosing errors.
 
-When building an image, Machinery filters some files from the system
-description, which would break the built image. The list of filters is shown
-at the beginning of the build.
+When building an image, Machinery filters out some files which would break the
+built image. The list of filters is shown at the beginning of the build.
 
 
 ### ARGUMENTS
@@ -52,8 +51,7 @@ at the beginning of the build.
 
 ### BUILD SUPPORT MATRIX
 
-  When building images with machinery the build platform also called as
-  buildhost can build images for the following combination of platforms:
+The following combinations of build platforms and built systems are supported:
 
   * SUSE Linux Enterprise 12
 
