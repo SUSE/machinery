@@ -34,7 +34,11 @@ EOF
 
   def inspect_data(host = "myhost", data = package_example)
     inspector = PackagesInspector.new
-    system = System.for(host)
+    system = double(
+      :requires_root?    => false,
+      :host              => "example.com",
+      :check_requirement => nil
+    )
 
     expect(system).to receive(:run_command) { data }
 

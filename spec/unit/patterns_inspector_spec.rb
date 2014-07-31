@@ -45,13 +45,16 @@ describe PatternsInspector do
   }
 
   let(:patterns_inspector) { PatternsInspector.new }
+  let(:system) {
+    double(
+      :requires_root?    => false,
+      :host              => "example.com",
+      :check_requirement => nil
+    )
+  }
 
   describe "#inspect" do
     it "parses the patterns list into a Hash" do
-      system = double
-      expect(system).to receive(:check_requirement).
-        with("zypper", "--version").
-        and_return(true)
       expect(system).to receive(:run_command).
         with("zypper", "-xq", "patterns", "-i", {:stdout=>:capture}).
         and_return(zypper_output)
@@ -69,7 +72,6 @@ describe PatternsInspector do
     end
 
     it "returns an empty array when there are no patterns installed" do
-      system = System.for("myhost")
       expect(system).to receive(:run_command).and_return("")
 
       patterns_inspector.inspect(system, description)
@@ -77,7 +79,6 @@ describe PatternsInspector do
     end
 
     it "returns sorted data" do
-      system = System.for("myhost")
       expect(system).to receive(:run_command).and_return(zypper_output)
 
       patterns_inspector.inspect(system, description)

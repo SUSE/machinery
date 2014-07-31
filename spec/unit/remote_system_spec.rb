@@ -22,7 +22,6 @@ describe RemoteSystem do
 
   describe "#initialize" do
     it "raises ConnectionFailed when it can't connect" do
-      RemoteSystem.any_instance.unstub(:connect)
       expect(Cheetah).to receive(:run).with(
          "ssh", "-q", "-o", "BatchMode=yes", "root@example.com"
       ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -33,44 +32,50 @@ describe RemoteSystem do
     end
   end
 
-  describe "#requires_root?" do
-    it "returns false" do
-      expect(remote_system.requires_root?).to be(false)
-    end
-  end
-
-  describe "#run_command" do
-    it "executes commands via ssh" do
-      expect(Cheetah).to receive(:run).with("ssh", "root@remotehost", "LC_ALL=C", "ls", "/tmp", {})
-
-      remote_system.run_command("ls", "/tmp")
+  context "connecting to a remote system" do
+    before(:each) do
+      allow_any_instance_of(RemoteSystem).to receive(:connect)
     end
 
-    it "executes piped commands via ssh" do
-      expect(Cheetah).to receive(:run).with("ssh", "root@remotehost", "LC_ALL=C", "ls", "/tmp", "|", "grep", "foo", "|", "wc", "-l", {})
-
-      remote_system.run_command(["ls", "/tmp"], ["grep", "foo"], ["wc", "-l"])
+    describe "#requires_root?" do
+      it "returns false" do
+        expect(remote_system.requires_root?).to be(false)
+      end
     end
 
-    it "logs commands by default" do
-      expect(LoggedCheetah).to receive(:run)
+    describe "#run_command" do
+      it "executes commands via ssh" do
+        expect(Cheetah).to receive(:run).with("ssh", "root@remotehost", "LC_ALL=C", "ls", "/tmp", {})
 
-      remote_system.run_command("ls")
+        remote_system.run_command("ls", "/tmp")
+      end
+
+      it "executes piped commands via ssh" do
+        expect(Cheetah).to receive(:run).with("ssh", "root@remotehost", "LC_ALL=C", "ls", "/tmp", "|", "grep", "foo", "|", "wc", "-l", {})
+
+        remote_system.run_command(["ls", "/tmp"], ["grep", "foo"], ["wc", "-l"])
+      end
+
+      it "logs commands by default" do
+        expect(LoggedCheetah).to receive(:run)
+
+        remote_system.run_command("ls")
+      end
+
+      it "does not log commands when :disable_logging is set" do
+        expect(LoggedCheetah).to_not receive(:run)
+        expect(Cheetah).to receive(:run)
+
+        remote_system.run_command("ls", :disable_logging => true)
+      end
     end
 
-    it "does not log commands when :disable_logging is set" do
-      expect(LoggedCheetah).to_not receive(:run)
-      expect(Cheetah).to receive(:run)
+    describe "#retrieve_files" do
+      it "retrieves files via rsync from a remote host" do
+        expect(Cheetah).to receive(:run).with("rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", "root@remotehost:/", "/tmp",  :stdout => :capture, :stdin => "/foo\n/bar" )
 
-      remote_system.run_command("ls", :disable_logging => true)
-    end
-  end
-
-  describe "#retrieve_files" do
-    it "retrives files via rsync from a remote host" do
-      expect(Cheetah).to receive(:run).with("rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", "root@remotehost:/", "/tmp",  :stdout => :capture, :stdin => "/foo\n/bar" )
-
-      remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+        remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+      end
     end
   end
 end

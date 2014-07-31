@@ -24,6 +24,7 @@ describe System do
     end
 
     it "returns a RemoteSystem when a hostname is given" do
+      allow_any_instance_of(RemoteSystem).to receive(:connect)
       remote_system = System.for("somehost")
 
       expect(remote_system).to be_a(RemoteSystem)

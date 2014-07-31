@@ -34,12 +34,19 @@ describe InspectTask, "#inspect_system" do
 
   before :each do
     allow_any_instance_of(SystemDescriptionStore).to receive(:save)
+    allow(System).to receive(:for).and_return(system)
   end
 
   let(:inspect_task) { InspectTask.new }
   let(:store) { SystemDescriptionStore.new }
   let(:name) { "name" }
   let(:host) { "example.com" }
+  let(:system) {
+    double(
+      :requires_root? => false,
+      :host           => "example.com"
+    )
+  }
 
 
   let(:current_user_root) {
@@ -104,26 +111,38 @@ describe InspectTask, "#inspect_system" do
   end
 
   describe "root check" do
-    it "raises an exception when inspected system requires root and we don't run as root" do
-      expect {
-        inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"])
-      }.to raise_error(Machinery::Errors::MissingSystemRequirement)
+    describe "when root is required" do
+      before(:each) do
+        expect(system).to receive(:requires_root?).and_return(true)
+      end
+
+      it "raises an exception we don't run as root" do
+        expect {
+          inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"])
+        }.to raise_error(Machinery::Errors::MissingSystemRequirement)
+      end
+
+      it "doesn't raise an exception when we run as root" do
+        allow(Inspector).to receive(:all) { [] }
+
+        expect {
+          inspect_task.inspect_system(store, "localhost", name, current_user_root, ["foo"])
+        }.not_to raise_error
+      end
     end
 
-    it "doesn't raise an exception when inspected system doesn't require root and we don't run as root" do
-      allow(Inspector).to receive(:all) { [] }
+    describe "when root is not required" do
+      before(:each) do
+        expect(system).to receive(:requires_root?).and_return(false)
+      end
 
-      expect {
-        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
-      }.not_to raise_error
-    end
+      it "doesn't raise an exception when we don't run as root" do
+        allow(Inspector).to receive(:all) { [] }
 
-    it "doesn't raise an exception when inspected system does requires root and we run as root" do
-      allow(Inspector).to receive(:all) { [] }
-
-      expect {
-        inspect_task.inspect_system(store, "localhost", name, current_user_root, ["foo"])
-      }.not_to raise_error
+        expect {
+          inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
+        }.not_to raise_error
+      end
     end
   end
 end

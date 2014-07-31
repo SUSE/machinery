@@ -30,9 +30,6 @@ Machinery.initialize_logger("/tmp/machinery_test.log")
 
 RSpec.configure do |config|
   config.before(:each) do
-    # Globally stub the connect! method. We do not want RemoteSystem to try to
-    # ssh in general.
-    allow_any_instance_of(RemoteSystem).to receive(:connect)
     allow_any_instance_of(System).to receive(:check_requirement)
 
     allow_any_instance_of(Kernel).to receive(:print)
