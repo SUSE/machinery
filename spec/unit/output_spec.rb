@@ -36,7 +36,7 @@ describe Machinery do
 
       allow($stdout).to receive(:tty?).and_return(true)
       allow(Machinery).to receive(:check_package).
-        and_raise(Machinery::MissingRequirementsError)
+        and_raise(Machinery::Errors::MissingRequirement)
       expect($stdout).to receive(:puts).with(output)
 
       Machinery::print_output(output)
@@ -48,7 +48,7 @@ describe Machinery do
       allow($stdout).to receive(:tty?).and_return(true)
 
       expect { Machinery::print_output(output) }.
-        to raise_error(Machinery::InvalidPagerError, /not_a_pager/)
+        to raise_error(Machinery::Errors::InvalidPager, /not_a_pager/)
     end
   end
 end

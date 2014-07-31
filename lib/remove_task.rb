@@ -18,7 +18,7 @@
 class RemoveTask
   def remove(store, name, options = {})
     if !options[:all] && !store.list.include?(name)
-        raise Machinery::SystemDescriptionNotFoundError.new(
+        raise Machinery::Errors::SystemDescriptionNotFound.new(
           "System description \"#{name}\" does not exist."
         )
     end

@@ -31,7 +31,7 @@ class InspectTask
     if !failed_inspections.empty?
       puts "\n"
       message = failed_inspections.map { |scope, msg| "Errors while inspecting #{scope}:\n#{msg}" }.join("\n\n")
-      raise Machinery::FailedScopeError.new(message)
+      raise Machinery::Errors::ScopeFailed.new(message)
     end
     description
   end
@@ -40,7 +40,7 @@ class InspectTask
 
   def check_root(system, current_user)
     if system.requires_root? && !current_user.is_root?
-      raise Machinery::SystemRequirementError,
+      raise Machinery::Errors::MissingSystemRequirement,
             "Need to be root to inspect local system."
     end
   end
@@ -60,7 +60,7 @@ class InspectTask
   def build_description(store, name, system, scopes, options)
     begin
       description = store.load(name)
-    rescue Machinery::SystemDescriptionNotFoundError
+    rescue Machinery::Errors::SystemDescriptionNotFound
       description = SystemDescription.new(name, {}, store)
     end
     timestring = Time.now.utc.iso8601
@@ -83,7 +83,7 @@ class InspectTask
       end
     end
     if failed_inspectors.length > 0
-      raise Machinery::UnknownInspectorError.new(
+      raise Machinery::Errors::UnknownInspector.new(
         "The following scopes are not supported: #{failed_inspectors.join(",")}. " \
         "Valid scopes are: #{Inspector.all_scopes.join(",")}."
       )
@@ -95,7 +95,7 @@ class InspectTask
       puts "Inspecting #{inspector.scope}..."
       begin
         summary = inspector.inspect(system, description, options)
-      rescue StandardError => e
+      rescue Machinery::Errors::MachineryError => e
         puts "Inspection of scope #{inspector.scope} failed!"
         failed_inspections[inspector.scope] = e
         next

@@ -33,7 +33,7 @@ class ShowTask
       end
 
       if failed_renderers.length > 0
-        raise Machinery::UnknownRendererError.new(
+        raise Machinery::Errors::UnknownRenderer.new(
           "The following scopes are not supported: #{failed_renderers.join(",")}. " \
           "Valid scopes are: #{Inspector.all_scopes.join(",")}."
         )

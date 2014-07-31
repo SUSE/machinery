@@ -50,7 +50,7 @@ describe RemoveTask do
     it "throws an error when SystemDescription does not exist" do
       expect {
         remove_task.remove(store, "foo_bar_does_not_exist" )
-      }.to raise_error(Machinery::SystemDescriptionNotFoundError)
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
   end
 end

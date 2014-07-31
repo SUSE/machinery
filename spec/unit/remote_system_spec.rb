@@ -29,7 +29,7 @@ describe RemoteSystem do
 
       expect {
         RemoteSystem.new("example.com")
-      }.to raise_error(Machinery::SshConnectionFailed, /SSH/)
+      }.to raise_error(Machinery::Errors::SshConnectionFailed, /SSH/)
     end
   end
 

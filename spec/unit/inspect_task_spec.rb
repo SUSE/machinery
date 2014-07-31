@@ -81,23 +81,33 @@ describe InspectTask, "#inspect_system" do
         current_user_non_root,
         ["doesnotexist"]
       )
-    }.to raise_error(Machinery::UnknownInspectorError, /not supported.*doesnotexist/)
+    }.to raise_error(Machinery::Errors::UnknownInspector, /not supported.*doesnotexist/)
   end
 
-  it "raises an exception when an inspector fails" do
-    description = SystemDescription.new("foo")
-    failed_inspection = {:foo => "foo"}
-    allow(inspect_task).to receive(:build_description).and_return([description, failed_inspection])
-    expect {
-      inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
-    }.to raise_error(Machinery::FailedScopeError)
+  describe "in case of inspection errors" do
+    it "raises Machinery::Errors::ScopeFailed on 'expected errors'" do
+      expect_any_instance_of(FooInspector).to receive(:inspect).
+        and_raise(Machinery::Errors::SshConnectionFailed)
+
+      expect {
+        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
+      }.to raise_error(Machinery::Errors::ScopeFailed)
+    end
+
+    it "bubbles up 'unexpected errors'" do
+      expect_any_instance_of(FooInspector).to receive(:inspect).and_raise(RuntimeError)
+
+      expect {
+        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
+      }.to raise_error(RuntimeError)
+    end
   end
 
   describe "root check" do
     it "raises an exception when inspected system requires root and we don't run as root" do
       expect {
         inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"])
-      }.to raise_error(Machinery::SystemRequirementError)
+      }.to raise_error(Machinery::Errors::MissingSystemRequirement)
     end
 
     it "doesn't raise an exception when inspected system doesn't require root and we don't run as root" do

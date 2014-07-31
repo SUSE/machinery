@@ -25,7 +25,7 @@ class ConfigFilesRenderer < Renderer
     end
 
     if !diffs_dir && @options[:show_diffs]
-      raise Machinery::SystemDescriptionIncomplete.new(
+      raise Machinery::Errors::SystemDescriptionIncomplete.new(
         "Diffs can not be shown because they were not generated yet.\n" \
         "You can generate them with 'machinery analyze #{@system_description.name} -o config-file-diffs'."
       )

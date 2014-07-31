@@ -331,11 +331,11 @@ describe UnmanagedFilesInspector do
       system = double
       expect(system).to receive(:check_requirement).with(
         "rpm", "--version"
-      ).and_raise(Machinery::SystemRequirementError)
+      ).and_raise(Machinery::Errors::MissingSystemRequirement)
 
       inspector = UnmanagedFilesInspector.new
       expect{inspector.inspect(system, description)}.to raise_error(
-        Machinery::SystemRequirementError)
+        Machinery::Errors::MissingSystemRequirement)
     end
 
     it "extracts unmanaged files" do

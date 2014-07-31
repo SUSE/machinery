@@ -42,6 +42,10 @@ class Cli
       command = ARGV & @commands.keys.map(&:to_s)
       run(command << "--help")
       exit 1
+    when Machinery::Errors::MachineryError
+      Machinery.logger.error(e.message)
+      STDERR.puts e.message
+      exit 1
     when SystemExit
       raise
     when SignalException
@@ -55,10 +59,14 @@ class Cli
       STDERR.puts e.to_s
       exit 1
     else
+      Machinery.logger.error("Machinery experienced an unexpected error:")
       Machinery.logger.error(e.message)
-      Machinery.logger.debug(e.backtrace.join("\n"))
-      STDERR.puts e.to_s
-      exit 1
+      Machinery.logger.error(e.backtrace.join("\n"))
+
+      STDERR.puts "Machinery experienced an unexpected error. Please file a " \
+        "bug report at https://github.com/SUSE/machinery/issues/new."
+      STDERR.puts "\nDetails:"
+      raise
     end
 
     true
@@ -75,7 +83,7 @@ class Cli
     if scopes
       if exclude_scopes
         # scope and exclude-scope
-        raise Machinery::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
+        raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
       else
         # scope only
         scope_list = scopes.split(/[, ]/)
@@ -88,7 +96,7 @@ class Cli
           if Inspector.all_scopes.include?(e)
             scope_list.delete(e)
           else
-            raise Machinery::UnknownRendererError.new(
+            raise Machinery::Errors::UnknownRenderer.new(
                 "The following scope is not supported: #{e}. " \
                 "Valid scopes are: #{Inspector.all_scopes.join(",")}."
             )
@@ -100,7 +108,7 @@ class Cli
       end
     end
     if scope_list.empty?
-      raise Machinery::InvalidCommandLine.new( "No scopes to process. Nothing to do.")
+      raise Machinery::Errors::InvalidCommandLine.new( "No scopes to process. Nothing to do.")
     end
     scope_list
   end
@@ -131,9 +139,9 @@ class Cli
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
         else
-          raise RuntimeError.new(
-              "The operation '#{options[:operation]}' is not supported. " \
-          "Valid operations are: config-file-diffs."
+          raise Machinery::Errors::InvalidCommandLine.new(
+            "The operation '#{options[:operation]}' is not supported. " \
+            "Valid operations are: config-file-diffs."
           )
       end
     end

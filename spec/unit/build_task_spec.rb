@@ -135,10 +135,10 @@ describe BuildTask do
     end
 
     it "throws an error if kiwi doesn't exist" do
-      allow(Machinery).to receive(:check_package).and_raise(Machinery::MissingRequirementsError.new("kiwi"))
+      allow(Machinery).to receive(:check_package).and_raise(Machinery::Errors::MissingRequirement.new("kiwi"))
       expect{
         build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::MissingRequirementsError, /kiwi/)
+      }.to raise_error(Machinery::Errors::MissingRequirement, /kiwi/)
     end
 
     it "creates a yaml file in the output directory with the name in it" do
@@ -158,7 +158,7 @@ describe BuildTask do
       expect(File.exists?(image_path)).to be(false)
       expect{
         build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::BuildError, /kiwi-terminal-output.log/)
+      }.to raise_error(Machinery::Errors::BuildFailed, /kiwi-terminal-output.log/)
     end
 
     it "shows the unmanaged file filters at the beginning" do

@@ -103,11 +103,11 @@ EOF
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
       expect(system).to receive(:check_requirement).
         with("chkconfig", "--help").
-        and_raise(Machinery::SystemRequirementError)
+        and_raise(Machinery::Errors::MissingSystemRequirement)
 
       expect {
         inspector.inspect(system, description)
-      }.to raise_error(Machinery::SystemRequirementError)
+      }.to raise_error(Machinery::Errors::MissingSystemRequirement)
     end
   end
 end

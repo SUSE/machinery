@@ -332,7 +332,7 @@ describe Cli do
     end
 
     it "raises an error if both scopes and excluded scopes are given" do
-      expect { Cli.process_scope_option("scope1", "scope2") }.to  raise_error(Machinery::InvalidCommandLine)
+      expect { Cli.process_scope_option("scope1", "scope2") }.to  raise_error(Machinery::Errors::InvalidCommandLine)
     end
   end
 

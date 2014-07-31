@@ -238,11 +238,11 @@ EOF
       system = double
       expect(system).to receive(:check_requirement).with(
         "rpm", "--version"
-      ).and_raise(Machinery::SystemRequirementError)
+      ).and_raise(Machinery::Errors::MissingSystemRequirement)
 
       inspector = ConfigFilesInspector.new
       expect{inspector.inspect(system, description)}.to raise_error(
-        Machinery::SystemRequirementError)
+        Machinery::Errors::MissingSystemRequirement)
     end
 
     it "extracts changed configuration files" do

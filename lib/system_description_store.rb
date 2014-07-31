@@ -39,7 +39,7 @@ class SystemDescriptionStore
     validate_name(name)
     file_name = manifest_path(name)
     unless File.exists?(file_name)
-      raise Machinery::SystemDescriptionNotFoundError.new(
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
         "A system description with the name #{name} was not found."
       )
     end
@@ -75,13 +75,13 @@ class SystemDescriptionStore
     validate_name(from)
     validate_name(to)
     if !list.include?(from)
-      raise Machinery::SystemDescriptionNotFoundError.new(
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
         "System description \"#{from}\" does not exist."
       )
     end
 
     if list.include?(to)
-      raise Machinery::SystemDescriptionAlreadyExistsError.new(
+      raise Machinery::Errors::SystemDescriptionAlreadyExists.new(
         "A System description with the name \"#{to}\" does already exist."
       )
     end
@@ -126,13 +126,13 @@ class SystemDescriptionStore
 
   def validate_name(name)
     if ! /^[\w\.:-]*$/.match(name)
-      raise Machinery::SystemDescriptionNameInvalid.new(
+      raise Machinery::Errors::SystemDescriptionNameInvalid.new(
         "System description name \"#{name}\" is invalid. Only \"a-zA-Z0-9_:.-\" are valid characters."
       )
     end
 
     if name.start_with?(".")
-      raise Machinery::SystemDescriptionNameInvalid.new(
+      raise Machinery::Errors::SystemDescriptionNameInvalid.new(
         "System description name \"#{name}\" is invalid. A dot is not allowed as first character."
       )
     end

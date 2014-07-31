@@ -117,19 +117,19 @@ describe SystemDescription do
     class SystemDescriptionFooConfig < Machinery::Object; end
     expect { SystemDescription.from_json(@name,
       '[ "system-description-foo", "xxx" ]'
-    )}.to raise_error(Machinery::InvalidSystemDescription)
+    )}.to raise_error(Machinery::Errors::SystemDescriptionInvalid)
   end
 
   it "raises ValidationError if json validator find duplicate packages" do
     SystemDescription.add_validator "/packages" do |json|
       if json != json.uniq
-        raise Machinery::ValidationError,
+        raise Machinery::Errors::SystemDescriptionValidationFailed,
           "The description contains duplicate packages."
       end
     end
     expect { SystemDescription.from_json(@name,
       @duplicate_description
-    )}.to raise_error(Machinery::ValidationError)
+    )}.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed)
   end
 
   describe "#scopes" do
@@ -154,7 +154,7 @@ describe SystemDescription do
           end
           description.assert_scopes("repositories", "packages")
         }.to raise_error(
-           Machinery::SystemDescriptionIncomplete,
+           Machinery::Errors::SystemDescriptionIncomplete,
            /: #{missing.join(", ")}\./)
       end
     end
@@ -170,7 +170,7 @@ describe SystemDescription do
 
       expect {
         description.short_os_version
-      }.to raise_error(Machinery::SystemDescriptionIncomplete)
+      }.to raise_error(Machinery::Errors::SystemDescriptionIncomplete)
     end
 
     it "parses openSUSE versions" do
@@ -281,7 +281,7 @@ describe SystemDescription do
           description.os = system_description.os
         end
       end
-      expect { description.buildhost }.to raise_error(Machinery::UnsupportedHostForImageError, /Unsupported build host distribution/)
+      expect { description.buildhost }.to raise_error(Machinery::Errors::UnsupportedBuildTarget, /Unsupported build host distribution/)
     end
   end
 end

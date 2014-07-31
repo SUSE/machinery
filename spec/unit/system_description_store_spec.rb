@@ -59,9 +59,9 @@ describe SystemDescriptionStore do
       expect(description.name).to eq(test_name)
     end
 
-    it "raises SystemDescriptionNotFoundError if the manifest file doesn't exist" do
+    it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
       store = SystemDescriptionStore.new
-      expect { store.load("not_existing") }.to raise_error(Machinery::SystemDescriptionNotFoundError)
+      expect { store.load("not_existing") }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
   end
 
@@ -92,10 +92,10 @@ describe SystemDescriptionStore do
       expect(File.stat(manifest).mode & 0777).to eq(0644)
     end
 
-    it "raises SystemDescriptionInvalid if the system description name is invalid" do
+    it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
       store = SystemDescriptionStore.new
-      expect { store.save(SystemDescription.from_json("invalid/slash", test_manifest)) }.to raise_error(Machinery::SystemDescriptionNameInvalid)
-      expect { store.save(SystemDescription.from_json(".invalid_dot", test_manifest)) }.to raise_error(Machinery::SystemDescriptionNameInvalid)
+      expect { store.save(SystemDescription.from_json("invalid/slash", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionNameInvalid)
+      expect { store.save(SystemDescription.from_json(".invalid_dot", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionNameInvalid)
     end
   end
 
@@ -161,7 +161,7 @@ describe SystemDescriptionStore do
     it "throws an error when the to be cloned SystemDescription does not exist" do
       expect {
         store.clone("foo_bar_does_not_exist", new_name)
-      }.to raise_error(Machinery::SystemDescriptionNotFoundError, /foo_bar_does_not_exist/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound, /foo_bar_does_not_exist/)
     end
 
     it "throws an error when the new name already exists" do
@@ -169,7 +169,7 @@ describe SystemDescriptionStore do
       expect(store.list).to include(new_name)
       expect {
         store.clone(test_name, new_name)
-      }.to raise_error(Machinery::SystemDescriptionAlreadyExistsError, /#{new_name}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionAlreadyExists, /#{new_name}/)
     end
   end
 

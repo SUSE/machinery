@@ -24,7 +24,7 @@ describe ShowTask, "#show" do
   let(:description_with_packages) {
     json = <<-EOF
       {
-        "packages": []  
+        "packages": []
       }
     EOF
     SystemDescription.from_json("name", json)
@@ -66,6 +66,6 @@ describe ShowTask, "#show" do
   it "throws an error when renderer does not exist" do
     expect {
       show_task.show(system_description, ["unknown"])
-    }.to raise_error(Machinery::UnknownRendererError)
+    }.to raise_error(Machinery::Errors::UnknownRenderer)
   end
 end

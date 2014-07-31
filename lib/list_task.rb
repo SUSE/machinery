@@ -23,7 +23,7 @@ class ListTask
       name = File.basename(name)
       begin
         description = store.load(name)
-      rescue Machinery::SystemDescriptionNotFoundError => e
+      rescue Machinery::Errors::SystemDescriptionNotFound => e
         puts e
         next
       end

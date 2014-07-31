@@ -40,7 +40,7 @@ class System
     begin
       run_command(command, *args)
     rescue Cheetah::ExecutionFailed
-      raise Machinery::SystemRequirementError.new(
+      raise Machinery::Errors::MissingSystemRequirement.new(
         "Need binary '#{command}' to be available on the inspected system."
       )
     end
