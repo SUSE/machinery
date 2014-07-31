@@ -21,14 +21,11 @@ describe Zypper do
   subject { Zypper.new }
 
   describe ".isolated" do
-    it "calls zypper with the special machinery dirs" do
+    it "calls zypper in a chroot environment" do
       Zypper.isolated do |zypper|
+        allow(LoggedCheetah).to receive(:run)
         expect(LoggedCheetah).to receive(:run) do |*args|
-          expect(args).to include("--cache-dir")
-          expect(args).to include("--pkg-cache-dir")
-          expect(args).to include("--solv-cache-dir")
-          expect(args).to include("--reposd-dir")
-          expect(args).to include("--config")
+          expect(args).to include("--root")
           expect(args).to include("refresh")
         end
 

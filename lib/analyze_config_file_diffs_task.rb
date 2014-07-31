@@ -127,10 +127,6 @@ class AnalyzeConfigFileDiffsTask
         end
 
         block.call(zypper)
-      ensure
-        remote_repos.each do |repo|
-          zypper.remove_repo(repo.alias)
-        end
       end
     end
   end

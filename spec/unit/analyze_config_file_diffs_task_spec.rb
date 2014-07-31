@@ -148,29 +148,4 @@ describe AnalyzeConfigFileDiffsTask do
       expect(match).to be_nil
     end
   end
-
-  describe "#with_description_repositories" do
-    before(:each) do
-      expect_any_instance_of(Zypper).to receive(:add_repo).with(
-        "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
-        "repo-debug"
-      )
-      expect_any_instance_of(Zypper).to receive(:refresh)
-      expect_any_instance_of(Zypper).to receive(:remove_repo).with(
-        "repo-debug"
-      )
-    end
-
-    it "sets up and tears down the given repositories" do
-      block = ->(zypper) {}
-      subject.send(:with_repositories, description, &block)
-    end
-
-    it "tears down the repositories when something goes wrong" do
-      block = ->(zypper) { raise }
-      expect {
-        subject.send(:with_repositories, description, &block)
-      }.to raise_exception
-    end
-  end
 end

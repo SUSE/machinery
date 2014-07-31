@@ -44,29 +44,18 @@ class Zypper
   end
 
   def self.isolated(&block)
-    Dir.mktmpdir("machinery_zypper") do |zypper_base|
-      zypper = Zypper.new
+    zypper_base = Dir.mktmpdir("machinery_zypper")
+    zypper = Zypper.new
 
-      [
-        "#{zypper_base}/packages",
-        "#{zypper_base}/solv",
-        "#{zypper_base}/repos"
-      ].each do |dir|
-        FileUtils.mkdir_p(dir)
-      end
+    zypper.zypper_options = [
+      "--non-interactive",
+      "--no-gpg-checks",
+      "--root", zypper_base
+    ]
 
-      zypper.zypper_options = [
-        "--non-interactive",
-        "--no-gpg-checks",
-        "--cache-dir",      "#{zypper_base}",
-        "--pkg-cache-dir",  "#{zypper_base}/packages",
-        "--solv-cache-dir", "#{zypper_base}/solv",
-        "--reposd-dir",     "#{zypper_base}/repos",
-        "--config",         "#{zypper_base}/zypp.conf"
-      ]
-
-      block.call(zypper)
-    end
+    block.call(zypper)
+  ensure
+    LoggedCheetah.run("sudo", "rm", "-r", zypper_base) if zypper_base.start_with?("/tmp/")
   end
 
   private
