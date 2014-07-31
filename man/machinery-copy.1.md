@@ -1,17 +1,17 @@
 
-## clone — Clone System Description
+## copy — Copy System Description
 
 ### SYNOPSIS
 
-`machinery clone`
+`machinery copy`
     FROM_NAME TO_NAME
 
-`machinery` help clone
+`machinery` help copy
 
 
 ### DESCRIPTION
 
-The `clone` command clones a stored system description. It creates a new
+The `copy` command copies a stored system description. It creates a new
 description named TO_NAME containing the same content as the description
 FROM_NAME.
 
@@ -26,6 +26,6 @@ FROM_NAME.
 
 ### EXAMPLES
 
-  * Create a clone of the system description `earth` under the name `moon`:
+  * Create a copy of the system description `earth` under the name `moon`:
 
-    $ `machinery` clone earth moon
+    $ `machinery` copy earth moon

@@ -307,11 +307,11 @@ describe Cli do
     end
   end
 
-  describe "#clone" do
-    it "triggers the clone task" do
-      expect_any_instance_of(CloneTask).to receive(:clone).
+  describe "#copy" do
+    it "triggers the copy task" do
+      expect_any_instance_of(CopyTask).to receive(:copy).
         with(an_instance_of(SystemDescriptionStore), "foo", "bar")
-      run_command(["clone", "foo", "bar"])
+      run_command(["copy", "foo", "bar"])
     end
   end
 
