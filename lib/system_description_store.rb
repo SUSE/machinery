@@ -71,7 +71,7 @@ class SystemDescriptionStore
     end
   end
 
-  def clone(from, to)
+  def copy(from, to)
     validate_name(from)
     validate_name(to)
     if !list.include?(from)

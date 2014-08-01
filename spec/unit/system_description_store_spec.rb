@@ -144,7 +144,7 @@ describe SystemDescriptionStore do
     end
   end
 
-  describe "#clone" do
+  describe "#copy" do
     let(:store) { SystemDescriptionStore.new(test_base_path) }
     let(:new_name) { "description2" }
 
@@ -152,23 +152,23 @@ describe SystemDescriptionStore do
       create_machinery_dir
     end
 
-    it "clones an existing SystemDescription" do
+    it "copies an existing SystemDescription" do
       expect(store.list).to eq([test_name])
-      store.clone(test_name, new_name)
+      store.copy(test_name, new_name)
       expect(store.list).to eq([test_name, new_name])
     end
 
-    it "throws an error when the to be cloned SystemDescription does not exist" do
+    it "throws an error when the to be copied SystemDescription does not exist" do
       expect {
-        store.clone("foo_bar_does_not_exist", new_name)
+        store.copy("foo_bar_does_not_exist", new_name)
       }.to raise_error(Machinery::Errors::SystemDescriptionNotFound, /foo_bar_does_not_exist/)
     end
 
     it "throws an error when the new name already exists" do
-      store.clone(test_name, new_name)
+      store.copy(test_name, new_name)
       expect(store.list).to include(new_name)
       expect {
-        store.clone(test_name, new_name)
+        store.copy(test_name, new_name)
       }.to raise_error(Machinery::Errors::SystemDescriptionAlreadyExists, /#{new_name}/)
     end
   end

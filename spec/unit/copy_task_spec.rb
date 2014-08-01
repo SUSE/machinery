@@ -15,8 +15,18 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class CloneTask
-  def clone(store, from, to)
-    store.clone(from, to)
+require_relative "spec_helper"
+
+describe CopyTask do
+  let(:copy_task) { CopyTask.new }
+
+  describe "#copy" do
+    it "copies the system description directory" do
+      store = double
+      from = "description1"
+      to = "description2"
+      expect(store).to receive(:copy).with(from, to)
+      copy_task.copy(store, from, to)
+    end
   end
 end

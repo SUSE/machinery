@@ -62,7 +62,7 @@ require_relative 'kiwi_export_task'
 require_relative 'helper'
 require_relative 'deploy_task'
 require_relative 'analyze_config_file_diffs_task'
-require_relative 'clone_task'
+require_relative 'copy_task'
 require_relative 'scope'
 require_relative 'output'
 

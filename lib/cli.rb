@@ -218,20 +218,20 @@ class Cli
 
 
 
-  desc "Clone system description"
+  desc "Copy system description"
   long_desc <<-LONGDESC
-    Clone a system description.
+    Copy a system description.
 
-    The system description is cloned and stored under the provided name.
+    The system description is copied and stored under the provided name.
   LONGDESC
   arg_name "FROM_NAME TO_NAME"
-  command :clone do |c|
+  command :copy do |c|
     c.action do |global_options,options,args|
       from = shift_arg(args, "FROM_NAME")
       to = shift_arg(args, "TO_NAME")
       store = SystemDescriptionStore.new
-      task = CloneTask.new
-      task.clone(store, from, to)
+      task = CopyTask.new
+      task.copy(store, from, to)
     end
   end
 

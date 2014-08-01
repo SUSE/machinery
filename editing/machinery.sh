@@ -111,7 +111,7 @@ _machinery() {
   # Command option parameters completion
   #----------------------------------------
   case "${prev}" in
-    analyze|deploy|remove|show|build|export-kiwi|clone|compare)
+    analyze|deploy|remove|show|build|export-kiwi|copy|compare)
       comp_reply "$descriptions"
       warn_no_description
       return 0
@@ -131,7 +131,7 @@ _machinery() {
     *)
       local prev_prev="${COMP_WORDS[COMP_CWORD-2]}"
       case "$prev_prev" in
-        compare|clone)
+        compare|copy)
           comp_reply $descriptions
           warn_no_description
           return 0
