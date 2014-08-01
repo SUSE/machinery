@@ -65,6 +65,7 @@ require_relative 'analyze_config_file_diffs_task'
 require_relative 'copy_task'
 require_relative 'scope'
 require_relative 'output'
+require_relative 'os'
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 
