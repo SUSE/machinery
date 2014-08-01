@@ -34,11 +34,18 @@ describe Os do
     expect(os.can_build).to include OsSles12
   end
 
-  it "returns if it can build an Os" do
+  it "returns if it can build an Os given as class" do
     os = OsSles12.new
 
     expect(os.can_build?(OsSles12)).to be true
     expect(os.can_build?(OsSles11)).to be false
+  end
+
+  it "returns if it can build an Os given as instance" do
+    os = OsSles12.new
+
+    expect(os.can_build?(OsSles12.new)).to be true
+    expect(os.can_build?(OsSles11.new)).to be false
   end
 
 end

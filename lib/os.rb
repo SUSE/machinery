@@ -18,8 +18,12 @@
 class Os
   attr_reader :can_build
 
-  def can_build?(os_class)
-    @can_build.include?(os_class)
+  def can_build?(os)
+    if os.is_a?(Class)
+      return @can_build.include?(os)
+    else
+      return @can_build.include?(os.class)
+    end
   end
 end
 
