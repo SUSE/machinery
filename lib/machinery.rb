@@ -29,7 +29,6 @@ require "yaml"
 require "uri"
 require "gli"
 
-require_relative 'host_capabilities'
 require_relative 'machinery_logger'
 require_relative 'zypper'
 require_relative 'rpm'

@@ -67,27 +67,6 @@ describe SystemDescription do
         }
       }
     }'
-    class OsInspector
-      alias orig_inspect inspect
-      def inspect(system, description, options = {})
-        json = <<-EOF
-        {
-          "os": {
-          "name": "SUSE Linux Enterprise Server 12"
-          }
-        }
-        EOF
-        system_description = SystemDescription.from_json("localhost", json)
-        description.os = system_description.os
-      end
-    end
-  end
-
-  after(:all) do
-    class OsInspector
-      alias inspect orig_inspect
-      remove_method(:orig_inspect)
-    end
   end
 
   it "returns empty JSON structure on .new" do
@@ -248,40 +227,6 @@ describe SystemDescription do
     it "returns false" do
       description.store = double(file_store: nil)
       expect(description.scope_extracted?("config-files")).to be(false)
-    end
-  end
-
-  describe "#buildhost" do
-    let(:description) {
-      json = <<-EOF
-        {
-          "os": {
-          "name": "openSUSE 13.1 (Bottle)"
-          }
-        }
-      EOF
-      description = SystemDescription.from_json("name", json)
-    }
-
-    it "returns OsSLE12 object" do
-      expect(description.buildhost).to be_a(OsSLE12)
-    end
-
-    it "raises Machinery::UnsupportedHostForImageError if build host is unsupported" do
-      class OsInspector
-        def inspect(system, description, options = {})
-          json = <<-EOF
-          {
-            "os": {
-            "name": "SUSE Linux Enterprise Server 13"
-            }
-          }
-          EOF
-          system_description = SystemDescription.from_json("localhost", json)
-          description.os = system_description.os
-        end
-      end
-      expect { description.buildhost }.to raise_error(Machinery::Errors::BuildFailed, /Unsupported build host distribution/)
     end
   end
 

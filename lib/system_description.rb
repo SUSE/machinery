@@ -118,24 +118,6 @@ class SystemDescription < Machinery::Object
     extracting_scopes.include?(scope) && !@store.file_store(name, scope).nil?
   end
 
-  def buildhost
-    assert_scopes("os")
-
-    buildhost_description = SystemDescription.new("local-OS")
-    inspector = OsInspector.new
-    inspector.inspect(System.for("localhost"), buildhost_description)
-    buildhost_os_name = buildhost_description.os.name
-
-    if !OsBuild.supported_buildhost?(buildhost_os_name)
-      message = "Unsupported build host distribution " +
-        "'#{buildhost_os_name}'. " +
-        "Supported are '#{OsBuild.supported_buildhost}'"
-      raise(Machinery::Errors::BuildFailed.new(message))
-    end
-
-    OsBuild.instance_for(buildhost_os_name, self.os.name)
-  end
-
   def os_object
     assert_scopes("os")
 
