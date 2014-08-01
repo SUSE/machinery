@@ -20,6 +20,26 @@ require_relative "spec_helper"
 describe LocalSystem do
   let(:local_system) { LocalSystem.new }
 
+  describe ".os" do
+    before(:each) do
+      expect_any_instance_of(OsInspector).to receive(:inspect) do |instance, system, description|
+        json = <<-EOF
+        {
+          "os": {
+            "name": "SUSE Linux Enterprise Server 12"
+          }
+        }
+        EOF
+        system_description = SystemDescription.from_json("localhost", json)
+        description.os = system_description.os
+      end
+    end
+
+    it "returns os object for local host" do
+      expect(LocalSystem.os).to be_a OsSles12
+    end
+  end
+
   describe "#requires_root?" do
     it "returns true" do
       expect(local_system.requires_root?).to be(true)

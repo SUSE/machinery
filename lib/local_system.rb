@@ -16,6 +16,13 @@
 # you may find current contact information at www.suse.com
 
 class LocalSystem < System
+  def self.os
+    description = SystemDescription.new("localhost")
+    inspector = OsInspector.new
+    inspector.inspect(System.for("localhost"), description)
+    description.os_object
+  end
+
   def requires_root?
     true
   end
