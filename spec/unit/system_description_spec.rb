@@ -284,4 +284,45 @@ describe SystemDescription do
       expect { description.buildhost }.to raise_error(Machinery::Errors::BuildFailed, /Unsupported build host distribution/)
     end
   end
+
+  describe "#os_object" do
+    it "returns Os object for SLES 12" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "SUSE Linux Enterprise Server 12"
+          }
+        }
+      EOF
+      description = SystemDescription.from_json("name", json)
+
+      expect(description.os_object).to be_a(OsSles12)
+    end
+
+    it "returns Os object for SLES 11" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "SUSE Linux Enterprise Server 11"
+          }
+        }
+      EOF
+      description = SystemDescription.from_json("name", json)
+
+      expect(description.os_object).to be_a(OsSles11)
+    end
+
+    it "returns Os object for openSUSE 13.1" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "openSUSE 13.1 (Bottle)"
+          }
+        }
+      EOF
+      description = SystemDescription.from_json("name", json)
+
+      expect(description.os_object).to be_a(OsOpenSuse13_1)
+    end
+  end
 end

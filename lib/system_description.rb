@@ -136,6 +136,21 @@ class SystemDescription < Machinery::Object
     OsBuild.instance_for(buildhost_os_name, self.os.name)
   end
 
+  def os_object
+    assert_scopes("os")
+
+    if self.os.name == "SUSE Linux Enterprise Server 12"
+      return OsSles12.new
+    elsif self.os.name == "SUSE Linux Enterprise Server 11"
+      return OsSles11.new
+    elsif self.os.name == "openSUSE 13.1 (Bottle)"
+      return OsOpenSuse13_1.new
+    else
+      raise Machinery::Errors::SystemDescriptionInvalid.new(
+        "Unrecognized operating system '#{self.os.name}")
+    end
+  end
+
   # Filestore handling
   def initialize_file_store(store_name)
     @store.initialize_file_store(self.name, store_name)
