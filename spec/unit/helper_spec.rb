@@ -18,31 +18,6 @@
 require_relative "spec_helper"
 
 describe Machinery do
-  before(:all) do
-    # simulate a sles12 host
-    class OsInspector
-      alias orig_inspect inspect
-      def inspect(system, description, options = {})
-        json = <<-EOF
-        {
-          "os": {
-          "name": "SUSE Linux Enterprise Server 12"
-          }
-        }
-        EOF
-        system_description = SystemDescription.from_json("localhost", json)
-        description.os = system_description.os
-      end
-    end
-  end
-
-  after(:all) do
-    class OsInspector
-      alias inspect orig_inspect
-      remove_method(:orig_inspect)
-    end
-  end
-
   describe ".check_package" do
     it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
       package = "does_not_exist"
@@ -55,6 +30,10 @@ describe Machinery do
   end
 
   describe ".check_build_compatible_host" do
+    before(:each) do
+      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+    end
+
     # let us build a sles11 system which is unsupported on sle12 host
     let(:system_description) {
       json = <<-EOF

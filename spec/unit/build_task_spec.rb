@@ -53,32 +53,9 @@ describe BuildTask do
   let(:image_extension) { "qcow2" }
   let(:image_file) { system_description.name + ".x86_64-0.0.1.qcow2" }
 
-  before(:all) do
-    # simulate an openSUSE 13.1  host
-    class OsInspector
-      alias orig_inspect inspect
-      def inspect(system, description, options = {})
-        json = <<-EOF
-        {
-          "os": {
-          "name": "openSUSE 13.1 (Bottle)"
-          }
-        }
-        EOF
-        system_description = SystemDescription.from_json("localhost", json)
-        description.os = system_description.os
-      end
-    end
-  end
-
-  after(:all) do
-    class OsInspector
-      alias inspect orig_inspect
-      remove_method(:orig_inspect)
-    end
-  end
-
   before(:each) {
+    allow(LocalSystem).to receive(:os_object).and_return(OsOpenSuse13_1.new)
+
     allow(Cheetah).to receive(:run)
 
     Dir.mkdir("/tmp")
