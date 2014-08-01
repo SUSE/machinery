@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe LocalSystem do
   let(:local_system) { LocalSystem.new }
 
-  describe ".os" do
+  describe ".os_object" do
     before(:each) do
       expect_any_instance_of(OsInspector).to receive(:inspect) do |instance, system, description|
         json = <<-EOF
@@ -36,7 +36,7 @@ describe LocalSystem do
     end
 
     it "returns os object for local host" do
-      expect(LocalSystem.os).to be_a OsSles12
+      expect(LocalSystem.os_object).to be_a(OsSles12)
     end
   end
 
