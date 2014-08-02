@@ -161,7 +161,6 @@ EOF
         )
     end
 
-    boot =
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.image(schemaversion: "5.8", name: @system_description.name) do
         xml.description(type: "system") do
