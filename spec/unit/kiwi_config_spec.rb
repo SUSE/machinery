@@ -407,13 +407,13 @@ describe KiwiConfig do
   end
 
   describe "#initialize" do
-    it "checks for building support of the inspected operating system" do
-      system_description_with_content.os.name = "Unknown Operating System"
+    it "raises exception when OS is not supported for building" do
+      system_description_with_content.os.name = "openSUSE 13.1 (Bottle)"
       expect {
         KiwiConfig.new(system_description_with_content)
       }.to raise_error(
          Machinery::Errors::KiwiExportFailed,
-         /Unknown Operating System/
+         /openSUSE 13.1/
       )
     end
 

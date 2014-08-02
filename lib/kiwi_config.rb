@@ -147,17 +147,17 @@ suseSetupProduct
 suseImportBuildKey
 suseConfig
 EOF
-    case @system_description.os.name
-      when "SUSE Linux Enterprise Server 12"
+    case @system_description.os_object
+      when OsSles12
         boot = "vmxboot/suse-SLES12"
         bootloader = "grub2"
-      when "SUSE Linux Enterprise Server 11"
+      when OsSles11
         boot = "vmxboot/suse-SLES11"
         bootloader = "grub"
       else
         raise Machinery::Errors::KiwiExportFailed.new(
           "Building is not possible because the operating system " \
-          "'#{@system_description.os.name}' is not supported."
+          "'#{@system_description.os_object.name}' is not supported."
         )
     end
 
