@@ -307,10 +307,10 @@ EOF
   end
 
   def enable_dhcp(output_location)
-    case @system_description.os.name
-      when "SUSE Linux Enterprise Server 11"
+    case @system_description.os_object
+      when OsSles11
         write_dhcp_network_config(output_location, "eth0")
-      when "SUSE Linux Enterprise Server 12"
+      when OsSles12
         write_dhcp_network_config(output_location, "lan0")
         write_persistent_net_rules(output_location)
     end
