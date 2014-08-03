@@ -59,6 +59,6 @@ class ShowTask
       end
     end
 
-      Machinery::print_output(output, :no_pager => options[:no_pager])
+    Machinery::print_output(output, :no_pager => options[:no_pager])
   end
 end
