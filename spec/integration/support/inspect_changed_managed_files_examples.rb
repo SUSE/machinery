@@ -20,13 +20,13 @@ shared_examples "inspect changed managed files" do |base|
     it "extracts list of managed files" do
       measure("Inspect system") do
         @machinery.run_command(
-            "cd; machinery/bin/machinery inspect #{@subject_system.ip} --scope=changed-managed-files --extract-files",
+            "machinery inspect #{@subject_system.ip} --scope=changed-managed-files --extract-files",
             as: "vagrant"
         )
       end
 
       actual_files_list = @machinery.run_command(
-          "cd; machinery/bin/machinery show #{@subject_system.ip} --scope=changed-managed-files",
+          "machinery show #{@subject_system.ip} --scope=changed-managed-files",
           as: "vagrant", stdout: :capture
       )
 
