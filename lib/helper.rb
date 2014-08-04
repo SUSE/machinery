@@ -25,12 +25,15 @@ module Machinery
   end
 
   def self.check_build_compatible_host(system_description)
-    if !system_description.buildhost.can_build?
+    if !LocalSystem.os_object.can_build?(system_description.os_object)
       message = "Building image for " +
-        "'#{system_description.os.name}' is not supported." +
+        "'#{system_description.os_object.name}' is not supported." +
         " Supported image build target(s) on buildhost " +
-        "'#{system_description.buildhost.os_name}' are: " +
-        "'#{system_description.buildhost.can_build}'"
+        "'#{LocalSystem.os_object.name}' are: "
+      message += system_description.os_object.can_build.map do |os_class|
+        "'" + os_class.new.name + "'"
+      end.join(", ")
+
       raise(Machinery::Errors::BuildFailed.new(message))
     end
   end
