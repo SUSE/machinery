@@ -48,4 +48,8 @@ describe Os do
     expect(os.can_build?(OsSles11.new)).to be false
   end
 
+  it "returns a display name" do
+    expect(OsSles12.new.name).to eq "SUSE Linux Enterprise Server 12"
+  end
+
 end

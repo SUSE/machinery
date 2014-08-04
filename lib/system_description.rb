@@ -139,11 +139,11 @@ class SystemDescription < Machinery::Object
   def os_object
     assert_scopes("os")
 
-    if self.os.name == "SUSE Linux Enterprise Server 12"
+    if self.os.name == OsSles12.new.name
       return OsSles12.new
-    elsif self.os.name == "SUSE Linux Enterprise Server 11"
+    elsif self.os.name == OsSles11.new.name
       return OsSles11.new
-    elsif self.os.name == "openSUSE 13.1 (Bottle)"
+    elsif self.os.name == OsOpenSuse13_1.new.name
       return OsOpenSuse13_1.new
     else
       raise Machinery::Errors::SystemDescriptionInvalid.new(

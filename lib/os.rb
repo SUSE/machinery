@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class Os
-  attr_reader :can_build
+  attr_reader :can_build, :name
 
   def can_build?(os)
     if os.is_a?(Class)
