@@ -79,7 +79,15 @@ end
 
 namespace :rpm do
   desc 'Build RPM of current version'
-  task :build do
+  task :build, [:api, :project, :target] do |task, args|
+    if args[:api] && args[:project] && args[:target]
+      Packaging.configuration do |conf|
+        conf.obs_api = args[:api]
+        conf.obs_project = args[:project]
+        conf.obs_target = args[:target]
+      end
+    end
+
     # This task builds unreleased versions of the RPM, so we don't want to
     # bump and commit the version each time. Instead we just set the version
     # temporarily and revert the change afterwards. That causes the
