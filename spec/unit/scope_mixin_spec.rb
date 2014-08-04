@@ -15,10 +15,26 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "spec_helper"
 
-class Group < Machinery::Object
-end
+describe Machinery::ScopeMixin do
+  class SimpleScope < Machinery::Object
+    include Machinery::ScopeMixin
+  end
 
-class GroupsScope < Machinery::Array
-  include Machinery::ScopeMixin
+  subject { SimpleScope.new }
+
+  it "provides accessors for timestamp and hostname to a simple scope" do
+    mytime = Time.now.utc.iso8601
+    host = "192.168.122.216"
+
+    expect(subject.meta).to be(nil)
+
+    subject.set_metadata(mytime, host)
+
+    t = Time.utc(subject.meta.modified)
+    expect(t.utc?).to eq(true)
+    expect(subject.meta.modified).to eq(mytime)
+    expect(subject.meta.hostname).to eq(host)
+  end
 end

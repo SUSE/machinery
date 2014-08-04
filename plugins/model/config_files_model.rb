@@ -19,11 +19,6 @@
 class ConfigFile < Machinery::Object
 end
 
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
+class ConfigFilesScope < Machinery::Array
+  include Machinery::ScopeMixin
 end
-
-class ConfigFilesScope < Machinery::Scope
-  contains ConfigFileList
-end
-

@@ -15,6 +15,6 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class OsScope < Machinery::Scope
-  contains Machinery::Object
+class OsScope < Machinery::Object
+  include Machinery::ScopeMixin
 end

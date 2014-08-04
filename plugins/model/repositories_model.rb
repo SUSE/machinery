@@ -19,10 +19,6 @@
 class Repository < Machinery::Object
 end
 
-class RepositoryList < Machinery::Array
-  has_elements class: Repository
-end
-
-class RepositoriesScope < Machinery::Scope
-  contains RepositoryList
+class RepositoriesScope < Machinery::Array
+  include Machinery::ScopeMixin
 end

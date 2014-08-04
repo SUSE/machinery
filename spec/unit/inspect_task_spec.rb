@@ -21,8 +21,8 @@ require_relative "spec_helper"
 describe InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
 
-  class SimpleInspectTaskScope < Machinery::Scope
-    contains Machinery::Object
+  class SimpleInspectTaskScope < Machinery::Object
+    include Machinery::ScopeMixin
   end
 
   class FooInspector < Inspector

@@ -19,10 +19,6 @@
 class Pattern < Machinery::Object
 end
 
-class PatternList < Machinery::Array
-  has_elements class: Pattern
-end
-
-class PatternsScope < Machinery::Scope
-  contains PatternList
+class PatternsScope < Machinery::Array
+  include Machinery::ScopeMixin
 end
