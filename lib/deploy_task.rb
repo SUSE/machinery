@@ -19,14 +19,14 @@ class DeployTask
   def deploy(description, cloud_config, options = {})
     Machinery::check_package("python-glanceclient")
     if !File.exists?(cloud_config)
-      raise(Machinery::Errors::FileNotFound,
+      raise(Machinery::Errors::DeployFailed,
         "The cloud config file '#{cloud_config}' could not be found."
       )
     end
 
     if options[:image_dir]
       if !Dir.exists?(options[:image_dir])
-        raise(Machinery::Errors::FileNotFound,
+        raise(Machinery::Errors::DeployFailed,
           "The image directory does not exist."
         )
       end
@@ -48,7 +48,7 @@ class DeployTask
     end
 
     if !File.exists?(image_file)
-      raise(Machinery::Errors::FileNotFound,
+      raise(Machinery::Errors::DeployFailed,
         "The image file '#{image_file}' does not exist."
       )
     end
@@ -72,7 +72,7 @@ class DeployTask
   def load_meta_data(meta_dir)
       meta_file = File.join(meta_dir, Machinery::IMAGE_META_DATA_FILE)
       if !File.exists?(meta_file)
-        raise(Machinery::Errors::FileNotFound,
+        raise(Machinery::Errors::DeployFailed,
           "The meta data file '#{meta_file}' could not be found."
         )
       end
@@ -80,7 +80,7 @@ class DeployTask
       meta_data = YAML.load_file(meta_file)
 
       if !meta_data[:image_file] || !meta_data[:description]
-        raise(Machinery::Errors::BrokenMetaData,
+        raise(Machinery::Errors::DeployFailed,
           "The meta data file '#{meta_file}' is broken."
         )
       end

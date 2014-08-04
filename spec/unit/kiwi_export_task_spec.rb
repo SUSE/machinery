@@ -46,7 +46,7 @@ describe KiwiExportTask do
       it "raises an error when --force is not given" do
         expect {
           subject.export(nil, kiwi_dir, force: false)
-        }.to raise_error(Machinery::Errors::DirectoryAlreadyExists)
+        }.to raise_error(Machinery::Errors::KiwiExportFailed)
       end
 
       it "overwrites existing directory when --force is given" do

@@ -19,7 +19,7 @@ class AnalyzeConfigFileDiffsTask
   def analyze(description)
     description.assert_scopes("repositories", "config-files")
     if !description.file_store("config-files")
-      raise Machinery::Errors::SystemDescriptionIncomplete.new(
+      raise Machinery::Errors::SystemDescriptionError.new(
         "Missing extracted config files.\n" \
         "You can extract them using 'machinery inspect -s config-files -x'."
       )

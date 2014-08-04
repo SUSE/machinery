@@ -98,7 +98,7 @@ describe InspectTask, "#inspect_system" do
 
       expect {
         inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
-      }.to raise_error(Machinery::Errors::ScopeFailed)
+      }.to raise_error(Machinery::Errors::InspectionFailed)
     end
 
     it "bubbles up 'unexpected errors'" do
@@ -119,7 +119,7 @@ describe InspectTask, "#inspect_system" do
       it "raises an exception we don't run as root" do
         expect {
           inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"])
-        }.to raise_error(Machinery::Errors::MissingSystemRequirement)
+        }.to raise_error(Machinery::Errors::MissingRequirement)
       end
 
       it "doesn't raise an exception when we run as root" do

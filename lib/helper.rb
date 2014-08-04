@@ -31,7 +31,7 @@ module Machinery
         " Supported image build target(s) on buildhost " +
         "'#{system_description.buildhost.os_name}' are: " +
         "'#{system_description.buildhost.can_build}'"
-      raise(Machinery::Errors::UnsupportedBuildTarget.new(message))
+      raise(Machinery::Errors::BuildFailed.new(message))
     end
   end
 end
