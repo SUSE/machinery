@@ -22,13 +22,13 @@ shared_examples "inspect config files" do |base|
     it "extracts list of config files" do
       measure("Inspect system") do
         @machinery.run_command(
-          "cd; machinery/bin/machinery inspect #{@subject_system.ip} --scope=config-files --extract-files",
+          "machinery inspect #{@subject_system.ip} --scope=config-files --extract-files",
           as: "vagrant"
         )
       end
 
       actual_files_list = @machinery.run_command(
-        "cd; machinery/bin/machinery show #{@subject_system.ip} --scope=config-files",
+        "machinery show #{@subject_system.ip} --scope=config-files",
         as: "vagrant", stdout: :capture
       )
 

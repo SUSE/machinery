@@ -59,8 +59,9 @@ class Release
     output_dir = File.join("/var/tmp", obs_project, build_dist)
     FileUtils.cp Dir.glob("#{output_dir}/*.rpm"), "package/"
   ensure
-    # revert the version changes
-    Cheetah.run "git", "checkout", "."
+    # revert the version and changelog changes
+    Cheetah.run "git", "checkout", File.join(Machinery::ROOT, "lib/version.rb")
+    Cheetah.run "git", "checkout", File.join(Machinery::ROOT, "RPM_CHANGES")
   end
 
   # Commit version changes, tag release and push changes upstream.

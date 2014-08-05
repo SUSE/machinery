@@ -22,6 +22,19 @@ def inject_test_data(base)
     inline: "cd /; tar xf /vagrant/unmanaged-files.tgz"
 end
 
+def setup_machinery(base)
+    # Vagrantfile sets up its own environment which prevents rake from working
+    # So we reset the environment and specify the only missing environment variable
+    rpm_output = `env -i bash -lc "cd ../../../../machinery && export HOME=$(echo ~/) && rake rpm:build 2>&1"`
+    rpm = Dir.entries("../../../../machinery/package/").select{ |i| i =~ /^machinery-\d.*\d\.rpm$/ }.first
+    if !$?.success? || !rpm
+      raise "Building the rpm package failed.\n#{rpm_output}"
+    end
+
+    base.vm.synced_folder "../../../../machinery/package/", "/tmp/machinery-rpms", :type => "rsync", :rsync__exclude => "spec/", :owner => "vagrant", :group => "users"
+    base.vm.provision "shell", inline: "zypper --non-interactive in /tmp/machinery-rpms/#{rpm}"
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :opensuse131 do |opensuse131|
@@ -38,7 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.define :machinery_131 do |machinery_131|
-    machinery_131.vm.synced_folder "../../../../machinery", "/home/vagrant/machinery", :type => "rsync", :rsync__exclude => "spec/", :owner => "vagrant", :group => "users"
+    setup_machinery(machinery_131)
     machinery_131.vm.box = "machinery_opensuse13.1_kvm"
     machinery_131.vm.network :private_network, :network_name => "default"
 
