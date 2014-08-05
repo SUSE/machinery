@@ -123,7 +123,7 @@ describe UnmanagedFilesInspector do
     def expect_find_commands(system,add_files)
       dirs = [
         "/",
-        "/etc/ppp/ip-down.d",
+        "/etc/ppp/ip 'down.d",
         "/etc/ppp/ip-up.d",
         "/etc/skel/.config",
         "/etc/skel/.fonts",
@@ -223,7 +223,7 @@ describe UnmanagedFilesInspector do
         "/usr/share/info"                => "sinfo"
       }
       dirs.each do |d|
-        cmd = "find #{d} -xdev -maxdepth 1 -maxdepth 3 -printf \"%y\\0%P\\0%l\\0\""
+        cmd = "find #{d.shellescape} -xdev -maxdepth 1 -maxdepth 3 -printf \"%y\\0%P\\0%l\\0\""
 
         # non_empty_dirs maps dirs to extension names where content of dir is stored
         # files with test content is saved in find_#{ext}

@@ -89,7 +89,7 @@ d
 etc/ppp
 
 d
-etc/ppp/ip-down.d
+etc/ppp/ip 'down.d
 
 d
 etc/ppp/ip-up.d
