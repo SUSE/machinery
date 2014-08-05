@@ -338,11 +338,6 @@ describe Cli do
 
   describe "#error_handling" do
     it "shows stderr, stdout and the backtrace for unexpected errors" do
-      expected_machinery_out = <<-EOT.sub(/\n$/, '')
-Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.
-
-      EOT
-
       expected_cheetah_out = <<-EOT
 Cheetah::ExecutionFailed
 
@@ -354,15 +349,14 @@ This is STDOUT
 Backtrace:
       EOT
 
-      expect(STDERR).to receive(:puts).with(expected_machinery_out)
+      expect(STDERR).to receive(:puts).with(/Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.\n/)
       expect(STDERR).to receive(:puts).with(/#{expected_cheetah_out}/)
-      expect {
-        begin
-          raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
-        rescue => e
-          Cli.handle_error(e)
-        end
-      }.to raise_error(SystemExit)
+      begin
+        # Actually raise the exception, so we have a backtrace
+        raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
+      rescue => e
+        expect{ Cli.handle_error(e) }.to raise_error(SystemExit)
+      end
     end
   end
 
