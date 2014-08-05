@@ -21,9 +21,6 @@ zypper --non-interactive install --no-recommends git libxslt1 libxslt-devel zlib
 # Install kiwi and dependencies for building
 zypper --non-interactive install --no-recommends kiwi kiwi-desc-vmxboot kiwi-tools db45-utils db-utils grub
 
-# Install bundler, rspec and the junit formatter (for jenkins)
-gem install bundler rspec rspec_junit_formatter
-
 # checkout and setup machinery and pennyworth
 su vagrant -c "cd && git clone https://github.com/SUSE/machinery.git"
 su vagrant -c "cd && git clone https://github.com/SUSE/pennyworth.git"
