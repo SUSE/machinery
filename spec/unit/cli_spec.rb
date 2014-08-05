@@ -340,6 +340,7 @@ describe Cli do
     it "shows stderr, stdout and the backtrace for unexpected errors" do
       expected_machinery_out = <<-EOT.sub(/\n$/, '')
 Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.
+
       EOT
 
       expected_cheetah_out = <<-EOT
