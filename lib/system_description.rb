@@ -221,15 +221,11 @@ class SystemDescription < Machinery::Object
   def os_object
     assert_scopes("os")
 
-    [OsSles12, OsSles11, OsOpenSuse13_1].each do |os_class|
-      os_object = os_class.new
-      if self.os.name == os_object.name
-        return os_object
-      end
+    begin
+      Os.for(self.os.name)
+    rescue Machinery::Errors::UnknownOs => e
+      raise Machinery::Errors::SystemDescriptionError.new(e)
     end
-
-    raise Machinery::Errors::SystemDescriptionError.new(
-      "Unrecognized operating system '#{self.os.name}")
   end
 
   # Filestore handling

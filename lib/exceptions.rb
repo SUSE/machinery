@@ -26,6 +26,7 @@ module Machinery
     class MachineryError < StandardError; end
 
     class UnknownScope < MachineryError; end
+    class UnknownOs < MachineryError; end
     class InvalidPager < MachineryError; end
     class InvalidCommandLine < MachineryError; end
 

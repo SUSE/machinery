@@ -18,6 +18,20 @@
 class Os
   attr_reader :can_build, :name
 
+  def self.descendants
+    ObjectSpace.each_object(::Class).select { |klass| klass < self }
+  end
+
+  def self.for(os_name)
+    descendants.each do |os_class|
+      os_object = os_class.new
+      if os_name == os_object.name
+        return os_object
+      end
+    end
+    raise Machinery::Errors::UnknownOs.new("Unknown OS: '#{os_name}'")
+  end
+
   def can_build?(os)
     if os.is_a?(Class)
       return @can_build.include?(os)
