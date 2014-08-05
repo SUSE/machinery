@@ -34,7 +34,7 @@ class Cli
     end
   end
 
-  on_error do |e|
+  def self.handle_error(e)
     case e
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
         GLI::UnknownCommand, GLI::BadCommandLine
@@ -84,6 +84,11 @@ class Cli
       end
     end
     true
+  end
+
+
+  on_error do |e|
+    Cli.handle_error(e)
   end
 
   def self.shift_arg(args, name)

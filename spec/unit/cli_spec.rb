@@ -305,12 +305,6 @@ describe Cli do
           with(an_instance_of(SystemDescriptionStore), anything())
       run_command(["list"])
     end
-
-    it "shows stderr, stdout and the backtrace for unexpected errors" do
-      expect_any_instance_of(ListTask).to receive(:list).and_raise(Cheetah::ExecutionFailed.new("nil","nil","This is STDOUT","This is STDERR"))
-      expect(STDERR).to receive(:puts).with(/Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new./),(/Cheetah::ExecutionFailed\n\nError output:\nThis is STDERR\nStandard output:\nThis is STDOUT\n\nBacktrace:\n/)
-      run_command(["list"])
-    end
   end
 
   describe "#copy" do
@@ -339,6 +333,35 @@ describe Cli do
 
     it "raises an error if both scopes and excluded scopes are given" do
       expect { Cli.process_scope_option("scope1", "scope2") }.to  raise_error(Machinery::Errors::InvalidCommandLine)
+    end
+  end
+
+  describe "#error_handling" do
+    it "shows stderr, stdout and the backtrace for unexpected errors" do
+      expected_machinery_out = <<-EOT.sub(/\n$/, '')
+Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.
+      EOT
+
+      expected_cheetah_out = <<-EOT
+Cheetah::ExecutionFailed
+
+Error output:
+This is STDERR
+Standard output:
+This is STDOUT
+
+Backtrace:
+      EOT
+
+      expect(STDERR).to receive(:puts).with(expected_machinery_out)
+      expect(STDERR).to receive(:puts).with(/#{expected_cheetah_out}/)
+      expect {
+        begin
+          raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
+        rescue => e
+          Cli.handle_error(e)
+        end
+      }.to raise_error(SystemExit)
     end
   end
 
