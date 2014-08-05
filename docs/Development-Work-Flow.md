@@ -16,7 +16,7 @@ material such as the web site.
 ## Maintainers
 
 Machinery is maintained by a team at [SUSE](http://suse.com). This is the group
-which has commit access to the git repository and which has the final say about
+which has commit access to the Git repository and which has the final say about
 what goes in there. We take the role of maintainers with responsibility. It
 includes deciding about contributions, but it's just as well about contributing
 and helping others to contribute.
@@ -43,7 +43,7 @@ expectations on contributions in more detail:
 
 ## Releases
 
-Machinery is released early and often. Releases come as tag in git,
+Machinery is released early and often. Releases come as tag in Git,
 corresponding tarball on the [release page](https://github.com/SUSE/machinery/releases),
 and a package in the
 [openSUSE Build Service](https://build.opensuse.org/project/show/systemsmanagement:machinery).
@@ -77,7 +77,7 @@ feature request, plese report them there as well.
 We try to keep references in the commits to bugs closed and features
 implemented, so it's clear when things are done and released.
 
-## SUSE internal work
+## SUSE Internal Work
 
 There is a team at SUSE which is working on Machinery. We try to do as much as
 possible in the open. All code goes through the
