@@ -84,8 +84,7 @@ namespace :rpm do
     # bump and commit the version each time. Instead we just set the version
     # temporarily and revert the change afterwards. That causes the
     # check:committed check which is triggered by osc:build to fail, though,
-    # so we call it beforehand and clear it instead.
-    Rake::Task["check:committed"].invoke
+    # so we clear it instead.
     Rake::Task["check:committed"].clear
 
     release = Release.new
