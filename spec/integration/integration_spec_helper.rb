@@ -17,6 +17,7 @@
 
 require_relative "../../lib/machinery"
 require_relative "../../../pennyworth/lib/spec"
+require_relative "../../../pennyworth/lib/ssh_keys_importer"
 
 def prepare_machinery_for_host(system, ip, opts = {})
   opts = {
@@ -24,9 +25,13 @@ def prepare_machinery_for_host(system, ip, opts = {})
     user:     "vagrant"
   }.merge(opts)
 
-  system.run_command(
-    "cd; pennyworth/bin/pennyworth copy-ssh-keys #{ip} -p #{opts[:password]}; ",
-    as: opts[:user]
+  SshKeysImporter.import(ip, opts[:password], File.join(Machinery::ROOT, "spec/keys/machinery_rsa.pub"))
+
+  system.inject_file(
+    File.join(Machinery::ROOT, "spec/keys/machinery_rsa"),
+    "/home/vagrant/.ssh/id_rsa",
+    :owner => "vagrant",
+    :mode => "600"
   )
 
   system.run_command(
