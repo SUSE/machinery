@@ -128,7 +128,7 @@ class SystemDescription < Machinery::Object
       end
     end
 
-    raise Machinery::Errors::SystemDescriptionInvalid.new(
+    raise Machinery::Errors::SystemDescriptionError.new(
       "Unrecognized operating system '#{self.os.name}")
   end
 
