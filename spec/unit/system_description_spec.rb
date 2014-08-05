@@ -269,5 +269,19 @@ describe SystemDescription do
 
       expect(description.os_object).to be_a(OsOpenSuse13_1)
     end
+
+    it "raises exception for invalid os name" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "invalid name"
+          }
+        }
+      EOF
+      description = SystemDescription.from_json("name", json)
+
+      expect{ description.os_object }.to(
+        raise_error(Machinery::Errors::SystemDescriptionError))
+    end
   end
 end
