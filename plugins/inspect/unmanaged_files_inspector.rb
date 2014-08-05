@@ -155,7 +155,7 @@ class UnmanagedFilesInspector < Inspector
     dirs = {}
 
     # compute command line
-    cmd = "find #{dir} -xdev -maxdepth 1 -maxdepth #{depth} "
+    cmd = "find #{dir.shellescape} -xdev -maxdepth 1 -maxdepth #{depth} "
     cmd += '-printf "%y\0%P\0%l\0"'
 
     # Cheetah seems to be unable to handle binary zeroes "\0" in parameters

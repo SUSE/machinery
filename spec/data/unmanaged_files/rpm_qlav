@@ -28,7 +28,7 @@ d /etc/news
 d /etc/opt
 d /etc/permissions.d
 d /etc/ppp
-d /etc/ppp/ip-down.d
+d /etc/ppp/ip 'down.d
 d /etc/ppp/ip-up.d
 d /etc/profile.d
 l /etc/rc.d -> init.d
