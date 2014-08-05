@@ -25,7 +25,7 @@ end
 def setup_machinery(base)
     # Vagrantfile sets up its own environment which prevents rake from working
     # So we reset the environment and specify the only missing environment variable
-    rpm_output = `env -i bash -lc "cd ../../../../machinery && export HOME=$(echo ~/) && rake rpm:build 2>&1"`
+    rpm_output = `env -i bash -lc "cd ../../../../machinery && export HOME=$(echo ~/) && export LC_ALL=en_US.utf8 && rake rpm:build 2>&1"`
     rpm = Dir.entries("../../../../machinery/package/").select{ |i| i =~ /^machinery-\d.*\d\.rpm$/ }.first
     if !$?.success? || !rpm
       raise "Building the rpm package failed.\n#{rpm_output}"
