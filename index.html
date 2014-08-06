@@ -314,7 +314,11 @@
     <script src="js/custom.js"></script>
     <script type="text/javascript" src="js/skrollr.min.js"></script>
     <script type="text/javascript">
-      var s = skrollr.init();
+      $(document).on("ready",function(){
+          if (document.documentElement.clientWidth > 500) {
+            var s = skrollr.init();
+        }
+      })
     </script>
     
   </body>
