@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 0.18.0 - Wed Aug 06 18:37:26 CEST 2014 - thardeck@suse.de
+
+* update to version 0.18.0
 * add gem2rpm as build requirement to follow common gem packaging style
 * use new ruby packging style for SLES12 only (Factory is not yet adapted)
 

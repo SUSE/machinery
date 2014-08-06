@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 0.18.0 - Wed Aug 06 18:37:26 CEST 2014 - thardeck@suse.de
+
 * Fixed bnc#888786 - fix analyzing of config files with restricted repositories
 * Fixed bnc#879990 - check if building is supported on the current platform
 * Added distinction between expected and unexpected errors
