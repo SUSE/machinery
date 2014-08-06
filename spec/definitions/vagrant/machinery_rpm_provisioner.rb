@@ -70,7 +70,7 @@ module MachineryRpm
 
       # Vagrantfile sets up its own environment which prevents rake from working
       # So we reset the environment and specify the only missing environment variable
-      cmd = "cd #{MACHINERY_ROOT} && export HOME=$(echo ~/) && rake rpm:build#{obs_cmd} 2>&1"
+      cmd = "cd #{MACHINERY_ROOT} && export HOME=$(echo ~/) && export LC_ALL=en_US.utf8 && rake rpm:build#{obs_cmd} 2>&1"
       rpm_output = `env -i bash -lc "#{cmd}"`
       @rpm = Dir.entries(File.join(MACHINERY_ROOT, "package")).select do |file|
         file =~ /^machinery-\d.*\.x86_64\.rpm$/
