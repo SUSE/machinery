@@ -45,6 +45,7 @@ module ReleaseChecks
     uri = URI.parse("https://ci.opensuse.org/job/machinery-unit/lastStableBuild/api/json")
 
     http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = uri.scheme == "https"
     request = Net::HTTP::Get.new(uri.request_uri)
     response = http.request(request)
 
