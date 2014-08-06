@@ -1,8 +1,9 @@
 # Machinery Release Notes
 
-* Fixed bnc#888786 - run zypper in a chroot environment
-* Fixed bnc#879990 - check building restrictions
+* Fixed bnc#888786 - fix analyzing of config files with restricted repositories
+* Fixed bnc#879990 - check if building is supported on the current platform
 * Renamed `clone` command to `copy`
+* Improved error handling
 
 ## Version 0.17.2 - Thu Jul 17 11:32:43 CEST 2014 - thardeck@suse.de
 
