@@ -49,11 +49,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.volume_cache = 'none'
     end
 
-    script = <<-EOF
-        su vagrant -c "mkdir /home/vagrant/.machinery/"
-    EOF
-
-    machinery_131.vm.provision "shell", inline: script
     machinery_131.vm.provision "machinery_rpm"
   end
 
