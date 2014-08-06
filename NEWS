@@ -2,7 +2,8 @@
 
 * Fixed bnc#888786 - fix analyzing of config files with restricted repositories
 * Fixed bnc#879990 - check if building is supported on the current platform
-* Made error messages user friendlier and prevented truncated error messages
+* Added distinction between expected and unexpected errors
+* Prevented truncated error messages
 * Renamed `clone` command to `copy`
 
 ## Version 0.17.2 - Thu Jul 17 11:32:43 CEST 2014 - thardeck@suse.de
