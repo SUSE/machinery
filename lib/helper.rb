@@ -20,7 +20,13 @@ module Machinery
     begin
       Cheetah.run("rpm", "-q", package)
     rescue
-      raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}'. You can install it by running `zypper install #{package}`"))
+      needed_module = LocalSystem.os_object.module_required_by_package(package)
+      if needed_module
+        raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}' from module '#{needed_module}'. You can install it as follows:\n" \
+          "If you haven't selected the module '#{needed_module}' before, run `yast2 scc` and choose 'Select Extensions' and activate '#{needed_module}'.\nRun `zypper install #{package}` to install the package."))
+      else
+        raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}'. You can install it by running `zypper install #{package}`"))
+      end
     end
   end
 

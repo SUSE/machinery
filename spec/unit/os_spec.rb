@@ -52,4 +52,15 @@ describe Os do
     expect(OsSles12.new.name).to eq "SUSE Linux Enterprise Server 12"
   end
 
+  describe "#module_required_by_package" do
+    it "returns the module's name for a package" do
+      os = OsSles12.new
+      expect(os.module_required_by_package("python-glanceclient")).to eq("Public Cloud Module")
+    end
+
+    it "returns nil if no module is required for a package" do
+      os = OsSles11.new
+      expect(os.module_required_by_package("python-glanceclient")).to eq(nil)
+    end
+  end
 end

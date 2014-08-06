@@ -27,6 +27,13 @@ describe Machinery do
     it "doesn't raise an error if the package exists" do
       expect { Machinery::check_package("bash") }.not_to raise_error
     end
+
+    it "explains how to install a missing package from a module on SLES12" do
+      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+      expect {
+        Machinery::check_package("python-glanceclient")
+      }.to raise_error(Machinery::Errors::MissingRequirement, /Public Cloud Module/)
+     end
   end
 
   describe ".check_build_compatible_host" do
