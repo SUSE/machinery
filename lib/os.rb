@@ -25,6 +25,12 @@ class Os
       return @can_build.include?(os.class)
     end
   end
+
+  def module_required_by_package(package)
+    if @module_required_by_package
+      return @module_required_by_package[package]
+    end
+  end
 end
 
 class OsSles11 < Os
@@ -38,6 +44,9 @@ class OsSles12 < Os
   def initialize
     @can_build = [OsSles12]
     @name = "SUSE Linux Enterprise Server 12"
+    @module_required_by_package = {
+      "python-glanceclient" => "Public Cloud Module"
+    }
   end
 end
 
