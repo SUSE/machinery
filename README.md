@@ -4,6 +4,10 @@ Machinery is a systems management toolkit for Linux. It supports configuration
 discovery, system validation, and service migration. It's based on the idea of a
 universal system description.
 
+A spin-off project of Machinery is
+[Pennyworth](https://github.com/SUSE/pennyworth), which is used to manage the
+integration test environment.
+
 For more information, [visit our website](http://machinery-project.org/).
 
 ## Contents
