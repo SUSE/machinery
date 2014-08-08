@@ -47,19 +47,18 @@ EOF
         Group.new(
           name: "+",
           password: "",
-          gid: "",
           users: []
         ),
         Group.new(
           name: "root",
           password: "x",
-          gid: "0",
+          gid: 0,
           users: []
         ),
         Group.new(
           name: "tftp",
           password: "x",
-          gid: "493",
+          gid: 493,
           users: ["dnsmasq", "tftp"]
         ),
 

@@ -153,13 +153,13 @@ describe KiwiConfig do
           {
             "name": "root",
             "password": "x",
-            "gid": "0",
+            "gid": 0,
             "users": []
           },
           {
             "name": "tftp",
             "password": "x",
-            "gid": "7",
+            "gid": 7,
             "users": ["dnsmasq", "tftp"]
           }
         ],
