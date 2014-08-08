@@ -91,8 +91,7 @@ class ChangedManagedFilesInspector < Inspector
               name:              file,
               package_name:      package_name,
               package_version:   package_version,
-              changes:           changes,
-              package_file_flag: flag
+              changes:           changes
           )
         end
         # Since errors are also recognized for config-files we have

@@ -1204,8 +1204,7 @@
       "package_version": "3.2",
       "changes": [
         "deleted"
-      ],
-      "package_file_flag": ""
+      ]
     },
     {
       "name": "/usr/share/bash/helpfiles/read",
@@ -1214,7 +1213,6 @@
       "changes": [
         "md5"
       ],
-      "package_file_flag": "",
       "mode": "644",
       "uid": 0,
       "gid": 0,
