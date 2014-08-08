@@ -56,7 +56,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
         Repository.new(
           alias: "nu_novell_com:SLES11-SP3-Pool",
           name: "SLES11-SP3-Pool",
-          repo_type: "rpm-md",
+          type: "rpm-md",
           enabled: true,
           autorefresh: true,
           gpgcheck: true,
@@ -68,7 +68,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           Repository.new(
           alias: "repo-oss",
           name: "openSUSE-Oss",
-          repo_type: "yast2",
+          type: "yast2",
           enabled: true,
           autorefresh: true,
           gpgcheck: true,
@@ -78,7 +78,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           Repository.new(
           alias: "repo-update",
           name: "openSUSE-Update",
-          repo_type: "rpm-md",
+          type: "rpm-md",
           enabled: false,
           autorefresh: false,
           gpgcheck: false,
