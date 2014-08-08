@@ -28,8 +28,7 @@ describe ChangedManagedFilesRenderer do
           "package_version": "2.11.3",
           "changes": [
             "deleted"
-          ],
-          "package_file_flag": "d"
+          ]
         },
         {
           "name": "/changed/file",
@@ -39,7 +38,6 @@ describe ChangedManagedFilesRenderer do
             "md5",
             "mode"
           ],
-          "package_file_flag": "c",
           "mode": "644",
           "uid": 0,
           "gid": 0,
