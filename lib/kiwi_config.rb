@@ -73,8 +73,8 @@ class KiwiConfig
 
       # The shadow file contains an eigth reserved field at the end, so we have
       # to manually add it, too.
-      shadow = [u.name, u.shadow_password, u.last_changed, u.minimum_age,
-        u.maximum_age, u.warn_days, u.expire_inactive, u.expire, ""].join(":")
+      shadow = [u.name, u.encrypted_password, u.last_changed_date, u.min_days,
+        u.max_days, u.warn_days, u.disable_days, u.disabled_date, ""].join(":")
       "['#{passwd}', '#{shadow}']"
     end.join(",\n")
     group_entries = @system_description.groups.map do |g|

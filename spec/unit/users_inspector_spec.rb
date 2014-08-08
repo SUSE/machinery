@@ -50,36 +50,31 @@ EOF
 
       expected = UsersScope.new([
         User.new(
-          name:            "lp",
-          password:        "x",
-          uid:             "4",
-          gid:             "7",
-          info:            "Printing daemon",
-          home:            "/var/spool/lpd",
-          shell:           "/bin/false",
-          shadow_password: "*",
-          last_changed:    "16125",
-          minimum_age:     "1",
-          maximum_age:     "2",
-          warn_days:       "3",
-          expire_inactive: "4",
-          expire:          "5"
+          name:               "lp",
+          password:           "x",
+          uid:                4,
+          gid:                7,
+          comment:            "Printing daemon",
+          home:               "/var/spool/lpd",
+          shell:              "/bin/false",
+          encrypted_password: "*",
+          last_changed_date:  16125,
+          min_days:           1,
+          max_days:           2,
+          warn_days:          3,
+          disable_days:       4,
+          disabled_date:      5
         ),
         User.new(
-          name:            "root",
-          password:        "x",
-          uid:             "0",
-          gid:             "0",
-          info:            "root",
-          home:            "/root",
-          shell:           "/bin/bash",
-          shadow_password: "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
-          last_changed:    "16125",
-          minimum_age:     "",
-          maximum_age:     "",
-          warn_days:       "",
-          expire_inactive: "",
-          expire:          ""
+          name:               "root",
+          password:           "x",
+          uid:                0,
+          gid:                0,
+          comment:            "root",
+          home:               "/root",
+          shell:              "/bin/bash",
+          encrypted_password: "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
+          last_changed_date:  16125
         )
       ])
 
@@ -97,20 +92,20 @@ EOF
         User.new(
           name:            "lp",
           password:        "x",
-          uid:             "4",
-          gid:             "7",
-          info:            "Printing daemon",
+          uid:             4,
+          gid:             7,
+          comment:         "Printing daemon",
           home:            "/var/spool/lpd",
           shell:           "/bin/false"
         ),
         User.new(
-            name:            "root",
-            password:        "x",
-            uid:             "0",
-            gid:             "0",
-            info:            "root",
-            home:            "/root",
-            shell:           "/bin/bash"
+          name:            "root",
+          password:        "x",
+          uid:             0,
+          gid:             0,
+          comment:         "root",
+          home:            "/root",
+          shell:           "/bin/bash"
         )
       ])
 
