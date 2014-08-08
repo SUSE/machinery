@@ -25,32 +25,22 @@ describe UsersRenderer do
         {
           "name": "root",
           "password": "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
-          "uid": "0",
-          "gid": "0",
+          "uid": 0,
+          "gid": 0,
           "info": "",
           "home": "/root",
           "shell": "/bin/bash",
-          "last_changed": "16125",
-          "minimum_age": "",
-          "maximum_age": "",
-          "warn_days": "",
-          "expire_inactive": "",
-          "expire": ""
+          "last_changed": 16125
         },
         {
           "name": "lp",
           "password": "*",
-          "uid": "4",
-          "gid": "7",
+          "uid": 4,
+          "gid": 7,
           "info": "Printing daemon",
           "home": "/var/spool/lpd",
           "shell": "/bin/bash",
-          "last_changed": "16125",
-          "minimum_age": "",
-          "maximum_age": "",
-          "warn_days": "",
-          "expire_inactive": "",
-          "expire": ""
+          "last_changed": 16125
         }
       ]
     }
@@ -59,7 +49,7 @@ describe UsersRenderer do
   }
 
   describe "show" do
-    it "prints a repository list" do
+    it "prints the user list" do
       output = UsersRenderer.new.render(system_description)
 
       expect(output).to include("root (N/A, uid: 0, gid: 0, shell: /bin/bash)")

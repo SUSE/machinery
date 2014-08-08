@@ -41,14 +41,14 @@ class UsersInspector < Inspector
 
   def passwd_attributes(passwd, user)
     line = passwd.lines.find { |l| l.start_with?("#{user}:") }
-    user, passwd, uid, gid, info, home, shell = line.split(":").map(&:chomp)
+    user, passwd, uid, gid, comment, home, shell = line.split(":").map(&:chomp)
 
     {
         name: user,
         password: passwd,
-        uid: uid,
-        gid: gid,
-        info: info,
+        uid: uid.to_i,
+        gid: gid.to_i,
+        comment: comment,
         home: home,
         shell: shell
     }
@@ -59,15 +59,17 @@ class UsersInspector < Inspector
     if line
       user, passwd, changed, min, max, warn, inactive, expire = line.split(":").map(&:chomp)
 
-      {
-        shadow_password: passwd,
-        last_changed: changed,
-        minimum_age: min,
-        maximum_age: max,
-        warn_days: warn,
-        expire_inactive: inactive,
-        expire: expire
+      result = {
+        encrypted_password: passwd
       }
+      result[:last_changed_date] = changed.to_i if !changed.empty?
+      result[:min_days] = min.to_i if !min.empty?
+      result[:max_days] = max.to_i if !max.empty?
+      result[:warn_days] = warn.to_i if !warn.empty?
+      result[:disable_days] = inactive.to_i if !inactive.empty?
+      result[:disabled_date] = expire.to_i if !expire.empty?
+
+      result
     else
       {}
     end
