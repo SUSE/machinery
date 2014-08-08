@@ -932,7 +932,7 @@
     "services": {
       "modified": "2014-04-14T13:08:09Z"
     },
-    "changed-managed-files": {
+    "changed_managed_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
     "os": {
@@ -1197,7 +1197,7 @@
       }
     ]
   },
-  "changed-managed-files": [
+  "changed_managed_files": [
     {
       "name": "/usr/share/bash/helpfiles/cd",
       "package_name": "bash",

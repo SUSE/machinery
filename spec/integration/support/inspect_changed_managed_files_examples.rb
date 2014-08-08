@@ -40,7 +40,7 @@ shared_examples "inspect changed managed files" do |base|
       actual_managed_files_list = nil
       measure("Gather information about extracted files") do
         actual_managed_files_list = @machinery.run_command(
-            "cd ~/.machinery/#{@subject_system.ip}/changed-managed-files/; find",
+            "cd ~/.machinery/#{@subject_system.ip}/changed_managed_files/; find",
             as: "vagrant", stdout: :capture
         ).split("\n")
       end
@@ -61,7 +61,7 @@ shared_examples "inspect changed managed files" do |base|
 
       # test file content
       actual_content = @machinery.run_command(
-          "cat ~/.machinery/#{@subject_system.ip}/changed-managed-files/usr/share/bash/helpfiles/read",
+          "cat ~/.machinery/#{@subject_system.ip}/changed_managed_files/usr/share/bash/helpfiles/read",
           as: "vagrant", stdout: :capture
       )
       expect(actual_content).to include("changed managed files test entry")

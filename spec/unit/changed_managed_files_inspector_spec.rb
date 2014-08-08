@@ -82,12 +82,12 @@ describe ChangedManagedFilesInspector do
       ])
       subject.inspect(system, description)
 
-      expect(description["changed-managed-files"]).to eq(expected_result)
+      expect(description["changed_managed_files"]).to eq(expected_result)
     end
 
     it "returns sorted data" do
       subject.inspect(system, description)
-      names = description["changed-managed-files"].map(&:name)
+      names = description["changed_managed_files"].map(&:name)
 
       expect(names).to eq(names.sort)
     end

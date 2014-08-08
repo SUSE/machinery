@@ -20,7 +20,7 @@ class ChangedManagedFilesInspector < Inspector
 
   def inspect(system, description, options = {})
     @system = system
-    store_name = "changed-managed-files"
+    store_name = "changed_managed_files"
 
     result = changed_files
 
@@ -33,7 +33,7 @@ class ChangedManagedFilesInspector < Inspector
 
     summary = "#{options[:extract_changed_managed_files] ? "Extracted" : "Found"} #{result.count} changed files."
 
-    description["changed-managed-files"] = ChangedManagedFilesScope.new(result.sort_by(&:name))
+    description["changed_managed_files"] = ChangedManagedFilesScope.new(result.sort_by(&:name))
     summary
   end
 

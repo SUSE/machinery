@@ -90,7 +90,7 @@ class KiwiConfig
   end
 
   def inject_extracted_files(output_location)
-    ["config_files", "changed-managed-files"].each do |dir|
+    ["config_files", "changed_managed_files"].each do |dir|
       path = @system_description.file_store(dir)
       if path
         output_root_path = File.join(output_location, "root")
@@ -119,7 +119,7 @@ class KiwiConfig
 
   def check_existance_of_extraced_files
     scopes = []
-    ["config_files", "changed-managed-files", "unmanaged_files"].each do |scope|
+    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
       path = @system_description.file_store(scope)
 
       if @system_description[scope] && !path
@@ -239,7 +239,7 @@ EOF
   end
 
   def apply_extracted_files_attributes
-    ["config_files", "changed-managed-files"].each do |scope|
+    ["config_files", "changed_managed_files"].each do |scope|
       if @system_description[scope]
         deleted, files = @system_description[scope].partition do |f|
           f.changes == Machinery::Array.new(["deleted"])
