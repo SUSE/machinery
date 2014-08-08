@@ -130,9 +130,9 @@ class KiwiConfig
     if !scopes.empty?
       raise Machinery::Errors::SystemDescriptionError.new(
         "Cannot create kiwi config. " \
-        "The following scopes #{scopes.join(",")} are part of the system " \
-        "description but the corresponding files weren't extracted during " \
-        "inspection.\n" \
+        "The following scopes #{Cli.internal_to_cli_scope_names(scopes).join(",")} " \
+        "are part of the system description but the corresponding files " \
+        "weren't extracted during inspection.\n" \
         "Use the -x parameter while running inspect to extract the files."
       )
     end

@@ -105,18 +105,19 @@ class Cli
         raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
       else
         # scope only
-        scope_list = scopes.split(/[, ]/)
+        scope_list = Cli.cli_to_internal_scope_names(scopes.split(/[, ]/))
       end
     else
       if exclude_scopes
         # exclude-scope only
         scope_list = Inspector.all_scopes
-        exclude_scopes.split(/[, ]/).each do |e|
+        Cli.cli_to_internal_scope_names(exclude_scopes.split(/[, ]/)).each do |e|
           if Inspector.all_scopes.include?(e)
             scope_list.delete(e)
           else
             raise Machinery::Errors::UnknownRenderer.new(
-                "The following scope is not supported: #{e}. " \
+                "The following scope is not supported: " \
+                  "#{Cli.internal_to_cli_scope_names(e).join(",")}. " \
                 "Valid scopes are: #{AVAILABLE_SCOPE_LIST}."
             )
           end
@@ -132,8 +133,19 @@ class Cli
     scope_list
   end
 
+  def self.internal_to_cli_scope_names(scopes)
+    list = Array(scopes)
+    list.map{ |e| e.tr("_", "-") }
+  end
 
-  AVAILABLE_SCOPE_LIST = Inspector.all_scopes.join(",")
+  def self.cli_to_internal_scope_names(scopes)
+    list = Array(scopes)
+    list.map{ |e| e.tr("-", "_") }
+  end
+
+  AVAILABLE_SCOPE_LIST = Cli.internal_to_cli_scope_names(
+    Inspector.all_scopes
+  ).join(",")
 
   desc "Analyze system description"
   long_desc <<-LONGDESC

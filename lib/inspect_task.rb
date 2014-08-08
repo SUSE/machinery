@@ -84,8 +84,10 @@ class InspectTask
     end
     if failed_inspectors.length > 0
       raise Machinery::Errors::UnknownInspector.new(
-        "The following scopes are not supported: #{failed_inspectors.join(",")}. " \
-        "Valid scopes are: #{Inspector.all_scopes.join(",")}."
+        "The following scopes are not supported: " \
+        "#{Cli.internal_to_cli_scope_names(failed_inspectors).join(",")}. " \
+        "Valid scopes are: " \
+          "#{Cli.internal_to_cli_scope_names(Inspector.all_scopes).join(",")}."
       )
     end
 
