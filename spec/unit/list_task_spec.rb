@@ -52,7 +52,7 @@ describe ListTask do
   let(:system_description_with_extracted_files) {
     json = <<-EOF
       {
-        "config-files": []
+        "config_files": []
       }
     EOF
     SystemDescription.from_json(name, json)
@@ -92,7 +92,7 @@ describe ListTask do
       expect(store).to receive(:file_store).and_return(double)
       expect($stdout).to receive(:puts) { |s|
         expect(s).to include(name)
-        expect(s).to include("config-files (extracted)")
+        expect(s).to include("config_files (extracted)")
       }
 
       store.save(system_description_with_extracted_files)

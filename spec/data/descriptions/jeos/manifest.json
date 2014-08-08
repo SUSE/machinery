@@ -926,7 +926,7 @@
     "unmanaged_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
-    "config-files": {
+    "config_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
     "services": {
@@ -977,7 +977,7 @@
       "files": 2
     }
   ],
-  "config-files": [
+  "config_files": [
     {
       "name": "/etc/crontab",
       "package_name": "cron",

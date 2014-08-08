@@ -17,8 +17,8 @@
 
 class AnalyzeConfigFileDiffsTask
   def analyze(description)
-    description.assert_scopes("repositories", "config-files")
-    if !description.file_store("config-files")
+    description.assert_scopes("repositories", "config_files")
+    if !description.file_store("config_files")
       raise Machinery::Errors::SystemDescriptionError.new(
         "Missing extracted config files.\n" \
         "You can extract them using 'machinery inspect -s config-files -x'."
@@ -28,7 +28,7 @@ class AnalyzeConfigFileDiffsTask
     with_repositories(description) do |zypper|
       description.initialize_file_store("config-file-diffs")
       diffs_path = description.file_store("config-file-diffs")
-      extracted_files_path = description.file_store("config-files")
+      extracted_files_path = description.file_store("config_files")
 
       puts "Generating diffs..."
       cnt = 1
@@ -75,7 +75,7 @@ class AnalyzeConfigFileDiffsTask
   #   }
   # ]
   def files_by_package(description)
-    files = description["config-files"].
+    files = description["config_files"].
       select { |f| f.changes.include?("md5") }
 
     files.inject({}) do |result, file|

@@ -43,7 +43,7 @@ describe "match_machinery_show_scope matcher" do
       - /etc/crontab (md5)
         Diff:
         --- -	2014-05-28 11:42:50.785992953 +0200
-        +++ /home/vagrant/.machinery/sles11sp3-build/config-files/etc/crontab	2014-05-28 11:42:12.520257287 +0200
+        +++ /home/vagrant/.machinery/sles11sp3-build/config_files/etc/crontab	2014-05-28 11:42:12.520257287 +0200
         @@ -0,0 +1 @@
         +-*/15 * * * *   root  echo config_files_integration_test
     EOT
@@ -53,7 +53,7 @@ describe "match_machinery_show_scope matcher" do
       - /etc/crontab (md5)
         Diff:
         --- -	2014-04-22 15:03:13.162341623 +0100
-        +++ /home/vagrant/.machinery/sles11sp3-build/config-files/etc/crontab	2014-04-22 15:03:13.162341623 +0100
+        +++ /home/vagrant/.machinery/sles11sp3-build/config_files/etc/crontab	2014-04-22 15:03:13.162341623 +0100
         @@ -0,0 +1 @@
         +-*/15 * * * *   root  echo config_files_integration_test
     EOT

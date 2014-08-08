@@ -99,15 +99,15 @@ class ConfigFilesInspector < Inspector
       end
     end
 
-    description.remove_file_store("config-files")
+    description.remove_file_store("config_files")
     if do_extract
-      description.initialize_file_store("config-files")
-      system.retrieve_files(paths, description.file_store("config-files"))
+      description.initialize_file_store("config_files")
+      system.retrieve_files(paths, description.file_store("config_files"))
     end
 
     summary = "#{do_extract ? "Extracted" : "Found"} #{result.count} changed configuration files."
 
-    description["config-files"] = ConfigFilesScope.new(result.sort_by(&:name))
+    description["config_files"] = ConfigFilesScope.new(result.sort_by(&:name))
     summary
   end
 end

@@ -41,7 +41,7 @@ shared_examples "inspect config files" do |base|
       actual_config_files = nil
       measure("Gather information about extracted files") do
         actual_config_files = @machinery.run_command(
-          "cd ~/.machinery/#{@subject_system.ip}/config-files/; find -type f",
+          "cd ~/.machinery/#{@subject_system.ip}/config_files/; find -type f",
           as: "vagrant", stdout: :capture
         ).split("\n")
       end
@@ -57,7 +57,7 @@ shared_examples "inspect config files" do |base|
 
       # test file content
       actual_content = @machinery.run_command(
-        "grep config_files_integration_test ~/.machinery/#{@subject_system.ip}/config-files/etc/crontab",
+        "grep config_files_integration_test ~/.machinery/#{@subject_system.ip}/config_files/etc/crontab",
         as: "vagrant", stdout: :capture
       )
       expect(actual_content).to eq(expected_content)

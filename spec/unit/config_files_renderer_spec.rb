@@ -21,7 +21,7 @@ describe ConfigFilesRenderer do
   let(:system_description) {
     json = <<-EOF
     {
-      "config-files": [
+      "config_files": [
       {
         "name": "/etc/default/grub",
         "package_name": "grub2",
@@ -95,7 +95,7 @@ describe ConfigFilesRenderer do
       end
 
       it "does not try to show a diff when the md5 did not change" do
-        system_description["config-files"].each do |config_file|
+        system_description["config_files"].each do |config_file|
           config_file.changes = ["deleted"]
         end
         subject.render(system_description, show_diffs: true)

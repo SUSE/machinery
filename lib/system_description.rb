@@ -111,7 +111,7 @@ class SystemDescription < Machinery::Object
   def scope_extracted?(scope)
     extracting_scopes = [
       "changed-managed-files",
-      "config-files",
+      "config_files",
       "unmanaged_files"
     ]
 

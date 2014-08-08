@@ -302,7 +302,7 @@ describe KiwiConfig do
             "priority": 1
           }
         ],
-        "config-files": [
+        "config_files": [
           {
             "name": "/usr/share/fonts/encodings/encodings.dir",
             "package_name": "xorg-x11-fonts-core",
@@ -396,7 +396,7 @@ describe KiwiConfig do
 
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "kiwi_helpers"))
-    ["config-files", "changed-managed-files", "unmanaged_files"].each do |scope|
+    ["config_files", "changed-managed-files", "unmanaged_files"].each do |scope|
       system_description_with_content.initialize_file_store(scope)
     end
   end
@@ -531,7 +531,7 @@ describe KiwiConfig do
     end
 
     it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
-      scope = "config-files"
+      scope = "config_files"
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
@@ -681,8 +681,8 @@ describe KiwiConfig do
       before(:each) do
         # prepare fakefs
         [config_1, config_2].each do |file|
-          FileUtils.mkdir_p(File.join(manifest_path, "config-files", File.dirname(file)))
-          FileUtils.touch(File.join(manifest_path, "config-files", file))
+          FileUtils.mkdir_p(File.join(manifest_path, "config_files", File.dirname(file)))
+          FileUtils.touch(File.join(manifest_path, "config_files", file))
         end
 
         [changed_managed_1, changed_managed_2].each do |file|
