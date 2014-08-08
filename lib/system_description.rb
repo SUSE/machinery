@@ -112,7 +112,7 @@ class SystemDescription < Machinery::Object
     extracting_scopes = [
       "changed-managed-files",
       "config-files",
-      "unmanaged-files"
+      "unmanaged_files"
     ]
 
     extracting_scopes.include?(scope) && !@store.file_store(name, scope).nil?

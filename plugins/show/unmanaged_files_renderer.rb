@@ -17,10 +17,10 @@
 
 class UnmanagedFilesRenderer < Renderer
   def do_render
-    return unless @system_description["unmanaged-files"]
+    return unless @system_description["unmanaged_files"]
 
     list do
-      @system_description["unmanaged-files"].each do |p|
+      @system_description["unmanaged_files"].each do |p|
         if p.user && p.group
           item "#{p.name} (#{p.type})" do
             puts "User/Group: #{p.user}:#{p.group}"

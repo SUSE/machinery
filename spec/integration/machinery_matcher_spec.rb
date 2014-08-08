@@ -84,7 +84,7 @@ describe "match_scope matcher" do
     it "with equal content" do
       expected_json = <<-EOT
       {
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr",
             "user": "root"
@@ -101,7 +101,7 @@ describe "match_scope matcher" do
 
       actual_json = <<-EOT
       {
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr",
             "user": "root"
@@ -121,13 +121,13 @@ describe "match_scope matcher" do
       actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to match_scope(expected_description,
-        "unmanaged-files")
+        "unmanaged_files")
     end
 
     it "with unequal content" do
       expected_json = <<-EOT
       {
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr",
             "user": "nobody"
@@ -144,7 +144,7 @@ describe "match_scope matcher" do
 
       actual_json = <<-EOT
       {
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr",
             "user": "root"
@@ -164,13 +164,13 @@ describe "match_scope matcher" do
       actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to_not match_scope(expected_description,
-        "unmanaged-files")
+        "unmanaged_files")
     end
 
     it "with content of different length" do
       expected_json = <<-EOT
       {
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr"
           },
@@ -185,7 +185,7 @@ describe "match_scope matcher" do
 
       actual_json = <<-EOT
       {
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr"
           }
@@ -200,7 +200,7 @@ describe "match_scope matcher" do
       actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to_not match_scope(expected_description,
-        "unmanaged-files")
+        "unmanaged_files")
     end
   end
 
@@ -261,7 +261,7 @@ describe "include_scope matcher" do
   it "matches scope with included subset of entries" do
     expected_json = <<-EOT
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
         {
           "name": "/boot/backup_mbr",
           "user": "root"
@@ -278,7 +278,7 @@ describe "include_scope matcher" do
 
     actual_json = <<-EOT
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
         {
           "name": "/boot/backup_mbr",
           "user": "root"
@@ -297,13 +297,13 @@ describe "include_scope matcher" do
     actual_description = SystemDescription.from_json("actual", actual_json)
 
     expect(actual_description).to include_scope(expected_description,
-      "unmanaged-files")
+      "unmanaged_files")
   end
 
   it "doesn't match scope with non-included subset of entries" do
     expected_json = <<-EOT
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
         {
           "name": "/boot/backup_mbr",
           "user": "nobody"
@@ -320,7 +320,7 @@ describe "include_scope matcher" do
 
     actual_json = <<-EOT
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
         {
           "name": "/boot/backup_mbr",
           "user": "root"
@@ -339,6 +339,6 @@ describe "include_scope matcher" do
     actual_description = SystemDescription.from_json("actual", actual_json)
 
     expect(actual_description).to_not include_scope(expected_description,
-      "unmanaged-files")
+      "unmanaged_files")
   end
 end

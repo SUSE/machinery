@@ -923,7 +923,7 @@
     "repositories": {
       "modified": "2014-04-14T13:08:09Z"
     },
-    "unmanaged-files": {
+    "unmanaged_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
     "config-files": {
@@ -958,7 +958,7 @@
       "priority": 99
     }
   ],
-  "unmanaged-files": [
+  "unmanaged_files": [
     {
       "name": "/etc/unmanaged-file",
       "type": "file",

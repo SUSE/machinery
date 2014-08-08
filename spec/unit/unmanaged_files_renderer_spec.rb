@@ -21,7 +21,7 @@ describe UnmanagedFilesRenderer do
   let(:description_without_meta) {
     json = <<-EOF
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
       {
         "name": "/boot/backup_mbr",
         "type": "file"
@@ -35,7 +35,7 @@ describe UnmanagedFilesRenderer do
   let(:description_link) {
     json = <<-EOF
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
       {
         "name": "/usr/include/asm",
         "type": "link",
@@ -51,7 +51,7 @@ describe UnmanagedFilesRenderer do
   let(:description_dir) {
     json = <<-EOF
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
       {
         "name": "/etc/iscsi/",
         "type": "dir",
@@ -70,7 +70,7 @@ describe UnmanagedFilesRenderer do
   let(:description_file) {
     json = <<-EOF
     {
-      "unmanaged-files": [
+      "unmanaged_files": [
       {
         "name": "/etc/modprobe.d/50-ipv6.conf",
         "type": "file",

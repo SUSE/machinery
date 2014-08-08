@@ -80,7 +80,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def extract_unmanaged_files(system, description, files, trees)
-    store_name = "unmanaged-files"
+    store_name = "unmanaged_files"
     description.initialize_file_store(store_name)
     store_path = description.file_store(store_name)
 
@@ -284,7 +284,7 @@ class UnmanagedFilesInspector < Inspector
       links.each { |d| unmanaged_links[find_dir + d] = "" }
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
-    description.remove_file_store("unmanaged-files")
+    description.remove_file_store("unmanaged_files")
     if do_extract
       extract_unmanaged_files(system, description, unmanaged_files, unmanaged_trees)
     end
@@ -294,12 +294,12 @@ class UnmanagedFilesInspector < Inspector
     end
     osl += unmanaged_trees.map { |p| UnmanagedFile.new( name: p + "/", type: "dir") }
     if do_extract
-      osl = extract_tar_metadata(osl, description.file_store("unmanaged-files"))
+      osl = extract_tar_metadata(osl, description.file_store("unmanaged_files"))
     end
 
     summary = "#{do_extract ? "Extracted" : "Found"} #{osl.size} unmanaged files and trees."
 
-    description["unmanaged-files"] = UnmanagedFilesScope.new(osl.sort_by(&:name))
+    description["unmanaged_files"] = UnmanagedFilesScope.new(osl.sort_by(&:name))
     summary
   end
 end

@@ -99,7 +99,7 @@ class KiwiConfig
       end
     end
 
-    unmanaged_files_path = @system_description.file_store("unmanaged-files")
+    unmanaged_files_path = @system_description.file_store("unmanaged_files")
     if unmanaged_files_path
       filter = "unmanaged_files_build_excludes"
       destination = File.join(output_location, "root", "tmp")
@@ -111,15 +111,15 @@ class KiwiConfig
       )
 
       @sh << "# Apply the extracted unmanaged files\n"
-      @sh << "find /tmp/unmanaged-files -name *.tgz -exec " \
+      @sh << "find /tmp/unmanaged_files -name *.tgz -exec " \
         "tar -C / -X '/tmp/#{filter}' -xf {} \\;\n"
-      @sh << "rm -rf '/tmp/unmanaged-files' '/tmp/#{filter}'\n"
+      @sh << "rm -rf '/tmp/unmanaged_files' '/tmp/#{filter}'\n"
     end
   end
 
   def check_existance_of_extraced_files
     scopes = []
-    ["config-files", "changed-managed-files", "unmanaged-files"].each do |scope|
+    ["config-files", "changed-managed-files", "unmanaged_files"].each do |scope|
       path = @system_description.file_store(scope)
 
       if @system_description[scope] && !path
