@@ -25,7 +25,7 @@ describe PackagesRenderer do
       {
         "alias": "openSUSE-13.1-1.10",
         "name": "openSUSE-13.1-1.10",
-        "repo_type": "yast2",
+        "type": "yast2",
         "url": "cd:///?devices=/dev/disk/by-id/ata-HL-DT-ST_DVD+_-RW_GHA2N_KEID27K1340,/dev/sr0",
         "enabled": true,
         "autorefresh": false,
@@ -35,7 +35,7 @@ describe PackagesRenderer do
       {
         "alias": "repo-debug",
         "name": "openSUSE-13.1-Debug",
-        "repo_type": null,
+        "type": null,
         "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
         "enabled": false,
         "autorefresh": true,

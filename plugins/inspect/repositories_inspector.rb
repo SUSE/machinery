@@ -73,7 +73,7 @@ class RepositoriesInspector < Inspector
         repository = Repository.new(
           alias:       rep["alias"],
           name:        rep["name"],
-          repo_type:   rep["type"],
+          type:        rep["type"],
           url:         rep.at_xpath("./url").text,
           enabled:     rep["enabled"] == "1",
           autorefresh: rep["autorefresh"] == "1",

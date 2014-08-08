@@ -950,7 +950,7 @@
     {
       "alias": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138",
       "name": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138",
-      "repo_type": "yast2",
+      "type": "yast2",
       "url": "http://example.com/SLES11-SP3",
       "enabled": true,
       "autorefresh": true,

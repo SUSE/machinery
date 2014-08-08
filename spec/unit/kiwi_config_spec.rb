@@ -40,7 +40,7 @@ describe KiwiConfig do
           {
             "alias": "nodejs_alias",
             "name": "nodejs",
-            "repo_type": "rpm-md",
+            "type": "rpm-md",
             "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
             "enabled": true,
             "autorefresh": false,
@@ -50,7 +50,7 @@ describe KiwiConfig do
           {
             "alias": "openSUSE-13.1-1.7_alias",
             "name": "openSUSE-13.1-1.7",
-            "repo_type": "yast2",
+            "type": "yast2",
             "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
             "enabled": false,
             "autorefresh": false,
@@ -60,7 +60,7 @@ describe KiwiConfig do
           {
             "alias": "repo_without_type_alias",
             "name": "repo_without_type",
-            "repo_type": null,
+            "type": null,
             "url": "http://repo_without_type",
             "enabled": true,
             "autorefresh": false,
@@ -70,7 +70,7 @@ describe KiwiConfig do
           {
             "alias": "disabled_repo_alias",
             "name": "disabled_repo",
-            "repo_type": null,
+            "type": null,
             "url": "http://disabled_repo",
             "enabled": false,
             "autorefresh": false,
@@ -80,7 +80,7 @@ describe KiwiConfig do
           {
             "alias": "autorefresh_enabled_alias",
             "name": "autorefresh_enabled",
-            "repo_type": null,
+            "type": null,
             "url": "http://autorefreshed_repo",
             "enabled": true,
             "autorefresh": true,
@@ -90,7 +90,7 @@ describe KiwiConfig do
           {
             "alias": "dvd_entry_alias",
             "name": "dvd_entry",
-            "repo_type": "yast2",
+            "type": "yast2",
             "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
             "enabled": true,
             "autorefresh": false,
@@ -100,7 +100,7 @@ describe KiwiConfig do
           {
             "alias": "NCCRepo",
             "name": "NCC Repository",
-            "repo_type": "yast2",
+            "type": "yast2",
             "url": "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
             "enabled": true,
             "autorefresh": true,
@@ -181,7 +181,7 @@ describe KiwiConfig do
           {
             "alias": "nodejs_alias",
             "name": "nodejs",
-            "repo_type": "rpm-md",
+            "type": "rpm-md",
             "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
             "enabled": true,
             "autorefresh": false,
@@ -226,7 +226,7 @@ describe KiwiConfig do
           {
             "alias": "nodejs_alias",
             "name": "nodejs",
-            "repo_type": "rpm-md",
+            "type": "rpm-md",
             "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
             "enabled": true,
             "autorefresh": false,
@@ -294,7 +294,7 @@ describe KiwiConfig do
           {
             "alias": "nodejs_alias",
             "name": "nodejs",
-            "repo_type": "rpm-md",
+            "type": "rpm-md",
             "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
             "enabled": true,
             "autorefresh": false,

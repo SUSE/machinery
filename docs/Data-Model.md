@@ -14,7 +14,7 @@ JSON serialization is used to store and exchange the system configuration.
 
 At the top level, the data consists of a JSON object. Each key in this object corresponds to a configuration scope (e.g. repositories, packages, changed configuration files, etc.). Data under each key is further structured into JSON objects and arrays as needed.
 
-There is one special key `meta`, which is used to collect meta data of the information in the scope sections. 
+There is one special key `meta`, which is used to collect meta data of the information in the scope sections.
 
 For example, a JSON document describing software configuration may look like this:
 
@@ -25,7 +25,7 @@ For example, a JSON document describing software configuration may look like thi
       "alias": "YaST:Head",
       "name": "YaST:Head",
       "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
-      "repo_type": "rpm-md",
+      "type": "rpm-md",
       "priority": 99,
       "enabled": true,
       "autorefresh": true,
@@ -120,7 +120,7 @@ SystemDescription.add_validator "#/software/packages" do |json|
   if json != json.uniq
     raise Machinery::ValidationError,
           "The #{description} contains duplicate packages."
-  end  
+  end
 end
 ```
 

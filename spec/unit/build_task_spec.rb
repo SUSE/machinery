@@ -33,7 +33,7 @@ describe BuildTask do
           {
             "alias": "nodejs",
             "name": "nodejs",
-            "repo_type": "rpm-md",
+            "type": "rpm-md",
             "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"
           }
         ],

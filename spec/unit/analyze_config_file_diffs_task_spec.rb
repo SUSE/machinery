@@ -26,7 +26,7 @@ describe AnalyzeConfigFileDiffsTask do
           {
             "alias": "repo-debug",
             "name": "openSUSE-13.1-Debug",
-            "repo_type": null,
+            "type": null,
             "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
             "enabled": false,
             "autorefresh": true,
@@ -36,7 +36,7 @@ describe AnalyzeConfigFileDiffsTask do
           {
             "alias": "dvd_entry_alias",
             "name": "dvd_entry",
-            "repo_type": "yast2",
+            "type": "yast2",
             "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
             "enabled": true,
             "autorefresh": false,

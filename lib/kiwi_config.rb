@@ -214,21 +214,21 @@ EOF
     if @system_description.repositories
       @system_description.repositories.each do |repo|
         # only use accessible repositories as source for kiwi build
-        parameters = { type: repo.repo_type, priority: repo.priority }
+        parameters = { type: repo.type, priority: repo.priority }
         if repo.username && repo.password
           parameters[:username] = repo.username
           parameters[:password] = repo.password
         end
         is_external_medium = repo.url.start_with?("cd://") ||
           repo.url.start_with?("dvd://")
-        if repo.enabled && !repo.repo_type.nil? && !is_external_medium
+        if repo.enabled && !repo.type.nil? && !is_external_medium
           xml.repository(parameters) do
             xml.source(path: repo.url)
           end
         end
         if !repo.url.match(/^https:\/\/nu.novell.com|^https:\/\/update.suse.com/)
           @sh << "zypper -n ar --name='#{repo.name}' "
-          @sh << "--type='#{repo.repo_type}' " if repo.repo_type
+          @sh << "--type='#{repo.type}' " if repo.type
           @sh << "--refresh " if repo.autorefresh
           @sh << "--disable " unless repo.enabled
           @sh << "'#{repo.url}' '#{repo.alias}'\n"
