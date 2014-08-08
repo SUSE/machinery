@@ -51,7 +51,7 @@ class SystemDescription < Machinery::Object
     entries = hash.map do |key, value|
       next if key == "meta"
 
-      class_name = "#{key.split("-").map(&:capitalize).join}Scope"
+      class_name = "#{key.split("_").map(&:capitalize).join}Scope"
       value_converted = Object.const_get(class_name).from_json(value)
 
       # Set metadata

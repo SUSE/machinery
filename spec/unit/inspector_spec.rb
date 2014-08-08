@@ -34,7 +34,7 @@ describe Inspector do
   describe ".for" do
     it "returns the requested Inspector" do
       expect(Inspector.for("foo")).to be_a(FooInspector)
-      expect(Inspector.for("bar-baz")).to be_a(BarBazInspector)
+      expect(Inspector.for("bar_baz")).to be_a(BarBazInspector)
     end
   end
 
@@ -51,13 +51,13 @@ describe Inspector do
     it "returns all available scopes" do
       all_scopes = Inspector.all_scopes
       expect(all_scopes).to include("foo")
-      expect(all_scopes).to include("bar-baz")
+      expect(all_scopes).to include("bar_baz")
     end
   end
 
   describe "#scope" do
     it "returns the un-camelcased name" do
-      expect(BarBazInspector.new.scope).to eql("bar-baz")
+      expect(BarBazInspector.new.scope).to eql("bar_baz")
     end
   end
 end

@@ -42,7 +42,7 @@ class Inspector
     end
 
     def for(scope)
-      class_name = "#{scope.split("-").map(&:capitalize).join}Inspector"
+      class_name = "#{scope.split("_").map(&:capitalize).join}Inspector"
 
       Object.const_get(class_name).new if Object.const_defined?(class_name)
     end
@@ -58,8 +58,8 @@ class Inspector
 
   def scope
     # Return the un-camelcased name of the inspector,
-    # e.g. "foo-bar" for "FooBarInspector"
+    # e.g. "foo_bar" for "FooBarInspector"
     scope = self.class.name.match(/^(.*)Inspector$/)[1]
-    scope.gsub(/([^A-Z])([A-Z])/, "\\1-\\2").downcase
+    scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
   end
 end

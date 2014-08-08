@@ -25,7 +25,7 @@ describe CompareTask do
 
     class CompareTaskFooRenderer < Renderer
       def do_render
-        @system_description["compare-task-foo"].each do |e|
+        @system_description["compare_task_foo"].each do |e|
           puts e
         end
       end
@@ -37,7 +37,7 @@ describe CompareTask do
 
     class CompareTaskBarRenderer < Renderer
       def do_render
-        @system_description["compare-task-bar"].each do |e|
+        @system_description["compare_task_bar"].each do |e|
           puts e
         end
       end
@@ -49,7 +49,7 @@ describe CompareTask do
 
     class CompareTaskBazRenderer < Renderer
       def do_render
-        @system_description["compare-task-baz"].each do |e|
+        @system_description["compare_task_baz"].each do |e|
           puts e
         end
       end
@@ -61,7 +61,7 @@ describe CompareTask do
 
     class CompareTaskFoobarRenderer < Renderer
       def do_render
-        @system_description["compare-task-foobar"].each do |e|
+        @system_description["compare_task_foobar"].each do |e|
           puts e
         end
       end
@@ -76,9 +76,9 @@ describe CompareTask do
     let(:description1) {
       SystemDescription.from_json("name1", <<-EOT)
         {
-          "compare-task-foo": ["foo_data1"],
-          "compare-task-bar": ["bar_data1"],
-          "compare-task-baz": ["baz_data1"]
+          "compare_task_foo": ["foo_data1"],
+          "compare_task_bar": ["bar_data1"],
+          "compare_task_baz": ["baz_data1"]
         }
       EOT
     }
@@ -86,9 +86,9 @@ describe CompareTask do
     let(:description2) {
       SystemDescription.from_json("name2", <<-EOT)
         {
-          "compare-task-foo": ["foo_data2"],
-          "compare-task-bar": ["bar_data2"],
-          "compare-task-baz": ["baz_data2"]
+          "compare_task_foo": ["foo_data2"],
+          "compare_task_bar": ["bar_data2"],
+          "compare_task_baz": ["baz_data2"]
         }
       EOT
     }
@@ -96,8 +96,8 @@ describe CompareTask do
     let(:description3) {
       SystemDescription.from_json("name3", <<-EOT)
         {
-          "compare-task-bar": ["bar_data3"],
-          "compare-task-foobar": ["foobar_data3"]
+          "compare_task_bar": ["bar_data3"],
+          "compare_task_foobar": ["foobar_data3"]
         }
       EOT
     }
@@ -105,8 +105,8 @@ describe CompareTask do
     let(:description4) {
       SystemDescription.from_json("name4", <<-EOT)
         {
-          "compare-task-foo": ["foo_data4"],
-          "compare-task-foobar": ["foobar_data4"]
+          "compare_task_foo": ["foo_data4"],
+          "compare_task_foobar": ["foobar_data4"]
         }
       EOT
     }
@@ -201,16 +201,16 @@ Compared descriptions are identical.
 
     def setup_renderers
       allow(Renderer).to receive(:for).
-        with("compare-task-foo").
+        with("compare_task_foo").
         and_return(CompareTaskFooRenderer.new)
       allow(Renderer).to receive(:for).
-        with("compare-task-bar").
+        with("compare_task_bar").
         and_return(CompareTaskBarRenderer.new)
       allow(Renderer).to receive(:for).
-        with("compare-task-baz").
+        with("compare_task_baz").
         and_return(CompareTaskBazRenderer.new)
       allow(Renderer).to receive(:for).
-        with("compare-task-foobar").
+        with("compare_task_foobar").
         and_return(CompareTaskFoobarRenderer.new)
     end
 
@@ -225,7 +225,7 @@ Compared descriptions are identical.
         subject.compare(
           description1,
           description2,
-          ["compare-task-foo", "compare-task-bar", "compare-task-baz"]
+          ["compare_task_foo", "compare_task_bar", "compare_task_baz"]
         )
       end
 
@@ -239,7 +239,7 @@ Compared descriptions are identical.
         subject.compare(
           description3,
           description4,
-          ["compare-task-foo", "compare-task-bar", "compare-task-baz", "compare-task-foobar"]
+          ["compare_task_foo", "compare_task_bar", "compare_task_baz", "compare_task_foobar"]
         )
       end
     end
@@ -257,7 +257,7 @@ Compared descriptions are identical.
         subject.compare(
           description1,
           description1,
-          ["compare-task-foo", "compare-task-bar", "compare-task-baz"],
+          ["compare_task_foo", "compare_task_bar", "compare_task_baz"],
           show_all: false
         )
       end
@@ -268,7 +268,7 @@ Compared descriptions are identical.
         subject.compare(
           description1,
           description1,
-          ["compare-task-foo", "compare-task-bar", "compare-task-baz"],
+          ["compare_task_foo", "compare_task_bar", "compare_task_baz"],
           show_all: true
         )
       end
@@ -279,7 +279,7 @@ Compared descriptions are identical.
         subject.compare(
           description3,
           description3,
-          ["compare-task-foo", "compare-task-bar", "compare-task-baz"]
+          ["compare_task_foo", "compare_task_bar", "compare_task_baz"]
         )
       end
     end
