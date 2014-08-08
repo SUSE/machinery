@@ -117,7 +117,7 @@ class Cli
           else
             raise Machinery::Errors::UnknownRenderer.new(
                 "The following scope is not supported: #{e}. " \
-                "Valid scopes are: #{Inspector.all_scopes.join(",")}."
+                "Valid scopes are: #{AVAILABLE_SCOPE_LIST}."
             )
           end
         end
@@ -133,6 +133,7 @@ class Cli
   end
 
 
+  AVAILABLE_SCOPE_LIST = Inspector.all_scopes.join(",")
 
   desc "Analyze system description"
   long_desc <<-LONGDESC
@@ -201,7 +202,7 @@ class Cli
     Multiple scopes can be passed as comma-separated list. If no specific scopes
     are given, all scopes are compared.
 
-    Available scopes: #{Inspector.all_scopes.join(",")}
+    Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
   arg "NAME1"
   arg "NAME2"
@@ -324,7 +325,7 @@ class Cli
     Multiple scopes can be passed as comma-separated list. If no specific scopes
     are given, all scopes are inspected.
 
-    Available scopes: #{Inspector.all_scopes.join(",")}
+    Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
   arg "HOSTNAME"
   command :inspect do |c|
@@ -431,7 +432,7 @@ class Cli
     Multiple scopes can be passed as comma-separated list. If no specific scopes
     are given, all scopes are shown.
 
-    Available scopes: #{Inspector.all_scopes.join(",")}
+    Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
   arg "NAME"
   command :show do |c|
