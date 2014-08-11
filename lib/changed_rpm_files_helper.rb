@@ -43,14 +43,16 @@ module ChangedRpmFilesHelper
 
   def parse_stat_line(line)
     mode, user, group, uid, gid, *path = line.split(":")
+
+    user = uid if user == "UNKNOWN"
+    group = gid if group == "UNKNOWN"
+
     [path.join(":").chomp,
-     {
-         :mode  => mode,
-         :uid   => uid.to_i,
-         :gid   => gid.to_i,
-         :user  => user,
-         :group => group
-     }
+      {
+        :mode  => mode,
+        :user  => user,
+        :group => group
+      }
     ]
   end
 

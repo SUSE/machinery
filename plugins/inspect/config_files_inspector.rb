@@ -92,7 +92,7 @@ class ConfigFilesInspector < Inspector
 
     paths = result.reject { |f| f.changes == ["deleted"] }.map(&:name)
     path_data = get_path_data(system, paths)
-    key_list = [ :uid, :gid, :user, :group, :mode ]
+    key_list = [ :user, :group, :mode ]
     result.each do |pkg|
       pname = pkg.name
       if path_data.has_key?(pname)

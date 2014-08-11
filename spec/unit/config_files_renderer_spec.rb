@@ -30,8 +30,6 @@ describe ConfigFilesRenderer do
         "changes": [
           "mode"
         ],
-        "uid": 0,
-        "gid": 0,
         "user": "root",
         "group": "root",
         "mode": "600",
@@ -44,8 +42,6 @@ describe ConfigFilesRenderer do
         "changes": [
           "md5"
         ],
-        "uid": 0,
-        "gid": 0,
         "user": "root",
         "group": "root",
         "mode": "644",
