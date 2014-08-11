@@ -142,11 +142,11 @@ Proposal for structure of data for unmanaged files:
   "unmanaged_files": [
     {
       "name": "/usr/local/magicapp/",
-      "file_type": "dir"
+      "type": "dir"
     },
     {
       "name": "/etc/magicapp.conf",
-      "file_type": "file"
+      "type": "file"
     }
   ],
 

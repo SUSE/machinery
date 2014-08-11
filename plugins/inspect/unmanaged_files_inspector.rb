@@ -102,7 +102,7 @@ class UnmanagedFilesInspector < Inspector
   def extract_tar_metadata(osl, destdir)
     if Dir.exists?(destdir)
       tarballs = [File.join(destdir, "files.tgz")]
-      osl.select{ |os| os.file_type == "dir" }.map(&:name).each do |d|
+      osl.select{ |os| os.type == "dir" }.map(&:name).each do |d|
         base = File.dirname(d)
         tarballs << File.join(destdir, "trees", base, "#{File.basename(d)}.tgz")
       end
@@ -123,7 +123,7 @@ class UnmanagedFilesInspector < Inspector
           end
 
           # unmanaged dirs are trees and only have one entry in the manifest
-          if os.file_type == "dir"
+          if os.type == "dir"
             os.size = files.map { |d| d[:size] }.reduce(:+)
             os.files = files.size
             break
@@ -290,9 +290,9 @@ class UnmanagedFilesInspector < Inspector
     end
     osl = unmanaged_files.map do |p|
       type = unmanaged_links.has_key?(p) ? "link" : "file"
-      UnmanagedFile.new(name: p, file_type: type)
+      UnmanagedFile.new(name: p, type: type)
     end
-    osl += unmanaged_trees.map { |p| UnmanagedFile.new( name: p + "/", file_type: "dir") }
+    osl += unmanaged_trees.map { |p| UnmanagedFile.new( name: p + "/", type: "dir") }
     if do_extract
       osl = extract_tar_metadata(osl, description.file_store("unmanaged-files"))
     end

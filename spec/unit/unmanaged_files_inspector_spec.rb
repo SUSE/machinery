@@ -25,20 +25,20 @@ describe UnmanagedFilesInspector do
 
     let(:expected_data) {
       UnmanagedFilesScope.new([
-        UnmanagedFile.new( name: "/etc/etc_mydir/", file_type: "dir" ),
-        UnmanagedFile.new( name: "/etc/etc_myfile", file_type: "file" ),
-        UnmanagedFile.new( name: "/mydir/", file_type: "dir" ),
-        UnmanagedFile.new( name: "/myfile", file_type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setgid", file_type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setgid_x", file_type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setuid", file_type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setuid_x", file_type: "file" ),
-        UnmanagedFile.new( name: "/myfile_sticky", file_type: "file" ),
-        UnmanagedFile.new( name: "/myfile_sticky_x", file_type: "file" ),
-        UnmanagedFile.new( name: "/my link", file_type: "link" ),
-        UnmanagedFile.new( name: "/other_dir/", file_type: "dir" ),
-        UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", file_type: "dir" ),
-        UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", file_type: "file" )
+        UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
+        UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
+        UnmanagedFile.new( name: "/mydir/", type: "dir" ),
+        UnmanagedFile.new( name: "/myfile", type: "file" ),
+        UnmanagedFile.new( name: "/myfile_setgid", type: "file" ),
+        UnmanagedFile.new( name: "/myfile_setgid_x", type: "file" ),
+        UnmanagedFile.new( name: "/myfile_setuid", type: "file" ),
+        UnmanagedFile.new( name: "/myfile_setuid_x", type: "file" ),
+        UnmanagedFile.new( name: "/myfile_sticky", type: "file" ),
+        UnmanagedFile.new( name: "/myfile_sticky_x", type: "file" ),
+        UnmanagedFile.new( name: "/my link", type: "link" ),
+        UnmanagedFile.new( name: "/other_dir/", type: "dir" ),
+        UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
+        UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
       ])
     }
 
@@ -262,7 +262,7 @@ describe UnmanagedFilesInspector do
       if(extract)
         description.initialize_file_store("unmanaged-files")
         cfdir = description.file_store("unmanaged-files")
-        dlist = expected_data.select{ |s| s.file_type=="dir" }
+        dlist = expected_data.select{ |s| s.type=="dir" }
         dlist.map!{ |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)
         dlist.each do |dir|

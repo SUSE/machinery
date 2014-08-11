@@ -377,7 +377,7 @@ describe KiwiConfig do
         "unmanaged-files": [
           {
             "name": "/boot/backup_mbr",
-            "file_type": "file",
+            "type": "file",
             "user": "root",
             "group": "root",
             "size": 512,

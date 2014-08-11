@@ -22,14 +22,14 @@ class UnmanagedFilesRenderer < Renderer
     list do
       @system_description["unmanaged-files"].each do |p|
         if p.user && p.group
-          item "#{p.name} (#{p.file_type})" do
+          item "#{p.name} (#{p.type})" do
             puts "User/Group: #{p.user}:#{p.group}"
             puts "Mode: #{p.mode}" if p.mode
             puts "Size: #{number_to_human_size(p.size)}" if p.size
             puts "Files: #{p.files}" if p.files
           end
         else
-          item "#{p.name} (#{p.file_type})"
+          item "#{p.name} (#{p.type})"
         end
       end
     end
