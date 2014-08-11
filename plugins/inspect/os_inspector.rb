@@ -55,8 +55,11 @@ class OsInspector < Inspector
     end
     # return pretty_name as name as it contains the actual full length
     # name instead of an abbreviation
-    result["name"] = result["pretty_name"]
-    OsScope.new(result)
+    OsScope.new(
+      name:         result["pretty_name"],
+      version:      result["version"],
+      architecture: result["architecture"]
+    )
   end
 
   # checks for additional version information like Beta or RC
