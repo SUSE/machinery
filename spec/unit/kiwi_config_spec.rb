@@ -111,8 +111,8 @@ describe KiwiConfig do
         "patterns" : [
           {
             "name": "Minimal",
-            "version": "11-38.44.33",
-            "repository": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138"
+            "version": "11",
+            "release": "38.44.33"
           }
         ],
         "users": [
