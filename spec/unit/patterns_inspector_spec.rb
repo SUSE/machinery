@@ -64,7 +64,8 @@ describe PatternsInspector do
       expect(description.patterns.first).to eq(
         Pattern.new(
           name: "base",
-          version: "13.1-13.6.1",
+          version: "13.1",
+          release: "13.6.1"
         )
       )
 

@@ -56,7 +56,8 @@ class PatternsInspector < Inspector
     patterns = pattern_list.map do |pattern|
       Pattern.new(
         name: pattern["name"],
-        version: "#{pattern["version"]}-#{pattern["release"]}"
+        version: pattern["version"],
+        release: pattern["release"]
       )
     end.uniq.sort_by(&:name)
 
