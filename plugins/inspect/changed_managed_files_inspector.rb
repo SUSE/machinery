@@ -79,7 +79,8 @@ class ChangedManagedFilesInspector < Inspector
             name:              $1,
             package_name:      package_name,
             package_version:   package_version,
-            error:             $2
+            status:            "error",
+            error_message:     $2
           )
         else
           file, changes, flag = parse_rpm_changes_line(changed_file)
@@ -91,6 +92,7 @@ class ChangedManagedFilesInspector < Inspector
               name:              file,
               package_name:      package_name,
               package_version:   package_version,
+              status:            "changed",
               changes:           changes
           )
         end

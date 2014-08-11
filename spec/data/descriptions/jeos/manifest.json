@@ -1202,6 +1202,7 @@
       "name": "/usr/share/bash/helpfiles/cd",
       "package_name": "bash",
       "package_version": "3.2",
+      "status": "changed",
       "changes": [
         "deleted"
       ]
@@ -1210,6 +1211,7 @@
       "name": "/usr/share/bash/helpfiles/read",
       "package_name": "bash",
       "package_version": "3.2",
+      "status": "changed",
       "changes": [
         "md5"
       ],

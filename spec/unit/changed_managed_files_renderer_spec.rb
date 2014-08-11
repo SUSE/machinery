@@ -26,6 +26,7 @@ describe ChangedManagedFilesRenderer do
           "name": "/deleted/file",
           "package_name": "glibc",
           "package_version": "2.11.3",
+          "status": "changed",
           "changes": [
             "deleted"
           ]
@@ -34,6 +35,7 @@ describe ChangedManagedFilesRenderer do
           "name": "/changed/file",
           "package_name": "login",
           "package_version": "3.41",
+          "status": "changed",
           "changes": [
             "md5",
             "mode"
@@ -49,7 +51,8 @@ describe ChangedManagedFilesRenderer do
           "name": "/usr/sbin/vlock-main",
           "package_name": "vlock",
           "package_version": "2.2.3",
-          "error": "cannot verify root:root 0755 - not listed in /etc/permissions"
+          "status": "error",
+          "error_message": "cannot verify root:root 0755 - not listed in /etc/permissions"
         }
       ]
     }
