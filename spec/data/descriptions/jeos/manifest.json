@@ -1142,6 +1142,7 @@
     }
   ],
   "meta": {
+    "format_version": 1,
     "packages": {
       "modified": "2014-04-14T13:08:09Z"
     },

@@ -18,6 +18,9 @@
 class SystemDescription < Machinery::Object
   attr_accessor :name
   attr_accessor :store
+  attr_accessor :format_version
+
+  CURRENT_FORMAT_VERSION = 1
 
   def self.add_validator(json_path, &block)
     @@json_validator[json_path] = block
@@ -26,6 +29,7 @@ class SystemDescription < Machinery::Object
   def initialize(name, hash = {}, store = nil)
     @name = name
     @store = store
+    @format_version = CURRENT_FORMAT_VERSION
 
     super(hash)
   end
@@ -44,7 +48,12 @@ class SystemDescription < Machinery::Object
       block.yield pointer.value if pointer.exists?
     end
 
-    self.new(name, self.create_attrs(json_hash), store)
+    description = self.new(name, self.create_attrs(json_hash), store)
+
+    json_format_version = json_hash["meta"]["format_version"] if json_hash["meta"]
+    description.format_version = json_format_version
+
+    description
   end
 
   def self.create_attrs(hash)
@@ -67,11 +76,13 @@ class SystemDescription < Machinery::Object
 
   def to_json
     hash = as_json
-    meta = {}
+    hash["meta"] = {
+      format_version: self.format_version
+    }
+
     attributes.each do |key, value|
-      meta[key] = self[key].meta.as_json if self[key].meta
+      hash["meta"][key] = self[key].meta.as_json if self[key].meta
     end
-    hash["meta"] = meta if !meta.empty?
 
     JSON.pretty_generate(hash)
   end

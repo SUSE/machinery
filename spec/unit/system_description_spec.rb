@@ -41,6 +41,7 @@ describe SystemDescription do
         }
       ],
       "meta": {
+        "format_version": 1,
         "packages": {
           "modified": "2014-02-07T14:04:45Z",
           "hostname": "192.168.122.216"
@@ -48,6 +49,9 @@ describe SystemDescription do
       }
     }'
     @duplicate_description = '{
+      "meta": {
+        "format_version": 1
+      },
       "packages": [
         {
           "name": "kernel-desktop",
@@ -62,12 +66,18 @@ describe SystemDescription do
       ]
     }'
     @empty_description = '{
+      "meta": {
+        "format_version": 1
+      }
     }'
     @mix_struct_hash_descr = '{
       "software": {
         "packages": {
           "foo": "bar"
         }
+      },
+      "meta": {
+        "format_version": 1
       }
     }'
   end

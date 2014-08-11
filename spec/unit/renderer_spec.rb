@@ -85,6 +85,7 @@ describe Renderer do
         {
           "bar_baz": [],
           "meta": {
+            "format_version": 1,
             "bar_baz": {
               "modified": "#{date}",
               "hostname": "#{host}"

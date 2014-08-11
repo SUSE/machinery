@@ -50,7 +50,10 @@ shared_context "machinery test directory" do
       "version": "3.7.10",
       "release": "1.0"
     }
-  ]
+  ],
+  "meta": {
+    "format_version": 1
+  }
 }
 EOF
     test_manifest.chomp
