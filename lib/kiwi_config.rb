@@ -69,7 +69,7 @@ class KiwiConfig
     )
 
     passwd_entries = @system_description.users.map do |u|
-      passwd = [u.name, u.password, u.uid, u.gid, u.info, u.home, u.shell].join(":")
+      passwd = [u.name, u.password, u.uid, u.gid, u.comment, u.home, u.shell].join(":")
 
       # The shadow file contains an eigth reserved field at the end, so we have
       # to manually add it, too.
