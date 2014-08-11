@@ -27,7 +27,7 @@ describe UsersRenderer do
           "password": "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
           "uid": 0,
           "gid": 0,
-          "info": "",
+          "comment": "",
           "home": "/root",
           "shell": "/bin/bash",
           "last_changed": 16125
@@ -37,7 +37,7 @@ describe UsersRenderer do
           "password": "*",
           "uid": 4,
           "gid": 7,
-          "info": "Printing daemon",
+          "comment": "Printing daemon",
           "home": "/var/spool/lpd",
           "shell": "/bin/bash",
           "last_changed": 16125
