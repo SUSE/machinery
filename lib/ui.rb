@@ -17,6 +17,11 @@
 
 module Machinery
   class Ui
+    def self.internal_scope_list_to_string(scopes)
+      list = Array(scopes)
+      list.map{ |e| e.tr("_", "-") }.join(",")
+    end
+
     def self.print_output(output, options = {})
       if options[:no_pager] || !$stdout.tty?
         puts output

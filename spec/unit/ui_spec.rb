@@ -18,6 +18,17 @@
 require_relative "spec_helper"
 
 describe Machinery::Ui do
+  describe ".internal_scope_list_to_string" do
+    it "accepts strings and converts internal names to cli ones ('_' to '-')" do
+      expect(Machinery::Ui.internal_scope_list_to_string("foo_bar")).to eq("foo-bar")
+    end
+
+    it "also accepts arrays" do
+      expect(Machinery::Ui.internal_scope_list_to_string(["foo_bar", "bar_baz"])).
+        to eq("foo-bar,bar-baz")
+    end
+  end
+
   describe ".prints_output" do
     let(:output) { "foo bar" }
     it "pipes the output to a pager" do
