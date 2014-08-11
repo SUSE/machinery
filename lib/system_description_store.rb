@@ -44,7 +44,15 @@ class SystemDescriptionStore
       )
     end
     json = File.read(file_name)
-    SystemDescription.from_json(name, json, self)
+    description = SystemDescription.from_json(name, json, self)
+    if !description.format_version ||
+        description.format_version != SystemDescription::CURRENT_FORMAT_VERSION
+      raise Machinery::Errors::SystemDescriptionError.new(
+        "The system description #{name} has an incompatible data format and can" \
+        " not be read."
+      )
+    end
+    description
   end
 
   def save(description)

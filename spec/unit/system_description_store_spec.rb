@@ -68,6 +68,34 @@ describe SystemDescriptionStore do
         store.load("not_existing")
       }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
+
+    it "raises Errors::SystemDescriptionError if the manifest does not contain a format version" do
+      store = SystemDescriptionStore.new(test_base_path)
+      FileUtils.mkdir_p(File.join(test_base_path, "no_format_version"), mode: 0700)
+      File.write(File.join(test_base_path, "no_format_version", "manifest.json"), {})
+
+      expect {
+        store.load("no_format_version")
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+    end
+
+    it "raises Errors::SystemDescriptionError if the manifest is of a old format_version" do
+      store = SystemDescriptionStore.new(test_base_path)
+      FileUtils.mkdir_p(File.join(test_base_path, "old_format_version"), mode: 0700)
+
+      json = <<-EOF
+        {
+          "meta": {
+            "format_version": 0
+          }
+        }
+      EOF
+
+      File.write(File.join(test_base_path, "old_format_version", "manifest.json"), json)
+      expect {
+        store.load("old_format_version")
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+    end
   end
 
   describe "#save" do
