@@ -31,7 +31,7 @@ class ListTask
       scopes = []
 
       description.scopes.each do |scope|
-        entry = scope
+        entry = Cli.internal_to_cli_scope_names(scope).join(",")
         entry += " (extracted)" if description.scope_extracted?(scope)
 
         if options["verbose"]

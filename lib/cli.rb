@@ -367,7 +367,7 @@ class Cli
 
       print "Inspecting #{host}"
       if !scope_list.empty?
-        print " for #{scope_list}"
+        print " for #{Cli.internal_to_cli_scope_names(scope_list).join(",")}"
       end
       puts "..."
 

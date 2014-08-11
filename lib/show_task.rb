@@ -57,7 +57,7 @@ class ShowTask
     if missing_scopes.length > 0
       output += "# The following requested scopes were not inspected\n\n"
       missing_scopes.each do |scope|
-        output += "  * #{scope}\n"
+        output += "  * #{Cli.internal_to_cli_scope_names(scope).join(",")}\n"
       end
     end
 

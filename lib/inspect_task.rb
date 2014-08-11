@@ -30,7 +30,9 @@ class InspectTask
 
     if !failed_inspections.empty?
       puts "\n"
-      message = failed_inspections.map { |scope, msg| "Errors while inspecting #{scope}:\n#{msg}" }.join("\n\n")
+      message = failed_inspections.map { |scope, msg|
+        "Errors while inspecting " \
+          "#{Cli.internal_to_cli_scope_names(scope).join(",")}:\n#{msg}" }.join("\n\n")
       raise Machinery::Errors::InspectionFailed.new(message)
     end
     description
@@ -94,11 +96,12 @@ class InspectTask
     failed_inspections = {}
 
     inspectors.each do |inspector|
-      puts "Inspecting #{inspector.scope}..."
+      puts "Inspecting #{Cli.internal_to_cli_scope_names(inspector.scope).join(",")}..."
       begin
         summary = inspector.inspect(system, description, options)
       rescue Machinery::Errors::MachineryError => e
-        puts "Inspection of scope #{inspector.scope} failed!"
+        puts "Inspection of scope " \
+          "#{Cli.internal_to_cli_scope_names(inspector.scope).join(",")} failed!"
         failed_inspections[inspector.scope] = e
         next
       end
