@@ -105,13 +105,21 @@ class Cli
         raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
       else
         # scope only
-        scope_list = Cli.cli_to_internal_scope_names(scopes.split(/[, ]/))
+
+        # convert cli scope naming to internal one
+        scopes.tr!("-", "_")
+
+        scope_list = scopes.split(/[, ]/)
       end
     else
       if exclude_scopes
         # exclude-scope only
         scope_list = Inspector.all_scopes
-        Cli.cli_to_internal_scope_names(exclude_scopes.split(/[, ]/)).each do |e|
+
+        # convert cli scope naming to internal one
+        exclude_scopes.tr!("-", "_")
+
+        exclude_scopes.split(/[, ]/).each do |e|
           if Inspector.all_scopes.include?(e)
             scope_list.delete(e)
           else
@@ -136,11 +144,6 @@ class Cli
   def self.internal_to_cli_scope_names(scopes)
     list = Array(scopes)
     list.map{ |e| e.tr("_", "-") }
-  end
-
-  def self.cli_to_internal_scope_names(scopes)
-    list = Array(scopes)
-    list.map{ |e| e.tr("-", "_") }
   end
 
   AVAILABLE_SCOPE_LIST = Cli.internal_to_cli_scope_names(
