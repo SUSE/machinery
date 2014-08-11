@@ -125,7 +125,7 @@ class Cli
           else
             raise Machinery::Errors::UnknownRenderer.new(
                 "The following scope is not supported: " \
-                  "#{Cli.internal_to_cli_scope_names(e).join(",")}. " \
+                  "#{Machinery::Ui.internal_scope_list_to_string(e)}. " \
                 "Valid scopes are: #{AVAILABLE_SCOPE_LIST}."
             )
           end
@@ -141,14 +141,9 @@ class Cli
     scope_list
   end
 
-  def self.internal_to_cli_scope_names(scopes)
-    list = Array(scopes)
-    list.map{ |e| e.tr("_", "-") }
-  end
-
-  AVAILABLE_SCOPE_LIST = Cli.internal_to_cli_scope_names(
+  AVAILABLE_SCOPE_LIST = Machinery::Ui.internal_scope_list_to_string(
     Inspector.all_scopes
-  ).join(",")
+  )
 
   desc "Analyze system description"
   long_desc <<-LONGDESC
@@ -370,7 +365,7 @@ class Cli
 
       print "Inspecting #{host}"
       if !scope_list.empty?
-        print " for #{Cli.internal_to_cli_scope_names(scope_list).join(",")}"
+        print " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
       end
       puts "..."
 

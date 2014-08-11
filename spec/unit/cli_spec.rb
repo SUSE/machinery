@@ -360,17 +360,6 @@ Backtrace:
     end
   end
 
-  describe ".internal_to_cli_scope_names" do
-    it "converts the internal names to the cli ones ('_' to '-') and returns an array" do
-      expect(Cli.internal_to_cli_scope_names("foo_bar")).to eq(["foo-bar"])
-    end
-
-    it "accepts arrays" do
-      expect(Cli.internal_to_cli_scope_names(["foo_bar", "bar_baz"])).
-        to match_array(["foo-bar", "bar-baz"])
-    end
-  end
-
   private
 
   def run_command(*args)

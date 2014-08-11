@@ -28,9 +28,9 @@ class CompareTask
     if failed_scopes.length > 0
       raise Machinery::Errors::UnknownRenderer.new(
         "The following scopes are not supported: " \
-        "#{Cli.internal_to_cli_scope_names(failed_scopes).join(",")}. " \
+        "#{Machinery::Ui.internal_scope_list_to_string(failed_scopes)}. " \
         "Valid scopes are: " \
-          "#{Cli.internal_to_cli_scope_names(Inspector.all_scopes).join(",")}."
+          "#{Machinery::Ui.internal_scope_list_to_string(Inspector.all_scopes)}."
       )
     end
 
