@@ -30,6 +30,7 @@ describe ListTask do
         "packages": [],
         "repositories": [],
         "meta": {
+          "format_version": 1,
           "packages": {
             "modified": "#{date}"
           },
@@ -41,10 +42,13 @@ describe ListTask do
     EOF
     SystemDescription.from_json(name, json)
   }
-  let(:system_description_without_meta) {
+  let(:system_description_without_scope_meta) {
     json = <<-EOF
       {
-        "packages": []
+        "packages": [],
+        "meta": {
+          "format_version": 1
+        }
       }
     EOF
     SystemDescription.from_json(name, json)
@@ -52,7 +56,17 @@ describe ListTask do
   let(:system_description_with_extracted_files) {
     json = <<-EOF
       {
-        "config_files": []
+        "config_files": [],
+        "meta": {
+          "format_version": 1
+        }
+      }
+    EOF
+    SystemDescription.from_json(name, json)
+  }
+  let(:system_description_with_incompatible_data_format) {
+    json = <<-EOF
+      {
       }
     EOF
     SystemDescription.from_json(name, json)
@@ -80,7 +94,7 @@ describe ListTask do
     end
 
     it "verbose shows the date as unknown if there is no meta data for it" do
-      store.save(system_description_without_meta)
+      store.save(system_description_without_scope_meta)
       expect($stdout).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("unknown")
@@ -96,6 +110,14 @@ describe ListTask do
       }
 
       store.save(system_description_with_extracted_files)
+      list_task.list(store)
+    end
+
+    it "marks descriptions with incompatible data format" do
+      expect($stdout).to receive(:puts) { |s|
+        expect(s.to_s).to include("incompatible")
+      }
+      store.save(system_description_with_incompatible_data_format)
       list_task.list(store)
     end
   end
