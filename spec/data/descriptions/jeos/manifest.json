@@ -961,7 +961,7 @@
   "unmanaged-files": [
     {
       "name": "/etc/unmanaged-file",
-      "file_type": "file",
+      "type": "file",
       "user": "root",
       "group": "root",
       "size": 8,
@@ -969,7 +969,7 @@
     },
     {
       "name": "/etc/unmanaged-tree/",
-      "file_type": "dir",
+      "type": "dir",
       "user": "root",
       "group": "root",
       "size": 339,

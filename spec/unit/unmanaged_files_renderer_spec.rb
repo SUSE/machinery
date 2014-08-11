@@ -24,7 +24,7 @@ describe UnmanagedFilesRenderer do
       "unmanaged-files": [
       {
         "name": "/boot/backup_mbr",
-        "file_type": "file"
+        "type": "file"
       }
       ]
     }
@@ -38,7 +38,7 @@ describe UnmanagedFilesRenderer do
       "unmanaged-files": [
       {
         "name": "/usr/include/asm",
-        "file_type": "link",
+        "type": "link",
         "user": "root",
         "group": "root"
       }
@@ -54,7 +54,7 @@ describe UnmanagedFilesRenderer do
       "unmanaged-files": [
       {
         "name": "/etc/iscsi/",
-        "file_type": "dir",
+        "type": "dir",
         "user": "root",
         "group": "root",
         "size": 12024,
@@ -73,7 +73,7 @@ describe UnmanagedFilesRenderer do
       "unmanaged-files": [
       {
         "name": "/etc/modprobe.d/50-ipv6.conf",
-        "file_type": "file",
+        "type": "file",
         "user": "root",
         "group": "root",
         "size": 24,
