@@ -343,6 +343,7 @@ describe KiwiConfig do
             "name": "/tmp/managed/one",
             "package_name": "xorg-x11-fonts-core",
             "package_version": "7.4",
+            "status": "changed",
             "changes": [
               "md5"
             ],
@@ -356,6 +357,7 @@ describe KiwiConfig do
             "name": "/var/managed_two",
             "package_name": "aaa_base",
             "package_version": "11",
+            "status": "changed",
             "changes": [
               "md5"
             ],
@@ -369,6 +371,7 @@ describe KiwiConfig do
             "name": "/tmp/deleted_changed_managed",
             "package_name": "aaa_base",
             "package_version": "11",
+            "status": "changed",
             "changes": [
               "deleted"
             ]

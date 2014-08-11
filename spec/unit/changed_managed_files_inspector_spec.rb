@@ -43,6 +43,7 @@ describe ChangedManagedFilesInspector do
             name: "/etc/apache2/de:fault server.conf",
             package_name: "hwinfo",
             package_version: "15.50",
+            status: "changed",
             changes: ["md5"],
             uid: 1001,
             gid: 1002,
@@ -54,12 +55,14 @@ describe ChangedManagedFilesInspector do
             name: "/etc/apache2/listen.conf",
             package_name: "hwinfo",
             package_version: "15.50",
+            status: "changed",
             changes: ["md5"]
         ),
         ChangedManagedFile.new(
             name: "/etc/iscsi/iscsid.conf",
             package_name: "zypper",
             package_version: "1.6.311",
+            status: "changed",
             changes: ["mode", "md5", "user", "group"],
             uid: 0,
             gid: 0,
@@ -71,12 +74,14 @@ describe ChangedManagedFilesInspector do
             name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
             package_name: "kdelibs3-default-style",
             package_version: "3.5.10",
+            status: "changed",
             changes: ["deleted"]
         ),
         ChangedManagedFile.new(
             name: "/usr/share/man/man1/time.1.gz",
             package_name: "hwinfo",
             package_version: "15.50",
+            status: "changed",
             changes: ["replaced"]
         )
       ])

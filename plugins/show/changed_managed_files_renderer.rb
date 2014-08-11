@@ -20,7 +20,7 @@ class ChangedManagedFilesRenderer < Renderer
     return unless @system_description["changed-managed-files"]
 
     files, errors = @system_description["changed-managed-files"].partition do |file|
-      file.error.nil?
+      file.status != "error"
     end
 
     if !files.empty?
@@ -34,7 +34,7 @@ class ChangedManagedFilesRenderer < Renderer
     if !errors.empty?
       list("Errors") do
         errors.each do |p|
-          item "#{p.name}: #{p.error}"
+          item "#{p.name}: #{p.error_message}"
         end
       end
     end
