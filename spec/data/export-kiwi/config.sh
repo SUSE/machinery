@@ -62,7 +62,7 @@ chkconfig setserial off
 chkconfig skeleton.compat off
 chkconfig sshd on
 # Apply the extracted unmanaged files
-find /tmp/unmanaged-files -name *.tgz -exec tar -C / -X '/tmp/unmanaged_files_build_excludes' -xf {} \;
-rm -rf '/tmp/unmanaged-files' '/tmp/unmanaged_files_build_excludes'
+find /tmp/unmanaged_files -name *.tgz -exec tar -C / -X '/tmp/unmanaged_files_build_excludes' -xf {} \;
+rm -rf '/tmp/unmanaged_files' '/tmp/unmanaged_files_build_excludes'
 baseCleanMount
 exit 0

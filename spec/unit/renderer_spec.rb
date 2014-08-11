@@ -55,7 +55,7 @@ describe Renderer do
   describe ".for" do
     it "returns the requested Renderer" do
       expect(Renderer.for("foo")).to be_a(FooRenderer)
-      expect(Renderer.for("bar-baz")).to be_a(BarBazRenderer)
+      expect(Renderer.for("bar_baz")).to be_a(BarBazRenderer)
     end
   end
 
@@ -70,7 +70,7 @@ describe Renderer do
 
   describe "#scope" do
     it "returns the un-camelcased name" do
-      expect(BarBazRenderer.new.scope).to eql("bar-baz")
+      expect(BarBazRenderer.new.scope).to eql("bar_baz")
     end
   end
 
@@ -83,9 +83,9 @@ describe Renderer do
     let(:description_with_meta) {
       json = <<-EOF
         {
-          "bar-baz": [],
+          "bar_baz": [],
           "meta": {
-            "bar-baz": {
+            "bar_baz": {
               "modified": "#{date}",
               "hostname": "#{host}"
             }

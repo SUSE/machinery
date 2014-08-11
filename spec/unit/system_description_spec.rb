@@ -213,7 +213,7 @@ describe SystemDescription do
     let(:description) {
       json = <<-EOF
         {
-          "config-files": []
+          "config_files": []
         }
       EOF
       description = SystemDescription.from_json("name", json)
@@ -221,12 +221,12 @@ describe SystemDescription do
 
     it "returns true" do
       description.store = double(file_store: "/path/to/foo")
-      expect(description.scope_extracted?("config-files")).to be(true)
+      expect(description.scope_extracted?("config_files")).to be(true)
     end
 
     it "returns false" do
       description.store = double(file_store: nil)
-      expect(description.scope_extracted?("config-files")).to be(false)
+      expect(description.scope_extracted?("config_files")).to be(false)
     end
   end
 

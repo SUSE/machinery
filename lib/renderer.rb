@@ -65,7 +65,7 @@ class Renderer
     end
 
     def for(scope)
-      class_name = "#{scope.split("-").map(&:capitalize).join}Renderer"
+      class_name = "#{scope.split("_").map(&:capitalize).join}Renderer"
 
       if Object.const_defined?(class_name)
         Object.const_get(class_name).new
@@ -215,9 +215,9 @@ class Renderer
 
   def scope
     # Return the un-camelcased name of the inspector,
-    # e.g. "foo-bar" for "FooBarInspector"
+    # e.g. "foo_bar" for "FooBarInspector"
     scope = self.class.name.match(/^(.*)Renderer$/)[1]
-    scope.gsub(/([^A-Z])([A-Z])/, "\\1-\\2").downcase
+    scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
   end
 
   private

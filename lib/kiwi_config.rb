@@ -90,7 +90,7 @@ class KiwiConfig
   end
 
   def inject_extracted_files(output_location)
-    ["config-files", "changed-managed-files"].each do |dir|
+    ["config_files", "changed_managed_files"].each do |dir|
       path = @system_description.file_store(dir)
       if path
         output_root_path = File.join(output_location, "root")
@@ -99,7 +99,7 @@ class KiwiConfig
       end
     end
 
-    unmanaged_files_path = @system_description.file_store("unmanaged-files")
+    unmanaged_files_path = @system_description.file_store("unmanaged_files")
     if unmanaged_files_path
       filter = "unmanaged_files_build_excludes"
       destination = File.join(output_location, "root", "tmp")
@@ -111,15 +111,15 @@ class KiwiConfig
       )
 
       @sh << "# Apply the extracted unmanaged files\n"
-      @sh << "find /tmp/unmanaged-files -name *.tgz -exec " \
+      @sh << "find /tmp/unmanaged_files -name *.tgz -exec " \
         "tar -C / -X '/tmp/#{filter}' -xf {} \\;\n"
-      @sh << "rm -rf '/tmp/unmanaged-files' '/tmp/#{filter}'\n"
+      @sh << "rm -rf '/tmp/unmanaged_files' '/tmp/#{filter}'\n"
     end
   end
 
   def check_existance_of_extraced_files
     scopes = []
-    ["config-files", "changed-managed-files", "unmanaged-files"].each do |scope|
+    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
       path = @system_description.file_store(scope)
 
       if @system_description[scope] && !path
@@ -130,9 +130,9 @@ class KiwiConfig
     if !scopes.empty?
       raise Machinery::Errors::SystemDescriptionError.new(
         "Cannot create kiwi config. " \
-        "The following scopes #{scopes.join(",")} are part of the system " \
-        "description but the corresponding files weren't extracted during " \
-        "inspection.\n" \
+        "The following scopes #{Cli.internal_to_cli_scope_names(scopes).join(",")} " \
+        "are part of the system description but the corresponding files " \
+        "weren't extracted during inspection.\n" \
         "Use the -x parameter while running inspect to extract the files."
       )
     end
@@ -239,7 +239,7 @@ EOF
   end
 
   def apply_extracted_files_attributes
-    ["config-files", "changed-managed-files"].each do |scope|
+    ["config_files", "changed_managed_files"].each do |scope|
       if @system_description[scope]
         deleted, files = @system_description[scope].partition do |f|
           f.changes == Machinery::Array.new(["deleted"])

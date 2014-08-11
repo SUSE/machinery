@@ -10,19 +10,19 @@ total 4
 
 /tmp/jeos/root/tmp:
 total 8
-drwxr-xr-x 3 vagrant users 4096  unmanaged-files
+drwxr-xr-x 3 vagrant users 4096  unmanaged_files
 -rw-r--r-- 1 vagrant users   59  unmanaged_files_build_excludes
 
-/tmp/jeos/root/tmp/unmanaged-files:
+/tmp/jeos/root/tmp/unmanaged_files:
 total 8
 -rw-r--r-- 1 vagrant users  220  files.tgz
 drwxr-xr-x 3 vagrant users 4096  trees
 
-/tmp/jeos/root/tmp/unmanaged-files/trees:
+/tmp/jeos/root/tmp/unmanaged_files/trees:
 total 4
 drwxr-xr-x 2 vagrant users 4096  etc
 
-/tmp/jeos/root/tmp/unmanaged-files/trees/etc:
+/tmp/jeos/root/tmp/unmanaged_files/trees/etc:
 total 4
 -rw-r--r-- 1 vagrant users 339  unmanaged-tree.tgz
 

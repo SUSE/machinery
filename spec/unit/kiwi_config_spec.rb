@@ -302,7 +302,7 @@ describe KiwiConfig do
             "priority": 1
           }
         ],
-        "config-files": [
+        "config_files": [
           {
             "name": "/usr/share/fonts/encodings/encodings.dir",
             "package_name": "xorg-x11-fonts-core",
@@ -338,7 +338,7 @@ describe KiwiConfig do
             ]
           }
         ],
-        "changed-managed-files": [
+        "changed_managed_files": [
           {
             "name": "/tmp/managed/one",
             "package_name": "xorg-x11-fonts-core",
@@ -374,7 +374,7 @@ describe KiwiConfig do
             ]
           }
         ],
-        "unmanaged-files": [
+        "unmanaged_files": [
           {
             "name": "/boot/backup_mbr",
             "type": "file",
@@ -396,7 +396,7 @@ describe KiwiConfig do
 
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "kiwi_helpers"))
-    ["config-files", "changed-managed-files", "unmanaged-files"].each do |scope|
+    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
       system_description_with_content.initialize_file_store(scope)
     end
   end
@@ -531,27 +531,30 @@ describe KiwiConfig do
     end
 
     it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
-      scope = "config-files"
+      scope = "config_files"
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{scope}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError,
+        /#{Cli.internal_to_cli_scope_names(scope).join(",")}/)
     end
 
     it "throws an error if changed managed files are part of the system description but don't exist on the filesystem" do
-      scope = "changed-managed-files"
+      scope = "changed_managed_files"
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{scope}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError,
+        /#{Cli.internal_to_cli_scope_names(scope).join(",")}/)
     end
 
     it "throws an error if unmanaged files are part of the system description but don't exist on the filesystem" do
-      scope = "unmanaged-files"
+      scope = "unmanaged_files"
       system_description_with_modified_files.remove_file_store(scope)
       expect {
         KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{scope}/)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError,
+        /#{Cli.internal_to_cli_scope_names(scope).join(",")}/)
     end
 
     it "applies 'pre-process' config" do
@@ -681,13 +684,13 @@ describe KiwiConfig do
       before(:each) do
         # prepare fakefs
         [config_1, config_2].each do |file|
-          FileUtils.mkdir_p(File.join(manifest_path, "config-files", File.dirname(file)))
-          FileUtils.touch(File.join(manifest_path, "config-files", file))
+          FileUtils.mkdir_p(File.join(manifest_path, "config_files", File.dirname(file)))
+          FileUtils.touch(File.join(manifest_path, "config_files", file))
         end
 
         [changed_managed_1, changed_managed_2].each do |file|
-          FileUtils.mkdir_p(File.join(manifest_path, "changed-managed-files", File.dirname(file)))
-          FileUtils.touch(File.join(manifest_path, "changed-managed-files", file))
+          FileUtils.mkdir_p(File.join(manifest_path, "changed_managed_files", File.dirname(file)))
+          FileUtils.touch(File.join(manifest_path, "changed_managed_files", file))
         end
 
         FileUtils.mkdir_p(output_location)
@@ -719,16 +722,16 @@ describe KiwiConfig do
       end
 
       it "copies the unmanaged files tarballs into the root directory" do
-        FileUtils.mkdir_p(File.join(manifest_path, "unmanaged-files", "var", "log"))
-        FileUtils.touch(File.join(manifest_path, "unmanaged-files", "var", "log", "news.tgz"))
-        FileUtils.touch(File.join(manifest_path, "unmanaged-files", "files.tgz"))
+        FileUtils.mkdir_p(File.join(manifest_path, "unmanaged_files", "var", "log"))
+        FileUtils.touch(File.join(manifest_path, "unmanaged_files", "var", "log", "news.tgz"))
+        FileUtils.touch(File.join(manifest_path, "unmanaged_files", "files.tgz"))
 
         config.write(output_location)
 
-        expect(File.exists?("/tmp/some_path/root/tmp/unmanaged-files/files.tgz")).to be(true)
-        expect(File.exists?("/tmp/some_path/root/tmp/unmanaged-files/var/log/news.tgz")).to be(true)
+        expect(File.exists?("/tmp/some_path/root/tmp/unmanaged_files/files.tgz")).to be(true)
+        expect(File.exists?("/tmp/some_path/root/tmp/unmanaged_files/var/log/news.tgz")).to be(true)
 
-        expect(config.sh).to match(/find \/tmp\/unmanaged-files.*tar/)
+        expect(config.sh).to match(/find \/tmp\/unmanaged_files.*tar/)
 
         # expect filter to be present
         expect(File.exists?("/tmp/some_path/root/tmp/unmanaged_files_build_excludes")).to be(true)

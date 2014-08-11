@@ -923,16 +923,16 @@
     "repositories": {
       "modified": "2014-04-14T13:08:09Z"
     },
-    "unmanaged-files": {
+    "unmanaged_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
-    "config-files": {
+    "config_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
     "services": {
       "modified": "2014-04-14T13:08:09Z"
     },
-    "changed-managed-files": {
+    "changed_managed_files": {
       "modified": "2014-04-14T13:08:09Z"
     },
     "os": {
@@ -958,7 +958,7 @@
       "priority": 99
     }
   ],
-  "unmanaged-files": [
+  "unmanaged_files": [
     {
       "name": "/etc/unmanaged-file",
       "type": "file",
@@ -977,7 +977,7 @@
       "files": 2
     }
   ],
-  "config-files": [
+  "config_files": [
     {
       "name": "/etc/crontab",
       "package_name": "cron",
@@ -1197,7 +1197,7 @@
       }
     ]
   },
-  "changed-managed-files": [
+  "changed_managed_files": [
     {
       "name": "/usr/share/bash/helpfiles/cd",
       "package_name": "bash",

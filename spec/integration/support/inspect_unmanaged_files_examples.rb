@@ -26,7 +26,7 @@ shared_examples "inspect unmanaged files" do |base|
     def parse_md5sums(output)
       output.split("\n").map { |e| e.split.first }
     end
-    test_tarball = File.join(Machinery::ROOT, "../machinery/spec/data/unmanaged_files/unmanaged-files.tgz")
+    test_tarball = File.join(Machinery::ROOT, "../machinery/spec/data/unmanaged_files/unmanaged_files.tgz")
 
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
@@ -94,12 +94,12 @@ shared_examples "inspect unmanaged files" do |base|
       actual_filestgz_list = nil
       measure("Gather information about extracted files") do
         actual_tarballs = @machinery.run_command(
-          "cd ~/.machinery/#{@subject_system.ip}/unmanaged-files/trees; find -type f",
+          "cd ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
           as: "vagrant", stdout: :capture
         ).split("\n")
 
         actual_filestgz_list = @machinery.run_command(
-          "tar -tf ~/.machinery/#{@subject_system.ip}/unmanaged-files/files.tgz",
+          "tar -tf ~/.machinery/#{@subject_system.ip}/unmanaged_files/files.tgz",
           as: "vagrant", stdout: :capture
         ).split("\n")
       end
@@ -124,13 +124,13 @@ shared_examples "inspect unmanaged files" do |base|
 
 
       # check content of test tarball
-      tmp_dir = Dir.mktmpdir("unmanaged-files", "/tmp")
+      tmp_dir = Dir.mktmpdir("unmanaged_files", "/tmp")
       expected_output = `cd "#{tmp_dir}"; tar -xf "#{test_tarball}"; md5sum "#{tmp_dir}/srv/www/htdocs/test/"*`
       FileUtils.rm_r(tmp_dir)
       expected_md5sums = parse_md5sums(expected_output)
 
       output = @machinery.run_command(
-        "cd /tmp; tar -xf ~/.machinery/#{@subject_system.ip}/unmanaged-files/trees/srv/www/htdocs/test.tgz; md5sum /tmp/srv/www/htdocs/test/*",
+        "cd /tmp; tar -xf ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees/srv/www/htdocs/test.tgz; md5sum /tmp/srv/www/htdocs/test/*",
         as: "vagrant", stdout: :capture
       )
       actual_md5sums = parse_md5sums(output)

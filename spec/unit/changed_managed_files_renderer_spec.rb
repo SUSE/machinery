@@ -21,7 +21,7 @@ describe ChangedManagedFilesRenderer do
   let(:system_description) {
     json = <<-EOF
     {
-      "changed-managed-files": [
+      "changed_managed_files": [
         {
           "name": "/deleted/file",
           "package_name": "glibc",

@@ -43,7 +43,7 @@ describe AnalyzeConfigFileDiffsTask do
             "gpgcheck": true,
             "priority": 2
           }
-        ], "config-files": [
+        ], "config_files": [
           {
             "name": "/etc/pam.d/login",
             "package_name": "login",

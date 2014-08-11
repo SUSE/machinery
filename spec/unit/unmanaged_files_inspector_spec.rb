@@ -260,8 +260,8 @@ describe UnmanagedFilesInspector do
       expect_cat_mounts(system)
       expect_find_commands(system,add_files)
       if(extract)
-        description.initialize_file_store("unmanaged-files")
-        cfdir = description.file_store("unmanaged-files")
+        description.initialize_file_store("unmanaged_files")
+        cfdir = description.file_store("unmanaged_files")
         dlist = expected_data.select{ |s| s.type=="dir" }
         dlist.map!{ |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)
@@ -299,7 +299,7 @@ describe UnmanagedFilesInspector do
       inspector = UnmanagedFilesInspector.new
       summary = inspector.inspect(system, description)
 
-      expect(description["unmanaged-files"]).to eq(UnmanagedFilesScope.new)
+      expect(description["unmanaged_files"]).to eq(UnmanagedFilesScope.new)
       expect(summary).to include("Found 0 unmanaged files and trees")
     end
 
@@ -311,7 +311,7 @@ describe UnmanagedFilesInspector do
       inspector = UnmanagedFilesInspector.new
       summary = inspector.inspect(system, description)
 
-      expect(description["unmanaged-files"]).to match_array(expected_data)
+      expect(description["unmanaged_files"]).to match_array(expected_data)
       expect(summary).to include("Found #{expected_data.size} unmanaged files and trees")
     end
 
@@ -322,7 +322,7 @@ describe UnmanagedFilesInspector do
 
       inspector = UnmanagedFilesInspector.new
       inspector.inspect(system, description)
-      names = description["unmanaged-files"].map(&:name)
+      names = description["unmanaged_files"].map(&:name)
 
       expect(names).to eq(names.sort)
     end
@@ -348,9 +348,9 @@ describe UnmanagedFilesInspector do
         :extract_unmanaged_files => true
       )
 
-      expect(description["unmanaged-files"]).to match_array(expected_data_meta)
+      expect(description["unmanaged_files"]).to match_array(expected_data_meta)
       expect(summary).to include("Extracted #{expected_data.size} unmanaged files and trees")
-      cfdir = description.file_store("unmanaged-files")
+      cfdir = description.file_store("unmanaged_files")
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end
   end

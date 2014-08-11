@@ -152,7 +152,7 @@ EOF
         config_paths, stat_output
       )
       if(extract)
-        cfdir = File.join(store.description_path(name), "config-files")
+        cfdir = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
           config_paths,
           cfdir
@@ -215,7 +215,7 @@ EOF
       inspector = ConfigFilesInspector.new
       summary = inspector.inspect(system, description)
 
-      expect(description["config-files"]).to eq(expected_data)
+      expect(description["config_files"]).to eq(expected_data)
       expect(summary).to include("6 changed configuration files")
     end
 
@@ -231,7 +231,7 @@ EOF
       inspector = ConfigFilesInspector.new
       inspector.inspect(system, description)
 
-      expect(description["config-files"]).to eq(ConfigFilesScope.new)
+      expect(description["config_files"]).to eq(ConfigFilesScope.new)
     end
 
     it "raise an error when requirements are not fulfilled" do
@@ -252,13 +252,13 @@ EOF
       inspector = ConfigFilesInspector.new
       summary = inspector.inspect(system, description, :extract_changed_config_files => true )
       expect(summary).to include("Extracted 6 changed configuration files")
-      cfdir = File.join(store.description_path(name), "config-files")
+      cfdir = File.join(store.description_path(name), "config_files")
       expect(File.stat(cfdir).mode & 0777).to eq(0700)
     end
 
     it "keep permissions on extracted config files dir" do
       system = double
-      cfdir = File.join(store.description_path(name), "config-files")
+      cfdir = File.join(store.description_path(name), "config_files")
       FileUtils.mkdir_p(cfdir)
       File.chmod(0750,cfdir)
       File.chmod(0750, store.description_path(name))
@@ -274,7 +274,7 @@ EOF
       system = double
       expect_inspect_configfiles(system, false)
 
-      cfdir = File.join(store.description_path(name), "config-files")
+      cfdir = File.join(store.description_path(name), "config_files")
       cfdir_file = File.join(cfdir, "config_file")
       FileUtils.mkdir_p(cfdir)
       FileUtils.touch(cfdir_file)
@@ -293,7 +293,7 @@ EOF
 
       inspector = ConfigFilesInspector.new
       inspector.inspect(system, description, :extract_changed_config_files => true)
-      names = description["config-files"].map(&:name)
+      names = description["config_files"].map(&:name)
 
       expect(names).to eq(names.sort)
     end

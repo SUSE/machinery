@@ -139,8 +139,8 @@ describe BuildTask do
     end
 
     it "shows the unmanaged file filters at the beginning" do
-      system_description.initialize_file_store("unmanaged-files")
-      system_description["unmanaged-files"] = {}
+      system_description.initialize_file_store("unmanaged_files")
+      system_description["unmanaged_files"] = {}
 
       expect($stdout).to receive(:puts).with("\nUnmanaged files following these patterns are not added to the built image:")
       expect($stdout).to receive(:puts) { |s|

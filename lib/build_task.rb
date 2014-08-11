@@ -28,7 +28,7 @@ class BuildTask
     config = KiwiConfig.new(system_description, options)
     config.write(tmp_config_dir)
 
-    if system_description["unmanaged-files"]
+    if system_description["unmanaged_files"]
       filters = File.read(
         File.join(Machinery::ROOT, "kiwi_helpers/unmanaged_files_build_excludes")
       )
