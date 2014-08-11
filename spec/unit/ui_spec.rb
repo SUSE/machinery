@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe Machinery do
+describe Machinery::Ui do
   describe ".prints_output" do
     let(:output) { "foo bar" }
     it "pipes the output to a pager" do
@@ -28,7 +28,7 @@ describe Machinery do
       allow($?).to receive(:success?).and_return(true)
       expect(IO).to receive(:popen).with("$PAGER", "w")
 
-      Machinery::print_output(output)
+      Machinery::Ui.print_output(output)
     end
 
     it "prints the output to stdout if no pager is available" do
@@ -39,7 +39,7 @@ describe Machinery do
         and_raise(Machinery::Errors::MissingRequirement)
       expect($stdout).to receive(:puts).with(output)
 
-      Machinery::print_output(output)
+      Machinery::Ui.print_output(output)
     end
 
     it "raises an error if ENV['PAGER'] is not a valid command" do
@@ -47,7 +47,7 @@ describe Machinery do
 
       allow($stdout).to receive(:tty?).and_return(true)
 
-      expect { Machinery::print_output(output) }.
+      expect { Machinery::Ui.print_output(output) }.
         to raise_error(Machinery::Errors::InvalidPager, /not_a_pager/)
     end
   end

@@ -74,6 +74,6 @@ class CompareTask
 
     output = "Compared descriptions are identical.\n" + output if identical && common_scopes
 
-    Machinery::print_output(output, :no_pager => options[:no_pager])
+    Machinery::Ui.print_output(output, :no_pager => options[:no_pager])
   end
 end
