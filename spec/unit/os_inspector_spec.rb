@@ -68,14 +68,6 @@ describe OsInspector do
         OsScope.new(
           name: "openSUSE 13.1 (Bottle)",
           version: "13.1 (Bottle)",
-          version_id: "13.1",
-          pretty_name: "openSUSE 13.1 (Bottle)",
-          id: "opensuse",
-          ansi_color: "0;32",
-          cpe_name: "cpe:/o:opensuse:opensuse:13.1",
-          bug_report_url: "https://bugs.opensuse.org",
-          home_url: "https://opensuse.org/",
-          id_like: "suse",
           architecture: "x86_64"
         )
       )
