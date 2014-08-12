@@ -24,9 +24,25 @@ describe PackagesInspector, ".inspect" do
   let(:packages_inspector) { PackagesInspector.new }
 
   let(:package_example) { <<EOF
-zypper|0.1.0$
-rpm|0.4.2$
+zypper|0.1.0|25.1$
+rpm|0.4.2|2.4.13$
 EOF
+  }
+  let(:expected_packages) {
+    PackagesScope.new(
+      [
+        Package.new(
+          name: "rpm",
+          version: "0.4.2",
+          release: "2.4.13"
+        ),
+        Package.new(
+          name: "zypper",
+          version: "0.1.0",
+          release: "25.1"
+        )
+      ]
+    )
   }
   let(:rpm_command) {
     ["rpm", "-qa", "--qf", "%{NAME}|%{VERSION}$", :stdout=>:capture]
@@ -47,16 +63,16 @@ EOF
   end
 
   it "returns a local SystemDescription containing rpm as one package" do
-    expect(inspect_data.first.name).to eq("rpm")
+    expect(inspect_data).to eq(expected_packages)
   end
 
   it "returns a remote SystemDescription containing rpm as one package" do
-    expect(inspect_data("remotehost", package_example).first.name).to eq("rpm")
+    expect(inspect_data("remotehost", package_example)).to eq(expected_packages)
   end
 
   it "ignores fake rpm packages with the name gpg-pubkey" do
-    data = "gpg-pubkey|39db7c82$#{package_example}"
-    expect(inspect_data("myhost", data).count).to eq(2)
+    data = "gpg-pubkey|39db7c82|1.0$#{package_example}"
+    expect(inspect_data(data)).to eq(expected_packages)
   end
 
   it "returns a summary" do
