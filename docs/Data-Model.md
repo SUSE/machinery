@@ -116,20 +116,18 @@ The object tree is serialized into JSON by the `SystemDescription#to_json` metho
 
 The object tree is deserialized from JSON by the `SystemDescription.from_json` method.
 
-Before deserialization, the JSON is validated using a JSON Schema (there is one for the whole document). If there are any errors, the deserialization will fail.
-
-Because not every constraint can be expressed using JSON Schema, the `SystemDescription` class allows to define a custom validator using the `SystemDescription#add_validator` method:
+In order to validate incoming data, the `SystemDescription` class allows to define custom validators using the `SystemDescription#add_validator` method:
 
 ```ruby
-SystemDescription.add_validator "#/software/packages" do |json|
+SystemDescription.add_validator "#/packages" do |json|
   if json != json.uniq
-    raise Machinery::ValidationError,
+    raise Machinery::Errors::SystemDescriptionError,
           "The #{description} contains duplicate packages."
   end
 end
 ```
 
-The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and a block. The block will be called for the JSON node specified by the pointer when deserializing. If code inside this method encounters invalid JSON, it can raise the `Machinery::ValidationError` exception and the deserialization will fail.
+The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and a block. The block will be called for the JSON node specified by the pointer when deserializing. If code inside this method encounters invalid JSON, it can raise the `Machinery::Errors::SystemDescriptionError` exception and the deserialization will fail.
 
 ### File Data
 
