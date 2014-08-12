@@ -1,3 +1,5 @@
+# Machinery Data Model
+
 The Machinery data model represents the system configuration as processed by Machinery. It consists of two parts that closely correspond to each other:
 
   * JSON serialization
@@ -83,9 +85,11 @@ With Ruby hashes, the code would be uglier:
 package = config["software"]["packages"].first
 ```
 
+### Root
+
 The root of the tree is a bit special — it is an instance of the `SystemDescription` class (a subclass of `Machinery::Object`). In addition to representing the toplevel JSON object, this class contains JSON serialization, deserialization and validation code.
 
-### Representing scopes
+### Representing Scopes
 
 Each scope is represented by a specific subclass of `Machinery::Scope`. The scopes are defined as a model class in the `plugins/model` directory. The model classes define what data objects the scope contains. There are helpers to define the structure of the data.
 
@@ -127,32 +131,6 @@ end
 
 The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and a block. The block will be called for the JSON node specified by the pointer when deserializing. If code inside this method encounters invalid JSON, it can raise the `Machinery::ValidationError` exception and the deserialization will fail.
 
-### File data
+### File Data
 
 Some scopes contain file data. The files are not serialized to the JSON, but stored into scope-specific subdirectories of the directory where the system description is stored. Depending on the type of files they are either stored as plain files or in a structure of tar archives containing the files.
-
-
-## Scope details
-
-### Unmanaged files
-
-Proposal for structure of data for unmanaged files:
-
-```json
-{
-  "unmanaged_files": [
-    {
-      "name": "/usr/local/magicapp/",
-      "type": "dir"
-    },
-    {
-      "name": "/etc/magicapp.conf",
-      "type": "file"
-    }
-  ],
-
-```
-
-Each dir represents a possible tree of files and subdirectories. All content of an unmanaged directory is unmanaged as well, only the highest level of unmanaged directory is reported in the list. The content is not represented in the JSON, but in the actually extracted files.
-
-Symbolic links are listed as normal entries in the JSON file, Their meta data (including that they are links) is also represented in the actually extracted files.
