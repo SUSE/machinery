@@ -1,3 +1,5 @@
+# Machinery Data Model
+
 The Machinery data model represents the system configuration as processed by Machinery. It consists of two parts that closely correspond to each other:
 
   * JSON serialization
