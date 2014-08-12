@@ -36,6 +36,7 @@ describe SystemDescriptionStore do
     it "creates the directory with correct permissions if it doesn't exist" do
       expect(Dir.exists?(File.join(ENV['HOME'], ".machinery"))).to be(false)
       store = SystemDescriptionStore.new
+
       expect(Dir.exists?(store.base_path)).to be(true)
       expect(File.stat(store.base_path).mode & 0777).to eq(0700)
     end
@@ -45,6 +46,7 @@ describe SystemDescriptionStore do
       alfdir = store.base_path
       File.chmod(0755, alfdir)
       store = SystemDescriptionStore.new
+
       expect(Dir.exists?(store.base_path)).to be(true)
       expect(File.stat(store.base_path).mode & 0777).to eq(0755)
     end
@@ -55,13 +57,16 @@ describe SystemDescriptionStore do
       create_machinery_dir
       store = SystemDescriptionStore.new(test_base_path)
       description = store.load(test_name)
+
       expect(description.to_json).to eq(test_manifest)
       expect(description.name).to eq(test_name)
     end
 
     it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
       store = SystemDescriptionStore.new
-      expect { store.load("not_existing") }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
+      expect {
+        store.load("not_existing")
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
   end
 
@@ -71,9 +76,10 @@ describe SystemDescriptionStore do
       store.save(SystemDescription.from_json(test_name, test_manifest))
       descr_dir = store.description_path(test_name)
       manifest = store.manifest_path(test_name)
+      content = File.read(manifest)
+
       expect(File.stat(descr_dir).mode & 0777).to eq(0700)
       expect(File.stat(manifest).mode & 0777).to eq(0600)
-      content = File.read(manifest)
       expect(content).to eq(test_manifest)
     end
 
@@ -94,8 +100,12 @@ describe SystemDescriptionStore do
 
     it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
       store = SystemDescriptionStore.new
-      expect { store.save(SystemDescription.from_json("invalid/slash", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionError)
-      expect { store.save(SystemDescription.from_json(".invalid_dot", test_manifest)) }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect {
+        store.save(SystemDescription.from_json("invalid/slash", test_manifest))
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect {
+        store.save(SystemDescription.from_json(".invalid_dot", test_manifest))
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end
 
@@ -134,13 +144,16 @@ describe SystemDescriptionStore do
       create_machinery_dir
       store = SystemDescriptionStore.new(test_base_path)
       expect(store.list).to eq([test_name])
+
       store.remove(test_name)
       expect(store.list).to be_empty
     end
 
     it "raises an error if an empty name was provided" do
       store = SystemDescriptionStore.new(test_base_path)
-      expect{ store.remove("") }.to raise_error(RuntimeError, /description has no name specified/)
+      expect {
+        store.remove("")
+      }.to raise_error(RuntimeError, /description has no name specified/)
     end
   end
 
@@ -207,13 +220,16 @@ describe SystemDescriptionStore do
       it "removes the file store dir" do
         store.initialize_file_store(test_name, file_store_name)
         expect(Dir.exists?(file_store_path)).to be(true)
+
         store.remove_file_store(test_name, file_store_name)
         expect(Dir.exists?(file_store_path)).to be(false)
       end
 
       it "doesn't throw an error if the dir doesn't exist" do
         expect(Dir.exists?(file_store_path)).to be(false)
-        expect { store.remove_file_store(test_name, file_store_name) }.not_to raise_error
+        expect {
+          store.remove_file_store(test_name, file_store_name)
+        }.not_to raise_error
       end
     end
 
@@ -235,6 +251,7 @@ describe SystemDescriptionStore do
       it "creates a directory in the file store" do
         store.initialize_file_store(test_name, file_store_name)
         expect(Dir.exists?(sub_dir_path)).to be(false)
+
         store.create_file_store_sub_dir(test_name, file_store_name, sub_dir)
         expect(Dir.exists?(sub_dir_path)).to be(true)
       end
