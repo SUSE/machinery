@@ -544,7 +544,7 @@ describe KiwiConfig do
       expect {
         KiwiConfig.new(system_description_with_modified_files)
       }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Cli.internal_to_cli_scope_names(scope).join(",")}/)
+        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
     end
 
     it "throws an error if changed managed files are part of the system description but don't exist on the filesystem" do
@@ -553,7 +553,7 @@ describe KiwiConfig do
       expect {
         KiwiConfig.new(system_description_with_modified_files)
       }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Cli.internal_to_cli_scope_names(scope).join(",")}/)
+        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
     end
 
     it "throws an error if unmanaged files are part of the system description but don't exist on the filesystem" do
@@ -562,7 +562,7 @@ describe KiwiConfig do
       expect {
         KiwiConfig.new(system_description_with_modified_files)
       }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Cli.internal_to_cli_scope_names(scope).join(",")}/)
+        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
     end
 
     it "applies 'pre-process' config" do

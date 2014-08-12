@@ -105,19 +105,27 @@ class Cli
         raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
       else
         # scope only
-        scope_list = Cli.cli_to_internal_scope_names(scopes.split(/[, ]/))
+
+        # convert cli scope naming to internal one
+        scopes.tr!("-", "_")
+
+        scope_list = scopes.split(/[, ]/)
       end
     else
       if exclude_scopes
         # exclude-scope only
         scope_list = Inspector.all_scopes
-        Cli.cli_to_internal_scope_names(exclude_scopes.split(/[, ]/)).each do |e|
+
+        # convert cli scope naming to internal one
+        exclude_scopes.tr!("-", "_")
+
+        exclude_scopes.split(/[, ]/).each do |e|
           if Inspector.all_scopes.include?(e)
             scope_list.delete(e)
           else
             raise Machinery::Errors::UnknownRenderer.new(
                 "The following scope is not supported: " \
-                  "#{Cli.internal_to_cli_scope_names(e).join(",")}. " \
+                  "#{Machinery::Ui.internal_scope_list_to_string(e)}. " \
                 "Valid scopes are: #{AVAILABLE_SCOPE_LIST}."
             )
           end
@@ -133,19 +141,9 @@ class Cli
     scope_list
   end
 
-  def self.internal_to_cli_scope_names(scopes)
-    list = Array(scopes)
-    list.map{ |e| e.tr("_", "-") }
-  end
-
-  def self.cli_to_internal_scope_names(scopes)
-    list = Array(scopes)
-    list.map{ |e| e.tr("-", "_") }
-  end
-
-  AVAILABLE_SCOPE_LIST = Cli.internal_to_cli_scope_names(
+  AVAILABLE_SCOPE_LIST = Machinery::Ui.internal_scope_list_to_string(
     Inspector.all_scopes
-  ).join(",")
+  )
 
   desc "Analyze system description"
   long_desc <<-LONGDESC
@@ -367,7 +365,7 @@ class Cli
 
       print "Inspecting #{host}"
       if !scope_list.empty?
-        print " for #{scope_list}"
+        print " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
       end
       puts "..."
 

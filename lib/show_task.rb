@@ -35,9 +35,9 @@ class ShowTask
       if failed_renderers.length > 0
         raise Machinery::Errors::UnknownRenderer.new(
           "The following scopes are not supported: " \
-          "#{Cli.internal_to_cli_scope_names(failed_renderers).join(",")}. " \
+          "#{Machinery::Ui.internal_scope_list_to_string(failed_renderers)}. " \
           "Valid scopes are: " \
-          "#{Cli.internal_to_cli_scope_names(Inspector.all_scopes).join(",")}."
+          "#{Machinery::Ui.internal_scope_list_to_string(Inspector.all_scopes)}."
         )
       end
     else
@@ -57,10 +57,10 @@ class ShowTask
     if missing_scopes.length > 0
       output += "# The following requested scopes were not inspected\n\n"
       missing_scopes.each do |scope|
-        output += "  * #{scope}\n"
+        output += "  * #{Machinery::Ui.internal_scope_list_to_string(scope)}\n"
       end
     end
 
-    Machinery::print_output(output, :no_pager => options[:no_pager])
+    Machinery::Ui.print_output(output, :no_pager => options[:no_pager])
   end
 end

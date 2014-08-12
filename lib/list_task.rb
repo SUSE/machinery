@@ -31,7 +31,7 @@ class ListTask
       scopes = []
 
       description.scopes.each do |scope|
-        entry = scope
+        entry = Machinery::Ui.internal_scope_list_to_string(scope)
         entry += " (extracted)" if description.scope_extracted?(scope)
 
         if options["verbose"]

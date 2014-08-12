@@ -30,7 +30,9 @@ class InspectTask
 
     if !failed_inspections.empty?
       puts "\n"
-      message = failed_inspections.map { |scope, msg| "Errors while inspecting #{scope}:\n#{msg}" }.join("\n\n")
+      message = failed_inspections.map { |scope, msg|
+        "Errors while inspecting " \
+          "#{Machinery::Ui.internal_scope_list_to_string(scope)}:\n#{msg}" }.join("\n\n")
       raise Machinery::Errors::InspectionFailed.new(message)
     end
     description
@@ -85,20 +87,21 @@ class InspectTask
     if failed_inspectors.length > 0
       raise Machinery::Errors::UnknownInspector.new(
         "The following scopes are not supported: " \
-        "#{Cli.internal_to_cli_scope_names(failed_inspectors).join(",")}. " \
+        "#{Machinery::Ui.internal_scope_list_to_string(failed_inspectors)}. " \
         "Valid scopes are: " \
-          "#{Cli.internal_to_cli_scope_names(Inspector.all_scopes).join(",")}."
+          "#{Machinery::Ui.internal_scope_list_to_string(Inspector.all_scopes)}."
       )
     end
 
     failed_inspections = {}
 
     inspectors.each do |inspector|
-      puts "Inspecting #{inspector.scope}..."
+      puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
       begin
         summary = inspector.inspect(system, description, options)
       rescue Machinery::Errors::MachineryError => e
-        puts "Inspection of scope #{inspector.scope} failed!"
+        puts "Inspection of scope " \
+          "#{Machinery::Ui.internal_scope_list_to_string(inspector.scope)} failed!"
         failed_inspections[inspector.scope] = e
         next
       end
