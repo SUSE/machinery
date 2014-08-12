@@ -132,29 +132,3 @@ The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and a 
 ### File Data
 
 Some scopes contain file data. The files are not serialized to the JSON, but stored into scope-specific subdirectories of the directory where the system description is stored. Depending on the type of files they are either stored as plain files or in a structure of tar archives containing the files.
-
-
-## Scope Details
-
-### Unmanaged Files
-
-Proposal for structure of data for unmanaged files:
-
-```json
-{
-  "unmanaged_files": [
-    {
-      "name": "/usr/local/magicapp/",
-      "type": "dir"
-    },
-    {
-      "name": "/etc/magicapp.conf",
-      "type": "file"
-    }
-  ],
-
-```
-
-Each dir represents a possible tree of files and subdirectories. All content of an unmanaged directory is unmanaged as well, only the highest level of unmanaged directory is reported in the list. The content is not represented in the JSON, but in the actually extracted files.
-
-Symbolic links are listed as normal entries in the JSON file, Their meta data (including that they are links) is also represented in the actually extracted files.
