@@ -30,6 +30,7 @@ describe Machinery do
 
     it "explains how to install a missing package from a module on SLES12" do
       allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+      allow(Cheetah).to receive(:run).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
       expect {
         Machinery::check_package("python-glanceclient")
       }.to raise_error(Machinery::Errors::MissingRequirement, /Public Cloud Module/)
