@@ -71,9 +71,9 @@ The question of versioning is kept open for now. It is assumed that at some poin
 
 ### Basics
 
-The system configuration is internally represented as a tree of Ruby objects. Leaf nodes are simple Ruby values (integers, strings, etc.), the inner nodes are instances of `Machinery::Object`, which provides an `OpenStruct`-like API for setting and getting attributes, and `Machinery::Array`, which provides an `Array`-like API.
+The system configuration is internally represented as a tree of Ruby objects. Leaf nodes are simple Ruby values (integers, strings, etc.), the inner nodes are instances of classes derived from `Machinery::Object`, which provides an `OpenStruct`-like API for setting and getting attributes, and `Machinery::Array`, which provides an `Array`-like API.
 
-The main advantage of using the `Machinery::Object` class to using pure hashes is that the object tree is nicer to navigate. For example, getting the first package from a list can be done using methods:
+The class-based design provides a natural way to implement behavior shared by all nodes while having a possibility to override it for some of them. Also, using the `Machinery::Object` class (instead of pure hashes) makes the object tree nice to navigate. For example, getting the first package from a list can be done using methods:
 
 ```ruby
 package = config.software.packages.first
@@ -116,20 +116,18 @@ The object tree is serialized into JSON by the `SystemDescription#to_json` metho
 
 The object tree is deserialized from JSON by the `SystemDescription.from_json` method.
 
-Before deserialization, the JSON is validated using a JSON Schema (there is one for the whole document). If there are any errors, the deserialization will fail.
-
-Because not every constraint can be expressed using JSON Schema, the `SystemDescription` class allows to define a custom validator using the `SystemDescription#add_validator` method:
+In order to validate incoming data, the `SystemDescription` class allows to define custom validators using the `SystemDescription#add_validator` method:
 
 ```ruby
-SystemDescription.add_validator "#/software/packages" do |json|
+SystemDescription.add_validator "#/packages" do |json|
   if json != json.uniq
-    raise Machinery::ValidationError,
+    raise Machinery::Errors::SystemDescriptionError,
           "The #{description} contains duplicate packages."
   end
 end
 ```
 
-The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and a block. The block will be called for the JSON node specified by the pointer when deserializing. If code inside this method encounters invalid JSON, it can raise the `Machinery::ValidationError` exception and the deserialization will fail.
+The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and a block. The block will be called for the JSON node specified by the pointer when deserializing. If code inside this method encounters invalid JSON, it can raise the `Machinery::Errors::SystemDescriptionError` exception and the deserialization will fail.
 
 ### File Data
 
