@@ -85,6 +85,8 @@ With Ruby hashes, the code would be uglier:
 package = config["software"]["packages"].first
 ```
 
+### Root
+
 The root of the tree is a bit special — it is an instance of the `SystemDescription` class (a subclass of `Machinery::Object`). In addition to representing the toplevel JSON object, this class contains JSON serialization, deserialization and validation code.
 
 ### Representing Scopes
