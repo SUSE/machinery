@@ -31,14 +31,14 @@ module Machinery
           ENV['LESS'] = 'FSRX'
           begin
             Machinery::check_package("less")
-            IO.popen("$PAGER", "w") { |f| f.puts output }
+            IO.popen("$PAGER", "w") { |f| f.syswrite output }
           rescue Machinery::Errors::MissingRequirement
             puts output
           end
         else
           IO.popen("$PAGER &>/dev/null", "w") { |f| f.close }
           if $?.success?
-            IO.popen("$PAGER", "w") { |f| f.puts output }
+            IO.popen("$PAGER", "w") { |f| f.syswrite output }
           else
             raise(Machinery::Errors::InvalidPager.new("'#{ENV['PAGER']}' could not " \
               "be executed. Use the --no-pager option or modify your $PAGER " \
