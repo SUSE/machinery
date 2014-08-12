@@ -26,6 +26,7 @@ describe ConfigFilesRenderer do
         "name": "/etc/default/grub",
         "package_name": "grub2",
         "package_version": "2.00",
+        "status": "changed",
         "changes": [
           "mode"
         ],

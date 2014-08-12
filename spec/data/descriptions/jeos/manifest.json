@@ -982,6 +982,7 @@
       "name": "/etc/crontab",
       "package_name": "cron",
       "package_version": "4.1",
+      "status": "changed",
       "changes": [
         "md5"
       ],

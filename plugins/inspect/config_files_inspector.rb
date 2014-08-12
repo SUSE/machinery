@@ -76,6 +76,7 @@ class ConfigFilesInspector < Inspector
         name:            path,
         package_name:    package_name,
         package_version: package_version,
+        status:          "changed",
         changes:         changes
       )
     end
