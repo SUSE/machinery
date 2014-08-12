@@ -48,6 +48,7 @@ describe AnalyzeConfigFileDiffsTask do
             "name": "/etc/pam.d/login",
             "package_name": "login",
             "package_version": "3.41",
+            "status": "changed",
             "changes": [
               "md5"
             ]
@@ -56,6 +57,7 @@ describe AnalyzeConfigFileDiffsTask do
             "name": "/etc/modprobe.d/unsupported-modules",
             "package_name": "aaa_base",
             "package_version": "3.11.1",
+            "status": "changed",
             "changes": [
               "md5"
             ]
@@ -64,6 +66,7 @@ describe AnalyzeConfigFileDiffsTask do
             "name": "/etc/inittab",
             "package_name": "aaa_base",
             "package_version": "3.11.1",
+            "status": "changed",
             "changes": [
               "md5"
             ]
@@ -72,6 +75,7 @@ describe AnalyzeConfigFileDiffsTask do
             "name": "/etc/mode_changed_only",
             "package_name": "mode_changed_only",
             "package_version": "1",
+            "status": "changed",
             "changes": [
               "mode"
             ]

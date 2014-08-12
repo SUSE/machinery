@@ -166,6 +166,7 @@ EOF
         name:            "",
         package_name:    "apache2",
         package_version: "2.4.6",
+        status:          "changed",
         changes:         ["md5"],
         uid:             0,
         gid:             0,
@@ -187,12 +188,14 @@ EOF
         name:            "/usr/share/info/dir",
         package_name:    "apache2",
         package_version: "2.4.6",
+        status:          "changed",
         changes:         ["deleted"]
       )
       apache_5 = ConfigFile.new(
         name:            "/usr/share/man/man1/time.1.gz",
         package_name:    "apache2",
         package_version: "2.4.6",
+        status:          "changed",
         changes:         ["replaced"]
       )
 
