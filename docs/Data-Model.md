@@ -73,7 +73,7 @@ The question of versioning is kept open for now. It is assumed that at some poin
 
 The system configuration is internally represented as a tree of Ruby objects. Leaf nodes are simple Ruby values (integers, strings, etc.), the inner nodes are instances of classes derived from `Machinery::Object`, which provides an `OpenStruct`-like API for setting and getting attributes, and `Machinery::Array`, which provides an `Array`-like API.
 
-The main advantage of using the `Machinery::Object` class to using pure hashes is that the object tree is nicer to navigate. For example, getting the first package from a list can be done using methods:
+The class-based design provides a natural way to implement behavior shared by all nodes while having a possibility to override it for some of them. Also, using the `Machinery::Object` class (instead of pure hashes) makes the object tree nice to navigate. For example, getting the first package from a list can be done using methods:
 
 ```ruby
 package = config.software.packages.first
