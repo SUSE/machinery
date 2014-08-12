@@ -16,7 +16,7 @@ JSON serialization is used to store and exchange the system configuration.
 
 At the top level, the data consists of a JSON object. Each key in this object corresponds to a configuration scope (e.g. repositories, packages, changed configuration files, etc.). Data under each key is further structured into JSON objects and arrays as needed.
 
-There is one special key `meta`, which is used to collect meta data of the information in the scope sections.
+There is one special key `meta`, which is used to collect meta data of the whole document and the information in the scope sections.
 
 For example, a JSON document describing software configuration may look like this:
 
@@ -46,6 +46,7 @@ For example, a JSON document describing software configuration may look like thi
   ],
 
   "meta": {
+    "format_version": 1,
     "repositories": {
       "modified": "2014-02-10T16:10:48Z"
     },
@@ -64,7 +65,9 @@ Structure of the data, required and optional parts, etc. will be precisely speci
 
 ### Versioning
 
-The question of versioning is kept open for now. It is assumed that at some point before 1.0, the topic will be discussed and some versioning scheme and compatibility policy will be created.
+The version of the data format is kept in the `format_version` attribute of the `meta` section. Machinery does currently not provide a migration path for descriptions that use an older format version and will abort if such a description is encountered. This policy will likely change in the future. Descriptions with a higher format version will also cause Machinery to abort.
+
+**Note:** Machinery <= v0.18 used unversioned documents which are no longer supported.
 
 
 ## Internal Object Model
