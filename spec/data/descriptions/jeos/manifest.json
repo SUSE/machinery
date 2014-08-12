@@ -1214,8 +1214,6 @@
       "changes": [
         "md5"
       ],
-      "uid": 0,
-      "gid": 0,
       "user": "root",
       "group": "root",
       "mode": "644"
@@ -1445,8 +1443,6 @@
         "md5"
       ],
       "mode": "644",
-      "uid": 0,
-      "gid": 0,
       "user": "root",
       "group": "root"
     }

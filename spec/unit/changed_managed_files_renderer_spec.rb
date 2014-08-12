@@ -41,8 +41,6 @@ describe ChangedManagedFilesRenderer do
             "mode"
           ],
           "mode": "644",
-          "uid": 0,
-          "gid": 0,
           "user": "root",
           "group": "root",
           "md5_hash": "a571ffd6f0f9ab955f274d72c767d06b"

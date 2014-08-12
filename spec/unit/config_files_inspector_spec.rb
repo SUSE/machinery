@@ -168,11 +168,9 @@ EOF
         package_version: "2.4.6",
         status:          "changed",
         changes:         ["md5"],
-        uid:             0,
-        gid:             0,
         user:            "root",
         group:           "root",
-        mode:            "644",
+        mode:            "644"
       )
 
       apache_1 = md5_os.dup
@@ -206,8 +204,6 @@ EOF
       iscsi_1.package_version = "2.0.873"
       iscsi_1.user = "nobody"
       iscsi_1.group = "nobody"
-      iscsi_1.uid = 65534
-      iscsi_1.gid = 65533
       iscsi_1.mode = "4700"
 
       expected_data = ConfigFilesScope.new([apache_1, apache_2, iscsi_1, apache_3,

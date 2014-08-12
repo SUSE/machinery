@@ -315,8 +315,6 @@ describe KiwiConfig do
             "changes": [
               "md5"
             ],
-            "uid": 0,
-            "gid": 0,
             "user": "user",
             "group": "group",
             "mode": "644"
@@ -328,8 +326,6 @@ describe KiwiConfig do
             "changes": [
               "md5"
             ],
-            "uid": 0,
-            "gid": 0,
             "user": "root",
             "group": "root",
             "mode": "644"
@@ -352,8 +348,6 @@ describe KiwiConfig do
             "changes": [
               "md5"
             ],
-            "uid": 0,
-            "gid": 0,
             "user": "user",
             "group": "group",
             "mode": "644"
@@ -366,8 +360,6 @@ describe KiwiConfig do
             "changes": [
               "md5"
             ],
-            "uid": 0,
-            "gid": 0,
             "user": "root",
             "group": "root",
             "mode": "644"
