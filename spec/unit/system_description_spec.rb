@@ -36,7 +36,8 @@ describe SystemDescription do
       "packages": [
         {
           "name": "kernel-desktop",
-          "version": "3.7.10-1.16.1"
+          "version": "3.7.10",
+          "release": "1.0"
         }
       ],
       "meta": {
@@ -50,11 +51,13 @@ describe SystemDescription do
       "packages": [
         {
           "name": "kernel-desktop",
-          "version": "3.7.10-1.16.1"
+          "version": "3.7.10",
+          "release": "1.0"
         },
         {
           "name": "kernel-desktop",
-          "version": "3.7.10-1.16.1"
+          "version": "3.7.10",
+          "release": "1.0"
         }
       ]
     }'

@@ -37,7 +37,8 @@ For example, a JSON document describing software configuration may look like thi
   "packages": [
     {
       "name": "kernel-desktop",
-      "version": "3.7.10-1.16.1"
+      "version": "3.7.10",
+      "release": "1.0"
     },
     ...
   ],

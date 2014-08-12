@@ -47,7 +47,8 @@ shared_context "machinery test directory" do
   "packages": [
     {
       "name": "kernel-desktop",
-      "version": "3.7.10-1.16.1"
+      "version": "3.7.10",
+      "release": "1.0"
     }
   ]
 }

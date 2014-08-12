@@ -24,11 +24,13 @@ describe PackagesRenderer do
         "packages": [
           {
             "name": "bash",
-            "version": "4.2-68.1.5"
+            "version": "4.2",
+            "release": "1.0"
           },
           {
             "name": "kernel-desktop",
-            "version": "3.7.10-1.16.1"
+            "version": "3.7.10",
+            "release": "1.0"
           }
 
         ]
@@ -41,8 +43,8 @@ describe PackagesRenderer do
     it "prints a package list when scope packages is requested" do
       output = PackagesRenderer.new.render(system_description)
 
-      expect(output).to include("bash (4.2-68.1.5)")
-      expect(output).to include("kernel-desktop (3.7.10-1.16.1)")
+      expect(output).to include("bash (4.2)")
+      expect(output).to include("kernel-desktop (3.7.10)")
     end
   end
 end
