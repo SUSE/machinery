@@ -22,6 +22,10 @@ module Machinery
       list.map{ |e| e.tr("_", "-") }.join(",")
     end
 
+    def self.write_output_to_pager(output)
+      IO.popen("$PAGER", "w") { |f| f.syswrite output }
+    end
+
     def self.print_output(output, options = {})
       if options[:no_pager] || !$stdout.tty?
         puts output
@@ -31,14 +35,14 @@ module Machinery
           ENV['LESS'] = 'FSRX'
           begin
             Machinery::check_package("less")
-            IO.popen("$PAGER", "w") { |f| f.syswrite output }
+            write_output_to_pager(output)
           rescue Machinery::Errors::MissingRequirement
             puts output
           end
         else
           IO.popen("$PAGER &>/dev/null", "w") { |f| f.close }
           if $?.success?
-            IO.popen("$PAGER", "w") { |f| f.syswrite output }
+            write_output_to_pager(output)
           else
             raise(Machinery::Errors::InvalidPager.new("'#{ENV['PAGER']}' could not " \
               "be executed. Use the --no-pager option or modify your $PAGER " \
