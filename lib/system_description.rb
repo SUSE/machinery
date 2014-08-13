@@ -16,11 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class SystemDescription < Machinery::Object
+  CURRENT_FORMAT_VERSION = 1
+
   attr_accessor :name
   attr_accessor :store
   attr_accessor :format_version
-
-  CURRENT_FORMAT_VERSION = 1
 
   def self.add_validator(json_path, &block)
     @@json_validator[json_path] = block
