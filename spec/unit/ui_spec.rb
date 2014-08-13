@@ -62,4 +62,12 @@ describe Machinery::Ui do
         to raise_error(Machinery::Errors::InvalidPager, /not_a_pager/)
     end
   end
+
+  describe ".warn" do
+    it "prints warnings to STDERR" do
+      expect(STDERR).to receive(:puts).with("Warning: foo")
+
+      Machinery::Ui.warn("foo")
+    end
+  end
 end

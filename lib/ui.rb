@@ -58,5 +58,9 @@ module Machinery
         end
       end
     end
+
+    def self.warn(s)
+      STDERR.puts "Warning: " + s
+    end
   end
 end
