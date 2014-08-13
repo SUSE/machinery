@@ -53,48 +53,28 @@ describe SystemDescriptionStore do
   end
 
   describe "#load" do
-    it "loads a SystemDescription" do
+    before(:each) do
       create_machinery_dir
-      store = SystemDescriptionStore.new(test_base_path)
-      description = store.load(test_name)
+      @store = SystemDescriptionStore.new(test_base_path)
+    end
+
+    it "loads a SystemDescription" do
+      description = @store.load(test_name)
 
       expect(description.to_json).to eq(test_manifest)
       expect(description.name).to eq(test_name)
     end
 
     it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
-      store = SystemDescriptionStore.new
       expect {
-        store.load("not_existing")
+        @store.load("not_existing")
       }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
 
-    it "raises Errors::SystemDescriptionError if the manifest does not contain a format version" do
-      store = SystemDescriptionStore.new(test_base_path)
-      FileUtils.mkdir_p(File.join(test_base_path, "no_format_version"), mode: 0700)
-      File.write(File.join(test_base_path, "no_format_version", "manifest.json"), {})
+    it "ensures that the system description is compatible" do
+      expect_any_instance_of(SystemDescription).to receive(:ensure_compatibility!)
 
-      expect {
-        store.load("no_format_version")
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-    end
-
-    it "raises Errors::SystemDescriptionError if the manifest is of a old format_version" do
-      store = SystemDescriptionStore.new(test_base_path)
-      FileUtils.mkdir_p(File.join(test_base_path, "old_format_version"), mode: 0700)
-
-      json = <<-EOF
-        {
-          "meta": {
-            "format_version": 0
-          }
-        }
-      EOF
-
-      File.write(File.join(test_base_path, "old_format_version", "manifest.json"), json)
-      expect {
-        store.load("old_format_version")
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      @store.load(test_name)
     end
   end
 

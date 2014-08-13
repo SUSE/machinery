@@ -18,6 +18,8 @@
 require_relative "spec_helper"
 
 describe SystemDescription do
+  subject { SystemDescription.new("foo") }
+
   before(:all) do
     @name = "name"
     @description = '{
@@ -122,6 +124,42 @@ describe SystemDescription do
     expect { SystemDescription.from_json(@name,
       @duplicate_description
     )}.to raise_error(Machinery::Errors::SystemDescriptionError)
+  end
+
+  describe "#compatible?" do
+    it "returns true if the format_version is good" do
+      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
+      expect(subject.compatible?).to be(true)
+    end
+
+    it "returns false if there is no format version defined" do
+      subject.format_version = nil
+      expect(subject.compatible?).to be(false)
+    end
+
+    it "returns false if the format_version does not match the current format version" do
+      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
+      expect(subject.compatible?).to be(false)
+
+      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION + 1
+      expect(subject.compatible?).to be(false)
+    end
+  end
+
+  describe "#ensure_compatibility!" do
+    it "does not raise an exception if the description is compatible" do
+      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
+      expect {
+        subject.ensure_compatibility!
+      }.to_not raise_error
+    end
+
+    it "raises an exception if the description is incompatible" do
+      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
+      expect {
+        subject.ensure_compatibility!
+      }.to raise_error
+    end
   end
 
   describe "#scopes" do

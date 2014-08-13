@@ -74,6 +74,20 @@ class SystemDescription < Machinery::Object
     Hash[entries]
   end
 
+  def compatible?
+    !format_version.nil? &&
+      format_version == SystemDescription::CURRENT_FORMAT_VERSION
+  end
+
+  def ensure_compatibility!
+    if !compatible?
+      raise Machinery::Errors::SystemDescriptionError.new(
+        "The system description #{name} has an incompatible data format and can" \
+        " not be read."
+      )
+    end
+  end
+
   def to_json
     hash = as_json
     hash["meta"] = {
