@@ -23,7 +23,13 @@ module Machinery
     end
 
     def self.write_output_to_pager(output)
-      IO.popen("$PAGER", "w") { |f| f.syswrite output }
+      IO.popen("$PAGER", "w") do |f|
+        begin
+          f.puts output
+        rescue Errno::EPIPE
+          # We just ignore broken pipes.
+        end
+      end
     end
 
     def self.print_output(output, options = {})
