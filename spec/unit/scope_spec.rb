@@ -57,24 +57,20 @@ describe Machinery::Scope do
   end
 
   describe "#compare_with" do
-    it "returns correct result when compared objects are equal" do
-      a = SimpleScope.new(1 => "1")
-      b = SimpleScope.new(1 => "1")
+    it "delegates to payload" do
+      payload_a = Machinery::Object.new
+      payload_b = Machinery::Object.new
+      result = [payload_a, payload_b, nil]
+      expect(payload_a).to receive(:compare_with).
+        with(payload_b).
+        and_return(result)
 
-      expected = [nil, nil, SimpleScope.new(1 => "1")]
-      expect(a.compare_with(b)).to eq(expected)
-    end
+      a = SimpleScope.new(payload_a)
+      b = SimpleScope.new(payload_b)
 
-    it "returns correct result when compared objects aren't equal" do
-      a = SimpleScope.new(1 => "1")
-      b = SimpleScope.new(2 => "2")
+      comparison = a.compare_with(b)
 
-      expected = [
-        SimpleScope.new(1 => "1"),
-        SimpleScope.new(2 => "2"),
-        nil
-      ]
-      expect(a.compare_with(b)).to eq(expected)
+      expect(comparison).to be(result)
     end
   end
 end
