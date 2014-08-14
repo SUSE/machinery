@@ -1,8 +1,12 @@
-Inspection means obtaining data from a local or remote system system concerning a particular area (packages, repositories, services,...) and storing it into our internal JSON format (see [data model](Data-Model)). This document describes structure of classes implementing this functionality.
+Inspection means obtaining data from a local or remote system system
+concerning a particular area (packages, repositories, services,...) and
+storing it into our internal JSON format (see [data model](Data-Model)). This
+document describes structure of classes implementing this functionality.
 
 ## Structure
 
-The main entities in the inspection process are **inspected systems** and **inspection code**. Both are reflected in the class design.
+The main entities in the inspection process are **inspected systems** and
+**inspection code**. Both are reflected in the class design.
 
 ## Inspected Systems
 
@@ -45,16 +49,23 @@ system = System.for("dreadnought.suse.cz")
 files = system.run_command("ls", "/etc", :stdout => :capture).split("\n")
 ```
 
-All systems are capable of running commands, pass them input and capture their output. This is accomplished using the `run_command` method, which has a Cheetah-like interface. In case of remote systems, the method executes commands using `ssh`.
+All systems are capable of running commands, pass them input and capture their
+output. This is accomplished using the `run_command` method, which has a
+Cheetah-like interface. In case of remote systems, the method executes
+commands using `ssh`.
 
-All systems are also capable of extracting files from the system with the `retrieve_files` method for processing on the inspecting machine or storage as part of the system description.
+All systems are also capable of extracting files from the system with the
+`retrieve_files` method for processing on the inspecting machine or storage as
+part of the system description.
 
 
 ## Inspection Code
 
 ### Correspondences
 
-On the data model level, information about the system is structured into *areas* (packages, repositories, services,...). These correspond to the toplevel keys in the JSON document.
+On the data model level, information about the system is structured into
+*areas* (packages, repositories, services,...). These correspond to the
+toplevel keys in the JSON document.
 
 For example, a JSON document describing software configuration may look like this:
 
@@ -64,19 +75,23 @@ For example, a JSON document describing software configuration may look like thi
     {
       "alias": "YaST:Head",
       "name": "YaST:Head",
-      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "type": "rpm-md",
-      "priority": 99,
+      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "keep_packages": false,
       "enabled": true,
       "autorefresh": true
+      "priority": 99,
     },
     ...
   ],
   "packages": [
     {
       "name": "kernel-desktop",
-      "version": "3.7.10-1.16.1"
+      "version": "3.7.10-1.16.1",
+      "release": "1.0",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d92a1a90799e41dcb3d4d2dd1dc5e8f4"
     },
     ...
   ]
@@ -85,25 +100,38 @@ For example, a JSON document describing software configuration may look like thi
 
 Areas in the data model correspond 1:1 to *scopes* used by users in the CLI.
 
-For example, a user who wants to retrieve a list of packages from a system can use the following command:
+For example, a user who wants to retrieve a list of packages from a system can
+use the following command:
 
     $ machinery inspect --scope=packages dreadnought.suse.cz
 
 Finally, areas and scopes correspond 1:1 to *plugins* and *inspectors* (see below).
 
-All these 1:1 correspondences are meant to simplify things and avoid unnecessary layers of indirection. If we find that some of these correspondences cause problems, we'll drop them.
+All these 1:1 correspondences are meant to simplify things and avoid
+unnecessary layers of indirection. If we find that some of these
+correspondences cause problems, we'll drop them.
 
 ### Plugins
 
-The inspection code is implemented in plugins. This makes the design modular and ensures extensibility.
+The inspection code is implemented in plugins. This makes the design modular
+and ensures extensibility.
 
-In general, plugin is a set of classes performing a specific task (inspection, display, installation, ...) in a specific area (packages, repositories, services,...).
+In general, plugin is a set of classes performing a specific task (inspection,
+display, installation, ...) in a specific area (packages, repositories, services,...).
 
-One of the plugin classes is the *main* one. In case of inspection, this class is derived from `Inspector` and implements the `inspect` method. Its class and file name correspond to the area the plugin is responsible for. For example, a `packages` plugin contains a `PackagesInspector` class in the `packages_inspector.rb` file.
+One of the plugin classes is the *main* one. In case of inspection, this class
+is derived from `Inspector` and implements the `inspect` method. Its class and
+file name correspond to the area the plugin is responsible for. For example, a
+`packages` plugin contains a `PackagesInspector` class in the
+`packages_inspector.rb` file.
 
-The main class is automatically found and loaded based on its file location. The other classes need to be loaded by the main class using the `require` statement.
+The main class is automatically found and loaded based on its file
+location. The other classes need to be loaded by the main class using the
+`require` statement.
 
-On the file system level, plugins are split along the task they perform and further along the area they cover. The overall directory structure looks like this:
+On the file system level, plugins are split along the task they perform and
+further along the area they cover. The overall directory structure looks like
+this:
 
     machinery
     └─ plugins
@@ -115,11 +143,14 @@ On the file system level, plugins are split along the task they perform and furt
        │  └─ ...
        └─ ...
 
-For now, plugins are mainly about code modularity. There is no infrastructure for plugin installation, no plugin metadata, etc. It is possible that these things will be added later as the plugin framework matures.
+For now, plugins are mainly about code modularity. There is no infrastructure
+for plugin installation, no plugin metadata, etc. It is possible that these
+things will be added later as the plugin framework matures.
 
 ### Inspectors
 
-The inspection itself is performed by inspector classes, derived from a common `Inspector` superclass:
+The inspection itself is performed by inspector classes, derived from a common
+`Inspector` superclass:
 
 ```ruby
 # Generic
@@ -151,7 +182,9 @@ class PackagesInspector < Inspector
 end
 ```
 
-The `inspect` method gets passed a `System` instance and a `SystemDescription` instance. It stores the inspected data under the corresponding key in the data model and returns a summary of the inspection.
+The `inspect` method gets passed a `System` instance and a `SystemDescription`
+instance. It stores the inspected data under the corresponding key in the data
+model and returns a summary of the inspection.
 
 Code invoking the inspectors could look like this (just a sketch):
 
