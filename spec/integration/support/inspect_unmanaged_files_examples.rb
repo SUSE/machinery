@@ -26,7 +26,7 @@ shared_examples "inspect unmanaged files" do |base|
     def parse_md5sums(output)
       output.split("\n").map { |e| e.split.first }
     end
-    test_tarball = File.join(Machinery::ROOT, "../machinery/spec/data/unmanaged_files/unmanaged_files.tgz")
+    test_tarball = File.join(Machinery::ROOT, "../machinery/spec/definitions/vagrant/unmanaged_files.tgz")
 
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
