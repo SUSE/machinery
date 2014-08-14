@@ -27,7 +27,10 @@ describe BuildTask do
           {
             "name": "kernel-desktop",
             "version": "3.7.10",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
           }
         ],
         "repositories": [
