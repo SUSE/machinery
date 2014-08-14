@@ -21,7 +21,7 @@ class PackagesRenderer < Renderer
 
     list do
       @system_description.packages.each do |p|
-        item "#{p.name} (#{p.version})"
+        item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{p.vendor})"
       end
     end
   end

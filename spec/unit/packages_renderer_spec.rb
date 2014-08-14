@@ -25,14 +25,19 @@ describe PackagesRenderer do
           {
             "name": "bash",
             "version": "4.2",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "openSUSE",
+            "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
           },
           {
             "name": "kernel-desktop",
             "version": "3.7.10",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "i586",
+            "vendor": "openSUSE",
+            "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
           }
-
         ]
       }
     EOF
@@ -43,8 +48,8 @@ describe PackagesRenderer do
     it "prints a package list when scope packages is requested" do
       output = PackagesRenderer.new.render(system_description)
 
-      expect(output).to include("bash (4.2)")
-      expect(output).to include("kernel-desktop (3.7.10)")
+      expect(output).to include("bash-4.2-1.0.x86_64 (openSUSE)")
+      expect(output).to include("kernel-desktop-3.7.10-1.0.i586 (openSUSE)")
     end
   end
 end

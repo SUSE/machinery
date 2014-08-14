@@ -24,8 +24,8 @@ describe PackagesInspector, ".inspect" do
   let(:packages_inspector) { PackagesInspector.new }
 
   let(:package_example) { <<EOF
-zypper|0.1.0|25.1$
-rpm|0.4.2|2.4.13$
+zypper|1.9.16|22.2|x86_64|openSUSE|4a87f6b9ceae5d40a411fe52d0f17050$
+rpm|4.11.1|6.5.1|x86_64|openSUSE|7dfdd742a9b7d60c75bf4844d294716d$
 EOF
   }
   let(:expected_packages) {
@@ -33,19 +33,25 @@ EOF
       [
         Package.new(
           name: "rpm",
-          version: "0.4.2",
-          release: "2.4.13"
+          version: "4.11.1",
+          release: "6.5.1",
+          arch: "x86_64",
+          vendor: "openSUSE",
+          checksum: "7dfdd742a9b7d60c75bf4844d294716d"
         ),
         Package.new(
           name: "zypper",
-          version: "0.1.0",
-          release: "25.1"
+          version: "1.9.16",
+          release: "22.2",
+          arch: "x86_64",
+          vendor: "openSUSE",
+          checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
         )
       ]
     )
   }
   let(:rpm_command) {
-    ["rpm", "-qa", "--qf", "%{NAME}|%{VERSION}$", :stdout=>:capture]
+    ["rpm", "-qa", "--qf", "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{FILEMD5S}$", :stdout=>:capture]
   }
 
   def inspect_data(host = "myhost", data = package_example)

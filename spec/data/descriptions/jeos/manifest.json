@@ -3,1142 +3,1829 @@
     {
       "name": "ConsoleKit",
       "version": "0.2.10",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "PolicyKit",
       "version": "0.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "aaa_base",
       "version": "11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "audit-libs",
       "version": "1.8",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "augeas-lenses",
       "version": "0.9.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "autoyast2",
       "version": "2.17.69",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "autoyast2-installation",
       "version": "2.17.69",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "bash",
       "version": "3.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "bind-libs",
       "version": "9.6ESVR7P4",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "bind-utils",
       "version": "9.6ESVR7P4",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "branding-SLES",
       "version": "11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "bridge-utils",
       "version": "1.4",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "bzip2",
       "version": "1.0.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "checkmedia",
       "version": "3.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "coreutils",
       "version": "8.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cpio",
       "version": "2.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cpio-lang",
       "version": "2.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cracklib",
       "version": "2.8.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cracklib-dict-full",
       "version": "2.8.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cron",
       "version": "4.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cryptsetup",
       "version": "1.0.5_SVNr46",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "curl",
       "version": "7.19.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "cyrus-sasl",
       "version": "2.1.22",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "dbus-1",
       "version": "1.2.10",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "dbus-1-glib",
       "version": "0.76",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "device-mapper",
       "version": "1.02.77",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "dhcpcd",
       "version": "3.2.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "diffutils",
       "version": "2.8.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "dirmngr",
       "version": "1.0.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "dmraid",
       "version": "1.0.0.rc16",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "e2fsprogs",
       "version": "1.41.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "elfutils",
       "version": "0.152",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "expat",
       "version": "2.0.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "fbset",
       "version": "2.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "file",
       "version": "4.24",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "filesystem",
       "version": "11.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "fillup",
       "version": "1.42",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "findutils",
       "version": "4.4.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "gawk",
       "version": "3.1.8",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "gdbm",
       "version": "1.8.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "glib2",
       "version": "2.22.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "glib2-branding-SLES",
       "version": "2.16",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "glib2-lang",
       "version": "2.22.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "glibc",
       "version": "2.11.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "glibc-locale",
       "version": "2.11.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "gpg2",
       "version": "2.0.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "gpg2-lang",
       "version": "2.0.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "grep",
       "version": "2.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "grub",
       "version": "0.97",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "gzip",
       "version": "1.3.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "hal",
       "version": "0.5.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "haveged",
       "version": "1.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "hwinfo",
       "version": "15.50",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "info",
       "version": "4.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "initviocons",
       "version": "0.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "insserv",
       "version": "1.12.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "iproute2",
       "version": "2.6.29.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "kbd",
       "version": "1.14.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "kernel-default",
       "version": "3.0.76",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "kernel-default-base",
       "version": "3.0.76",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "keyutils-libs",
       "version": "1.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "kpartx",
       "version": "0.4.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "krb5",
       "version": "1.6.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "less",
       "version": "424b",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libacl",
       "version": "2.2.47",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libaio",
       "version": "0.3.109",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libasm1",
       "version": "0.152",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libattr",
       "version": "2.4.43",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libaugeas0",
       "version": "0.9.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libblkid1",
       "version": "2.19.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libblocxx6",
       "version": "2.1.0.342",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libbz2-1",
       "version": "1.0.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libcap2",
       "version": "2.11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libcom_err2",
       "version": "1.41.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libcryptsetup0",
       "version": "1.0.5_SVNr46",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libcurl4",
       "version": "7.19.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libdb-4_5",
       "version": "4.5.20",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libdw1",
       "version": "0.152",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libebl1",
       "version": "0.152",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libelf1",
       "version": "0.152",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libexpat1",
       "version": "2.0.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libext2fs2",
       "version": "1.41.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libgcc_s1",
       "version": "4.7.2_20130108",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libgcrypt11",
       "version": "1.5.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libglib-2_0-0",
       "version": "2.22.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libgobject-2_0-0",
       "version": "2.22.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libgpg-error0",
       "version": "1.10",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libgthread-2_0-0",
       "version": "2.22.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libidn",
       "version": "1.10",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libksba",
       "version": "1.0.4",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libldap-2_4-2",
       "version": "2.4.26",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libldapcpp1",
       "version": "0.3.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "liblzma5",
       "version": "5.0.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libncurses5",
       "version": "5.6",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libnscd",
       "version": "2.0.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libopenssl0_9_8",
       "version": "0.9.8j",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libreadline5",
       "version": "5.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libreiserfs",
       "version": "0.3.0.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libselinux1",
       "version": "2.0.91",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libsepol1",
       "version": "2.0.41",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libsmbios2",
       "version": "2.0.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libstdc++6",
       "version": "4.7.2_20130108",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libudev0",
       "version": "147",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libusb-0_1-4",
       "version": "0.1.12",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libuuid1",
       "version": "2.19.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libxcrypt",
       "version": "3.0.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libxml2",
       "version": "2.7.6",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libxslt",
       "version": "1.1.24",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libzio",
       "version": "0.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "libzypp",
       "version": "9.34.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "limal",
       "version": "1.5.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "limal-perl",
       "version": "1.5.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "login",
       "version": "3.41",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "logrotate",
       "version": "3.7.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "lsof",
       "version": "4.80",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "lsscsi",
       "version": "0.23",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "lvm2",
       "version": "2.02.98",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "master-boot-code",
       "version": "1.14",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "mdadm",
       "version": "3.2.6",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "mingetty",
       "version": "1.0.7s",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "mkinitrd",
       "version": "2.4.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "module-init-tools",
       "version": "3.11.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "mtools",
       "version": "3.9.11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "multipath-tools",
       "version": "0.4.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "ncurses-utils",
       "version": "5.6",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "net-tools",
       "version": "1.60",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "netcfg",
       "version": "11.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "openldap2-client",
       "version": "2.4.26",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "openslp",
       "version": "1.2.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "openssh",
       "version": "6.2p2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "openssl",
       "version": "0.9.8j",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "openssl-certs",
       "version": "1.85",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pam",
       "version": "1.1.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pam-config",
       "version": "0.79",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pam-modules",
       "version": "11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "parted",
       "version": "2.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pciutils",
       "version": "3.1.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pciutils-ids",
       "version": "2013.2.11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pcre",
       "version": "7.8",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl",
       "version": "5.10.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Bootloader",
       "version": "0.4.89.55",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Config-Crontab",
       "version": "1.21",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Config-IniFiles",
       "version": "2.39",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Digest-SHA1",
       "version": "2.11",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Module-Build",
       "version": "0.2808.01",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Parse-RecDescent",
       "version": "1.96.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-Test-Simple",
       "version": "0.72",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-URI",
       "version": "1.37",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-X500-DN",
       "version": "0.29",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-XML-Parser",
       "version": "2.36",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-XML-Simple",
       "version": "2.18",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-XML-XPath",
       "version": "1.13",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-base",
       "version": "5.10.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "perl-gettext",
       "version": "1.05",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "permissions",
       "version": "2013.1.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pinentry",
       "version": "0.7.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pm-utils",
       "version": "0.99.4.20071229",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pmtools",
       "version": "20071116",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "polkit-default-privs",
       "version": "0.1_200812111413",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "popt",
       "version": "1.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "postfix",
       "version": "2.9.4",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "procps",
       "version": "3.2.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "psmisc",
       "version": "22.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pth",
       "version": "2.0.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "pwdutils",
       "version": "3.2.15",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "release-notes-sles",
       "version": "11.3.22",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "rpm",
       "version": "4.4.2.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "rsync",
       "version": "3.0.4",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "satsolver-tools",
       "version": "0.17.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "sed",
       "version": "4.1.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "setserial",
       "version": "2.17",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "sles-release",
       "version": "11.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "sles-release-DVD",
       "version": "11.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "subscription-tools",
       "version": "1.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "sudo",
       "version": "1.7.6p2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "sysconfig",
       "version": "0.71.61",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "syslinux",
       "version": "3.82",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "sysvinit",
       "version": "2.86",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "tar",
       "version": "1.26",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "tcpd",
       "version": "7.6",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "terminfo-base",
       "version": "5.6",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "timezone",
       "version": "2013b",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "tunctl",
       "version": "20070815",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "udev",
       "version": "147",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "unzip",
       "version": "6.00",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "update-alternatives",
       "version": "1.14.19",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "util-linux",
       "version": "2.19.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "util-linux-lang",
       "version": "2.19.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "vim",
       "version": "7.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "vim-base",
       "version": "7.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "vlan",
       "version": "1.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "xz",
       "version": "5.0.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2",
       "version": "2.17.129",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-add-on",
       "version": "2.17.31",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-bootloader",
       "version": "2.17.96",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-core",
       "version": "2.17.45",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-country",
       "version": "2.17.54",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-country-data",
       "version": "2.17.54",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-dbus-client",
       "version": "2.17.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-dbus-server",
       "version": "2.17.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-firewall",
       "version": "2.17.13",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-hardware-detection",
       "version": "2.17.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-installation",
       "version": "2.17.108",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-ldap",
       "version": "2.17.8",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-ldap-client",
       "version": "2.17.37",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-libyui",
       "version": "2.21.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-mouse",
       "version": "2.16.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-ncurses",
       "version": "2.17.22",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-ncurses-pkg",
       "version": "2.17.20",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-network",
       "version": "2.17.195",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-online-update",
       "version": "2.17.23",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-packager",
       "version": "2.17.107",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-pam",
       "version": "2.17.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-perl-bindings",
       "version": "2.17.2",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-pkg-bindings",
       "version": "2.17.59",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-runlevel",
       "version": "2.17.9",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-schema",
       "version": "2.17.5",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-security",
       "version": "2.17.16",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-storage",
       "version": "2.17.142",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-storage-lib",
       "version": "2.17.142",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-trans-en_US",
       "version": "2.17.34",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-trans-stats",
       "version": "2.15.0",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-transfer",
       "version": "2.16.3",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-users",
       "version": "2.17.54",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-xml",
       "version": "2.16.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "yast2-ycp-ui-bindings",
       "version": "2.21.1",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "zlib",
       "version": "1.2.7",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     },
     {
       "name": "zypper",
       "version": "1.6.307",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "i386",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c2baffc641476ccca601595138118f76"
     }
   ],
   "meta": {

@@ -21,18 +21,22 @@ class PackagesInspector < Inspector
 
     packages = Array.new
     rpm_data = system.run_command(
-      "rpm","-qa","--qf", "%{NAME}|%{VERSION}|%{RELEASE}$",
+      "rpm","-qa","--qf",
+      "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{SIGMD5}$",
       :stdout=>:capture
     )
     # gpg-pubkeys are no real packages but listed by rpm in the regular
     # package list
-    rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
+    rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
       name =~ /^gpg-pubkey$/
-    end.each do |name, version, release|
+    end.each do |name, version, release, arch, vendor, checksum|
       packages << Package.new(
-        :name    => name,
-        :version => version,
-        :release => release
+        :name     => name,
+        :version  => version,
+        :release  => release,
+        :arch     => arch,
+        :vendor   => vendor,
+        :checksum => checksum
       )
     end
 
