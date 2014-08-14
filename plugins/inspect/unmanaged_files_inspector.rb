@@ -169,9 +169,30 @@ class UnmanagedFilesInspector < Inspector
       }
     )
 
+    # Filenames can contain invalid UTF-8 characters. We filter those and replace
+    # them with the "REPLACEMENT CHARACTER" (U+FFFD) so that we can safely handle
+    # these cases later without running into encoding exceptions
+    # (Using https://github.com/hsbt/string-scrub which backports String#scrub
+    # to ruby < 2.1)
+    out.scrub!
+
     # find creates three field per path
     out.split("\0", -1).each_slice(3) do |type,path,link|
       next unless path && !path.empty?
+
+      if [path, link].any? { |f| f.include?("\uFFFD") }
+        broken_names = []
+        broken_names << "filename '#{path}'" if path.include?("\uFFFD")
+        broken_names << "link target '#{link}'" if link.include?("\uFFFD")
+
+        warning = broken_names.join(" and ").capitalize
+        warning += " contain#{"s" if broken_names.length == 1}"
+        warning += " invalid UTF-8 characters. Skipping."
+
+        Machinery::Ui.warn(warning)
+        next
+      end
+
       files[path] = link if type == "l"
       files[path] = "" if type == "f"
 

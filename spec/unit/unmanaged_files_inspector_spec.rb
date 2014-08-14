@@ -350,4 +350,32 @@ describe UnmanagedFilesInspector do
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end
   end
+
+  describe "#get_find_data" do
+    it "does not choke on filenames with invalid UTF-8 characters and filters them" do
+      system = double
+      expect(system).to receive(:run_command).and_return(
+        "f\0good_filename\0\0" \
+        "f\0broken\255filename\0\0"
+      )
+      expect(Machinery::Ui).to receive(:warn)
+
+      result = nil
+      expect {
+        result = subject.get_find_data(system, "/", 1)
+      }.to_not raise_error
+
+      expect(result).to eq([{"good_filename" => ""}, {}])
+    end
+
+    it "reports both link and target if both is broken" do
+      system = double
+      expect(system).to receive(:run_command).and_return(
+        "f\0broken\255link\0broken\255target\0"
+      )
+      expect(Machinery::Ui).to receive(:warn).with(/broken\uFFFDlink.*broken\uFFFDtarget/)
+
+      subject.get_find_data(system, "/", 1)
+    end
+  end
 end

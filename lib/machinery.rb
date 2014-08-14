@@ -28,6 +28,7 @@ require "erb"
 require "yaml"
 require "uri"
 require "gli"
+require "string-scrub"
 
 require_relative 'machinery_logger'
 require_relative 'zypper'
