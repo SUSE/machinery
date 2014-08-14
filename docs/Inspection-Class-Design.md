@@ -75,19 +75,23 @@ For example, a JSON document describing software configuration may look like thi
     {
       "alias": "YaST:Head",
       "name": "YaST:Head",
-      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "type": "rpm-md",
-      "priority": 99,
+      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "keep_packages": false,
       "enabled": true,
       "autorefresh": true
+      "priority": 99,
     },
     ...
   ],
   "packages": [
     {
       "name": "kernel-desktop",
-      "version": "3.7.10-1.16.1"
+      "version": "3.7.10-1.16.1",
+      "release": "1.0",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d92a1a90799e41dcb3d4d2dd1dc5e8f4"
     },
     ...
   ]

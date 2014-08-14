@@ -24,7 +24,7 @@ corresponds to a configuration scope (e.g. repositories, packages, changed
 configuration files, etc.). Data under each key is further structured into
 JSON objects and arrays as needed.
 
-There is one special key `meta`, which is used to collect meta data of the
+There is one special key `meta`, which is used to collect meta data from the
 whole document and the information in the scope sections.
 
 For example, a JSON document describing software configuration may look like this:
@@ -35,9 +35,8 @@ For example, a JSON document describing software configuration may look like thi
     {
       "alias": "YaST:Head",
       "name": "YaST:Head",
-      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "type": "rpm-md",
-      "priority": 99,
+      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "enabled": true,
       "autorefresh": true,
       "gpgcheck": true,
@@ -60,10 +59,12 @@ For example, a JSON document describing software configuration may look like thi
   "meta": {
     "format_version": 1,
     "repositories": {
-      "modified": "2014-02-10T16:10:48Z"
+      "modified": "2014-02-10T16:10:48Z",
+      "hostname": "example.com"
     },
     "packages": {
-      "modified": "2014-02-10T16:10:48Z"
+      "modified": "2014-02-10T16:10:48Z",
+      "hostname": "example.com"
     }
   }
 }
