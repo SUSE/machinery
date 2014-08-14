@@ -57,6 +57,10 @@ module Machinery
 
     alias eql? ==
 
+    def hash
+      @elements.hash
+    end
+
     def -(other)
       self.class.new(@elements - other.elements)
     end
