@@ -148,6 +148,9 @@ suseImportBuildKey
 suseConfig
 EOF
     case @system_description.os_object
+      when OsOpenSuse13_1
+        boot = "vmxboot/suse-13.1"
+        bootloader = "grub2"
       when OsSles12
         boot = "vmxboot/suse-SLES12"
         bootloader = "grub2"
@@ -311,6 +314,9 @@ EOF
       when OsSles11
         write_dhcp_network_config(output_location, "eth0")
       when OsSles12
+        write_dhcp_network_config(output_location, "lan0")
+        write_persistent_net_rules(output_location)
+      when OsOpenSuse13_1
         write_dhcp_network_config(output_location, "lan0")
         write_persistent_net_rules(output_location)
     end
