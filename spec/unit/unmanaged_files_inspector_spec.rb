@@ -272,7 +272,8 @@ describe UnmanagedFilesInspector do
           base_dir = "" if base_dir=="/"
           expect(system).to receive(:create_archive).with(
             dir,
-            File.join(cfdir, "trees", base_dir, "#{last_dir}.tgz")
+            File.join(cfdir, "trees", base_dir, "#{last_dir}.tgz"),
+            []
           )
         end
         arch = File.join(cfdir, "files.tgz")
@@ -362,10 +363,11 @@ describe UnmanagedFilesInspector do
 
       result = nil
       expect {
-        result = subject.get_find_data(system, "/", 1)
+        result = subject.get_find_data(system, "/etc", 1)
       }.to_not raise_error
 
-      expect(result).to eq([{"good_filename" => ""}, {}])
+      expect(result).to eq([{"good_filename" => ""}, {},
+        ["broken\255filename".force_encoding("binary")]])
     end
 
     it "reports both link and target if both is broken" do
@@ -375,7 +377,15 @@ describe UnmanagedFilesInspector do
       )
       expect(Machinery::Ui).to receive(:warn).with(/broken\uFFFDlink.*broken\uFFFDtarget/)
 
-      subject.get_find_data(system, "/", 1)
+      result = subject.get_find_data(system, "/etc", 1)
+      expect(result).to eq([
+        {},
+        {},
+        [
+          "broken\255link".force_encoding("binary"),
+          "broken\255target".force_encoding("binary")
+        ]
+      ])
     end
   end
 end
