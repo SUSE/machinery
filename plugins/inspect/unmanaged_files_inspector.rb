@@ -79,13 +79,13 @@ class UnmanagedFilesInspector < Inspector
     p "should not happen non-abs dirs:#{list}" unless list.empty?
   end
 
-  def extract_unmanaged_files(system, description, files, trees)
+  def extract_unmanaged_files(system, description, files, trees, excluded)
     store_name = "unmanaged_files"
     description.initialize_file_store(store_name)
     store_path = description.file_store(store_name)
 
     archive_path = File.join(store_path, "files.tgz")
-    system.create_archive(files.join("\0"), archive_path)
+    system.create_archive(files.join("\0"), archive_path, excluded)
 
     trees.each do |tree|
       tree_name = File.basename(tree)
@@ -94,7 +94,7 @@ class UnmanagedFilesInspector < Inspector
 
       description.create_file_store_sub_dir(store_name, sub_dir)
       archive_path = File.join(store_path, sub_dir, "#{tree_name}.tgz")
-      system.create_archive(tree, archive_path)
+      system.create_archive(tree, archive_path, excluded)
     end
   end
 
@@ -153,6 +153,7 @@ class UnmanagedFilesInspector < Inspector
     dep = depth - 1
     files = {}
     dirs = {}
+    excluded_files = []
 
     # compute command line
     cmd = "find #{dir.shellescape} -xdev -maxdepth 1 -maxdepth #{depth} "
@@ -160,6 +161,15 @@ class UnmanagedFilesInspector < Inspector
 
     # Cheetah seems to be unable to handle binary zeroes "\0" in parameters
     # misuse stdin for command
+    #
+    # Filenames can contain invalid UTF-8 characters, so we treat the data as
+    # binary information first while splitting the raw output and then convert
+    # the separate strings to UTF-8, replacing invalid characters with the
+    # "REPLACEMENT CHARACTER" (U+FFFD). That way we have both the raw data
+    # (which is needed in order to be able to access the files) and the cleaned
+    # string which can be safely used.
+    # (Using https://github.com/hsbt/string-scrub which backports String#scrub
+    # to ruby < 2.1)
     out = system.run_command(
       "/bin/bash",
       {
@@ -167,23 +177,26 @@ class UnmanagedFilesInspector < Inspector
         :stdout          => :capture,
         :disable_logging => true
       }
-    )
+    ).force_encoding("binary")
 
-    # Filenames can contain invalid UTF-8 characters. We filter those and replace
-    # them with the "REPLACEMENT CHARACTER" (U+FFFD) so that we can safely handle
-    # these cases later without running into encoding exceptions
-    # (Using https://github.com/hsbt/string-scrub which backports String#scrub
-    # to ruby < 2.1)
-    out.scrub!
 
     # find creates three field per path
-    out.split("\0", -1).each_slice(3) do |type,path,link|
-      next unless path && !path.empty?
+    out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
+      next unless raw_path && !raw_path.empty?
+
+      path = raw_path.dup.force_encoding("UTF-8").scrub
+      link = raw_link.dup.force_encoding("UTF-8").scrub
 
       if [path, link].any? { |f| f.include?("\uFFFD") }
         broken_names = []
-        broken_names << "filename '#{path}'" if path.include?("\uFFFD")
-        broken_names << "link target '#{link}'" if link.include?("\uFFFD")
+        if path.include?("\uFFFD")
+          broken_names << "filename '#{path}'"
+          excluded_files << raw_path
+        end
+        if link.include?("\uFFFD")
+          broken_names << "link target '#{link}'"
+          excluded_files << raw_link
+        end
 
         warning = broken_names.join(" and ").capitalize
         warning += " contain#{"s" if broken_names.length == 1}"
@@ -200,8 +213,8 @@ class UnmanagedFilesInspector < Inspector
       # dirs at maxdepth could be non-leafs all othere are leafs
       dirs[path] = path.count("/") == dep if type == "d"
     end
-    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size} dirs:#{dirs.size}"
-    [files, dirs]
+    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size} dirs:#{dirs.size} excluded:#{excluded_files}"
+    [files, dirs, excluded_files]
   end
 
   def max_depth
@@ -248,6 +261,7 @@ class UnmanagedFilesInspector < Inspector
     Machinery.logger.debug "inspect unmanaged files mounts_abs:#{mounts_abs}"
     unmanaged_files = []
     unmanaged_trees = []
+    excluded_files = []
     unmanaged_links = {}
     dirs_todo = [ "/" ]
     start = start_depth
@@ -258,7 +272,8 @@ class UnmanagedFilesInspector < Inspector
 
       # determine files and directories below find_dir until a certain depth
       depth = mounts_abs.include?(find_dir) ? start : max
-      files, dirs = get_find_data( system, find_dir, depth )
+      files, dirs, excluded = get_find_data( system, find_dir, depth )
+      excluded_files += excluded
       find_count += 1
       find_dir += "/" if find_dir.size > 1
       if !mounts.empty?
@@ -308,7 +323,7 @@ class UnmanagedFilesInspector < Inspector
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     description.remove_file_store("unmanaged_files")
     if do_extract
-      extract_unmanaged_files(system, description, unmanaged_files, unmanaged_trees)
+      extract_unmanaged_files(system, description, unmanaged_files, unmanaged_trees, excluded_files)
     end
     osl = unmanaged_files.map do |p|
       type = unmanaged_links.has_key?(p) ? "link" : "file"
