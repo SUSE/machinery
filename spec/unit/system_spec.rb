@@ -75,6 +75,28 @@ describe System do
       local_system.run_command("md5sum", "-c", :stdin => md5sum)
       FileUtils.rm_r(dir)
     end
+
+    it "excludes excluded files" do
+      Dir.mktmpdir("machinery_unittest") do |tmp_dir|
+        archive = File.join(tmp_dir, "/archive.tgz")
+        test_dir = File.join(tmp_dir, "/test")
+        included_file = File.join(test_dir, "included")
+        excluded_file_1 = File.join(test_dir, "excluded")
+        excluded_file_2 = File.join(test_dir, "excluded?with special:chars")
+        FileUtils.mkdir_p(test_dir)
+        FileUtils.touch(included_file)
+        FileUtils.touch(excluded_file_1)
+        FileUtils.touch(excluded_file_2)
+
+        local_system = LocalSystem.new()
+        local_system.create_archive(test_dir, archive, [excluded_file_1, excluded_file_2])
+
+        file_list = Tarball.new(archive).list
+        # paths in the tarball are relativ to "/", so we have to add it for the comparison
+        paths = file_list.map { |f| File.join("/", f[:path]) }
+        expect(paths).to match_array([test_dir, included_file])
+      end
+    end
   end
 
   describe "#run_script" do
