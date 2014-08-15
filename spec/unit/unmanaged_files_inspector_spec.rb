@@ -373,16 +373,16 @@ describe UnmanagedFilesInspector do
     it "reports both link and target if both is broken" do
       system = double
       expect(system).to receive(:run_command).and_return(
-        "f\0broken\255link\0broken\255target\0"
+        "f\0broken\255Link\0broken\255target\0"
       )
-      expect(Machinery::Ui).to receive(:warn).with(/broken\uFFFDlink.*broken\uFFFDtarget/)
+      expect(Machinery::Ui).to receive(:warn).with(/broken\uFFFDLink.*broken\uFFFDtarget/)
 
       result = subject.get_find_data(system, "/etc", 1)
       expect(result).to eq([
         {},
         {},
         [
-          "broken\255link".force_encoding("binary"),
+          "broken\255Link".force_encoding("binary"),
           "broken\255target".force_encoding("binary")
         ]
       ])

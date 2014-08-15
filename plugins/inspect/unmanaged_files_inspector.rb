@@ -198,9 +198,10 @@ class UnmanagedFilesInspector < Inspector
           excluded_files << raw_link
         end
 
-        warning = broken_names.join(" and ").capitalize
+        warning = broken_names.join(" and ")
         warning += " contain#{"s" if broken_names.length == 1}"
         warning += " invalid UTF-8 characters. Skipping."
+        warning[0] = warning[0].upcase
 
         Machinery.logger.warn(warning)
         Machinery::Ui.warn(warning)
