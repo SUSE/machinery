@@ -4,63 +4,64 @@ baseMount
 suseSetupProduct
 suseImportBuildKey
 suseConfig
-zypper -n ar --name='SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138' --type='yast2' --refresh 'http://example.com/SLES11-SP3' 'SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138'
-zypper -n mr --priority=99 'SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138'
+zypper -n ar --name='openSUSE_13.1_OSS' --type='yast2' --refresh 'http://download.opensuse.org/distribution/13.1/repo/oss/' 'openSUSE_13.1_OSS'
+zypper -n mr --priority=99 'openSUSE_13.1_OSS'
+zypper -n ar --name='openSUSE_13.1_Updates' --type='rpm-md' --refresh 'http://download.opensuse.org/update/13.1/' 'openSUSE_13.1_Updates'
+zypper -n mr --priority=99 'openSUSE_13.1_Updates'
 chmod 644 '/etc/crontab'
 chown root:root '/etc/crontab'
 chmod 644 '/usr/share/bash/helpfiles/read'
 chown root:root '/usr/share/bash/helpfiles/read'
 rm -rf '/usr/share/bash/helpfiles/cd'
-chkconfig arpd off
-chkconfig autoyast off
-chkconfig boot.cgroup off
-chkconfig boot.cleanup on
-chkconfig boot.clock on
-chkconfig boot.compliance on
-chkconfig boot.crypto off
-chkconfig boot.crypto-early off
-chkconfig boot.debugfs on
-chkconfig boot.device-mapper on
-chkconfig boot.dmraid off
-chkconfig boot.efivars on
-chkconfig boot.ipconfig on
-chkconfig boot.klog on
-chkconfig boot.ldconfig on
-chkconfig boot.loadmodules on
-chkconfig boot.localfs on
-chkconfig boot.localnet on
-chkconfig boot.lvm off
-chkconfig boot.lvm_monitor on
-chkconfig boot.md off
-chkconfig boot.multipath off
-chkconfig boot.proc on
-chkconfig boot.rootfsck on
-chkconfig boot.swap on
-chkconfig boot.sysctl on
-chkconfig boot.udev on
-chkconfig boot.udev_retry on
-chkconfig cron on
-chkconfig dbus on
-chkconfig fbset on
-chkconfig haldaemon on
-chkconfig haveged on
-chkconfig kbd on
-chkconfig lvm_wait_merge_snapshot on
-chkconfig mdadmd off
-chkconfig multipathd off
-chkconfig network on
-chkconfig network-remotefs on
-chkconfig postfix on
-chkconfig powerd off
-chkconfig purge-kernels on
-chkconfig random on
-chkconfig raw off
-chkconfig rpasswdd off
-chkconfig rpmconfigcheck off
-chkconfig rsyncd off
-chkconfig setserial off
-chkconfig skeleton.compat off
-chkconfig sshd on
+systemctl disable blk-availability.service
+systemctl mask cgroup.service
+systemctl mask clock.service
+systemctl disable console-getty.service
+systemctl enable cron.service
+systemctl mask crypto-early.service
+systemctl mask crypto.service
+systemctl disable debug-shell.service
+systemctl mask device-mapper.service
+systemctl disable dm-event.service
+systemctl disable dm-event.socket
+systemctl mask earlysyslog.service
+systemctl mask earlyxdm.service
+systemctl mask kbd.service
+systemctl disable klog.service
+systemctl disable klogd.service
+systemctl mask ldconfig.service
+systemctl mask loadmodules.service
+systemctl mask localnet.service
+systemctl disable lvm2-lvmetad.service
+systemctl disable lvm2-lvmetad.socket
+systemctl disable lvm2-monitor.service
+systemctl enable network.service
+systemctl disable plymouth-halt.service
+systemctl disable plymouth-kexec.service
+systemctl disable plymouth-poweroff.service
+systemctl disable plymouth-quit-wait.service
+systemctl disable plymouth-quit.service
+systemctl disable plymouth-read-write.service
+systemctl disable plymouth-reboot.service
+systemctl disable plymouth-start.service
+systemctl mask proc.service
+systemctl enable purge-kernels.service
+systemctl disable rpcbind.service
+systemctl disable rpcbind.socket
+systemctl disable rsyncd.service
+systemctl mask single.service
+systemctl enable sshd.service
+systemctl mask startpreload.service
+systemctl mask stoppreload.service
+systemctl enable suse-studio-custom.service
+systemctl mask swap.service
+systemctl enable syslog-ng.service
+systemctl enable syslog.service
+systemctl enable systemd-readahead-collect.service
+systemctl enable systemd-readahead-drop.service
+systemctl enable systemd-readahead-replay.service
+perl /tmp/merge_users_and_groups.pl /etc/passwd /etc/shadow /etc/group
+rm /tmp/merge_users_and_groups.pl
 # Apply the extracted unmanaged files
 find /tmp/unmanaged_files -name *.tgz -exec tar -C / -X '/tmp/unmanaged_files_build_excludes' -xf {} \;
 rm -rf '/tmp/unmanaged_files' '/tmp/unmanaged_files_build_excludes'

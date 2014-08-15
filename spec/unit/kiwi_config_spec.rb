@@ -405,16 +405,6 @@ describe KiwiConfig do
   end
 
   describe "#initialize" do
-    it "raises exception when OS is not supported for building" do
-      system_description_with_content.os.name = "openSUSE 13.1 (Bottle)"
-      expect {
-        KiwiConfig.new(system_description_with_content)
-      }.to raise_error(
-         Machinery::Errors::KiwiExportFailed,
-         /openSUSE 13.1/
-      )
-    end
-
     it "applies the packages to the kiwi config" do
       config = KiwiConfig.new(system_description_with_content)
 
