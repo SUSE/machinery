@@ -22,7 +22,7 @@ describe "machinery@openSUSE 13.1" do
     @machinery = start_system(box: "machinery_131")
   end
 
-  include_examples "inspect", ["opensuse131"]
   include_examples "CLI"
   include_examples "kiwi export"
+  include_examples "inspect", ["opensuse131"]
 end
