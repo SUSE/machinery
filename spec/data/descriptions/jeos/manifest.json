@@ -1,1877 +1,2848 @@
 {
-  "packages": [
+  "os": {
+    "name": "openSUSE 13.1 (Bottle)",
+    "version": "13.1 (Bottle)",
+    "architecture": "x86_64"
+  },
+  "services": {
+    "init_system": "systemd",
+    "services": [
+      {
+        "name": "after-local.service",
+        "state": "static"
+      },
+      {
+        "name": "blk-availability.service",
+        "state": "disabled"
+      },
+      {
+        "name": "cgroup.service",
+        "state": "masked"
+      },
+      {
+        "name": "cleanup.service",
+        "state": "static"
+      },
+      {
+        "name": "clock.service",
+        "state": "masked"
+      },
+      {
+        "name": "console-getty.service",
+        "state": "disabled"
+      },
+      {
+        "name": "console-shell.service",
+        "state": "static"
+      },
+      {
+        "name": "cron.service",
+        "state": "enabled"
+      },
+      {
+        "name": "crypto-early.service",
+        "state": "masked"
+      },
+      {
+        "name": "crypto.service",
+        "state": "masked"
+      },
+      {
+        "name": "dbus-org.freedesktop.hostname1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.locale1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.login1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.machine1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.timedate1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus.socket",
+        "state": "static"
+      },
+      {
+        "name": "debug-shell.service",
+        "state": "disabled"
+      },
+      {
+        "name": "device-mapper.service",
+        "state": "masked"
+      },
+      {
+        "name": "dm-event.service",
+        "state": "disabled"
+      },
+      {
+        "name": "dm-event.socket",
+        "state": "disabled"
+      },
+      {
+        "name": "earlysyslog.service",
+        "state": "masked"
+      },
+      {
+        "name": "earlyxdm.service",
+        "state": "masked"
+      },
+      {
+        "name": "emergency.service",
+        "state": "static"
+      },
+      {
+        "name": "halt-local.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-cleanup.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-parse-etc.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-switch-root.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-udevadm-cleanup-db.service",
+        "state": "static"
+      },
+      {
+        "name": "kbd.service",
+        "state": "masked"
+      },
+      {
+        "name": "klog.service",
+        "state": "disabled"
+      },
+      {
+        "name": "klogd.service",
+        "state": "disabled"
+      },
+      {
+        "name": "kmod-static-nodes.service",
+        "state": "static"
+      },
+      {
+        "name": "ldconfig.service",
+        "state": "masked"
+      },
+      {
+        "name": "loadmodules.service",
+        "state": "masked"
+      },
+      {
+        "name": "localfs.service",
+        "state": "static"
+      },
+      {
+        "name": "localnet.service",
+        "state": "masked"
+      },
+      {
+        "name": "lvm2-lvmetad.service",
+        "state": "disabled"
+      },
+      {
+        "name": "lvm2-lvmetad.socket",
+        "state": "disabled"
+      },
+      {
+        "name": "lvm2-monitor.service",
+        "state": "disabled"
+      },
+      {
+        "name": "network.service",
+        "state": "enabled"
+      },
+      {
+        "name": "plymouth-halt.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-kexec.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-poweroff.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-quit-wait.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-quit.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-read-write.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-reboot.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-start.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-switch-root.service",
+        "state": "static"
+      },
+      {
+        "name": "polkit.service",
+        "state": "static"
+      },
+      {
+        "name": "proc.service",
+        "state": "masked"
+      },
+      {
+        "name": "purge-kernels.service",
+        "state": "enabled"
+      },
+      {
+        "name": "quotaon.service",
+        "state": "static"
+      },
+      {
+        "name": "random.service",
+        "state": "static"
+      },
+      {
+        "name": "rc-local.service",
+        "state": "static"
+      },
+      {
+        "name": "rescue.service",
+        "state": "static"
+      },
+      {
+        "name": "rootfsck.service",
+        "state": "static"
+      },
+      {
+        "name": "rpcbind.service",
+        "state": "disabled"
+      },
+      {
+        "name": "rpcbind.socket",
+        "state": "disabled"
+      },
+      {
+        "name": "rsyncd.service",
+        "state": "disabled"
+      },
+      {
+        "name": "single.service",
+        "state": "masked"
+      },
+      {
+        "name": "sshd.service",
+        "state": "enabled"
+      },
+      {
+        "name": "startpreload.service",
+        "state": "masked"
+      },
+      {
+        "name": "stoppreload.service",
+        "state": "masked"
+      },
+      {
+        "name": "suse-studio-custom.service",
+        "state": "enabled"
+      },
+      {
+        "name": "swap.service",
+        "state": "masked"
+      },
+      {
+        "name": "sysctl.service",
+        "state": "static"
+      },
+      {
+        "name": "syslog-ng.service",
+        "state": "enabled"
+      },
+      {
+        "name": "syslog.service",
+        "state": "enabled"
+      },
+      {
+        "name": "syslog.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-ask-password-console.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-ask-password-plymouth.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-ask-password-wall.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-binfmt.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-fsck-root.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-halt.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-hibernate.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-hostnamed.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-hybrid-sleep.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-initctl.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-initctl.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-journal-flush.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-journald.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-journald.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-kexec.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-localed.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-logind.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-machined.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-modules-load.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-poweroff.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-quotacheck.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-random-seed.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-readahead-collect.service",
+        "state": "enabled"
+      },
+      {
+        "name": "systemd-readahead-done.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-readahead-drop.service",
+        "state": "enabled"
+      },
+      {
+        "name": "systemd-readahead-replay.service",
+        "state": "enabled"
+      },
+      {
+        "name": "systemd-reboot.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-remount-fs.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-shutdownd.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-shutdownd.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-suspend.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-sysctl.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-timedated.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-tmpfiles-clean.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-tmpfiles-setup-dev.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-tmpfiles-setup.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udev-root-symlink.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udev-settle.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udev-trigger.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udevd-control.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udevd-kernel.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udevd.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-update-utmp-runlevel.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-update-utmp.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-user-sessions.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-vconsole-setup.service",
+        "state": "static"
+      },
+      {
+        "name": "udev.service",
+        "state": "static"
+      }
+    ]
+  },
+  "groups": [
     {
-      "name": "ConsoleKit",
-      "version": "0.2.10",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "audio",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 17
     },
     {
-      "name": "PolicyKit",
-      "version": "0.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "bin",
+      "password": "x",
+      "users": [
+        "daemon"
+      ],
+      "gid": 1
+    },
+    {
+      "name": "cdrom",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 20
+    },
+    {
+      "name": "console",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 21
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 2
+    },
+    {
+      "name": "dialout",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 16
+    },
+    {
+      "name": "disk",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 6
+    },
+    {
+      "name": "floppy",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 19
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 49
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 40
+    },
+    {
+      "name": "kmem",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 9
+    },
+    {
+      "name": "lock",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 54
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 7
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 12
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 62
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 499
+    },
+    {
+      "name": "modem",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 43
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 13
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 65533
+    },
+    {
+      "name": "nogroup",
+      "password": "x",
+      "users": [
+        "nobody"
+      ],
+      "gid": 65534
+    },
+    {
+      "name": "polkitd",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 496
+    },
+    {
+      "name": "public",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 32
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 0
+    },
+    {
+      "name": "shadow",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 15
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 495
+    },
+    {
+      "name": "sys",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 3
+    },
+    {
+      "name": "systemd-journal",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 498
+    },
+    {
+      "name": "tape",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 497
+    },
+    {
+      "name": "trusted",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 42
+    },
+    {
+      "name": "tty",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 5
+    },
+    {
+      "name": "users",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 100
+    },
+    {
+      "name": "utmp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 22
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 14
+    },
+    {
+      "name": "video",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 33
+    },
+    {
+      "name": "wheel",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 10
+    },
+    {
+      "name": "www",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 8
+    },
+    {
+      "name": "xok",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 41
+    }
+  ],
+  "packages": [
+    {
+      "name": "DirectFB",
+      "version": "1.6.3",
+      "release": "4.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f7ab84032a0b07fe079030b0abb441d3"
+    },
+    {
+      "name": "Mesa",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d3350e07a011f5731cb7a787e0ed11a8"
+    },
+    {
+      "name": "Mesa-libEGL1",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d36cf64cb1860e7130b10ab13de55285"
+    },
+    {
+      "name": "Mesa-libGL1",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ee2ea91c3be8552be55f6a28e60fc3ec"
+    },
+    {
+      "name": "Mesa-libGLESv2-2",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0939ad04af12d3974b5b383a743889e8"
+    },
+    {
+      "name": "Mesa-libglapi0",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6659ebca0af2e8d9baf42f6b768d5273"
     },
     {
       "name": "aaa_base",
-      "version": "11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "13.1",
+      "release": "16.42.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "503e92b38ac00bd311ce7527e907d6d6"
     },
     {
-      "name": "audit-libs",
-      "version": "1.8",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "augeas-lenses",
-      "version": "0.9.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "autoyast2",
-      "version": "2.17.69",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "autoyast2-installation",
-      "version": "2.17.69",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "adjtimex",
+      "version": "1.29",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6fe8798263f38820e050b3912f41b2a4"
     },
     {
       "name": "bash",
-      "version": "3.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.2",
+      "release": "68.1.5",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "533e40ba8a5551204b528c047e45c169"
     },
     {
-      "name": "bind-libs",
-      "version": "9.6ESVR7P4",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "bind-utils",
-      "version": "9.6ESVR7P4",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "branding-SLES",
-      "version": "11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "branding-openSUSE",
+      "version": "13.1",
+      "release": "10.4.13",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "c52a3adf23bef50cecf7d265354c78a0"
     },
     {
       "name": "bridge-utils",
-      "version": "1.4",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.5",
+      "release": "16.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "322087a0b95cb45a405f7300d3b8a86a"
     },
     {
       "name": "bzip2",
-      "version": "1.0.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "checkmedia",
-      "version": "3.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.0.6",
+      "release": "26.1.21",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ed4d63829fb89c41e6836ee77b8a6a36"
     },
     {
       "name": "coreutils",
-      "version": "8.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "8.21",
+      "release": "7.16.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "72ecfca8b13198813ff596769600155d"
     },
     {
       "name": "cpio",
-      "version": "2.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "cpio-lang",
-      "version": "2.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.11",
+      "release": "25.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "981d0c41ebf01ca7c48d3b9b2a4cc5ff"
     },
     {
       "name": "cracklib",
-      "version": "2.8.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.9.0",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ef05b58179386b1ec5ceb75c2b28f3c7"
     },
     {
       "name": "cracklib-dict-full",
       "version": "2.8.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "62.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f401ce4c8686f47cf1036302dd38d203"
     },
     {
       "name": "cron",
-      "version": "4.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.2",
+      "release": "50.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "26a9db1420ea73406246e0a8a420b7e2"
     },
     {
-      "name": "cryptsetup",
-      "version": "1.0.5_SVNr46",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "curl",
-      "version": "7.19.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "cronie",
+      "version": "1.4.8",
+      "release": "50.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "47c2ffa29dc838c13d916045331b8f39"
     },
     {
       "name": "cyrus-sasl",
-      "version": "2.1.22",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.1.25",
+      "release": "28.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "1febe5c5413e4151ba47fefdf622bc5f"
     },
     {
       "name": "dbus-1",
-      "version": "1.2.10",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.7.4",
+      "release": "4.16.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "81a54ec6c964f0ab983fc5368fa3ea03"
     },
     {
-      "name": "dbus-1-glib",
-      "version": "0.76",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "dbus-1-x11",
+      "version": "1.7.4",
+      "release": "4.16.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "705313fb41bdde2b8c54f45603dcc9d9"
     },
     {
       "name": "device-mapper",
-      "version": "1.02.77",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.02.78",
+      "release": "0.14.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "5966592e4352931f7a53bf036e1ee8b9"
     },
     {
       "name": "dhcpcd",
       "version": "3.2.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "47.78.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a41747eb196b296f2f8db34401bc0390"
     },
     {
       "name": "diffutils",
-      "version": "2.8.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.3",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "908f0790c137980d435a876862bd6cc9"
     },
     {
       "name": "dirmngr",
-      "version": "1.0.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.1.0",
+      "release": "18.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6ef4f2839e67d361f8daef05d26dd58e"
     },
     {
       "name": "dmraid",
       "version": "1.0.0.rc16",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "25.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "00f7738e99a14874fcec444ed54a60f9"
     },
     {
       "name": "e2fsprogs",
-      "version": "1.41.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.42.8",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c91c5b90bf3fe6fb6d14dca13f9e89f9"
     },
     {
       "name": "elfutils",
-      "version": "0.152",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.155",
+      "release": "6.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6d3e828799be2f3277013aa4e55885c4"
     },
     {
       "name": "expat",
-      "version": "2.0.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "fbset",
-      "version": "2.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.1.0",
+      "release": "12.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "268ba7a859ea5aab034ae57ab48ff9d6"
     },
     {
       "name": "file",
-      "version": "4.24",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.15",
+      "release": "4.20.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a6f7a3339d9a35f2c3fd59d7579dce20"
+    },
+    {
+      "name": "file-magic",
+      "version": "5.15",
+      "release": "4.20.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a4c8755a5fbff1622ccf8154bcdb0723"
     },
     {
       "name": "filesystem",
-      "version": "11.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "13.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "35c6b72b11240b2b60ca6aa01261e2f2"
     },
     {
       "name": "fillup",
       "version": "1.42",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "269.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bf192d483b3b2c69a03e9c270f01705f"
     },
     {
       "name": "findutils",
-      "version": "4.4.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.5.12",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4e8bdc044364eade7a2dfc754dd7e172"
+    },
+    {
+      "name": "fontconfig",
+      "version": "2.11.0",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "518c8c930443a2ca35031419288dcd84"
     },
     {
       "name": "gawk",
-      "version": "3.1.8",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.1.0",
+      "release": "2.1.14",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "84980e1ce8eeb88eb28edecfe3fb93da"
     },
     {
-      "name": "gdbm",
-      "version": "1.8.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "gettext-runtime",
+      "version": "0.18.3.1",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "5fa81a9dd0d81c18db234f79f1824959"
     },
     {
-      "name": "glib2",
-      "version": "2.22.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "gio-branding-openSUSE",
+      "version": "13.1",
+      "release": "2.13.1",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "6f33b8040e1954545050b634b6123716"
     },
     {
-      "name": "glib2-branding-SLES",
-      "version": "2.16",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "glib2-lang",
-      "version": "2.22.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "glib2-tools",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a2d8a24f6f5005895da45d653bd9e74b"
     },
     {
       "name": "glibc",
-      "version": "2.11.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.18",
+      "release": "4.15.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c445d03338a18ed5df13008fcfbc42f7"
     },
     {
-      "name": "glibc-locale",
-      "version": "2.11.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "glibc-32bit",
+      "version": "2.18",
+      "release": "4.15.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3aa78168eebef10365b78fc061894155"
+    },
+    {
+      "name": "gnu-unifont-bitmap-fonts",
+      "version": "20080123",
+      "release": "82.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "246ea5728ea7c96ceffcb0d88e8d9198"
     },
     {
       "name": "gpg2",
-      "version": "2.0.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "gpg2-lang",
-      "version": "2.0.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.0.22",
+      "release": "8.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6c2bfb0eb55ecd31a0c657323b1e2d80"
     },
     {
       "name": "grep",
-      "version": "2.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.14",
+      "release": "5.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9b5eff76470cec4750c13e09b68307b4"
     },
     {
       "name": "grub",
       "version": "0.97",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "194.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "1aa5c0f0a344b2686adab527e966d093"
+    },
+    {
+      "name": "grub2",
+      "version": "2.00",
+      "release": "39.8.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3a9bc35cf452103ed484e7dad70485be"
+    },
+    {
+      "name": "grub2-i386-pc",
+      "version": "2.00",
+      "release": "39.8.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "95211e0bde6dedb7a32a3bf97a39dab0"
     },
     {
       "name": "gzip",
-      "version": "1.3.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "hal",
-      "version": "0.5.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "haveged",
-      "version": "1.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.6",
+      "release": "4.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "79db5125f8b7ad6837fe453212af5cd3"
     },
     {
       "name": "hwinfo",
-      "version": "15.50",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "20.2",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6a5d3c3fae0661286d845cc05b160ded"
     },
     {
       "name": "info",
-      "version": "4.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.13a",
+      "release": "36.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ca47c27038491958bce289e5b9217883"
     },
     {
-      "name": "initviocons",
-      "version": "0.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "insserv",
-      "version": "1.12.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "insserv-compat",
+      "version": "0.1",
+      "release": "8.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a7bf3cd6f00f08ecac430d01b921e2a2"
     },
     {
       "name": "iproute2",
-      "version": "2.6.29.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.9.0",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "88eaf0491ad1d8a2b46101ba652ae435"
+    },
+    {
+      "name": "iputils",
+      "version": "s20101006",
+      "release": "23.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f288609e60d206fbf0b58ba17be2e91e"
     },
     {
       "name": "kbd",
-      "version": "1.14.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.15.5",
+      "release": "5.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7efca8396c5f237f3285e9d32976b740"
     },
     {
       "name": "kernel-default",
-      "version": "3.0.76",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.11.10",
+      "release": "21.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "1f02808a7737e2165b6d43dc89925b98"
     },
     {
-      "name": "kernel-default-base",
-      "version": "3.0.76",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "klogd",
+      "version": "1.4.1",
+      "release": "772.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ec248c9cacac4d32879f9c5956aee989"
     },
     {
-      "name": "keyutils-libs",
-      "version": "1.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "kmod",
+      "version": "14",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "02ac0f892dcf5f1e89c302eb72302864"
     },
     {
       "name": "kpartx",
       "version": "0.4.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "11.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "19518e85b4efa2f214d72f83f6509dce"
     },
     {
       "name": "krb5",
-      "version": "1.6.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.11.3",
+      "release": "3.8.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "99c2b99fc2883995ac6d7260be4cf945"
     },
     {
-      "name": "less",
-      "version": "424b",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libICE6",
+      "version": "1.0.8",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3e83dca788686f352e2fd5e274fa9924"
     },
     {
-      "name": "libacl",
-      "version": "2.2.47",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libLLVM",
+      "version": "3.3",
+      "release": "6.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7f33572a255596090c19755445b6d5cd"
     },
     {
-      "name": "libaio",
-      "version": "0.3.109",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libSM6",
+      "version": "1.2.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "56ffc029177a9d59208a47b543b22f40"
+    },
+    {
+      "name": "libX11-6",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "55772cdf402ae64da9062c5af6ad23c6"
+    },
+    {
+      "name": "libX11-data",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "45c5eb39c862ddcfa74e1ed6a293cff9"
+    },
+    {
+      "name": "libX11-xcb1",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b2bc2a4765ae26f15f78e9880d998346"
+    },
+    {
+      "name": "libXau6",
+      "version": "1.0.8",
+      "release": "2.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "264008603b7067b1374320d913a67b50"
+    },
+    {
+      "name": "libXdamage1",
+      "version": "1.1.4",
+      "release": "6.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d720db9f2c345cfbb6d021ccc6675eaf"
+    },
+    {
+      "name": "libXext6",
+      "version": "1.3.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6c1045b4f2b6de12b292918d89b88d91"
+    },
+    {
+      "name": "libXfixes3",
+      "version": "5.0.1",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2dce65a71fe23c5413a406de9ae9f242"
+    },
+    {
+      "name": "libXft2",
+      "version": "2.3.1",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "390d0a5a5e21e476b0e916fd6aa6858f"
+    },
+    {
+      "name": "libXrender1",
+      "version": "0.9.8",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9f18b64f2fe146aff06badbd5c95d8ae"
+    },
+    {
+      "name": "libXt6",
+      "version": "1.1.4",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c3ad229d17418d328e4cb36f71e82c8f"
+    },
+    {
+      "name": "libXxf86vm1",
+      "version": "1.1.3",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f0bd67d4c0b7dbd4aa3190383703aad6"
+    },
+    {
+      "name": "libacl1",
+      "version": "2.2.52",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "aa481c6f36a50f65c5e1f49c8e56b6cd"
+    },
+    {
+      "name": "libadns1",
+      "version": "1.4",
+      "release": "100.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "809f26d07084f2efe61a0ba4c4cc9a49"
     },
     {
       "name": "libasm1",
-      "version": "0.152",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.155",
+      "release": "6.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c23167b5cf1585cc3190d7f5eb123b61"
     },
     {
-      "name": "libattr",
-      "version": "2.4.43",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libassuan0",
+      "version": "2.1.1",
+      "release": "2.1.4",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "27baf0c90065f8b789e00ff0c8e58c8a"
+    },
+    {
+      "name": "libattr1",
+      "version": "2.4.47",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "36475f1e0b33db0f6b4ebaec386baced"
+    },
+    {
+      "name": "libaudit1",
+      "version": "2.2.3",
+      "release": "4.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e009d1b6979ac39c0e27618dba5942c3"
     },
     {
       "name": "libaugeas0",
-      "version": "0.9.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.0.0",
+      "release": "2.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "63550fa63afa6e77580a8d6884a6c77f"
     },
     {
       "name": "libblkid1",
-      "version": "2.19.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "libblocxx6",
-      "version": "2.1.0.342",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.23.2",
+      "release": "10.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9c6dd5053f219a078f1401e88199dc26"
     },
     {
       "name": "libbz2-1",
-      "version": "1.0.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.0.6",
+      "release": "26.1.21",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2038cfa741a8ba0e6b56aac63d703f6b"
+    },
+    {
+      "name": "libcairo2",
+      "version": "1.12.16",
+      "release": "3.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "15a0a4a0db6c856979afb11197b4eeb3"
+    },
+    {
+      "name": "libcap-ng0",
+      "version": "0.7.3",
+      "release": "2.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ff489e11773fdc71b9d406bde89e1381"
     },
     {
       "name": "libcap2",
-      "version": "2.11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.22",
+      "release": "10.1.24",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0ccfd0e6dbd1b306506e0d16eec00468"
     },
     {
       "name": "libcom_err2",
-      "version": "1.41.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.42.8",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "5645879cfe6df2124297129ab092f86e"
     },
     {
-      "name": "libcryptsetup0",
-      "version": "1.0.5_SVNr46",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libcrack2",
+      "version": "2.9.0",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9a4a1661e1e3e830dca5aff5b8d77f53"
+    },
+    {
+      "name": "libcroco-0_6-3",
+      "version": "0.6.8",
+      "release": "5.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "230c8e1b9663374894179dd7628a66a3"
+    },
+    {
+      "name": "libcryptsetup4",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e772c215475c2f72ac5116255f2ae94c"
     },
     {
       "name": "libcurl4",
-      "version": "7.19.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "7.32.0",
+      "release": "2.23.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bb418fe4e5cae3755720778883cc7664"
     },
     {
-      "name": "libdb-4_5",
-      "version": "4.5.20",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libdb-4_8",
+      "version": "4.8.30",
+      "release": "25.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3baee52f14ee01e68198cb7610c03322"
+    },
+    {
+      "name": "libdbus-1-3",
+      "version": "1.7.4",
+      "release": "4.16.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a0da1a97770ea31c8e0bafec805ed8ee"
+    },
+    {
+      "name": "libdirectfb-1_6-0",
+      "version": "1.6.3",
+      "release": "4.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ca55121d3a2297e9d8bc10c9738325d4"
+    },
+    {
+      "name": "libdrm2",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2da207fa912f1349af8fc1d8637a0844"
+    },
+    {
+      "name": "libdrm_intel1",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "62fc0169329cf763af383b0da526e863"
+    },
+    {
+      "name": "libdrm_nouveau2",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a18e9353eb1c317bfccd1ad22abf1566"
+    },
+    {
+      "name": "libdrm_radeon1",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d91061defa2547678b2b0de5c364009f"
     },
     {
       "name": "libdw1",
-      "version": "0.152",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.155",
+      "release": "6.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "73319688553c542d599fec1f47d01289"
     },
     {
-      "name": "libebl1",
-      "version": "0.152",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libedit0",
+      "version": "3.0.snap20110802",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d31500f21b16f4eb3815959ec5a15c0f"
+    },
+    {
+      "name": "libelf0",
+      "version": "0.8.13",
+      "release": "17.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d9155091b404665cb71e36c27bcc69a8"
     },
     {
       "name": "libelf1",
-      "version": "0.152",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.155",
+      "release": "6.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6d10779115f7c30417a4103bd287f7be"
+    },
+    {
+      "name": "libevtlog0",
+      "version": "0.2.12",
+      "release": "12.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4d45600d9adbbf60df46ff5d148e9a70"
     },
     {
       "name": "libexpat1",
-      "version": "2.0.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.1.0",
+      "release": "12.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "46c4c86e71dd79326af7a00af5c690f7"
     },
     {
       "name": "libext2fs2",
-      "version": "1.41.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.42.8",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "56ec318b2b982c8fc025e77fb3a93f41"
+    },
+    {
+      "name": "libffi4",
+      "version": "4.8.1_20130909",
+      "release": "3.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ce39c74566b70e7a46b0751a5b56e4c7"
+    },
+    {
+      "name": "libfreetype6",
+      "version": "2.5.0.1",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "426e5fbb0c86e5f935578b4e92de4339"
+    },
+    {
+      "name": "libfuse2",
+      "version": "2.9.3",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0f615962ec48302125f39fec4dfffea3"
+    },
+    {
+      "name": "libgbm1",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9eb77854360e5138934337d7d152c694"
     },
     {
       "name": "libgcc_s1",
-      "version": "4.7.2_20130108",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.8.1_20130909",
+      "release": "3.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6a367abf63e53464569882ffcd698f70"
+    },
+    {
+      "name": "libgcc_s1-32bit",
+      "version": "4.8.1_20130909",
+      "release": "3.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c9bac33254154c1566ad5208eff9f7a2"
     },
     {
       "name": "libgcrypt11",
-      "version": "1.5.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.5.3",
+      "release": "2.1.4",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a6dc91cec093e23ceec6fee703e33e95"
+    },
+    {
+      "name": "libgdbm4",
+      "version": "1.10",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4cb8c4186dfc926b4f2873a6442ae05c"
+    },
+    {
+      "name": "libgio-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a00a5c8c4fbde932e3a18b3ca8e5d5c3"
     },
     {
       "name": "libglib-2_0-0",
-      "version": "2.22.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "99270631b20505414d09a6b6b9de0422"
+    },
+    {
+      "name": "libgmodule-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3ce5b5de92df7f91a4565e865828bb8e"
+    },
+    {
+      "name": "libgmp10",
+      "version": "5.1.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a947a448ea5e2a77d3210e1d1c9dbf37"
     },
     {
       "name": "libgobject-2_0-0",
-      "version": "2.22.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2f47a18777f0ed9adc321c3f9bdff2c5"
     },
     {
       "name": "libgpg-error0",
-      "version": "1.10",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.12",
+      "release": "2.1.4",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "31618d5fcc288f97f408171c9297bb7a"
+    },
+    {
+      "name": "libgraphite2-3",
+      "version": "1.2.0",
+      "release": "6.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "332daef2e774e011c2266602cc01d933"
     },
     {
       "name": "libgthread-2_0-0",
-      "version": "2.22.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cfea336fe24c959b7db5f6a1fe490514"
     },
     {
-      "name": "libidn",
-      "version": "1.10",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libharfbuzz0",
+      "version": "0.9.21",
+      "release": "1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "346dde85086a523fa901a43432543468"
     },
     {
-      "name": "libksba",
-      "version": "1.0.4",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libidn11",
+      "version": "1.25",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2dadd34019da8fe689769e7737267a24"
+    },
+    {
+      "name": "libjpeg8",
+      "version": "8.0.2",
+      "release": "24.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "8858cc6b8090c8e2381ed64e658ccc40"
+    },
+    {
+      "name": "libkeyutils1",
+      "version": "1.5.5",
+      "release": "6.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "858fb7b3e65610a33440274d503be733"
+    },
+    {
+      "name": "libkmod2",
+      "version": "14",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e3e065ec4387217149c55219c7b1afd6"
+    },
+    {
+      "name": "libksba8",
+      "version": "1.3.0",
+      "release": "5.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "5f72603086ca945fec2bbc2730e0733e"
     },
     {
       "name": "libldap-2_4-2",
-      "version": "2.4.26",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.4.33",
+      "release": "8.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9d7a3c403109ae83fb5ef90d16813500"
     },
     {
-      "name": "libldapcpp1",
-      "version": "0.3.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "liblua5_1",
+      "version": "5.1.5",
+      "release": "5.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a8512013f8c60e92440662d84f06b060"
     },
     {
       "name": "liblzma5",
-      "version": "5.0.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.0.5",
+      "release": "2.1.20",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "12c350cecf9beb9c7ce0a0c6cab03db9"
+    },
+    {
+      "name": "liblzo2-2",
+      "version": "2.06",
+      "release": "12.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "00037888ac7fecc26b1126320cb14d5b"
+    },
+    {
+      "name": "libmagic1",
+      "version": "5.15",
+      "release": "4.20.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7a87c0b1d8d90136cd6d1fdc04a23bca"
+    },
+    {
+      "name": "libmodman1",
+      "version": "2.0.1",
+      "release": "14.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f777245b0444d15c3d3decdfe6a1353e"
+    },
+    {
+      "name": "libmount1",
+      "version": "2.23.2",
+      "release": "10.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4da095e797ed8c1bf454c06adae31db6"
+    },
+    {
+      "name": "libmozjs-17_0",
+      "version": "17.0",
+      "release": "4.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2b6c101161d094f53439e710e2674a45"
     },
     {
       "name": "libncurses5",
-      "version": "5.6",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.9",
+      "release": "33.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "40748e3e80ecff89afb129ae0eee82cc"
     },
     {
-      "name": "libnscd",
-      "version": "2.0.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libncurses5-32bit",
+      "version": "5.9",
+      "release": "33.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cdca2990295df2ecc6a3316690e709e7"
     },
     {
-      "name": "libopenssl0_9_8",
-      "version": "0.9.8j",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libncurses6",
+      "version": "5.9",
+      "release": "33.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "33b9de30610593053b0b5849a87ff256"
     },
     {
-      "name": "libreadline5",
-      "version": "5.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libnet1",
+      "version": "1.1.6",
+      "release": "2.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "125baae561665d24a1c3034faabe3996"
     },
     {
-      "name": "libreiserfs",
-      "version": "0.3.0.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libopenssl1_0_0",
+      "version": "1.0.1h",
+      "release": "11.48.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d1cbe4dacd6500533d5d40f59cc9d912"
+    },
+    {
+      "name": "libpango-1_0-0",
+      "version": "1.36.1",
+      "release": "4.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e12878a0e5640449f36b67070080a228"
+    },
+    {
+      "name": "libpci3",
+      "version": "3.2.0",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "adda37eb1a9534b302c61f1a4c69c3a3"
+    },
+    {
+      "name": "libpciaccess0",
+      "version": "0.13.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ba1b4a06415344d05f2c60a3d838607e"
+    },
+    {
+      "name": "libpcre1",
+      "version": "8.33",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0e425f92d1473b2eee16216ceefc2540"
+    },
+    {
+      "name": "libpixman-1-0",
+      "version": "0.30.2",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "87bf57588a4fc9d4e967f66057401d16"
+    },
+    {
+      "name": "libply-boot-client2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d9639e736c3b4026a9c8d73445860ee0"
+    },
+    {
+      "name": "libply-splash-core2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7ddb803703fe3d09446d6cf1b6dbff7b"
+    },
+    {
+      "name": "libply-splash-graphics2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "300cfe8a83fcbcea07ff48f6f759b3f6"
+    },
+    {
+      "name": "libply2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b68bf0706b57f6655bd5dbd04d5e104b"
+    },
+    {
+      "name": "libpng16-16",
+      "version": "1.6.6",
+      "release": "12.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "78b3d50bfefda1bad94b24861e0499a3"
+    },
+    {
+      "name": "libpolkit0",
+      "version": "0.112",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "21b6a6b2e7488158ceeead9a34e1ee9d"
+    },
+    {
+      "name": "libpopt0",
+      "version": "1.16",
+      "release": "24.1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0f3c6b975dd8802652d3ca219954ed05"
+    },
+    {
+      "name": "libprocps1",
+      "version": "3.3.8",
+      "release": "5.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3491e58c99895c6c0b73a16d41765a4a"
+    },
+    {
+      "name": "libproxy1",
+      "version": "0.4.11",
+      "release": "9.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cfb3b6740fa83e86ec3cc024661db593"
+    },
+    {
+      "name": "libpth20",
+      "version": "2.0.7",
+      "release": "138.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0172d0b91fc59486c7fedb0e35304f2e"
+    },
+    {
+      "name": "libqrencode3",
+      "version": "3.4.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "408c2c66bca2856a0182a32a0b9309da"
+    },
+    {
+      "name": "libreadline6",
+      "version": "6.2",
+      "release": "68.1.5",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3e32ca4079cc131cc51d84d521ec6638"
     },
     {
       "name": "libselinux1",
-      "version": "2.0.91",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.1.13",
+      "release": "4.1.21",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "8eb702959d41bc1eb402f1a419f464b7"
+    },
+    {
+      "name": "libsemanage1",
+      "version": "2.1.10",
+      "release": "3.1.20",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "88d84028f1221eb388cfffcd59c7f578"
     },
     {
       "name": "libsepol1",
-      "version": "2.0.41",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.1.9",
+      "release": "5.1.23",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "5ab32ec052ee5dbcb1fb4c891991e5cc"
     },
     {
-      "name": "libsmbios2",
-      "version": "2.0.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libsgutils2-2",
+      "version": "1.36",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d5e5cab2704598e8f594205cb5bd9874"
+    },
+    {
+      "name": "libsolv-tools",
+      "version": "0.4.2",
+      "release": "11.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "828ae058721f75cf8240b988af5728ab"
+    },
+    {
+      "name": "libssh2-1",
+      "version": "1.4.3",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d23a114cbbc1613cda7098c335b0c1dd"
     },
     {
       "name": "libstdc++6",
-      "version": "4.7.2_20130108",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.8.1_20130909",
+      "release": "3.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "97b33e0029cb4a5c7573d8c045f234db"
     },
     {
-      "name": "libudev0",
-      "version": "147",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libstdc++6-32bit",
+      "version": "4.8.1_20130909",
+      "release": "3.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b4ec184c5dbf51377066355f3e6d1137"
+    },
+    {
+      "name": "libtirpc1",
+      "version": "0.2.3",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "00a5301be37b29094eca890d5863612d"
+    },
+    {
+      "name": "libts-1_0-0",
+      "version": "1.0",
+      "release": "5.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f2b6fdfece2e79ddadec0f5f8483e083"
+    },
+    {
+      "name": "libudev-mini1",
+      "version": "208",
+      "release": "23.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d6429c4578dc2c099bb9ecece60bae72"
     },
     {
       "name": "libusb-0_1-4",
-      "version": "0.1.12",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.1.13",
+      "release": "27.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c6e02bfa2aec095b34606de1e4713be1"
+    },
+    {
+      "name": "libusb-1_0-0",
+      "version": "1.0.9",
+      "release": "8.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cb909261aef3b3ced30c81504f74cb5e"
+    },
+    {
+      "name": "libustr-1_0-1",
+      "version": "1.0.4",
+      "release": "29.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cf086ac2f3e4ea6ae1d9c9fe50f073c8"
+    },
+    {
+      "name": "libutempter0",
+      "version": "1.1.6",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d5c359ce81477afccab1b796ce24e43a"
     },
     {
       "name": "libuuid1",
-      "version": "2.19.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.23.2",
+      "release": "10.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3e34463d1100a619f7ec0b8148b9848f"
     },
     {
-      "name": "libxcrypt",
-      "version": "3.0.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libvdpau1",
+      "version": "0.6",
+      "release": "3.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b3ecac5402abe3a8a4935e88d6ebb968"
     },
     {
-      "name": "libxml2",
-      "version": "2.7.6",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libwayland-client0",
+      "version": "1.2.1",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7c6f0b1d0064d308131ad91bd12e144c"
     },
     {
-      "name": "libxslt",
-      "version": "1.1.24",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libwayland-server0",
+      "version": "1.2.1",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d34cdcf483e6f5b260d13973275ee467"
     },
     {
-      "name": "libzio",
-      "version": "0.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "libwrap0",
+      "version": "7.6",
+      "release": "881.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "fe377bd99e7d334d9cf79848016f032a"
+    },
+    {
+      "name": "libx86-1",
+      "version": "1.1",
+      "release": "41.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d2b38998dccdf7e221bdec63d78933eb"
+    },
+    {
+      "name": "libx86emu1",
+      "version": "1.1",
+      "release": "20.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "912a60a01b66c8c9d282119be497e270"
+    },
+    {
+      "name": "libxcb-dri2-0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "649520326303a5d21a57768a402d4fe4"
+    },
+    {
+      "name": "libxcb-glx0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a5f1959e50b120d6b609e6bcda4c3873"
+    },
+    {
+      "name": "libxcb-render0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4f197686e4e1bf8a60c0fb360956e079"
+    },
+    {
+      "name": "libxcb-shm0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9a6e1ab0bdee52ee16b9583fadf7e8d6"
+    },
+    {
+      "name": "libxcb-xfixes0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6da557e15067061ee5de5f84423d1bad"
+    },
+    {
+      "name": "libxcb1",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "89d7a9b0a91c234d1df3a683fe9186de"
+    },
+    {
+      "name": "libxml2-2",
+      "version": "2.9.1",
+      "release": "2.12.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "453ae3a9447b84b8d64322f6911254a0"
+    },
+    {
+      "name": "libxtables10",
+      "version": "1.4.19.1",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "785f963cead3b708f5ceb2377fcfb2a4"
+    },
+    {
+      "name": "libz1",
+      "version": "1.2.8",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2c6323ebf13e698b42fecd70ea601c52"
+    },
+    {
+      "name": "libzio1",
+      "version": "1.00",
+      "release": "8.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e00e07f2c70171d40b4afad9ee731c7d"
     },
     {
       "name": "libzypp",
-      "version": "9.34.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "limal",
-      "version": "1.5.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "limal-perl",
-      "version": "1.5.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "login",
-      "version": "3.41",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "13.10.2",
+      "release": "19.6",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4f176ae6996a659b459abd00b7405968"
     },
     {
       "name": "logrotate",
-      "version": "3.7.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "lsof",
-      "version": "4.80",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "lsscsi",
-      "version": "0.23",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.8.7",
+      "release": "4.8.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bcfdc3052257777a4f6586afa50d410d"
     },
     {
       "name": "lvm2",
       "version": "2.02.98",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "master-boot-code",
-      "version": "1.14",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "mdadm",
-      "version": "3.2.6",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "mingetty",
-      "version": "1.0.7s",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "0.28.18.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6b0b4c3aedeabd583a01eff007b3ef76"
     },
     {
       "name": "mkinitrd",
-      "version": "2.4.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.8.1",
+      "release": "5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ab63ea6f80dbf1309878e1240c3ef692"
     },
     {
       "name": "module-init-tools",
-      "version": "3.11.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.15",
+      "release": "11.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cf47c19d69be792c1b64d78767b213b1"
     },
     {
-      "name": "mtools",
-      "version": "3.9.11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "multipath-tools",
-      "version": "0.4.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "mozilla-nspr",
+      "version": "4.10.6",
+      "release": "12.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d77927f3a2bc2d037c4fdb42217b4c40"
     },
     {
       "name": "ncurses-utils",
-      "version": "5.6",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.9",
+      "release": "33.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c895c8627563350384a954bd51e07dbc"
     },
     {
       "name": "net-tools",
       "version": "1.60",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "763.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a096fec9cbf5b4f058e04161660932cf"
     },
     {
       "name": "netcfg",
-      "version": "11.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "11.5",
+      "release": "18.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "b0348797ab50ad507322a0a844dc46f4"
     },
     {
-      "name": "openldap2-client",
-      "version": "2.4.26",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "openSUSE-build-key",
+      "version": "1.0",
+      "release": "24.4.1",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "22293922b1ec9e499c86ccc994f8e9d7"
+    },
+    {
+      "name": "openSUSE-release",
+      "version": "13.1",
+      "release": "1.10",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c1346b9611b400c2b846c9304c83dda3"
+    },
+    {
+      "name": "openSUSE-release-ftp",
+      "version": "13.1",
+      "release": "1.10",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e90b96f60c978c73e0bb2575ff511c51"
     },
     {
       "name": "openslp",
       "version": "1.2.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "202.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "8e939a55456389bfeb670f1d77c7ac3d"
     },
     {
       "name": "openssh",
       "version": "6.2p2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "3.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7c9c818cd3aa7487fe215fa82c3ba79e"
     },
     {
       "name": "openssl",
-      "version": "0.9.8j",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.0.1h",
+      "release": "11.48.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7777920545e792199d03427521040ad5"
     },
     {
-      "name": "openssl-certs",
-      "version": "1.85",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "os-prober",
+      "version": "1.61",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b7d25d6b4f513daa5fca261a6c1e90f9"
     },
     {
       "name": "pam",
-      "version": "1.1.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.1.8",
+      "release": "6.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "20662211b201c9e816eff1ceac3ead74"
     },
     {
       "name": "pam-config",
-      "version": "0.79",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.86",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7b0c19ae19a63d125e4ce5034f392c21"
     },
     {
-      "name": "pam-modules",
-      "version": "11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "pango-tools",
+      "version": "1.36.1",
+      "release": "4.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9055f8babdc6fb56592931a6837ae69a"
     },
     {
-      "name": "parted",
-      "version": "2.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "pciutils",
-      "version": "3.1.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "pciutils-ids",
-      "version": "2013.2.11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "pcre",
-      "version": "7.8",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "patterns-openSUSE-base",
+      "version": "13.1",
+      "release": "13.6.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4b0d596406c411cc27784afb5ded1fd0"
     },
     {
       "name": "perl",
-      "version": "5.10.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.18.1",
+      "release": "2.1.11",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "8e2b84ae89fe86c94fd9bb874b32c7bc"
     },
     {
       "name": "perl-Bootloader",
-      "version": "0.4.89.55",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-Config-Crontab",
-      "version": "1.21",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-Config-IniFiles",
-      "version": "2.39",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-Digest-SHA1",
-      "version": "2.11",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-Module-Build",
-      "version": "0.2808.01",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-Parse-RecDescent",
-      "version": "1.96.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-Test-Simple",
-      "version": "0.72",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-URI",
-      "version": "1.37",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-X500-DN",
-      "version": "0.29",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-XML-Parser",
-      "version": "2.36",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-XML-Simple",
-      "version": "2.18",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-XML-XPath",
-      "version": "1.13",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.711",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c3e5fff04d51da7f39d03113b94da96c"
     },
     {
       "name": "perl-base",
-      "version": "5.10.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "perl-gettext",
-      "version": "1.05",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.18.1",
+      "release": "2.1.11",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "30ba609525fa4599dd9343cba0fce90e"
     },
     {
       "name": "permissions",
-      "version": "2013.1.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2013.08.22.1339",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bce0da0f540d62d824e562606cf5aea5"
+    },
+    {
+      "name": "pigz",
+      "version": "2.3",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "913fd953da8f90159f0d63182283b9b2"
     },
     {
       "name": "pinentry",
-      "version": "0.7.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.8.3",
+      "release": "2.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0bfe88da0719c9e26862fc51b1905116"
     },
     {
-      "name": "pm-utils",
-      "version": "0.99.4.20071229",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "pkg-config",
+      "version": "0.28",
+      "release": "4.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c745e0069f89e5fc4c58b83da285ad4a"
     },
     {
-      "name": "pmtools",
-      "version": "20071116",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "plymouth",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d6398532c251b29da885a96c3a0ce038"
+    },
+    {
+      "name": "plymouth-branding-openSUSE",
+      "version": "13.1",
+      "release": "10.4.13",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "e88bcce224aa1d3439dd020b2ff32879"
+    },
+    {
+      "name": "plymouth-plugin-label",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "dd868cb02f0c79ea3d47af8c725cdef6"
+    },
+    {
+      "name": "plymouth-plugin-script",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "fd176b49f8dd666a59bffef44d9a5fc5"
+    },
+    {
+      "name": "plymouth-scripts",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a5d19131bd0eb21bd021c57c7475052f"
+    },
+    {
+      "name": "polkit",
+      "version": "0.112",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "41403fe43867063f72681ae8164a3d57"
     },
     {
       "name": "polkit-default-privs",
-      "version": "0.1_200812111413",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "popt",
-      "version": "1.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "postfix",
-      "version": "2.9.4",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "13.1",
+      "release": "10.2.1",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "9d9d6fa282cda6f79912d9494713c081"
     },
     {
       "name": "procps",
-      "version": "3.2.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.3.8",
+      "release": "5.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0c3f5603c5057d124e90ef7ee72d3f69"
     },
     {
-      "name": "psmisc",
-      "version": "22.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "pth",
-      "version": "2.0.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "pwdutils",
-      "version": "3.2.15",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "release-notes-sles",
-      "version": "11.3.22",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "rpcbind",
+      "version": "0.2.0_git201103171419",
+      "release": "12.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "25d3938bd3ab1cf13847889b5cb12dff"
     },
     {
       "name": "rpm",
-      "version": "4.4.2.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.11.1",
+      "release": "6.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
     },
     {
       "name": "rsync",
-      "version": "3.0.4",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "satsolver-tools",
-      "version": "0.17.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "3.1.0",
+      "release": "21.8.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "13635fe58b4b2c6a9f76e02a8250d8fb"
     },
     {
       "name": "sed",
-      "version": "4.1.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "4.2.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "8a6c03daa0669218cbbc05e258c5ad81"
     },
     {
-      "name": "setserial",
-      "version": "2.17",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "sg3_utils",
+      "version": "1.36",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bba22b2f04875ccff4e13ba6f8075ea3"
     },
     {
-      "name": "sles-release",
-      "version": "11.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "shadow",
+      "version": "4.1.5.1",
+      "release": "8.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "cb7e22465082019199af847b8cbe7834"
     },
     {
-      "name": "sles-release-DVD",
-      "version": "11.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "shared-mime-info",
+      "version": "1.1",
+      "release": "2.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bf68c9e63bf5e922dfd008f049089e2b"
     },
     {
-      "name": "subscription-tools",
+      "name": "splashy",
+      "version": "0.3.13",
+      "release": "44.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "63a6da3457e7918998f0ff920dfb054b"
+    },
+    {
+      "name": "suse-module-tools",
+      "version": "12.3",
+      "release": "6.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "9d9e2673781ab036c1b9a4bce6f12f37"
+    },
+    {
+      "name": "suspend",
       "version": "1.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "sudo",
-      "version": "1.7.6p2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "28.1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "26451ace66afc822d02a05bf42b9d754"
     },
     {
       "name": "sysconfig",
-      "version": "0.71.61",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "0.81.5",
+      "release": "30.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b9b91cd68eacb46e0206fe0f0c6a5942"
     },
     {
-      "name": "syslinux",
-      "version": "3.82",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "sysconfig-netconfig",
+      "version": "0.81.5",
+      "release": "30.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b9f3fb0bb05bd06c1fa89e7096a4afd4"
     },
     {
-      "name": "sysvinit",
-      "version": "2.86",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "sysconfig-network",
+      "version": "0.81.5",
+      "release": "30.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "465047025d6fa03bab9024dd3c8f70a8"
+    },
+    {
+      "name": "sysfsutils",
+      "version": "2.1.0",
+      "release": "150.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9376708eb251f9ebfbc8cfafcdc30169"
+    },
+    {
+      "name": "syslog-ng",
+      "version": "3.4.7",
+      "release": "2.8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "92e7fc363269742ad16bacbf00be38d6"
+    },
+    {
+      "name": "syslog-service",
+      "version": "2.0",
+      "release": "772.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "a9fffdfca30d09868c5665fc38a13f82"
+    },
+    {
+      "name": "systemd",
+      "version": "208",
+      "release": "23.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2b203bd567b59d3835591a8586b8df32"
+    },
+    {
+      "name": "systemd-presets-branding-openSUSE",
+      "version": "0.3.0",
+      "release": "3.4.1",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "6ef5619371f03c12ea11ffd668067088"
+    },
+    {
+      "name": "systemd-sysvinit",
+      "version": "208",
+      "release": "23.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4206c307df74dde5516a1acbdeb6ee25"
+    },
+    {
+      "name": "sysvinit-tools",
+      "version": "2.88+",
+      "release": "89.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "950eb6c1cd1b191440587a6b5feb9dca"
     },
     {
       "name": "tar",
       "version": "1.26",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "tcpd",
-      "version": "7.6",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "19.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c98f23f345f27d05108cb1482b43400a"
     },
     {
       "name": "terminfo-base",
-      "version": "5.6",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.9",
+      "release": "33.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6419d9cff92c0bb11694b63d9f65c69b"
+    },
+    {
+      "name": "time",
+      "version": "1.7",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "eb72e62ff0e0dfeae621d9dc7ebe9a9c"
     },
     {
       "name": "timezone",
-      "version": "2013b",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2013h",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "afddca087f38f0f0d47cc3bc37575b4e"
     },
     {
       "name": "tunctl",
-      "version": "20070815",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.5",
+      "release": "22.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3570c4a86602c8f3575a345b7a6553dc"
     },
     {
-      "name": "udev",
-      "version": "147",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "udev-mini",
+      "version": "208",
+      "release": "23.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "8bfcd579f0b8f1bdd903e0947fa3be1c"
     },
     {
-      "name": "unzip",
-      "version": "6.00",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "name": "udevmountd",
+      "version": "0.81.5",
+      "release": "30.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e2f7d6d173a65b36934925b4774cc251"
     },
     {
       "name": "update-alternatives",
-      "version": "1.14.19",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "1.16.10",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f9d7fb20379a381881ccbba425a22b57"
     },
     {
       "name": "util-linux",
-      "version": "2.19.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "util-linux-lang",
-      "version": "2.19.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "2.23.2",
+      "release": "10.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d79c422626e5fc3abc363994aace3873"
     },
     {
       "name": "vim",
-      "version": "7.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "vim-base",
-      "version": "7.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "7.4.052",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ad3d655834f823280555d2aba0d43621"
     },
     {
       "name": "vlan",
       "version": "1.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "release": "136.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c3832b61a2a30a6d6a760c1513e2ca8f"
+    },
+    {
+      "name": "wallpaper-branding-openSUSE",
+      "version": "13.1",
+      "release": "10.4.13",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "7830ced9c0641c7853d20680e906456e"
+    },
+    {
+      "name": "which",
+      "version": "2.20",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "72fca6588383d5907d5230d025b14c82"
     },
     {
       "name": "xz",
-      "version": "5.0.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2",
-      "version": "2.17.129",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-add-on",
-      "version": "2.17.31",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-bootloader",
-      "version": "2.17.96",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-core",
-      "version": "2.17.45",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-country",
-      "version": "2.17.54",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-country-data",
-      "version": "2.17.54",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-dbus-client",
-      "version": "2.17.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-dbus-server",
-      "version": "2.17.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-firewall",
-      "version": "2.17.13",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-hardware-detection",
-      "version": "2.17.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-installation",
-      "version": "2.17.108",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-ldap",
-      "version": "2.17.8",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-ldap-client",
-      "version": "2.17.37",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-libyui",
-      "version": "2.21.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-mouse",
-      "version": "2.16.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-ncurses",
-      "version": "2.17.22",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-ncurses-pkg",
-      "version": "2.17.20",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-network",
-      "version": "2.17.195",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-online-update",
-      "version": "2.17.23",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-packager",
-      "version": "2.17.107",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-pam",
-      "version": "2.17.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-perl-bindings",
-      "version": "2.17.2",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-pkg-bindings",
-      "version": "2.17.59",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-runlevel",
-      "version": "2.17.9",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-schema",
-      "version": "2.17.5",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-security",
-      "version": "2.17.16",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-storage",
-      "version": "2.17.142",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-storage-lib",
-      "version": "2.17.142",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-trans-en_US",
-      "version": "2.17.34",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-trans-stats",
-      "version": "2.15.0",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-transfer",
-      "version": "2.16.3",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-users",
-      "version": "2.17.54",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-xml",
-      "version": "2.16.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "yast2-ycp-ui-bindings",
-      "version": "2.21.1",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    },
-    {
-      "name": "zlib",
-      "version": "1.2.7",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
+      "version": "5.0.5",
+      "release": "2.1.20",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "01142bc3c09c23ae7c6b764d1ae51e42"
     },
     {
       "name": "zypper",
-      "version": "1.6.307",
-      "release": "1.0",
-      "arch": "i386",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "c2baffc641476ccca601595138118f76"
-    }
-  ],
-  "meta": {
-    "format_version": 1,
-    "packages": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "patterns": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "repositories": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "unmanaged_files": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "config_files": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "services": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "changed_managed_files": {
-      "modified": "2014-04-14T13:08:09Z"
-    },
-    "os": {
-      "modified": "2014-04-14T13:08:09Z"
-    }
-  },
-  "patterns": [
-    {
-      "name": "Minimal",
-      "version": "11",
-      "release": "38.44.33"
-    }
-  ],
-  "repositories": [
-    {
-      "alias": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138",
-      "name": "SUSE-Linux-Enterprise-Server-11-SP3 11.3.3-1.138",
-      "type": "yast2",
-      "url": "http://example.com/SLES11-SP3",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99
+      "version": "1.9.16",
+      "release": "22.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
     }
   ],
   "unmanaged_files": [
@@ -1907,211 +2878,173 @@
       "mode": "644"
     }
   ],
-  "services": {
-    "init_system": "sysvinit",
-    "services": [
-      {
-        "name": "arpd",
-        "state": "off"
-      },
-      {
-        "name": "autoyast",
-        "state": "off"
-      },
-      {
-        "name": "boot.cgroup",
-        "state": "off"
-      },
-      {
-        "name": "boot.cleanup",
-        "state": "on"
-      },
-      {
-        "name": "boot.clock",
-        "state": "on"
-      },
-      {
-        "name": "boot.compliance",
-        "state": "on"
-      },
-      {
-        "name": "boot.crypto",
-        "state": "off"
-      },
-      {
-        "name": "boot.crypto-early",
-        "state": "off"
-      },
-      {
-        "name": "boot.debugfs",
-        "state": "on"
-      },
-      {
-        "name": "boot.device-mapper",
-        "state": "on"
-      },
-      {
-        "name": "boot.dmraid",
-        "state": "off"
-      },
-      {
-        "name": "boot.efivars",
-        "state": "on"
-      },
-      {
-        "name": "boot.ipconfig",
-        "state": "on"
-      },
-      {
-        "name": "boot.klog",
-        "state": "on"
-      },
-      {
-        "name": "boot.ldconfig",
-        "state": "on"
-      },
-      {
-        "name": "boot.loadmodules",
-        "state": "on"
-      },
-      {
-        "name": "boot.localfs",
-        "state": "on"
-      },
-      {
-        "name": "boot.localnet",
-        "state": "on"
-      },
-      {
-        "name": "boot.lvm",
-        "state": "off"
-      },
-      {
-        "name": "boot.lvm_monitor",
-        "state": "on"
-      },
-      {
-        "name": "boot.md",
-        "state": "off"
-      },
-      {
-        "name": "boot.multipath",
-        "state": "off"
-      },
-      {
-        "name": "boot.proc",
-        "state": "on"
-      },
-      {
-        "name": "boot.rootfsck",
-        "state": "on"
-      },
-      {
-        "name": "boot.swap",
-        "state": "on"
-      },
-      {
-        "name": "boot.sysctl",
-        "state": "on"
-      },
-      {
-        "name": "boot.udev",
-        "state": "on"
-      },
-      {
-        "name": "boot.udev_retry",
-        "state": "on"
-      },
-      {
-        "name": "cron",
-        "state": "on"
-      },
-      {
-        "name": "dbus",
-        "state": "on"
-      },
-      {
-        "name": "fbset",
-        "state": "on"
-      },
-      {
-        "name": "haldaemon",
-        "state": "on"
-      },
-      {
-        "name": "haveged",
-        "state": "on"
-      },
-      {
-        "name": "kbd",
-        "state": "on"
-      },
-      {
-        "name": "lvm_wait_merge_snapshot",
-        "state": "on"
-      },
-      {
-        "name": "mdadmd",
-        "state": "off"
-      },
-      {
-        "name": "multipathd",
-        "state": "off"
-      },
-      {
-        "name": "network",
-        "state": "on"
-      },
-      {
-        "name": "network-remotefs",
-        "state": "on"
-      },
-      {
-        "name": "postfix",
-        "state": "on"
-      },
-      {
-        "name": "powerd",
-        "state": "off"
-      },
-      {
-        "name": "purge-kernels",
-        "state": "on"
-      },
-      {
-        "name": "random",
-        "state": "on"
-      },
-      {
-        "name": "raw",
-        "state": "off"
-      },
-      {
-        "name": "rpasswdd",
-        "state": "off"
-      },
-      {
-        "name": "rpmconfigcheck",
-        "state": "off"
-      },
-      {
-        "name": "rsyncd",
-        "state": "off"
-      },
-      {
-        "name": "setserial",
-        "state": "off"
-      },
-      {
-        "name": "skeleton.compat",
-        "state": "off"
-      },
-      {
-        "name": "sshd",
-        "state": "on"
-      }
-    ]
-  },
+  "users": [
+    {
+      "name": "bin",
+      "password": "x",
+      "uid": 1,
+      "gid": 1,
+      "comment": "bin",
+      "home": "/bin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "uid": 2,
+      "gid": 2,
+      "comment": "Daemon",
+      "home": "/sbin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "uid": 40,
+      "gid": 49,
+      "comment": "FTP account",
+      "home": "/srv/ftp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "uid": 12,
+      "gid": 100,
+      "comment": "Games account",
+      "home": "/var/games",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "uid": 4,
+      "gid": 7,
+      "comment": "Printing daemon",
+      "home": "/var/spool/lpd",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "uid": 8,
+      "gid": 12,
+      "comment": "Mailer daemon",
+      "home": "/var/spool/clientmqueue",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "uid": 13,
+      "gid": 62,
+      "comment": "Manual pages viewer",
+      "home": "/var/cache/man",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "uid": 499,
+      "gid": 499,
+      "comment": "User for D-Bus",
+      "home": "/run/dbus",
+      "shell": "/bin/false",
+      "encrypted_password": "!",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "uid": 9,
+      "gid": 13,
+      "comment": "News system",
+      "home": "/etc/news",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "uid": 65534,
+      "gid": 65533,
+      "comment": "nobody",
+      "home": "/var/lib/nobody",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "polkitd",
+      "password": "x",
+      "uid": 498,
+      "gid": 496,
+      "comment": "User for polkitd",
+      "home": "/var/lib/polkit",
+      "shell": "/sbin/nologin",
+      "encrypted_password": "!",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "uid": 0,
+      "gid": 0,
+      "comment": "root",
+      "home": "/root",
+      "shell": "/bin/bash",
+      "encrypted_password": "$1$Juw2uHkQ$MYXs0qMLleTt8yusfKiCb0",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "uid": 497,
+      "gid": 495,
+      "comment": "SSH daemon",
+      "home": "/var/lib/sshd",
+      "shell": "/bin/false",
+      "encrypted_password": "!",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "uid": 10,
+      "gid": 14,
+      "comment": "Unix-to-Unix CoPy system",
+      "home": "/etc/uucp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "wwwrun",
+      "password": "x",
+      "uid": 30,
+      "gid": 8,
+      "comment": "WWW daemon apache",
+      "home": "/var/lib/wwwrun",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    }
+  ],
   "changed_managed_files": [
     {
       "name": "/usr/share/bash/helpfiles/cd",
@@ -2135,9 +3068,76 @@
       "group": "root"
     }
   ],
-  "os": {
-    "name": "SUSE Linux Enterprise Server 11",
-    "version": "11 SP3",
-    "architecture": "i686"
+  "repositories": [
+    {
+      "alias": "openSUSE_13.1_OSS",
+      "name": "openSUSE_13.1_OSS",
+      "type": "yast2",
+      "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99
+    },
+    {
+      "alias": "openSUSE_13.1_Updates",
+      "name": "openSUSE_13.1_Updates",
+      "type": "rpm-md",
+      "url": "http://download.opensuse.org/update/13.1/",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99
+    }
+  ],
+  "patterns": [
+    {
+      "name": "base",
+      "version": "13.1",
+      "release": "13.6.1"
+    }
+  ],
+  "meta": {
+    "format_version": 1,
+    "os": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "services": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "groups": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "packages": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "unmanaged_files": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "config_files": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "users": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "changed_managed_files": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "repositories": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "patterns": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    }
   }
 }
