@@ -189,6 +189,7 @@ class UnmanagedFilesInspector < Inspector
         warning += " contain#{"s" if broken_names.length == 1}"
         warning += " invalid UTF-8 characters. Skipping."
 
+        Machinery.logger.warn(warning)
         Machinery::Ui.warn(warning)
         next
       end
