@@ -20,6 +20,7 @@ require_relative "spec_helper"
 describe Machinery do
   describe ".check_package" do
     it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
+      allow_any_instance_of(SystemDescription).to receive(:os_object).and_return(Os.new)
       package = "does_not_exist"
       expect { Machinery::check_package(package) }.to raise_error(Machinery::Errors::MissingRequirement, /#{package}/)
     end
