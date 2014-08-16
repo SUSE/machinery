@@ -103,7 +103,7 @@ describe Cli do
         run_command(["inspect", example_host])
       end
 
-      it "only inspects the scopes provided (separated by ',')" do
+      it "only inspects the scopes provided" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
@@ -116,21 +116,6 @@ describe Cli do
           and_return(description)
 
         run_command(["inspect", "--scope=packages,repositories", example_host])
-      end
-
-      it "only inspects the scopes provided (separated by ' ')" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system).
-          with(
-            an_instance_of(SystemDescriptionStore),
-            example_host,
-            example_host,
-            an_instance_of(CurrentUser),
-            ["packages", "repositories"],
-            {}
-          ).
-          and_return(description)
-
-        run_command(["inspect", "--scope=packages repositories", example_host])
       end
 
       it "inspects all scopes if no --scope is provided" do
@@ -164,7 +149,7 @@ describe Cli do
           ).
           and_return(description)
 
-        run_command(["inspect", "--exclude-scope=packages repositories", example_host])
+        run_command(["inspect", "--exclude-scope=packages,repositories", example_host])
       end
 
       describe "file extraction" do
@@ -318,7 +303,6 @@ describe Cli do
   describe "#process_scope_option" do
     it "returns the scopes which are provided" do
       expect(Cli.process_scope_option("test1,test2", nil)).to eq(["test1", "test2"])
-      expect(Cli.process_scope_option("test1 test2", nil)).to eq(["test1", "test2"])
     end
 
     it "returns all scopes if no scopes are provided" do

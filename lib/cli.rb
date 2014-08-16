@@ -109,7 +109,7 @@ class Cli
         # convert cli scope naming to internal one
         scopes.tr!("-", "_")
 
-        scope_list = scopes.split(/[, ]/)
+        scope_list = scopes.split(",")
       end
     else
       if exclude_scopes
@@ -119,7 +119,7 @@ class Cli
         # convert cli scope naming to internal one
         exclude_scopes.tr!("-", "_")
 
-        exclude_scopes.split(/[, ]/).each do |e|
+        exclude_scopes.split(",").each do |e|
           if Inspector.all_scopes.include?(e)
             scope_list.delete(e)
           else
