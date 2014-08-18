@@ -14,8 +14,12 @@ List all available system descriptions in the internal database.
 The list is sorted alphabetically and contains a name and the
 scopes for each system.
 
-The option `--verbose` additionally prints the inspection dates
-of each scope.
+
+### OPTIONS
+
+  * `--verbose` (optional):
+    Print additional information about the origin of scopes.
+    Currently displays [HOSTNAME] and (DATE).
 
 
 ### EXAMPLES

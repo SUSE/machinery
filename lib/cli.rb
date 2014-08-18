@@ -421,7 +421,7 @@ class Cli
   LONGDESC
   command :list do |c|
     c.switch :verbose, :required => false, :negatable => false,
-      :desc => "Enable verbose mode"
+      :desc => "Display additional information about origin of scopes"
 
     c.action do |global_options,options,args|
       store = SystemDescriptionStore.new

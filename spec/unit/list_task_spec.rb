@@ -23,6 +23,7 @@ describe ListTask do
   let(:store) { SystemDescriptionStore.new }
   let(:name) { "foo" }
   let(:date) { "2014-02-07T14:04:45Z" }
+  let(:hostname) { "example.com" }
   let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
   let(:system_description) {
     json = <<-EOF
@@ -32,10 +33,12 @@ describe ListTask do
         "meta": {
           "format_version": 1,
           "packages": {
-            "modified": "#{date}"
+            "modified": "#{date}",
+            "hostname": "#{hostname}"
           },
           "repositories": {
-            "modified": "#{date}"
+            "modified": "#{date}",
+            "hostname": "#{hostname}"
           }
         }
       }
@@ -80,24 +83,27 @@ describe ListTask do
         expect(s).to include("packages")
         expect(s).to include("repositories")
         expect(s).not_to include(date_human)
+        expect(s).not_to include(hostname)
       }
       list_task.list(store)
     end
 
-    it "shows also the date of the descriptions if verbose is true" do
+    it "shows also the date and hostname of the descriptions if verbose is true" do
       store.save(system_description)
       expect($stdout).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include(date_human)
+        expect(s).to include(hostname)
       }
       list_task.list(store, {"verbose" => true})
     end
 
-    it "verbose shows the date as unknown if there is no meta data for it" do
+    it "verbose shows the date/hostname as unknown if there is no meta data for it" do
       store.save(system_description_without_scope_meta)
       expect($stdout).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("unknown")
+        expect(s).to include("Unknown hostname")
       }
       list_task.list(store, {"verbose" => true})
     end
