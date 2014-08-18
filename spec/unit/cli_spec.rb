@@ -342,6 +342,13 @@ describe Cli do
         Cli.parse_scopes("unknown-scope,unknown-scope2")
       }.to raise_error(Machinery::Errors::UnknownScope, /The following scopes are not supported: unknown-scope,unknown-scope2./)
     end
+
+    it "raises an error if the scope consists illegal characters" do
+      expect{
+        Cli.parse_scopes("fd df,u*n")
+      }.to raise_error(Machinery::Errors::UnknownScope,
+        /The following scopes are not valid: "fd df", "u\*n"\./)
+    end
   end
 
   describe "#error_handling" do

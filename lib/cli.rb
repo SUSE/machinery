@@ -124,17 +124,33 @@ class Cli
 
   def self.parse_scopes(scope_string)
     unknown_scopes = []
+    invalid_scopes = []
     scopes = []
 
     scope_string.split(",").each do |scope|
+      if !(scope =~ /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/)
+        invalid_scopes << scope
+        next
+      end
+
       # convert cli scope naming to internal one
       scope.tr!("-", "_")
 
-      if !Inspector.all_scopes.include?(scope) || !Renderer.for(scope.gsub(/\s+/, ""))
+      if Inspector.all_scopes.include?(scope) && Renderer.for(scope)
         scopes << scope
       else
         unknown_scopes << scope
       end
+    end
+
+    if invalid_scopes.length > 0
+      form = invalid_scopes.length > 1 ? "scopes are" : "scope is"
+      raise Machinery::Errors::UnknownScope.new(
+        "The following #{form} not valid:" \
+          " \"#{invalid_scopes.join("\", \"")}\"." \
+          " Scope names must start with a letter and contain only lowercase" \
+          " letters and digits separated by dashes (\"-\")."
+      )
     end
 
     if unknown_scopes.length > 0
