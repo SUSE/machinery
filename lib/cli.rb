@@ -443,7 +443,7 @@ class Cli
     c.switch :all, :negatable => false,
       :desc => "Remove all system descriptions"
     c.switch :verbose, :required => false, :negatable => false,
-      :desc => "Enable verbose mode"
+      :desc => "Explain what is being done"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME") if !options[:all]
