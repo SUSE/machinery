@@ -16,36 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class ShowTask
-  def show(description, scopes = nil, options = {})
+  def show(description, scopes, options = {})
     missing_scopes = []
-    if scopes
-      renderers = []
-      failed_renderers = []
-
-      scopes.each do |scope|
-        renderer = Renderer.for(scope)
-
-        if renderer
-          renderers << renderer
-        else
-          failed_renderers << scope
-        end
-      end
-
-      if failed_renderers.length > 0
-        raise Machinery::Errors::UnknownRenderer.new(
-          "The following scopes are not supported: " \
-          "#{Machinery::Ui.internal_scope_list_to_string(failed_renderers)}. " \
-          "Valid scopes are: " \
-          "#{Machinery::Ui.internal_scope_list_to_string(Inspector.all_scopes)}."
-        )
-      end
-    else
-      renderers = Renderer.all
-    end
-
     output = ""
-    renderers.each do |renderer|
+
+    scopes.map { |s| Renderer.for(s) }.each do |renderer|
       section = renderer.render(description, options)
       unless section.empty?
         output += section

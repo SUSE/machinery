@@ -30,13 +30,6 @@ describe ShowTask, "#show" do
     SystemDescription.from_json("name", json)
   }
 
-
-  it "runs all renderers when no scope is given" do
-    expect(Renderer).to receive(:all) { [] }
-
-    show_task.show(system_description, nil, :no_pager => true)
-  end
-
   it "runs the proper renderer when a scope is given" do
     renderer = double
     expect(renderer).to receive(:render).and_return("bar")
@@ -61,11 +54,5 @@ describe ShowTask, "#show" do
       expect(s).not_to include("packages")
     }
     show_task.show(description_with_packages, [scope], :no_pager => true)
-  end
-
-  it "throws an error when renderer does not exist" do
-    expect {
-      show_task.show(system_description, ["unknown"])
-    }.to raise_error(Machinery::Errors::UnknownRenderer)
   end
 end

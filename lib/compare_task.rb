@@ -17,23 +17,6 @@
 
 class CompareTask
   def compare(description1, description2, scopes, options = {})
-    failed_scopes = []
-
-    scopes.each do |scope|
-      if !Renderer.for(scope)
-        failed_scopes << scope
-      end
-    end
-
-    if failed_scopes.length > 0
-      raise Machinery::Errors::UnknownRenderer.new(
-        "The following scopes are not supported: " \
-        "#{Machinery::Ui.internal_scope_list_to_string(failed_scopes)}. " \
-        "Valid scopes are: " \
-          "#{Machinery::Ui.internal_scope_list_to_string(Inspector.all_scopes)}."
-      )
-    end
-
     output = ""
     identical = true
     common_scopes = false

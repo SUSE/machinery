@@ -79,18 +79,6 @@ describe InspectTask, "#inspect_system" do
     expect(description.foo).to eql(SimpleInspectTaskScope.new("bar" => "baz"))
   end
 
-  it "raises an exception when an inspector is unknown" do
-    expect {
-      inspect_task.inspect_system(
-        store,
-        host,
-        name,
-        current_user_non_root,
-        ["doesnotexist"]
-      )
-    }.to raise_error(Machinery::Errors::UnknownInspector, /not supported.*doesnotexist/)
-  end
-
   describe "in case of inspection errors" do
     it "raises Machinery::Errors::ScopeFailed on 'expected errors'" do
       expect_any_instance_of(FooInspector).to receive(:inspect).

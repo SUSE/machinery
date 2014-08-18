@@ -72,30 +72,9 @@ class InspectTask
       host = system.host
     end
 
-    inspectors = []
-    failed_inspectors = []
-
-    scopes.each do |scope|
-      inspector = Inspector.for(scope)
-
-      if inspector
-        inspectors << inspector
-      else
-        failed_inspectors << scope
-      end
-    end
-    if failed_inspectors.length > 0
-      raise Machinery::Errors::UnknownInspector.new(
-        "The following scopes are not supported: " \
-        "#{Machinery::Ui.internal_scope_list_to_string(failed_inspectors)}. " \
-        "Valid scopes are: " \
-          "#{Machinery::Ui.internal_scope_list_to_string(Inspector.all_scopes)}."
-      )
-    end
-
     failed_inspections = {}
 
-    inspectors.each do |inspector|
+    scopes.map { |s| Inspector.for(s) }.each do |inspector|
       puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
       begin
         summary = inspector.inspect(system, description, options)

@@ -72,7 +72,7 @@ shared_examples "CLI" do
           "sudo machinery inspect localhost --scope=foobar --name=test",
           :as => "vagrant",
           :stdout => :capture
-        ) }.to raise_error(ExecutionFailed, /The following scopes are not supported: foobar/)
+        ) }.to raise_error(ExecutionFailed, /The following scope is not supported: foobar/)
       end
     end
 

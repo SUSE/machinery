@@ -103,7 +103,7 @@ describe Cli do
         run_command(["inspect", example_host])
       end
 
-      it "only inspects the scopes provided (separated by ',')" do
+      it "only inspects the scopes provided" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
@@ -116,21 +116,6 @@ describe Cli do
           and_return(description)
 
         run_command(["inspect", "--scope=packages,repositories", example_host])
-      end
-
-      it "only inspects the scopes provided (separated by ' ')" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system).
-          with(
-            an_instance_of(SystemDescriptionStore),
-            example_host,
-            example_host,
-            an_instance_of(CurrentUser),
-            ["packages", "repositories"],
-            {}
-          ).
-          and_return(description)
-
-        run_command(["inspect", "--scope=packages repositories", example_host])
       end
 
       it "inspects all scopes if no --scope is provided" do
@@ -164,7 +149,7 @@ describe Cli do
           ).
           and_return(description)
 
-        run_command(["inspect", "--exclude-scope=packages repositories", example_host])
+        run_command(["inspect", "--exclude-scope=packages,repositories", example_host])
       end
 
       describe "file extraction" do
@@ -315,10 +300,9 @@ describe Cli do
     end
   end
 
-  describe "#process_scope_option" do
+  describe ".process_scope_option" do
     it "returns the scopes which are provided" do
-      expect(Cli.process_scope_option("test1,test2", nil)).to eq(["test1", "test2"])
-      expect(Cli.process_scope_option("test1 test2", nil)).to eq(["test1", "test2"])
+      expect(Cli.process_scope_option("os,packages", nil)).to eq(["os", "packages"])
     end
 
     it "returns all scopes if no scopes are provided" do
@@ -333,6 +317,37 @@ describe Cli do
 
     it "raises an error if both scopes and excluded scopes are given" do
       expect { Cli.process_scope_option("scope1", "scope2") }.to  raise_error(Machinery::Errors::InvalidCommandLine)
+    end
+  end
+
+  describe ".parse_scopes" do
+    it "returns an array with existing scopes" do
+      expect(Cli.parse_scopes("os,config-files")).to eq(["os", "config_files"])
+    end
+
+    it "raises an error if the provided scope is unknown" do
+      expect{
+        Cli.parse_scopes("unknown-scope")
+      }.to raise_error(Machinery::Errors::UnknownScope, /unknown-scope/)
+    end
+
+    it "uses singular in the error message for one scope" do
+      expect{
+        Cli.parse_scopes("unknown-scope")
+      }.to raise_error(Machinery::Errors::UnknownScope, /The following scope is not supported: unknown-scope./)
+    end
+
+    it "uses plural in the error message for more than one scope" do
+      expect{
+        Cli.parse_scopes("unknown-scope,unknown-scope2")
+      }.to raise_error(Machinery::Errors::UnknownScope, /The following scopes are not supported: unknown-scope,unknown-scope2./)
+    end
+
+    it "raises an error if the scope consists illegal characters" do
+      expect{
+        Cli.parse_scopes("fd df,u*n")
+      }.to raise_error(Machinery::Errors::UnknownScope,
+        /The following scopes are not valid: "fd df", "u\*n"\./)
     end
   end
 
