@@ -48,13 +48,14 @@ class ListTask
           else
             hostname = "Unknown hostname"
           end
-          entry += " - Host: [#{hostname}] Date: (#{date})"
+          entry += "\n      Host: [#{hostname}]"
+          entry += "\n      Date: (#{date})"
         end
 
         scopes << entry
       end
 
-      puts output + scopes.join(", ")
+      puts output + "\n   * " + scopes .join("\n   * ") + "\n\n"
     end
   end
 end
