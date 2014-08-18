@@ -249,8 +249,6 @@ class Cli
       :desc => "Show also common properties"
     c.switch "pager", :required => false, :default_value => true,
       :desc => "Pipe output into a pager"
-    c.switch :verbose, :required => false, :negatable => false,
-      :desc => "Enable verbose mode"
 
     c.action do |global_options,options,args|
       name1 = shift_arg(args, "NAME1")
@@ -262,7 +260,6 @@ class Cli
 
       task = CompareTask.new
       opts = {
-          verbose:  options["verbose"],
           show_all: options["show-all"],
           no_pager: !options["pager"]
       }
