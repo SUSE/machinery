@@ -22,8 +22,57 @@ class SystemDescription < Machinery::Object
   attr_accessor :store
   attr_accessor :format_version
 
-  def self.add_validator(json_path, &block)
-    @@json_validator[json_path] = block
+  class << self
+    def add_validator(json_path, &block)
+      @@json_validator[json_path] = block
+    end
+
+    def from_json(name, json, store = nil)
+      json_hash = JSON.parse(json)
+
+      if !json_hash.is_a?(Hash)
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "System descriptions must have a hash as the root element"
+        )
+      end
+
+      @@json_validator.each do |json_path, block|
+        pointer = JsonPointer.new(json_hash, json_path, :symbolize_keys => false)
+        block.yield pointer.value if pointer.exists?
+      end
+
+      begin
+        description = self.new(name, self.create_attrs(json_hash), store)
+      rescue NameError
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "The system description #{name} has an incompatible data format and can" \
+          " not be read.\n\n"
+        )
+      end
+
+      json_format_version = json_hash["meta"]["format_version"] if json_hash["meta"]
+      description.format_version = json_format_version
+
+      description
+    end
+
+    def create_attrs(hash)
+      entries = hash.map do |key, value|
+        next if key == "meta"
+
+        class_name = "#{key.split("_").map(&:capitalize).join}Scope"
+        value_converted = Object.const_get(class_name).from_json(value)
+
+        # Set metadata
+        if hash["meta"] && hash["meta"][key]
+          value_converted.meta = Machinery::Object.from_json(hash["meta"][key])
+        end
+
+        [key, value_converted]
+      end.compact
+
+      Hash[entries]
+    end
   end
 
   def initialize(name, hash = {}, store = nil)
@@ -32,53 +81,6 @@ class SystemDescription < Machinery::Object
     @format_version = CURRENT_FORMAT_VERSION
 
     super(hash)
-  end
-
-  def self.from_json(name, json, store = nil)
-    json_hash = JSON.parse(json)
-
-    if !json_hash.is_a?(Hash)
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "System descriptions must have a hash as the root element"
-      )
-    end
-
-    @@json_validator.each do |json_path, block|
-      pointer = JsonPointer.new(json_hash, json_path, :symbolize_keys => false)
-      block.yield pointer.value if pointer.exists?
-    end
-
-    begin
-      description = self.new(name, self.create_attrs(json_hash), store)
-    rescue NameError
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "The system description #{name} has an incompatible data format and can" \
-        " not be read.\n\n"
-      )
-    end
-
-    json_format_version = json_hash["meta"]["format_version"] if json_hash["meta"]
-    description.format_version = json_format_version
-
-    description
-  end
-
-  def self.create_attrs(hash)
-    entries = hash.map do |key, value|
-      next if key == "meta"
-
-      class_name = "#{key.split("_").map(&:capitalize).join}Scope"
-      value_converted = Object.const_get(class_name).from_json(value)
-
-      # Set metadata
-      if hash["meta"] && hash["meta"][key]
-        value_converted.meta = Machinery::Object.from_json(hash["meta"][key])
-      end
-
-      [key, value_converted]
-    end.compact
-
-    Hash[entries]
   end
 
   def compatible?
