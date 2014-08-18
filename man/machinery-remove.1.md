@@ -19,6 +19,9 @@ The `remove` command removes a stored system description.
   * `--all` (optional):
     Remove all stored system descriptions.
 
+  * `--verbose` (optional):
+    Explain what is being done.
+
 
 ### ARGUMENTS
 
