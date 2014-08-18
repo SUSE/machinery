@@ -25,6 +25,7 @@ module Machinery
     # showing a backtrace.
     class MachineryError < StandardError; end
 
+    class UnknownScope < MachineryError; end
     class UnknownInspector < MachineryError; end
     class UnknownRenderer < MachineryError; end
     class InvalidPager < MachineryError; end

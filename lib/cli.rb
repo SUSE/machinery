@@ -105,31 +105,12 @@ class Cli
         raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
       else
         # scope only
-
-        # convert cli scope naming to internal one
-        scopes.tr!("-", "_")
-
-        scope_list = scopes.split(",")
+        scope_list = parse_scopes(scopes)
       end
     else
       if exclude_scopes
         # exclude-scope only
-        scope_list = Inspector.all_scopes
-
-        # convert cli scope naming to internal one
-        exclude_scopes.tr!("-", "_")
-
-        exclude_scopes.split(",").each do |e|
-          if Inspector.all_scopes.include?(e)
-            scope_list.delete(e)
-          else
-            raise Machinery::Errors::UnknownRenderer.new(
-                "The following scope is not supported: " \
-                  "#{Machinery::Ui.internal_scope_list_to_string(e)}. " \
-                "Valid scopes are: #{AVAILABLE_SCOPE_LIST}."
-            )
-          end
-        end
+        scope_list = Inspector.all_scopes - parse_scopes(exclude_scopes)
       else
         # neither scope nor exclude-scope
         scope_list = Inspector.all_scopes
@@ -139,6 +120,33 @@ class Cli
       raise Machinery::Errors::InvalidCommandLine.new( "No scopes to process. Nothing to do.")
     end
     scope_list
+  end
+
+  def self.parse_scopes(scope_string)
+    unknown_scopes = []
+    scopes = []
+
+    scope_string.split(",").each do |scope|
+      # convert cli scope naming to internal one
+      scope.tr!("-", "_")
+
+      if !Inspector.all_scopes.include?(scope) || !Renderer.for(scope.gsub(/\s+/, ""))
+        scopes << scope
+      else
+        unknown_scopes << scope
+      end
+    end
+
+    if unknown_scopes.length > 0
+      form = unknown_scopes.length > 1 ? "scopes are" : "scope is"
+      raise Machinery::Errors::UnknownScope.new(
+        "The following #{form} not supported: " \
+          "#{Machinery::Ui.internal_scope_list_to_string(unknown_scopes)}. " \
+        "Valid scopes are: #{AVAILABLE_SCOPE_LIST}."
+      )
+    end
+
+    scopes
   end
 
   AVAILABLE_SCOPE_LIST = Machinery::Ui.internal_scope_list_to_string(
