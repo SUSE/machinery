@@ -29,17 +29,7 @@ class SystemDescription < Machinery::Object
 
     def from_json(name, json, store = nil)
       json_hash = JSON.parse(json)
-
-      if !json_hash.is_a?(Hash)
-        raise Machinery::Errors::SystemDescriptionError.new(
-          "System descriptions must have a hash as the root element"
-        )
-      end
-
-      @@json_validator.each do |json_path, block|
-        pointer = JsonPointer.new(json_hash, json_path, :symbolize_keys => false)
-        block.yield pointer.value if pointer.exists?
-      end
+      validate_json(json_hash)
 
       begin
         description = self.new(name, self.create_attrs(json_hash), store)
@@ -72,6 +62,21 @@ class SystemDescription < Machinery::Object
       end.compact
 
       Hash[entries]
+    end
+
+    private
+
+    def validate_json(json)
+      if !json.is_a?(Hash)
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "System descriptions must have a hash as the root element"
+        )
+      end
+
+      @@json_validator.each do |json_path, block|
+        pointer = JsonPointer.new(json, json_path, :symbolize_keys => false)
+        block.yield pointer.value if pointer.exists?
+      end
     end
   end
 
