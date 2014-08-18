@@ -283,13 +283,5 @@ Compared descriptions are identical.
         )
       end
     end
-
-    it "raises an exception for unknown scope" do
-      allow($stdout).to receive(:tty?).and_return(false)
-
-      expect {
-        subject.compare(description1, description2, ["unknown"])
-      }.to raise_error(Machinery::Errors::UnknownRenderer)
-    end
   end
 end
