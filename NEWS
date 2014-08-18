@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+* Added support for building openSUSE 13.1 images
+* Formatted list output to be more readable
+* Fixed issue #59 by filtering invalid UTF-8 characters during inspection
 
 ## Version 0.18.0 - Wed Aug 06 18:37:26 CEST 2014 - thardeck@suse.de
 

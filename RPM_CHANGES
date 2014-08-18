@@ -1,5 +1,6 @@
 # Machinery RPM Changelog
 
+* add requirement for ruby gem string-scrub
 
 ## Version 0.18.0 - Wed Aug 06 18:37:26 CEST 2014 - thardeck@suse.de
 
