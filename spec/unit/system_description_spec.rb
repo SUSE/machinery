@@ -123,6 +123,31 @@ describe SystemDescription do
     )}.to raise_error(Machinery::Errors::SystemDescriptionError)
   end
 
+  it "raises SystemDescriptionError on invalid description" do
+    expect {
+      SystemDescription.from_json(@name, <<-EOT)
+        {
+          "meta": {
+            "format_version": 1,
+            "os": "invalid"
+          }
+        }
+      EOT
+    }.to raise_error(Machinery::Errors::SystemDescriptionError)
+  end
+
+  it "doesn't validate incompatible descriptions" do
+    expect {
+      SystemDescription.from_json(@name, <<-EOT)
+        {
+          "meta": {
+            "os": "invalid"
+          }
+        }
+      EOT
+    }.not_to raise_error
+  end
+
   it "raises ValidationError if json validator find duplicate packages" do
     SystemDescription.add_validator "/packages" do |json|
       if json != json.uniq

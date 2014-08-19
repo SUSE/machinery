@@ -18,6 +18,11 @@
 class SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 1
 
+  GLOBAL_SCHEMA = JSON.parse(File.read(File.expand_path(
+    "../../schema/v#{CURRENT_FORMAT_VERSION}/system-description-global.schema.json",
+    __FILE__
+  )))
+
   attr_accessor :name
   attr_accessor :store
   attr_accessor :format_version
@@ -29,7 +34,7 @@ class SystemDescription < Machinery::Object
 
     def from_json(name, json, store = nil)
       json_hash = JSON.parse(json)
-      validate_json(json_hash)
+      validate_json(json_hash) if compatible_json?(json_hash)
 
       begin
         description = self.new(name, self.create_attrs(json_hash), store)
@@ -66,11 +71,16 @@ class SystemDescription < Machinery::Object
 
     private
 
+    def compatible_json?(json)
+      json.is_a?(Hash) &&
+        json["meta"].is_a?(Hash) &&
+        json["meta"]["format_version"] == CURRENT_FORMAT_VERSION
+    end
+
     def validate_json(json)
-      if !json.is_a?(Hash)
-        raise Machinery::Errors::SystemDescriptionError.new(
-          "System descriptions must have a hash as the root element"
-        )
+      errors = JSON::Validator.fully_validate(GLOBAL_SCHEMA, json)
+      if !errors.empty?
+        raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
       end
 
       @@json_validator.each do |json_path, block|
