@@ -168,8 +168,6 @@ class UnmanagedFilesInspector < Inspector
     # "REPLACEMENT CHARACTER" (U+FFFD). That way we have both the raw data
     # (which is needed in order to be able to access the files) and the cleaned
     # string which can be safely used.
-    # (Using https://github.com/hsbt/string-scrub which backports String#scrub
-    # to ruby < 2.1)
     out = system.run_command(
       "/bin/bash",
       {
@@ -184,8 +182,8 @@ class UnmanagedFilesInspector < Inspector
     out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
       next unless raw_path && !raw_path.empty?
 
-      path = raw_path.dup.force_encoding("UTF-8").scrub
-      link = raw_link.dup.force_encoding("UTF-8").scrub
+      path = scrub(raw_path.dup.force_encoding("UTF-8"))
+      link = scrub(raw_link.dup.force_encoding("UTF-8"))
 
       if [path, link].any? { |f| f.include?("\uFFFD") }
         broken_names = []
@@ -339,5 +337,19 @@ class UnmanagedFilesInspector < Inspector
 
     description["unmanaged_files"] = UnmanagedFilesScope.new(osl.sort_by(&:name))
     summary
+  end
+
+  private
+
+  # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
+  # UTF-8.
+  def scrub(s)
+    # We have a string in UTF-8 with possible invalid byte sequences. It turns
+    # out that String#encode can remove these sequences when given appropriate
+    # options, but just converting into UTF-8 would be a no-op. So let's convert
+    # into UTF-16 (which has the same character set as UTF-8) and back.
+    #
+    # See also: http://stackoverflow.com/a/21315619
+    s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
   end
 end
