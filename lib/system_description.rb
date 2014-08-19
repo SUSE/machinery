@@ -103,14 +103,15 @@ class SystemDescription < Machinery::Object
   end
 
   def to_json
-    hash = as_json
-    hash["meta"] = {
-      format_version: self.format_version
-    }
+    meta = {}
+    meta["format_version"] = self.format_version if self.format_version
 
     attributes.each do |key, value|
-      hash["meta"][key] = self[key].meta.as_json if self[key].meta
+      meta[key] = self[key].meta.as_json if self[key].meta
     end
+
+    hash = as_json
+    hash["meta"] = meta unless meta.empty?
 
     JSON.pretty_generate(hash)
   end

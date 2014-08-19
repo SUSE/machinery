@@ -171,6 +171,31 @@ describe SystemDescription do
     end
   end
 
+  describe "#to_json" do
+    it "saves version metadata for descriptions with format version" do
+      description = SystemDescription.from_json("name", <<-EOT)
+        {
+          "meta": {
+            "format_version": 1
+          }
+        }
+      EOT
+
+      json = JSON.parse(description.to_json)
+
+      expect(json["meta"]["format_version"]).to eq(1)
+    end
+
+    it "doesn't save version metadata for descriptions without format version" do
+      description = SystemDescription.from_json("name", "{}")
+
+      json = JSON.parse(description.to_json)
+
+      has_format_version = json.has_key?("meta") && json["meta"].has_key?("format_version")
+      expect(has_format_version).to be(false)
+    end
+  end
+
   describe "#scopes" do
     it "returns a sorted list of scopes which are available in the system description" do
       description = SystemDescription.from_json(@name, @description)
