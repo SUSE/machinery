@@ -51,7 +51,7 @@ built image. The list of filters is shown at the beginning of the build.
 
 ### BUILD SUPPORT MATRIX
 
-The following combinations of build platforms and built systems are supported:
+The following combinations of build hosts and targets are supported:
 
   * SUSE Linux Enterprise 12
 
