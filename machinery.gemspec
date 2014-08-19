@@ -39,7 +39,6 @@ Gem::Specification.new do |s|
   s.add_dependency "abstract_method", ">=1.2.1"
   s.add_dependency "nokogiri", ">=1.6.0"
   s.add_dependency "gli", "~> 2.11.0"
-  s.add_dependency "string-scrub", "~> 0.0.3"
 
   s.files        = Dir["lib/**/*.rb", "plugins/**/*.rb", "bin/*", "man/**/*", "NEWS", "COPYING", "helpers/*", "kiwi_helpers/*"]
   s.executables  = "machinery"
