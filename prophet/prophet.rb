@@ -88,7 +88,7 @@ Prophet.setup do |config|
   config.execution do
     log.info 'Running tests ...'
 
-    system("cd ..; rake spec:unit")
+    system("cd ..; (bundle check || sudo bundle install) && rake spec:unit")
     config.success = ($? == 0)
 
     log.info "Tests are #{config.success ? 'passing' : 'failing'}."
