@@ -53,7 +53,7 @@ class SystemDescription < Machinery::Object
     rescue NameError
       raise Machinery::Errors::SystemDescriptionError.new(
         "The system description #{name} has an incompatible data format and can" \
-        " not be read."
+        " not be read.\n\n"
       )
     end
 
