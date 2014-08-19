@@ -48,7 +48,14 @@ class SystemDescription < Machinery::Object
       block.yield pointer.value if pointer.exists?
     end
 
-    description = self.new(name, self.create_attrs(json_hash), store)
+    begin
+      description = self.new(name, self.create_attrs(json_hash), store)
+    rescue NameError
+      raise Machinery::Errors::SystemDescriptionError.new(
+        "The system description #{name} has an incompatible data format and can" \
+        " not be read."
+      )
+    end
 
     json_format_version = json_hash["meta"]["format_version"] if json_hash["meta"]
     description.format_version = json_format_version
