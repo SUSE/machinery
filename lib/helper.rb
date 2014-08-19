@@ -32,13 +32,10 @@ module Machinery
 
   def self.check_build_compatible_host(system_description)
     if !LocalSystem.os_object.can_build?(system_description.os_object)
-      message = "Building image for " +
-        "'#{system_description.os_object.name}' is not supported." +
-        " Supported image build target(s) on buildhost " +
-        "'#{LocalSystem.os_object.name}' are: "
-      message += system_description.os_object.can_build.map do |os_class|
-        "'" + os_class.new.name + "'"
-      end.join(", ")
+      message = "Building '#{system_description.os_object.name}' images is " \
+        "not supported on this distribution.\n" \
+        "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
+        "further information which build targets are supported."
 
       raise(Machinery::Errors::BuildFailed.new(message))
     end

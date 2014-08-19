@@ -35,7 +35,7 @@ end
 
 class OsSles11 < Os
   def initialize
-    @can_build = [OsSles11]
+    @can_build = []
     @name = "SUSE Linux Enterprise Server 11"
   end
 end
@@ -52,7 +52,7 @@ end
 
 class OsOpenSuse13_1 < Os
   def initialize
-    @can_build = [OsSles11, OsSles12, OsOpenSuse13_1]
+    @can_build = [OsSles11, OsOpenSuse13_1]
     @name = "openSUSE 13.1 (Bottle)"
   end
 end
