@@ -59,7 +59,7 @@ The following combinations of build platforms and built systems are supported:
 
   * openSUSE 13.1
 
-    Can build SUSE Linux Enterprise 11 and 12
+    Can build SUSE Linux Enterprise 11 and openSUSE 13.1
 
 ### EXAMPLES
 
