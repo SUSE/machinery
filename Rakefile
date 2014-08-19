@@ -95,6 +95,12 @@ namespace :rpm do
     # so we clear it instead.
     Rake::Task["check:committed"].clear
 
+    # We don't want the unit tests to be called each time the package is
+    # build since building is also required for the integration tests.
+    # This allows running the integration tests on a work-in-progress code
+    # base even when the unit tests are failing.
+    Rake::Task["package"].prerequisites.delete("test")
+
     release = Release.new
     release.build_local
   end
