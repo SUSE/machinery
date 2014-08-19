@@ -3,9 +3,10 @@
 
 ## Version 0.19.0 - Mon Aug 18 17:55:51 CEST 2014 - thardeck@suse.de
 
+* Introduced system description versioning. This change prevents usage of old system descriptions.
+* Fixed issue #59 by filtering invalid UTF-8 characters during inspection
 * Added support for building openSUSE 13.1 images
 * Formatted list output to be more readable
-* Fixed issue #59 by filtering invalid UTF-8 characters during inspection
 
 ## Version 0.18.0 - Wed Aug 06 18:37:26 CEST 2014 - thardeck@suse.de
 
