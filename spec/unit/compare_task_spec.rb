@@ -284,4 +284,191 @@ Compared descriptions are identical.
       end
     end
   end
+
+  describe "compare os scopes" do
+    it "shows two different os scopes" do
+      system_description1 = SystemDescription.from_json("one", <<-EOT)
+        {
+          "os": {
+            "name": "openSUSE",
+            "version": "12.2",
+            "architecture": "x86_64"
+          }
+        }
+      EOT
+
+      system_description2 = SystemDescription.from_json("two", <<-EOT)
+        {
+          "os": {
+            "name": "openSUSE",
+            "version": "13.1",
+            "architecture": "x86_64"
+          }
+        }
+      EOT
+
+      expected_output = <<EOT
+# Operating system
+
+Only in 'one':
+  Name: openSUSE
+  Version: 12.2
+  Architecture: x86_64
+
+Only in 'two':
+  Name: openSUSE
+  Version: 13.1
+  Architecture: x86_64
+
+EOT
+      output = CompareTask.new.render_comparison(system_description1,
+        system_description2, ["os"])
+
+      expect(output).to eq expected_output
+    end
+
+    it "shows two identical os scopes" do
+      system_description1 = SystemDescription.from_json("one", <<-EOT)
+        {
+          "os": {
+            "name": "openSUSE",
+            "version": "12.2",
+            "architecture": "x86_64"
+          }
+        }
+      EOT
+
+      system_description2 = SystemDescription.from_json("two", <<-EOT)
+        {
+          "os": {
+            "name": "openSUSE",
+            "version": "12.2",
+            "architecture": "x86_64"
+          }
+        }
+      EOT
+
+      output = CompareTask.new.render_comparison(system_description1,
+        system_description2, ["os"])
+
+      expect(output).to eq "Compared descriptions are identical.\n"
+    end
+  end
+
+  describe "compare packages scope" do
+    it "shows that a package has been added to a list" do
+      system_description1 = SystemDescription.from_json("one", <<-EOT)
+        {
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             },
+             {
+               "name": "kernel",
+               "version": "3",
+               "release": "1",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
+             }
+           ]
+        }
+      EOT
+
+      system_description2 = SystemDescription.from_json("two", <<-EOT)
+        {
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             }
+           ]
+        }
+      EOT
+
+      expected_output = <<EOT
+# Packages
+
+Only in 'one':
+  * kernel-3-1.x86_64 (openSUSE)
+
+EOT
+      output = CompareTask.new.render_comparison(system_description1,
+        system_description2, ["packages"])
+
+      expect(output).to eq expected_output
+    end
+
+    it "shows that a package has been changed in a list" do
+      system_description1 = SystemDescription.from_json("one", <<-EOT)
+        {
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             },
+             {
+               "name": "kernel",
+               "version": "3",
+               "release": "1",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
+             }
+           ]
+        }
+      EOT
+
+      system_description2 = SystemDescription.from_json("two", <<-EOT)
+        {
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             },
+             {
+               "name": "kernel",
+               "version": "4",
+               "release": "1",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
+             }
+           ]
+        }
+      EOT
+
+      expected_output = <<EOT
+# Packages
+
+Only in 'one':
+  * kernel-3-1.x86_64 (openSUSE)
+
+Only in 'two':
+  * kernel-4-1.x86_64 (openSUSE)
+
+EOT
+      output = CompareTask.new.render_comparison(system_description1,
+        system_description2, ["packages"])
+
+      expect(output).to eq expected_output
+    end
+  end
 end

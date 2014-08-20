@@ -70,6 +70,22 @@ describe Machinery::Array do
     end
   end
 
+  describe "#hash" do
+    it "returns the same hash for arrays with equivalent elements" do
+      hash1 = Machinery::Array.new(["a", "b", "c"]).hash
+      hash2 = Machinery::Array.new(["a", "b", "c"]).hash
+
+      expect(hash1).to eq(hash2)
+    end
+
+    it "returns a different hash for arrays with different elements" do
+      hash1 = Machinery::Array.new(["a", "b", "c"]).hash
+      hash2 = Machinery::Array.new(["d", "e", "f"]).hash
+
+      expect(hash1).not_to eq(hash2)
+    end
+  end
+
   describe "#-" do
     it "subtracts the elements" do
       a = ArrayExampleArray.new(["a", "b", "c"])

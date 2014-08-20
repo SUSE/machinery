@@ -120,12 +120,14 @@ class Renderer
 
     heading(display_name) if show_heading
 
-    if description1[scope] && description2[scope]
+    if description1[scope]
       puts "Only in '#{description1.name}':"
       @system_description = description1
       indent { do_render }
       @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
+    end
 
+    if description2[scope]
       puts "Only in '#{description2.name}':"
       @system_description = description2
       indent { do_render }

@@ -200,7 +200,9 @@ EOF
     let(:output_data_none) { "" }
     let(:output_data_missing) { <<-EOT }
 # Foo
-  Unable to compare, no data in 'name1'
+
+Only in 'name2':
+  data2
 
 EOT
     let(:output_data_only_common) { <<-EOT }
@@ -249,9 +251,11 @@ EOT
       end
 
       it "renders error message when there is no scope data in at least one description" do
-        output = subject.render_comparison_missing_scope(
+        output = subject.render_comparison(
           description1_without_data,
           description2_with_data,
+          description_common_without_data,
+          options
         )
 
         expect(output).to eq(output_data_missing)

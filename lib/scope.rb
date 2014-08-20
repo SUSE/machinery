@@ -51,7 +51,7 @@ module Machinery
     end
 
     def compare_with(other)
-      self.payload == other.payload ? [nil, nil, self] : [self, other, nil]
+      self.payload.compare_with(other.payload)
     end
 
     def ==(other)

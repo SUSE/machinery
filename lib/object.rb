@@ -130,5 +130,9 @@ module Machinery
 
       Hash[entries]
     end
+
+    def compare_with(other)
+      self == other ? [nil, nil, self] : [self, other, nil]
+    end
   end
 end
