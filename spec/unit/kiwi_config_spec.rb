@@ -38,7 +38,18 @@ describe KiwiConfig do
           {
             "name": "kernel-desktop-base",
             "version": "3.7.10",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+          },
+          {
+            "name": "openSUSE-release-dvd",
+            "version": "13.1",
+            "release": "1.10",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
           }
         ],
         "repositories": [
@@ -164,8 +175,8 @@ describe KiwiConfig do
           }
         ],
         "os": {
-          "name": "SUSE Linux Enterprise Server 11",
-          "version": "11 SP3",
+          "name": "openSUSE 13.1 (Bottle)",
+          "version": "13.1 (Bottle)",
           "architecture": "x86_64"
         }
       }
@@ -180,7 +191,10 @@ describe KiwiConfig do
           {
             "name": "kernel-desktop-base",
             "version": "3.7.10",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
           }
         ],
         "repositories": [
@@ -226,7 +240,10 @@ describe KiwiConfig do
           {
             "name": "kernel-desktop-base",
             "version": "3.7.10",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
           }
         ],
         "repositories": [
@@ -295,7 +312,10 @@ describe KiwiConfig do
           {
             "name": "kernel-desktop-base",
             "version": "3.7.10",
-            "release": "1.0"
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
           }
         ],
         "repositories": [
@@ -399,6 +419,9 @@ describe KiwiConfig do
 
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "kiwi_helpers"))
+    FakeFS::FileSystem.clone(File.join(
+      Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
+    )
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
       system_description_with_content.initialize_file_store(scope)
     end
@@ -434,6 +457,14 @@ describe KiwiConfig do
       expect(packages.count).to eq(2)
       expect(packages[0].attr("name")).to eq("kernel-desktop")
       expect(packages[1].attr("name")).to eq("kernel-desktop-base")
+    end
+
+    it "applies the packages to the kiwi config" do
+      config = KiwiConfig.new(system_description_with_content)
+
+      packages = config.xml.xpath("/image/packages/package").
+        map { |e| e.attr("name") }
+      expect(packages).not_to include("openSUSE-release-dvd")
     end
 
     it "applies the patterns to the kiwi config" do
@@ -517,13 +548,13 @@ describe KiwiConfig do
       }.to raise_error(Machinery::Errors::KiwiExportFailed, /not_known/)
     end
 
-    it "sets the target distribution and bootloader for SLES11" do
-      expect(system_description_with_content.os.name).to include("Server 11")
+    it "sets the target distribution and bootloader for openSUSE 13.1" do
+      expect(system_description_with_content.os.name).to include("openSUSE 13.1")
       config = KiwiConfig.new(system_description_with_content)
       type_node = config.xml.xpath("/image/preferences/type")[0]
 
-      expect(type_node["boot"]).to eq("vmxboot/suse-SLES11")
-      expect(type_node["bootloader"]).to eq("grub")
+      expect(type_node["boot"]).to eq("vmxboot/suse-13.1")
+      expect(type_node["bootloader"]).to eq("grub2")
     end
 
     it "sets the target distribution and bootloader for SLES12" do
@@ -623,7 +654,7 @@ describe KiwiConfig do
       network_config = "/root/etc/sysconfig/network/ifcfg-eth0"
 
       config = KiwiConfig.new(
-          system_description_with_content,
+          system_description_with_sysvinit_services,
           enable_dhcp: true
       )
       config.write("/")
