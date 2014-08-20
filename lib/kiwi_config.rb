@@ -198,9 +198,15 @@ EOF
   end
 
   def apply_packages(xml)
+    build_filter = YAML.load_file(File.join(
+      Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
+    )
+    filter = build_filter[@system_description.os_object.name] || []
+
     xml.packages(type: "bootstrap") do
       if @system_description.packages
         @system_description.packages.each do |package|
+          next if filter.include?(package.name)
           xml.package(name: "#{package.name}")
         end
       end
