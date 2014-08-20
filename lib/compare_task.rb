@@ -17,6 +17,12 @@
 
 class CompareTask
   def compare(description1, description2, scopes, options = {})
+    output = render_comparison(description1, description2, scopes, options)
+
+    Machinery::Ui.print_output(output, :no_pager => options[:no_pager])
+  end
+
+  def render_comparison(description1, description2, scopes, options = {})
     output = ""
     identical = true
     common_scopes = false
@@ -57,6 +63,6 @@ class CompareTask
 
     output = "Compared descriptions are identical.\n" + output if identical && common_scopes
 
-    Machinery::Ui.print_output(output, :no_pager => options[:no_pager])
+    output
   end
 end
