@@ -67,9 +67,11 @@ class SystemDescription < Machinery::Object
     private
 
     def load_global_schema
-      JSON.parse(File.read(File.expand_path(
-        "../../schema/v#{CURRENT_FORMAT_VERSION}/system-description-global.schema.json",
-        __FILE__
+      JSON.parse(File.read(File.join(
+        Machinery::ROOT,
+        "schema",
+        "v#{CURRENT_FORMAT_VERSION}",
+        "system-description-global.schema.json"
       )))
     end
 
