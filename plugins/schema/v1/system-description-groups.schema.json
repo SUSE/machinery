@@ -7,7 +7,8 @@
     "required": ["name", "password", "gid", "users"],
     "properties": {
       "name": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "password": {
         "type": "string"
@@ -19,7 +20,8 @@
       "users": {
         "type": "array",
         "items": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         }
       }
     }
