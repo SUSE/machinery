@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "required": ["name", "version", "architecture"],
+  "properties": {
+    "name": {
+      "type": ["string", "null"]
+    },
+    "version": {
+      "type": ["string", "null"]
+    },
+    "architecture": {
+      "type": ["string", "null"]
+    }
+  }
+}
+

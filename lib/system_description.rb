@@ -75,6 +75,24 @@ class SystemDescription < Machinery::Object
       )))
     end
 
+    def load_scope_schemas
+      schema_dir = File.join(
+        Machinery::ROOT,
+        "plugins",
+        "schema",
+        "v#{CURRENT_FORMAT_VERSION}"
+      )
+
+      Hash[
+        Dir["#{schema_dir}/*.schema.json"].map do |file|
+          scope = file.match(/system-description-(.*)\.schema\.json$/)[1].tr("-", "_")
+          schema = JSON.parse(File.read(file))
+
+          [scope, schema]
+        end
+      ]
+    end
+
     def compatible_json?(json)
       json.is_a?(Hash) &&
         json["meta"].is_a?(Hash) &&
@@ -83,6 +101,15 @@ class SystemDescription < Machinery::Object
 
     def validate_json(json)
       errors = JSON::Validator.fully_validate(GLOBAL_SCHEMA, json)
+
+      scopes = json.keys
+      scopes.delete("meta")
+      errors += scopes.flat_map do |scope|
+        schema = SCOPE_SCHEMAS[scope]
+
+        schema ? JSON::Validator.fully_validate(schema, json[scope]) : []
+      end
+
       if !errors.empty?
         raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
       end
@@ -95,6 +122,7 @@ class SystemDescription < Machinery::Object
   end
 
   GLOBAL_SCHEMA = load_global_schema
+  SCOPE_SCHEMAS = load_scope_schemas
 
   def initialize(name, hash = {}, store = nil)
     @name = name
