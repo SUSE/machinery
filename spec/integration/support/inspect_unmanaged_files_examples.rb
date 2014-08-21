@@ -137,5 +137,47 @@ shared_examples "inspect unmanaged files" do |base|
 
       expect(actual_md5sums).to match_array(expected_md5sums)
     end
+
+    it "can deal with spaces and quotes in file names" do
+      @subject_system.inject_file(
+        File.join(Machinery::ROOT, "spec/data/unmanaged_files/test-quote-char-1.0-1.noarch.rpm"),
+        "/tmp/test-quote-char-1.0-1.noarch.rpm",
+        :owner => "root",
+        :mode => "644"
+      )
+
+      @subject_system.run_command(
+        "rpm -i /tmp/test-quote-char-1.0-1.noarch.rpm",
+        as: "root"
+      )
+
+      @subject_system.run_command(
+        "echo 42 > /opt/test-quote-char/test-dir-name-with-\\'\\ quote-char\\ \\'/unmanaged-file-with-\\'\\ quote\\ \\'",
+        as: "root"
+      )
+
+      @subject_system.run_command(
+        "mkdir /opt/test-quote-char/test-dir-name-with-\\'\\ quote-char\\ \\'/unmanaged-dir-with-\\'\\ quote\\ \\'",
+        as: "root"
+      )
+
+      @machinery.run_command(
+        "machinery inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
+        as: "vagrant"
+      )
+
+      file_output = @machinery.run_command(
+        "ls ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees/opt/test-quote-char/test-dir-name-with-\\'\\ quote-char\\ \\'/unmanaged-dir-with-\\'\\ quote\\ \\'.tgz",
+        as: "vagrant", stdout: :capture
+      )
+      expect(file_output).to include("unmanaged-dir-with-' quote '.tgz")
+
+      show_output = @machinery.run_command(
+        "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+        as: "vagrant", stdout: :capture
+      )
+      expect(show_output).to include("unmanaged-file-with-' quote '")
+      expect(show_output).to include("unmanaged-dir-with-' quote '")
+    end
   end
 end
