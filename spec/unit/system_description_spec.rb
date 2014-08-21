@@ -123,7 +123,7 @@ describe SystemDescription do
     )}.to raise_error(Machinery::Errors::SystemDescriptionError)
   end
 
-  it "raises SystemDescriptionError on invalid description" do
+  it "raises SystemDescriptionError on invalid global data in a description" do
     expect {
       SystemDescription.from_json(@name, <<-EOT)
         {
@@ -131,6 +131,19 @@ describe SystemDescription do
             "format_version": 1,
             "os": "invalid"
           }
+        }
+      EOT
+    }.to raise_error(Machinery::Errors::SystemDescriptionError)
+  end
+
+  it "raises SystemDescriptionError on invalid scope data in a description" do
+    expect {
+      SystemDescription.from_json(@name, <<-EOT)
+        {
+          "meta": {
+            "format_version": 1
+          },
+          "os": { }
         }
       EOT
     }.to raise_error(Machinery::Errors::SystemDescriptionError)
