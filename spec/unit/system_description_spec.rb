@@ -32,6 +32,7 @@ describe SystemDescription do
           "priority": 99,
           "keep_packages": false,
           "enabled": true,
+          "gpgcheck": true,
           "autorefresh": true
         }
       ],
