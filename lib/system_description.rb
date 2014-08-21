@@ -107,7 +107,17 @@ class SystemDescription < Machinery::Object
       errors += scopes.flat_map do |scope|
         schema = SCOPE_SCHEMAS[scope]
 
-        schema ? JSON::Validator.fully_validate(schema, json[scope]) : []
+        if schema
+          JSON::Validator.fully_validate(schema, json[scope]).map do |error|
+            "In scope #{scope}: #{error}"
+          end
+        else
+          []
+        end
+      end
+
+      errors.map! do |error|
+        error.gsub(/ in schema .*$/, ".")
       end
 
       if !errors.empty?
