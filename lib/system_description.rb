@@ -18,11 +18,6 @@
 class SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 1
 
-  GLOBAL_SCHEMA = JSON.parse(File.read(File.expand_path(
-    "../../schema/v#{CURRENT_FORMAT_VERSION}/system-description-global.schema.json",
-    __FILE__
-  )))
-
   attr_accessor :name
   attr_accessor :store
   attr_accessor :format_version
@@ -71,6 +66,13 @@ class SystemDescription < Machinery::Object
 
     private
 
+    def load_global_schema
+      JSON.parse(File.read(File.expand_path(
+        "../../schema/v#{CURRENT_FORMAT_VERSION}/system-description-global.schema.json",
+        __FILE__
+      )))
+    end
+
     def compatible_json?(json)
       json.is_a?(Hash) &&
         json["meta"].is_a?(Hash) &&
@@ -89,6 +91,8 @@ class SystemDescription < Machinery::Object
       end
     end
   end
+
+  GLOBAL_SCHEMA = load_global_schema
 
   def initialize(name, hash = {}, store = nil)
     @name = name
