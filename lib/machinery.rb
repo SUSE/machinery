@@ -28,6 +28,7 @@ require "erb"
 require "yaml"
 require "uri"
 require "gli"
+require "json-schema"
 
 require_relative 'machinery_logger'
 require_relative 'zypper'

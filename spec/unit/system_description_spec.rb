@@ -123,6 +123,31 @@ describe SystemDescription do
     )}.to raise_error(Machinery::Errors::SystemDescriptionError)
   end
 
+  it "raises SystemDescriptionError on invalid description" do
+    expect {
+      SystemDescription.from_json(@name, <<-EOT)
+        {
+          "meta": {
+            "format_version": 1,
+            "os": "invalid"
+          }
+        }
+      EOT
+    }.to raise_error(Machinery::Errors::SystemDescriptionError)
+  end
+
+  it "doesn't validate incompatible descriptions" do
+    expect {
+      SystemDescription.from_json(@name, <<-EOT)
+        {
+          "meta": {
+            "os": "invalid"
+          }
+        }
+      EOT
+    }.not_to raise_error
+  end
+
   it "raises ValidationError if json validator find duplicate packages" do
     SystemDescription.add_validator "/packages" do |json|
       if json != json.uniq
@@ -168,6 +193,31 @@ describe SystemDescription do
       expect {
         subject.ensure_compatibility!
       }.to raise_error
+    end
+  end
+
+  describe "#to_json" do
+    it "saves version metadata for descriptions with format version" do
+      description = SystemDescription.from_json("name", <<-EOT)
+        {
+          "meta": {
+            "format_version": 1
+          }
+        }
+      EOT
+
+      json = JSON.parse(description.to_json)
+
+      expect(json["meta"]["format_version"]).to eq(1)
+    end
+
+    it "doesn't save version metadata for descriptions without format version" do
+      description = SystemDescription.from_json("name", "{}")
+
+      json = JSON.parse(description.to_json)
+
+      has_format_version = json.has_key?("meta") && json["meta"].has_key?("format_version")
+      expect(has_format_version).to be(false)
     end
   end
 
