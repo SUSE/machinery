@@ -48,7 +48,10 @@ shared_context "machinery test directory" do
     {
       "name": "kernel-desktop",
       "version": "3.7.10",
-      "release": "1.0"
+      "release": "1.0",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6aa7aa6af76da1357219b65c5d32a52e"
     }
   ],
   "meta": {
