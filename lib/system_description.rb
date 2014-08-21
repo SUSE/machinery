@@ -117,6 +117,7 @@ class SystemDescription < Machinery::Object
       end
 
       errors.map! do |error|
+        error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
         error.gsub(/ in schema .*$/, ".")
       end
 
