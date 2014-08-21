@@ -116,6 +116,10 @@ class SystemDescription < Machinery::Object
         end
       end
 
+      errors.map! do |error|
+        error.gsub(/ in schema .*$/, ".")
+      end
+
       if !errors.empty?
         raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
       end
