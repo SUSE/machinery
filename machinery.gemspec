@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.add_dependency "gli", "~> 2.11.0"
   s.add_dependency "json-schema", "~> 2.2.4"
 
-  s.files        = Dir["lib/**/*.rb", "plugins/**/*.rb", "bin/*", "man/**/*", "NEWS", "COPYING", "helpers/*", "kiwi_helpers/*", "schema/*"]
+  s.files        = Dir["lib/**/*.rb", "plugins/**/*.rb", "bin/*", "man/**/*", "NEWS", "COPYING", "helpers/*", "kiwi_helpers/*", "schema/**/*"]
   s.executables  = "machinery"
   s.require_path = "lib"
 
