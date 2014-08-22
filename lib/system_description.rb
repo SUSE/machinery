@@ -28,7 +28,24 @@ class SystemDescription < Machinery::Object
     end
 
     def from_json(name, json, store = nil)
-      json_hash = JSON.parse(json)
+      begin
+        json_hash = JSON.parse(json)
+      rescue JSON::ParserError => e
+        lines = e.message.split("\n")
+        error_pos = json.split("\n").length + 3 - lines.length
+        block_end = lines.index { |l| l =~ / \},$/ }
+
+        # remove needless json error information
+        lines[0].gsub!(/^\d+: (.*)$/, "\\1")
+
+        error = lines[0..block_end].join("\n")
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "The JSON data of system description '#{name}' " \
+            "couldn't be parsed. The following error occured around line " \
+            "#{error_pos} in file '#{store.manifest_path(name)}':\n\n" \
+            "#{error}"
+        )
+      end
       validate_json(json_hash) if compatible_json?(json_hash)
 
       begin
