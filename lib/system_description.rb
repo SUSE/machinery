@@ -48,9 +48,10 @@ class SystemDescription < Machinery::Object
         end
 
         error = "The JSON data of the system description '#{name}' " \
-          "couldn't be parsed. The following error occured "
-        error += "around line #{error_pos} " if error_pos
-        error += "in file '#{store.manifest_path(name)}':\n\n#{json_error}"
+          "couldn't be parsed. The following error occured"
+        error += " around line #{error_pos}" if error_pos
+        error += " in file '#{store.manifest_path(name)}'" if store
+        error += ":\n\n#{json_error}"
 
         raise Machinery::Errors::SystemDescriptionError.new(error)
       end
