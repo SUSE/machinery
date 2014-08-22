@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "array",
+  "items": {
+    "anyOf": [
+      { "$ref": "#/definitions/not_extracted" },
+      {
+        "anyOf": [
+          { "$ref": "#/definitions/extracted_dir" },
+          { "$ref": "#/definitions/extracted_file" },
+          { "$ref": "#/definitions/extracted_link" }
+        ]
+      }
+    ]
+  },
+  "definitions": {
+    "not_extracted": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^/.+"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["file", "dir", "link"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "extracted_dir": {
+      "type": "object",
+      "required": ["name", "type", "user", "group", "size", "files"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^/.+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["dir"]
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]{0,1}[0-7]{3}$"
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "extracted_file": {
+      "type": "object",
+      "required": ["name", "type", "user", "group", "size"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^/.+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["file"]
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]{0,1}[0-7]{3}$"
+        }
+      }
+    },
+    "extracted_link": {
+      "type": "object",
+      "required": ["name", "type", "user", "group"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^/.+"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["link"]
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
