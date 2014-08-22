@@ -33,7 +33,7 @@ class SystemDescription < Machinery::Object
       rescue JSON::ParserError => e
         lines = e.message.split("\n")
         error_pos = json.split("\n").length + 3 - lines.length
-        block_end = lines.index { |l| l =~ / \},$/ }
+        block_end = lines.index { |l| l =~ / [\}\]],?$/ }
 
         # remove needless json error information
         lines[0].gsub!(/^\d+: (.*)$/, "\\1")
