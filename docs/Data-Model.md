@@ -85,15 +85,32 @@ deserialization. There are, however, two general rules:
 
 ### Versioning
 
-The version of the data format is kept in the `format_version` attribute of
-the `meta` section. Machinery does currently not provide a migration path for
-descriptions that use an older format version and will abort if such a
-description is encountered. This policy will likely change in the
-future. Descriptions with a higher format version will also cause Machinery to
-abort.
+Each release of Machinery supports a specific version as the current version of
+the system description format. This is the version defined as
+`CURRENT_FORMAT_VERSION` in the
+[`SystemDescription`](https://github.com/SUSE/machinery/blob/master/lib/system_description.rb)
+class. The current version is stored in the `format_version` attribute of the
+`meta` section of all descriptions written by Machinery.
 
-**Note:** Machinery <= v0.18 used unversioned documents which are no longer supported.
+When reading system descriptions, Machinery supports the current version of the
+format. It is the latest version the tool can support. It also supports all
+previous versions. Descriptions written in older formats will transparently be
+upgraded to the current version.
 
+If Machinery is given a description with a version newer than the current
+version of the tool, it exits with an error.
+
+Whenever the format is changed in a way that older versions of Machinery can't
+read it anymore without the chance of losing data or other misbehavior,
+`CURRENT_FORMAT_VERSION` needs to be increased.
+
+The policy of the format version from and end user point of view is documented
+in the
+[System Description Format](https://github.com/SUSE/machinery/wiki/System-Description-Format#versioning)
+documentation.
+
+**Note:** Machinery <= v0.18 used unversioned documents which are no longer
+supported.
 
 ## Internal Object Model
 
