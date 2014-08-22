@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "array",
+  "items" : {
+    "anyOf": [
+      { "$ref": "#/definitions/deleted" },
+      { "$ref": "#/definitions/permissions_md5" }
+    ]
+  },
+  "definitions": {
+    "deleted": {
+      "type": "object",
+      "required": ["name", "package_name", "package_version", "status", "changes"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^/.+$"
+        },
+        "package_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["changed", "error"]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["deleted"]
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "permissions_md5": {
+      "type": "object",
+      "required": ["name", "package_name", "package_version", "status", "changes", "mode", "user", "group"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^/.+$"
+        },
+        "package_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["changed", "error"]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["mode", "md5", "group", "user"]
+          },
+          "minItems": 1
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]{0,1}[0-7]{3}$"
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+       "group": {
+         "type": "string",
+         "minLength": 1
+       }
+      }
+    }
+  }
+}
