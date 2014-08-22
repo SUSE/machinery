@@ -32,19 +32,27 @@ class SystemDescription < Machinery::Object
         json_hash = JSON.parse(json)
       rescue JSON::ParserError => e
         lines = e.message.split("\n")
-        error_pos = json.split("\n").length + 3 - lines.length
+        error_pos = json.split("\n").length - lines.length + 2
         block_end = lines.index { |l| l =~ / [\}\]],?$/ }
 
         # remove needless json error information
         lines[0].gsub!(/^\d+: (.*)$/, "\\1")
+        json_error = lines[0..block_end].join("\n")
 
-        error = lines[0..block_end].join("\n")
-        raise Machinery::Errors::SystemDescriptionError.new(
-          "The JSON data of system description '#{name}' " \
-            "couldn't be parsed. The following error occured around line " \
-            "#{error_pos} in file '#{store.manifest_path(name)}':\n\n" \
-            "#{error}"
-        )
+        if error_pos == 1
+          json_error = "A bracket, comma or quotation is missing in one of " \
+            "the global scope definitions or in the meta section. Unlike " \
+            "issues with the elements of the scopes, our JSON  parser isn't " \
+            "able to localize issues like these."
+          error_pos = nil
+        end
+
+        error = "The JSON data of the system description '#{name}' " \
+          "couldn't be parsed. The following error occured "
+        error += "around line #{error_pos} " if error_pos
+        error += "in file '#{store.manifest_path(name)}':\n\n#{json_error}"
+
+        raise Machinery::Errors::SystemDescriptionError.new(error)
       end
       validate_json(json_hash) if compatible_json?(json_hash)
 
