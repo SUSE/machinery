@@ -117,6 +117,11 @@ class SystemDescription < Machinery::Object
       end
 
       errors.map! do |error|
+        # optimize error message about unexpected values
+        error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
+        # optimize error message about missing required attributes
+        error.gsub!(/The property '#\/(\d+)'/, "The element #\\1")
+        # remove obsolete information at the end of the error message
         error.gsub(/ in schema .*$/, ".")
       end
 
