@@ -109,7 +109,8 @@ class SystemDescription < Machinery::Object
 
         if schema
           JSON::Validator.fully_validate(schema, json[scope]).map do |error|
-            "In scope #{scope}: #{error}"
+            "In scope #{Machinery::Ui.internal_scope_list_to_string(scope)}:" \
+              " #{error}"
           end
         else
           []
