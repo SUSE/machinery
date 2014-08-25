@@ -21,7 +21,7 @@
       "properties": {
         "name": {
           "type": "string",
-          "pattern": "^/.+"
+          "pattern": "^/"
         },
         "type": {
           "type": "string",
@@ -36,7 +36,7 @@
       "properties": {
         "name": {
           "type": "string",
-          "pattern": "^/.+$"
+          "pattern": "^/"
         },
         "type": {
           "type": "string",
@@ -70,7 +70,7 @@
       "properties": {
         "name": {
           "type": "string",
-          "pattern": "^/.+$"
+          "pattern": "^/"
         },
         "type": {
           "type": "string",
@@ -100,7 +100,7 @@
       "properties": {
         "name": {
           "type": "string",
-          "pattern": "^/.+"
+          "pattern": "^/"
         },
         "type": {
           "type": "string",
