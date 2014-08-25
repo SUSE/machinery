@@ -16,7 +16,7 @@
       },
       "type": {
         "type": ["string", "null"],
-        "pattern": "^(yast2|rpm\-md|plaindir)$"
+        "enum": ["yast2", "rpm-md", "plaindir", null]
       },
       "url": {
         "type": "string",
