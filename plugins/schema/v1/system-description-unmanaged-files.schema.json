@@ -32,7 +32,7 @@
     },
     "extracted_dir": {
       "type": "object",
-      "required": ["name", "type", "user", "group", "size", "files"],
+      "required": ["name", "type", "user", "group", "size", "mode", "files"],
       "properties": {
         "name": {
           "type": "string",
@@ -66,7 +66,7 @@
     },
     "extracted_file": {
       "type": "object",
-      "required": ["name", "type", "user", "group", "size"],
+      "required": ["name", "type", "user", "group", "size", "mode"],
       "properties": {
         "name": {
           "type": "string",
