@@ -63,4 +63,20 @@ describe Os do
       expect(os.module_required_by_package("python-glanceclient")).to eq(nil)
     end
   end
+
+  it "returns list of subclasses" do
+    expect(Os.descendants).to be_a(Array)
+    expect(Os.descendants.count).to be >= 3
+    expect(Os.descendants).to include OsSles12
+    expect(Os.descendants).to include OsOpenSuse13_1
+  end
+
+  it "returns os object for os name string" do
+    expect(Os.for("SUSE Linux Enterprise Server 12")).to be_a(OsSles12)
+    expect(Os.for("openSUSE 13.1 (Bottle)")).to be_a(OsOpenSuse13_1)
+    expect {
+      Os.for("unknow OS name")
+    }.to raise_error(Machinery::Errors::UnknownOs)
+  end
+
 end
