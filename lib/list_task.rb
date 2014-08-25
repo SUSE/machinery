@@ -23,12 +23,12 @@ class ListTask
       name = File.basename(name)
       begin
         description = store.load(name)
-      rescue Machinery::Errors::SystemDescriptionError,
-          Machinery::Errors::SystemDescriptionNotFound => e
-        puts e
+      rescue Machinery::Errors::SystemDescriptionError
+        puts " #{name}:\n"
+        puts "   This description has an incompatible data format or is broken.\n" \
+             "   Use `machinery show #{name}` to see the error message.\n\n"
         next
       end
-      output = " #{name}: "
       scopes = []
 
       description.scopes.each do |scope|
@@ -55,7 +55,7 @@ class ListTask
         scopes << entry
       end
 
-      puts output + "\n   * " + scopes .join("\n   * ") + "\n\n"
+      puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
     end
   end
 end

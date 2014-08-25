@@ -1,0 +1,25 @@
+{
+  "os": {
+    "name": "openSUSE 13.1 (Bottle)",
+    "version": "13.1 (Bottle)",
+    "architecture": "x86_64"
+  },
+  "patterns": [
+    {
+      "name": "base",
+      "version": "13.1" 
+      "release": "13.6.1"
+    }
+  ],
+  "meta": {
+    "format_version": 1,
+    "os": {
+      "modified": "2014-08-22T14:50:08Z",
+      "hostname": "192.168.121.157"
+    },
+    "patterns": {
+      "modified": "2014-08-22T14:50:08Z",
+      "hostname": "192.168.121.157"
+    }
+  }
+}

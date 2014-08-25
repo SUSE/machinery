@@ -174,6 +174,32 @@ describe SystemDescription do
     )}.to raise_error(Machinery::Errors::SystemDescriptionError)
   end
 
+  describe "json parser error handling" do
+    it "raises and shows the error position if possible " do
+      json = File.read("spec/data/schema/faulty-element.json")
+      expect { SystemDescription.from_json(@name, json) }.to raise_error(
+        Machinery::Errors::SystemDescriptionError,
+        /around line 8:.*"version": "13\.1" \n/m
+      )
+    end
+
+    it "raises and shows an explanation if an unlocatable issue happened" do
+      json = File.read("spec/data/schema/faulty-global-scope.json")
+      expect { SystemDescription.from_json(@name, json) }.to raise_error(
+        Machinery::Errors::SystemDescriptionError,
+        /our JSON  parser isn't able to localize issues like these\.$/m
+      )
+    end
+
+    it "doesn't show explanation in case of locatable errors" do
+      json = File.read("spec/data/schema/faulty-element.json")
+      expect { SystemDescription.from_json(@name, json) }.to raise_error(
+        Machinery::Errors::SystemDescriptionError,
+        /\s+}$/m
+      )
+    end
+  end
+
   describe "#compatible?" do
     it "returns true if the format_version is good" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION

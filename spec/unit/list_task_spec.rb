@@ -120,8 +120,9 @@ describe ListTask do
     end
 
     it "marks descriptions with incompatible data format" do
+      expect($stdout).to receive(:puts).with(" foo:\n")
       expect($stdout).to receive(:puts) { |s|
-        expect(s.to_s).to include("incompatible")
+        expect(s.to_s).to include("incompatible data format")
       }
       store.save(system_description_with_incompatible_data_format)
       list_task.list(store)
