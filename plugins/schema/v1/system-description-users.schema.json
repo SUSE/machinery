@@ -14,11 +14,11 @@
         "type": "string"
       },
       "uid": {
-        "type": "integer",
+        "type": ["integer", "string"],
         "minimum": 0
       },
       "gid": {
-        "type": "integer",
+        "type": ["integer", "string"],
         "minimum": 0
       },
       "comment": {

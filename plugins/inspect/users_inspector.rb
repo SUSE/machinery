@@ -43,11 +43,16 @@ class UsersInspector < Inspector
     line = passwd.lines.find { |l| l.start_with?("#{user}:") }
     user, passwd, uid, gid, comment, home, shell = line.split(":").map(&:chomp)
 
+    # the nis placeholder has empty entries for uid and gid
+    # +::::::
+    uid = uid.to_i if Machinery::is_int?(uid)
+    gid = gid.to_i if Machinery::is_int?(gid)
+
     {
         name: user,
         password: passwd,
-        uid: uid.to_i,
-        gid: gid.to_i,
+        uid: uid,
+        gid: gid,
         comment: comment,
         home: home,
         shell: shell
