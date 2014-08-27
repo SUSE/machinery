@@ -345,6 +345,21 @@ EOF
       end
 
     end
+
+    describe "unmanaged_files scope" do
+      let(:path) { "spec/data/schema/validation_error/unmanaged_files/" }
+
+      it "raises for extracted in case of unknown type" do
+        expected = <<EOF
+In scope unmanaged-files: The property '#/0/type/0/type/type' of type Array did not match any of the required schemas.
+EOF
+        expected.chomp!
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}/extracted_unknown_type.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+    end
   end
 
   describe "#compatible?" do
