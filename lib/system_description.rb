@@ -40,10 +40,10 @@ class SystemDescription < Machinery::Object
         json_error = lines[0..block_end].join("\n")
 
         if error_pos == 1
-          json_error = "A bracket, comma or quotation is missing in one of " \
-            "the global scope definitions or in the meta section. Unlike " \
-            "issues with the elements of the scopes, our JSON  parser isn't " \
-            "able to localize issues like these."
+          json_error = "An opening bracket, a comma or quotation is missing " \
+            "in one of the global scope definitions or in the meta section. " \
+            "Unlike issues with the elements of the scopes, our JSON parser " \
+            "isn't able to localize issues like these."
           error_pos = nil
         end
 

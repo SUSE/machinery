@@ -1,0 +1,34 @@
+{
+  "unmanaged_files": [
+    {
+      "name": "/boot/backup_mbr",
+      "type": "file",
+      "user": "root",
+      "group": "root",
+      "size": 512,
+      "mode": "644"
+    },
+    {
+      "name": "/boot/grub/e2fs_stage1_5",
+      "type": "file",
+      "user": "root",
+      "group": "root",
+      "size": 8608,
+      "mode": "644"
+    }
+  ],
+  "changed_managed_files": 
+    {
+      "name": "/sys",
+      "package_name": "filesystem",
+      "package_version": "13.1",
+      "status": "changed",
+      "changes": [
+        "mode"
+      ],
+      "mode": "555",
+      "user": "root",
+      "group": "root"
+    }
+  ]
+}
