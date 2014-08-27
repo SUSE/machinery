@@ -278,6 +278,75 @@ EOF
     end
   end
 
+  describe "json schema validation error handling" do
+    describe "config-files" do
+      let(:path) { "spec/data/schema/validation_error/config_files/" }
+
+      it "raises in case of missing package_version" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property '#/0/changes/1' value "md5" did not match one of the following values: deleted.
+ - The property '#/0/changes/0' value "mode" did not match one of the following values: deleted.
+ - The element #0 did not contain a required property of 'package_version'.
+ - The element #0 did not contain a required property of 'package_version'.
+EOF
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}missing_attribute.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+      it "raises in case of an unknown status" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property '#/0/changes/1' value "md5" did not match one of the following values: deleted.
+ - The property '#/0/changes/0' value "mode" did not match one of the following values: deleted.
+ - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
+ - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
+EOF
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}unknown_status.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+      it "raises in case of a pattern mismatch" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property '#/0/changes/1' value "md5" did not match one of the following values: deleted.
+ - The property '#/0/changes/0' value "mode" did not match one of the following values: deleted.
+ - The property 'status' of element #0 value "status" did not match one of the following values: changed, error.
+ - The property 'mode' of element #0 value "900" did not match the regex '^[0-4]{0,1}[0-7]{3}$'.
+ - The property 'status' of element #0 value "status" did not match one of the following values: changed, error.
+EOF
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}pattern_mismatch.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+      it "raises for a deleted file in case of an empty changes array" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property 'changes' of element #0 did not contain a minimum number of items 1.
+ - The property 'changes' of element #0 did not contain a minimum number of items 1.
+ - The element #0 did not contain a required property of 'group'.
+ - The element #0 did not contain a required property of 'user'.
+ - The element #0 did not contain a required property of 'mode'.
+EOF
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}deleted_without_changes.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+    end
+  end
+
   describe "#compatible?" do
     it "returns true if the format_version is good" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
