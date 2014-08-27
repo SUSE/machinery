@@ -2,18 +2,22 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
 
   "type": "array",
-  "items": {
-    "anyOf": [
-      { "$ref": "#/definitions/not_extracted" },
-      {
+  "oneOf": [
+    {
+      "items": {
+        "$ref": "#/definitions/not_extracted"
+      }
+    },
+    {
+      "items": {
         "anyOf": [
           { "$ref": "#/definitions/extracted_dir" },
           { "$ref": "#/definitions/extracted_file" },
           { "$ref": "#/definitions/extracted_link" }
         ]
       }
-    ]
-  },
+    }
+  ],
   "definitions": {
     "not_extracted": {
       "type": "object",
