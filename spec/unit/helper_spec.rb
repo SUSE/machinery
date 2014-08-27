@@ -65,4 +65,21 @@ describe Machinery do
       expect { Machinery::check_build_compatible_host(system_description) }.not_to raise_error
     end
   end
+
+  describe ".is_int?" do
+    it "returns true if the string only consists numbers" do
+      expect(Machinery::is_int?("12345")).to be(true)
+      expect(Machinery::is_int?("1")).to be(true)
+    end
+
+    it "returns false if the string consist any chars than numbers" do
+      expect(Machinery::is_int?(" 12345")).to be(false)
+      expect(Machinery::is_int?("12456 ")).to be(false)
+      expect(Machinery::is_int?("1a2")).to be(false)
+      expect(Machinery::is_int?("1 ")).to be(false)
+      expect(Machinery::is_int?(" 1")).to be(false)
+      expect(Machinery::is_int?("")).to be(false)
+    end
+
+  end
 end

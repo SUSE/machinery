@@ -16,6 +16,10 @@
 # you may find current contact information at www.suse.com
 
 module Machinery
+  def self.is_int?(string)
+    (string =~ /^\d+$/) != nil
+  end
+
   def self.check_package(package)
     begin
       Cheetah.run("rpm", "-q", package)

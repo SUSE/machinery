@@ -84,6 +84,31 @@ EOF
       expect(summary).to eq("Found 2 users.")
     end
 
+    it "it can deal with the NIS placeholder in /etc/passwd" do
+      expect(system).to receive(:cat_file).with("/etc/passwd").and_return("+::::::\n")
+      expect(system).to receive(:cat_file).with("/etc/shadow").and_return("+::0:0:0::::\n")
+
+      expected = UsersScope.new([
+        User.new(
+          name:               "+",
+          password:           "",
+          uid:                "",
+          gid:                "",
+          comment:            "",
+          home:               "",
+          shell:              "",
+          encrypted_password: "",
+          last_changed_date:  0,
+          min_days:           0,
+          max_days:           0
+        )
+      ])
+
+      summary = subject.inspect(system, description)
+
+      expect(description.users).to eq(expected)
+    end
+
     it "returns all available attributes when /etc/shadow is missing" do
       expect(system).to receive(:cat_file).with("/etc/passwd").and_return(passwd_content)
       expect(system).to receive(:cat_file).with("/etc/shadow").and_return(nil)
