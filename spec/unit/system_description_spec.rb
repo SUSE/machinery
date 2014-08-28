@@ -198,6 +198,41 @@ describe SystemDescription do
         /\s+}$/m
       )
     end
+
+    describe "json validation error handling" do
+      it "raises an error when encountering invalid enum values" do
+        expect {
+          SystemDescription.from_json(@name, <<-EOT)
+            {
+              "config_files": [
+                {
+                  "name": "/etc/crontab",
+                  "package_name": "cronie",
+                  "package_version": "1.4.8",
+                  "status": "changed",
+                  "changes": [
+                    "invalid"
+                  ],
+                  "user": "root",
+                  "group": "root",
+                  "mode": "644"
+                }
+              ],
+              "meta": {
+                "format_version": 1,
+                "config_files": {
+                  "modified": "2014-08-22T14:50:09Z",
+                  "hostname": "192.168.121.85"
+                }
+              }
+            }
+          EOT
+          }.to raise_error(
+            Machinery::Errors::SystemDescriptionError,
+            /In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.\n The schema specific errors were:\n - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: deleted.\n - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: mode, md5, group, user, replaced.\n/
+          )
+      end
+    end
   end
 
   describe "#compatible?" do
