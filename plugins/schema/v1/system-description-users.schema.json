@@ -15,11 +15,13 @@
       },
       "uid": {
         "type": ["integer", "string"],
-        "minimum": 0
+        "minimum": 0,
+        "pattern": ""
       },
       "gid": {
         "type": ["integer", "string"],
-        "minimum": 0
+        "minimum": 0,
+        "pattern": ""
       },
       "comment": {
         "type": "string"
