@@ -26,7 +26,7 @@ class ListTask
       rescue Machinery::Errors::SystemDescriptionError
         puts " #{name}:\n"
         puts "   This description has an incompatible data format or is broken.\n" \
-             "   Use `machinery show #{name}` to see the error message.\n\n"
+             "   Use `machinery validate #{name}` to see the error message.\n\n"
         next
       end
       scopes = []
