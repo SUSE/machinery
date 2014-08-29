@@ -1,0 +1,59 @@
+{
+  "repositories": [
+    {
+      "alias": "download.opensuse.org-non-oss",
+      "name": "Main Repository (NON-OSS)",
+      "type": "yast2",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99
+    },
+    {
+      "alias": "download.opensuse.org-oss",
+      "name": "Main Repository (OSS)",
+      "type": "yast2",
+      "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99
+    }
+  ],
+  "services": {
+    "init_system": "systemd",
+    "services": [
+      {
+        "name": "YaST2-Firstboot.service",
+        "state": "enabled"
+      },
+      {
+        "name": "YaST2-Second-Stage.service",
+        "state": "enabled"
+      },
+      {
+        "name": "after-local.service",
+        "state": "static"
+      },
+      {
+        "name": "autoyast-initscripts.service",
+        "state": "disabled"
+      },
+      {
+        "name": "blk-availability.service",
+        "state": ""
+      }
+    ]
+  },
+  "meta": {
+    "format_version": 1,
+    "repositories": {
+      "modified": "2014-08-29T11:10:03Z",
+      "hostname": "192.168.121.56"
+    },
+    "services": {
+      "modified": "2014-08-29T11:10:03Z",
+      "hostname": "192.168.121.56"
+    }
+  }
+}
