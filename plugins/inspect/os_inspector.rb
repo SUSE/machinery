@@ -27,7 +27,7 @@ class OsInspector < Inspector
   end
 
   # determines the architecture
-  def determine_arch(system)
+  def get_arch(system)
     system.run_command("uname", "-m", :stdout => :capture).chomp
   end
 
@@ -40,8 +40,7 @@ class OsInspector < Inspector
   end
 
   # check for freedesktop standard: /etc/os-release
-  def analyze_os_release_file(system)
-  filename = "/etc/os-release"
+  def get_os_from_os_release(system)
     os_release = read_file_if_exists(system, "/etc/os-release")
     return nil if os_release.empty?
 
@@ -57,8 +56,7 @@ class OsInspector < Inspector
     # name instead of an abbreviation
     OsScope.new(
       name:         result["pretty_name"],
-      version:      result["version"],
-      architecture: result["architecture"]
+      version:      result["version"]
     )
   end
 
@@ -71,7 +69,7 @@ class OsInspector < Inspector
   end
 
   # checks for old suse standard: /etc/SuSE-release
-  def analyze_suse_release_file(system)
+  def get_os_from_suse_release(system)
     suse_release = read_file_if_exists(system, "/etc/SuSE-release")
     return nil if suse_release.empty?
 
@@ -97,16 +95,21 @@ class OsInspector < Inspector
   def inspect(system, description, options = {})
     system.check_requirement("cat", "--version")
 
-    os ||= analyze_os_release_file(system)
-    os ||= analyze_suse_release_file(system)
+    # Use os-release file by default
+    os = get_os_from_os_release(system)
+
+    # Fall back to SuSE-release file
+    if !os
+      os = get_os_from_suse_release(system)
+    end
 
     if os
-      os["architecture"] = determine_arch(system)
-      os["version"] += get_additional_version(system)
-      summary = "Found operating system \"#{os.name}\" version \"#{os.version}\"."
+      os.architecture = get_arch(system)
+      os.version += get_additional_version(system)
+      summary = "Found operating system '#{os.name}' version '#{os.version}'."
     else
-      summary = "Could not determine the operating system."
       os = OsScope.new(name: nil, version: nil, architecture: nil)
+      summary = "Could not determine the operating system."
     end
 
     description.os = os
