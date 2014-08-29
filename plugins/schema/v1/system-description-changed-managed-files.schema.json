@@ -63,7 +63,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["mode", "md5", "group", "user"]
+            "enum": ["mode", "md5", "group", "user", "replaced"]
           },
           "minItems": 1
         },
