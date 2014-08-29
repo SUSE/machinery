@@ -31,12 +31,14 @@ class GroupsInspector < Inspector
     content.lines.map do |line|
       name, password, gid, users = line.split(":").map(&:chomp)
 
+      gid = gid.to_i if Machinery::is_int?(gid)
+
       attrs = {
         name: name,
         password: password,
+        gid: gid,
         users: users.split(",")
       }
-      attrs[:gid] = gid.to_i if !gid.empty?
 
       Group.new(attrs)
     end
