@@ -232,6 +232,36 @@ describe SystemDescription do
             /In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.\n The schema specific errors were:\n - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: deleted.\n - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: mode, md5, group, user, replaced.\n/
           )
       end
+
+      it "does not raise an error when a changed-managed-file is 'replaced'" do
+        expect {
+          SystemDescription.from_json(@name, <<-EOT)
+            {
+              "changed_managed_files": [
+                {
+                  "name": "/etc/libvirt",
+                  "package_name": "libvirt-client",
+                  "package_version": "1.1.2",
+                  "status": "changed",
+                  "changes": [
+                    "replaced"
+                  ],
+                  "mode": "700",
+                  "user": "root",
+                  "group": "root"
+                }
+              ],
+              "meta": {
+                "format_version": 1,
+                "changed_managed_files": {
+                  "modified": "2014-08-12T09:12:54Z",
+                  "hostname": "host.example.com"
+                }
+              }
+            }
+          EOT
+          }.not_to raise_error
+      end
     end
   end
 
