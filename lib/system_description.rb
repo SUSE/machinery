@@ -254,6 +254,28 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  def validate_file_data!
+    errors = []
+    if scope_extracted?("config_files")
+      begin
+        @store.validate_file_data_config_files(self)
+      rescue Machinery::Errors::SystemDescriptionValidationFailed => e
+        error_message = "Scope 'config_files':\n"
+        e.errors.each do |error|
+          error_message += "  * " + error
+        end
+        errors.push(error_message)
+      end
+    end
+    if errors.empty?
+      return true
+    else
+      e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
+      e.header = "Error validating description '#{name}'"
+      raise e
+    end
+  end
+
   # Filestore handling
   def initialize_file_store(store_name)
     @store.initialize_file_store(self.name, store_name)

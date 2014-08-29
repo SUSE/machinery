@@ -46,6 +46,7 @@ class SystemDescriptionStore
     json = File.read(file_name)
     description = SystemDescription.from_json(name, json, self)
     description.ensure_compatibility!
+    description.validate_file_data!
     description
   end
 
@@ -116,6 +117,24 @@ class SystemDescriptionStore
       mode = File.stat(description_path(name)).mode & 0777
     end
     mode
+  end
+
+  def validate_file_data_config_files(description)
+    errors = []
+
+    file_store = file_store(description.name, "config_files")
+    description.config_files.each do |config_file|
+      file_path = File.join(file_store, config_file.name)
+      if !File.exists?(file_path)
+        errors.push "Config file '#{file_path}' doesn't exist"
+      end
+    end
+
+    if errors.empty?
+      return true
+    else
+      raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
+    end
   end
 
   private
