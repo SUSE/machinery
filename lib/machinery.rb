@@ -66,6 +66,7 @@ require_relative 'copy_task'
 require_relative 'scope'
 require_relative 'os'
 require_relative 'ui'
+require_relative 'validate_task'
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

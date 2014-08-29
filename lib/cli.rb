@@ -494,4 +494,23 @@ class Cli
       task.show(description, scope_list, opts)
     end
   end
+
+
+  desc "Validate system description"
+  long_desc <<-LONGDESC
+    Validate system description stored under the specified name.
+  LONGDESC
+  arg "NAME"
+  command :validate do |c|
+    c.action do |global_options,options,args|
+      name = shift_arg(args, "NAME")
+      if name == "localhost" && !CurrentUser.new.is_root?
+        puts "You need root rights to access the system description of your locally inspected system."
+      end
+
+      store = SystemDescriptionStore.new
+      task = ValidateTask.new
+      task.validate(store, name)
+    end
+  end
 end
