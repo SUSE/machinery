@@ -47,6 +47,7 @@ EOF
         Group.new(
           name: "+",
           password: "",
+          gid:  "",
           users: []
         ),
         Group.new(
