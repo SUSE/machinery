@@ -130,14 +130,40 @@ class SystemDescription < Machinery::Object
 
       scopes = json.keys
       scopes.delete("meta")
+
       errors += scopes.flat_map do |scope|
         schema = SCOPE_SCHEMAS[scope]
 
         if schema
-          JSON::Validator.fully_validate(schema, json[scope]).map do |error|
+          issue = JSON::Validator.fully_validate(schema, json[scope]).map do |error|
             "In scope #{Machinery::Ui.internal_scope_list_to_string(scope)}:" \
               " #{error}"
           end
+
+          # filter duplicates
+          issue.map! do |error|
+            lines = error.split("\n")
+            lines.uniq.join("\n")
+          end
+
+          # make json error messages more user-friendly
+          if ["config_files", "changed_managed_files"].include?(scope)
+            issue.map! do |error|
+              lines = error.split("\n")
+              # the following error is most likely irrelevant if there are more
+              # than one messages per issue
+              # there first element is always "The schema specific errors were:"
+              # so it always needs to be expected cound + 1
+              if lines.length > 2
+                lines.reject! {
+                  |l| l =~ /The property.*did not match one of the following values: deleted/
+                }
+              end
+              lines.join("\n")
+            end
+          end
+
+          issue
         else
           []
         end

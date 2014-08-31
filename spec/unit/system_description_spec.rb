@@ -214,9 +214,9 @@ EOF
         expected = <<EOF
 In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
- - The property '#/0/changes/0' value "invalid" did not match one of the following values: deleted.
  - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: mode, md5, group, user, replaced.
 EOF
+        expected.chomp!
         expect {
           SystemDescription.from_json(@name, <<-EOT)
             {
@@ -286,11 +286,9 @@ EOF
         expected = <<EOF
 In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
- - The property '#/0/changes/1' value "md5" did not match one of the following values: deleted.
- - The property '#/0/changes/0' value "mode" did not match one of the following values: deleted.
- - The element #0 did not contain a required property of 'package_version'.
  - The element #0 did not contain a required property of 'package_version'.
 EOF
+        expected.chomp!
         expect { SystemDescription.
           from_json(@name,
             File.read("#{path}missing_attribute.json")) }.
@@ -301,11 +299,9 @@ EOF
         expected = <<EOF
 In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
- - The property '#/0/changes/1' value "md5" did not match one of the following values: deleted.
- - The property '#/0/changes/0' value "mode" did not match one of the following values: deleted.
- - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
  - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
 EOF
+        expected.chomp!
         expect { SystemDescription.
           from_json(@name,
             File.read("#{path}unknown_status.json")) }.
@@ -316,12 +312,9 @@ EOF
         expected = <<EOF
 In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
- - The property '#/0/changes/1' value "md5" did not match one of the following values: deleted.
- - The property '#/0/changes/0' value "mode" did not match one of the following values: deleted.
- - The property 'status' of element #0 value "status" did not match one of the following values: changed, error.
  - The property 'mode' of element #0 value "900" did not match the regex '^[0-4]{0,1}[0-7]{3}$'.
- - The property 'status' of element #0 value "status" did not match one of the following values: changed, error.
 EOF
+        expected.chomp!
         expect { SystemDescription.
           from_json(@name,
             File.read("#{path}pattern_mismatch.json")) }.
@@ -333,11 +326,11 @@ EOF
 In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
  - The property 'changes' of element #0 did not contain a minimum number of items 1.
- - The property 'changes' of element #0 did not contain a minimum number of items 1.
  - The element #0 did not contain a required property of 'group'.
  - The element #0 did not contain a required property of 'user'.
  - The element #0 did not contain a required property of 'mode'.
 EOF
+        expected.chomp!
         expect { SystemDescription.
           from_json(@name,
             File.read("#{path}deleted_without_changes.json")) }.
