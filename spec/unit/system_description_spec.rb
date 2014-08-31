@@ -214,7 +214,7 @@ EOF
         expected = <<EOF
 In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
- - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: mode, md5, group, user, replaced.
+ - The element #0 value "invalid" did not match one of the following values: mode, md5, group, user, replaced.
 EOF
         expected.chomp!
         expect {
@@ -344,7 +344,7 @@ EOF
 
       it "raises for extracted in case of unknown type" do
         expected = <<EOF
-In scope unmanaged-files: The property '#/0/type/0/type/type' of type Array did not match any of the required schemas.
+In scope unmanaged-files: The element #0 of type Array did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
