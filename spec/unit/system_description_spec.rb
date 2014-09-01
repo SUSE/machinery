@@ -175,32 +175,48 @@ describe SystemDescription do
   end
 
   describe "json parser error handling" do
-    it "raises and shows the error position if possible " do
-      json = File.read("spec/data/schema/faulty-element.json")
-      expect { SystemDescription.from_json(@name, json) }.to raise_error(
-        Machinery::Errors::SystemDescriptionError,
-        /around line 8:.*"version": "13\.1" \n/m
-      )
+    let(:path) { "spec/data/schema/invalid_json/" }
+
+    it "raises in case of a missing comma" do
+      expected = <<EOF
+The JSON data of the system description 'name' couldn't be parsed. The following error occured around line 11:
+
+unexpected token at '{
+      "name": "/boot/grub/e2fs_stage1_5",
+      "type": "file",
+      "user": "root"  
+      "group": "root",
+      "size": 8608,
+      "mode": "644"
+    }
+EOF
+      expected.chomp!
+      expect { SystemDescription.from_json(@name,
+         File.read("#{path}/missing_comma.json"))
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
 
-    it "raises and shows an explanation if an unlocatable issue happened" do
-      json = File.read("spec/data/schema/faulty-global-scope.json")
-      expect { SystemDescription.from_json(@name, json) }.to raise_error(
-        Machinery::Errors::SystemDescriptionError,
-        /our JSON  parser isn't able to localize issues like these\.$/m
-      )
-    end
+    it "raises in case of a missing opening bracket" do
+      expected = <<EOF
+The JSON data of the system description 'name' couldn't be parsed. The following error occured:
 
-    it "doesn't show explanation in case of locatable errors" do
-      json = File.read("spec/data/schema/faulty-element.json")
-      expect { SystemDescription.from_json(@name, json) }.to raise_error(
-        Machinery::Errors::SystemDescriptionError,
-        /\s+}$/m
-      )
+An opening bracket, a comma or quotation is missing in one of the global scope definitions or in the meta section. Unlike issues with the elements of the scopes, our JSON parser isn't able to localize issues like these.
+EOF
+      expected.chomp!
+      expect { SystemDescription.
+        from_json(@name,
+          File.read("#{path}/missing_opening_bracket.json"))
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
 
     describe "json validation error handling" do
       it "raises an error when encountering invalid enum values" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The element #0 value "invalid" did not match one of the following values: mode, md5, group, user, replaced.
+EOF
+        expected.chomp!
         expect {
           SystemDescription.from_json(@name, <<-EOT)
             {
@@ -227,10 +243,7 @@ describe SystemDescription do
               }
             }
           EOT
-          }.to raise_error(
-            Machinery::Errors::SystemDescriptionError,
-            /In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.\n The schema specific errors were:\n - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: deleted.\n - The property '#\/0\/changes\/0' value "invalid" did not match one of the following values: mode, md5, group, user, replaced.\n/
-          )
+          }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
       it "does not raise an error when a changed-managed-file is 'replaced'" do
@@ -261,6 +274,83 @@ describe SystemDescription do
             }
           EOT
           }.not_to raise_error
+      end
+    end
+  end
+
+  describe "json schema validation error handling" do
+    describe "config-files" do
+      let(:path) { "spec/data/schema/validation_error/config_files/" }
+
+      it "raises in case of missing package_version" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The element #0 did not contain a required property of 'package_version'.
+EOF
+        expected.chomp!
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}missing_attribute.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+      it "raises in case of an unknown status" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
+EOF
+        expected.chomp!
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}unknown_status.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+      it "raises in case of a pattern mismatch" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property 'mode' of element #0 value "900" did not match the regex '^[0-4]{0,1}[0-7]{3}$'.
+EOF
+        expected.chomp!
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}pattern_mismatch.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+      it "raises for a deleted file in case of an empty changes array" do
+        expected = <<EOF
+In scope config-files: The element #0 of type Hash did not match one or more of the required schemas.
+ The schema specific errors were:
+ - The property 'changes' of element #0 did not contain a minimum number of items 1.
+ - The element #0 did not contain a required property of 'group'.
+ - The element #0 did not contain a required property of 'user'.
+ - The element #0 did not contain a required property of 'mode'.
+EOF
+        expected.chomp!
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}deleted_without_changes.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+      end
+
+    end
+
+    describe "unmanaged_files scope" do
+      let(:path) { "spec/data/schema/validation_error/unmanaged_files/" }
+
+      it "raises for extracted in case of unknown type" do
+        expected = <<EOF
+In scope unmanaged-files: The element #0 of type Array did not match any of the required schemas.
+EOF
+        expected.chomp!
+        expect { SystemDescription.
+          from_json(@name,
+            File.read("#{path}/extracted_unknown_type.json")) }.
+          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
     end
   end

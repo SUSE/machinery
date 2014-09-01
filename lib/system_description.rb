@@ -40,10 +40,10 @@ class SystemDescription < Machinery::Object
         json_error = lines[0..block_end].join("\n")
 
         if error_pos == 1
-          json_error = "A bracket, comma or quotation is missing in one of " \
-            "the global scope definitions or in the meta section. Unlike " \
-            "issues with the elements of the scopes, our JSON  parser isn't " \
-            "able to localize issues like these."
+          json_error = "An opening bracket, a comma or quotation is missing " \
+            "in one of the global scope definitions or in the meta section. " \
+            "Unlike issues with the elements of the scopes, our JSON parser " \
+            "isn't able to localize issues like these."
           error_pos = nil
         end
 
@@ -130,14 +130,41 @@ class SystemDescription < Machinery::Object
 
       scopes = json.keys
       scopes.delete("meta")
+
       errors += scopes.flat_map do |scope|
         schema = SCOPE_SCHEMAS[scope]
 
         if schema
-          JSON::Validator.fully_validate(schema, json[scope]).map do |error|
+          issue = JSON::Validator.fully_validate(schema, json[scope]).map do |error|
             "In scope #{Machinery::Ui.internal_scope_list_to_string(scope)}:" \
               " #{error}"
           end
+
+          # filter duplicates
+          issue.map! do |error|
+            lines = error.split("\n")
+            lines.uniq.join("\n")
+          end
+
+          # make json error messages more user-friendly
+          if ["config_files", "changed_managed_files"].include?(scope)
+            issue.map! do |error|
+              lines = error.split("\n")
+              # The following error is most likely irrelevant if there are more
+              # than one messages per issue.
+              # The first element is always the introduction:
+              # 'The schema specific errors were:'
+              # so the check count needs to be increased by one
+              if lines.length > 2
+                lines.reject! {
+                  |l| l =~ /The property.*did not match one of the following values: deleted/
+                }
+              end
+              lines.join("\n")
+            end
+          end
+
+          issue
         else
           []
         end
@@ -147,7 +174,7 @@ class SystemDescription < Machinery::Object
         # optimize error message about unexpected values
         error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
         # optimize error message about missing required attributes
-        error.gsub!(/The property '#\/(\d+)'/, "The element #\\1")
+        error.gsub!(/The property '#\/(\d+).*?'/, "The element #\\1")
         # remove obsolete information at the end of the error message
         error.gsub(/ in schema .*$/, ".")
       end

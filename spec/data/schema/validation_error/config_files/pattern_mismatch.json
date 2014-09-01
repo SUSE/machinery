@@ -1,0 +1,24 @@
+{
+  "config_files": [
+    {
+      "name": "/etc/default/grub",
+      "package_name": "grub2",
+      "package_version": "2.00",
+      "status": "changed",
+      "changes": [
+        "mode",
+        "md5"
+      ],
+      "user": "root",
+      "group": "root",
+      "mode": "900"
+    }
+  ],
+  "meta": {
+    "format_version": 1,
+    "config_files": {
+      "modified": "2014-08-25T14:45:38Z",
+      "hostname": "192.168.121.68"
+    }
+  }
+}
