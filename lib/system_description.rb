@@ -150,10 +150,11 @@ class SystemDescription < Machinery::Object
           if ["config_files", "changed_managed_files"].include?(scope)
             issue.map! do |error|
               lines = error.split("\n")
-              # the following error is most likely irrelevant if there are more
-              # than one messages per issue
-              # there first element is always "The schema specific errors were:"
-              # so it always needs to be expected cound + 1
+              # The following error is most likely irrelevant if there are more
+              # than one messages per issue.
+              # The first element is always the introduction:
+              # 'The schema specific errors were:'
+              # so the check count needs to be increased by one
               if lines.length > 2
                 lines.reject! {
                   |l| l =~ /The property.*did not match one of the following values: deleted/
