@@ -15,17 +15,9 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-require_relative "integration_spec_helper"
-
-describe "machinery@openSUSE 13.1" do
-  before(:all) do
-    @machinery = start_system(box: "machinery_131")
+class ValidateTask
+  def validate(store, name)
+    description = store.load(name)
+    puts "Validation against JSON schemas succeeded."
   end
-
-  include_examples "CLI"
-  include_examples "kiwi export"
-  include_examples "validate"
-  include_examples "inspect", ["opensuse131"]
-  include_examples "analyze", "opensuse131"
-  include_examples "build", "opensuse131"
 end

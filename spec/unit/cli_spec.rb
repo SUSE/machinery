@@ -238,6 +238,16 @@ describe Cli do
       end
     end
 
+    describe "#validate" do
+      it "triggers a validation" do
+        name = "description1"
+        expect_any_instance_of(ValidateTask).to receive(:validate).with(
+          an_instance_of(SystemDescriptionStore), name)
+
+        run_command(["validate", "description1"])
+      end
+    end
+
     describe "#export_kiwi" do
       it "triggers a KIWI export" do
         description = SystemDescription.from_json("name", test_manifest)
