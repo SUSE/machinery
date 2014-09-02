@@ -1,5 +1,5 @@
 
-# validate — Validate System Description
+## validate — Validate System Description
 
 ### SYNOPSIS
 
