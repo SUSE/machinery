@@ -25,8 +25,8 @@ describe UsersRenderer do
         {
           "name": "root",
           "password": "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
-          "uid": 0,
-          "gid": 0,
+          "uid": null,
+          "gid": null,
           "comment": "",
           "home": "/root",
           "shell": "/bin/bash",
@@ -52,7 +52,7 @@ describe UsersRenderer do
     it "prints the user list" do
       output = UsersRenderer.new.render(system_description)
 
-      expect(output).to include("root (N/A, uid: 0, gid: 0, shell: /bin/bash)")
+      expect(output).to include("root (N/A, uid: N/A, gid: N/A, shell: /bin/bash)")
       expect(output).to include("lp (Printing daemon, uid: 4, gid: 7, shell: /bin/bash)")
     end
   end

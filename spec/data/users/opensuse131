@@ -1,6 +1,6 @@
 # Users [192.168.122.238] (2014-05-21 13:59:16)
 
-  * + (N/A, uid: , gid: , shell: )
+  * + (N/A, uid: N/A, gid: N/A, shell: )
   * bin (bin, uid: 1, gid: 1, shell: /bin/bash)
   * daemon (Daemon, uid: 2, gid: 2, shell: /bin/bash)
   * ftp (FTP account, uid: 40, gid: 49, shell: /bin/bash)

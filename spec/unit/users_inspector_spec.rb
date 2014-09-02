@@ -92,8 +92,8 @@ EOF
         User.new(
           name:               "+",
           password:           "",
-          uid:                "",
-          gid:                "",
+          uid:                nil,
+          gid:                nil,
           comment:            "",
           home:               "",
           shell:              "",

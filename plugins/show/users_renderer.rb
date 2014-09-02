@@ -22,7 +22,9 @@ class UsersRenderer < Renderer
     list do
       @system_description.users.each do |user|
         info = user.comment.empty? ? "N/A" : user.comment
-        item "#{user.name} (#{info}, uid: #{user.uid}, gid: #{user.gid}, shell: #{user.shell})"
+        uid = user.uid || "N/A"
+        gid = user.gid || "N/A"
+        item "#{user.name} (#{info}, uid: #{uid}, gid: #{gid}, shell: #{user.shell})"
       end
     end
   end

@@ -31,7 +31,7 @@ class GroupsInspector < Inspector
     content.lines.map do |line|
       name, password, gid, users = line.split(":").map(&:chomp)
 
-      gid = gid.to_i if Machinery::is_int?(gid)
+      gid = Machinery::is_int?(gid) ? gid.to_i : nil
 
       attrs = {
         name: name,
