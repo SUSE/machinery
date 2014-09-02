@@ -125,7 +125,7 @@ class SystemDescriptionStore
     file_store = file_store(description.name, "config_files")
     description.config_files.each do |config_file|
       file_path = File.join(file_store, config_file.name)
-      if !File.exists?(file_path)
+      if !config_file.changes.include?("deleted") && !File.exists?(file_path)
         errors.push "Config file '#{file_path}' doesn't exist"
       end
     end

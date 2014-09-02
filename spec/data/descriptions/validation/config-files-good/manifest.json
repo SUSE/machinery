@@ -24,6 +24,15 @@
       "user": "root",
       "group": "root",
       "mode": "644"
+    },
+    {
+      "name": "/etc/ntp.conf",
+      "package_name": "ntp",
+      "package_version": "4.2.6p5",
+      "status": "changed",
+      "changes": [
+        "deleted"
+      ]
     }
   ],
   "meta": {
