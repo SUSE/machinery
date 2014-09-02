@@ -175,7 +175,7 @@ class SystemDescription < Machinery::Object
         error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
         # optimize error message about missing required attributes
         error.gsub!(/The property '#\/(\d+).*?'/, "The element #\\1")
-        # remove obsolete information at the end of the error message
+        # remove unnecessary information at the end of the error message
         error.gsub(/ in schema .*$/, ".")
       end
 
