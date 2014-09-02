@@ -14,9 +14,8 @@
         "type": "string"
       },
       "gid": {
-        "type": ["integer", "string"],
-        "minimum": 0,
-        "pattern": ""
+        "type": ["integer", "null"],
+        "minimum": 0
       },
       "users": {
         "type": "array",

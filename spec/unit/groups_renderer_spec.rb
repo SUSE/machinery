@@ -25,7 +25,7 @@ describe GroupsRenderer do
         {
           "name": "root",
           "password": "x",
-          "gid": 0,
+          "gid": null,
           "users": []
         },
         {
@@ -44,7 +44,7 @@ describe GroupsRenderer do
     it "prints a repository list" do
       output = GroupsRenderer.new.render(system_description)
 
-      expect(output).to include("root (gid: 0)")
+      expect(output).to include("root (gid: N/A)")
       expect(output).to include("tftp (gid: 7, users: dnsmasq,tftp)")
     end
   end

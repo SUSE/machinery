@@ -21,7 +21,8 @@ class GroupsRenderer < Renderer
 
     list do
       @system_description.groups.each do |group|
-        details ="gid: #{group.gid}"
+        gid = group.gid || "N/A"
+        details ="gid: #{gid}"
         details += ", users: #{group.users.join(",")}" if !group.users.empty?
 
         item "#{group.name} (#{details})"
