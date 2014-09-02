@@ -54,7 +54,8 @@ end
 
 RSpec::Matchers.define :include_scope do |expected, scope|
   match do |actual|
-    if actual[scope].is_a?(Machinery::Scope)
+    if actual[scope].is_a?(Machinery::Object) ||
+       actual[scope].is_a?(Machinery::Array)
       expected[scope].all? { |e| actual[scope].include?(e) }
     else
       raise "Scope '#{scope}' has unsupported type '#{actual[scope].class}'"

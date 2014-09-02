@@ -19,10 +19,6 @@
 class ChangedManagedFile < Machinery::Object
 end
 
-class ChangedManagedFileList < Machinery::Array
-  has_elements class: ChangedManagedFile
-end
-
-class ChangedManagedFilesScope < Machinery::Scope
-  contains ChangedManagedFileList
+class ChangedManagedFilesScope < Machinery::Array
+  include Machinery::ScopeMixin
 end

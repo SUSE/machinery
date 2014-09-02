@@ -19,10 +19,6 @@
 class Package < Machinery::Object
 end
 
-class PackageList < Machinery::Array
-  has_elements class: Package
-end
-
-class PackagesScope < Machinery::Scope
-  contains PackageList
+class PackagesScope < Machinery::Array
+  include Machinery::ScopeMixin
 end

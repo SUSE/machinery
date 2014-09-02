@@ -15,10 +15,15 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+module Machinery
+  module ScopeMixin
+    attr_accessor :meta
 
-class Group < Machinery::Object
-end
-
-class GroupsScope < Machinery::Array
-  include Machinery::ScopeMixin
+    def set_metadata(timestring, host)
+      self.meta = Machinery::Object.new(
+        modified: timestring,
+        hostname: host
+      )
+    end
+  end
 end

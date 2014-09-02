@@ -18,10 +18,10 @@ require_relative "spec_helper"
 
 describe CompareTask do
   describe "#compare" do
-    class CompareTaskFooScope < Machinery::Scope; contains Machinery::Array; end
-    class CompareTaskBarScope < Machinery::Scope; contains Machinery::Array; end
-    class CompareTaskBazScope < Machinery::Scope; contains Machinery::Array; end
-    class CompareTaskFoobarScope < Machinery::Scope; contains Machinery::Array; end
+    class CompareTaskFooScope < Machinery::Array; end
+    class CompareTaskBarScope < Machinery::Array; end
+    class CompareTaskBazScope < Machinery::Array; end
+    class CompareTaskFoobarScope < Machinery::Array; end
 
     class CompareTaskFooRenderer < Renderer
       def do_render

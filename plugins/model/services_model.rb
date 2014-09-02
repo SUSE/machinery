@@ -27,8 +27,8 @@ class ServicesConfig < Machinery::Object
   has_property :services, class: ServiceList
 end
 
-class ServicesScope < Machinery::Scope
-  contains ServicesConfig
+class ServicesScope < ServicesConfig
+  include Machinery::ScopeMixin
 
   def compare_with(other)
     if self.init_system != other.init_system

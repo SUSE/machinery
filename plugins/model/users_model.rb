@@ -19,11 +19,6 @@
 class User < Machinery::Object
 end
 
-class UserList < Machinery::Array
-  has_elements class: User
+class UsersScope < Machinery::Array
+  include Machinery::ScopeMixin
 end
-
-class UsersScope < Machinery::Scope
-  contains UserList
-end
-

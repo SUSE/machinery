@@ -119,7 +119,7 @@ module Machinery
     def as_json
       entries = @attributes.map do |key, value|
         case value
-        when Machinery::Scope, Machinery::Array, Machinery::Object
+        when Machinery::Array, Machinery::Object
           value_json = value.as_json
         else
           value_json = value

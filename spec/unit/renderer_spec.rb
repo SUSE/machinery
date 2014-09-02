@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-class FooScope < Machinery::Scope; contains Machinery::Object;  end
+class FooScope < Machinery::Object;  end
 class FooRenderer < Renderer
   def do_render
     puts @system_description.foo.data
@@ -28,7 +28,7 @@ class FooRenderer < Renderer
   end
 end
 
-class BarBazScope < Machinery::Scope; contains Machinery::Object;  end
+class BarBazScope < Machinery::Object;  end
 class BarBazRenderer < Renderer
   def do_render
     heading("bar")

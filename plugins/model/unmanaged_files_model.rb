@@ -19,10 +19,6 @@
 class UnmanagedFile < Machinery::Object
 end
 
-class UnmanagedFileList < Machinery::Array
-  has_elements class: UnmanagedFile
-end
-
-class UnmanagedFilesScope < Machinery::Scope
-  contains UnmanagedFileList
+class UnmanagedFilesScope < Machinery::Array
+  include Machinery::ScopeMixin
 end
