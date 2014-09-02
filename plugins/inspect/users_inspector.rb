@@ -43,8 +43,13 @@ class UsersInspector < Inspector
     line = passwd.lines.find { |l| l.start_with?("#{user}:") }
     user, passwd, uid, gid, comment, home, shell = line.split(":").map(&:chomp)
 
-    # the nis placeholder has empty entries for uid and gid
-    # +::::::
+    # In case the inspected machine uses NIS, /etc/passwd will contain a
+    # placeholder entry like this:
+    #
+    #   +::::::
+    #
+    # We need to handle it correctly, which means setting non-string attributes
+    # to nil.
     uid = Machinery::is_int?(uid) ? uid.to_i : nil
     gid = Machinery::is_int?(gid) ? gid.to_i : nil
 
