@@ -151,8 +151,13 @@ $(document).on("ready", function(){
     }
     $(this).addClass("USDactive");
   })
+
+  $('.carousel').carousel({
+    interval: false
+  })
   
 })
+
 
 
 
