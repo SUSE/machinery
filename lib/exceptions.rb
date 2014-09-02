@@ -35,6 +35,25 @@ module Machinery
     class SystemDescriptionError < MachineryError; end
     class SystemDescriptionNotFound < SystemDescriptionError; end
 
+    class SystemDescriptionValidationFailed < SystemDescriptionError
+      attr_reader :errors
+      attr_accessor :header
+
+      def initialize(errors)
+        @errors = errors
+      end
+
+      def to_s
+        message = ""
+        if @header
+          message += header + "\n\n"
+        end
+        message += @errors.join("\n")
+        message += "\n"
+        message
+      end
+    end
+
     class BuildFailed < MachineryError; end
     class DeployFailed < MachineryError; end
     class InspectionFailed < MachineryError; end
