@@ -45,8 +45,8 @@ class UsersInspector < Inspector
 
     # the nis placeholder has empty entries for uid and gid
     # +::::::
-    uid = uid.to_i if Machinery::is_int?(uid)
-    gid = gid.to_i if Machinery::is_int?(gid)
+    uid = Machinery::is_int?(uid) ? uid.to_i : nil
+    gid = Machinery::is_int?(gid) ? gid.to_i : nil
 
     {
         name: user,
