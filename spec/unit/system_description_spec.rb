@@ -284,9 +284,7 @@ EOF
 
       it "raises in case of missing package_version" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The element #0 did not contain a required property of 'package_version'.
+In scope config_files: The element #0 did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -297,9 +295,7 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
+In scope config_files: The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
 EOF
         expected.chomp!
         expect { SystemDescription.
