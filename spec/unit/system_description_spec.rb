@@ -312,7 +312,7 @@ EOF
         expected = <<EOF
 In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
  The schema specific errors were:
- - The property 'mode' of element #0 value "900" did not match the regex '^[0-4]{0,1}[0-7]{3}$'.
+ - The property 'mode' of element #0 value "900" did not match the regex '^[0-4]?[0-7]{3}$'.
 EOF
         expected.chomp!
         expect { SystemDescription.

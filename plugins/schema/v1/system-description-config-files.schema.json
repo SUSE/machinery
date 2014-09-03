@@ -69,7 +69,7 @@
         },
         "mode": {
           "type": "string",
-          "pattern": "^[0-4]{0,1}[0-7]{3}$"
+          "pattern": "^[0-4]?[0-7]{3}$"
         },
         "user": {
           "type": "string",
