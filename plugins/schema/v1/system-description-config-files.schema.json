@@ -75,10 +75,10 @@
           "type": "string",
           "minLength": 1
         },
-       "group": {
-         "type": "string",
-         "minLength": 1
-       }
+        "group": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }
