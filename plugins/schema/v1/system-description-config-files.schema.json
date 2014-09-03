@@ -4,12 +4,12 @@
   "type": "array",
   "items" : {
     "anyOf": [
-      { "$ref": "#/definitions/deleted" },
-      { "$ref": "#/definitions/permissions_md5" }
+      { "$ref": "#/definitions/deleted_file" },
+      { "$ref": "#/definitions/changed_file" }
     ]
   },
   "definitions": {
-    "deleted": {
+    "deleted_file": {
       "type": "object",
       "required": ["name", "package_name", "package_version", "status", "changes"],
       "properties": {
@@ -39,7 +39,7 @@
         }
       }
     },
-    "permissions_md5": {
+    "changed_file": {
       "type": "object",
       "required": ["name", "package_name", "package_version", "status", "changes", "mode", "user", "group"],
       "properties": {
