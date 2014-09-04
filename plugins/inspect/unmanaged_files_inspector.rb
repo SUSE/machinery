@@ -182,8 +182,8 @@ class UnmanagedFilesInspector < Inspector
     out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
       next unless raw_path && !raw_path.empty?
 
-      path = scrub(raw_path.dup.force_encoding("UTF-8"))
-      link = scrub(raw_link.dup.force_encoding("UTF-8"))
+      path = scrub(raw_path)
+      link = scrub(raw_link)
 
       if [path, link].any? { |f| f.include?("\uFFFD") }
         broken_names = []
