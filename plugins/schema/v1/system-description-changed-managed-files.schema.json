@@ -3,62 +3,44 @@
 
   "type": "array",
   "items" : {
-    "anyOf": [
-      { "$ref": "#/definitions/deleted_file" },
-      { "$ref": "#/definitions/changed_file" }
+    "type": "object",
+    "required": ["name", "package_name", "package_version"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "pattern": "^/"
+      },
+      "package_name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "package_version": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "oneOf": [
+      { "$ref": "#/definitions/file_changed" },
+      { "$ref": "#/definitions/file_error" }
     ]
   },
   "definitions": {
-    "deleted_file": {
-      "type": "object",
-      "required": ["name", "package_name", "package_version", "status", "changes"],
+    "file_changed": {
+      "required": ["status"],
       "properties": {
-        "name": {
-          "type": "string",
-          "pattern": "^/"
-        },
-        "package_name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "package_version": {
-          "type": "string",
-          "minLength": 1
-        },
         "status": {
           "type": "string",
-          "enum": ["changed", "error"]
-        },
-        "changes": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["deleted"]
-          },
-          "minItems": 1
+          "enum": ["changed"]
         }
-      }
+      },
+      "oneOf": [
+        { "$ref": "#/definitions/file_changed_modified" },
+        { "$ref": "#/definitions/file_changed_deleted" }
+      ]
     },
-    "changed_file": {
-      "type": "object",
-      "required": ["name", "package_name", "package_version", "status", "changes", "mode", "user", "group"],
+    "file_changed_modified": {
+      "required": ["changes", "mode", "user", "group"],
       "properties": {
-        "name": {
-          "type": "string",
-          "pattern": "^/"
-        },
-        "package_name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "package_version": {
-          "type": "string",
-          "minLength": 1
-        },
-        "status": {
-          "type": "string",
-          "enum": ["changed", "error"]
-        },
         "changes": {
           "type": "array",
           "items": {
@@ -78,6 +60,27 @@
         "group": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "file_changed_deleted": {
+      "required": ["changes"],
+      "properties": {
+        "changes": {
+          "type": "array",
+          "enum": [["deleted"]]
+        }
+      }
+    },
+    "file_error": {
+      "required": ["status", "error_message"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["error"]
+        },
+        "error_message": {
+          "type": "string"
         }
       }
     }

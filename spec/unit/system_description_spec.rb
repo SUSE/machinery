@@ -212,9 +212,7 @@ EOF
     describe "json validation error handling" do
       it "raises an error when encountering invalid enum values" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The element #0 value "invalid" did not match one of the following values: mode, md5, group, user, replaced.
+In scope config_files: The element #0 of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect {
@@ -284,9 +282,7 @@ EOF
 
       it "raises in case of missing package_version" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The element #0 did not contain a required property of 'package_version'.
+In scope config_files: The element #0 did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -297,9 +293,7 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The property 'status' of element #0 value "unknown_status" did not match one of the following values: changed, error.
+In scope config_files: The property 'status' of element #0 of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -310,9 +304,7 @@ EOF
 
       it "raises in case of a pattern mismatch" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The property 'mode' of element #0 value "900" did not match the regex '^[0-4]?[0-7]{3}$'.
+In scope config_files: The element #0 of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -323,12 +315,7 @@ EOF
 
       it "raises for a deleted file in case of an empty changes array" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match one or more of the required schemas.
- The schema specific errors were:
- - The property 'changes' of element #0 did not contain a minimum number of items 1.
- - The element #0 did not contain a required property of 'group'.
- - The element #0 did not contain a required property of 'user'.
- - The element #0 did not contain a required property of 'mode'.
+In scope config_files: The property 'changes' of element #0 of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
