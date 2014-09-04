@@ -4,7 +4,7 @@
   "type": "array",
   "items" : {
     "type": "object",
-    "required": ["name", "package_name", "package_version", "status", "changes"],
+    "required": ["name", "package_name", "package_version"],
     "properties": {
       "name": {
         "type": "string",
@@ -17,32 +17,29 @@
       "package_version": {
         "type": "string",
         "minLength": 1
-      },
-      "status": {
-        "type": "string",
-        "enum": ["changed", "error"]
       }
     },
-    "anyOf": [
-      { "$ref": "#/definitions/deleted_file" },
-      { "$ref": "#/definitions/changed_file" }
+    "oneOf": [
+      { "$ref": "#/definitions/file_changed" },
+      { "$ref": "#/definitions/file_error" }
     ]
   },
   "definitions": {
-    "deleted_file": {
+    "file_changed": {
+      "required": ["status"],
       "properties": {
-        "changes": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["deleted"]
-          },
-          "minItems": 1
+        "status": {
+          "type": "string",
+          "enum": ["changed"]
         }
-      }
+      },
+      "oneOf": [
+        { "$ref": "#/definitions/file_changed_modified" },
+        { "$ref": "#/definitions/file_changed_deleted" }
+      ]
     },
-    "changed_file": {
-      "required": ["mode", "user", "group"],
+    "file_changed_modified": {
+      "required": ["changes", "mode", "user", "group"],
       "properties": {
         "changes": {
           "type": "array",
@@ -63,6 +60,27 @@
         "group": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "file_changed_deleted": {
+      "required": ["changes"],
+      "properties": {
+        "changes": {
+          "type": "array",
+          "enum": [["deleted"]]
+        }
+      }
+    },
+    "file_error": {
+      "required": ["status", "error_message"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["error"]
+        },
+        "error_message": {
+          "type": "string"
         }
       }
     }
