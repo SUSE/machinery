@@ -26,7 +26,7 @@ require "packaging"
 
 desc "Run RSpec code examples in spec/unit"
 RSpec::Core::RakeTask.new("spec:unit") do |t|
-  t.pattern = ["spec/unit/**/*_spec.rb", "spec/helper/**/*_spec.rb"]
+  t.exclude_pattern = "spec/integration/**/*"
 end
 
 desc "Run RSpec code examples in spec/integration"
