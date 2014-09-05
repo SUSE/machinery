@@ -119,21 +119,12 @@ class SystemDescriptionStore
     mode
   end
 
-  def validate_file_data_config_files(description)
-    errors = []
+  def missing_files(description, store_name, file_list)
+    file_store = file_store(description.name, store_name)
+    file_list.map! { |file| File.join(file_store, file) }
 
-    file_store = file_store(description.name, "config_files")
-    description.config_files.each do |config_file|
-      file_path = File.join(file_store, config_file.name)
-      if !config_file.changes.include?("deleted") && !File.exists?(file_path)
-        errors.push "Config file '#{file_path}' doesn't exist"
-      end
-    end
-
-    if errors.empty?
-      return true
-    else
-      raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
+    file_list.select do |file|
+      !File.exists?(file)
     end
   end
 

@@ -60,6 +60,7 @@ describe ListTask do
     json = <<-EOF
       {
         "config_files": [],
+        "changed_managed_files": [],
         "meta": {
           "format_version": 1
         }
