@@ -37,15 +37,12 @@ class ListTask
 
         if options["verbose"]
           meta = description[scope].meta
-          if meta && meta.modified
+          if meta
             time = Time.parse(meta.modified).getlocal
             date = time.strftime "%Y-%m-%d %H:%M:%S"
-          else
-            date = "unknown"
-          end
-          if meta && meta.hostname
             hostname = meta.hostname
           else
+            date = "unknown"
             hostname = "Unknown hostname"
           end
           entry += "\n      Host: [#{hostname}]"

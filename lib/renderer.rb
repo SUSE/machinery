@@ -85,15 +85,10 @@ class Renderer
       meta = system_description[scope].meta
 
       if meta
-        if meta.hostname
           header += " [#{meta.hostname}]"
-        end
-        if meta.modified
           date = Time.parse(meta.modified).localtime
           date_human = date.strftime "%Y-%m-%d %H:%M:%S"
-
           header += " (#{date_human})"
-        end
       end
 
       heading(header)
