@@ -283,17 +283,18 @@ class SystemDescription < Machinery::Object
   def validate_file_data!
     errors = []
 
-    if scope_extracted?("config_files")
-      expected_files = config_files.reject { |file| file.changes.include?("deleted") }
-      missing_files = @store.missing_files(self, "config-files",
-        expected_files.map(&:name))
+    ["config_files", "changed_managed_files"].each do |scope|
+      if scope_extracted?(scope)
+        expected_files = self[scope].reject { |file| file.changes.include?("deleted") }
+        missing_files = @store.missing_files(self, scope, expected_files.map(&:name))
 
-      if !missing_files.empty?
-        error_message = "Scope 'config_files':\n"
-        error_message += missing_files.map do |file|
-          "  * Config file '" + file + "' doesn't exist"
-        end.join("\n")
-        errors.push(error_message)
+        if !missing_files.empty?
+          error_message = "Scope '#{scope}':\n"
+          error_message += missing_files.map do |file|
+            "  * File '" + file + "' doesn't exist"
+          end.join("\n")
+          errors.push(error_message)
+        end
       end
     end
 
