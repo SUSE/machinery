@@ -23,14 +23,13 @@ describe LocalSystem do
   describe ".os_object" do
     before(:each) do
       expect_any_instance_of(OsInspector).to receive(:inspect) do |instance, system, description|
-        json = <<-EOF
+        system_description = create_test_description(<<-EOF, name: "localhost")
         {
           "os": {
             "name": "SUSE Linux Enterprise Server 12"
           }
         }
         EOF
-        system_description = SystemDescription.from_json("localhost", json)
         description.os = system_description.os
       end
     end

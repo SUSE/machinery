@@ -20,7 +20,7 @@ shared_examples "build" do |distribution|
     before(:each) do
       @system_description_file = "spec/data/descriptions/#{distribution}-build/manifest.json"
       @system_description_dir = File.dirname(@system_description_file)
-      @system_description = SystemDescription.from_json("original", File.read(@system_description_file))
+      @system_description = create_test_description(File.read(@system_description_file), name: "original")
     end
 
     it "builds a #{distribution} image from a system description" do
@@ -76,7 +76,7 @@ shared_examples "build" do |distribution|
           as: "vagrant",
           stdout: :capture
         )
-        @new_description = SystemDescription.from_json("new", new_description_json)
+        @new_description = create_test_description(new_description_json, name: "new")
       end
 
       it "contains the RPM from the system description" do

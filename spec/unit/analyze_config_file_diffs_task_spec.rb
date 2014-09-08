@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe AnalyzeConfigFileDiffsTask do
   let(:store) { SystemDescriptionStore.new }
   let(:description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "test", store: store)
       {
         "repositories": [
           {
@@ -83,7 +83,6 @@ describe AnalyzeConfigFileDiffsTask do
         ]
       }
     EOF
-    SystemDescription.from_json("test", json, store)
   }
   subject {
     AnalyzeConfigFileDiffsTask.new

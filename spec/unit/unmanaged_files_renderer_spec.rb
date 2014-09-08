@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe UnmanagedFilesRenderer do
   let(:description_without_meta) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "unmanaged_files": [
       {
@@ -29,11 +29,10 @@ describe UnmanagedFilesRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   let(:description_link) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "unmanaged_files": [
       {
@@ -45,11 +44,10 @@ describe UnmanagedFilesRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   let(:description_dir) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "unmanaged_files": [
       {
@@ -64,11 +62,10 @@ describe UnmanagedFilesRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   let(:description_file) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "unmanaged_files": [
       {
@@ -82,7 +79,6 @@ describe UnmanagedFilesRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   describe "#render" do

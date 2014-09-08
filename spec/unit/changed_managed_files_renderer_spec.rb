@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe ChangedManagedFilesRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "changed_managed_files": [
         {
@@ -55,7 +55,6 @@ describe ChangedManagedFilesRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   describe "#render" do

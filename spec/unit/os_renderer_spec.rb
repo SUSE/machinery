@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe OsRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "os": {
       "name": "openSUSE",
@@ -28,7 +28,6 @@ describe OsRenderer do
       }
     }
     EOF
-    system_description = SystemDescription.from_json("name", json)
   }
 
   describe "show" do

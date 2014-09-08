@@ -110,3 +110,10 @@ module FakeFS
     end
   end
 end
+
+def create_test_description(json, options)
+  name  = options[:name]
+  store = options[:store]
+
+  SystemDescription.from_json(name, json, store)
+end

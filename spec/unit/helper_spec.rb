@@ -45,14 +45,13 @@ describe Machinery do
 
     # let us build a sles11 system which is unsupported on sle12 host
     let(:system_description) {
-      json = <<-EOF
+      create_test_description(<<-EOF, name: "localhost")
       {
         "os": {
         "name": "SUSE Linux Enterprise Server 11"
         }
       }
       EOF
-      system_description = SystemDescription.from_json("localhost", json)
     }
 
     it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do

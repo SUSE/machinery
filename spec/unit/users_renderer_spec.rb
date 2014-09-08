@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe UsersRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
     {
       "users": [
         {
@@ -45,7 +45,6 @@ describe UsersRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   describe "show" do

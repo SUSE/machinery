@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe PatternsRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: "name")
       {
         "patterns": [
           {
@@ -35,7 +35,6 @@ describe PatternsRenderer do
         ]
       }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   describe "#render" do
