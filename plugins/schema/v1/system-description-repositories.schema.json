@@ -15,7 +15,6 @@
         "minLength": 1
       },
       "type": {
-        "type": ["string", "null"],
         "enum": ["yast2", "rpm-md", "plaindir", null]
       },
       "url": {
