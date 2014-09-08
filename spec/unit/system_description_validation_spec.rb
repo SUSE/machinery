@@ -78,4 +78,32 @@ EOT
       end
     end
   end
+
+  describe "validate unmanaged file presence" do
+    it "validates unextracted description" do
+      expect {
+        @store.load("unmanaged-files-unextracted")
+      }.to_not raise_error
+    end
+
+    it "validates valid description" do
+      expect {
+        @store.load("unmanaged-files-good")
+      }.to_not raise_error
+    end
+
+    it "throws error on invalid description" do
+      expect {
+        @store.load("unmanaged-files-bad")
+      }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
+        expect(error.to_s).to eq(<<EOT
+Error validating description 'unmanaged-files-bad'
+
+Scope 'unmanaged_files':
+  * File 'spec/data/descriptions/validation/unmanaged-files-bad/unmanaged_files/trees/root/.ssh.tgz' doesn't exist
+EOT
+        )
+      end
+    end
+  end
 end

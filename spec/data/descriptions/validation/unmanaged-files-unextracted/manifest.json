@@ -1,0 +1,19 @@
+{
+  "unmanaged_files": [
+    {
+      "name": "/boot/0xfcdaa824",
+      "type": "file"
+    },
+    {
+      "name": "/boot/grub/device.map",
+      "type": "file"
+    }
+  ],
+  "meta": {
+    "format_version": 1,
+    "unmanaged_files": {
+      "modified": "2014-08-27T18:00:17Z",
+      "hostname": "10.122.166.77"
+    }
+  }
+}
