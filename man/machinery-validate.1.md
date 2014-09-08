@@ -12,7 +12,8 @@
 
 The `validate` subcommand validates an existing system description.
 It checks, that the description has the correct structure and the data stored
-there conforms to the required schema.
+there conforms to the required schema. It also verifies that all extracted files
+are present on disk.
 
 In case of issues errors are shown with additional information.
 

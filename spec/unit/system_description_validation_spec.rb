@@ -23,7 +23,7 @@ describe SystemDescription do
     @store = SystemDescriptionStore.new(path)
   end
 
-  describe "validate file data" do
+  describe "validate config file presence" do
     it "validates unextracted description" do
       expect {
         @store.load("config-files-unextracted")
@@ -44,7 +44,63 @@ describe SystemDescription do
 Error validating description 'config-files-bad'
 
 Scope 'config_files':
-  * Config file 'spec/data/descriptions/validation/config-files-bad/config_files/etc/postfix/main.cf' doesn't exist
+  * File 'spec/data/descriptions/validation/config-files-bad/config_files/etc/postfix/main.cf' doesn't exist
+EOT
+        )
+      end
+    end
+  end
+
+  describe "validate changed managed file presence" do
+    it "validates unextracted description" do
+      expect {
+        @store.load("changed-managed-files-unextracted")
+      }.to_not raise_error
+    end
+
+    it "validates valid description" do
+      expect {
+        @store.load("changed-managed-files-good")
+      }.to_not raise_error
+    end
+
+    it "throws error on invalid description" do
+      expect {
+        @store.load("changed-managed-files-bad")
+      }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
+        expect(error.to_s).to eq(<<EOT
+Error validating description 'changed-managed-files-bad'
+
+Scope 'changed_managed_files':
+  * File 'spec/data/descriptions/validation/changed-managed-files-bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
+EOT
+        )
+      end
+    end
+  end
+
+  describe "validate unmanaged file presence" do
+    it "validates unextracted description" do
+      expect {
+        @store.load("unmanaged-files-unextracted")
+      }.to_not raise_error
+    end
+
+    it "validates valid description" do
+      expect {
+        @store.load("unmanaged-files-good")
+      }.to_not raise_error
+    end
+
+    it "throws error on invalid description" do
+      expect {
+        @store.load("unmanaged-files-bad")
+      }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
+        expect(error.to_s).to eq(<<EOT
+Error validating description 'unmanaged-files-bad'
+
+Scope 'unmanaged_files':
+  * File 'spec/data/descriptions/validation/unmanaged-files-bad/unmanaged_files/trees/root/.ssh.tgz' doesn't exist
 EOT
         )
       end
