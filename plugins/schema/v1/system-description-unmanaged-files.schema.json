@@ -35,7 +35,6 @@
       "required": ["type"],
       "properties": {
         "type": {
-          "type": "string",
           "enum": ["file", "dir", "link"]
         }
       },
@@ -63,7 +62,6 @@
       "required": ["type", "size", "mode"],
       "properties": {
         "type": {
-          "type": "string",
           "enum": ["file"]
         },
         "size": {
@@ -80,7 +78,6 @@
       "required": ["type", "size", "mode", "files"],
       "properties": {
         "type": {
-          "type": "string",
           "enum": ["dir"]
         },
         "size": {
@@ -101,7 +98,6 @@
       "required": ["type"],
       "properties": {
         "type": {
-          "type": "string",
           "enum": ["link"]
         }
       }

@@ -29,7 +29,6 @@
       "required": ["status"],
       "properties": {
         "status": {
-          "type": "string",
           "enum": ["changed"]
         }
       },
@@ -44,7 +43,6 @@
         "changes": {
           "type": "array",
           "items": {
-            "type": "string",
             "enum": ["mode", "md5", "group", "user", "replaced"]
           },
           "minItems": 1
@@ -67,7 +65,6 @@
       "required": ["changes"],
       "properties": {
         "changes": {
-          "type": "array",
           "enum": [["deleted"]]
         }
       }
@@ -76,7 +73,6 @@
       "required": ["status", "error_message"],
       "properties": {
         "status": {
-          "type": "string",
           "enum": ["error"]
         },
         "error_message": {
