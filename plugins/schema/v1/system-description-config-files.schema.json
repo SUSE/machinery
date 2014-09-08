@@ -7,8 +7,7 @@
     "required": ["name", "package_name", "package_version"],
     "properties": {
       "name": {
-        "type": "string",
-        "pattern": "^/"
+        "type": "string"
       },
       "package_name": {
         "type": "string",
