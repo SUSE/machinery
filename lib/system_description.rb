@@ -296,7 +296,7 @@ class SystemDescription < Machinery::Object
 
     scope = "unmanaged_files"
     if scope_extracted?(scope)
-      has_files_tarball = self[scope].any? { |f| f.type == "file" }
+      has_files_tarball = self[scope].any? { |f| f.type == "file" || f.type == "link" }
       tree_tarballs = self[scope].
         select { |f| f.type == "dir" }.
         map { |d| File.join("trees", d.name.sub(/\/$/, "") + ".tgz") }
