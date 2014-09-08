@@ -23,10 +23,6 @@ class SystemDescription < Machinery::Object
   attr_accessor :format_version
 
   class << self
-    def add_validator(json_path, &block)
-      @@json_validator[json_path] = block
-    end
-
     def from_json(name, json, store = nil)
       begin
         json_hash = JSON.parse(json)
@@ -180,11 +176,6 @@ class SystemDescription < Machinery::Object
 
       if !errors.empty?
         raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
-      end
-
-      @@json_validator.each do |json_path, block|
-        pointer = JsonPointer.new(json, json_path, :symbolize_keys => false)
-        block.yield pointer.value if pointer.exists?
       end
     end
   end

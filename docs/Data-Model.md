@@ -176,24 +176,6 @@ method. It recusively walks the tree and serializes all the nodes.
 
 The object tree is deserialized from JSON by the `SystemDescription.from_json` method.
 
-In order to validate incoming data, the `SystemDescription` class allows to
-define custom validators using the `SystemDescription#add_validator` method:
-
-```ruby
-SystemDescription.add_validator "#/packages" do |json|
-  if json != json.uniq
-    raise Machinery::Errors::SystemDescriptionError,
-          "The #{description} contains duplicate packages."
-  end
-end
-```
-
-The method is passed a [JSON Pointer](http://tools.ietf.org/html/rfc6901) and
-a block. The block will be called for the JSON node specified by the pointer
-when deserializing. If code inside this method encounters invalid JSON, it can
-raise the `Machinery::Errors::SystemDescriptionError` exception and the
-deserialization will fail.
-
 ### File Data
 
 Some scopes contain file data. The files are not serialized to the JSON, but
