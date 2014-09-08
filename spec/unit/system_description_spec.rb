@@ -162,18 +162,6 @@ describe SystemDescription do
     }.not_to raise_error
   end
 
-  it "raises ValidationError if json validator find duplicate packages" do
-    SystemDescription.add_validator "/packages" do |json|
-      if json != json.uniq
-        raise Machinery::Errors::SystemDescriptionError,
-          "The description contains duplicate packages."
-      end
-    end
-    expect { SystemDescription.from_json(@name,
-      @duplicate_description
-    )}.to raise_error(Machinery::Errors::SystemDescriptionError)
-  end
-
   describe "json parser error handling" do
     let(:path) { "spec/data/schema/invalid_json/" }
 

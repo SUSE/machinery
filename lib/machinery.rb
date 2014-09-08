@@ -17,7 +17,6 @@
 
 require 'ostruct'
 require 'json'
-require 'json-pointer'
 require "abstract_method"
 require "cheetah"
 require "tmpdir"
