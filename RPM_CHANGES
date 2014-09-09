@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 0.20.0 - Tue Sep 09 14:43:15 CEST 2014 - thardeck@suse.de
+
+* update to version 0.20.0
 * remove now unused gem json-pointer
 
 ## Version 0.19.1 - Tue Aug 19 18:03:39 CEST 2014 - thardeck@suse.de

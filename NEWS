@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 0.20.0 - Tue Sep 09 14:43:15 CEST 2014 - thardeck@suse.de
+
 * Processed descriptions are validated against a set of JSON schemas
 * File structure of processed descriptions is validated
 * System descriptions can also be validated manually with the command `validate`
