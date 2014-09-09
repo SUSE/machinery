@@ -1,5 +1,6 @@
 # Machinery RPM Changelog
 
+* remove now unused gem json-pointer
 
 ## Version 0.19.1 - Tue Aug 19 18:03:39 CEST 2014 - thardeck@suse.de
 
