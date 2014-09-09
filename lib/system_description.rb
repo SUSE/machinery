@@ -39,7 +39,7 @@ class SystemDescription < Machinery::Object
           json_error = "An opening bracket, a comma or quotation is missing " \
             "in one of the global scope definitions or in the meta section. " \
             "Unlike issues with the elements of the scopes, our JSON parser " \
-            "isn't able to localize issues like these."
+            "isn't able to locate issues like these."
           error_pos = nil
         end
 
