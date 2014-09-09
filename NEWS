@@ -1,5 +1,9 @@
 # Machinery Release Notes
 
+* Processed descriptions are validated against a set of JSON schemas
+* File structure of processed descriptions is validated
+* System descriptions can also be validated manually with the command `validate`
+* Enhanced package inspector to also inspect package architecture, checksum and revision
 
 ## Version 0.19.0 - Mon Aug 18 17:55:51 CEST 2014 - thardeck@suse.de
 
