@@ -48,6 +48,10 @@ class SystemDescriptionValidator
   GLOBAL_SCHEMA = load_global_schema
   SCOPE_SCHEMAS = load_scope_schemas
 
+  def initialize(description)
+    @description = description
+  end
+
   def validate_json(json)
     errors = JSON::Validator.fully_validate(GLOBAL_SCHEMA, json)
 
@@ -103,6 +107,53 @@ class SystemDescriptionValidator
 
     if !errors.empty?
       raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
+    end
+  end
+
+  def validate_file_data!
+    missing_files_by_scope = {}
+
+    ["config_files", "changed_managed_files"].each do |scope|
+      if @description.scope_extracted?(scope)
+        expected_files = @description[scope].reject { |file| file.changes.include?("deleted") }
+        missing_files = @description.store.missing_files(@description, scope, expected_files.map(&:name))
+
+        if !missing_files.empty?
+          missing_files_by_scope[scope] = missing_files
+        end
+      end
+    end
+
+    scope = "unmanaged_files"
+    if @description.scope_extracted?(scope)
+      has_files_tarball = @description[scope].any? { |f| f.type == "file" || f.type == "link" }
+      tree_tarballs = @description[scope].
+        select { |f| f.type == "dir" }.
+        map { |d| File.join("trees", d.name.sub(/\/$/, "") + ".tgz") }
+
+      expected_files = []
+      expected_files << "files.tgz" if has_files_tarball
+      expected_files += tree_tarballs
+
+      missing_files = @description.store.missing_files(@description, scope, expected_files)
+      if !missing_files.empty?
+        missing_files_by_scope[scope] = missing_files
+      end
+    end
+
+    errors = missing_files_by_scope.map do |scope, missing_files|
+      error_message = "Scope '#{scope}':\n"
+      error_message += missing_files.map do |file|
+        "  * File '" + file + "' doesn't exist"
+      end.join("\n")
+    end
+
+    if errors.empty?
+      return true
+    else
+      e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
+      e.header = "Error validating description '#{@description.name}'"
+      raise e
     end
   end
 end
