@@ -51,7 +51,10 @@ class SystemDescription < Machinery::Object
 
         raise Machinery::Errors::SystemDescriptionError.new(error)
       end
-      validate_json(json_hash) if compatible_json?(json_hash)
+
+      if compatible_json?(json_hash)
+        SystemDescriptionValidator.new(self).validate_json(json_hash)
+      end
 
       begin
         description = self.new(name, self.create_attrs(json_hash), store)
@@ -88,100 +91,12 @@ class SystemDescription < Machinery::Object
 
     private
 
-    def load_global_schema
-      JSON.parse(File.read(File.join(
-        Machinery::ROOT,
-        "schema",
-        "v#{CURRENT_FORMAT_VERSION}",
-        "system-description-global.schema.json"
-      )))
-    end
-
-    def load_scope_schemas
-      schema_dir = File.join(
-        Machinery::ROOT,
-        "plugins",
-        "schema",
-        "v#{CURRENT_FORMAT_VERSION}"
-      )
-
-      Hash[
-        Dir["#{schema_dir}/*.schema.json"].map do |file|
-          scope = file.match(/system-description-(.*)\.schema\.json$/)[1].tr("-", "_")
-          schema = JSON.parse(File.read(file))
-
-          [scope, schema]
-        end
-      ]
-    end
-
     def compatible_json?(json)
       json.is_a?(Hash) &&
         json["meta"].is_a?(Hash) &&
         json["meta"]["format_version"] == CURRENT_FORMAT_VERSION
     end
-
-    def validate_json(json)
-      errors = JSON::Validator.fully_validate(GLOBAL_SCHEMA, json)
-
-      scopes = json.keys
-      scopes.delete("meta")
-
-      errors += scopes.flat_map do |scope|
-        schema = SCOPE_SCHEMAS[scope]
-
-        if schema
-          issue = JSON::Validator.fully_validate(schema, json[scope]).map do |error|
-            "In scope #{scope}: #{error}"
-          end
-
-          # filter duplicates
-          issue.map! do |error|
-            lines = error.split("\n")
-            lines.uniq.join("\n")
-          end
-
-          # make json error messages more user-friendly
-          if ["config_files", "changed_managed_files"].include?(scope)
-            issue.map! do |error|
-              lines = error.split("\n")
-              # The following error is most likely irrelevant if there are more
-              # than one messages per issue.
-              # The first element is always the introduction:
-              # 'The schema specific errors were:'
-              # so the check count needs to be increased by one
-              if lines.length > 2
-                lines.reject! {
-                  |l| l =~ /The property.*did not match one of the following values: deleted/
-                }
-              end
-              lines.join("\n")
-            end
-          end
-
-          issue
-        else
-          []
-        end
-      end
-
-      errors.map! do |error|
-        # optimize error message about unexpected values
-        error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
-        # optimize error message about missing required attributes
-        error.gsub!(/The property '#\/(\d+).*?'/, "The element #\\1")
-        # remove unnecessary information at the end of the error message
-        error.gsub(/ in schema .*$/, ".")
-      end
-
-      if !errors.empty?
-        raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
-      end
-    end
   end
-
-  GLOBAL_SCHEMA = load_global_schema
-  SCOPE_SCHEMAS = load_scope_schemas
 
   def initialize(name, hash = {}, store = nil)
     @name = name
@@ -272,50 +187,7 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_file_data!
-    missing_files_by_scope = {}
-
-    ["config_files", "changed_managed_files"].each do |scope|
-      if scope_extracted?(scope)
-        expected_files = self[scope].reject { |file| file.changes.include?("deleted") }
-        missing_files = @store.missing_files(self, scope, expected_files.map(&:name))
-
-        if !missing_files.empty?
-          missing_files_by_scope[scope] = missing_files
-        end
-      end
-    end
-
-    scope = "unmanaged_files"
-    if scope_extracted?(scope)
-      has_files_tarball = self[scope].any? { |f| f.type == "file" || f.type == "link" }
-      tree_tarballs = self[scope].
-        select { |f| f.type == "dir" }.
-        map { |d| File.join("trees", d.name.sub(/\/$/, "") + ".tgz") }
-
-      expected_files = []
-      expected_files << "files.tgz" if has_files_tarball
-      expected_files += tree_tarballs
-
-      missing_files = @store.missing_files(self, scope, expected_files)
-      if !missing_files.empty?
-        missing_files_by_scope[scope] = missing_files
-      end
-    end
-
-    errors = missing_files_by_scope.map do |scope, missing_files|
-      error_message = "Scope '#{scope}':\n"
-      error_message += missing_files.map do |file|
-        "  * File '" + file + "' doesn't exist"
-      end.join("\n")
-    end
-
-    if errors.empty?
-      return true
-    else
-      e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
-      e.header = "Error validating description '#{name}'"
-      raise e
-    end
+    SystemDescriptionValidator.new(self).validate_file_data!
   end
 
   # Filestore handling
