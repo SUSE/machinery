@@ -291,5 +291,22 @@ describe SystemDescriptionStore do
         expect(store.new_dir_mode(test_name)).to eq(0700)
       end
     end
+
+    describe "#list_file_store_content" do
+      it "returns a list of files and dirs in the file store" do
+        store.initialize_file_store(test_name, file_store_name)
+        store.create_file_store_sub_dir(test_name, file_store_name, "foo/bar")
+        FileUtils.touch(File.join(file_store_path, "foo", "baz"))
+        FileUtils.touch(File.join(file_store_path, "foo", ".baz"))
+
+        expect(store.list_file_store_content(test_name, file_store_name)).to match_array(
+          [
+            File.join(file_store_path, "foo", "bar"),
+            File.join(file_store_path, "foo", "baz"),
+            File.join(file_store_path, "foo", ".baz")
+          ]
+        )
+      end
+    end
   end
 end
