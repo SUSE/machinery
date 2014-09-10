@@ -212,6 +212,10 @@ class SystemDescription < Machinery::Object
     @store.remove_file_store(self.name, store_name)
   end
 
+  def rename_file_store(old_name, new_name)
+    @store.rename_file_store(self.name, old_name, new_name)
+  end
+
   def list_file_store_content(store_name)
     @store.list_file_store_content(self.name, store_name)
   end
