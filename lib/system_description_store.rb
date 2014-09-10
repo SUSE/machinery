@@ -111,6 +111,14 @@ class SystemDescriptionStore
     create_dir(dir, new_dir_mode(description_name))
   end
 
+  def list_file_store_content(description_name, store_name)
+    dir = File.join(description_path(description_name), store_name)
+
+    files = Dir.glob(File.join(dir, "**/*"), File::FNM_DOTMATCH)
+    # filter parent directories because they should not be listed separately
+    files.reject { |f| files.index { |e| e =~ /^#{f}\/.+/ } }
+  end
+
   def new_dir_mode(name)
     mode = 0700
     if Dir.exists?(description_path(name))
