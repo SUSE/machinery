@@ -203,6 +203,10 @@ class SystemDescription < Machinery::Object
     @store.remove_file_store(self.name, store_name)
   end
 
+  def list_file_store_content(store_name)
+    @store.list_file_store_content(self.name, store_name)
+  end
+
   def create_file_store_sub_dir(store_name, sub_dir)
     @store.create_file_store_sub_dir(self.name, store_name, sub_dir)
   end
