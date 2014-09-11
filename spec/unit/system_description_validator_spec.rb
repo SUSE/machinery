@@ -47,7 +47,7 @@ describe SystemDescriptionValidator do
 
     it "raises an error when encountering invalid enum values" do
       expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (changes) of type Hash did not match any of the required schemas.
 EOF
       expected.chomp!
       expect {
@@ -114,7 +114,7 @@ EOF
 
       it "raises in case of missing package_version" do
         expected = <<EOF
-In scope config_files: The element #0 did not contain a required property of 'package_version'.
+In scope config_files: The property #0 did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -125,7 +125,7 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope config_files: The property 'status' of element #0 of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (status) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -136,7 +136,7 @@ EOF
 
       it "raises in case of a pattern mismatch" do
         expected = <<EOF
-In scope config_files: The element #0 of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (mode/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -147,7 +147,7 @@ EOF
 
       it "raises for a deleted file in case of an empty changes array" do
         expected = <<EOF
-In scope config_files: The property 'changes' of element #0 of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -163,7 +163,7 @@ EOF
 
       it "raises for extracted in case of unknown type" do
         expected = <<EOF
-In scope unmanaged_files: The element #0 of type Array did not match any of the required schemas.
+In scope unmanaged_files: The property #0 of type Array did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.

@@ -65,44 +65,12 @@ class SystemDescriptionValidator
         issue = JSON::Validator.fully_validate(schema, json[scope]).map do |error|
           "In scope #{scope}: #{error}"
         end
-
-        # filter duplicates
-        issue.map! do |error|
-          lines = error.split("\n")
-          lines.uniq.join("\n")
+        issue.map do |error|
+          SystemDescriptionValidator.cleanup_json_error_message(error, scope)
         end
-
-        # make json error messages more user-friendly
-        if ["config_files", "changed_managed_files"].include?(scope)
-          issue.map! do |error|
-            lines = error.split("\n")
-            # The following error is most likely irrelevant if there are more
-            # than one messages per issue.
-            # The first element is always the introduction:
-            # 'The schema specific errors were:'
-            # so the check count needs to be increased by one
-            if lines.length > 2
-              lines.reject! {
-                |l| l =~ /The property.*did not match one of the following values: deleted/
-              }
-            end
-            lines.join("\n")
-          end
-        end
-
-        issue
       else
         []
       end
-    end
-
-    errors.map! do |error|
-      # optimize error message about unexpected values
-      error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
-      # optimize error message about missing required attributes
-      error.gsub!(/The property '#\/(\d+).*?'/, "The element #\\1")
-      # remove unnecessary information at the end of the error message
-      error.gsub(/ in schema .*$/, ".")
     end
 
     if !errors.empty?
