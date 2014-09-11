@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe PackagesRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF)
     {
       "repositories": [
       {
@@ -45,7 +45,6 @@ describe PackagesRenderer do
     ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   describe "show" do

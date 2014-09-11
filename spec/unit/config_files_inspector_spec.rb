@@ -28,7 +28,7 @@ describe ConfigFilesInspector do
     }
 
     before(:each) do
-      store.save(SystemDescription.from_json(name, "{}"))
+      store.save(create_test_description("{}", name: name))
     end
 
     let(:rpm_qa_output_test1) {

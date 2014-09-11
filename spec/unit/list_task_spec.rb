@@ -26,7 +26,7 @@ describe ListTask do
   let(:hostname) { "example.com" }
   let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name)
       {
         "packages": [],
         "repositories": [],
@@ -43,10 +43,9 @@ describe ListTask do
         }
       }
     EOF
-    SystemDescription.from_json(name, json)
   }
   let(:system_description_without_scope_meta) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name)
       {
         "packages": [],
         "meta": {
@@ -54,10 +53,9 @@ describe ListTask do
         }
       }
     EOF
-    SystemDescription.from_json(name, json)
   }
   let(:system_description_with_extracted_files) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name)
       {
         "config_files": [],
         "changed_managed_files": [],
@@ -72,14 +70,12 @@ describe ListTask do
         }
       }
     EOF
-    SystemDescription.from_json(name, json)
   }
   let(:system_description_with_incompatible_data_format) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name)
       {
       }
     EOF
-    SystemDescription.from_json(name, json)
   }
 
   describe "#list" do

@@ -22,12 +22,11 @@ describe ShowTask, "#show" do
   let(:show_task) { ShowTask.new }
   let(:system_description) { SystemDescription.new("foo") }
   let(:description_with_packages) {
-    json = <<-EOF
+    create_test_description(<<-EOF)
       {
         "packages": []
       }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   it "runs the proper renderer when a scope is given" do

@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe ServicesRenderer do
   let(:system_description_systemd) {
-    json = <<-EOF
+    create_test_description(<<-EOF)
       {
         "services": {
           "init_system": "systemd",
@@ -39,11 +39,10 @@ describe ServicesRenderer do
         }
       }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   let(:system_description_sysvinit) {
-    json = <<-EOF
+    create_test_description(<<-EOF)
       {
         "services": {
           "init_system": "sysvinit",
@@ -63,7 +62,6 @@ describe ServicesRenderer do
         }
       }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   let(:expected_output_systemd) {

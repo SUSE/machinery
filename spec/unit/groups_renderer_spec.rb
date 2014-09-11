@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe GroupsRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF)
     {
       "groups": [
         {
@@ -37,7 +37,6 @@ describe GroupsRenderer do
       ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
 
   describe "show" do

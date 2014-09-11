@@ -81,7 +81,7 @@ describe Renderer do
     let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
     let(:host) { "192.168.122.216" }
     let(:description_with_meta) {
-      json = <<-EOF
+      create_test_description(<<-EOF)
         {
           "bar_baz": [],
           "meta": {
@@ -93,7 +93,6 @@ describe Renderer do
           }
         }
       EOF
-      SystemDescription.from_json("name", json)
     }
 
     it "calls specialized do_render method" do
@@ -179,22 +178,22 @@ EOF
     subject { FooRenderer.new }
 
     let(:description1_without_data) {
-      SystemDescription.from_json("name1", '{}')
+      create_test_description("{}", name: "name1")
     }
     let(:description2_without_data) {
-      SystemDescription.from_json("name2", '{}')
+      create_test_description("{}", name: "name2")
     }
     let(:description_common_without_data) {
-      SystemDescription.from_json("common", '{}')
+      create_test_description("{}", name: "common")
     }
     let(:description1_with_data) {
-      SystemDescription.from_json("name1", '{ "foo": { "data": "data1" } }')
+      create_test_description('{ "foo": { "data": "data1" } }', name: "name1")
     }
     let(:description2_with_data) {
-      SystemDescription.from_json("name2", '{ "foo": { "data": "data2" } }')
+      create_test_description('{ "foo": { "data": "data2" } }', name: "name2")
     }
     let(:description_common_with_data) {
-      SystemDescription.from_json("name2", '{ "foo": { "data": "data_common" } }')
+      create_test_description('{ "foo": { "data": "data_common" } }', name: "name2")
     }
 
     let(:output_data_none) { "" }

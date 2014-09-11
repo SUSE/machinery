@@ -24,7 +24,7 @@ describe KiwiConfig do
   let(:store) { SystemDescriptionStore.new("/.machinery") }
   let(:empty_system_description) { SystemDescription.new }
   let(:system_description_with_content) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name, store: store)
       {
         "packages": [
           {
@@ -181,11 +181,10 @@ describe KiwiConfig do
         }
       }
     EOF
-    SystemDescription.from_json(name, json, store)
   }
 
   let(:system_description_with_sysvinit_services) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name, store: store)
       {
         "packages": [
           {
@@ -230,11 +229,10 @@ describe KiwiConfig do
 
       }
     EOF
-    SystemDescription.from_json(name, json, store)
   }
 
   let(:system_description_with_systemd_services) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name, store: store)
       {
         "packages": [
           {
@@ -302,11 +300,10 @@ describe KiwiConfig do
         }
       }
     EOF
-    SystemDescription.from_json(name, json, store)
   }
 
   let(:system_description_with_modified_files) {
-    json = <<-EOF
+    create_test_description(<<-EOF, name: name, store: store)
       {
         "packages": [
           {
@@ -414,7 +411,6 @@ describe KiwiConfig do
         }
       }
     EOF
-    SystemDescription.from_json(name, json, store)
   }
 
   before(:each) do

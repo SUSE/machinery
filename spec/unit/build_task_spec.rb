@@ -21,7 +21,7 @@ describe BuildTask do
   include FakeFS::SpecHelpers
 
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF, store: SystemDescriptionStore.new)
       {
         "packages": [
           {
@@ -48,7 +48,6 @@ describe BuildTask do
         }
       }
     EOF
-    SystemDescription.from_json("test", json, SystemDescriptionStore.new)
   }
   let(:build_task) { BuildTask.new }
   let(:output_path) { "/tmp/output" }

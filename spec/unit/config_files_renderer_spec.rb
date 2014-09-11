@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe ConfigFilesRenderer do
   let(:system_description) {
-    json = <<-EOF
+    create_test_description(<<-EOF)
     {
       "config_files": [
       {
@@ -50,7 +50,6 @@ describe ConfigFilesRenderer do
     ]
     }
     EOF
-    SystemDescription.from_json("name", json)
   }
   subject { ConfigFilesRenderer.new }
 

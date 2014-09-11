@@ -82,7 +82,7 @@ end
 describe "match_scope matcher" do
   describe "matches scope as array" do
     it "with equal content" do
-      expected_json = <<-EOT
+      expected_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -96,10 +96,8 @@ describe "match_scope matcher" do
         ]
       }
       EOT
-      expected_description = SystemDescription.from_json("expected",
-        expected_json)
 
-      actual_json = <<-EOT
+      actual_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -118,14 +116,13 @@ describe "match_scope matcher" do
         ]
       }
       EOT
-      actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to match_scope(expected_description,
         "unmanaged_files")
     end
 
     it "with unequal content" do
-      expected_json = <<-EOT
+      expected_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -139,10 +136,8 @@ describe "match_scope matcher" do
         ]
       }
       EOT
-      expected_description = SystemDescription.from_json("expected",
-        expected_json)
 
-      actual_json = <<-EOT
+      actual_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -161,14 +156,13 @@ describe "match_scope matcher" do
         ]
       }
       EOT
-      actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to_not match_scope(expected_description,
         "unmanaged_files")
     end
 
     it "with content of different length" do
-      expected_json = <<-EOT
+      expected_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -180,10 +174,8 @@ describe "match_scope matcher" do
         ]
       }
       EOT
-      expected_description = SystemDescription.from_json("expected",
-        expected_json)
 
-      actual_json = <<-EOT
+      actual_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -197,7 +189,6 @@ describe "match_scope matcher" do
         ]
       }
       EOT
-      actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to_not match_scope(expected_description,
         "unmanaged_files")
@@ -206,7 +197,7 @@ describe "match_scope matcher" do
 
   describe "matches scope as hash" do
     it "with equal content" do
-      expected_json = <<-EOT
+      expected_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -214,10 +205,8 @@ describe "match_scope matcher" do
         }
       }
       EOT
-      expected_description = SystemDescription.from_json("expected",
-        expected_json)
 
-      actual_json = <<-EOT
+      actual_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -225,13 +214,12 @@ describe "match_scope matcher" do
         }
       }
       EOT
-      actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to match_scope(expected_description, "os")
     end
 
     it "with unequal content" do
-      expected_json = <<-EOT
+      expected_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -239,10 +227,8 @@ describe "match_scope matcher" do
         }
       }
       EOT
-      expected_description = SystemDescription.from_json("expected",
-        expected_json)
 
-      actual_json = <<-EOT
+      actual_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -250,7 +236,6 @@ describe "match_scope matcher" do
         }
       }
       EOT
-      actual_description = SystemDescription.from_json("actual", actual_json)
 
       expect(actual_description).to_not match_scope(expected_description, "os")
     end
@@ -259,7 +244,7 @@ end
 
 describe "include_scope matcher" do
   it "matches scope with included subset of entries" do
-    expected_json = <<-EOT
+    expected_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -273,10 +258,8 @@ describe "include_scope matcher" do
       ]
     }
     EOT
-    expected_description = SystemDescription.from_json("expected",
-      expected_json)
 
-    actual_json = <<-EOT
+    actual_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -294,14 +277,13 @@ describe "include_scope matcher" do
       ]
     }
     EOT
-    actual_description = SystemDescription.from_json("actual", actual_json)
 
     expect(actual_description).to include_scope(expected_description,
       "unmanaged_files")
   end
 
   it "doesn't match scope with non-included subset of entries" do
-    expected_json = <<-EOT
+    expected_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -315,10 +297,8 @@ describe "include_scope matcher" do
       ]
     }
     EOT
-    expected_description = SystemDescription.from_json("expected",
-      expected_json)
 
-    actual_json = <<-EOT
+    actual_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -336,7 +316,6 @@ describe "include_scope matcher" do
       ]
     }
     EOT
-    actual_description = SystemDescription.from_json("actual", actual_json)
 
     expect(actual_description).to_not include_scope(expected_description,
       "unmanaged_files")
