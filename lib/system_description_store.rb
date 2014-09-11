@@ -127,15 +127,6 @@ class SystemDescriptionStore
     mode
   end
 
-  def missing_files(description, store_name, file_list)
-    file_store = file_store(description.name, store_name)
-    file_list.map! { |file| File.join(file_store, file) }
-
-    file_list.select do |file|
-      !File.exists?(file)
-    end
-  end
-
   private
 
   def create_dir(dir, mode = 0700)
