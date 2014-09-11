@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe AnalyzeConfigFileDiffsTask do
   let(:store) { SystemDescriptionStore.new }
   let(:description) {
-    create_test_description(<<-EOF, name: "test", store: store)
+    create_test_description(<<-EOF, store: store)
       {
         "repositories": [
           {

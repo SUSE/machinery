@@ -81,7 +81,7 @@ describe Renderer do
     let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
     let(:host) { "192.168.122.216" }
     let(:description_with_meta) {
-      create_test_description(<<-EOF, name: "name")
+      create_test_description(<<-EOF)
         {
           "bar_baz": [],
           "meta": {

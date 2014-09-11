@@ -21,7 +21,7 @@ describe BuildTask do
   include FakeFS::SpecHelpers
 
   let(:system_description) {
-    create_test_description(<<-EOF, name: "test", store: SystemDescriptionStore.new)
+    create_test_description(<<-EOF, store: SystemDescriptionStore.new)
       {
         "packages": [
           {

@@ -218,7 +218,7 @@ describe Cli do
     describe "#build" do
       it "triggers a build" do
         path = "/tmp/output_path"
-        description = create_test_description(test_manifest, name: "name")
+        description = create_test_description(test_manifest)
         description.name = "descriptionx"
 
         expect_any_instance_of(BuildTask).to receive(:build).
@@ -230,7 +230,7 @@ describe Cli do
 
     describe "#show" do
       it "triggers the show task for packages when scope packages is specified" do
-        description = create_test_description(test_manifest, name: "name")
+        description = create_test_description(test_manifest)
         expect_any_instance_of(ShowTask).to receive(:show).with(
           description, ["packages"], :no_pager => true, :show_diffs => false)
 
@@ -250,7 +250,7 @@ describe Cli do
 
     describe "#export_kiwi" do
       it "triggers a KIWI export" do
-        description = create_test_description(test_manifest, name: "name")
+        description = create_test_description(test_manifest)
         expect_any_instance_of(KiwiExportTask).to receive(:export).
           with(description, "/tmp/export", force: false)
 
@@ -258,7 +258,7 @@ describe Cli do
       end
 
       it "forwards the force option" do
-        description = create_test_description(test_manifest, name: "name")
+        description = create_test_description(test_manifest)
         expect_any_instance_of(KiwiExportTask).to receive(:export).
           with(description, "/tmp/export", force: true)
 
@@ -268,14 +268,14 @@ describe Cli do
 
     describe "#analyze" do
       it "fails when an unsupported operation is called" do
-        create_test_description(test_manifest, name: "name")
+        create_test_description(test_manifest)
 
         expect(STDERR).to receive(:puts).with(/.*The operation 'foo' is not supported.*/)
         run_command(["analyze", "description1", "--operation=foo"])
       end
 
       it "triggers the analyze task" do
-        description = create_test_description(test_manifest, name: "name")
+        description = create_test_description(test_manifest)
         expect_any_instance_of(AnalyzeConfigFileDiffsTask).to receive(:analyze).with(
           description
         )

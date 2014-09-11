@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe UsersRenderer do
   let(:system_description) {
-    create_test_description(<<-EOF, name: "name")
+    create_test_description(<<-EOF)
     {
       "users": [
         {

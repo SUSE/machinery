@@ -82,7 +82,7 @@ end
 describe "match_scope matcher" do
   describe "matches scope as array" do
     it "with equal content" do
-      expected_description = create_test_description(<<-EOT, name: "expected")
+      expected_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -97,7 +97,7 @@ describe "match_scope matcher" do
       }
       EOT
 
-      actual_description = create_test_description(<<-EOT, name: "actual")
+      actual_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -122,7 +122,7 @@ describe "match_scope matcher" do
     end
 
     it "with unequal content" do
-      expected_description = create_test_description(<<-EOT, name: "expected")
+      expected_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -137,7 +137,7 @@ describe "match_scope matcher" do
       }
       EOT
 
-      actual_description = create_test_description(<<-EOT, name: "actual")
+      actual_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -162,7 +162,7 @@ describe "match_scope matcher" do
     end
 
     it "with content of different length" do
-      expected_description = create_test_description(<<-EOT, name: "expected")
+      expected_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -175,7 +175,7 @@ describe "match_scope matcher" do
       }
       EOT
 
-      actual_description = create_test_description(<<-EOT, name: "actual")
+      actual_description = create_test_description(<<-EOT)
       {
         "unmanaged_files": [
           {
@@ -197,7 +197,7 @@ describe "match_scope matcher" do
 
   describe "matches scope as hash" do
     it "with equal content" do
-      expected_description = create_test_description(<<-EOT, name: "expected")
+      expected_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -206,7 +206,7 @@ describe "match_scope matcher" do
       }
       EOT
 
-      actual_description = create_test_description(<<-EOT, name: "actual")
+      actual_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -219,7 +219,7 @@ describe "match_scope matcher" do
     end
 
     it "with unequal content" do
-      expected_description = create_test_description(<<-EOT, name: "expected")
+      expected_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -228,7 +228,7 @@ describe "match_scope matcher" do
       }
       EOT
 
-      actual_description = create_test_description(<<-EOT, name: "actual")
+      actual_description = create_test_description(<<-EOT)
       {
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
@@ -244,7 +244,7 @@ end
 
 describe "include_scope matcher" do
   it "matches scope with included subset of entries" do
-    expected_description = create_test_description(<<-EOT, name: "expected")
+    expected_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -259,7 +259,7 @@ describe "include_scope matcher" do
     }
     EOT
 
-    actual_description = create_test_description(<<-EOT, name: "actual")
+    actual_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -283,7 +283,7 @@ describe "include_scope matcher" do
   end
 
   it "doesn't match scope with non-included subset of entries" do
-    expected_description = create_test_description(<<-EOT, name: "expected")
+    expected_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
@@ -298,7 +298,7 @@ describe "include_scope matcher" do
     }
     EOT
 
-    actual_description = create_test_description(<<-EOT, name: "actual")
+    actual_description = create_test_description(<<-EOT)
     {
       "unmanaged_files": [
         {
