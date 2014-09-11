@@ -128,6 +128,13 @@ class SystemDescriptionValidator
     missing_files = @description.missing_files(scope, expected_files)
   end
 
+  def format_missing_file_errors(scope, missing_files)
+    error_message = "Scope '#{scope}':\n"
+    error_message += missing_files.map do |file|
+      "  * File '" + file + "' doesn't exist"
+    end.join("\n")
+  end
+
   def validate_file_data!
     missing_files_by_scope = {}
 
@@ -149,10 +156,7 @@ class SystemDescriptionValidator
     end
 
     errors = missing_files_by_scope.map do |scope, missing_files|
-      error_message = "Scope '#{scope}':\n"
-      error_message += missing_files.map do |file|
-        "  * File '" + file + "' doesn't exist"
-      end.join("\n")
+      format_missing_file_errors(scope, missing_files)
     end
 
     if errors.empty?
