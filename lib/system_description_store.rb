@@ -107,9 +107,10 @@ class SystemDescriptionStore
   end
 
   def rename_file_store(description_name, store_old, store_new)
-    FileUtils.cd(description_path(description_name)) do
-      FileUtils.mv(store_old, store_new)
-    end
+    FileUtils.mv(
+      File.join(description_path(description_name), store_old),
+      File.join(description_path(description_name), store_new)
+    )
   end
 
   def create_file_store_sub_dir(description_name, store_name, sub_dir)
