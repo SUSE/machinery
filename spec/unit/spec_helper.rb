@@ -19,6 +19,8 @@ require "fakefs/spec_helpers"
 
 require File.expand_path('../../../lib/machinery', __FILE__)
 
+require_relative "../helper/shared_test_methods"
+
 bin_path = File.expand_path( "../../../bin/", __FILE__ )
 
 if ENV['PATH'] !~ /#{bin_path}/
@@ -109,11 +111,4 @@ module FakeFS
       end
     end
   end
-end
-
-def create_test_description(json, options = {})
-  name  = options[:name] || "description"
-  store = options[:store]
-
-  SystemDescription.from_json(name, json, store)
 end

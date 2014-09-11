@@ -18,6 +18,7 @@
 require_relative "../../lib/machinery"
 require_relative "../../../pennyworth/lib/spec"
 require_relative "../../../pennyworth/lib/ssh_keys_importer"
+require_relative "../helper/shared_test_methods"
 
 def prepare_machinery_for_host(system, ip, opts = {})
   opts = {
