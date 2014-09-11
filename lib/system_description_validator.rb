@@ -128,6 +128,14 @@ class SystemDescriptionValidator
     missing_files = @description.missing_files(scope, expected_files)
   end
 
+  def missing_files_for_scope(scope)
+    if scope == "unmanaged_files"
+      missing_files_for_tared_scope(scope)
+    else
+      missing_files_for_plain_scope(scope)
+    end
+  end
+
   def format_missing_file_errors(scope, missing_files)
     error_message = "Scope '#{scope}':\n"
     error_message += missing_files.map do |file|
@@ -138,20 +146,12 @@ class SystemDescriptionValidator
   def validate_file_data!
     errors = []
 
-    ["config_files", "changed_managed_files"].each do |scope|
+    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
       if @description.scope_extracted?(scope)
-        missing_files = missing_files_for_plain_scope(scope)
+        missing_files = missing_files_for_scope(scope)
         if !missing_files.empty?
           errors.push(format_missing_file_errors(scope, missing_files))
         end
-      end
-    end
-
-    scope = "unmanaged_files"
-    if @description.scope_extracted?(scope)
-      missing_files = missing_files_for_tared_scope(scope)
-      if !missing_files.empty?
-        errors.push(format_missing_file_errors(scope, missing_files))
       end
     end
 
