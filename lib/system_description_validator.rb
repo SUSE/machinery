@@ -155,9 +155,7 @@ class SystemDescriptionValidator
       end
     end
 
-    if errors.empty?
-      return true
-    else
+    if !errors.empty?
       e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
       e.header = "Error validating description '#{@description.name}'"
       raise e
