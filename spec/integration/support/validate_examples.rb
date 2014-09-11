@@ -19,8 +19,8 @@ shared_examples "validate" do
   describe "validate" do
     it "validates a system description against JSON schemas" do
       expected = <<EOF
-In scope repositories: The element #0 did not contain a required property of 'url'.
-In scope services: The property '#/services/4/state' was not of a minimum string length of 1.
+In scope repositories: The property #0 did not contain a required property of 'url'.
+In scope services: The property #4 (services/state) was not of a minimum string length of 1.
 EOF
       system_description_file = "spec/data/descriptions/validation-error/manifest.json"
       system_description_dir = File.dirname(system_description_file)
@@ -36,7 +36,7 @@ EOF
         "machinery validate validation-error",
         as: "vagrant",
         stdout: :capture
-      ) }.to raise_error(ExecutionFailed, /#{expected}/)
+      ) }.to raise_error(ExecutionFailed, /#{Regexp.quote(expected)}/)
     end
 
     it "checks a system description for valid JSON syntax" do
@@ -59,7 +59,7 @@ EOF
         "machinery validate invalid-json",
         as: "vagrant",
         stdout: :capture
-      ) }.to raise_error(ExecutionFailed, /#{expected}/)
+      ) }.to raise_error(ExecutionFailed, /#{Regexp.quote(expected)}/)
     end
   end
 end

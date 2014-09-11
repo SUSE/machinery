@@ -65,44 +65,12 @@ class SystemDescriptionValidator
         issue = JSON::Validator.fully_validate(schema, json[scope]).map do |error|
           "In scope #{scope}: #{error}"
         end
-
-        # filter duplicates
-        issue.map! do |error|
-          lines = error.split("\n")
-          lines.uniq.join("\n")
+        issue.map do |error|
+          SystemDescriptionValidator.cleanup_json_error_message(error, scope)
         end
-
-        # make json error messages more user-friendly
-        if ["config_files", "changed_managed_files"].include?(scope)
-          issue.map! do |error|
-            lines = error.split("\n")
-            # The following error is most likely irrelevant if there are more
-            # than one messages per issue.
-            # The first element is always the introduction:
-            # 'The schema specific errors were:'
-            # so the check count needs to be increased by one
-            if lines.length > 2
-              lines.reject! {
-                |l| l =~ /The property.*did not match one of the following values: deleted/
-              }
-            end
-            lines.join("\n")
-          end
-        end
-
-        issue
       else
         []
       end
-    end
-
-    errors.map! do |error|
-      # optimize error message about unexpected values
-      error.gsub!(/'#\/(\d+)\/([a-z\-]+)'/, "'\\2' of element #\\1")
-      # optimize error message about missing required attributes
-      error.gsub!(/The property '#\/(\d+).*?'/, "The element #\\1")
-      # remove unnecessary information at the end of the error message
-      error.gsub(/ in schema .*$/, ".")
     end
 
     if !errors.empty?
@@ -160,5 +128,63 @@ class SystemDescriptionValidator
       e.header = "Error validating description '#{@description.name}'"
       raise e
     end
+  end
+
+  def self.cleanup_json_error_message(message, scope)
+    message = cleanup_json_path(message, scope)
+    message = remove_json_error_uuid(message)
+    message
+  end
+
+  private
+
+  def self.cleanup_json_path(message, scope)
+    old_path = message[/The property '#\/(.*?)'/,1]
+
+    position = error_position_from_json_path(old_path)
+    details = extract_details_from_json_path(old_path, scope)
+
+    new_path = "The property"
+    new_path += " ##{position}" if position > -1
+    new_path += " (#{details})" if !details.empty?
+
+    message.gsub(/The property '#\/.*?'/, new_path)
+  end
+
+  def self.error_position_from_json_path(path)
+    elements = path.split("/")
+
+    position = -1
+    elements.each do |e|
+      if Machinery::is_int?(e)
+        number = e.to_i
+        position = number if number > position
+      end
+    end
+    position
+  end
+
+  def self.extract_details_from_json_path(path, scope)
+    elements = path.split("/")
+
+    elements.uniq!
+
+    # filter numbers since the position is calculated elswhere
+    elements.reject! { |e| Machinery::is_int?(e) }
+
+    # The json schema path often contains the word "type" in many messages
+    # but this information adds no value for the user since it is not related
+    # to our manifest.json
+    # So we filter it for all scopes except of repositories since this is the
+    # only scope which does have an attribute called "type"
+    if scope != "repositories"
+      elements.reject! { |e| e == "type" }
+    end
+
+    elements.join("/")
+  end
+
+  def self.remove_json_error_uuid(message)
+    message.gsub(/ in schema .*$/, ".")
   end
 end

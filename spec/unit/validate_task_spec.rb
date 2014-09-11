@@ -24,7 +24,7 @@ describe ValidateTask, "#validate" do
 
   it "raises an error when encountering fauly description" do
     expected = <<EOF
-In scope packages: The property 'checksum' of element #0 value "Invalid Checksum" did not match the regex '^[a-f0-9]+$'.
+In scope packages: The property #0 (checksum) value "Invalid Checksum" did not match the regex '^[a-f0-9]+$'.
 EOF
     expected.chomp!
     expect {
