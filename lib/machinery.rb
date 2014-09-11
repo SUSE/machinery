@@ -67,6 +67,7 @@ require_relative 'scope_mixin'
 require_relative 'os'
 require_relative 'ui'
 require_relative 'validate_task'
+require_relative 'migration'
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 
