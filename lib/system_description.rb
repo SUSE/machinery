@@ -194,6 +194,12 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  def additional_files(scope, file_list)
+    file_list.map! { |file| File.join(file_store(scope), file) }
+    files = list_file_store_content(scope)
+
+    files - file_list
+  end
 
   def validate_file_data!
     SystemDescriptionValidator.new(self).validate_file_data!
