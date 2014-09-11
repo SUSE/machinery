@@ -32,6 +32,9 @@
 # migration. The system description in question is made available as the
 # `@description` instance variable.
 #
+# Migrations also need to describe their purpose using the `desc` class method
+# (see example below).
+#
 # *Note*: Migrations do not need to take care of updating the format version
 # attribute in the system description. That is already handled by the base
 # class.
@@ -39,6 +42,10 @@
 # Simple example migration which adds a new attribute to the JSON:
 #
 #   class Migrate1To2 < Migration
+#     desc <<-EOT
+#       Add 'foo' element to the system description root.
+#     EOT
+#
 #     def migrate
 #       @description.foo = true
 #     end
@@ -47,6 +54,12 @@ class Migration
   MIGRATIONS_DIR= File.join(Machinery::ROOT, "schema/migrations")
 
   class <<self
+    attr_reader :migration_desc
+
+    def desc(s)
+      @migration_desc = s
+    end
+
     def migrate_description(store, description_name)
       load_migrations
 
@@ -67,6 +80,14 @@ class Migration
           klass = Object.const_get("Migrate#{version}To#{next_version}")
         rescue NameError
           return
+        end
+
+        # Make sure that the migration was documented
+        if klass.migration_desc.nil?
+          raise Machinery::Errors::MigrationError.new(
+            "Invalid migration '#{klass}'. It does not specify its purpose using" \
+            " the 'desc' class method."
+          )
         end
 
         klass.new(hash, path).migrate

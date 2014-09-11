@@ -54,6 +54,8 @@ module Machinery
       end
     end
 
+    class MigrationError < MachineryError; end
+
     class BuildFailed < MachineryError; end
     class DeployFailed < MachineryError; end
     class InspectionFailed < MachineryError; end

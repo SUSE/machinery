@@ -20,8 +20,18 @@ require_relative "spec_helper"
 describe Migration do
   initialize_system_description_factory_store
 
-  class Migrate1To2 < Migration; def migrate; end; end
-  class Migrate2To3 < Migration; def migrate; end; end
+  class Migrate1To2 < Migration
+    desc "Migrate version 1 to 2"
+    def migrate; end
+  end
+  class Migrate2To3 < Migration
+    desc "Migrate version 2 to 3"
+    def migrate; end
+  end
+  class Migrate3To4 < Migration
+    # Bad migration, it does not describe its purpose.
+    def migrate; end
+  end
 
   let(:store) { system_description_factory_store }
 
@@ -93,6 +103,13 @@ describe Migration do
       end
 
       Migration.migrate_description(store, "v2_description")
+    end
+
+    it "refuses to run migrations without a migration_desc" do
+      stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 4)
+      expect {
+        Migration.migrate_description(store, "v3_description")
+      }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate3To4'/)
     end
   end
 end
