@@ -156,4 +156,62 @@ class SystemDescriptionValidator
       raise e
     end
   end
+
+  def self.cleanup_json_error_message(message, scope)
+    message = cleanup_json_path(message, scope)
+    message = remove_json_error_uuid(message)
+    message
+  end
+
+  private
+
+  def self.cleanup_json_path(message, scope)
+    old_path = message[/The property '#\/(.*?)'/,1]
+
+    position = error_position_from_json_path(old_path)
+    details = extract_details_from_json_path(old_path, scope)
+
+    new_path = "The property"
+    new_path += " ##{position}" if position > -1
+    new_path += " (#{details})" if !details.empty?
+
+    message.gsub(/The property '#\/.*?'/, new_path)
+  end
+
+  def self.error_position_from_json_path(path)
+    elements = path.split("/")
+
+    position = -1
+    elements.each do |e|
+      if Machinery::is_int?(e)
+        number = e.to_i
+        position = number if number > position
+      end
+    end
+    position
+  end
+
+  def self.extract_details_from_json_path(path, scope)
+    elements = path.split("/")
+
+    elements.uniq!
+
+    # filter numbers since the position is calculated elswhere
+    elements.reject! { |e| Machinery::is_int?(e) }
+
+    # The json schema path often contains the word "type" in many messages
+    # but this information adds no value for the user since it is not related
+    # to our manifest.json
+    # So we filter it for all scopes except of repositories since this is the
+    # only scope which does have an attribute called "type"
+    if scope != "repositories"
+      elements.reject! { |e| e == "type" }
+    end
+
+    elements.join("/")
+  end
+
+  def self.remove_json_error_uuid(message)
+    message.gsub(/ in schema .*$/, ".")
+  end
 end
