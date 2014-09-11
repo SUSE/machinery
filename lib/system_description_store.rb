@@ -106,6 +106,12 @@ class SystemDescriptionStore
     FileUtils.rm_rf(File.join(description_path(description_name), store_name))
   end
 
+  def rename_file_store(description_name, store_old, store_new)
+    FileUtils.cd(description_path(description_name)) do
+      FileUtils.mv(store_old, store_new)
+    end
+  end
+
   def create_file_store_sub_dir(description_name, store_name, sub_dir)
     dir = File.join(description_path(description_name), store_name, sub_dir)
     create_dir(dir, new_dir_mode(description_name))

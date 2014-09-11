@@ -261,8 +261,8 @@ describe UnmanagedFilesInspector do
       expect_cat_mounts(system)
       expect_find_commands(system,add_files)
       if(extract)
-        description.initialize_file_store("unmanaged_files")
-        cfdir = description.file_store("unmanaged_files")
+        description.initialize_file_store("unmanaged_files.tmp")
+        cfdir = description.file_store("unmanaged_files.tmp")
         dlist = expected_data.select{ |s| s.type=="dir" }
         dlist.map!{ |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)

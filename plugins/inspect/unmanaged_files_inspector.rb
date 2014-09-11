@@ -79,8 +79,8 @@ class UnmanagedFilesInspector < Inspector
     p "should not happen non-abs dirs:#{list}" unless list.empty?
   end
 
-  def extract_unmanaged_files(system, description, files, trees, excluded)
-    store_name = "unmanaged_files"
+  def extract_unmanaged_files(system, description, files, trees, excluded, store_name)
+    description.remove_file_store(store_name)
     description.initialize_file_store(store_name)
     store_path = description.file_store(store_name)
 
@@ -228,6 +228,10 @@ class UnmanagedFilesInspector < Inspector
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(system, do_extract)
 
+    tmp_file_store = "unmanaged_files.tmp"
+    final_file_store = "unmanaged_files"
+
+
     ignore_list = [ "tmp", "var/tmp", "lost+found", "var/run", "var/lib/rpm",
       ".snapshots", description.store.base_path.sub(/^\//, "")]
 
@@ -320,17 +324,31 @@ class UnmanagedFilesInspector < Inspector
       links.each { |d| unmanaged_links[find_dir + d] = "" }
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
-    description.remove_file_store("unmanaged_files")
-    if do_extract
-      extract_unmanaged_files(system, description, unmanaged_files, unmanaged_trees, excluded_files)
-    end
-    osl = unmanaged_files.map do |p|
-      type = unmanaged_links.has_key?(p) ? "link" : "file"
-      UnmanagedFile.new(name: p, type: type)
-    end
-    osl += unmanaged_trees.map { |p| UnmanagedFile.new( name: p + "/", type: "dir") }
-    if do_extract
-      osl = extract_tar_metadata(osl, description.file_store("unmanaged_files"))
+    begin
+      if do_extract
+        extract_unmanaged_files(system, description, unmanaged_files, unmanaged_trees, excluded_files, tmp_file_store)
+      else
+        description.remove_file_store(final_file_store)
+      end
+      osl = unmanaged_files.map do |p|
+        type = unmanaged_links.has_key?(p) ? "link" : "file"
+        UnmanagedFile.new(name: p, type: type)
+      end
+      osl += unmanaged_trees.map { |p| UnmanagedFile.new( name: p + "/", type: "dir") }
+      if do_extract
+        osl = extract_tar_metadata(osl, description.file_store(tmp_file_store))
+        description.remove_file_store(final_file_store)
+        description.rename_file_store(
+          tmp_file_store, final_file_store
+        )
+      end
+    rescue SignalException => e
+      # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
+      if [1, 2, 15].include?(e.signo)
+        STDERR.puts "Interrupted by user. The partly extracted unmanaged-files are available" \
+          " under '#{description.file_store(tmp_file_store)}'"
+      end
+      raise
     end
 
     summary = "#{do_extract ? "Extracted" : "Found"} #{osl.size} unmanaged files and trees."

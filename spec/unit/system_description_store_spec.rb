@@ -241,6 +241,22 @@ describe SystemDescriptionStore do
       end
     end
 
+    describe "#rename_file_store" do
+      it "renames the file store dir" do
+        file_store_name_new = "bar"
+        file_store_path_new =
+          File.join(store.description_path(test_name), file_store_name_new)
+
+        store.initialize_file_store(test_name, file_store_name)
+        expect(Dir.exists?(file_store_path)).to be(true)
+        expect(Dir.exists?(file_store_path_new)).to be(false)
+
+        store.rename_file_store(test_name, file_store_name, file_store_name_new)
+        expect(Dir.exists?(file_store_path)).to be(false)
+        expect(Dir.exists?(file_store_path_new)).to be(true)
+      end
+    end
+
     describe "#file_store" do
       it "returns the path to the file store dir" do
         store.initialize_file_store(test_name, file_store_name)
