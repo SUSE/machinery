@@ -186,6 +186,15 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  def missing_files(scope, file_list)
+    file_list.map! { |file| File.join(file_store(scope), file) }
+
+    file_list.select do |file|
+      !File.exists?(file)
+    end
+  end
+
+
   def validate_file_data!
     SystemDescriptionValidator.new(self).validate_file_data!
   end

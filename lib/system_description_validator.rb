@@ -116,7 +116,7 @@ class SystemDescriptionValidator
     ["config_files", "changed_managed_files"].each do |scope|
       if @description.scope_extracted?(scope)
         expected_files = @description[scope].reject { |file| file.changes.include?("deleted") }
-        missing_files = @description.store.missing_files(@description, scope, expected_files.map(&:name))
+        missing_files = @description.missing_files(scope, expected_files.map(&:name))
 
         if !missing_files.empty?
           missing_files_by_scope[scope] = missing_files
@@ -135,7 +135,7 @@ class SystemDescriptionValidator
       expected_files << "files.tgz" if has_files_tarball
       expected_files += tree_tarballs
 
-      missing_files = @description.store.missing_files(@description, scope, expected_files)
+      missing_files = @description.missing_files(scope, expected_files)
       if !missing_files.empty?
         missing_files_by_scope[scope] = missing_files
       end
