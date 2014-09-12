@@ -16,10 +16,11 @@
 # you may find current contact information at www.suse.com
 
 require "fakefs/spec_helpers"
+require "given_filesystem/spec_helpers"
 
 require File.expand_path('../../../lib/machinery', __FILE__)
 
-require_relative "../helper/shared_test_methods"
+require_relative "../support/system_description_factory"
 
 bin_path = File.expand_path( "../../../bin/", __FILE__ )
 
@@ -31,6 +32,8 @@ ENV["MACHINERY_LOG_FILE"] = "/tmp/machinery_test.log"
 Machinery.initialize_logger("/tmp/machinery_test.log")
 
 RSpec.configure do |config|
+  config.include(SystemDescriptionFactory)
+
   config.before(:each) do
     allow_any_instance_of(System).to receive(:check_requirement)
 

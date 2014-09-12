@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe ConfigFilesRenderer do
   let(:system_description) {
-    create_test_description(<<-EOF)
+    create_test_description(json: <<-EOF)
     {
       "config_files": [
       {

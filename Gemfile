@@ -22,4 +22,5 @@ gemspec
 group :test do
   gem "rspec", ">= 3.1.0"
   gem "fakefs"
+  gem "given_filesystem"
 end

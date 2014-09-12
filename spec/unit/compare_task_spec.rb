@@ -74,7 +74,7 @@ describe CompareTask do
     subject { CompareTask.new }
 
     let(:description1) {
-      create_test_description(<<-EOT, name: "name1")
+      create_test_description(json: <<-EOT, name: "name1")
         {
           "compare_task_foo": ["foo_data1"],
           "compare_task_bar": ["bar_data1"],
@@ -84,7 +84,7 @@ describe CompareTask do
     }
 
     let(:description2) {
-      create_test_description(<<-EOT, name: "name2")
+      create_test_description(json: <<-EOT, name: "name2")
         {
           "compare_task_foo": ["foo_data2"],
           "compare_task_bar": ["bar_data2"],
@@ -94,7 +94,7 @@ describe CompareTask do
     }
 
     let(:description3) {
-      create_test_description(<<-EOT, name: "name3")
+      create_test_description(json: <<-EOT, name: "name3")
         {
           "compare_task_bar": ["bar_data3"],
           "compare_task_foobar": ["foobar_data3"]
@@ -103,7 +103,7 @@ describe CompareTask do
     }
 
     let(:description4) {
-      create_test_description(<<-EOT, name: "name4")
+      create_test_description(json: <<-EOT, name: "name4")
         {
           "compare_task_foo": ["foo_data4"],
           "compare_task_foobar": ["foobar_data4"]
@@ -287,7 +287,7 @@ Compared descriptions are identical.
 
   describe "compare os scopes" do
     it "shows two different os scopes" do
-      system_description1 = create_test_description(<<-EOT, name: "one")
+      system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
           "os": {
             "name": "openSUSE",
@@ -297,7 +297,7 @@ Compared descriptions are identical.
         }
       EOT
 
-      system_description2 = create_test_description(<<-EOT, name: "two")
+      system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
           "os": {
             "name": "openSUSE",
@@ -328,7 +328,7 @@ EOT
     end
 
     it "shows two identical os scopes" do
-      system_description1 = create_test_description(<<-EOT, name: "one")
+      system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
           "os": {
             "name": "openSUSE",
@@ -338,7 +338,7 @@ EOT
         }
       EOT
 
-      system_description2 = create_test_description(<<-EOT, name: "two")
+      system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
           "os": {
             "name": "openSUSE",
@@ -357,7 +357,7 @@ EOT
 
   describe "compare packages scope" do
     it "shows that a package has been added to a list" do
-      system_description1 = create_test_description(<<-EOT, name: "one")
+      system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
           "packages": [
              {
@@ -380,7 +380,7 @@ EOT
         }
       EOT
 
-      system_description2 = create_test_description(<<-EOT, name: "two")
+      system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
           "packages": [
              {
@@ -409,7 +409,7 @@ EOT
     end
 
     it "shows that a package has been changed in a list" do
-      system_description1 = create_test_description(<<-EOT, name: "one")
+      system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
           "packages": [
              {
@@ -432,7 +432,7 @@ EOT
         }
       EOT
 
-      system_description2 = create_test_description(<<-EOT, name: "two")
+      system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
           "packages": [
              {

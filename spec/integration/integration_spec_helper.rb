@@ -18,7 +18,7 @@
 require_relative "../../lib/machinery"
 require_relative "../../../pennyworth/lib/spec"
 require_relative "../../../pennyworth/lib/ssh_keys_importer"
-require_relative "../helper/shared_test_methods"
+require_relative "../support/system_description_factory"
 
 def prepare_machinery_for_host(system, ip, opts = {})
   opts = {
@@ -44,5 +44,7 @@ end
 Dir[File.join(Machinery::ROOT, "/spec/integration/support/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
+  config.include(SystemDescriptionFactory)
+
   config.vagrant_dir = File.join(Machinery::ROOT, "spec/definitions/vagrant/")
 end

@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe OsRenderer do
   let(:system_description) {
-    create_test_description(<<-EOF)
+    create_test_description(json: <<-EOF)
     {
       "os": {
       "name": "openSUSE",

@@ -45,7 +45,7 @@ describe Machinery do
 
     # let us build a sles11 system which is unsupported on sle12 host
     let(:system_description) {
-      create_test_description(<<-EOF)
+      create_test_description(json: <<-EOF)
       {
         "os": {
         "name": "SUSE Linux Enterprise Server 11"

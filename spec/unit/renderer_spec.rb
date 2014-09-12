@@ -81,7 +81,7 @@ describe Renderer do
     let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
     let(:host) { "192.168.122.216" }
     let(:description_with_meta) {
-      create_test_description(<<-EOF)
+      create_test_description(json: <<-EOF)
         {
           "bar_baz": [],
           "meta": {
@@ -178,22 +178,22 @@ EOF
     subject { FooRenderer.new }
 
     let(:description1_without_data) {
-      create_test_description("{}", name: "name1")
+      create_test_description(json: "{}", name: "name1")
     }
     let(:description2_without_data) {
-      create_test_description("{}", name: "name2")
+      create_test_description(json: "{}", name: "name2")
     }
     let(:description_common_without_data) {
-      create_test_description("{}", name: "common")
+      create_test_description(json: "{}", name: "common")
     }
     let(:description1_with_data) {
-      create_test_description('{ "foo": { "data": "data1" } }', name: "name1")
+      create_test_description(json: '{ "foo": { "data": "data1" } }', name: "name1")
     }
     let(:description2_with_data) {
-      create_test_description('{ "foo": { "data": "data2" } }', name: "name2")
+      create_test_description(json: '{ "foo": { "data": "data2" } }', name: "name2")
     }
     let(:description_common_with_data) {
-      create_test_description('{ "foo": { "data": "data_common" } }', name: "name2")
+      create_test_description(json: '{ "foo": { "data": "data_common" } }', name: "name2")
     }
 
     let(:output_data_none) { "" }
