@@ -44,31 +44,45 @@
 #     end
 #   end
 class Migration
-  def self.migrate_description(store, description_name)
-    hash = JSON.parse(store.load_json(description_name))
-    path = store.description_path(description_name)
+  MIGRATIONS_DIR= File.join(Machinery::ROOT, "schema/migrations")
 
-    current_version = hash["meta"]["format_version"]
-    if !current_version
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "The system description #{description_name} has an incompatible data " \
+  class <<self
+    def migrate_description(store, description_name)
+      load_migrations
+
+      hash = JSON.parse(store.load_json(description_name))
+      path = store.description_path(description_name)
+
+      current_version = hash["meta"]["format_version"]
+      if !current_version
+        raise Machinery::Errors::SystemDescriptionError.new(
+            "The system description #{description_name} has an incompatible data " \
         "format and can not be read.\n\n"
-      )
-    end
-
-    (current_version..SystemDescription::CURRENT_FORMAT_VERSION-1).each do |version|
-      next_version = version + 1
-      begin
-        klass = Object.const_get("Migrate#{version}To#{next_version}")
-      rescue NameError
-        return
+        )
       end
 
-      klass.new(hash, path).migrate
-      hash["meta"]["format_version"] = next_version
+      (current_version..SystemDescription::CURRENT_FORMAT_VERSION-1).each do |version|
+        next_version = version + 1
+        begin
+          klass = Object.const_get("Migrate#{version}To#{next_version}")
+        rescue NameError
+          return
+        end
+
+        klass.new(hash, path).migrate
+        hash["meta"]["format_version"] = next_version
+      end
+
+      File.write(store.manifest_path(description_name), hash.to_json)
     end
 
-    File.write(store.manifest_path(description_name), hash.to_json)
+    private
+
+    def load_migrations
+      Dir.glob(File.join(MIGRATIONS_DIR, "*")).each do |migration|
+        require migration
+      end
+    end
   end
 
   attr_accessor :hash

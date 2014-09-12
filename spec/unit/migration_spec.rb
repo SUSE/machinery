@@ -40,6 +40,21 @@ describe Migration do
   end
 
   describe ".migrate_system_description" do
+    it "loads migration definitions" do
+      migrations_dir = given_directory
+      migration_path = File.join(migrations_dir, "migratefoo.rb")
+
+      stub_const("Migration::MIGRATIONS_DIR", migrations_dir)
+      File.write(migration_path, <<-EOF)
+       class MigrateFoo < Migration; end
+      EOF
+      create_test_description(store_on_disk: true)
+
+      expect_any_instance_of(Kernel).to receive(:require).with(migration_path)
+
+      Migration.migrate_description(store, "description")
+    end
+
     it "migrates old descriptions" do
       expect_any_instance_of(Migrate1To2).to receive(:migrate)
       expect_any_instance_of(Migrate2To3).to receive(:migrate)
