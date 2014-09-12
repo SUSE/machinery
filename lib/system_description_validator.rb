@@ -66,7 +66,7 @@ class SystemDescriptionValidator
           "In scope #{scope}: #{error}"
         end
         issue.map do |error|
-          SystemDescriptionValidator.cleanup_json_error_message(error, scope)
+          cleanup_json_error_message(error, scope)
         end
       else
         []
@@ -130,7 +130,7 @@ class SystemDescriptionValidator
     end
   end
 
-  def self.cleanup_json_error_message(message, scope)
+  def cleanup_json_error_message(message, scope)
     message = cleanup_json_path(message, scope)
     message = remove_json_error_uuid(message)
     message
@@ -138,7 +138,7 @@ class SystemDescriptionValidator
 
   private
 
-  def self.cleanup_json_path(message, scope)
+  def cleanup_json_path(message, scope)
     old_path = message[/The property '#\/(.*?)'/,1]
 
     position = error_position_from_json_path(old_path)
@@ -151,7 +151,7 @@ class SystemDescriptionValidator
     message.gsub(/The property '#\/.*?'/, new_path)
   end
 
-  def self.error_position_from_json_path(path)
+  def error_position_from_json_path(path)
     elements = path.split("/")
 
     position = -1
@@ -164,7 +164,7 @@ class SystemDescriptionValidator
     position
   end
 
-  def self.extract_details_from_json_path(path, scope)
+  def extract_details_from_json_path(path, scope)
     elements = path.split("/")
 
     elements.uniq!
@@ -184,7 +184,7 @@ class SystemDescriptionValidator
     elements.join("/")
   end
 
-  def self.remove_json_error_uuid(message)
+  def remove_json_error_uuid(message)
     message.gsub(/ in schema .*$/, ".")
   end
 end
