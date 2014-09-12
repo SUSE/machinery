@@ -1,5 +1,7 @@
 # Machinery
 
+[![Code Climate](https://codeclimate.com/github/SUSE/machinery/badges/gpa.svg)](https://codeclimate.com/github/SUSE/machinery)
+
 Machinery is a systems management toolkit for Linux. It supports configuration
 discovery, system validation, and service migration. It's based on the idea of a
 universal system description.
