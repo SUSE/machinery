@@ -310,12 +310,17 @@ describe Cli do
     end
   end
 
-  describe "#version" do
-    it "prints the machinery and the format version" do
-      expect(STDOUT).to receive(:puts).
-        with(/version #{Machinery::VERSION}.*format version #{SystemDescription::CURRENT_FORMAT_VERSION}/)
+  describe "#upgrade_format" do
+    it "triggers the upgrade task for a specific description" do
+      expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
+        with(an_instance_of(SystemDescriptionStore), "foo", {all: false})
+      run_command(["upgrade-format", "foo"])
+    end
 
-      run_command(["--version"])
+    it "triggers the upgrade task for all descriptions" do
+      expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
+        with(an_instance_of(SystemDescriptionStore), nil, {all: true})
+      run_command(["upgrade-format", "--all"])
     end
   end
 

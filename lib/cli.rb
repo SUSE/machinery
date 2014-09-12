@@ -514,4 +514,22 @@ class Cli
       task.validate(store, name)
     end
   end
+
+  desc "Upgrade format of system description"
+  long_desc <<-LONGDESC
+    Upgrade the format of one or all system descriptions.
+  LONGDESC
+  arg "NAME"
+  command "upgrade-format" do |c|
+    c.switch :all, :negatable => false,
+      :desc => "Upgrade all system descriptions"
+
+    c.action do |global_options,options,args|
+      name = shift_arg(args, "NAME") if !options[:all]
+
+      store = SystemDescriptionStore.new
+      task = UpgradeFormatTask.new
+      task.upgrade(store, name, :all => options[:all])
+    end
+  end
 end

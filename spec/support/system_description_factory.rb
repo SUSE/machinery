@@ -51,7 +51,7 @@ module SystemDescriptionFactory
   # Available options:
   # +name+: The name of the system description. Default: 'description'.
   # +store+: The SystemDescriptionStore where the description should be stored.
-  #   Default: The temporary factory description store..
+  #   Default: The temporary factory description store.
   # +store_on_disk+: If true, the description will be stored in the temporary
   #   description store. If false, the description is only create in-memory.
   # +json+: If this option is given, the system description will be generated
