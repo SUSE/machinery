@@ -83,7 +83,7 @@ class SystemDescriptionValidator
     missing_files = @description.missing_files(scope, expected_files.map(&:name))
   end
 
-  def missing_files_for_tared_scope(scope)
+  def expected_files_for_tared_scope(scope)
     has_files_tarball = @description[scope].any? { |f| f.type == "file" || f.type == "link" }
     tree_tarballs = @description[scope].
       select { |f| f.type == "dir" }.
@@ -92,7 +92,10 @@ class SystemDescriptionValidator
     expected_files = []
     expected_files << "files.tgz" if has_files_tarball
     expected_files += tree_tarballs
+  end
 
+  def missing_files_for_tared_scope(scope)
+    expected_files = expected_files_for_tared_scope(scope)
     missing_files = @description.missing_files(scope, expected_files)
   end
 
@@ -104,10 +107,31 @@ class SystemDescriptionValidator
     end
   end
 
-  def format_missing_file_errors(scope, missing_files)
+  def additional_files_for_tared_scope(scope)
+    expected_files = expected_files_for_tared_scope(scope)
+    additional_files = @description.additional_files(scope, expected_files)
+  end
+
+  def additional_files_for_plain_scope(scope)
+    expected_files = @description[scope].reject { |file| file.changes.include?("deleted") }
+    additional_files = @description.additional_files(scope, expected_files.map(&:name))
+  end
+
+  def additional_files_for_scope(scope)
+    if scope == "unmanaged_files"
+      additional_files_for_tared_scope(scope)
+    else
+      additional_files_for_plain_scope(scope)
+    end
+  end
+
+  def format_file_errors(scope, missing_files, additional_files)
     error_message = "Scope '#{scope}':\n"
     error_message += missing_files.map do |file|
       "  * File '" + file + "' doesn't exist"
+    end.join("\n")
+    error_message += additional_files.map do |file|
+      "  * File '" + file + "' doesn't have meta data"
     end.join("\n")
   end
 
@@ -117,8 +141,10 @@ class SystemDescriptionValidator
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
       if @description.scope_extracted?(scope)
         missing_files = missing_files_for_scope(scope)
-        if !missing_files.empty?
-          errors.push(format_missing_file_errors(scope, missing_files))
+        additional_files = additional_files_for_scope(scope)
+
+        if !missing_files.empty? or !additional_files.empty?
+          errors.push(format_file_errors(scope, missing_files, additional_files))
         end
       end
     end

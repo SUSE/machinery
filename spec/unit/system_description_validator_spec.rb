@@ -263,6 +263,50 @@ EOT
         end
       end
     end
+
+    describe "validate existence of meta data for extracted files" do
+      before(:each) do
+        path = "spec/data/descriptions/validation"
+        @store = SystemDescriptionStore.new(path)
+      end
+      describe "for changed manged files" do
+        it "validates existence of meta data" do
+          expect {
+            @store.load("changed-managed-files-good")
+          }.to_not raise_error
+        end
+
+        it "throws an error on file exists without meta data" do
+          expect {
+            @store.load("changed-managed-files-additional-files")
+          }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
+            expect(error.to_s).to include(
+              "* File 'spec/data/descriptions/validation/changed-managed-files-additional-files/changed_managed_files/lib/mkinitrd/scripts/setup-done.sh' doesn't have meta data",
+              "* File 'spec/data/descriptions/validation/changed-managed-files-additional-files/changed_managed_files/usr/share/doc/packages/SUSE_SLES-release-DVD' doesn't have meta data"
+            )
+          end
+        end
+      end
+
+      describe "for config files" do
+        it "validates existence of meta data" do
+          expect {
+            @store.load("config-files-good")
+          }.to_not raise_error
+        end
+
+        it "throws an error on file exists without meta data" do
+          expect {
+            @store.load("config-files-additional-files")
+          }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
+            expect(error.to_s).to include(
+              "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/postfix/main.cf' doesn't have meta data",
+              "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/ntp.conf' doesn't have meta data"
+            )
+          end
+        end
+      end
+    end
   end
 
   describe ".cleanup_json_error_message" do
