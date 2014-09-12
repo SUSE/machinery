@@ -35,7 +35,7 @@ class SystemDescriptionStore
     File.join(description_path(name), "manifest.json")
   end
 
-  def load(name)
+  def load_json(name)
     validate_name(name)
     file_name = manifest_path(name)
     unless File.exists?(file_name)
@@ -43,7 +43,11 @@ class SystemDescriptionStore
         "A system description with the name #{name} was not found."
       )
     end
-    json = File.read(file_name)
+    File.read(file_name)
+  end
+
+  def load(name)
+    json = load_json(name)
     description = SystemDescription.from_json(name, json, self)
     description.ensure_compatibility!
     description.validate_file_data!
