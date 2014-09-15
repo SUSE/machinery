@@ -28,4 +28,5 @@ describe "machinery@openSUSE 13.1" do
   include_examples "inspect", ["opensuse131"]
   include_examples "analyze", "opensuse131"
   include_examples "build", "opensuse131"
+  include_examples "upgrade format"
 end
