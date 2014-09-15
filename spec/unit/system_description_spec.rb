@@ -226,14 +226,14 @@ EOF
       description = SystemDescription.from_json("name", <<-EOT)
         {
           "meta": {
-            "format_version": 1
+            "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION}
           }
         }
       EOT
 
       json = JSON.parse(description.to_json)
 
-      expect(json["meta"]["format_version"]).to eq(1)
+      expect(json["meta"]["format_version"]).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
     it "doesn't save version metadata for descriptions without format version" do

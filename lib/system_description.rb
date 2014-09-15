@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class SystemDescription < Machinery::Object
-  CURRENT_FORMAT_VERSION = 1
+  CURRENT_FORMAT_VERSION = 2
 
   attr_accessor :name
   attr_accessor :store

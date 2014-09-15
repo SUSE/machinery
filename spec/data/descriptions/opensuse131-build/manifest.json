@@ -2088,7 +2088,7 @@
 
   ],
   "meta": {
-    "format_version": 1,
+    "format_version": 2,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"

@@ -57,7 +57,7 @@ For example, a JSON document describing software configuration may look like thi
   ],
 
   "meta": {
-    "format_version": 1,
+    "format_version": 2,
     "repositories": {
       "modified": "2014-02-10T16:10:48Z",
       "hostname": "example.com"
