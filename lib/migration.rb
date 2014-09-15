@@ -94,7 +94,7 @@ class Migration
         hash["meta"]["format_version"] = next_version
       end
 
-      File.write(store.manifest_path(description_name), hash.to_json)
+      File.write(store.manifest_path(description_name), JSON.pretty_generate(hash))
     end
 
     private
