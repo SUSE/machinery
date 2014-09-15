@@ -20,7 +20,8 @@ class Cli
 
   program_desc 'A systems management toolkit for Linux'
   preserve_argv(true)
-  @version = Machinery::VERSION
+  @version = Machinery::VERSION + " (system description format version " +
+    "#{SystemDescription::CURRENT_FORMAT_VERSION})"
   switch :version, :negatable => false, :desc => "Show version"
   switch :debug, :negatable => false, :desc => "Enable debug mode"
   switch [:help, :h], :negatable => false, :desc => "Show help"
