@@ -121,7 +121,7 @@ class SystemDescriptionStore
   def list_file_store_content(description_name, store_name)
     dir = File.join(description_path(description_name), store_name)
 
-    files = Dir.glob(File.join(dir, "**/*"), File::FNM_DOTMATCH)
+    files = Dir.glob(File.join(dir, "**/{*,.*}"))
     # filter parent directories because they should not be listed separately
     files.reject { |f| files.index { |e| e =~ /^#{f}\/.+/ } }
   end
