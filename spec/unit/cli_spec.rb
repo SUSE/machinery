@@ -310,6 +310,15 @@ describe Cli do
     end
   end
 
+  describe "#version" do
+    it "prints the machinery and the format version" do
+      expect(STDOUT).to receive(:puts).
+        with(/version #{Machinery::VERSION}.*format version #{SystemDescription::CURRENT_FORMAT_VERSION}/)
+
+      run_command(["--version"])
+    end
+  end
+
   describe ".process_scope_option" do
     it "returns the scopes which are provided" do
       expect(Cli.process_scope_option("os,packages", nil)).to eq(["os", "packages"])
