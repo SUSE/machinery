@@ -306,6 +306,24 @@ EOT
           end
         end
       end
+
+      describe "for unmanaged files" do
+        it "validates existence of meta data" do
+          expect {
+            @store.load("unmanaged-files-good")
+          }.to_not raise_error
+        end
+
+        it "throws an error on file exists without meta data" do
+          expect {
+            @store.load("unmanaged-files-additional-files")
+          }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
+            expect(error.to_s).to include(
+              "* File 'spec/data/descriptions/validation/unmanaged-files-additional-files/unmanaged_files/files.tgz' doesn't have meta data"
+            )
+          end
+        end
+      end
     end
   end
 
