@@ -69,8 +69,8 @@ class Migration
       current_version = hash["meta"]["format_version"]
       if !current_version
         raise Machinery::Errors::SystemDescriptionError.new(
-            "The system description #{description_name} has an incompatible data " \
-        "format and can not be read.\n\n"
+          "The system description #{description_name} has an incompatible data " \
+          "format and can not be read.\n\n"
         )
       end
 
