@@ -154,16 +154,16 @@ describe SystemDescription do
 
     it "raises in case of a missing comma" do
       expected = <<EOF
-The JSON data of the system description 'name' couldn't be parsed. The following error occured around line 11:
+The JSON data of the system description 'name' couldn't be parsed. The following error occured around line 13:
 
 unexpected token at '{
-      "name": "/boot/grub/e2fs_stage1_5",
-      "type": "file",
-      "user": "root"
-      "group": "root",
-      "size": 8608,
-      "mode": "644"
-    }
+        "name": "/boot/grub/e2fs_stage1_5",
+        "type": "file",
+        "user": "root"
+        "group": "root",
+        "size": 8608,
+        "mode": "644"
+      }
 EOF
       expected.chomp!
       expect { SystemDescription.from_json(@name,

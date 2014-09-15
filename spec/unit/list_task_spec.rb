@@ -65,12 +65,15 @@ describe ListTask do
           "extracted": true,
           "files": []
         },
-        "unmanaged_files": [
-          {
-            "name": "/boot/0xfcdaa824",
-            "type": "file"
-          }
-        ],
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/0xfcdaa824",
+              "type": "file"
+            }
+          ]
+        },
         "meta": {
           "format_version": 2
         }

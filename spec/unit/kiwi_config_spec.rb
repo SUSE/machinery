@@ -400,16 +400,19 @@ describe KiwiConfig do
             }
           ]
         },
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr",
-            "type": "file",
-            "user": "root",
-            "group": "root",
-            "size": 512,
-            "mode": "644"
-          }
-        ],
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr",
+              "type": "file",
+              "user": "root",
+              "group": "root",
+              "size": 512,
+              "mode": "644"
+            }
+          ]
+        },
         "os": {
           "name": "SUSE Linux Enterprise Server 11",
           "version": "11 SP3",

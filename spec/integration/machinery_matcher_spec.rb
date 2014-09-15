@@ -84,31 +84,37 @@ describe "match_scope matcher" do
     it "with equal content" do
       expected_description = create_test_description(json: <<-EOT)
       {
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr",
-            "user": "root"
-          },
-          {
-            "name": "/boot/grub/default",
-            "user": "root"
-          }
-        ]
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr",
+              "user": "root"
+            },
+            {
+              "name": "/boot/grub/default",
+              "user": "root"
+            }
+          ]
+        }
       }
       EOT
 
       actual_description = create_test_description(json: <<-EOT)
       {
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr",
-            "user": "root"
-          },
-          {
-            "name": "/boot/grub/default",
-            "user": "root"
-          }
-        ],
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr",
+              "user": "root"
+            },
+            {
+              "name": "/boot/grub/default",
+              "user": "root"
+            }
+          ]
+        },
         "groups": [
           {
             "name": "audio"
@@ -124,31 +130,37 @@ describe "match_scope matcher" do
     it "with unequal content" do
       expected_description = create_test_description(json: <<-EOT)
       {
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr",
-            "user": "nobody"
-          },
-          {
-            "name": "/boot/grub/default",
-            "user": "root"
-          }
-        ]
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr",
+              "user": "nobody"
+            },
+            {
+              "name": "/boot/grub/default",
+              "user": "root"
+            }
+          ]
+        }
       }
       EOT
 
       actual_description = create_test_description(json: <<-EOT)
       {
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr",
-            "user": "root"
-          },
-          {
-            "name": "/boot/grub/default",
-            "user": "root"
-          }
-        ],
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr",
+              "user": "root"
+            },
+            {
+              "name": "/boot/grub/default",
+              "user": "root"
+            }
+          ]
+        },
         "groups": [
           {
             "name": "audio"
@@ -164,24 +176,30 @@ describe "match_scope matcher" do
     it "with content of different length" do
       expected_description = create_test_description(json: <<-EOT)
       {
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr"
-          },
-          {
-            "name": "/boot/grub/default"
-          }
-        ]
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr"
+            },
+            {
+              "name": "/boot/grub/default"
+            }
+          ]
+        }
       }
       EOT
 
       actual_description = create_test_description(json: <<-EOT)
       {
-        "unmanaged_files": [
-          {
-            "name": "/boot/backup_mbr"
-          }
-        ],
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr"
+            }
+          ]
+        },
         "groups": [
           {
             "name": "audio"
@@ -246,14 +264,14 @@ describe "include_scope matcher" do
   it "matches scope with included subset of entries" do
     expected_description = create_test_description(json: <<-EOT)
     {
-      "unmanaged_files": [
+      "packages": [
         {
-          "name": "/boot/backup_mbr",
-          "user": "root"
+          "name": "aaa-base",
+          "version": "0.1"
         },
         {
-          "name": "/boot/grub/default",
-          "user": "root"
+          "name": "at",
+          "version": "0.1"
         }
       ]
     }
@@ -261,38 +279,38 @@ describe "include_scope matcher" do
 
     actual_description = create_test_description(json: <<-EOT)
     {
-      "unmanaged_files": [
+      "packages": [
         {
-          "name": "/boot/backup_mbr",
-          "user": "root"
+          "name": "aaa-base",
+          "version": "0.1"
         },
         {
-          "name": "/boot/grub/default",
-          "user": "root"
+          "name": "at",
+          "version": "0.1"
         },
         {
-          "name": "/boot/grub/device.map",
-          "user": "root"
+          "name": "audit",
+          "version": "0.1"
         }
       ]
     }
     EOT
 
     expect(actual_description).to include_scope(expected_description,
-      "unmanaged_files")
+      "packages")
   end
 
   it "doesn't match scope with non-included subset of entries" do
     expected_description = create_test_description(json: <<-EOT)
     {
-      "unmanaged_files": [
+      "packages": [
         {
-          "name": "/boot/backup_mbr",
-          "user": "nobody"
+          "name": "aaa-base",
+          "version": "0.1"
         },
         {
-          "name": "/boot/grub/default",
-          "user": "root"
+          "name": "at",
+          "version": "0.1"
         }
       ]
     }
@@ -300,24 +318,20 @@ describe "include_scope matcher" do
 
     actual_description = create_test_description(json: <<-EOT)
     {
-      "unmanaged_files": [
+      "packages": [
         {
-          "name": "/boot/backup_mbr",
-          "user": "root"
+          "name": "aaa-base",
+          "version": "0.2"
         },
         {
-          "name": "/boot/grub/default",
-          "user": "root"
-        },
-        {
-          "name": "/boot/grub/device.map",
-          "user": "root"
+          "name": "at",
+          "version": "0.1"
         }
       ]
     }
     EOT
 
     expect(actual_description).to_not include_scope(expected_description,
-      "unmanaged_files")
+      "packages")
   end
 end

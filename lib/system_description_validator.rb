@@ -84,8 +84,8 @@ class SystemDescriptionValidator
   end
 
   def expected_files_for_tared_scope(scope)
-    has_files_tarball = @description[scope].any? { |f| f.type == "file" || f.type == "link" }
-    tree_tarballs = @description[scope].
+    has_files_tarball = @description[scope].files.any? { |f| f.type == "file" || f.type == "link" }
+    tree_tarballs = @description[scope].files.
       select { |f| f.type == "dir" }.
       map { |d| File.join("trees", d.name.sub(/\/$/, "") + ".tgz") }
 

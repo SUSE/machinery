@@ -169,7 +169,7 @@ EOF
 
       it "raises for extracted in case of unknown type" do
         expected = <<EOF
-In scope unmanaged_files: The property #0 of type Array did not match any of the required schemas.
+In scope unmanaged_files: The property #0 (files) of type Array did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.

@@ -21,12 +21,15 @@ describe UnmanagedFilesRenderer do
   let(:description_without_meta) {
     create_test_description(json: <<-EOF)
     {
-      "unmanaged_files": [
-      {
-        "name": "/boot/backup_mbr",
-        "type": "file"
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/boot/backup_mbr",
+            "type": "file"
+          }
+        ]
       }
-      ]
     }
     EOF
   }
@@ -34,14 +37,17 @@ describe UnmanagedFilesRenderer do
   let(:description_link) {
     create_test_description(json: <<-EOF)
     {
-      "unmanaged_files": [
-      {
-        "name": "/usr/include/asm",
-        "type": "link",
-        "user": "root",
-        "group": "root"
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/usr/include/asm",
+            "type": "link",
+            "user": "root",
+            "group": "root"
+          }
+        ]
       }
-      ]
     }
     EOF
   }
@@ -49,17 +55,20 @@ describe UnmanagedFilesRenderer do
   let(:description_dir) {
     create_test_description(json: <<-EOF)
     {
-      "unmanaged_files": [
-      {
-        "name": "/etc/iscsi/",
-        "type": "dir",
-        "user": "root",
-        "group": "root",
-        "size": 12024,
-        "mode": "755",
-        "files": 2
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/etc/iscsi/",
+            "type": "dir",
+            "user": "root",
+            "group": "root",
+            "size": 12024,
+            "mode": "755",
+            "files": 2
+          }
+        ]
       }
-      ]
     }
     EOF
   }
@@ -67,16 +76,19 @@ describe UnmanagedFilesRenderer do
   let(:description_file) {
     create_test_description(json: <<-EOF)
     {
-      "unmanaged_files": [
-      {
-        "name": "/etc/modprobe.d/50-ipv6.conf",
-        "type": "file",
-        "user": "root",
-        "group": "root",
-        "size": 24,
-        "mode": "644"
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/etc/modprobe.d/50-ipv6.conf",
+            "type": "file",
+            "user": "root",
+            "group": "root",
+            "size": 24,
+            "mode": "644"
+          }
+        ]
       }
-      ]
     }
     EOF
   }

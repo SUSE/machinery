@@ -19,6 +19,14 @@
 class UnmanagedFile < Machinery::Object
 end
 
-class UnmanagedFilesScope < Machinery::Array
+class UnmanagedFileList < Machinery::Array
+  has_elements class: UnmanagedFile
+end
+
+class UnmanagedFilesConfig < Machinery::Object
+  has_property :files, class: UnmanagedFileList
+end
+
+class UnmanagedFilesScope < UnmanagedFilesConfig
   include Machinery::ScopeMixin
 end

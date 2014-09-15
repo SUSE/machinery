@@ -2019,25 +2019,28 @@
       }
     ]
   },
-  "unmanaged_files": [
-    {
-      "name": "/etc/magicapp.conf",
-      "type": "file",
-      "user": "root",
-      "group": "root",
-      "size": 0,
-      "mode": "644"
-    },
-    {
-      "name": "/usr/local/magicapp/",
-      "type": "dir",
-      "user": "root",
-      "group": "root",
-      "size": 150,
-      "mode": "755",
-      "files": 8
-    }
-  ],
+  "unmanaged_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/magicapp.conf",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 0,
+        "mode": "644"
+      },
+      {
+        "name": "/usr/local/magicapp/",
+        "type": "dir",
+        "user": "root",
+        "group": "root",
+        "size": 150,
+        "mode": "755",
+        "files": 8
+      }
+    ]
+  },
   "changed_managed_files": {
     "extracted": true,
     "files": [

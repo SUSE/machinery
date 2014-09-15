@@ -2845,25 +2845,28 @@
       "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
     }
   ],
-  "unmanaged_files": [
-    {
-      "name": "/etc/unmanaged-file",
-      "type": "file",
-      "user": "root",
-      "group": "root",
-      "size": 8,
-      "mode": "644"
-    },
-    {
-      "name": "/etc/unmanaged-tree/",
-      "type": "dir",
-      "user": "root",
-      "group": "root",
-      "size": 339,
-      "mode": "644",
-      "files": 2
-    }
-  ],
+  "unmanaged_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/unmanaged-file",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 8,
+        "mode": "644"
+      },
+      {
+        "name": "/etc/unmanaged-tree/",
+        "type": "dir",
+        "user": "root",
+        "group": "root",
+        "size": 339,
+        "mode": "644",
+        "files": 2
+      }
+    ]
+  },
   "config_files": {
     "extracted": true,
     "files": [

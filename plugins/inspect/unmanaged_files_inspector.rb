@@ -353,7 +353,10 @@ class UnmanagedFilesInspector < Inspector
 
     summary = "#{do_extract ? "Extracted" : "Found"} #{osl.size} unmanaged files and trees."
 
-    description["unmanaged_files"] = UnmanagedFilesScope.new(osl.sort_by(&:name))
+    description["unmanaged_files"] = UnmanagedFilesScope.new(
+      extracted: !!do_extract,
+      files: osl.sort_by(&:name)
+    )
     summary
   end
 

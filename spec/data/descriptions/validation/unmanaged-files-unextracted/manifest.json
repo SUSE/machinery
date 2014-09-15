@@ -1,14 +1,17 @@
 {
-  "unmanaged_files": [
-    {
-      "name": "/boot/0xfcdaa824",
-      "type": "file"
-    },
-    {
-      "name": "/boot/grub/device.map",
-      "type": "file"
-    }
-  ],
+  "unmanaged_files":{
+    "extracted": false,
+    "files": [
+      {
+        "name": "/boot/0xfcdaa824",
+        "type": "file"
+      },
+      {
+        "name": "/boot/grub/device.map",
+        "type": "file"
+      }
+    ]
+  },
   "meta": {
     "format_version": 2,
     "unmanaged_files": {

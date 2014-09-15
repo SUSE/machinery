@@ -25,22 +25,25 @@ describe UnmanagedFilesInspector do
     let(:test_file_path) { "spec/data/unmanaged_files" }
 
     let(:expected_data) {
-      UnmanagedFilesScope.new([
-        UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
-        UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
-        UnmanagedFile.new( name: "/mydir/", type: "dir" ),
-        UnmanagedFile.new( name: "/myfile", type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setgid", type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setgid_x", type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setuid", type: "file" ),
-        UnmanagedFile.new( name: "/myfile_setuid_x", type: "file" ),
-        UnmanagedFile.new( name: "/myfile_sticky", type: "file" ),
-        UnmanagedFile.new( name: "/myfile_sticky_x", type: "file" ),
-        UnmanagedFile.new( name: "/my link", type: "link" ),
-        UnmanagedFile.new( name: "/other_dir/", type: "dir" ),
-        UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
-        UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
-      ])
+      UnmanagedFilesScope.new(
+        extracted: false,
+        files: [
+          UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
+          UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
+          UnmanagedFile.new( name: "/my link", type: "link" ),
+          UnmanagedFile.new( name: "/mydir/", type: "dir" ),
+          UnmanagedFile.new( name: "/myfile", type: "file" ),
+          UnmanagedFile.new( name: "/myfile_setgid", type: "file" ),
+          UnmanagedFile.new( name: "/myfile_setgid_x", type: "file" ),
+          UnmanagedFile.new( name: "/myfile_setuid", type: "file" ),
+          UnmanagedFile.new( name: "/myfile_setuid_x", type: "file" ),
+          UnmanagedFile.new( name: "/myfile_sticky", type: "file" ),
+          UnmanagedFile.new( name: "/myfile_sticky_x", type: "file" ),
+          UnmanagedFile.new( name: "/other_dir/", type: "dir" ),
+          UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
+          UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
+        ]
+      )
     }
 
     let(:expected_data_meta) {
@@ -74,11 +77,14 @@ describe UnmanagedFilesInspector do
         { name: "/usr/X11R6/x11_myfile",
           size: 1024, mode: "644", user: "emil", group: "users" },
       ]
-      files = expected_data.map do |os|
+      files = expected_data.files.map do |os|
         idx = new.find_index{ |h| h[:name] == os.name }
         os = UnmanagedFile.new(os.attributes.merge(new[idx])) if idx
       end
-      UnmanagedFilesScope.new(files)
+      UnmanagedFilesScope.new(
+        extracted: true,
+        files: files
+      )
     }
 
     let(:description) {
@@ -263,9 +269,10 @@ describe UnmanagedFilesInspector do
       if(extract)
         description.initialize_file_store("unmanaged_files.tmp")
         cfdir = description.file_store("unmanaged_files.tmp")
-        dlist = expected_data.select{ |s| s.type=="dir" }
+        dlist = expected_data.files.select{ |s| s.type=="dir" }
         dlist.map!{ |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)
+
         dlist.each do |dir|
           last_dir = File.basename(dir)
           base_dir = File.dirname(dir)
@@ -300,7 +307,11 @@ describe UnmanagedFilesInspector do
 
       summary = subject.inspect(system, description)
 
-      expect(description["unmanaged_files"]).to eq(UnmanagedFilesScope.new)
+      expected = UnmanagedFilesScope.new(
+        extracted: false,
+        files: []
+      )
+      expect(description["unmanaged_files"]).to eq(expected)
       expect(summary).to include("Found 0 unmanaged files and trees")
     end
 
@@ -311,8 +322,8 @@ describe UnmanagedFilesInspector do
 
       summary = subject.inspect(system, description)
 
-      expect(description["unmanaged_files"]).to match_array(expected_data)
-      expect(summary).to include("Found #{expected_data.size} unmanaged files and trees")
+      expect(description["unmanaged_files"]).to eq(expected_data)
+      expect(summary).to include("Found #{expected_data.files.size} unmanaged files and trees")
     end
 
     it "returns sorted data" do
@@ -321,7 +332,7 @@ describe UnmanagedFilesInspector do
       expect_inspect_unmanaged(system, true, false)
 
       subject.inspect(system, description)
-      names = description["unmanaged_files"].map(&:name)
+      names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
     end
@@ -345,8 +356,8 @@ describe UnmanagedFilesInspector do
         :extract_unmanaged_files => true
       )
 
-      expect(description["unmanaged_files"]).to match_array(expected_data_meta)
-      expect(summary).to include("Extracted #{expected_data.size} unmanaged files and trees")
+      expect(description["unmanaged_files"]).to eq(expected_data_meta)
+      expect(summary).to include("Extracted #{expected_data.files.size} unmanaged files and trees")
       cfdir = description.file_store("unmanaged_files")
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end

@@ -1,23 +1,26 @@
 {
-  "unmanaged_files": [
-    {
-      "name": "/boot/0xfcdaa824",
-      "type": "file",
-      "user": "root",
-      "group": "root",
-      "size": 0,
-      "mode": "644"
-    },
-    {
-      "name": "/root/.ssh/",
-      "type": "dir",
-      "user": "root",
-      "group": "root",
-      "size": 616,
-      "mode": "700",
-      "files": 2
-    }
-  ],
+  "unmanaged_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/boot/0xfcdaa824",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 0,
+        "mode": "644"
+      },
+      {
+        "name": "/root/.ssh/",
+        "type": "dir",
+        "user": "root",
+        "group": "root",
+        "size": 616,
+        "mode": "700",
+        "files": 2
+      }
+    ]
+  },
   "meta": {
     "format_version": 2,
     "unmanaged_files": {
