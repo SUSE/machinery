@@ -101,6 +101,26 @@ class Renderer
     @buffer
   end
 
+  def render_comparison_section(description)
+    @system_description = description
+    indent { do_render }
+    @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
+  end
+
+  def render_comparison_only_in(description, scope)
+    if description[scope]
+      puts "Only in '#{description.name}':"
+      render_comparison_section(description)
+    end
+  end
+
+  def render_comparison_common(description, scope)
+    if description[scope]
+      puts "Common to both systems:"
+      render_comparison_section(description)
+    end
+  end
+
   def render_comparison(description1, description2, description_common, options = {})
     @options = options
     @buffer = ""
@@ -115,26 +135,9 @@ class Renderer
 
     heading(display_name) if show_heading
 
-    if description1[scope]
-      puts "Only in '#{description1.name}':"
-      @system_description = description1
-      indent { do_render }
-      @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
-    end
-
-    if description2[scope]
-      puts "Only in '#{description2.name}':"
-      @system_description = description2
-      indent { do_render }
-      @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
-    end
-
-    if options[:show_all] && description_common[scope]
-      puts "Common to both systems:"
-      @system_description = description_common
-      indent { do_render }
-      @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
-    end
+    render_comparison_only_in(description1, scope)
+    render_comparison_only_in(description2, scope)
+    render_comparison_common(description_common, scope) if options[:show_all]
 
     @buffer
   end
