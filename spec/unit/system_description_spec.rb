@@ -47,7 +47,7 @@ describe SystemDescription do
         }
       ],
       "meta": {
-        "format_version": 1,
+        "format_version": 2,
         "packages": {
           "modified": "2014-02-07T14:04:45Z",
           "hostname": "192.168.122.216"
@@ -56,7 +56,7 @@ describe SystemDescription do
     }'
     @duplicate_description = '{
       "meta": {
-        "format_version": 1
+        "format_version": 2
       },
       "packages": [
         {
@@ -79,7 +79,7 @@ describe SystemDescription do
     }'
     @empty_description = '{
       "meta": {
-        "format_version": 1
+        "format_version": 2
       }
     }'
     @mix_struct_hash_descr = '{
@@ -89,7 +89,7 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": 1
+        "format_version": 2
       }
     }'
   end
@@ -129,7 +129,7 @@ describe SystemDescription do
       SystemDescription.from_json(@name, <<-EOT)
         {
           "meta": {
-            "format_version": 1,
+            "format_version": 2,
             "os": "invalid"
           }
         }
@@ -159,7 +159,7 @@ The JSON data of the system description 'name' couldn't be parsed. The following
 unexpected token at '{
       "name": "/boot/grub/e2fs_stage1_5",
       "type": "file",
-      "user": "root"  
+      "user": "root"
       "group": "root",
       "size": 8608,
       "mode": "644"
@@ -345,23 +345,33 @@ EOF
   end
 
   describe "#scope_extracted?" do
-    let(:description) {
+    let(:extracted_description) {
       json = <<-EOF
         {
-          "config_files": []
+          "config_files": {
+            "extracted": true
+          }
+        }
+      EOF
+      description = SystemDescription.from_json("name", json)
+    }
+    let(:unextracted_description) {
+      json = <<-EOF
+        {
+          "config_files": {
+            "extracted": false
+          }
         }
       EOF
       description = SystemDescription.from_json("name", json)
     }
 
     it "returns true" do
-      description.store = double(file_store: "/path/to/foo")
-      expect(description.scope_extracted?("config_files")).to be(true)
+      expect(extracted_description.scope_extracted?("config_files")).to be(true)
     end
 
     it "returns false" do
-      description.store = double(file_store: nil)
-      expect(description.scope_extracted?("config_files")).to be(false)
+      expect(unextracted_description.scope_extracted?("config_files")).to be(false)
     end
   end
 

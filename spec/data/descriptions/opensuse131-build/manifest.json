@@ -1979,43 +1979,46 @@
       "checksum": "ea9a594803fb3522ecc3f33bbdbdea8f"
     }
   ],
-  "config_files": [
-    {
-      "name": "/etc/crontab",
-      "package_name": "cronie",
-      "package_version": "1.4.8",
-      "status": "changed",
-      "changes": [
-        "md5"
-      ],
-      "user": "root",
-      "group": "root",
-      "mode": "644"
-    },
-    {
-      "name": "/etc/postfix/LICENSE",
-      "package_name": "postfix",
-      "package_version": "2.9.6",
-      "status": "changed",
-      "changes": [
-        "deleted"
-      ]
-    },
-    {
-      "name": "/etc/postfix/TLS_LICENSE",
-      "package_name": "postfix",
-      "package_version": "2.9.6",
-      "status": "changed",
-      "changes": [
-        "mode",
-        "user",
-        "group"
-      ],
-      "user": "bin",
-      "group": "users",
-      "mode": "666"
-    }
-  ],
+  "config_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.8",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644"
+      },
+      {
+        "name": "/etc/postfix/LICENSE",
+        "package_name": "postfix",
+        "package_version": "2.9.6",
+        "status": "changed",
+        "changes": [
+          "deleted"
+        ]
+      },
+      {
+        "name": "/etc/postfix/TLS_LICENSE",
+        "package_name": "postfix",
+        "package_version": "2.9.6",
+        "status": "changed",
+        "changes": [
+          "mode",
+          "user",
+          "group"
+        ],
+        "user": "bin",
+        "group": "users",
+        "mode": "666"
+      }
+    ]
+  },
   "unmanaged_files": [
     {
       "name": "/etc/magicapp.conf",
@@ -2035,34 +2038,37 @@
       "files": 8
     }
   ],
-  "changed_managed_files": [
-    {
-      "name": "/usr/share/doc/packages/rsync/NEWS",
-      "package_name": "rsync",
-      "package_version": "3.0.9",
-      "status": "changed",
-      "changes": [
-        "deleted"
-      ],
-      "package_file_flag": "d"
-    },
-    {
-      "name": "/usr/share/doc/packages/rsync/README",
-      "package_name": "rsync",
-      "package_version": "3.0.9",
-      "status": "changed",
-      "changes": [
-        "mode",
-        "md5",
-        "user",
-        "group"
-      ],
-      "package_file_flag": "d",
-      "mode": "664",
-      "user": "bin",
-      "group": "wheel"
-    }
-  ],
+  "changed_managed_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/usr/share/doc/packages/rsync/NEWS",
+        "package_name": "rsync",
+        "package_version": "3.0.9",
+        "status": "changed",
+        "changes": [
+          "deleted"
+        ],
+        "package_file_flag": "d"
+      },
+      {
+        "name": "/usr/share/doc/packages/rsync/README",
+        "package_name": "rsync",
+        "package_version": "3.0.9",
+        "status": "changed",
+        "changes": [
+          "mode",
+          "md5",
+          "user",
+          "group"
+        ],
+        "package_file_flag": "d",
+        "mode": "664",
+        "user": "bin",
+        "group": "wheel"
+      }
+    ]
+  },
   "repositories": [
     {
       "alias": "openSUSE_13.1_OSS",

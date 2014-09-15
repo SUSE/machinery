@@ -32,7 +32,7 @@ class ConfigFilesRenderer < Renderer
     end
 
     list do
-      @system_description["config_files"].each do |p|
+      @system_description["config_files"].files.each do |p|
         if @options[:show_diffs] && p.changes.include?("md5")
           item "#{p.name} (#{p.changes.join(", ")})" do
             render_diff_file(diffs_dir, p.name)

@@ -21,38 +21,41 @@ describe ChangedManagedFilesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
-      "changed_managed_files": [
-        {
-          "name": "/deleted/file",
-          "package_name": "glibc",
-          "package_version": "2.11.3",
-          "status": "changed",
-          "changes": [
-            "deleted"
-          ]
-        },
-        {
-          "name": "/changed/file",
-          "package_name": "login",
-          "package_version": "3.41",
-          "status": "changed",
-          "changes": [
-            "md5",
-            "mode"
-          ],
-          "mode": "644",
-          "user": "root",
-          "group": "root",
-          "md5_hash": "a571ffd6f0f9ab955f274d72c767d06b"
-        },
-        {
-          "name": "/usr/sbin/vlock-main",
-          "package_name": "vlock",
-          "package_version": "2.2.3",
-          "status": "error",
-          "error_message": "cannot verify root:root 0755 - not listed in /etc/permissions"
-        }
-      ]
+      "changed_managed_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/deleted/file",
+            "package_name": "glibc",
+            "package_version": "2.11.3",
+            "status": "changed",
+            "changes": [
+              "deleted"
+            ]
+          },
+          {
+            "name": "/changed/file",
+            "package_name": "login",
+            "package_version": "3.41",
+            "status": "changed",
+            "changes": [
+              "md5",
+              "mode"
+            ],
+            "mode": "644",
+            "user": "root",
+            "group": "root",
+            "md5_hash": "a571ffd6f0f9ab955f274d72c767d06b"
+          },
+          {
+            "name": "/usr/sbin/vlock-main",
+            "package_name": "vlock",
+            "package_version": "2.2.3",
+            "status": "error",
+            "error_message": "cannot verify root:root 0755 - not listed in /etc/permissions"
+          }
+        ]
+      }
     }
     EOF
   }

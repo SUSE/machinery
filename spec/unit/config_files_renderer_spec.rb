@@ -21,33 +21,36 @@ describe ConfigFilesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
-      "config_files": [
-      {
-        "name": "/etc/default/grub",
-        "package_name": "grub2",
-        "package_version": "2.00",
-        "status": "changed",
-        "changes": [
-          "mode"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "600",
-        "md5_hash": "93c6ef32d541b0c7c1f9f1eb40c3e6ae"
-      },
-      {
-        "name": "/etc/postfix/main.cf",
-        "package_name": "postfix",
-        "package_version": "2.9.6",
-        "changes": [
-          "md5"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "644",
-        "md5_hash": "7b937326e997ce6b79b1bcd4431fc57a"
+      "config_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/etc/default/grub",
+            "package_name": "grub2",
+            "package_version": "2.00",
+            "status": "changed",
+            "changes": [
+              "mode"
+            ],
+            "user": "root",
+            "group": "root",
+            "mode": "600",
+            "md5_hash": "93c6ef32d541b0c7c1f9f1eb40c3e6ae"
+          },
+          {
+            "name": "/etc/postfix/main.cf",
+            "package_name": "postfix",
+            "package_version": "2.9.6",
+            "changes": [
+              "md5"
+            ],
+            "user": "root",
+            "group": "root",
+            "mode": "644",
+            "md5_hash": "7b937326e997ce6b79b1bcd4431fc57a"
+          }
+        ]
       }
-    ]
     }
     EOF
   }

@@ -43,44 +43,47 @@ describe AnalyzeConfigFileDiffsTask do
             "gpgcheck": true,
             "priority": 2
           }
-        ], "config_files": [
-          {
-            "name": "/etc/pam.d/login",
-            "package_name": "login",
-            "package_version": "3.41",
-            "status": "changed",
-            "changes": [
-              "md5"
-            ]
-          },
-          {
-            "name": "/etc/modprobe.d/unsupported-modules",
-            "package_name": "aaa_base",
-            "package_version": "3.11.1",
-            "status": "changed",
-            "changes": [
-              "md5"
-            ]
-          },
-          {
-            "name": "/etc/inittab",
-            "package_name": "aaa_base",
-            "package_version": "3.11.1",
-            "status": "changed",
-            "changes": [
-              "md5"
-            ]
-          },
-          {
-            "name": "/etc/mode_changed_only",
-            "package_name": "mode_changed_only",
-            "package_version": "1",
-            "status": "changed",
-            "changes": [
-              "mode"
-            ]
-          }
-        ]
+        ], "config_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/etc/pam.d/login",
+              "package_name": "login",
+              "package_version": "3.41",
+              "status": "changed",
+              "changes": [
+                "md5"
+              ]
+            },
+            {
+              "name": "/etc/modprobe.d/unsupported-modules",
+              "package_name": "aaa_base",
+              "package_version": "3.11.1",
+              "status": "changed",
+              "changes": [
+                "md5"
+              ]
+            },
+            {
+              "name": "/etc/inittab",
+              "package_name": "aaa_base",
+              "package_version": "3.11.1",
+              "status": "changed",
+              "changes": [
+                "md5"
+              ]
+            },
+            {
+              "name": "/etc/mode_changed_only",
+              "package_name": "mode_changed_only",
+              "package_version": "1",
+              "status": "changed",
+              "changes": [
+                "mode"
+              ]
+            }
+          ]
+        }
       }
     EOF
   }

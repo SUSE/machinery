@@ -19,6 +19,14 @@
 class ConfigFile < Machinery::Object
 end
 
-class ConfigFilesScope < Machinery::Array
+class ConfigFileList < Machinery::Array
+  has_elements class: ConfigFile
+end
+
+class ConfigFilesConfig < Machinery::Object
+  has_property :files, class: ConfigFileList
+end
+
+class ConfigFilesScope < ConfigFilesConfig
   include Machinery::ScopeMixin
 end

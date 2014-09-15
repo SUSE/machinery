@@ -60,7 +60,7 @@ shared_context "machinery test directory" do
     }
   ],
   "meta": {
-    "format_version": 1
+    "format_version": 2
   }
 }
 EOF

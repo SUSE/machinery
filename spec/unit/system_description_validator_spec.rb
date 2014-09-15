@@ -24,7 +24,7 @@ describe SystemDescriptionValidator do
         SystemDescription.from_json(@name, <<-EOT)
           {
             "meta": {
-              "format_version": 1,
+              "format_version": 2,
               "os": "invalid"
             }
           }
@@ -37,7 +37,7 @@ describe SystemDescriptionValidator do
         SystemDescription.from_json(@name, <<-EOT)
           {
             "meta": {
-              "format_version": 1
+              "format_version": 2
             },
             "os": { }
           }
@@ -47,28 +47,31 @@ describe SystemDescriptionValidator do
 
     it "raises an error when encountering invalid enum values" do
       expected = <<EOF
-In scope config_files: The property #0 (changes) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
 EOF
       expected.chomp!
       expect {
         SystemDescription.from_json(@name, <<-EOT)
           {
-            "config_files": [
-              {
-                "name": "/etc/crontab",
-                "package_name": "cronie",
-                "package_version": "1.4.8",
-                "status": "changed",
-                "changes": [
-                  "invalid"
-                ],
-                "user": "root",
-                "group": "root",
-                "mode": "644"
-              }
-            ],
+            "config_files": {
+              "extracted": true,
+              "files": [
+                {
+                  "name": "/etc/crontab",
+                  "package_name": "cronie",
+                  "package_version": "1.4.8",
+                  "status": "changed",
+                  "changes": [
+                    "invalid"
+                  ],
+                  "user": "root",
+                  "group": "root",
+                  "mode": "644"
+                }
+              ]
+            },
             "meta": {
-              "format_version": 1,
+              "format_version": 2,
               "config_files": {
                 "modified": "2014-08-22T14:50:09Z",
                 "hostname": "192.168.121.85"
@@ -83,22 +86,25 @@ EOF
       expect {
         SystemDescription.from_json(@name, <<-EOT)
           {
-            "changed_managed_files": [
-              {
-                "name": "/etc/libvirt",
-                "package_name": "libvirt-client",
-                "package_version": "1.1.2",
-                "status": "changed",
-                "changes": [
-                  "replaced"
-                ],
-                "mode": "700",
-                "user": "root",
-                "group": "root"
-              }
-            ],
+            "changed_managed_files": {
+              "extracted": true,
+              "files": [
+                {
+                  "name": "/etc/libvirt",
+                  "package_name": "libvirt-client",
+                  "package_version": "1.1.2",
+                  "status": "changed",
+                  "changes": [
+                    "replaced"
+                  ],
+                  "mode": "700",
+                  "user": "root",
+                  "group": "root"
+                }
+              ]
+            },
             "meta": {
-              "format_version": 1,
+              "format_version": 2,
               "changed_managed_files": {
                 "modified": "2014-08-12T09:12:54Z",
                 "hostname": "host.example.com"
@@ -114,7 +120,7 @@ EOF
 
       it "raises in case of missing package_version" do
         expected = <<EOF
-In scope config_files: The property #0 did not contain a required property of 'package_version'.
+In scope config_files: The property #0 (files) did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -125,7 +131,7 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope config_files: The property #0 (status) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (files/status) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -136,7 +142,7 @@ EOF
 
       it "raises in case of a pattern mismatch" do
         expected = <<EOF
-In scope config_files: The property #0 (mode/changes) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (files/mode/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.
@@ -147,7 +153,7 @@ EOF
 
       it "raises for a deleted file in case of an empty changes array" do
         expected = <<EOF
-In scope config_files: The property #0 (changes) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         expect { SystemDescription.

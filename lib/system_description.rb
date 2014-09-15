@@ -173,7 +173,7 @@ class SystemDescription < Machinery::Object
       "unmanaged_files"
     ]
 
-    extracting_scopes.include?(scope) && !@store.file_store(name, scope).nil?
+    extracting_scopes.include?(scope) && self[scope] && self[scope].extracted
   end
 
   def os_object

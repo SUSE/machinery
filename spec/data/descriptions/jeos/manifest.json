@@ -2864,20 +2864,23 @@
       "files": 2
     }
   ],
-  "config_files": [
-    {
-      "name": "/etc/crontab",
-      "package_name": "cron",
-      "package_version": "4.1",
-      "status": "changed",
-      "changes": [
-        "md5"
-      ],
-      "user": "root",
-      "group": "root",
-      "mode": "644"
-    }
-  ],
+  "config_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cron",
+        "package_version": "4.1",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644"
+      }
+    ]
+  },
   "users": [
     {
       "name": "bin",
@@ -3045,29 +3048,32 @@
       "last_changed_date": 16296
     }
   ],
-  "changed_managed_files": [
-    {
-      "name": "/usr/share/bash/helpfiles/cd",
-      "package_name": "bash",
-      "package_version": "3.2",
-      "status": "changed",
-      "changes": [
-        "deleted"
-      ]
-    },
-    {
-      "name": "/usr/share/bash/helpfiles/read",
-      "package_name": "bash",
-      "package_version": "3.2",
-      "status": "changed",
-      "changes": [
-        "md5"
-      ],
-      "mode": "644",
-      "user": "root",
-      "group": "root"
-    }
-  ],
+  "changed_managed_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/usr/share/bash/helpfiles/cd",
+        "package_name": "bash",
+        "package_version": "3.2",
+        "status": "changed",
+        "changes": [
+          "deleted"
+        ]
+      },
+      {
+        "name": "/usr/share/bash/helpfiles/read",
+        "package_name": "bash",
+        "package_version": "3.2",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "mode": "644",
+        "user": "root",
+        "group": "root"
+      }
+    ]
+  },
   "repositories": [
     {
       "alias": "openSUSE_13.1_OSS",
@@ -3098,7 +3104,7 @@
     }
   ],
   "meta": {
-    "format_version": 1,
+    "format_version": 2,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"

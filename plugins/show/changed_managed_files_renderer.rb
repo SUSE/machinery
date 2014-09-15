@@ -19,7 +19,7 @@ class ChangedManagedFilesRenderer < Renderer
   def do_render
     return unless @system_description["changed_managed_files"]
 
-    files, errors = @system_description["changed_managed_files"].partition do |file|
+    files, errors = @system_description["changed_managed_files"].files.partition do |file|
       file.status != "error"
     end
 

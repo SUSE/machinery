@@ -327,73 +327,79 @@ describe KiwiConfig do
             "priority": 1
           }
         ],
-        "config_files": [
-          {
-            "name": "/usr/share/fonts/encodings/encodings.dir",
-            "package_name": "xorg-x11-fonts-core",
-            "package_version": "7.4",
-            "changes": [
-              "md5"
-            ],
-            "user": "user",
-            "group": "group",
-            "mode": "644"
-          },
-          {
-            "name": "/etc/inittab",
-            "package_name": "aaa_base",
-            "package_version": "11",
-            "changes": [
-              "md5"
-            ],
-            "user": "root",
-            "group": "root",
-            "mode": "644"
-          },
-          {
-            "name": "/tmp/deleted_config",
-            "package_name": "aaa_base",
-            "package_version": "11",
-            "changes": [
-              "deleted"
-            ]
-          }
-        ],
-        "changed_managed_files": [
-          {
-            "name": "/tmp/managed/one",
-            "package_name": "xorg-x11-fonts-core",
-            "package_version": "7.4",
-            "status": "changed",
-            "changes": [
-              "md5"
-            ],
-            "user": "user",
-            "group": "group",
-            "mode": "644"
-          },
-          {
-            "name": "/var/managed_two",
-            "package_name": "aaa_base",
-            "package_version": "11",
-            "status": "changed",
-            "changes": [
-              "md5"
-            ],
-            "user": "root",
-            "group": "root",
-            "mode": "644"
-          },
-          {
-            "name": "/tmp/deleted_changed_managed",
-            "package_name": "aaa_base",
-            "package_version": "11",
-            "status": "changed",
-            "changes": [
-              "deleted"
-            ]
-          }
-        ],
+        "config_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/usr/share/fonts/encodings/encodings.dir",
+              "package_name": "xorg-x11-fonts-core",
+              "package_version": "7.4",
+              "changes": [
+                "md5"
+              ],
+              "user": "user",
+              "group": "group",
+              "mode": "644"
+            },
+            {
+              "name": "/etc/inittab",
+              "package_name": "aaa_base",
+              "package_version": "11",
+              "changes": [
+                "md5"
+              ],
+              "user": "root",
+              "group": "root",
+              "mode": "644"
+            },
+            {
+              "name": "/tmp/deleted_config",
+              "package_name": "aaa_base",
+              "package_version": "11",
+              "changes": [
+                "deleted"
+              ]
+            }
+          ]
+        },
+        "changed_managed_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/tmp/managed/one",
+              "package_name": "xorg-x11-fonts-core",
+              "package_version": "7.4",
+              "status": "changed",
+              "changes": [
+                "md5"
+              ],
+              "user": "user",
+              "group": "group",
+              "mode": "644"
+            },
+            {
+              "name": "/var/managed_two",
+              "package_name": "aaa_base",
+              "package_version": "11",
+              "status": "changed",
+              "changes": [
+                "md5"
+              ],
+              "user": "root",
+              "group": "root",
+              "mode": "644"
+            },
+            {
+              "name": "/tmp/deleted_changed_managed",
+              "package_name": "aaa_base",
+              "package_version": "11",
+              "status": "changed",
+              "changes": [
+                "deleted"
+              ]
+            }
+          ]
+        },
         "unmanaged_files": [
           {
             "name": "/boot/backup_mbr",

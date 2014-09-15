@@ -1,16 +1,19 @@
 {
-  "config_files": [
-    {
-      "name": "/etc/crontab",
-      "package_name": "cronie",
-      "package_version": "1.4.8",
-      "status": "changed",
-      "changes": [
-      ]
-    }
-  ],
+  "config_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.8",
+        "status": "changed",
+        "changes": [
+        ]
+      }
+    ]
+  },
   "meta": {
-    "format_version": 1,
+    "format_version": 2,
     "config_files": {
       "modified": "2014-08-28T15:21:21Z",
       "hostname": "192.168.121.135"

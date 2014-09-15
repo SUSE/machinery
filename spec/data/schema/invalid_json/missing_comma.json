@@ -11,7 +11,7 @@
     {
       "name": "/boot/grub/e2fs_stage1_5",
       "type": "file",
-      "user": "root"  
+      "user": "root"
       "group": "root",
       "size": 8608,
       "mode": "644"

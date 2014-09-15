@@ -38,49 +38,52 @@ describe ChangedManagedFilesInspector do
 
   describe "#inspect" do
     it "returns a list of all changed files" do
-      expected_result = ChangedManagedFilesScope.new([
-        ChangedManagedFile.new(
-            name: "/etc/apache2/de:fault server.conf",
-            package_name: "hwinfo",
-            package_version: "15.50",
-            status: "changed",
-            changes: ["md5"],
-            user: "wwwrun",
-            group: "wwwrun",
-            mode: "400",
-        ),
-        ChangedManagedFile.new(
-            name: "/etc/apache2/listen.conf",
-            package_name: "hwinfo",
-            package_version: "15.50",
-            status: "changed",
-            changes: ["md5"]
-        ),
-        ChangedManagedFile.new(
-            name: "/etc/iscsi/iscsid.conf",
-            package_name: "zypper",
-            package_version: "1.6.311",
-            status: "changed",
-            changes: ["mode", "md5", "user", "group"],
-            user: "root",
-            group: "root",
-            mode: "644",
-        ),
-        ChangedManagedFile.new(
-            name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
-            package_name: "kdelibs3-default-style",
-            package_version: "3.5.10",
-            status: "changed",
-            changes: ["deleted"]
-        ),
-        ChangedManagedFile.new(
-            name: "/usr/share/man/man1/time.1.gz",
-            package_name: "hwinfo",
-            package_version: "15.50",
-            status: "changed",
-            changes: ["replaced"]
-        )
-      ])
+      expected_result = ChangedManagedFilesScope.new(
+        extracted: false,
+        files: [
+          ChangedManagedFile.new(
+              name: "/etc/apache2/de:fault server.conf",
+              package_name: "hwinfo",
+              package_version: "15.50",
+              status: "changed",
+              changes: ["md5"],
+              user: "wwwrun",
+              group: "wwwrun",
+              mode: "400",
+          ),
+          ChangedManagedFile.new(
+              name: "/etc/apache2/listen.conf",
+              package_name: "hwinfo",
+              package_version: "15.50",
+              status: "changed",
+              changes: ["md5"]
+          ),
+          ChangedManagedFile.new(
+              name: "/etc/iscsi/iscsid.conf",
+              package_name: "zypper",
+              package_version: "1.6.311",
+              status: "changed",
+              changes: ["mode", "md5", "user", "group"],
+              user: "root",
+              group: "root",
+              mode: "644",
+          ),
+          ChangedManagedFile.new(
+              name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
+              package_name: "kdelibs3-default-style",
+              package_version: "3.5.10",
+              status: "changed",
+              changes: ["deleted"]
+          ),
+          ChangedManagedFile.new(
+              name: "/usr/share/man/man1/time.1.gz",
+              package_name: "hwinfo",
+              package_version: "15.50",
+              status: "changed",
+              changes: ["replaced"]
+          )
+        ]
+      )
       subject.inspect(system, description)
 
       expect(description["changed_managed_files"]).to eq(expected_result)
@@ -88,7 +91,7 @@ describe ChangedManagedFilesInspector do
 
     it "returns sorted data" do
       subject.inspect(system, description)
-      names = description["changed_managed_files"].map(&:name)
+      names = description["changed_managed_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
     end

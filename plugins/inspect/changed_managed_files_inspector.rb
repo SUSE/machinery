@@ -33,7 +33,10 @@ class ChangedManagedFilesInspector < Inspector
 
     summary = "#{options[:extract_changed_managed_files] ? "Extracted" : "Found"} #{result.count} changed files."
 
-    description["changed_managed_files"] = ChangedManagedFilesScope.new(result.sort_by(&:name))
+    description["changed_managed_files"] = ChangedManagedFilesScope.new(
+      extracted: !!options[:extract_changed_managed_files],
+      files: result.sort_by(&:name)
+    )
     summary
   end
 

@@ -206,8 +206,10 @@ EOF
       iscsi_1.group = "nobody"
       iscsi_1.mode = "4700"
 
-      expected_data = ConfigFilesScope.new([apache_1, apache_2, iscsi_1, apache_3,
-        apache_4, apache_5])
+      expected_data = ConfigFilesScope.new(
+        extracted: false,
+        files: [apache_1, apache_2, iscsi_1, apache_3, apache_4, apache_5]
+      )
 
       expect_inspect_configfiles(system, false)
 
@@ -230,7 +232,11 @@ EOF
       inspector = ConfigFilesInspector.new
       inspector.inspect(system, description)
 
-      expect(description["config_files"]).to eq(ConfigFilesScope.new)
+      expected = ConfigFilesScope.new(
+        extracted: false,
+        files: []
+      )
+      expect(description["config_files"]).to eq(expected)
     end
 
     it "raise an error when requirements are not fulfilled" do
@@ -292,7 +298,7 @@ EOF
 
       inspector = ConfigFilesInspector.new
       inspector.inspect(system, description, :extract_changed_config_files => true)
-      names = description["config_files"].map(&:name)
+      names = description["config_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
     end

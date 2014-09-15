@@ -250,7 +250,7 @@ EOF
   def apply_extracted_files_attributes
     ["config_files", "changed_managed_files"].each do |scope|
       if @system_description[scope]
-        deleted, files = @system_description[scope].partition do |f|
+        deleted, files = @system_description[scope].files.partition do |f|
           f.changes == Machinery::Array.new(["deleted"])
         end
 

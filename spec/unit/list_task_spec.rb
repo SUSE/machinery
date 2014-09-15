@@ -31,7 +31,7 @@ describe ListTask do
         "packages": [],
         "repositories": [],
         "meta": {
-          "format_version": 1,
+          "format_version": 2,
           "packages": {
             "modified": "#{date}",
             "hostname": "#{hostname}"
@@ -49,7 +49,7 @@ describe ListTask do
       {
         "packages": [],
         "meta": {
-          "format_version": 1
+          "format_version": 2
         }
       }
     EOF
@@ -57,8 +57,14 @@ describe ListTask do
   let(:system_description_with_extracted_files) {
     create_test_description(json: <<-EOF, name: name)
       {
-        "config_files": [],
-        "changed_managed_files": [],
+        "config_files": {
+          "extracted": true,
+          "files": []
+        },
+        "changed_managed_files": {
+          "extracted": true,
+          "files": []
+        },
         "unmanaged_files": [
           {
             "name": "/boot/0xfcdaa824",
@@ -66,7 +72,7 @@ describe ListTask do
           }
         ],
         "meta": {
-          "format_version": 1
+          "format_version": 2
         }
       }
     EOF

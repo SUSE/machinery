@@ -19,6 +19,14 @@
 class ChangedManagedFile < Machinery::Object
 end
 
-class ChangedManagedFilesScope < Machinery::Array
+class ChangedManagedFileList < Machinery::Array
+  has_elements class: ChangedManagedFile
+end
+
+class ChangedManagedFilesConfig < Machinery::Object
+  has_property :files, class: ChangedManagedFileList
+end
+
+class ChangedManagedFilesScope < ChangedManagedFilesConfig
   include Machinery::ScopeMixin
 end

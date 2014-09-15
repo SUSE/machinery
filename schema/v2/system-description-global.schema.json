@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "required": ["meta"],
+  "properties": {
+    "meta": {
+      "required": ["format_version"],
+      "properties": {
+        "format_version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["modified", "hostname"],
+        "properties": {
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hostname": {
+            "type": "string",
+            "format": "hostname"
+          }
+        }
+      }
+    }
+  }
+}

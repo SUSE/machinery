@@ -79,7 +79,7 @@ class SystemDescriptionValidator
   end
 
   def missing_files_for_plain_scope(scope)
-    expected_files = @description[scope].reject { |file| file.changes.include?("deleted") }
+    expected_files = @description[scope].files.reject { |file| file.changes.include?("deleted") }
     missing_files = @description.missing_files(scope, expected_files.map(&:name))
   end
 
@@ -113,7 +113,7 @@ class SystemDescriptionValidator
   end
 
   def additional_files_for_plain_scope(scope)
-    expected_files = @description[scope].reject { |file| file.changes.include?("deleted") }
+    expected_files = @description[scope].files.reject { |file| file.changes.include?("deleted") }
     additional_files = @description.additional_files(scope, expected_files.map(&:name))
   end
 
