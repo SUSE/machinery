@@ -27,7 +27,7 @@ describe UnmanagedFilesInspector do
     let(:expected_data) {
       UnmanagedFilesScope.new(
         extracted: false,
-        files: [
+        files: UnmanagedFileList.new([
           UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
           UnmanagedFile.new( name: "/my link", type: "link" ),
@@ -42,7 +42,7 @@ describe UnmanagedFilesInspector do
           UnmanagedFile.new( name: "/other_dir/", type: "dir" ),
           UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
-        ]
+        ])
       )
     }
 
@@ -83,7 +83,7 @@ describe UnmanagedFilesInspector do
       end
       UnmanagedFilesScope.new(
         extracted: true,
-        files: files
+        files: UnmanagedFileList.new(files)
       )
     }
 
@@ -309,7 +309,7 @@ describe UnmanagedFilesInspector do
 
       expected = UnmanagedFilesScope.new(
         extracted: false,
-        files: []
+        files: UnmanagedFileList.new
       )
       expect(description["unmanaged_files"]).to eq(expected)
       expect(summary).to include("Found 0 unmanaged files and trees")

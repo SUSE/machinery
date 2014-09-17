@@ -40,7 +40,7 @@ describe ChangedManagedFilesInspector do
     it "returns a list of all changed files" do
       expected_result = ChangedManagedFilesScope.new(
         extracted: false,
-        files: [
+        files: ChangedManagedFileList.new([
           ChangedManagedFile.new(
               name: "/etc/apache2/de:fault server.conf",
               package_name: "hwinfo",
@@ -82,7 +82,7 @@ describe ChangedManagedFilesInspector do
               status: "changed",
               changes: ["replaced"]
           )
-        ]
+        ])
       )
       subject.inspect(system, description)
 

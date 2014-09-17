@@ -208,7 +208,7 @@ EOF
 
       expected_data = ConfigFilesScope.new(
         extracted: false,
-        files: [apache_1, apache_2, iscsi_1, apache_3, apache_4, apache_5]
+        files: ConfigFileList.new([apache_1, apache_2, iscsi_1, apache_3, apache_4, apache_5])
       )
 
       expect_inspect_configfiles(system, false)
@@ -234,7 +234,7 @@ EOF
 
       expected = ConfigFilesScope.new(
         extracted: false,
-        files: []
+        files: ConfigFileList.new()
       )
       expect(description["config_files"]).to eq(expected)
     end

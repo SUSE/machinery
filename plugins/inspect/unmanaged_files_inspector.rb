@@ -355,7 +355,7 @@ class UnmanagedFilesInspector < Inspector
 
     description["unmanaged_files"] = UnmanagedFilesScope.new(
       extracted: !!do_extract,
-      files: osl.sort_by(&:name)
+      files: UnmanagedFileList.new(osl.sort_by(&:name))
     )
     summary
   end

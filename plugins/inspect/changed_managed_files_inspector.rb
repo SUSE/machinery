@@ -35,7 +35,7 @@ class ChangedManagedFilesInspector < Inspector
 
     description["changed_managed_files"] = ChangedManagedFilesScope.new(
       extracted: !!options[:extract_changed_managed_files],
-      files: result.sort_by(&:name)
+      files: ChangedManagedFileList.new(result.sort_by(&:name))
     )
     summary
   end
