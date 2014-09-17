@@ -107,7 +107,7 @@ shared_examples "build" do |distribution|
         end
 
         it "contains the changed config-files from the system description" do
-          expect(@new_description).to include_scope(@system_description,
+          expect(@new_description).to include_file_scope(@system_description,
             "config_files")
         end
 
@@ -135,7 +135,7 @@ shared_examples "build" do |distribution|
         end
 
         it "contains the changed managed-files from the system description" do
-          expect(@new_description).to include_scope(@system_description,
+          expect(@new_description).to include_file_scope(@system_description,
             "config_files")
         end
 
@@ -149,7 +149,7 @@ shared_examples "build" do |distribution|
 
       it "contains the unmanaged files from the system description" do
         # Check meta data
-        expect(@new_description).to include_scope(@system_description,
+        expect(@new_description).to include_file_scope(@system_description,
           "unmanaged_files")
 
         # Check file content
