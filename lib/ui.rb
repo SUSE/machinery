@@ -34,7 +34,7 @@ module Machinery
 
     def self.print_output(output, options = {})
       if options[:no_pager] || !$stdout.tty?
-        puts output
+        Machinery::Ui.puts output
       else
         if !ENV['PAGER'] || ENV['PAGER'] == ''
           ENV['PAGER'] = 'less'
@@ -43,7 +43,7 @@ module Machinery
             Machinery::check_package("less")
             write_output_to_pager(output)
           rescue Machinery::Errors::MissingRequirement
-            puts output
+            Machinery::Ui.puts output
           end
         else
           IO.popen("$PAGER &>/dev/null", "w") { |f| f.close }
@@ -59,8 +59,16 @@ module Machinery
       end
     end
 
+    def self.puts(s)
+      STDOUT.puts s
+    end
+
     def self.warn(s)
-      STDERR.puts "Warning: " + s
+      STDERR.puts s
+    end
+
+    def self.error(s)
+      STDERR.puts s
     end
   end
 end

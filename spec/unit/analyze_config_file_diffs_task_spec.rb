@@ -121,7 +121,7 @@ describe AnalyzeConfigFileDiffsTask do
         with("aaa_base-3.11.1").and_return(nil)
       expect_any_instance_of(Zypper).to receive(:download_package).
         with("login-3.41").and_return("")
-      expect(STDERR).to receive(:puts).twice
+      expect(Machinery::Ui).to receive(:warn).twice
       expect(subject).to_not receive(:generate_diff)
 
       subject.analyze(description)

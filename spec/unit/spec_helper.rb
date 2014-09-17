@@ -37,11 +37,12 @@ RSpec.configure do |config|
   config.before(:each) do
     allow_any_instance_of(System).to receive(:check_requirement)
 
-    allow_any_instance_of(Kernel).to receive(:print)
-    allow(STDOUT).to receive(:puts)
-    allow(STDERR).to receive(:puts)
+    allow(Machinery::Ui).to receive(:puts)
+    allow(Machinery::Ui).to receive(:warn)
+    allow(Machinery::Ui).to receive(:print_output)
   end
 end
+
 
 shared_context "machinery test directory" do
   include FakeFS::SpecHelpers

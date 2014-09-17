@@ -29,7 +29,11 @@ describe Machinery::Ui do
     end
   end
 
-  describe ".prints_output" do
+  describe ".print_output" do
+    before(:each) do
+      allow(Machinery::Ui).to receive(:print_output).and_call_original
+    end
+
     let(:output) { "foo bar" }
     it "pipes the output to a pager" do
       ENV['PAGER'] = 'less'
@@ -48,7 +52,7 @@ describe Machinery::Ui do
       allow($stdout).to receive(:tty?).and_return(true)
       allow(Machinery).to receive(:check_package).
         and_raise(Machinery::Errors::MissingRequirement)
-      expect($stdout).to receive(:puts).with(output)
+      expect(Machinery::Ui).to receive(:puts).with(output)
 
       Machinery::Ui.print_output(output)
     end
@@ -64,8 +68,12 @@ describe Machinery::Ui do
   end
 
   describe ".warn" do
+    before(:each) do
+      allow(Machinery::Ui).to receive(:warn).and_call_original
+    end
+
     it "prints warnings to STDERR" do
-      expect(STDERR).to receive(:puts).with("Warning: foo")
+      expect(STDERR).to receive(:puts).with("foo")
 
       Machinery::Ui.warn("foo")
     end

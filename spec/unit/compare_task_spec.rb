@@ -220,7 +220,7 @@ Compared descriptions are identical.
 
         allow($stdout).to receive(:tty?).and_return(false)
 
-        expect($stdout).to receive(:puts).with(output_different)
+        expect(Machinery::Ui).to receive(:print_output).with(output_different, anything)
 
         subject.compare(
           description1,
@@ -234,7 +234,7 @@ Compared descriptions are identical.
 
         allow($stdout).to receive(:tty?).and_return(false)
 
-        expect($stdout).to receive(:puts).with(output_missing)
+        expect(Machinery::Ui).to receive(:print_output).with(output_missing, anything)
 
         subject.compare(
           description3,
@@ -252,7 +252,7 @@ Compared descriptions are identical.
       end
 
       it "produces correct output when :show_all is set to false" do
-        expect($stdout).to receive(:puts).with(output_same_show_all_false)
+        expect(Machinery::Ui).to receive(:print_output).with(output_same_show_all_false, anything)
 
         subject.compare(
           description1,
@@ -263,7 +263,7 @@ Compared descriptions are identical.
       end
 
       it "produces correct output when :show_all is set to true" do
-        expect($stdout).to receive(:puts).with(output_same_show_all_true)
+        expect(Machinery::Ui).to receive(:print_output).with(output_same_show_all_true, anything)
 
         subject.compare(
           description1,
@@ -274,7 +274,7 @@ Compared descriptions are identical.
       end
 
       it "produces correct output when scopes are missing" do
-        expect($stdout).to receive(:puts).with(output_missing_same)
+        expect(Machinery::Ui).to receive(:print_output).with(output_missing_same, anything)
 
         subject.compare(
           description3,

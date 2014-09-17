@@ -40,7 +40,7 @@ describe RemoveTask do
 
     it "shows also a success message if verbose is true" do
       create_machinery_dir
-      expect($stdout).to receive(:puts).with(
+      expect(Machinery::Ui).to receive(:puts).with(
         "System description \"#{test_name}\" successfully removed."
       )
 

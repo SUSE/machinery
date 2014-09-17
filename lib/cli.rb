@@ -39,13 +39,13 @@ class Cli
     case e
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
         GLI::UnknownCommand, GLI::BadCommandLine
-      STDERR.puts e.to_s + "\n\n"
+      Machinery::Ui.error e.to_s + "\n\n"
       command = ARGV & @commands.keys.map(&:to_s)
       run(command << "--help")
       exit 1
     when Machinery::Errors::MachineryError
       Machinery.logger.error(e.message)
-      STDERR.puts e.message
+      Machinery::Ui.error e.message
       exit 1
     when SystemExit
       raise
@@ -53,7 +53,7 @@ class Cli
       Machinery.logger.info "Machinery was aborted with signal #{e.signo}."
       exit 1
     else
-      STDERR.puts "Machinery experienced an unexpected error. Please file a " \
+      Machinery::Ui.error "Machinery experienced an unexpected error. Please file a " \
         "bug report at https://github.com/SUSE/machinery/issues/new.\n"
       if e.is_a?(Cheetah::ExecutionFailed)
         result = ""
@@ -75,7 +75,7 @@ class Cli
           result << "#{e.backtrace.join("\n")}\n\n"
         end
         Machinery.logger.error(result)
-        STDERR.puts result
+        Machinery::Ui.error result
         exit 1
       else
         Machinery.logger.error("Machinery experienced an unexpected error:")
@@ -385,11 +385,11 @@ class Cli
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
       name = options[:name] || host
 
-      print "Inspecting #{host}"
+
       if !scope_list.empty?
-        print " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
+        inspected_scopes = " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
       end
-      puts "..."
+      Machinery::Ui.puts "Inspecting #{host}#{inspected_scopes}..."
 
       inspect_options = {}
       if options["show"]
@@ -480,7 +480,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
-        puts "You need root rights to access the system description of your locally inspected system."
+        Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
 
       store = SystemDescriptionStore.new
@@ -506,7 +506,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
-        puts "You need root rights to access the system description of your locally inspected system."
+        Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
 
       store = SystemDescriptionStore.new

@@ -270,7 +270,7 @@ describe Cli do
       it "fails when an unsupported operation is called" do
         create_test_description(json: test_manifest)
 
-        expect(STDERR).to receive(:puts).with(/.*The operation 'foo' is not supported.*/)
+        expect(Machinery::Ui).to receive(:error).with(/.*The operation 'foo' is not supported.*/)
         run_command(["analyze", "description1", "--operation=foo"])
       end
 
@@ -388,8 +388,8 @@ This is STDOUT
 Backtrace:
       EOT
 
-      expect(STDERR).to receive(:puts).with(/Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.\n/)
-      expect(STDERR).to receive(:puts).with(/#{expected_cheetah_out}/)
+      expect(Machinery::Ui).to receive(:error).with(/Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.\n/)
+      expect(Machinery::Ui).to receive(:error).with(/#{expected_cheetah_out}/)
       begin
         # Actually raise the exception, so we have a backtrace
         raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))

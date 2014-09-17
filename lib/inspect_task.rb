@@ -29,7 +29,7 @@ class InspectTask
     end
 
     if !failed_inspections.empty?
-      puts "\n"
+      Machinery::Ui.puts "\n"
       message = failed_inspections.map { |scope, msg|
         "Errors while inspecting " \
           "#{Machinery::Ui.internal_scope_list_to_string(scope)}:\n#{msg}" }.join("\n\n")
@@ -55,7 +55,7 @@ class InspectTask
       next unless renderer
 
       output = renderer.render(description)
-      puts output if output
+      Machinery::Ui.puts output if output
     end
   end
 
@@ -75,17 +75,17 @@ class InspectTask
     failed_inspections = {}
 
     scopes.map { |s| Inspector.for(s) }.each do |inspector|
-      puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
+      Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
       begin
         summary = inspector.inspect(system, description, options)
       rescue Machinery::Errors::MachineryError => e
-        puts "Inspection of scope " \
+        Machinery::Ui.puts "Inspection of scope " \
           "#{Machinery::Ui.internal_scope_list_to_string(inspector.scope)} failed!"
         failed_inspections[inspector.scope] = e
         next
       end
       description[inspector.scope].set_metadata(timestring, host)
-      puts " -> " + summary
+      Machinery::Ui.puts " -> " + summary
     end
 
     return description, failed_inspections

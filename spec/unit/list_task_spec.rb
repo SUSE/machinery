@@ -90,7 +90,7 @@ describe ListTask do
   describe "#list" do
     it "lists the system descriptions with scopes" do
       store.save(system_description)
-      expect($stdout).to receive(:puts) { |s|
+      expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("packages")
         expect(s).to include("repositories")
@@ -102,7 +102,7 @@ describe ListTask do
 
     it "shows also the date and hostname of the descriptions if verbose is true" do
       store.save(system_description)
-      expect($stdout).to receive(:puts) { |s|
+      expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include(date_human)
         expect(s).to include(hostname)
@@ -112,7 +112,7 @@ describe ListTask do
 
     it "verbose shows the date/hostname as unknown if there is no meta data for it" do
       store.save(system_description_without_scope_meta)
-      expect($stdout).to receive(:puts) { |s|
+      expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("unknown")
         expect(s).to include("Unknown hostname")
@@ -123,7 +123,7 @@ describe ListTask do
     it "marks scopes with exctracted files as such" do
       allow(store).to receive(:file_store).and_return(double)
       allow_any_instance_of(SystemDescription).to receive(:validate_file_data!)
-      expect($stdout).to receive(:puts) { |s|
+      expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("config-files (extracted)")
       }
@@ -133,8 +133,8 @@ describe ListTask do
     end
 
     it "marks descriptions with incompatible data format" do
-      expect($stdout).to receive(:puts).with(" foo:\n")
-      expect($stdout).to receive(:puts) { |s|
+      expect(Machinery::Ui).to receive(:puts).with(" foo:\n")
+      expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s.to_s).to include("incompatible data format")
       }
       store.save(system_description_with_incompatible_data_format)

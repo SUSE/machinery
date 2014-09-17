@@ -24,8 +24,8 @@ class ListTask
       begin
         description = store.load(name)
       rescue Machinery::Errors::SystemDescriptionError
-        puts " #{name}:\n"
-        puts "   This description has an incompatible data format or is broken.\n" \
+        Machinery::Ui.puts " #{name}:\n"
+        Machinery::Ui.puts "   This description has an incompatible data format or is broken.\n" \
              "   Use `machinery validate #{name}` to see the error message.\n\n"
         next
       end
@@ -52,7 +52,7 @@ class ListTask
         scopes << entry
       end
 
-      puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
+      Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
     end
   end
 end

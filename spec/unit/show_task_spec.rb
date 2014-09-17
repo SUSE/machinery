@@ -39,7 +39,7 @@ describe ShowTask, "#show" do
 
   it "prints scopes missing from the system description" do
     scope = "packages"
-    expect($stdout).to receive(:puts) { |s|
+    expect(Machinery::Ui).to receive(:print_output) { |s|
       expect(s).to include("requested scopes were not inspected")
       expect(s).to include("packages")
     }
@@ -48,7 +48,7 @@ describe ShowTask, "#show" do
 
   it "does not show a message about missing scopes if there are none" do
     scope = "packages"
-    expect($stdout).to receive(:puts) { |s|
+    expect(Machinery::Ui).to receive(:print_output) { |s|
       expect(s).not_to include("requested scopes were not inspected")
       expect(s).not_to include("packages")
     }

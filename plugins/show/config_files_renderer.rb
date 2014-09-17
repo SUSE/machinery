@@ -56,7 +56,7 @@ class ConfigFilesRenderer < Renderer
     if File.exists?(path)
       puts "Diff:\n#{File.read(path)}"
     else
-      STDERR.puts "Diff for #{name} was not found on disk."
+      Machinery::Ui.warn "Diff for #{name} was not found on disk."
     end
   end
 end

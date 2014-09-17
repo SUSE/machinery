@@ -345,7 +345,7 @@ class UnmanagedFilesInspector < Inspector
     rescue SignalException => e
       # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
       if [1, 2, 15].include?(e.signo)
-        STDERR.puts "Interrupted by user. The partly extracted unmanaged-files are available" \
+        Machinery::Ui.warn "Interrupted by user. The partly extracted unmanaged-files are available" \
           " under '#{description.file_store(tmp_file_store)}'"
       end
       raise

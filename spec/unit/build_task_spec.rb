@@ -148,8 +148,8 @@ describe BuildTask do
       system_description.initialize_file_store("unmanaged_files")
       system_description["unmanaged_files"] = {}
 
-      expect($stdout).to receive(:puts).with("\nUnmanaged files following these patterns are not added to the built image:")
-      expect($stdout).to receive(:puts) { |s|
+      expect(Machinery::Ui).to receive(:puts).with("\nUnmanaged files following these patterns are not added to the built image:")
+      expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include("var/lib/rpm")
       }
       build_task.build(system_description, output_path)

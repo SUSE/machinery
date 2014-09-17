@@ -34,9 +34,9 @@ class RemoveTask
 
     if options[:verbose]
       if options[:all]
-        puts "Removed #{removed_descriptions.length} system descriptions successfully."
+        Machinery::Ui.puts "Removed #{removed_descriptions.length} system descriptions successfully."
       else
-        puts "System description \"#{name}\" successfully removed."
+        Machinery::Ui.puts "System description \"#{name}\" successfully removed."
       end
     end
   end

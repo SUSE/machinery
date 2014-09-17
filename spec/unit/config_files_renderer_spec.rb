@@ -86,7 +86,7 @@ describe ConfigFilesRenderer do
       end
 
       it "shows a message when a diff file was not found" do
-        expect(STDERR).to receive(:puts) do |s|
+        expect(Machinery::Ui).to receive(:warn) do |s|
           s.include?("Diff for /etc/postfix/main.cf was not found")
         end
 

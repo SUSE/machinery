@@ -30,7 +30,7 @@ class AnalyzeConfigFileDiffsTask
       diffs_path = description.file_store("config-file-diffs")
       extracted_files_path = description.file_store("config_files")
 
-      puts "Generating diffs..."
+      Machinery::Ui.puts "Generating diffs..."
       cnt = 1
       list = files_by_package(description)
       total = list.map(&:files).flatten.length.to_s
@@ -38,7 +38,7 @@ class AnalyzeConfigFileDiffsTask
         path = zypper.download_package("#{package.name}-#{package.version}")
 
         if !path || path.empty?
-          STDERR.puts "Warning: Could not download package #{package.name}-#{package.version}."
+          Machinery::Ui.warn "Warning: Could not download package #{package.name}-#{package.version}."
           cnt += package.files.length
           next
         end
@@ -47,18 +47,18 @@ class AnalyzeConfigFileDiffsTask
           diff = Rpm.new(path).diff(file, File.join(extracted_files_path, file))
 
           if !diff || diff.empty?
-            STDERR.puts "Warning: Could not generate diff for #{file}."
+            Machinery::Ui.warn "Warning: Could not generate diff for #{file}."
           else
             diff_path = File.join(diffs_path, file + ".diff")
             FileUtils.mkdir_p(File.dirname(diff_path))
             File.write(diff_path, diff)
-            puts "[#{cnt.to_s.rjust(total.length)}/#{total}] #{file}"
+            Machinery::Ui.puts "[#{cnt.to_s.rjust(total.length)}/#{total}] #{file}"
           end
 
           cnt += 1
         end
       end
-      puts "done"
+      Machinery::Ui.puts "done"
     end
   end
 
@@ -92,7 +92,7 @@ class AnalyzeConfigFileDiffsTask
   end
 
   def with_repositories(description, &block)
-    puts "Setting up repository access..."
+    Machinery::Ui.puts "Setting up repository access..."
     Zypper.isolated do |zypper|
       begin
         remote_repos = description.repositories.reject do |repo|

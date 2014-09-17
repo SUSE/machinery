@@ -32,10 +32,10 @@ class BuildTask
       filters = File.read(
         File.join(Machinery::ROOT, "kiwi_helpers/unmanaged_files_build_excludes")
       )
-      puts "\nUnmanaged files following these patterns are not added " \
+      Machinery::Ui.puts "\nUnmanaged files following these patterns are not added " \
         "to the built image:"
-      puts filters
-      puts "\n"
+      Machinery::Ui.puts filters
+      Machinery::Ui.puts "\n"
     end
 
     FileUtils.mkdir_p(output_path)
@@ -49,7 +49,7 @@ class BuildTask
       rescue SignalException => e
         # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
         if [1, 2, 15].include?(e.signo)
-          STDERR.puts "Interrupted by user. Waiting for build process to abort..."
+          Machinery::Ui.warn "Warning: Interrupted by user. Waiting for build process to abort..."
 
           # When we got a SIGHUP or a SIGTERM we send a SIGINT to all processes
           # in our progress group (forked by Cheetah).
@@ -65,7 +65,7 @@ class BuildTask
           end
           Process.waitall
 
-          STDERR.puts "Cleaning up temporary files..."
+          Machinery::Ui.warn "Cleaning up temporary files..."
           [tmp_config_dir, tmp_image_dir].each do |path|
             LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exists?(path)
           end
