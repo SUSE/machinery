@@ -52,14 +52,14 @@ RSpec::Matchers.define :match_scope do |expected, scope|
   end
 end
 
-RSpec::Matchers.define :include_scope do |expected, scope|
+RSpec::Matchers.define :include_file_scope do |expected, scope|
   match do |actual|
-    if actual[scope].is_a?(Machinery::Object) ||
-       actual[scope].is_a?(Machinery::Array)
-      expected[scope].all? { |e| actual[scope].include?(e) }
-    else
-      raise "Scope '#{scope}' has unsupported type '#{actual[scope].class}'"
+    if !["config_files", "changed_managed_files", "unmanaged_files"].include?(scope)
+      raise "Scope '#{scope}' is not supported by the 'include_files_scope' matcher." \
+        "Only use it with file scopes."
     end
+
+    expected[scope].files.all? { |e| actual[scope].files.include?(e) }
   end
 
   failure_message do |actual|
@@ -71,7 +71,7 @@ RSpec::Matchers.define :include_scope do |expected, scope|
   end
 
   description do
-    "takes two system descriptions and a scope and checks if the actual " +
+    "takes two system descriptions and a file scope and checks if the actual " +
     "scope includes the data of the expected scope"
   end
 end

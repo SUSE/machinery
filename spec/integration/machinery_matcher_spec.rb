@@ -260,78 +260,82 @@ describe "match_scope matcher" do
   end
 end
 
-describe "include_scope matcher" do
-  it "matches scope with included subset of entries" do
+describe "include_file_scope matcher" do
+  it "matches file scope with included subset of entries" do
     expected_description = create_test_description(json: <<-EOT)
     {
-      "packages": [
-        {
-          "name": "aaa-base",
-          "version": "0.1"
-        },
-        {
-          "name": "at",
-          "version": "0.1"
-        }
-      ]
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/boot/grub/default",
+            "user": "root"
+          }
+        ]
+      }
     }
     EOT
 
     actual_description = create_test_description(json: <<-EOT)
     {
-      "packages": [
-        {
-          "name": "aaa-base",
-          "version": "0.1"
-        },
-        {
-          "name": "at",
-          "version": "0.1"
-        },
-        {
-          "name": "audit",
-          "version": "0.1"
-        }
-      ]
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/boot/backup_mbr",
+            "user": "root"
+          },
+          {
+            "name": "/boot/grub/default",
+            "user": "root"
+          }
+        ]
+      }
     }
     EOT
 
-    expect(actual_description).to include_scope(expected_description,
-      "packages")
+    expect(actual_description).to include_file_scope(expected_description,
+      "unmanaged_files")
   end
 
   it "doesn't match scope with non-included subset of entries" do
     expected_description = create_test_description(json: <<-EOT)
     {
-      "packages": [
-        {
-          "name": "aaa-base",
-          "version": "0.1"
-        },
-        {
-          "name": "at",
-          "version": "0.1"
-        }
-      ]
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/boot/backup_mbr",
+            "user": "nobody"
+          },
+          {
+            "name": "/boot/grub/default",
+            "user": "root"
+          }
+        ]
+      }
     }
     EOT
 
     actual_description = create_test_description(json: <<-EOT)
     {
-      "packages": [
-        {
-          "name": "aaa-base",
-          "version": "0.2"
-        },
-        {
-          "name": "at",
-          "version": "0.1"
-        }
-      ]
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/boot/backup_mbr",
+            "user": "root"
+          },
+          {
+            "name": "/boot/grub/default",
+            "user": "root"
+          }
+        ]
+      }
     }
     EOT
 
-    expect(actual_description).to_not include_scope(expected_description,
-      "packages")
+    expect(actual_description).to_not include_file_scope(expected_description,
+      "unmanaged_files")
   end
 end
