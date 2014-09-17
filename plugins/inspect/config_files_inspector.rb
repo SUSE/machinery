@@ -110,7 +110,7 @@ class ConfigFilesInspector < Inspector
 
     description["config_files"] = ConfigFilesScope.new(
       extracted: !!do_extract,
-      files: result.sort_by(&:name)
+      files: ConfigFileList.new(result.sort_by(&:name))
     )
     summary
   end
