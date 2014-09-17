@@ -134,20 +134,6 @@ class UnmanagedFilesInspector < Inspector
     osl
   end
 
-  # determine all mount points where we have to check for unmanaged files
-  def get_mount_points( system )
-    allowed_fs = [ "ext2", "ext3", "ext4", "reiserfs", "btrfs", "vfat", "xfs", "jfs" ]
-    mounts = []
-    out = system.run_command("cat", "/proc/mounts", :stdout => :capture )
-    out.split("\n").each do |line|
-      dev, mp, fs = line.split(" ")
-      mounts << mp[1..-1] if allowed_fs.include?(fs) && mp.size > 1
-    end
-    mounts.sort!
-    Machinery.logger.debug "get_mount_points #{mounts}"
-    mounts
-  end
-
   # find paths below dir until a certain depth is reached
   def get_find_data( system, dir, depth )
     dep = depth - 1
@@ -258,23 +244,26 @@ class UnmanagedFilesInspector < Inspector
     ]
 
     rpm_files, rpm_dirs = extract_rpm_database(system)
-    mounts = get_mount_points( system )
-    mounts_abs = mounts.map{ |m| "/" + m }
-    mounts_abs << "/"
-    Machinery.logger.debug "inspect unmanaged files mounts_abs:#{mounts_abs}"
+
+    mount_points = MountPoints.new(system)
+    mounts = mount_points.local
     unmanaged_files = []
     unmanaged_trees = []
     excluded_files = []
     unmanaged_links = {}
+    remote_dirs = mount_points.remote
     dirs_todo = [ "/" ]
     start = start_depth
     max = max_depth
     find_count = 0
+    sub_tree_containing_remote_fs = []
+    excluded_files += remote_dirs
+
     while !dirs_todo.empty?
       find_dir = dirs_todo.first
 
       # determine files and directories below find_dir until a certain depth
-      depth = mounts_abs.include?(find_dir) ? start : max
+      depth = mounts.include?(find_dir) ? start : max
       files, dirs, excluded = get_find_data( system, find_dir, depth )
       excluded_files += excluded
       find_count += 1
@@ -303,6 +292,13 @@ class UnmanagedFilesInspector < Inspector
         unmanaged_trees << find_dir + dir
         dir += "/"
 
+        # find sub trees containing remote file systems
+        remote_dirs.each do |remote_dir|
+          if unmanaged.include?(remote_dir[1..-1])
+            sub_tree_containing_remote_fs << remote_dir
+            unmanaged = unmanaged.drop_while{ |d| d.start_with?(remote_dir[1...-1]) }
+          end
+        end
         # remove all possible further references starting with this subdir
         unmanaged = unmanaged.drop_while{ |d| d.start_with?(dir) }
         files.reject!{ |d| d.start_with?(dir) }
@@ -350,9 +346,17 @@ class UnmanagedFilesInspector < Inspector
       end
       raise
     end
+    remote_dirs.each do |remote_dir|
+      osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote-dir")
+    end
+
+    if !sub_tree_containing_remote_fs.empty?
+      warning = "Skipped files from remote file systems below: #{sub_tree_containing_remote_fs.uniq.join(", ")}."
+      Machinery.logger.warn(warning)
+      Machinery::Ui.warn(warning)
+    end
 
     summary = "#{do_extract ? "Extracted" : "Found"} #{osl.size} unmanaged files and trees."
-
     description["unmanaged_files"] = UnmanagedFilesScope.new(
       extracted: !!do_extract,
       files: UnmanagedFileList.new(osl.sort_by(&:name))

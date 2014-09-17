@@ -30,6 +30,7 @@ describe UnmanagedFilesInspector do
         files: UnmanagedFileList.new([
           UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
+          UnmanagedFile.new( name: "/homes/tux/", type: "remote-dir" ),
           UnmanagedFile.new( name: "/my link", type: "link" ),
           UnmanagedFile.new( name: "/mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/myfile", type: "file" ),
@@ -76,6 +77,7 @@ describe UnmanagedFilesInspector do
           size: 1000000, mode: "755", user: "root", group: "root", files: 13  },
         { name: "/usr/X11R6/x11_myfile",
           size: 1024, mode: "644", user: "emil", group: "users" },
+        { name: "/homes/tux/" },
       ]
       files = expected_data.files.map do |os|
         idx = new.find_index{ |h| h[:name] == os.name }
@@ -120,11 +122,11 @@ describe UnmanagedFilesInspector do
       ).and_return(File.read(test_file_path+"/rpm_qlav"))
     end
 
-    def expect_cat_mounts(system)
-      expect(system).to receive(:run_command).with(
-        "cat", "/proc/mounts",
-        :stdout => :capture
-      ).and_return("/dev/sda1 / ext4 rw,relatime,data=ordered 0 0")
+    def expect_cat_mounts(system, add_files)
+      ret_val="/dev/sda1 / ext4 rw,relatime,data=ordered 0 0"
+      ret_val+="\nhost:/real-homes/tux /homes/tux nfs4 rw,relatime,vers=4.0 0 0" if add_files
+
+      expect(system).to receive(:cat_file).and_return(ret_val)
     end
 
     def expect_find_commands(system,add_files)
@@ -264,8 +266,8 @@ describe UnmanagedFilesInspector do
         )
       end
       expect_rpm_qa(system)
-      expect_cat_mounts(system)
-      expect_find_commands(system,add_files)
+      expect_cat_mounts(system, add_files)
+      expect_find_commands(system, add_files)
       if(extract)
         description.initialize_file_store("unmanaged_files.tmp")
         cfdir = description.file_store("unmanaged_files.tmp")
@@ -280,7 +282,7 @@ describe UnmanagedFilesInspector do
           expect(system).to receive(:create_archive).with(
             dir,
             File.join(cfdir, "trees", base_dir, "#{last_dir}.tgz"),
-            []
+            ["/homes/tux"]
           )
         end
         arch = File.join(cfdir, "files.tgz")
