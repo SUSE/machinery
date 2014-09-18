@@ -152,6 +152,7 @@ describe BuildTask do
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include("var/lib/rpm")
       }
+      allow(Machinery::Ui).to receive(:puts)
       build_task.build(system_description, output_path)
     end
   end

@@ -74,18 +74,18 @@ describe ConfigFilesRenderer do
       before(:each) do
         allow(SystemDescriptionStore).to receive(:new).
           and_return(double(file_store: "/tmp"))
+        FileUtils.mkdir_p("/tmp/etc/postfix")
+        File.write("/tmp/etc/postfix/main.cf.diff", "main.cf.diff")
       end
 
       it "shows the diffs if the '--show-diff' option is set" do
-        FileUtils.mkdir_p("/tmp/etc/postfix")
-        File.write("/tmp/etc/postfix/main.cf.diff", "main.cf.diff")
-
         output = subject.render(system_description, show_diffs: true)
 
         expect(output).to include("Diff:\n    main.cf.diff\n")
       end
 
       it "shows a message when a diff file was not found" do
+        File.delete "/tmp/etc/postfix/main.cf.diff"
         expect(Machinery::Ui).to receive(:warn) do |s|
           s.include?("Diff for /etc/postfix/main.cf was not found")
         end

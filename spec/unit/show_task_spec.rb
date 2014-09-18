@@ -19,6 +19,8 @@ require_relative "spec_helper"
 
 
 describe ShowTask, "#show" do
+  silence_machinery_output
+
   let(:show_task) { ShowTask.new }
   let(:system_description) { SystemDescription.new("foo") }
   let(:description_with_packages) {

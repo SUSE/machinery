@@ -100,6 +100,7 @@ describe AnalyzeConfigFileDiffsTask do
 
   describe "#analyze" do
     include FakeFS::SpecHelpers
+    silence_machinery_output
 
     it "analyzes all files with changes" do
       expect_any_instance_of(Zypper).to receive(:download_package).

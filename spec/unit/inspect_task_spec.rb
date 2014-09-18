@@ -20,6 +20,7 @@ require_relative "spec_helper"
 
 describe InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
+  silence_machinery_output
 
   class SimpleInspectTaskScope < Machinery::Object
     include Machinery::ScopeMixin

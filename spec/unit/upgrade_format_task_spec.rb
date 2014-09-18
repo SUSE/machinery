@@ -19,6 +19,7 @@ require_relative "spec_helper"
 
 describe UpgradeFormatTask do
   initialize_system_description_factory_store
+  silence_machinery_output
 
   let(:outdated_json) {<<-EOF
     {

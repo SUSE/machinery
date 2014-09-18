@@ -18,6 +18,8 @@
 require_relative "spec_helper"
 
 describe Cli do
+  silence_machinery_output
+
   describe "#initialize" do
     before :each do
       allow_any_instance_of(IO).to receive(:puts)
