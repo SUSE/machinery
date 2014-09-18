@@ -18,7 +18,8 @@
 # = SystemDescription Migrations
 #
 # Migrations are used for migrating descriptions with an older format version to
-# the current version.
+# the current version. They are defined as subclasses of `Migration` in
+# `schema/migrations`.
 #
 # == Naming schema
 #
@@ -29,8 +30,9 @@
 # == Defining migrations
 #
 # The migration classes need to define a `migrate` method which does the actual
-# migration. The system description in question is made available as the
-# `@description` instance variable.
+# migration. The raw hash of the system description in question is made
+# available as the `@hash` instance variable, the path to the description on
+# disk is given ash the `@path` instance variable.
 #
 # Migrations also need to describe their purpose using the `desc` class method
 # (see example below).
@@ -47,7 +49,8 @@
 #     EOT
 #
 #     def migrate
-#       @description.foo = true
+#       is_extracted = Dir.exists?(File.join(@path, "config-files"))
+#       @hash["config_files"]["extracted"] = is_extracted
 #     end
 #   end
 class Migration

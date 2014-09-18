@@ -94,8 +94,13 @@ class. The current version is stored in the `format_version` attribute of the
 
 When reading system descriptions, Machinery supports the current version of the
 format. It is the latest version the tool can support. It also supports all
-previous versions. Descriptions written in older formats will transparently be
-upgraded to the current version.
+previous versions.
+
+Descriptions written in older formats have to be upgraded to the latest format
+version using `machinery upgrade-format DESCRIPTION`. This command uses the
+format migrations in `schema/migrations` to transform the old description into
+the current format. See the [`Migration`](https://github.com/SUSE/machinery/blob/master/lib/migration.rb)
+class for details.
 
 If Machinery is given a description with a version newer than the current
 version of the tool, it exits with an error.
