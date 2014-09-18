@@ -30,10 +30,6 @@ describe Machinery::Ui do
   end
 
   describe ".print_output" do
-    before(:each) do
-      allow(Machinery::Ui).to receive(:print_output).and_call_original
-    end
-
     let(:output) { "foo bar" }
     it "pipes the output to a pager" do
       ENV['PAGER'] = 'less'
@@ -68,10 +64,6 @@ describe Machinery::Ui do
   end
 
   describe ".warn" do
-    before(:each) do
-      allow(Machinery::Ui).to receive(:warn).and_call_original
-    end
-
     it "prints warnings to STDERR" do
       expect(STDERR).to receive(:puts).with("foo")
 
