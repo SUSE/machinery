@@ -187,6 +187,11 @@ Machinery supports the following scopes:
   Contains information about the system groups such as group attributes and the
   list of group members.
 
+### System Description
+
+The System Description format and file structure is documented in the machinery wiki: [https://github.com/SUSE/machinery/wiki/System-Description-Format](https://github.com/SUSE/machinery/wiki/System-Description-Format)
+
+
 
 ### Use Cases
 
