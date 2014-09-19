@@ -18,6 +18,6 @@
 class ValidateTask
   def validate(store, name)
     description = store.load(name)
-    puts "Validation against JSON schemas succeeded."
+    puts "Validation succeeded."
   end
 end

@@ -34,7 +34,7 @@ EOF
 
   it "prints a message in case of successful validation" do
     expect($stdout).to receive(:puts) { |s|
-     expect(s).to include("Validation against JSON schemas succeeded")
+     expect(s).to include("Validation succeeded")
     }
 
     validate_task.validate(store, "valid_description")
