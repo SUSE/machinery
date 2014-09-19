@@ -126,13 +126,13 @@ class SystemDescriptionValidator
   end
 
   def format_file_errors(scope, missing_files, additional_files)
-    error_message = "Scope '#{scope}':\n"
-    error_message += missing_files.map do |file|
+    errors = missing_files.map do |file|
       "  * File '" + file + "' doesn't exist"
-    end.join("\n")
-    error_message += additional_files.map do |file|
+    end
+    errors += additional_files.map do |file|
       "  * File '" + file + "' doesn't have meta data"
-    end.join("\n")
+    end
+    "Scope '#{scope}':\n" + errors.join("\n")
   end
 
   def validate_file_data!
