@@ -135,7 +135,7 @@ class SystemDescriptionValidator
     "Scope '#{scope}':\n" + errors.join("\n")
   end
 
-  def validate_file_data!
+  def validate_file_data
     errors = []
 
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|

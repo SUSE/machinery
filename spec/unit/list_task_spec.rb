@@ -122,7 +122,7 @@ describe ListTask do
 
     it "marks scopes with exctracted files as such" do
       allow(store).to receive(:file_store).and_return(double)
-      allow_any_instance_of(SystemDescription).to receive(:validate_file_data!)
+      allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("config-files (extracted)")

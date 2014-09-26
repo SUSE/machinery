@@ -205,18 +205,18 @@ EOF
     end
   end
 
-  describe "#ensure_compatibility!" do
+  describe "#validate_compatibility" do
     it "does not raise an exception if the description is compatible" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
       expect {
-        subject.ensure_compatibility!
+        subject.validate_compatibility
       }.to_not raise_error
     end
 
     it "raises an exception if the description is incompatible" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
       expect {
-        subject.ensure_compatibility!
+        subject.validate_compatibility
       }.to raise_error
     end
   end

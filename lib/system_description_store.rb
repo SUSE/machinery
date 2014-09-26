@@ -49,8 +49,8 @@ class SystemDescriptionStore
   def load(name)
     json = load_json(name)
     description = SystemDescription.from_json(name, json, self)
-    description.ensure_compatibility!
-    description.validate_file_data!
+    description.validate_compatibility
+    description.validate_file_data
     description
   end
 

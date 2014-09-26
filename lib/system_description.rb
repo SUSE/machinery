@@ -111,7 +111,7 @@ class SystemDescription < Machinery::Object
       format_version == SystemDescription::CURRENT_FORMAT_VERSION
   end
 
-  def ensure_compatibility!
+  def validate_compatibility
     if !compatible?
       raise Machinery::Errors::SystemDescriptionError.new(
         "The system description #{name} has an incompatible data format and can" \
@@ -201,8 +201,8 @@ class SystemDescription < Machinery::Object
     files - file_list
   end
 
-  def validate_file_data!
-    SystemDescriptionValidator.new(self).validate_file_data!
+  def validate_file_data
+    SystemDescriptionValidator.new(self).validate_file_data
   end
 
   # Filestore handling
