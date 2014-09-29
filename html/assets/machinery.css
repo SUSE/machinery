@@ -64,3 +64,65 @@ span.toggle.collapsed {
 .popover{
   max-width: 800px;
 }
+
+h1 {
+  color: #3D3A38;
+}
+
+h2 {
+  color: #67635E;
+}
+
+a, a:hover {
+  color: #7A7570;
+}
+
+.pad-top {
+  margin-top: 10px;
+}
+
+.diff-toggle {
+  float: right;
+}
+
+table.diff {
+  background: #e6e6e6;
+}
+
+table.diff td {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+table.diff tr.deletion {
+  background: #FFC0C0;
+}
+
+table.diff tr.addition {
+  background: #AEFFA8;
+}
+
+table.diff tr.common {
+  background: #EEEEEE;
+}
+
+table.diff tr.header {
+  background: #999999;
+}
+
+table.diff tr.deletion td.active {
+  border-color: #E5ADAD;
+}
+
+table.diff tr.addition td.active {
+  border-color: #95DA90;
+}
+
+table.diff td.linenumber {
+  color: #777777;
+  border-right: solid 1px #cccccc;
+}
+.popover-content {
+  max-height: 500px;
+  overflow-y: auto;
+ }

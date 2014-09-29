@@ -332,6 +332,21 @@
                 {{config_files.files.length}} files
                 {{meta_info.config_files}}
         .row.scope_content.collapse.in
+
+          {{#config_files.files}}
+          {{#diff}}
+          .diff{:style => "display: none", :"data-config-file-diff" => "{{file}}"}
+            %span.diff-summary
+              {{additions}} additions & {{deletions}} deletions
+            %table.diff
+              {{#lines}}
+              %tr{:class => "{{type}}"}
+                %td.active.linenumber {{original_line_number}}
+                %td.linenumber {{new_line_number}}
+                %td {{{content}}}
+              {{/lines}}
+          {{/diff}}
+          {{/config_files.files}}
           .col-xs-1
           .col-xs-11
             %table.table.table-striped.table-hover.table-condensed.files-table
@@ -347,7 +362,15 @@
               %tbody
                 {{#config_files.files}}
                 %tr
+                  {{#diff}}
+                  %td
+                    {{name}}
+                    %a.diff-toggle{:"data-config-file" => "{{name}}", :"data-toggle" => "popover"}
+                      Show diff
+                  {{/diff}}
+                  {{^diff}}
                   %td {{name}}
+                  {{/diff}}
                   %td {{package_name}}
                   %td {{package_version}}
                   {{#changes.length}}

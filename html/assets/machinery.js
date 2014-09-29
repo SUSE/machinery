@@ -112,4 +112,33 @@ $(document).ready(function () {
   })
 
   $("img").popover();
+  var counter;
+  $(".diff-toggle").popover({
+    trigger: "mouseenter",
+    html: true,
+    content: function() {
+      file = $(this).data("config-file")
+      return $('*[data-config-file-diff="' + file + '"]').html()
+    },
+    title: function() {
+      return "Changes for '" + $(this).data("config-file") + "'"
+    }
+  }).on("mouseenter",function () {
+    clearTimeout(counter);
+    var _this = this;
+    $('.diff-toggle').not(_this).popover('hide');
+
+    counter = setTimeout(function(){
+      $(_this).popover("show");
+      $(".popover").on("mouseleave", function () {
+          $('.diff-toggle').popover('hide');
+      });
+    }, 100);
+  }).on("mouseleave", function () {
+    counter = setTimeout(function(){
+      if (!$(".popover:hover").length) {
+        $('.diff-toggle').popover('hide');
+      }
+    }, 500);
+  });
 })
