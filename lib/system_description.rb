@@ -17,6 +17,11 @@
 
 class SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 2
+  EXTRACTABLE_SCOPES = [
+    "changed_managed_files",
+    "config_files",
+    "unmanaged_files"
+  ]
 
   attr_accessor :name
   attr_accessor :store
@@ -87,6 +92,10 @@ class SystemDescription < Machinery::Object
       end.compact
 
       Hash[entries]
+    end
+
+    def scope_extractable?(scope)
+      EXTRACTABLE_SCOPES.include?(scope)
     end
 
     private
@@ -167,13 +176,7 @@ class SystemDescription < Machinery::Object
   end
 
   def scope_extracted?(scope)
-    extracting_scopes = [
-      "changed_managed_files",
-      "config_files",
-      "unmanaged_files"
-    ]
-
-    extracting_scopes.include?(scope) && self[scope] && self[scope].extracted
+    SystemDescription.scope_extractable?(scope) && self[scope] && self[scope].extracted
   end
 
   def os_object
