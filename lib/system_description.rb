@@ -229,8 +229,4 @@ class SystemDescription < Machinery::Object
   def create_file_store_sub_dir(store_name, sub_dir)
     @store.create_file_store_sub_dir(self.name, store_name, sub_dir)
   end
-
-  private
-
-  @@json_validator = Hash.new
 end
