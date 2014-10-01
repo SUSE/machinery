@@ -39,6 +39,7 @@ BuildRequires:  %{rubygem bundler}
 BuildRequires:  %{rubygem <%= require[:name] %> <%= require[:operator] %> <%= require[:version] %>}
 <% end -%>
 %else
+BuildRequires:  ruby-devel
 BuildRequires:  rubygem(gem2rpm)
 BuildRequires:  rubygem(bundler)
 <% build_requires.each do |require| -%>
