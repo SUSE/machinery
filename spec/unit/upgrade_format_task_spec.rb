@@ -69,5 +69,14 @@ describe UpgradeFormatTask do
         expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
       end
     end
+
+    it "handles failed upgrades and continues" do
+      class Migrate0To1
+        def migrate; raise StandardError.new; end
+      end
+      expect(Machinery::Ui).to receive(:error).twice
+
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
+    end
   end
 end

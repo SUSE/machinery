@@ -95,6 +95,8 @@ class Migration
       end
 
       File.write(store.manifest_path(description_name), JSON.pretty_generate(hash))
+
+      true
     end
 
     private
