@@ -69,6 +69,7 @@ require_relative 'ui'
 require_relative 'validate_task'
 require_relative 'migration'
 require_relative 'upgrade_format_task'
+require_relative 'hint'
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 
