@@ -180,7 +180,7 @@ EOF
     end
   end
 
-  describe "#validate_file_data!" do
+  describe "#validate_file_data" do
     before(:each) do
       path = "spec/data/descriptions/validation"
       @store = SystemDescriptionStore.new(path)

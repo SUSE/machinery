@@ -78,8 +78,8 @@ describe SystemDescriptionStore do
       expect(description.name).to eq(test_name)
     end
 
-    it "ensures that the system description is compatible" do
-      expect_any_instance_of(SystemDescription).to receive(:ensure_compatibility!)
+    it "validates that the system description is compatible" do
+      expect_any_instance_of(SystemDescription).to receive(:validate_compatibility)
 
       @store.load(test_name)
     end
