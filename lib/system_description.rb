@@ -64,10 +64,7 @@ class SystemDescription < Machinery::Object
       begin
         description = self.new(name, self.create_attrs(json_hash), store)
       rescue NameError
-        raise Machinery::Errors::SystemDescriptionError.new(
-          "The system description #{name} has an incompatible data format and can" \
-          " not be read.\n\n"
-        )
+        raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
 
       json_format_version = json_hash["meta"]["format_version"] if json_hash["meta"]
@@ -122,10 +119,7 @@ class SystemDescription < Machinery::Object
 
   def ensure_compatibility!
     if !compatible?
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "The system description #{name} has an incompatible data format and can" \
-        " not be read."
-      )
+      raise Machinery::Errors::SystemDescriptionIncompatible.new(self.name)
     end
   end
 

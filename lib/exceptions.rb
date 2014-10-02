@@ -35,6 +35,19 @@ module Machinery
     class SystemDescriptionError < MachineryError; end
     class SystemDescriptionNotFound < SystemDescriptionError; end
 
+    class SystemDescriptionIncompatible < SystemDescriptionError
+      attr_reader :name
+
+      def initialize(name)
+        @name = name
+      end
+
+      def to_s
+        "The system description '#{@name}' has an incompatible data " \
+        "format and can not be read.\n\n"
+      end
+    end
+
     class SystemDescriptionValidationFailed < SystemDescriptionError
       attr_reader :errors
       attr_accessor :header
