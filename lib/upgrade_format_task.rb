@@ -43,9 +43,13 @@ class UpgradeFormatTask
     end
 
     if options[:all]
-      Machinery::Ui.puts "Upgraded #{migrations_done} system descriptions successfully."
+      if migrations_done > 0
+        Machinery::Ui.puts "Upgraded #{migrations_done} system descriptions successfully."
+      else
+        Machinery::Ui.puts "No system descriptions were upgraded."
+      end
     else
-      Machinery::Ui.puts "System description \"#{name}\" successfully upgraded."
+      Machinery::Ui.puts "System description \"#{name}\" successfully upgraded." if migrations_done > 1
     end
   end
 end

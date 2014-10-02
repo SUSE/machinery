@@ -74,6 +74,11 @@ class Migration
         raise Machinery::Errors::SystemDescriptionIncompatible.new(description_name)
       end
 
+      if current_version == SystemDescription::CURRENT_FORMAT_VERSION
+        # Nothing to do here
+        return false
+      end
+
       (current_version..SystemDescription::CURRENT_FORMAT_VERSION-1).each do |version|
         next_version = version + 1
         begin
