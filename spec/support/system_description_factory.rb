@@ -56,10 +56,14 @@ module SystemDescriptionFactory
   #   description store. If false, the description is only create in-memory.
   # +json+: If this option is given, the system description will be generated
   #   from it. Otherwise an empty description is created.
+  # +scopes+: The list of scopes to include in the generated system description
+  # +extracted_scopes+: The list of extractable scopes that should be extracted.
   def create_test_description(options = {})
     options = {
         name: "description",
-        store_on_disk: false
+        store_on_disk: false,
+        scopes: [],
+        extracted_scopes: []
     }.merge(options)
 
     name  = options[:name] || "description"
@@ -73,11 +77,66 @@ module SystemDescriptionFactory
     if options[:json]
       description = SystemDescription.from_json(name, options[:json], store)
     else
-      description = SystemDescription.new(name, {}, store)
+      description = build_description(name, store, options)
     end
 
     store.save(description) if options[:store_on_disk]
 
     description
   end
+
+  private
+
+  def build_description(name, store, options)
+    json_objects = []
+    meta = {
+      format_version: 2
+    }
+
+    (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
+      json_objects << EXAMPLE_SCOPES[scope]
+      meta[scope] = {
+        modified: DateTime.now,
+        hostname: "example.com"
+      }
+    end
+
+    json_objects << "\"meta\": #{meta.to_json}"
+    json = "{\n" + json_objects.join(",\n") + "\n}"
+    description = SystemDescription.from_json(name, json, store)
+
+
+    options[:extracted_scopes].each do |extracted_scope|
+      description[extracted_scope].extracted = true
+      if options[:store_on_disk]
+        description.initialize_file_store(extracted_scope)
+        description[extracted_scope].files.each do |file|
+          File.write(File.join(description.file_store(extracted_scope), file.name),
+            "Stub data for #{file.name}.")
+        end
+      end
+    end
+
+    description
+  end
+
+  EXAMPLE_SCOPES = {
+    "config_files" => <<-EOF
+      "config_files": {
+        "extracted": false,
+        "files": [
+          {
+            "name": "/etc/crontab",
+            "package_name": "cron",
+            "package_version": "4.1",
+            "status": "changed",
+            "changes": ["md5"],
+            "user": "root",
+            "group": "root",
+            "mode": "644"
+          }
+        ]
+      }
+    EOF
+  }
 end
