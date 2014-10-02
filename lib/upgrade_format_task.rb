@@ -32,10 +32,13 @@ class UpgradeFormatTask
     migrations_done = 0
     descriptions.each do |description|
       begin
+        Machinery.logger.info "Upgrading description \"#{description}\""
         migrated = Migration.migrate_description(store, description)
         migrations_done += 1 if migrated
       rescue StandardError => e
-        Machinery::Ui.error "Upgrading description \"#{description}\" failed: #{e.to_s}"
+        msg = "Upgrading description \"#{description}\" failed: #{e.to_s}"
+        Machinery.logger.error msg
+        Machinery::Ui.error msg
       end
     end
 
