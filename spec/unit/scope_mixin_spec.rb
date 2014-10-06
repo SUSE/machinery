@@ -21,6 +21,9 @@ describe Machinery::ScopeMixin do
   class SimpleScope < Machinery::Object
     include Machinery::ScopeMixin
   end
+  class MoreComplexScope < Machinery::Object
+    include Machinery::ScopeMixin
+  end
 
   subject { SimpleScope.new }
 
@@ -36,5 +39,19 @@ describe Machinery::ScopeMixin do
     expect(t.utc?).to eq(true)
     expect(subject.meta.modified).to eq(mytime)
     expect(subject.meta.hostname).to eq(host)
+  end
+
+  describe "#scope_name" do
+    example { expect(subject.scope_name).to eq("simple") }
+    example { expect(MoreComplexScope.new.scope_name).to eq("more_complex") }
+  end
+
+  describe "#is_extractable?" do
+    before(:each) do
+      stub_const("SystemDescription::EXTRACTABLE_SCOPES", ["simple"])
+    end
+
+    example { expect(subject.is_extractable?).to be(true) }
+    example { expect(MoreComplexScope.new.is_extractable?).to be(false) }
   end
 end

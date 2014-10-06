@@ -49,6 +49,10 @@ class BarBazRenderer < Renderer
       item("Item of a list with empty string")
     end
   end
+
+  def display_name
+    "Bar baz"
+  end
 end
 
 describe Renderer do
@@ -154,10 +158,6 @@ EOF
       def renderer.do_render
       end
 
-      def renderer.display_name
-        "Bar baz"
-      end
-
       expected = <<EOF
 # Bar baz [192.168.122.216] (#{date_human})
 
@@ -171,6 +171,17 @@ EOF
       end
 
       expect(renderer.render(description)).to include("  line 1\n  line 2")
+    end
+
+    it "appends the extraction state to extractable scopes" do
+      allow(renderer).to receive(:scope).and_return("config_files")
+      extracted_description = create_test_description(extracted_scopes: ["config_files"])
+      unextracted_description = create_test_description(scopes: ["config_files"])
+
+      expect(renderer.render(extracted_description)).to \
+        include("# Bar baz (extracted) [example.com]")
+      expect(renderer.render(unextracted_description)).to \
+        include("# Bar baz (not extracted) [example.com]")
     end
   end
 

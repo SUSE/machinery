@@ -62,7 +62,7 @@ describe ListTask do
           "files": []
         },
         "changed_managed_files": {
-          "extracted": true,
+          "extracted": false,
           "files": []
         },
         "unmanaged_files": {
@@ -120,12 +120,13 @@ describe ListTask do
       list_task.list(store, {"verbose" => true})
     end
 
-    it "marks scopes with exctracted files as such" do
+    it "show the extracted state of extractable scopes" do
       allow(store).to receive(:file_store).and_return(double)
       allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("config-files (extracted)")
+        expect(s).to include("changed-managed-files (not extracted)")
       }
 
       store.save(system_description_with_extracted_files)

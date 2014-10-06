@@ -33,7 +33,13 @@ class ListTask
 
       description.scopes.each do |scope|
         entry = Machinery::Ui.internal_scope_list_to_string(scope)
-        entry += " (extracted)" if description.scope_extracted?(scope)
+        if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+          if description.scope_extracted?(scope)
+            entry += " (extracted)"
+          else
+            entry += " (not extracted)"
+          end
+        end
 
         if options["verbose"]
           meta = description[scope].meta

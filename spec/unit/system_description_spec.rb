@@ -121,7 +121,7 @@ describe SystemDescription do
     class SystemDescriptionFooConfig < Machinery::Object; end
     expect { SystemDescription.from_json(@name,
       '[ "system-description-foo", "xxx" ]'
-    )}.to raise_error(Machinery::Errors::SystemDescriptionError)
+    )}.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
   end
 
   it "validates compatible descriptions" do
