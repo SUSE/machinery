@@ -25,5 +25,10 @@ module Machinery
         hostname: host
       )
     end
+
+    def scope_name
+      scope = self.class.name.match(/^(.*)Scope$/)[1]
+      scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+    end
   end
 end
