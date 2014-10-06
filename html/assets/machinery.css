@@ -1,0 +1,66 @@
+body {
+  background: #e9e0d6;
+}
+
+#nav-bar {
+  background: #e9e0d6 url('wheels_horizontal.png') no-repeat 112% -105px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  padding-left: 15px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+#nav-bar a:hover {
+  text-decoration: none;
+}
+
+a.scope_anchor {
+  display: block;
+  visibility: hidden;
+}
+
+.scope-summary {
+  display: inline;
+  font-weight: normal;
+  line-height: 1;
+  color: #999999;
+  font-size: 65%;
+}
+
+.scope-navigation {
+  font-size: 60%;
+  margin-left: 30px;
+}
+
+
+.filter-input {
+  margin-bottom: 10px;
+}
+
+.filter-input input {
+  width: 250px;
+}
+
+.fixed {
+  position: fixed;
+}
+
+span.toggle {
+  float: right;
+  width: 24px;
+  height: 24px;
+  background: url("arrow_up.png");
+  cursor: pointer;
+}
+
+span.toggle.collapsed {
+  background :url("arrow_down.png");
+}
+
+.popover{
+  max-width: 800px;
+}

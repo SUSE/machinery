@@ -39,8 +39,21 @@ Gem::Specification.new do |s|
   s.add_dependency "nokogiri", ">=1.6.0"
   s.add_dependency "gli", "~> 2.11.0"
   s.add_dependency "json-schema", "~> 2.2.4"
+  s.add_dependency "haml", "~> 4.0.5"
+  s.add_dependency "kramdown", "~> 1.3.3"
 
-  s.files        = Dir["lib/**/*.rb", "plugins/**/*", "bin/*", "man/**/*", "NEWS", "COPYING", "helpers/*", "kiwi_helpers/*", "schema/**/*"]
+  s.files        = Dir[
+    "lib/**/*.rb",
+    "plugins/**/*",
+    "bin/*",
+    "man/**/*",
+    "NEWS",
+    "COPYING",
+    "helpers/*",
+    "kiwi_helpers/*",
+    "schema/**/*",
+    "html/**/*"
+  ]
   s.executables  = "machinery"
   s.require_path = "lib"
 

@@ -234,7 +234,7 @@ describe Cli do
       it "triggers the show task for packages when scope packages is specified" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(ShowTask).to receive(:show).with(
-          description, ["packages"], :no_pager => true, :show_diffs => false)
+          description, ["packages"], :no_pager => true, :show_diffs => false, :show_html => false)
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
       end
@@ -283,6 +283,15 @@ describe Cli do
         )
 
         run_command(["analyze", "description1", "--operation=config-file-diffs"])
+      end
+    end
+
+    describe "#generate-html" do
+      it "triggers an HTML export of a system description" do
+        expect_any_instance_of(GenerateHtmlTask).to receive(:generate).
+          with(an_instance_of(SystemDescription))
+
+        run_command(["generate-html", "description1"])
       end
     end
   end

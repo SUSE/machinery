@@ -3,7 +3,7 @@
 
 ### SYNOPSIS
 
-`machinery show` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] NAME
+`machinery show` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME
 
 `machinery` help show
 
@@ -40,6 +40,9 @@ in local time are shown in the title of each scope section.
   * `--show-diffs` (optional):
     Include the generated diffs in the output if available (see `machinery help analyze`
     for more information).
+
+  * `--html` (optional):
+    Open the system description in HTML format in your web browser using the `xdg-open` command.
 
 
 ### EXAMPLES

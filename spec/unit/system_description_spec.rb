@@ -221,7 +221,7 @@ EOF
     end
   end
 
-  describe "#to_json" do
+  describe "#to_hash" do
     it "saves version metadata for descriptions with format version" do
       description = SystemDescription.from_json("name", <<-EOT)
         {
@@ -231,18 +231,27 @@ EOF
         }
       EOT
 
-      json = JSON.parse(description.to_json)
+      hash = description.to_hash
 
-      expect(json["meta"]["format_version"]).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      expect(hash["meta"]["format_version"]).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
     it "doesn't save version metadata for descriptions without format version" do
       description = SystemDescription.from_json("name", "{}")
 
-      json = JSON.parse(description.to_json)
+      hash = description.to_hash
 
-      has_format_version = json.has_key?("meta") && json["meta"].has_key?("format_version")
+      has_format_version = hash.has_key?("meta") && hash["meta"].has_key?("format_version")
       expect(has_format_version).to be(false)
+    end
+  end
+
+  describe "#to_json" do
+    it "generates valid json" do
+      description = create_test_description
+      json = description.to_json
+
+      expect(description.to_hash).to eq(JSON.parse(json))
     end
   end
 

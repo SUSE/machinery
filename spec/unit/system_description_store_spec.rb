@@ -141,6 +141,15 @@ describe SystemDescriptionStore do
     end
   end
 
+  describe "#html_path" do
+    it "returns correct html path" do
+      name = "test"
+      store = SystemDescriptionStore.new(test_base_path)
+      expect(store.html_path(name)).to eq(
+        File.join(store.description_path(name), "index.html"))
+    end
+  end
+
   describe "#list" do
     it "returns list of existing system descriptions" do
       create_machinery_dir

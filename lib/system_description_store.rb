@@ -35,6 +35,10 @@ class SystemDescriptionStore
     File.join(description_path(name), "manifest.json")
   end
 
+  def html_path(name)
+    File.join(description_path(name), "index.html")
+  end
+
   def load_json(name)
     validate_name(name)
     file_name = manifest_path(name)

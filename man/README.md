@@ -19,6 +19,8 @@ The man page is written in Markdown and contains:
 
 * its subcommands, stored in separate files each named `machinery-SUBCOMMAND.1.md`.
 
+* Scopes are described in `plugins/docs/SCOPENAME.md`
+
 
 **Tip:** To create a file for your subcommand, copy the `subcommand-template.1.md` template to
 `machinery-SUBCOMMAND.1.md` and edit the latter.

@@ -17,6 +17,30 @@
 
 class ShowTask
   def show(description, scopes, options = {})
+    if options[:show_html]
+      show_html(description)
+    else
+      show_console(description, scopes, options )
+    end
+  end
+
+  private
+
+  def show_html(description)
+    begin
+      Machinery::check_package("xdg-utils")
+      Html.generate(description)
+      html_path = SystemDescriptionStore.new.html_path(description.name)
+      LoggedCheetah.run("xdg-open", html_path)
+    rescue Cheetah::ExecutionFailed => e
+      raise Machinery::Errors::OpenInBrowserFailed.new(
+        "Could not open system description \"#{description.name}\" in the web browser.\n" \
+          "Error: #{e}\n"
+      )
+    end
+  end
+
+  def show_console(description, scopes, options)
     missing_scopes = []
     output = ""
 
