@@ -84,7 +84,7 @@ class Renderer
       header = display_name
       meta = system_description[scope].meta
 
-      if SystemDescription.scope_extractable?(scope)
+      if system_description[scope].is_extractable?
         if @system_description.scope_extracted?(scope)
           header += " (extracted)"
         else

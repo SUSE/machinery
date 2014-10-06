@@ -91,10 +91,6 @@ class SystemDescription < Machinery::Object
       Hash[entries]
     end
 
-    def scope_extractable?(scope)
-      EXTRACTABLE_SCOPES.include?(scope)
-    end
-
     private
 
     def compatible_json?(json)
@@ -170,7 +166,7 @@ class SystemDescription < Machinery::Object
   end
 
   def scope_extracted?(scope)
-    SystemDescription.scope_extractable?(scope) && self[scope] && self[scope].extracted
+    self[scope] && self[scope].is_extractable? && self[scope].extracted
   end
 
   def os_object

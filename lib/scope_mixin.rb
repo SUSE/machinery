@@ -30,5 +30,9 @@ module Machinery
       scope = self.class.name.match(/^(.*)Scope$/)[1]
       scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
     end
+
+    def is_extractable?
+      SystemDescription::EXTRACTABLE_SCOPES.include?(self.scope_name)
+    end
   end
 end

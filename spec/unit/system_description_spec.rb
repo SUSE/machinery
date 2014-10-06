@@ -149,11 +149,6 @@ describe SystemDescription do
     }.not_to raise_error
   end
 
-  describe ".scope_extractable?" do
-    example { expect(SystemDescription.scope_extractable?("os")).to be(false) }
-    example { expect(SystemDescription.scope_extractable?("unmanaged_files")).to be(true) }
-  end
-
   describe "json parser error handling" do
     let(:path) { "spec/data/schema/invalid_json/" }
 

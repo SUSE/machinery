@@ -45,4 +45,13 @@ describe Machinery::ScopeMixin do
     example { expect(subject.scope_name).to eq("simple") }
     example { expect(MoreComplexScope.new.scope_name).to eq("more_complex") }
   end
+
+  describe "#is_extractable?" do
+    before(:each) do
+      stub_const("SystemDescription::EXTRACTABLE_SCOPES", ["simple"])
+    end
+
+    example { expect(subject.is_extractable?).to be(true) }
+    example { expect(MoreComplexScope.new.is_extractable?).to be(false) }
+  end
 end
