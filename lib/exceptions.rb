@@ -44,7 +44,8 @@ module Machinery
 
       def to_s
         "The system description '#{@name}' has an incompatible data " \
-        "format and can not be read.\n\n"
+        "format and can not be read.\n" \
+        "Try '#{$0} upgrade-format #{name}' to upgrade it to the current version.\n"
       end
     end
 
