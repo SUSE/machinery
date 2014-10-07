@@ -16,19 +16,22 @@
 # you may find current contact information at www.suse.com
 
 class Hint
-  def self.show(hint, options = {})
-    text = "\nHint: "
-    case hint
-    when :how_to_get_started
-      text += "You can get started by inspecting a system. Run:\n"
-      text += "#{$0} inspect HOSTNAME"
-    when :how_to_show_data
-      text += "To show the data of the system you just inspected run:\n"
-      text += "#{$0} show #{options[:name]}"
-    when :how_to_do_complete_inspection
-      text += "To do a full inspection containing all scopes and to extract files run:\n"
-      text += "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
-    end
-    puts text
+  def self.get_started
+    output "You can get started by inspecting a system. Run:\n#{$0} inspect HOSTNAME"
+  end
+
+  def self.show_data(options = {})
+    output "To show the data of the system you just inspected run:\n#{$0} show #{options[:name]}"
+  end
+
+  def self.do_complete_inspection(options = {})
+    output "To do a full inspection containing all scopes and to extract files run:\n" \
+     "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
+  end
+
+  private
+
+  def self.output(text)
+    Machinery::Ui.puts "\nHint: #{text}\n"
   end
 end

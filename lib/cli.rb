@@ -37,7 +37,7 @@ class Cli
 
   post do |global_options,command,options,args|
     if command.is_a?(GLI::Commands::Help)
-      Hint::show(:how_to_get_started)
+      Hint.get_started
     end
   end
 
@@ -417,8 +417,8 @@ class Cli
         store, host, name, CurrentUser.new, scope_list, inspect_options
       )
 
-      Hint::show(:how_to_show_data, :name => name)
-      Hint::show(:how_to_do_complete_inspection, :name => name, :host => host) unless options["extract-files"]
+      Hint.show_data(:name => name)
+      Hint.do_complete_inspection(:name => name, :host => host) unless options["extract-files"]
     end
   end
 
