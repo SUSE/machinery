@@ -335,6 +335,14 @@ describe Cli do
     end
   end
 
+  describe "#config" do
+    it "triggers the config task" do
+      expect_any_instance_of(ConfigTask).to receive(:config).
+        with("foo", "bar")
+      run_command(["config", "foo", "bar"])
+    end
+  end
+
   describe ".process_scope_option" do
     it "returns the scopes which are provided" do
       expect(Cli.process_scope_option("os,packages", nil)).to eq(["os", "packages"])

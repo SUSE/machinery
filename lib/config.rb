@@ -6,7 +6,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -15,10 +15,19 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+
+# This file contains the defaults for machinery's configuration.
+# They can be overwritten by the config file.
+
 module Machinery
-  ROOT = File.expand_path("..", File.dirname(__FILE__))
-  DEFAULT_CONFIG_DIR = File.join(ENV['HOME'], ".machinery")
-  DEFAULT_LOG_FILE = File.join(DEFAULT_CONFIG_DIR, "machinery.log")
-  DEFAULT_CONFIG_FILE = File.join(DEFAULT_CONFIG_DIR, "machinery.config")
-  IMAGE_META_DATA_FILE = "machinery.meta"
+  class Config < ConfigBase
+    def define_entries
+      default_config_file(Machinery::DEFAULT_CONFIG_FILE)
+
+      entry("hints",
+        default:     true,
+        description: "Show hints about usage of Machinery in the context of the commands ran by the user"
+      )
+    end
+  end
 end

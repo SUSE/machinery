@@ -78,5 +78,6 @@ module Machinery
     class SshConnectionFailed < MachineryError; end
     class RsyncFailed < MachineryError; end
     class OpenInBrowserFailed < MachineryError; end
+    class UnknownConfig < MachineryError; end
   end
 end

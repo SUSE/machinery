@@ -1,6 +1,10 @@
 
 ## FILES AND DEVICES
 
+  * `~/.machinery/machinery.config`:
+
+    Configuration file.
+
   * `~/.machinery/machinery.log`:
 
     Central log file, in the format date, time, process id, and log message.
