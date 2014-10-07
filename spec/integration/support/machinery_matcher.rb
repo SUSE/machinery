@@ -20,8 +20,8 @@ require 'rspec/expectations'
 RSpec::Matchers.define :match_machinery_show_scope do |expected|
   match do |actual|
     # Remove timestamps which would trigger a failure
-    expected.sub!(/(# [A-Za-z ]+ \[)(.*)(\] \()(.*)(\))/, "\\1\\3\\5").strip!
-    actual.sub!(/(# [A-Za-z ]+ \[)(.*)(\] \()(.*)(\))/, "\\1\\3\\5").strip!
+    expected.sub!(/(# [A-Za-z \(\)]+ \[)(.*)(\] \()(.*)(\))/, "\\1\\3\\5").strip!
+    actual.sub!(/(# [A-Za-z \(\)]+ \[)(.*)(\] \()(.*)(\))/, "\\1\\3\\5").strip!
 
     # Remove ISO 8601 (and similar) timestamps
     expected.gsub!(/\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}.\d+[Z\-\+ ]+\d{2}:*\d{2}/, "")
