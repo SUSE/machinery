@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
   s.add_dependency "json-schema", "~> 2.2.4"
   s.add_dependency "haml", "~> 4.0.5"
   s.add_dependency "kramdown", "~> 1.3.3"
+  s.add_dependency "tilt", ">= 2.0"
 
   s.files        = Dir[
     "lib/**/*.rb",
