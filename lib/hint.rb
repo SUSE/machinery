@@ -20,11 +20,11 @@ class Hint
     output "You can get started by inspecting a system. Run:\n#{$0} inspect HOSTNAME"
   end
 
-  def self.show_data(options = {})
+  def self.show_data(options)
     output "To show the data of the system you just inspected run:\n#{$0} show #{options[:name]}"
   end
 
-  def self.do_complete_inspection(options = {})
+  def self.do_complete_inspection(options)
     output "To do a full inspection containing all scopes and to extract files run:\n" \
      "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
   end
