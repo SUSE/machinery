@@ -47,7 +47,7 @@
           "required": ["type"],
           "properties": {
             "type": {
-              "enum": ["file", "dir", "link", "remote-dir"]
+              "enum": ["file", "dir", "link", "remote_dir"]
             }
           },
           "not": { "$ref": "#/definitions/file_extracted" }
@@ -128,7 +128,7 @@
           "required": ["type"],
           "properties": {
             "type": {
-              "enum": ["remote-dir"]
+              "enum": ["remote_dir"]
             }
           }
         }

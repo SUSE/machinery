@@ -30,7 +30,7 @@ describe UnmanagedFilesInspector do
         files: UnmanagedFileList.new([
           UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
-          UnmanagedFile.new( name: "/homes/tux/", type: "remote-dir" ),
+          UnmanagedFile.new( name: "/homes/tux/", type: "remote_dir" ),
           UnmanagedFile.new( name: "/my link", type: "link" ),
           UnmanagedFile.new( name: "/mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/myfile", type: "file" ),

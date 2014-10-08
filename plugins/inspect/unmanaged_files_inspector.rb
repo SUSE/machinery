@@ -347,7 +347,7 @@ class UnmanagedFilesInspector < Inspector
       raise
     end
     remote_dirs.each do |remote_dir|
-      osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote-dir")
+      osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
     if !sub_tree_containing_remote_fs.empty?
