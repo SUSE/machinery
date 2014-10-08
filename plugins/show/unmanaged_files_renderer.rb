@@ -29,7 +29,8 @@ class UnmanagedFilesRenderer < Renderer
             puts "Files: #{p.files}" if p.files
           end
         else
-          item "#{p.name} (#{p.type})"
+          item "#{p.name} (#{p.type})" do
+          end
         end
       end
     end
