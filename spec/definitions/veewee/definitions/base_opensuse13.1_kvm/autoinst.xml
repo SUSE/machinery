@@ -137,6 +137,7 @@
       <package>mkinitrd</package>
       <package>module-init-tools</package>
       <package>ncurses-utils</package>
+      <package>nfs-kernel-server</package>
       <package>openssh</package>
       <package>openssl-certs</package>
       <package>pam</package>

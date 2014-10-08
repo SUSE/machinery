@@ -21,6 +21,25 @@ def inject_test_data(base)
     # add NIS placeholder to users/groups
     echo "+::::::" >> /etc/passwd
     echo "+:::" >> /etc/group
+
+    # enable NFS server for remote file system filtering tests
+    echo "/tmp     127.0.0.0/8(sync,no_subtree_check)" >> /etc/exports
+    exportfs -a
+    if [ -x /bin/systemd ]; then
+      systemctl enable rpcbind.service
+      systemctl enable nfsserver.service
+      systemctl restart rpcbind.service
+      systemctl restart nfsserver.service
+    else
+      chkconfig rpcbind on
+      chkconfig nfsserver on
+      rcrpcbind restart
+      rcnfsserver restart
+    fi
+    mkdir -p "/remote-dir/"
+    mkdir -p "/mnt/unmanaged/remote-dir/"
+    mount -t nfs 127.0.0.1:/tmp "/remote-dir/"
+    mount -t nfs 127.0.0.1:/tmp "/mnt/unmanaged/remote-dir/"
   EOF
 
   base.vm.provision "shell", inline: prepare_test_environment_script

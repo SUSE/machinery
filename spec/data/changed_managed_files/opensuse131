@@ -6,5 +6,6 @@
   * /usr/share/bash/helpfiles/read (md5)
   * /var/lib/ca-certificates/openssl (mode)
   * /var/lib/ca-certificates/pem (mode)
+  * /var/lib/nfs/rpc_pipefs (mode)
   * /var/lock (mode)
 
