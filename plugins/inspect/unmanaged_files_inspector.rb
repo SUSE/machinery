@@ -289,8 +289,10 @@ class UnmanagedFilesInspector < Inspector
         dir = unmanaged.shift
 
         # save into list of unmanaged trees
-        unmanaged_trees << find_dir + dir
-        dir += "/"
+        if !remote_dirs.include?(find_dir + dir)
+          unmanaged_trees << find_dir + dir
+        end
+        dir = File.join(dir, "/")
 
         # find sub trees containing remote file systems
         remote_dirs.each do |remote_dir|
