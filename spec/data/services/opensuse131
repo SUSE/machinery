@@ -52,8 +52,8 @@
   * rc-local.service: static
   * rescue.service: static
   * rootfsck.service: static
-  * rpcbind.service: disabled
-  * rpcbind.socket: disabled
+  * rpcbind.service: enabled
+  * rpcbind.socket: enabled
   * rsyncd.service: disabled
   * single.service: masked
   * sshd.service: enabled

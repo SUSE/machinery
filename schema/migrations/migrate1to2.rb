@@ -20,6 +20,10 @@ class Migrate1To2 < Migration
     Schema version 2 introduces an "extracted" flag for the config_files,
     changed_managed_files and unmanaged_files scope, indicating whether the
     files were extracted or not.
+
+    It also introduces a "remote_dir" type for the unmanaged_files scope
+    indicating that the directory is a remote mount point and that the
+    content is not checked or extracted.
   EOT
 
   def migrate

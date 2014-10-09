@@ -15,28 +15,32 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class UnmanagedFilesRenderer < Renderer
-  def do_render
-    return unless @system_description["unmanaged_files"]
+require_relative "spec_helper"
 
-    list do
-      @system_description["unmanaged_files"].files.each do |p|
-        if p.user && p.group
-          item "#{p.name} (#{p.type})" do
-            puts "User/Group: #{p.user}:#{p.group}"
-            puts "Mode: #{p.mode}" if p.mode
-            puts "Size: #{number_to_human_size(p.size)}" if p.size
-            puts "Files: #{p.files}" if p.files
-          end
-        else
-          item "#{p.name} (#{p.type})" do
-          end
-        end
-      end
+describe MountPoints do
+  subject {
+    system = System.new
+    allow(system).to receive(:cat_file).with("/proc/mounts").
+      and_return(File.open("spec/data/unmanaged_files/proc_mounts"))
+
+    MountPoints.new(system)
+  }
+
+  describe "#all" do
+    it "returns an array containing all mount points" do
+      expect(subject.all).to match_array(["/",  "/data", "/dev", "/homes/tux"])
     end
   end
 
-  def display_name
-    "Unmanaged files"
+  describe "#remote" do
+    it "returns an array containing the remote mount points" do
+      expect(subject.remote).to match_array(["/homes/tux"])
+    end
+  end
+
+  describe "#local" do
+    it "returns an array containing the local mount points" do
+      expect(subject.local).to match_array(["/", "/data"])
+    end
   end
 end

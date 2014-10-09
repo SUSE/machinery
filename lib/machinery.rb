@@ -74,6 +74,7 @@ require_relative 'upgrade_format_task'
 require_relative 'html'
 require_relative 'generate_html_task'
 require_relative 'hint'
+require_relative 'mountpoints'
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

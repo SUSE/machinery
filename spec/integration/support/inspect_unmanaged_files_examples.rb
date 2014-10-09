@@ -70,6 +70,38 @@ shared_examples "inspect unmanaged files" do |base|
       expect(actual_output).to include(link_example)
     end
 
+    describe "remote file system filtering for unmanaged-files inspector" do
+      let(:remote_file_system_tree_path) { "/remote-dir/" }
+      let(:remote_file_system_sub_tree_path) { "/mnt/unmanaged/remote-dir/" }
+
+      it "does not extract unmanaged directories which are remote file systems" do
+        actual_tarballs = @machinery.run_command(
+          "cd ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
+          as: "vagrant", stdout: :capture
+        ).split("\n")
+
+        expect(actual_tarballs).not_to include("./#{remote_file_system_tree_path}.tgz")
+      end
+
+      it "lists remote fs directories as 'remote_dir'" do
+        actual_output = @machinery.run_command(
+          "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+          as: "vagrant", stdout: :capture
+        )
+
+        expect(actual_output).to include("* #{remote_file_system_tree_path} (remote_dir)")
+      end
+
+      it "also shows remote fs which are mounted in a sub directory of a tree" do
+        actual_output = @machinery.run_command(
+          "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+          as: "vagrant", stdout: :capture
+        )
+
+        expect(actual_output).to include("* #{remote_file_system_sub_tree_path} (remote_dir)")
+      end
+    end
+
     it "filters directories which consist temporary or automatically generated files" do
       entries = nil
 
@@ -111,10 +143,11 @@ shared_examples "inspect unmanaged files" do |base|
       expected_output = File.read("spec/data/unmanaged_files/#{base}")
       expected_output.split("\n").each do |line|
         if line.start_with?("  * ")
-          file = line.match(/^  \* \/(.*) \(\w{3,4}\)$/)[1]
-          if line.end_with?(" (dir)")
+          file = line.match(/^  \* \/(.*) \(\w+\)$/)[1]
+          if line =~ /\(dir\)$/
             expected_tarballs << "./#{file.chomp("/")}.tgz"
-          else
+          end
+          if line =~ /\((file|link)\)$/
             expected_filestgz_list << file
           end
         end

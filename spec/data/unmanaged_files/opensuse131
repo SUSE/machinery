@@ -1,4 +1,4 @@
-# Unmanaged files [192.168.122.238] (2014-05-21 17:00:14)
+# Unmanaged files (extracted) [192.168.121.243] (2014-10-08 15:59:38)
 
   * /boot/backup_mbr (file)
     User/Group: root:root
@@ -183,12 +183,12 @@
   * /etc/passwd- (file)
     User/Group: root:root
     Mode: 644
-    Size: 681 B
+    Size: 743 B
 
   * /etc/passwd.YaST2save (file)
     User/Group: root:root
     Mode: 644
-    Size: 746 B
+    Size: 808 B
 
   * /etc/resolv.conf (file)
     User/Group: root:root
@@ -198,12 +198,12 @@
   * /etc/shadow- (file)
     User/Group: root:shadow
     Mode: 640
-    Size: 273 B
+    Size: 293 B
 
   * /etc/shadow.YaST2save (file)
     User/Group: root:root
     Mode: 640
-    Size: 295 B
+    Size: 315 B
 
   * /etc/ssh/ssh_host_dsa_key (file)
     User/Group: root:root
@@ -1603,6 +1603,11 @@
     Mode: 644
     Size: 193 B
 
+  * /etc/sysconfig/nfs (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 5.9 KiB
+
   * /etc/sysconfig/proxy (file)
     User/Group: root:root
     Mode: 644
@@ -1681,7 +1686,13 @@
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 6
+    Files: 7
+
+  * /etc/systemd/system/sockets.target.wants/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 2
 
   * /etc/systemd/system/system-update.target.wants/ (dir)
     User/Group: root:root
@@ -1819,6 +1830,9 @@
   * /lib/mkinitrd/boot/21-multipath.sh (link)
     User/Group: root:root
 
+  * /lib/mkinitrd/boot/21-nfs.sh (link)
+    User/Group: root:root
+
   * /lib/mkinitrd/boot/22-kpartx.sh (link)
     User/Group: root:root
 
@@ -1897,13 +1911,16 @@
   * /lib/mkinitrd/setup/81-firewire.sh (link)
     User/Group: root:root
 
-  * /lib/mkinitrd/setup/81-network.sh (link)
+  * /lib/mkinitrd/setup/81-nfs.sh (link)
     User/Group: root:root
 
   * /lib/mkinitrd/setup/81-scsi_dh.sh (link)
     User/Group: root:root
 
-  * /lib/mkinitrd/setup/82-ibft.sh (link)
+  * /lib/mkinitrd/setup/82-network.sh (link)
+    User/Group: root:root
+
+  * /lib/mkinitrd/setup/83-ibft.sh (link)
     User/Group: root:root
 
   * /lib/mkinitrd/setup/91-acpi.sh (link)
@@ -1933,10 +1950,20 @@
   * /lib64/libdmraid-events-isw.so.1.0.0.rc16-3 (link)
     User/Group: root:root
 
+  * /mnt/unmanaged/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 1
+
+  * /mnt/unmanaged/remote-dir/ (remote_dir)
+
+  * /remote-dir/ (remote_dir)
+
   * /root/.bash_history (file)
     User/Group: root:root
     Mode: 600
-    Size: 0 B
+    Size: 120 B
 
   * /root/.kbd/ (dir)
     User/Group: root:root
@@ -1953,7 +1980,7 @@
   * /root/.ssh/ (dir)
     User/Group: root:root
     Mode: 700
-    Size: 804 B
+    Size: 808 B
     Files: 2
 
   * /root/inst-sys/ (dir)
@@ -1980,10 +2007,10 @@
     Size: 261 B
 
   * /vagrant/ (dir)
-    User/Group: vagrant:root
+    User/Group: root:root
     Mode: 755
-    Size: 35.6 KiB
-    Files: 3
+    Size: 37.9 KiB
+    Files: 4
 
   * /var/adm/SuSEconfig/ (dir)
     User/Group: root:root
@@ -2021,7 +2048,7 @@
   * /var/cache/ldconfig/aux-cache (file)
     User/Group: root:root
     Mode: 600
-    Size: 14.1 KiB
+    Size: 14.6 KiB
 
   * /var/cache/zypp/packages/ (dir)
     User/Group: root:root
@@ -4604,6 +4631,21 @@
     Mode: 644
     Size: 4 KiB
 
+  * /var/lib/nfs/.etab.lock (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 0 B
+
+  * /var/lib/nfs/.xtab.lock (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 0 B
+
+  * /var/lib/nfs/export-lock (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 0 B
+
   * /var/lib/sudo/vagrant/ (dir)
     User/Group: root:users
     Mode: 700
@@ -4738,17 +4780,17 @@
   * /var/log/YaST2/y2changes (file)
     User/Group: root:root
     Mode: 644
-    Size: 2.3 KiB
+    Size: 2.4 KiB
 
   * /var/log/YaST2/y2log (file)
     User/Group: root:root
     Mode: 644
-    Size: 473.5 KiB
+    Size: 471.7 KiB
 
   * /var/log/YaST2/y2log-1.gz (file)
     User/Group: root:root
     Mode: 644
-    Size: 179.7 KiB
+    Size: 181.2 KiB
 
   * /var/log/YaST2/y2log_bootloader (file)
     User/Group: root:root
@@ -4773,5 +4815,5 @@
   * /var/log/zypp/history (file)
     User/Group: root:root
     Mode: 644
-    Size: 58.3 KiB
+    Size: 59.3 KiB
 

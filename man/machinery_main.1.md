@@ -117,8 +117,8 @@ Machinery supports the following scopes:
   package. The list of unmanaged files contains only plain files and
   directories. Special files like device nodes, named pipes and Unix domain
   sockets are ignored. The directories `/tmp`,  `/var/tmp`, `/sys`, `/dev`,
-  `/.snapshots/`, and `/var/run` are ignored, too. If a directory is in this
-  list, no file or directory below it belongs to a RPM package.
+  `/.snapshots/`, and `/var/run` are ignored, too. Content of directories
+  mounted from remote file systems like nfs or cifs are also ignored.
 
   Meta data information of unmanaged files is only available if the files were
   extracted during inspection.
