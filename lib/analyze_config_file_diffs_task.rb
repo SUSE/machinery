@@ -19,10 +19,7 @@ class AnalyzeConfigFileDiffsTask
   def analyze(description)
     description.assert_scopes("repositories", "config_files")
     if !description.scope_extracted?("config_files")
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "Missing extracted config files.\n" \
-        "You can extract them using 'machinery inspect -s config-files -x'."
-      )
+      raise Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
     end
 
     with_repositories(description) do |zypper|
