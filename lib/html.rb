@@ -22,9 +22,9 @@ class Html
     )
     target = description.store.description_path(description.name)
 
-    if description.config_files
+    diffs_dir = description.store.file_store(description.name, "config-file-diffs")
+    if description.config_files && diffs_dir
       # Enrich description with the config file diffs
-      diffs_dir = description.store.file_store(description.name, "config-file-diffs")
       description.config_files.files.each do |file|
         path = File.join(diffs_dir, file.name + ".diff")
         file.diff = diff_to_object(File.read(path)) if File.exists?(path)
