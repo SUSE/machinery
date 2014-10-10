@@ -139,4 +139,32 @@ module SystemDescriptionFactory
       }
     EOF
   }
+  EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF
+    "changed_managed_files": {
+      "extracted": false,
+      "files": [
+        {
+          "name": "/etc/cron.daily/mdadm",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": [
+            "deleted"
+          ]
+        }
+      ]
+    }
+  EOF
+  EXAMPLE_SCOPES["packages"] = <<-EOF
+    "packages": [
+      {
+        "name": "bash",
+        "version": "4.2",
+        "release": "68.1.5",
+        "arch": "x86_64",
+        "vendor": "openSUSE",
+        "checksum": "533e40ba8a5551204b528c047e45c169"
+      }
+    ]
+  EOF
 end

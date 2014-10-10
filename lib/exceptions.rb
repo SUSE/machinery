@@ -49,6 +49,34 @@ module Machinery
       end
     end
 
+    class MissingExtractedFiles < SystemDescriptionError
+      def initialize(description, scopes)
+        @description = description
+        @scopes = scopes
+      end
+
+      def to_s
+        meta = @description[@scopes.first].meta
+        hostname = @scopes.map do |s|
+          @description[s].meta.hostname if @description[s].meta
+        end.compact.first || "<HOSTNAME>"
+        formatted_scopes = Machinery::Ui.internal_scope_list_to_string(@scopes)
+
+        cmd = "#{$0} inspect --extract-files --scope=#{formatted_scopes}"
+        cmd += " --name='#{@description.name}'" if hostname != @description.name
+        cmd += " #{hostname}"
+
+        if @scopes.count > 1
+          output = "The following scopes '#{formatted_scopes}' are part of the system description"
+        else
+          output = "The scope '#{formatted_scopes}' is part of the system description"
+        end
+        output += " but the corresponding files weren't extracted during inspection.\n" \
+        "The files are required to continue with this command." \
+        " Run `#{cmd}` to extract them."
+      end
+    end
+
     class SystemDescriptionValidationFailed < SystemDescriptionError
       attr_reader :errors
       attr_accessor :header

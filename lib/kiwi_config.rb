@@ -118,23 +118,16 @@ class KiwiConfig
   end
 
   def check_existance_of_extraced_files
-    scopes = []
+    missing_scopes = []
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
-      path = @system_description.file_store(scope)
 
-      if @system_description[scope] && !path
-        scopes << scope
+      if @system_description[scope] && !@system_description.file_store(scope)
+        missing_scopes << scope
       end
     end
 
-    if !scopes.empty?
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "Cannot create kiwi config. " \
-        "The following scopes #{Machinery::Ui.internal_scope_list_to_string(scopes)} " \
-        "are part of the system description but the corresponding files " \
-        "weren't extracted during inspection.\n" \
-        "Use the -x parameter while running inspect to extract the files."
-      )
+    if !missing_scopes.empty?
+      raise Machinery::Errors::MissingExtractedFiles.new(@system_description, missing_scopes)
     end
   end
 
