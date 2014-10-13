@@ -47,4 +47,5 @@ RSpec.configure do |config|
   config.include(SystemDescriptionFactory)
 
   config.vagrant_dir = File.join(Machinery::ROOT, "spec/definitions/vagrant/")
+  config.filter_run_excluding :slow => true
 end
