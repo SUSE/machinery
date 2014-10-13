@@ -1,5 +1,7 @@
 # Machinery RPM Changelog
 
+* remove Recommends for kiwi and python-glanceclient
+* add requirement for the ruby gems haml, kramdown and tilt
 
 ## Version 0.20.0 - Tue Sep 09 14:43:15 CEST 2014 - thardeck@suse.de
 
