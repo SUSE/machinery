@@ -60,15 +60,15 @@ class Html
     new_line_number = 0
     diff_object[:lines] = lines.map do |line|
       line = ERB::Util.html_escape(line.gsub("\t", '').chomp)
-      case line[0]
-      when '@'
+      case line
+      when /^@.*/
         entry = {
           type: "header",
           content: line
         }
         original_line_number = line[/-(\d+)/, 1].to_i
         new_line_number = line[/\+(\d+)/, 1].to_i
-      when ' '
+      when /^ .*/, ""
         entry = {
           type: "common",
           new_line_number: new_line_number,
@@ -77,14 +77,14 @@ class Html
         }
         new_line_number += 1
         original_line_number += 1
-      when '+'
+      when /^\+.*/
         entry = {
           type: "addition",
           new_line_number: new_line_number,
           content: line[1..-1]
         }
         new_line_number += 1
-      when '-'
+      when /^\-.*/
         entry = {
           type: "deletion",
           original_line_number: original_line_number,
