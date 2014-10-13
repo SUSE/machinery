@@ -123,6 +123,21 @@ scope to <code>packages</code>. This will output only the requested information.
 <p>Machinery supports the following scopes:</p>
 
 <ul>
+<li><p>changed-managed-files</p>
+
+<p>Contains the names and contents of all non-configuration files which have
+been changed compared to the files in the package.</p></li>
+<li><p>config-files</p>
+
+<p>Contains all configuration files which have been changed since they were
+installed.
+Configuration files are all those files which are marked as such in the
+package which has installed them. A configuration file is considered changed
+if either its content or its Linux permission bits have changed.</p></li>
+<li><p>groups</p>
+
+<p>Contains information about the system groups such as group attributes and the
+list of group members.</p></li>
 <li><p>os</p>
 
 <p>Contains information about the operating system, name, version, and
@@ -131,32 +146,6 @@ architecture of the inspected system.</p></li>
 
 <p>Contains information on all installed RPM packages installed on the
 inspected system.</p></li>
-<li><p>config-files</p>
-
-<p>Contains all configuration files which have been changed since they were
-installed.
-Configuration files are all those files which are marked as such in the
-package which has installed them. A configuration file is considered changed
-if either its content or its Linux permission bits have changed.</p></li>
-<li><p>unmanaged-files</p>
-
-<p>Contains the names and contents of all files which are not part of any RPM
-package. The list of unmanaged files contains only plain files and
-directories. Special files like device nodes, named pipes and Unix domain
-sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/sys</code>, <code>/dev</code>,
-<code>/.snapshots/</code>, and <code>/var/run</code> are ignored, too. If a directory is in this
-list, no file or directory below it belongs to a RPM package.</p>
-
-<p>Meta data information of unmanaged files is only available if the files were
-extracted during inspection.</p>
-
-<p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from
-the system and stored in the system description. Depending on the content of
-the inspected system, the amount of data stored may be huge.</p></li>
-<li><p>changed-managed-files</p>
-
-<p>Contains the names and contents of all non-configuration files which have
-been changed compared to the files in the package.</p></li>
 <li><p>patterns</p>
 
 <p>Contains all patterns installed on the inspected system. A pattern is a
@@ -195,17 +184,32 @@ The scope determines which services are configured to be started in which
 runlevel. It uses the <code>chkconfig</code> command to obtain that information.
 The xinetd services that are also displayed by <code>chkconfig</code> are switched
 on/off by editing config files and are ignored in this context.</p></li>
+<li><p>unmanaged-files</p>
+
+<p>Contains the names and contents of all files which are not part of any RPM
+package. The list of unmanaged files contains only plain files and
+directories. Special files like device nodes, named pipes and Unix domain
+sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/sys</code>, <code>/dev</code>,
+<code>/.snapshots/</code>, and <code>/var/run</code> are ignored, too. If a directory is in this
+list, no file or directory below it belongs to a RPM package.</p>
+
+<p>Meta data information of unmanaged files is only available if the files were
+extracted during inspection.</p>
+
+<p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from
+the system and stored in the system description. Depending on the content of
+the inspected system, the amount of data stored may be huge.</p></li>
 <li><p>users</p>
 
 <p>Contains information about the system users including user and group ids,
 login information, such as password hashes and - if available - additional
 password properties.</p></li>
-<li><p>groups</p>
-
-<p>Contains information about the system groups such as group attributes and the
-list of group members.</p></li>
 </ul>
 
+
+<h3 id="System-Description">System Description</h3>
+
+<p>The System Description format and file structure is documented in the machinery wiki: <a href="https://github.com/SUSE/machinery/wiki/System-Description-Format" data-bare-link="true">https://github.com/SUSE/machinery/wiki/System-Description-Format</a></p>
 
 <h3 id="Use-Cases">Use Cases</h3>
 
@@ -302,9 +306,8 @@ data is stored to a temporary directory and cleaned up after the build. The KIWI
 log is shown as output of the <code>build</code> command format for showing progress and
 diagnosing errors.</p>
 
-<p>When building an image, Machinery filters some files from the system
-description, which would break the built image. The list of filters is shown
-at the beginning of the build.</p>
+<p>When building an image, Machinery filters out some files which would break the
+built image. The list of filters is shown at the beginning of the build.</p>
 
 <h3 id="ARGUMENTS">ARGUMENTS</h3>
 
@@ -328,12 +331,20 @@ at the beginning of the build.</p>
 <li><p>The <code>build</code> command requires the packages <code>kiwi</code> and <code>kiwi-desc-vmbxoot</code>.</p></li>
 <li><p>All repositories in the system description must be accessible from the
 build machine on which <code>machinery build</code> is called.</p></li>
-<li><p>The following combination of platforms is supported for builds:</p>
+</ul>
 
-<p>Building SUSE Linux Enterprise 11 and 12 images and openSUSE 13.1 images
-on openSUSE 13.1</p>
 
-<p>Building SUSE Linux Enterprise 12 images on SUSE Linux Enterprise 12</p></li>
+<h3 id="BUILD-SUPPORT-MATRIX">BUILD SUPPORT MATRIX</h3>
+
+<p>The following combinations of build hosts and targets are supported:</p>
+
+<ul>
+<li><p>SUSE Linux Enterprise 12</p>
+
+<p>Can build SUSE Linux Enterprise 12</p></li>
+<li><p>openSUSE 13.1</p>
+
+<p>Can build SUSE Linux Enterprise 11 and openSUSE 13.1</p></li>
 </ul>
 
 
@@ -345,38 +356,6 @@ image under the <code>/tmp/tux/</code> directory:</p>
 
 <p>$ <code>machinery</code> build tux -i /tmp/tux/</p></li>
 </ul>
-
-
-<h2 id="clone-Clone-System-Description">clone — Clone System Description</h2>
-
-<h3 id="SYNOPSIS">SYNOPSIS</h3>
-
-<p><code>machinery clone</code>
-    FROM_NAME TO_NAME</p>
-
-<p><code>machinery</code> help clone</p>
-
-<h3 id="DESCRIPTION">DESCRIPTION</h3>
-
-<p>The <code>clone</code> command clones a stored system description. It creates a new
-description named TO_NAME containing the same content as the description
-FROM_NAME.</p>
-
-<h3 id="ARGUMENTS">ARGUMENTS</h3>
-
-<dl>
-<dt><code>FROM_NAME</code> (required)</dt><dd><p>Name of the source system description.</p></dd>
-<dt><code>TO_NAME</code> (required)</dt><dd><p>Name of the target system description.</p></dd>
-</dl>
-
-
-<h3 id="EXAMPLES">EXAMPLES</h3>
-
-<dl>
-<dt>Create a clone of the system description <code>earth</code> under the name <code>moon</code>:</dt><dd><p></p>
-
-<p>$ <code>machinery</code> clone earth moon</p></dd>
-</dl>
 
 
 <h2 id="compare-Compare-System-Descriptions">compare — Compare System Descriptions</h2>
@@ -426,6 +405,38 @@ list:</p>
 
 <p>$ <code>machinery</code> compare earth moon --scope=changed-managed-files --show-all</p></li>
 </ul>
+
+
+<h2 id="copy-Copy-System-Description">copy — Copy System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery copy</code>
+    FROM_NAME TO_NAME</p>
+
+<p><code>machinery</code> help copy</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>copy</code> command copies a stored system description. It creates a new
+description named TO_NAME containing the same content as the description
+FROM_NAME.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>FROM_NAME</code> (required)</dt><dd><p>Name of the source system description.</p></dd>
+<dt><code>TO_NAME</code> (required)</dt><dd><p>Name of the target system description.</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Create a copy of the system description <code>earth</code> under the name <code>moon</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> copy earth moon</p></dd>
+</dl>
 
 
 <h2 id="deploy-Deploy-Image-to-OpenStack-Cloud">deploy — Deploy Image to OpenStack Cloud</h2>
@@ -536,6 +547,36 @@ will be created if it does not exist yet.</p></dd>
 </dl>
 
 
+<h2 id="generate-html-Generate-an-HTML-view-of-a-System-Description">generate-html — Generate an HTML view of a System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery generate-html</code> NAME</p>
+
+<p><code>machinery</code> help generate-html</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>generate-html</code> generates an HTML view of a system description. The
+index.html file can be found in the according system description directory, e.g.
+~/.machinery/NAME/index.html.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Create an HTML view of the <code>moon</code> system description:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> generate-html moon</p></dd>
+</dl>
+
+
 <h2 id="inspect-Inspect-Running-System">inspect — Inspect Running System</h2>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
@@ -638,8 +679,13 @@ configuration files are saved:</p>
 The list is sorted alphabetically and contains a name and the
 scopes for each system.</p>
 
-<p>The option <code>--verbose</code> additionally prints the inspection dates
-of each scope.</p>
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>--verbose</code> (optional)</dt><dd>Print additional information about the origin of scopes.
+Currently displays [HOSTNAME] and (DATE).</dd>
+</dl>
+
 
 <h3 id="EXAMPLES">EXAMPLES</h3>
 
@@ -669,7 +715,8 @@ of each scope.</p>
 <h3 id="OPTIONS">OPTIONS</h3>
 
 <dl>
-<dt><code>--all</code> (optional)</dt><dd>Remove all stored system descriptions.</dd>
+<dt><code>--all</code> (optional)</dt><dd><p>Remove all stored system descriptions.</p></dd>
+<dt><code>--verbose</code> (optional)</dt><dd><p>Explain what is being done.</p></dd>
 </dl>
 
 
@@ -696,7 +743,7 @@ of each scope.</p>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] NAME</p>
+<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME</p>
 
 <p><code>machinery</code> help show</p>
 
@@ -726,6 +773,7 @@ See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more infor
 <dt><code>--no-pager</code> (optional)</dt><dd><p>Do not pipe output into a pager.</p></dd>
 <dt><code>--show-diffs</code> (optional)</dt><dd><p>Include the generated diffs in the output if available (see <code>machinery help analyze</code>
 for more information).</p></dd>
+<dt><code>--html</code> (optional)</dt><dd><p>Open the system description in HTML format in your web browser using the <code>xdg-open</code> command.</p></dd>
 </dl>
 
 
@@ -741,6 +789,92 @@ for more information).</p></dd>
 <dt>Show the list of changed managed files:</dt><dd><p></p>
 
 <p>$ <code>machinery</code> show earth --scope=changed-managed-files</p></dd>
+</dl>
+
+
+<h2 id="upgrade-format-Upgrade-System-Description">upgrade-format — Upgrade System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery upgrade-format</code> --all</p>
+
+<p><code>machinery upgrade-format</code> NAME</p>
+
+<p><code>machinery</code> help upgrade-format</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>upgrade-format</code> command upgrades a system description to the latest format
+version.</p>
+
+<p>The <code>format</code> in this context is the structure of the internal system description
+data. If the format version of a system description does not match the current
+<code>machinery</code> format version, <code>machinery</code> is no longer able to work with the data
+until it is upgraded. The current format version can be retrieved using
+<code>machinery --version</code>. The format version of a system description can be found
+in the <code>meta</code> section of the according <code>manifest.json</code> file.</p>
+
+<p>If the <code>--all</code> switch is given all local descriptions will be upgraded.</p>
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>--all</code> (optional)</dt><dd>Upgrade all stored system descriptions.</dd>
+</dl>
+
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (optional)</dt><dd>Upgrade specified system description.</dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Upgrade the system description stored as <code>earth</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> upgrade-format earth</p></dd>
+<dt>Upgrade all stored system descriptions:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> upgrade-format --all</p></dd>
+</dl>
+
+
+<h2 id="validate-Validate-System-Description">validate — Validate System Description</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery validate</code> NAME</p>
+
+<p><code>machinery</code> help validate</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>validate</code> subcommand validates an existing system description.
+It checks, that the description has the correct structure and the data stored
+there conforms to the required schema. It also verifies that all extracted files
+are present on disk and that all files have meta information.</p>
+
+<p>In case of issues errors are shown with additional information.</p>
+
+<p>The main purpose of this command is to verify the system description after
+manually editing it.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Validate the system description with the name <code>myhost</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> validate myhost</p></dd>
 </dl>
 
 
@@ -772,5 +906,21 @@ for more information).</p></dd>
 </div>
 
     </div>
+
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//beans.opensuse.org/piwik/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 26]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="//beans.opensuse.org/piwik/piwik.php?idsite=26" style="border:0;" alt="" /></p></noscript>
+    <!-- End Piwik Code -->
   </body>
 </html>
