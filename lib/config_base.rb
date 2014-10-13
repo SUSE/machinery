@@ -50,17 +50,18 @@ class ConfigBase
     @entries[key][:value]
   end
 
-  def set(key, value)
+  def set(key, value, options = {auto_save: true} )
     ensure_config_exists(key)
 
-    # Check if data type if correct. true and false are not of the same type which makes the check complex
+    # Check if data type is correct. true and false are not of the same type which makes the check complex
     if value.class != @entries[key][:value].class &&
       ! ( ( value == true || value == false ) && ( @entries[key][:value].class == TrueClass || @entries[key][:value].class == FalseClass ) )
       raise Machinery::Errors::MachineryError.new("The value \"#{value}\" for configuration key \"#{key}\" is of an invalid data type.")
     end
 
     @entries[key][:value] = value
-    save
+
+    save if options[:auto_save]
   end
 
 
@@ -87,7 +88,7 @@ class ConfigBase
 
     content.each do |key, value|
       begin
-        set(key, value)
+        set(key, value, :auto_save => false )
       rescue => e
         Machinery::Ui.warn "Warning: The machinery config file \"#{file}\" contains an invalid entry \"#{key}\":\n#{e}"
       end

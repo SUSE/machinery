@@ -32,6 +32,8 @@ class Hint
   private
 
   def self.output(text)
-    Machinery::Ui.puts "\nHint: #{text}\n"
+    if Machinery::Config.new.hints
+      Machinery::Ui.puts "\nHint: #{text}\n"
+    end
   end
 end

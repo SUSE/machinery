@@ -86,7 +86,7 @@ describe Machinery::Config do
   end
 
   describe "#save" do
-    it "writes the config to the config file" do
+    it "writes the config to the file when the set method is called" do
       allow_any_instance_of(Machinery::Config).to receive(:define_entries)
       subject.default_config_file(Machinery::DEFAULT_CONFIG_FILE)
       subject.entry("configkey", default: false, description: "configtext")
@@ -95,6 +95,18 @@ describe Machinery::Config do
       expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: true\n"])
 
       subject.set("configkey", false)
+      expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: false\n"])
+    end
+
+    it "writes the config to the file when the generated accessors are called" do
+      allow_any_instance_of(Machinery::Config).to receive(:define_entries)
+      subject.default_config_file(Machinery::DEFAULT_CONFIG_FILE)
+      subject.entry("configkey", default: false, description: "configtext")
+
+      subject.configkey = true
+      expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: true\n"])
+
+      subject.configkey = false
       expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: false\n"])
     end
   end
