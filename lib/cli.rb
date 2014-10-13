@@ -563,4 +563,23 @@ class Cli
       task.generate(description)
     end
   end
+
+  desc "Show or change machinery's configuration"
+  long_desc <<-LONGDESC
+    Show or change machinery's configuration.
+
+    The value of a key is shown when no value argument is passed.
+    If neither the key argument nor the value argument are specified a list of all keys and their values are shown.
+  LONGDESC
+  arg "KEY", :optional
+  arg "VALUE", :optional
+  command "config" do |c|
+    c.action do |global_options,options,args|
+      key = args[0]
+      value = args[1]
+
+      task = ConfigTask.new
+      task.config(key, value)
+    end
+  end
 end
