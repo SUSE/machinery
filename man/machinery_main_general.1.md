@@ -25,6 +25,26 @@ work with this system description. These commands can be combined to form work
 flows. Machinery is targeted at the system administrator of the data center.
 
 
+## WORK FLOW EXAMPLES
+
+### Inspect a System and Show Results
+  - `machinery inspect --extract-files --name=NAME HOSTNAME`
+  - `machinery show NAME`
+
+### Inspect Two Systems and Compare Them
+  - `machinery inspect HOSTNAME1`
+  - `machinery inspect HOSTNAME2`
+  - `machinery compare HOSTNAME1 HOSTNAME2`
+
+### Fully Inspect a System and Export a Kiwi Description
+  - `machinery inspect --extract-files HOSTNAME`
+  - `machinery export-kiwi --kiwi-dir=~/kiwi HOSTNAME`
+
+### Fully Inspect a System and Deploy a Replicate to the Cloud
+  - `machinery inspect --extract-files HOSTNAME`
+  - `machinery deploy --cloud-config=~/openrc.sh HOSTNAME`
+
+
 ## CONCEPTUAL OVERVIEW
 
 Machinery's core concept is the complete representation of a system by a

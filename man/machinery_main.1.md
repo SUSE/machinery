@@ -25,6 +25,35 @@ work with this system description. These commands can be combined to form work
 flows. Machinery is targeted at the system administrator of the data center.
 
 
+## WORK FLOW EXAMPLES
+
+### GET DESCRIPTIONS
+* Inspect a system completely: `machinery inspect --extract-files HOSTNAME`
+* Inspect and don't use HOSTNAME as name: `machinery inspect --extract-files --name DESCRIPTION HOSTNAME
+* Inspect only the packages of a system: `machinery inspect --scope=packages HOSTNAME`
+
+### SHOW DESCRIPTIONS
+* Show the description in console: `machinery show DESCRIPTION`
+* Show only the packages: `machinery show --scope packages DESCRIPTION`
+* Show the description as HTML in webbrowser: `machinery show --html DESCRIPTION`
+* Compare descriptions: `machinery compare DESCRIPTION1 DESCRIPTION2`
+
+### MANAGE DESCRIPTIONS
+* Create a description copy: `machinery copy DESCRIPTION1 DESCRIPTION2`
+* List all descriptions: `machinery list`
+* Remove description: `machinery remove DESCRIPTION`
+
+### EXTEND DESCRIPTIONS
+
+* Create diffs of changed config files: `machinery analyze --operation=config-file-diffs DESCRIPTION`
+* Show diffs of changed config files: `machinery show --show-diffs DESCRIPTION`
+
+### CREATE IMAGES
+* Export description for KIWI: `machinery export-kiwi --kiwi-dir=~/kiwi`
+* Build image: `machinery build --image-dir=~/ DESCRIPTION`
+* Build and deploy image: `machinery deploy --cloud-config=~/openrc.sh DESCRIPTION`
+
+
 ## CONCEPTUAL OVERVIEW
 
 Machinery's core concept is the complete representation of a system by a
