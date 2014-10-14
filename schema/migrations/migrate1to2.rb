@@ -24,6 +24,8 @@ class Migrate1To2 < Migration
     It also introduces a "remote_dir" type for the unmanaged_files scope
     indicating that the directory is a remote mount point and that the
     content is not checked or extracted.
+
+    Add the missing GID key for NIS placeholder entries in groups.
   EOT
 
   def migrate
@@ -41,6 +43,14 @@ class Migrate1To2 < Migration
         "extracted" => is_extracted,
         "files"     => files
       }
+    end
+
+    if @hash.has_key?("groups")
+      @hash["groups"].each do |element|
+        if !element["gid"]
+          element["gid"] = nil
+        end
+      end
     end
   end
 end
