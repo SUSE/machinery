@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 0.21.0 - Tue Oct 14 12:07:33 CEST 2014 - thardeck@suse.de
+
 * Added HTML view of system descriptions
 * Add format version to `machinery --version` output
 * Added work flow hints to make machinery easier approchable
