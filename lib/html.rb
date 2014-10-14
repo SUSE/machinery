@@ -59,7 +59,9 @@ class Html
     original_line_number = 0
     new_line_number = 0
     diff_object[:lines] = lines.map do |line|
-      line = ERB::Util.html_escape(line.gsub("\t", '').chomp)
+      line = ERB::Util.html_escape(line.chomp).
+        gsub("\\", "&#92;").
+        gsub("\t", "&nbsp;"*8)
       case line
       when /^@.*/
         entry = {
