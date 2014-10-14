@@ -418,7 +418,10 @@ class Cli
       )
 
       Hint.show_data(:name => name)
-      Hint.do_complete_inspection(:name => name, :host => host) unless options["extract-files"]
+
+      if !options["extract-files"] || Inspector.all_scopes.count != scope_list.count
+        Hint.do_complete_inspection(:name => name, :host => host)
+      end
     end
   end
 
