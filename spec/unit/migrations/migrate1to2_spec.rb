@@ -84,6 +84,13 @@ describe Migrate1To2 do
             "files": 2
           }
         ],
+        "groups": [
+          {
+            "name": "+",
+            "password": "",
+            "users": []
+          }
+        ],
         "meta": {
           "format_version": 1
         }
@@ -129,5 +136,14 @@ describe Migrate1To2 do
     expect(description_hash["config_files"]["files"]).to match_array(config_files)
     expect(description_hash["changed_managed_files"]["files"]).to match_array(changed_managed_files)
     expect(description_hash["unmanaged_files"]["files"]).to match_array(unmanaged_files)
+  end
+
+  it "makes sure that NIS group placeholders have a GID" do
+    expect(description_hash["groups"].first.has_key?("gid")).to be(false)
+
+    migration = Migrate1To2.new(description_hash, description_base)
+    migration.migrate
+
+    expect(description_hash["groups"].first.has_key?("gid")).to be(true)
   end
 end
