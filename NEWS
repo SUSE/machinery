@@ -4,6 +4,7 @@
 * Add format version to `machinery --version` output
 * Added work flow hints to make machinery easier approchable
 * Improve validation to also check the existence of extracted files
+* Added filtering of remote mount points during unmanaged-files inspection
 * Increased format version to 2
 
 ## Version 0.20.0 - Tue Sep 09 14:43:15 CEST 2014 - thardeck@suse.de
