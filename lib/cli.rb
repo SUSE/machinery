@@ -36,7 +36,7 @@ class Cli
   end
 
   post do |global_options,command,options,args|
-    if command.is_a?(GLI::Commands::Help) && global_options[:help]
+    if command.is_a?(GLI::Commands::Help) && !global_options[:version]
       Hint.get_started
     end
   end
