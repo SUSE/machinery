@@ -15,15 +15,13 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "../spec_helper"
 
-class ConfigFile < Machinery::Object
-end
+describe "repositories model" do
+  it "creates a list of Repositories" do
+    description = create_test_description(scopes: ["repositories"])
 
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
-end
-
-class ConfigFilesScope < Machinery::Object
-  include Machinery::ScopeMixin
-  has_property :files, class: ConfigFileList
+    expect(description.repositories).to be_a(RepositoriesScope)
+    expect(description.repositories.first).to be_a(Repository)
+  end
 end

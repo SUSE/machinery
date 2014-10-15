@@ -23,10 +23,7 @@ class ChangedManagedFileList < Machinery::Array
   has_elements class: ChangedManagedFile
 end
 
-class ChangedManagedFilesConfig < Machinery::Object
-  has_property :files, class: ChangedManagedFileList
-end
-
-class ChangedManagedFilesScope < ChangedManagedFilesConfig
+class ChangedManagedFilesScope < Machinery::Object
   include Machinery::ScopeMixin
+  has_property :files, class: ChangedManagedFileList
 end

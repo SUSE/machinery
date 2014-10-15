@@ -15,15 +15,13 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "../spec_helper"
 
-class ConfigFile < Machinery::Object
-end
+describe "groups model" do
+  it "creates a list of Groups" do
+    description = create_test_description(scopes: ["groups"])
 
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
-end
-
-class ConfigFilesScope < Machinery::Object
-  include Machinery::ScopeMixin
-  has_property :files, class: ConfigFileList
+    expect(description.groups).to be_a(GroupsScope)
+    expect(description.groups.first).to be_a(Group)
+  end
 end

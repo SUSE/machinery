@@ -21,4 +21,6 @@ end
 
 class PackagesScope < Machinery::Array
   include Machinery::ScopeMixin
+
+  has_elements class: Package
 end

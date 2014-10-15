@@ -21,4 +21,6 @@ end
 
 class GroupsScope < Machinery::Array
   include Machinery::ScopeMixin
+
+  has_elements class: Group
 end

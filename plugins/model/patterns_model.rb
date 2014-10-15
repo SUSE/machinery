@@ -21,4 +21,6 @@ end
 
 class PatternsScope < Machinery::Array
   include Machinery::ScopeMixin
+
+  has_elements class: Pattern
 end

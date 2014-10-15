@@ -21,4 +21,6 @@ end
 
 class RepositoriesScope < Machinery::Array
   include Machinery::ScopeMixin
+
+  has_elements class: Repository
 end

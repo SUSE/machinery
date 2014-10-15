@@ -21,4 +21,6 @@ end
 
 class UsersScope < Machinery::Array
   include Machinery::ScopeMixin
+
+  has_elements class: User
 end

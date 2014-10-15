@@ -23,10 +23,7 @@ class UnmanagedFileList < Machinery::Array
   has_elements class: UnmanagedFile
 end
 
-class UnmanagedFilesConfig < Machinery::Object
-  has_property :files, class: UnmanagedFileList
-end
-
-class UnmanagedFilesScope < UnmanagedFilesConfig
+class UnmanagedFilesScope < Machinery::Object
   include Machinery::ScopeMixin
+  has_property :files, class: UnmanagedFileList
 end

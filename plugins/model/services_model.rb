@@ -23,12 +23,9 @@ class ServiceList < Machinery::Array
   has_elements class: Service
 end
 
-class ServicesConfig < Machinery::Object
-  has_property :services, class: ServiceList
-end
-
-class ServicesScope < ServicesConfig
+class ServicesScope < Machinery::Object
   include Machinery::ScopeMixin
+  has_property :services, class: ServiceList
 
   def compare_with(other)
     if self.init_system != other.init_system

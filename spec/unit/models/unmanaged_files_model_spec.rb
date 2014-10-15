@@ -15,15 +15,14 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "../spec_helper"
 
-class ConfigFile < Machinery::Object
-end
+describe "unmanaged_files model" do
+  it "creates a UnmanagedFileList of ConfigFiles" do
+    description = create_test_description(scopes: ["unmanaged_files"])
 
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
-end
-
-class ConfigFilesScope < Machinery::Object
-  include Machinery::ScopeMixin
-  has_property :files, class: ConfigFileList
+    expect(description.unmanaged_files).to be_a(UnmanagedFilesScope)
+    expect(description.unmanaged_files.files).to be_a(UnmanagedFileList)
+    expect(description.unmanaged_files.files.first).to be_a(UnmanagedFile)
+  end
 end

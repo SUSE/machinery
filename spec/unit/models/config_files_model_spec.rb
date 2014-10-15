@@ -15,15 +15,14 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "../spec_helper"
 
-class ConfigFile < Machinery::Object
-end
+describe "config_files model" do
+  it "creates a ConfigFileList of ConfigFiles" do
+    description = create_test_description(scopes: ["config_files"])
 
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
-end
-
-class ConfigFilesScope < Machinery::Object
-  include Machinery::ScopeMixin
-  has_property :files, class: ConfigFileList
+    expect(description.config_files).to be_a(ConfigFilesScope)
+    expect(description.config_files.files).to be_a(ConfigFileList)
+    expect(description.config_files.files.first).to be_a(ConfigFile)
+  end
 end

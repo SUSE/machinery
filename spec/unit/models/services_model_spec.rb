@@ -15,7 +15,17 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-require_relative "spec_helper"
+require_relative "../spec_helper"
+
+describe "services model" do
+  it "creates a ServiceList of Services" do
+    description = create_test_description(scopes: ["services"])
+
+    expect(description.services).to be_a(ServicesScope)
+    expect(description.services.services).to be_a(ServiceList)
+    expect(description.services.services.first).to be_a(Service)
+  end
+end
 
 describe ServicesScope do
   describe "#compare_with" do
