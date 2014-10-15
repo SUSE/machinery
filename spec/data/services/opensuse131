@@ -3,6 +3,7 @@
   * YaST2-Firstboot.service: enabled
   * YaST2-Second-Stage.service: enabled
   * after-local.service: static
+  * autofs.service: enabled
   * autoyast-initscripts.service: disabled
   * blk-availability.service: disabled
   * cgroup.service: masked

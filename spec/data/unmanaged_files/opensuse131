@@ -1,4 +1,4 @@
-# Unmanaged files (extracted) [192.168.121.243] (2014-10-08 15:59:38)
+# Unmanaged files (extracted) [192.168.121.99] (2014-10-15 14:09:44)
 
   * /boot/backup_mbr (file)
     User/Group: root:root
@@ -80,6 +80,11 @@
 
   * /etc/alternatives/usr-bin-awk (link)
     User/Group: root:root
+
+  * /etc/auto.remote_dir (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 34 B
 
   * /etc/default/grub.old (file)
     User/Group: root:root
@@ -208,7 +213,7 @@
   * /etc/ssh/ssh_host_dsa_key (file)
     User/Group: root:root
     Mode: 600
-    Size: 668 B
+    Size: 672 B
 
   * /etc/ssh/ssh_host_dsa_key.pub (file)
     User/Group: root:root
@@ -1523,6 +1528,11 @@
   * /etc/ssl/certs/thawte_Primary_Root_CA_-_G3.pem (link)
     User/Group: root:root
 
+  * /etc/sysconfig/autofs (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 5 KiB
+
   * /etc/sysconfig/backup (file)
     User/Group: root:root
     Mode: 644
@@ -1686,7 +1696,7 @@
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 7
+    Files: 8
 
   * /etc/systemd/system/sockets.target.wants/ (dir)
     User/Group: root:root
@@ -1713,22 +1723,22 @@
   * /etc/zypp/repos.d/download.opensuse.org-13.1-non-oss.repo (file)
     User/Group: root:root
     Mode: 644
-    Size: 162 B
+    Size: 164 B
 
   * /etc/zypp/repos.d/download.opensuse.org-non-oss.repo (file)
     User/Group: root:root
     Mode: 644
-    Size: 166 B
+    Size: 167 B
 
   * /etc/zypp/repos.d/download.opensuse.org-oss.repo (file)
     User/Group: root:root
     Mode: 644
-    Size: 154 B
+    Size: 155 B
 
   * /etc/zypp/repos.d/download.opensuse.org-update.repo (file)
     User/Group: root:root
     Mode: 644
-    Size: 143 B
+    Size: 145 B
 
   * /etc/zypp/repos.d/openSUSE-13.1-1.10.repo (file)
     User/Group: root:root
@@ -1958,12 +1968,14 @@
 
   * /mnt/unmanaged/remote-dir/ (remote_dir)
 
+  * /proc/sys/fs/binfmt_misc/ (remote_dir)
+
   * /remote-dir/ (remote_dir)
 
   * /root/.bash_history (file)
     User/Group: root:root
     Mode: 600
-    Size: 120 B
+    Size: 0 B
 
   * /root/.kbd/ (dir)
     User/Group: root:root
@@ -2009,7 +2021,7 @@
   * /vagrant/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 37.9 KiB
+    Size: 38.2 KiB
     Files: 4
 
   * /var/adm/SuSEconfig/ (dir)
@@ -2021,7 +2033,7 @@
   * /var/adm/autoinstall/cache/installedSystem.xml (file)
     User/Group: root:root
     Mode: 700
-    Size: 6.7 KiB
+    Size: 6.8 KiB
 
   * /var/adm/autoinstall/logs/init-scripts.log (file)
     User/Group: root:root
@@ -2059,14 +2071,14 @@
   * /var/cache/zypp/raw/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 2.7 MiB
-    Files: 20
+    Size: 17.3 MiB
+    Files: 82
 
   * /var/cache/zypp/solv/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 2.6 MiB
-    Files: 7
+    Size: 19.6 MiB
+    Files: 19
 
   * /var/lib/YaST2/backup_boot_sectors/ (dir)
     User/Group: root:root
@@ -4547,7 +4559,7 @@
   * /var/lib/dhcpcd/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 423 B
+    Size: 422 B
     Files: 3
 
   * /var/lib/hardware/udi/3hqH.pkM7KXDR457 (file)
@@ -4658,6 +4670,11 @@
     Size: 0 B
 
   * /var/lib/systemd/migrated/YaST2-Second-Stage (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 0 B
+
+  * /var/lib/systemd/migrated/autofs (file)
     User/Group: root:root
     Mode: 644
     Size: 0 B
@@ -4785,12 +4802,12 @@
   * /var/log/YaST2/y2log (file)
     User/Group: root:root
     Mode: 644
-    Size: 471.7 KiB
+    Size: 473.7 KiB
 
   * /var/log/YaST2/y2log-1.gz (file)
     User/Group: root:root
     Mode: 644
-    Size: 181.2 KiB
+    Size: 181.3 KiB
 
   * /var/log/YaST2/y2log_bootloader (file)
     User/Group: root:root
@@ -4815,5 +4832,5 @@
   * /var/log/zypp/history (file)
     User/Group: root:root
     Mode: 644
-    Size: 59.3 KiB
+    Size: 59.6 KiB
 
