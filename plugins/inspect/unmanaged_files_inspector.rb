@@ -259,6 +259,12 @@ class UnmanagedFilesInspector < Inspector
     sub_tree_containing_remote_fs = []
     excluded_files += remote_dirs
 
+    if !remote_dirs.empty?
+      warning = "The content of the following remote directories is ignored: #{remote_dirs.uniq.join(", ")}."
+      Machinery.logger.warn(warning)
+      Machinery::Ui.warn(warning)
+    end
+
     while !dirs_todo.empty?
       find_dir = dirs_todo.first
 
@@ -350,12 +356,6 @@ class UnmanagedFilesInspector < Inspector
     end
     remote_dirs.each do |remote_dir|
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
-    end
-
-    if !sub_tree_containing_remote_fs.empty?
-      warning = "Skipped files from remote file systems below: #{sub_tree_containing_remote_fs.uniq.join(", ")}."
-      Machinery.logger.warn(warning)
-      Machinery::Ui.warn(warning)
     end
 
     summary = "#{do_extract ? "Extracted" : "Found"} #{osl.size} unmanaged files and trees."
