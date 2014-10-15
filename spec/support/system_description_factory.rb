@@ -120,25 +120,8 @@ module SystemDescriptionFactory
     description
   end
 
-  EXAMPLE_SCOPES = {
-    "config_files" => <<-EOF
-      "config_files": {
-        "extracted": false,
-        "files": [
-          {
-            "name": "/etc/crontab",
-            "package_name": "cron",
-            "package_version": "4.1",
-            "status": "changed",
-            "changes": ["md5"],
-            "user": "root",
-            "group": "root",
-            "mode": "644"
-          }
-        ]
-      }
-    EOF
-  }
+  EXAMPLE_SCOPES = {}
+
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF
     "changed_managed_files": {
       "extracted": false,
@@ -155,6 +138,35 @@ module SystemDescriptionFactory
       ]
     }
   EOF
+  EXAMPLE_SCOPES["config_files"] = <<-EOF
+    "config_files": {
+      "extracted": false,
+      "files": [
+        {
+          "name": "/etc/crontab",
+          "package_name": "cron",
+          "package_version": "4.1",
+          "status": "changed",
+          "changes": ["md5"],
+          "user": "root",
+          "group": "root",
+          "mode": "644"
+        }
+      ]
+    }
+  EOF
+  EXAMPLE_SCOPES["groups"] = <<-EOF
+    "groups": [
+      {
+        "name": "audio",
+        "password": "x",
+        "users": [
+
+        ],
+        "gid": 17
+      }
+    ]
+  EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF
     "packages": [
       {
@@ -166,5 +178,69 @@ module SystemDescriptionFactory
         "checksum": "533e40ba8a5551204b528c047e45c169"
       }
     ]
+  EOF
+  EXAMPLE_SCOPES["patterns"] = <<-EOF
+    "patterns": [
+      {
+        "name": "base",
+        "version": "13.1",
+        "release": "13.6.1"
+      }
+    ]
+  EOF
+  EXAMPLE_SCOPES["repositories"] = <<-EOF
+    "repositories": [
+      {
+        "alias": "openSUSE_13.1_OSS",
+        "name": "openSUSE_13.1_OSS",
+        "type": "yast2",
+        "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      }
+    ]
+  EOF
+  EXAMPLE_SCOPES["users"] = <<-EOF
+    "users": [
+      {
+        "name": "bin",
+        "password": "x",
+        "uid": 1,
+        "gid": 1,
+        "comment": "bin",
+        "home": "/bin",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16125
+      }
+    ]
+  EOF
+  EXAMPLE_SCOPES["services"] = <<-EOF
+    "services": {
+      "init_system": "systemd",
+      "services": [
+        {
+          "name": "after-local.service",
+          "state": "static"
+        }
+      ]
+    }
+  EOF
+  EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF
+    "unmanaged_files": {
+      "extracted": true,
+      "files": [
+        {
+          "name": "/etc/unmanaged-file",
+          "type": "file",
+          "user": "root",
+          "group": "root",
+          "size": 8,
+          "mode": "644"
+        }
+      ]
+    }
   EOF
 end
