@@ -54,12 +54,15 @@ describe Machinery::Object do
   end
 
   describe "#from_json" do
-    it "delegates to specialized class when the element class is set" do
+    before(:all) do
       class FooObject < Machinery::Object; end
       class ObjectWithProperty < Machinery::Object
-        has_property :foo, :class => FooObject
+        has_property :foo, class: FooObject
+        has_property "bar", class: FooObject
       end
+    end
 
+    it "delegates to specialized class when the element class is set" do
       json_object = {foo: {bar: "bar"}, baz: "baz"}
 
       expected = ObjectWithProperty.new(
@@ -82,6 +85,22 @@ describe Machinery::Object do
         c: Machinery::Array.new([3, "3"])
       )
       expect(Machinery::Object.from_json(json_object)).to eq(expected)
+    end
+
+    it "uses specialized classes when symbol keys are used" do
+      json_object = {foo: {key: "value"}, bar: {key: "value"}}
+      object = ObjectWithProperty.from_json(json_object)
+
+      expect(object.foo).to be_a(FooObject)
+      expect(object.bar).to be_a(FooObject)
+    end
+
+    it "uses specialized classes when string keys are used" do
+      json_object = {"foo" => {key: "value"}, "bar" => {key: "value"}}
+      object = ObjectWithProperty.from_json(json_object)
+
+      expect(object.foo).to be_a(FooObject)
+      expect(object.bar).to be_a(FooObject)
     end
   end
 
