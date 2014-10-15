@@ -62,6 +62,7 @@ span.toggle.collapsed {
 }
 
 .popover{
+  min-width: 500px;
   max-width: 800px;
 }
 
@@ -122,7 +123,9 @@ table.diff td.linenumber {
   color: #777777;
   border-right: solid 1px #cccccc;
 }
-.popover-content {
+
+.diff-popover .popover-content {
   max-height: 500px;
   overflow-y: auto;
+  font-family: monospace;
  }
