@@ -111,11 +111,15 @@ $(document).ready(function () {
     $("#collapse-all").show()
   })
 
-  $("img").popover();
+  $("img").popover({
+    trigger: "hover",
+    html: true
+  });
   var counter;
   $(".diff-toggle").popover({
     trigger: "mouseenter",
     html: true,
+    template: '<div class="popover diff-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
     content: function() {
       file = $(this).data("config-file")
       return $('*[data-config-file-diff="' + file + '"]').html()
@@ -130,13 +134,13 @@ $(document).ready(function () {
 
     counter = setTimeout(function(){
       $(_this).popover("show");
-      $(".popover").on("mouseleave", function () {
+      $(".diff-popover").on("mouseleave", function () {
           $('.diff-toggle').popover('hide');
       });
     }, 100);
   }).on("mouseleave", function () {
     counter = setTimeout(function(){
-      if (!$(".popover:hover").length) {
+      if (!$(".diff-popover:hover").length) {
         $('.diff-toggle').popover('hide');
       }
     }, 500);
