@@ -20,15 +20,15 @@ module Machinery
     class << self
       def has_property(name, options)
         @property_classes ||= {}
-        @property_classes[name] = options[:class]
+        @property_classes[name.to_sym] = options[:class]
       end
 
       def from_json(json)
         return nil unless json
 
         entries = json.map do |key, value|
-          value_converted = if @property_classes && @property_classes[key]
-            @property_classes[key].from_json(value)
+          value_converted = if @property_classes && @property_classes[key.to_sym]
+            @property_classes[key.to_sym].from_json(value)
           else
             case value
               when ::Array
