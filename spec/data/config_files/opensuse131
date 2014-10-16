@@ -1,5 +1,6 @@
 # Changed configuration files (extracted) [192.168.122.238] (2014-05-21 17:00:14)
 
+  * /etc/auto.master (md5)
   * /etc/crontab (md5)
   * /etc/default/grub (mode, md5)
   * /etc/ssh/sshd_config (md5)

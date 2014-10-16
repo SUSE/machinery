@@ -114,6 +114,7 @@
     <install_recommended config:type="boolean">false</install_recommended>
     <packages config:type="list">
       <package>aaa_base</package>
+      <package>autofs</package>
       <package>bash</package>
       <package>coreutils</package>
       <package>cracklib-dict-full</package>
