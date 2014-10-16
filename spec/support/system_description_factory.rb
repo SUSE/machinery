@@ -85,9 +85,12 @@ module SystemDescriptionFactory
     description
   end
 
-  private
+  def create_test_description_json(options = {})
+    options = {
+      scopes: [],
+      extracted_scopes: []
+    }.merge(options)
 
-  def build_description(name, store, options)
     json_objects = []
     meta = {
       format_version: 2
@@ -102,7 +105,13 @@ module SystemDescriptionFactory
     end
 
     json_objects << "\"meta\": #{meta.to_json}"
-    json = "{\n" + json_objects.join(",\n") + "\n}"
+    "{\n" + json_objects.join(",\n") + "\n}"
+  end
+
+  private
+
+  def build_description(name, store, options)
+    json = create_test_description_json(options)
     description = SystemDescription.from_json(name, json, store)
 
 
