@@ -40,11 +40,12 @@ class ConfigTask
     current_value = @config.get(key)
 
     if current_value == true || current_value == false
-      if (value_string == "true" || value_string == "on")
+      if value_string == "true" || value_string == "on"
         return true
-      end
-      if (value_string == "false" || value_string == "off")
+      elsif value_string == "false" || value_string == "off"
         return false
+      else
+        raise Machinery::Errors::MachineryError.new("The value '#{value_string}' is not valid for key '#{key}'.")
       end
     elsif current_value.kind_of?(Integer)
       return value_string.to_i
