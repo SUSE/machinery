@@ -5,4 +5,5 @@
 *.html_fragment
 *.gz
 machinery.1.md
+machinery_main.1.md
 machinery_main_scopes.1.md
