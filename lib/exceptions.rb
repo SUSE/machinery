@@ -17,6 +17,8 @@
 
 module Machinery
   module Errors
+    class IncompatibleHost < StandardError; end
+
     # Superclass for all "expected" errors in Machinery.
     # "Expected" errors are errors which are caused by the environment or input
     # data and are not caused by bugs in the machinery codebase.
