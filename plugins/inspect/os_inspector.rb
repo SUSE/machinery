@@ -39,6 +39,45 @@ class OsInspector < Inspector
     name.gsub(/\((i.86|x86_64|s390|ia64|ppc|arm).*\)/, "").strip
   end
 
+  # checks for additional version information like Beta or RC
+  def get_additional_version(system)
+    issue = read_file_if_exists(system, "/etc/issue")
+    special_version = issue.scan(/Beta\d+|RC\d|GMC\d*/).first
+
+    special_version ? " #{special_version.gsub(/[0-9]{1,2}/," \\0")}" : ""
+  end
+
+  def get_os(system)
+    # Use os-release file by default
+    os = get_os_from_os_release(system)
+
+    # Fall back to SuSE-release file
+    if !os
+      os = get_os_from_suse_release(system)
+    end
+
+    os
+  end
+
+  def inspect(system, description, options = {})
+    system.check_requirement("cat", "--version")
+
+    os = get_os(system)
+    if os
+      os.architecture = get_arch(system)
+      os.version += get_additional_version(system)
+      summary = "Found operating system '#{os.name}' version '#{os.version}'."
+    else
+      os = OsScope.new(name: nil, version: nil, architecture: nil)
+      summary = "Could not determine the operating system."
+    end
+
+    description.os = os
+    summary
+  end
+
+  private
+
   # check for freedesktop standard: /etc/os-release
   def get_os_from_os_release(system)
     os_release = read_file_if_exists(system, "/etc/os-release")
@@ -60,14 +99,6 @@ class OsInspector < Inspector
     )
   end
 
-  # checks for additional version information like Beta or RC
-  def get_additional_version(system)
-    issue = read_file_if_exists(system, "/etc/issue")
-    special_version = issue.scan(/Beta\d+|RC\d|GMC\d*/).first
-
-    special_version ? " #{special_version.gsub(/[0-9]{1,2}/," \\0")}" : ""
-  end
-
   # checks for old suse standard: /etc/SuSE-release
   def get_os_from_suse_release(system)
     suse_release = read_file_if_exists(system, "/etc/SuSE-release")
@@ -87,32 +118,8 @@ class OsInspector < Inspector
       end
     end
     if result["version"] && !patch.nil?
-        result["version"] = "#{result["version"]} SP#{patch}"
+      result["version"] = "#{result["version"]} SP#{patch}"
     end
     OsScope.new(result)
-  end
-
-  def inspect(system, description, options = {})
-    system.check_requirement("cat", "--version")
-
-    # Use os-release file by default
-    os = get_os_from_os_release(system)
-
-    # Fall back to SuSE-release file
-    if !os
-      os = get_os_from_suse_release(system)
-    end
-
-    if os
-      os.architecture = get_arch(system)
-      os.version += get_additional_version(system)
-      summary = "Found operating system '#{os.name}' version '#{os.version}'."
-    else
-      os = OsScope.new(name: nil, version: nil, architecture: nil)
-      summary = "Could not determine the operating system."
-    end
-
-    description.os = os
-    summary
   end
 end

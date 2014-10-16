@@ -49,32 +49,35 @@ describe OsInspector do
     expect(inspector.get_arch(system)).to eq(result)
   end
 
-  it "gets os info from os-release file" do
-    system = double
-    os_release_file = File.read("spec/data/os/openSUSE13.1/etc/os-release")
-    os_release_name = "/etc/os-release"
-    expect_read_file(inspector, system, os_release_name, os_release_file)
+  describe "#get_os" do
+    it "gets os info from os-release file" do
+      system = double
+      os_release_file = File.read("spec/data/os/openSUSE13.1/etc/os-release")
+      os_release_name = "/etc/os-release"
+      expect_read_file(inspector, system, os_release_name, os_release_file)
 
-    os = inspector.get_os_from_os_release(system)
+      os = inspector.get_os(system)
 
-    expect(os).to eq(
-      OsScope.new(
-        name: "openSUSE 13.1 (Bottle)",
-        version: "13.1 (Bottle)"
+      expect(os).to eq(
+        OsScope.new(
+          name: "openSUSE 13.1 (Bottle)",
+          version: "13.1 (Bottle)"
+        )
       )
-    )
-  end
+    end
 
-  it "gets os info from SuSE-release file" do
-    system = double
-    suse_release_file = File.read("spec/data/os/SLES11/etc/SuSE-release")
-    suse_release_name = "/etc/SuSE-release"
-    expect_read_file(inspector, system, suse_release_name, suse_release_file)
+    it "gets os info from SuSE-release file" do
+      system = double
+      suse_release_file = File.read("spec/data/os/SLES11/etc/SuSE-release")
+      suse_release_name = "/etc/SuSE-release"
+      expect_read_file(inspector, system, "/etc/os-release", "")
+      expect_read_file(inspector, system, suse_release_name, suse_release_file)
 
-    os = inspector.get_os_from_suse_release(system)
+      os = inspector.get_os(system)
 
-    expect(os.name).to eq "SUSE Linux Enterprise Server 11"
-    expect(os.version).to eq "11 SP3"
+      expect(os.name).to eq "SUSE Linux Enterprise Server 11"
+      expect(os.version).to eq "11 SP3"
+    end
   end
 
   describe ".inspect" do
