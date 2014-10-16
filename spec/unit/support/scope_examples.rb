@@ -15,15 +15,16 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-require_relative "../spec_helper"
+shared_examples "Scope" do
+  it "allows for setting the metadata" do
+    expect(scope).to respond_to(:set_metadata)
+  end
 
-describe "groups model" do
-  let(:scope) {
-    json = create_test_description_json(scopes: ["groups"])
-    GroupsScope.from_json(JSON.parse(json)["groups"])
-  }
+  it "knows about its scope name" do
+    expect(scope).to respond_to(:scope_name)
+  end
 
-  it_behaves_like "Scope"
-
-  specify { expect(scope.first).to be_a(Group) }
+  it "knows whether it's extractable" do
+    expect(scope).to respond_to(:is_extractable?)
+  end
 end

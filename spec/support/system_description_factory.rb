@@ -176,6 +176,13 @@ module SystemDescriptionFactory
       }
     ]
   EOF
+  EXAMPLE_SCOPES["os"] = <<-EOF
+    "os": {
+      "name": "openSUSE 13.1 (Bottle)",
+      "version": "13.1 (Bottle)",
+      "architecture": "x86_64"
+    }
+  EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF
     "packages": [
       {

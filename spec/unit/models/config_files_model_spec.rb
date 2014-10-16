@@ -18,11 +18,13 @@
 require_relative "../spec_helper"
 
 describe "config_files model" do
-  it "creates a ConfigFileList of ConfigFiles" do
-    description = create_test_description(scopes: ["config_files"])
+  let(:scope) {
+    json = create_test_description_json(scopes: ["config_files"])
+    ConfigFilesScope.from_json(JSON.parse(json)["config_files"])
+  }
 
-    expect(description.config_files).to be_a(ConfigFilesScope)
-    expect(description.config_files.files).to be_a(ConfigFileList)
-    expect(description.config_files.files.first).to be_a(ConfigFile)
-  end
+  it_behaves_like "Scope"
+
+  specify { expect(scope.files).to be_a(ConfigFileList) }
+  specify { expect(scope.files.first).to be_a(ConfigFile) }
 end

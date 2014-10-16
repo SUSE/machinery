@@ -18,11 +18,13 @@
 require_relative "../spec_helper"
 
 describe "changed_managed_files model" do
-  it "creates a ChangedManagedFileList of ChangedManagedFiles" do
-    description = create_test_description(scopes: ["changed_managed_files"])
+  let(:scope) {
+    json = create_test_description_json(scopes: ["changed_managed_files"])
+    ChangedManagedFilesScope.from_json(JSON.parse(json)["changed_managed_files"])
+  }
 
-    expect(description.changed_managed_files).to be_a(ChangedManagedFilesScope)
-    expect(description.changed_managed_files.files).to be_a(ChangedManagedFileList)
-    expect(description.changed_managed_files.files.first).to be_a(ChangedManagedFile)
-  end
+  it_behaves_like "Scope"
+
+  specify { expect(scope.files).to be_a(ChangedManagedFileList) }
+  specify { expect(scope.files.first).to be_a(ChangedManagedFile) }
 end

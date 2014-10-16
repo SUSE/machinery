@@ -18,11 +18,13 @@
 require_relative "../spec_helper"
 
 describe "unmanaged_files model" do
-  it "creates a UnmanagedFileList of ConfigFiles" do
-    description = create_test_description(scopes: ["unmanaged_files"])
+  let(:scope) {
+    json = create_test_description_json(scopes: ["unmanaged_files"])
+    UnmanagedFilesScope.from_json(JSON.parse(json)["unmanaged_files"])
+  }
 
-    expect(description.unmanaged_files).to be_a(UnmanagedFilesScope)
-    expect(description.unmanaged_files.files).to be_a(UnmanagedFileList)
-    expect(description.unmanaged_files.files.first).to be_a(UnmanagedFile)
-  end
+  it_behaves_like "Scope"
+
+  specify { expect(scope.files).to be_a(UnmanagedFileList) }
+  specify { expect(scope.files.first).to be_a(UnmanagedFile) }
 end

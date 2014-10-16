@@ -18,13 +18,15 @@
 require_relative "../spec_helper"
 
 describe "services model" do
-  it "creates a ServiceList of Services" do
-    description = create_test_description(scopes: ["services"])
+  let(:scope) {
+    json = create_test_description_json(scopes: ["services"])
+    ServicesScope.from_json(JSON.parse(json)["services"])
+  }
 
-    expect(description.services).to be_a(ServicesScope)
-    expect(description.services.services).to be_a(ServiceList)
-    expect(description.services.services.first).to be_a(Service)
-  end
+  it_behaves_like "Scope"
+
+  specify { expect(scope.services).to be_a(ServiceList) }
+  specify { expect(scope.services.first).to be_a(Service) }
 end
 
 describe ServicesScope do

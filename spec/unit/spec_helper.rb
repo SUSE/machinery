@@ -22,6 +22,7 @@ require File.expand_path('../../../lib/machinery', __FILE__)
 
 require_relative "../support/system_description_factory"
 require_relative "../support/machinery_output_silencer"
+Dir[File.join(Machinery::ROOT, "/spec/unit/support/*.rb")].each { |f| require f }
 
 bin_path = File.expand_path( "../../../bin/", __FILE__ )
 

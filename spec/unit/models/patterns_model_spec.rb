@@ -18,10 +18,12 @@
 require_relative "../spec_helper"
 
 describe "patterns model" do
-  it "creates a list of Patterns" do
-    description = create_test_description(scopes: ["patterns"])
+  let(:scope) {
+    json = create_test_description_json(scopes: ["patterns"])
+    PatternsScope.from_json(JSON.parse(json)["patterns"])
+  }
 
-    expect(description.patterns).to be_a(PatternsScope)
-    expect(description.patterns.first).to be_a(Pattern)
-  end
+  it_behaves_like "Scope"
+
+  specify { expect(scope.first).to be_a(Pattern) }
 end

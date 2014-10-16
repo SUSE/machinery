@@ -17,13 +17,11 @@
 
 require_relative "../spec_helper"
 
-describe "groups model" do
+describe "os model" do
   let(:scope) {
-    json = create_test_description_json(scopes: ["groups"])
-    GroupsScope.from_json(JSON.parse(json)["groups"])
+    json = create_test_description_json(scopes: ["os"])
+    OsScope.from_json(JSON.parse(json)["os"])
   }
 
   it_behaves_like "Scope"
-
-  specify { expect(scope.first).to be_a(Group) }
 end

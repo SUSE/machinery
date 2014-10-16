@@ -18,10 +18,12 @@
 require_relative "../spec_helper"
 
 describe "repositories model" do
-  it "creates a list of Repositories" do
-    description = create_test_description(scopes: ["repositories"])
+  let(:scope) {
+    json = create_test_description_json(scopes: ["repositories"])
+    RepositoriesScope.from_json(JSON.parse(json)["repositories"])
+  }
 
-    expect(description.repositories).to be_a(RepositoriesScope)
-    expect(description.repositories.first).to be_a(Repository)
-  end
+  it_behaves_like "Scope"
+
+  specify { expect(scope.first).to be_a(Repository) }
 end

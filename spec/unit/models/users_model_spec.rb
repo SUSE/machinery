@@ -18,10 +18,11 @@
 require_relative "../spec_helper"
 
 describe "users model" do
-  it "creates a list of Users" do
-    description = create_test_description(scopes: ["users"])
+  let(:description) { create_test_description(scopes: ["users"]) }
 
-    expect(description.users).to be_a(UsersScope)
-    expect(description.users.first).to be_a(User)
+  it_behaves_like "Scope" do
+    let(:scope) { description.users }
   end
+
+  specify { expect(description.users.first).to be_a(User) }
 end
