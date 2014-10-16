@@ -79,6 +79,31 @@ describe Machinery do
       expect(Machinery::is_int?(" 1")).to be(false)
       expect(Machinery::is_int?("")).to be(false)
     end
+  end
 
+  describe ".check_compatible_host" do
+    it "returns true on hosts that can run machinery" do
+      expect(LocalSystem).to receive(:os_object).and_return(OsOpenSuse13_1.new)
+
+      expect {
+        Machinery.check_compatible_host
+      }.not_to raise_error
+    end
+
+    it "raises Machinery::Errors::IncompatibleHost on hosts that can not run machinery" do
+      expect(LocalSystem).to receive(:os_object).and_return(OsSles11.new)
+
+      expect {
+        Machinery.check_compatible_host
+      }.to raise_error(Machinery::Errors::IncompatibleHost)
+    end
+
+    it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
+      expect(LocalSystem).to receive(:os_object).and_return(nil)
+
+      expect {
+        Machinery.check_compatible_host
+      }.to raise_error(Machinery::Errors::IncompatibleHost)
+    end
   end
 end

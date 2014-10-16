@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class Os
-  attr_reader :can_build, :name
+  attr_reader :can_build, :name, :can_run_machinery
 
   def self.descendants
     ObjectSpace.each_object(::Class).select { |klass| klass < self }
@@ -61,6 +61,7 @@ class OsSles12 < Os
     @module_required_by_package = {
       "python-glanceclient" => "Public Cloud Module"
     }
+    @can_run_machinery = true
   end
 end
 
@@ -68,5 +69,6 @@ class OsOpenSuse13_1 < Os
   def initialize
     @can_build = [OsSles11, OsOpenSuse13_1]
     @name = "openSUSE 13.1 (Bottle)"
+    @can_run_machinery = true
   end
 end

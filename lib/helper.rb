@@ -34,6 +34,22 @@ module Machinery
     end
   end
 
+  def self.check_compatible_host
+    begin
+      local_os = LocalSystem.os_object
+    rescue Machinery::Errors::SystemDescriptionError
+      local_os = nil
+    end
+
+    if !local_os || !local_os.can_run_machinery
+      message = "Running Machinery is not supported on this system.\n" \
+        "Check the 'Installation' section in the README.md for more information " \
+        "about the requirements."
+
+      raise(Machinery::Errors::IncompatibleHost.new(message))
+    end
+  end
+
   def self.check_build_compatible_host(system_description)
     if !LocalSystem.os_object.can_build?(system_description.os_object)
       message = "Building '#{system_description.os_object.name}' images is " \
