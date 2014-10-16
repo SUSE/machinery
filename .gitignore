@@ -4,8 +4,6 @@ Gemfile.lock
 Guardfile
 options-local.yml
 
-man/*.gz
-
 iso
 *.box
 box_state.yaml

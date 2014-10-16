@@ -3,8 +3,8 @@
 require "erb"
 
 @template_path = File.expand_path("../layout.html.erb", __FILE__)
-@fragment_path = File.expand_path("../machinery.1.html_fragment", __FILE__)
-@output_path = File.expand_path("../manual.html", __FILE__)
+@fragment_path = File.expand_path("../generator/machinery.1.html_fragment", __FILE__)
+@output_path = File.expand_path("../generator/manual.html", __FILE__)
 
 def man_html_fragment
   File.read(@fragment_path)
