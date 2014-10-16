@@ -20,8 +20,9 @@ For more information, [visit our website](http://machinery-project.org/).
 
 ## Installation
 
-Machinery is tested on [openSUSE13.1](http://en.opensuse.org/Portal:13.1).
-It may not work with other openSUSE versions, Linux distributions, or
+Machinery is tested and supported on [openSUSE13.1](http://en.opensuse.org/Portal:13.1)
+and SLES 12.
+It will not run on other openSUSE versions, Linux distributions, or
 operating systems.
 
 The easiest way to install Machinery is as an RPM from our
