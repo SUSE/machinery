@@ -14,7 +14,7 @@ of the text based on the intended audience.
 
 The man page is written in Markdown and contains:
 
-* a "main" file `machinery_main.1.md` which consists of an overview of the machinery command,
+* a "main" file `machinery_main_general.1.md` which consists of an overview of the machinery command,
   its global options and a brief description of all subcommands, and
 
 * its subcommands, stored in separate files each named `machinery-SUBCOMMAND.1.md`.
