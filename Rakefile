@@ -62,21 +62,21 @@ namespace :man_pages do
         basename $scope .md | sed -e 's/_/-/g'
         echo ""
         cat $scope
-      done > man/machinery_main_scopes.1.md
+      done > man/generated/machinery_main_scopes.1.md
     EOF
     system <<-EOF
-      cat man/machinery_main_general.1.md man/machinery_main_scopes.1.md \
+      cat man/machinery_main_general.1.md man/generated/machinery_main_scopes.1.md \
         man/machinery_main_usecases.1.md man/machinery-*.1.md \
-        man/machinery_footer.1.md  > man/machinery.1.md
+        man/machinery_footer.1.md  > man/generated/machinery.1.md
     EOF
-    system "sed -i '/<!--.*-->/d' man/machinery.1.md"
-    system "ronn man/machinery.1.md"
-    system "gzip -f man/*.1"
+    system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
+    system "ronn man/generated/machinery.1.md"
+    system "gzip -f man/generated/*.1"
   end
 
   desc 'Create web view of man page'
   task :web => ["man_pages:build"] do
-    system "ronn -f man/machinery.1.md"
+    system "ronn -f man/generated/machinery.1.md"
     system "man/generate_man"
   end
 end
