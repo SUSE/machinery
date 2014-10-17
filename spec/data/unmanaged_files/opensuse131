@@ -1968,8 +1968,6 @@
 
   * /mnt/unmanaged/remote-dir/ (remote_dir)
 
-  * /proc/sys/fs/binfmt_misc/ (remote_dir)
-
   * /remote-dir/ (remote_dir)
 
   * /root/.bash_history (file)

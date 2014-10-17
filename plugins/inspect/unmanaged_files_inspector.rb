@@ -218,8 +218,16 @@ class UnmanagedFilesInspector < Inspector
     final_file_store = "unmanaged_files"
 
 
-    ignore_list = [ "tmp", "var/tmp", "lost+found", "var/run", "var/lib/rpm",
-      ".snapshots", description.store.base_path.sub(/^\//, "")]
+    ignore_list = [
+      "tmp",
+      "var/tmp",
+      "lost+found",
+      "var/run",
+      "var/lib/rpm",
+      ".snapshots",
+      description.store.base_path.sub(/^\//, ""),
+      "proc"
+    ]
 
     # Information about users and groups are extracted by the according inspector
     ignore_list += [
@@ -252,6 +260,9 @@ class UnmanagedFilesInspector < Inspector
     excluded_files = []
     unmanaged_links = {}
     remote_dirs = mount_points.remote
+    ignore_list.each do |ignore|
+      remote_dirs.delete_if { |e| e.start_with?(File.join("/", ignore, "/")) }
+    end
     dirs_todo = [ "/" ]
     start = start_depth
     max = max_depth
