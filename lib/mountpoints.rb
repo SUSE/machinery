@@ -33,7 +33,7 @@ class MountPoints
   REMOTE_FILE_SYSTEMS = ["autofs", "cifs", "nfs", "nfs4"]
   LOCAL_FILE_SYSTEMS  = ["ext2", "ext3", "ext4", "reiserfs", "btrfs", "vfat", "xfs", "jfs"]
   def initialize(system)
-    @mounts = parse_mounts(system.cat_file("/proc/mounts"))
+    @mounts = parse_mounts(system.read_file("/proc/mounts"))
   end
 
   def remote

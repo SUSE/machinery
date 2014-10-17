@@ -54,6 +54,14 @@ class LocalSystem < System
     end
   end
 
+  # Reads a file from the System. Returns nil if it does not exist.
+  def read_file(file)
+    File.read(file)
+  rescue Errno::ENOENT
+    # File not found, return nil
+    return
+  end
+
   private
 
   def with_c_locale(&block)

@@ -36,8 +36,8 @@ EOF
 
   describe "#inspect" do
     it "return an empty list when /etc/passwd is missing" do
-      expect(system).to receive(:cat_file).with("/etc/passwd").and_return(nil)
-      expect(system).to receive(:cat_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
       summary = subject.inspect(system, description)
       expect(description.users).to be_empty
@@ -45,8 +45,8 @@ EOF
     end
 
     it "returns all attributes when /etc/shadow is present" do
-      expect(system).to receive(:cat_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:cat_file).with("/etc/shadow").and_return(shadow_content)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
+      expect(system).to receive(:read_file).with("/etc/shadow").and_return(shadow_content)
 
       expected = UsersScope.new([
         User.new(
@@ -85,8 +85,8 @@ EOF
     end
 
     it "it can deal with the NIS placeholder in /etc/passwd" do
-      expect(system).to receive(:cat_file).with("/etc/passwd").and_return("+::::::\n")
-      expect(system).to receive(:cat_file).with("/etc/shadow").and_return("+::0:0:0::::\n")
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return("+::::::\n")
+      expect(system).to receive(:read_file).with("/etc/shadow").and_return("+::0:0:0::::\n")
 
       expected = UsersScope.new([
         User.new(
@@ -110,8 +110,8 @@ EOF
     end
 
     it "returns all available attributes when /etc/shadow is missing" do
-      expect(system).to receive(:cat_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:cat_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
+      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
       expected = UsersScope.new([
         User.new(
@@ -141,8 +141,8 @@ EOF
     end
 
     it "returns sorted data" do
-      expect(system).to receive(:cat_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:cat_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
+      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
       subject.inspect(system, description)
       names = description.users.map(&:name)

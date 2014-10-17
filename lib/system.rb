@@ -26,6 +26,7 @@ class System
   abstract_method :run_command
   abstract_method :kiwi_describe
   abstract_method :retrieve_files
+  abstract_method :read_file
 
   def self.for(host)
     if host && host != "localhost"
@@ -76,16 +77,5 @@ class System
     script = File.read(File.join(Machinery::ROOT, "helpers", args.shift))
 
     run_command("bash", "-c", script, *args)
-  end
-
-  def cat_file(file)
-    run_command("cat", file, stdout: :capture)
-  rescue Cheetah::ExecutionFailed => e
-    if e.status == 1
-      # File not found, return nil
-      return
-    else
-      raise
-    end
   end
 end

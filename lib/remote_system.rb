@@ -99,4 +99,16 @@ class RemoteSystem < System
     )
     end
   end
+
+  # Reads a file from the System. Returns nil if it does not exist.
+  def read_file(file)
+    run_command("cat", file, stdout: :capture)
+  rescue Cheetah::ExecutionFailed => e
+    if e.status == 1
+      # File not found, return nil
+      return
+    else
+      raise
+    end
+  end
 end

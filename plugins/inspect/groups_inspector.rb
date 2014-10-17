@@ -17,7 +17,7 @@
 
 class GroupsInspector < Inspector
   def inspect(system, description, options = {})
-    group_content = system.cat_file("/etc/group")
+    group_content = system.read_file("/etc/group")
 
     groups = group_content ? parse_groups(group_content) : []
 

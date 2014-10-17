@@ -32,7 +32,7 @@ EOF
 
   describe "#inspect" do
     it "return an empty list when /etc/group is missing" do
-      expect(system).to receive(:cat_file).with("/etc/group").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/group").and_return(nil)
 
       summary = subject.inspect(system, description)
 
@@ -41,7 +41,7 @@ EOF
     end
 
     it "returns the groups" do
-      expect(system).to receive(:cat_file).with("/etc/group").and_return(group_content)
+      expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
       expected = GroupsScope.new([
         Group.new(
@@ -71,7 +71,7 @@ EOF
     end
 
     it "returns sorted data" do
-      expect(system).to receive(:cat_file).with("/etc/group").and_return(group_content)
+      expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
       subject.inspect(system, description)
       names = description.groups.map(&:name)

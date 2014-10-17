@@ -126,7 +126,7 @@ describe UnmanagedFilesInspector do
       ret_val="/dev/sda1 / ext4 rw,relatime,data=ordered 0 0"
       ret_val+="\nhost:/real-homes/tux /homes/tux nfs4 rw,relatime,vers=4.0 0 0" if add_files
 
-      expect(system).to receive(:cat_file).and_return(ret_val)
+      expect(system).to receive(:read_file).and_return(ret_val)
     end
 
     def expect_find_commands(system,add_files)

@@ -17,8 +17,8 @@
 
 class UsersInspector < Inspector
   def inspect(system, description, options = {})
-    passwd = system.cat_file("/etc/passwd")
-    shadow = system.cat_file("/etc/shadow")
+    passwd = system.read_file("/etc/passwd")
+    shadow = system.read_file("/etc/shadow")
 
     users = passwd ? parse_users(passwd, shadow) : []
 

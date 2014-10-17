@@ -18,6 +18,9 @@
 require_relative "spec_helper"
 
 describe LocalSystem do
+  include GivenFilesystemSpecHelpers
+  use_given_filesystem
+
   let(:local_system) { LocalSystem.new }
 
   describe ".os_object" do
@@ -72,6 +75,21 @@ describe LocalSystem do
       expect(Cheetah).to receive(:run).with("rsync",  "--chmod=go-rwx", "--files-from=-", "/", "/tmp",  :stdout => :capture, :stdin => "/foo\n/bar" )
 
       local_system.retrieve_files(["/foo", "/bar"], "/tmp")
+    end
+  end
+
+  describe "#read_file" do
+    it "returns the file content if the file exists" do
+      @existing_file = given_dummy_file
+      expect(
+        local_system.read_file(@existing_file)
+      ).to_not be_empty
+    end
+
+    it "returns nil if the file does not exist" do
+      expect(
+        local_system.read_file("/does_not_exist")
+      ).to be(nil)
     end
   end
 end
