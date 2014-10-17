@@ -86,7 +86,7 @@ EOF
     let(:stat_output) {
       <<-EOF
 644:root:root:0:0:/etc/apache2/default-server.conf
-644:root:root:0:0:/etc/apache2/listen.conf
+6644:root:root:0:0:/etc/apache2/listen.conf
 644:root:root:0:0:/etc/sysconfig/SuSEfirewall2.d/services/apache2
 4700:nobody:nobody:65534:65533:/etc/iscsi/iscsid.conf
 644:root:root:0:0:/usr/share/man/man1/time.1.gz
@@ -179,6 +179,7 @@ EOF
 
       apache_2 = md5_os.dup
       apache_2.name = "/etc/apache2/listen.conf"
+      apache_2.mode = "6644"
 
       apache_3 = md5_os.dup
       apache_3.name = "/etc/sysconfig/SuSEfirewall2.d/services/apache2"

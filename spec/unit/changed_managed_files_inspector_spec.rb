@@ -73,7 +73,7 @@ describe ChangedManagedFilesInspector do
               changes: ["mode", "md5", "user", "group"],
               user: "root",
               group: "root",
-              mode: "644",
+              mode: "6644",
           ),
           ChangedManagedFile.new(
               name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
