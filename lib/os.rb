@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class Os
-  attr_reader :can_build, :name, :can_run_machinery
+  attr_reader :can_build, :name
 
   def self.descendants
     ObjectSpace.each_object(::Class).select { |klass| klass < self }
@@ -44,6 +44,10 @@ class Os
     if @module_required_by_package
       return @module_required_by_package[package]
     end
+  end
+
+  def can_run_machinery?
+    @can_run_machinery
   end
 end
 

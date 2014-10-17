@@ -41,7 +41,7 @@ module Machinery
       local_os = nil
     end
 
-    if !local_os || !local_os.can_run_machinery
+    if !local_os || !local_os.can_run_machinery?
       message = "Running Machinery is not supported on this system.\n" \
         "Check the 'Installation' section in the README.md for more information " \
         "about the requirements."
