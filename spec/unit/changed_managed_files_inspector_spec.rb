@@ -37,6 +37,10 @@ describe ChangedManagedFilesInspector do
   }
 
   describe "#inspect" do
+    before(:each) do
+      subject.inspect(system, description)
+    end
+
     it "returns a list of all changed files" do
       expected_result = ChangedManagedFilesScope.new(
         extracted: false,
@@ -49,14 +53,17 @@ describe ChangedManagedFilesInspector do
               changes: ["md5"],
               user: "wwwrun",
               group: "wwwrun",
-              mode: "400",
+              mode: "400"
           ),
           ChangedManagedFile.new(
               name: "/etc/apache2/listen.conf",
               package_name: "hwinfo",
               package_version: "15.50",
               status: "changed",
-              changes: ["md5"]
+              changes: ["md5"],
+              user: "root",
+              group: "root",
+              mode: "644"
           ),
           ChangedManagedFile.new(
               name: "/etc/iscsi/iscsid.conf",
@@ -80,17 +87,24 @@ describe ChangedManagedFilesInspector do
               package_name: "hwinfo",
               package_version: "15.50",
               status: "changed",
-              changes: ["replaced"]
+              changes: ["replaced"],
+              user: "wwwrun",
+              group: "wwwrun",
+              mode: "400"
           )
         ])
       )
-      subject.inspect(system, description)
-
       expect(description["changed_managed_files"]).to eq(expected_result)
     end
 
+    it "returns schema compliant data" do
+      json_hash = JSON.parse(description.to_json)
+      expect {
+        SystemDescriptionValidator.new(description).validate_json(json_hash)
+      }.to_not raise_error
+    end
+
     it "returns sorted data" do
-      subject.inspect(system, description)
       names = description["changed_managed_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
