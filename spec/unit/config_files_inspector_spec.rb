@@ -86,9 +86,10 @@ EOF
     let(:stat_output) {
       <<-EOF
 644:root:root:0:0:/etc/apache2/default-server.conf
-644:root:root:0:0:/etc/apache2/listen.conf
+6644:root:root:0:0:/etc/apache2/listen.conf
 644:root:root:0:0:/etc/sysconfig/SuSEfirewall2.d/services/apache2
 4700:nobody:nobody:65534:65533:/etc/iscsi/iscsid.conf
+644:root:root:0:0:/usr/share/man/man1/time.1.gz
 EOF
     }
     let(:config_paths) {
@@ -178,6 +179,7 @@ EOF
 
       apache_2 = md5_os.dup
       apache_2.name = "/etc/apache2/listen.conf"
+      apache_2.mode = "6644"
 
       apache_3 = md5_os.dup
       apache_3.name = "/etc/sysconfig/SuSEfirewall2.d/services/apache2"
@@ -194,7 +196,10 @@ EOF
         package_name:    "apache2",
         package_version: "2.4.6",
         status:          "changed",
-        changes:         ["replaced"]
+        changes:         ["replaced"],
+        user:            "root",
+        group:           "root",
+        mode:            "644"
       )
 
       iscsi_1 = md5_os.dup
@@ -290,6 +295,20 @@ EOF
       inspector.inspect(system, description)
 
       expect(File.exists?(cfdir_file)).to be false
+    end
+
+    it "returns schema compliant data" do
+      system = double
+      expect_inspect_configfiles(system, true)
+
+      inspector = ConfigFilesInspector.new
+      inspector.inspect(system, description, extract_changed_config_files: true )
+
+      json_hash = JSON.parse(description.to_json)
+
+      expect {
+        SystemDescriptionValidator.new(description).validate_json(json_hash)
+      }.to_not raise_error
     end
 
     it "returns sorted data" do

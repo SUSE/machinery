@@ -76,7 +76,7 @@ describe UnmanagedFilesInspector do
         { name: "/usr/X11R6/x11_mydir/",
           size: 1000000, mode: "755", user: "root", group: "root", files: 13  },
         { name: "/usr/X11R6/x11_myfile",
-          size: 1024, mode: "644", user: "emil", group: "users" },
+          size: 1024, mode: "6644", user: "emil", group: "users" },
         { name: "/homes/tux/" },
       ]
       files = expected_data.files.map do |os|
@@ -362,6 +362,18 @@ describe UnmanagedFilesInspector do
       expect(summary).to include("Extracted #{expected_data.files.size} unmanaged files and trees")
       cfdir = description.file_store("unmanaged_files")
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
+    end
+
+    it "returns schema compliant data" do
+      system = double
+      expect_inspect_unmanaged(system, true, true)
+
+      subject.inspect(system, description, extract_unmanaged_files: true)
+
+      json_hash = JSON.parse(description.to_json)
+      expect {
+        SystemDescriptionValidator.new(description).validate_json(json_hash)
+      }.to_not raise_error
     end
   end
 
