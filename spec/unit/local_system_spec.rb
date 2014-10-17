@@ -92,4 +92,79 @@ describe LocalSystem do
       ).to be(nil)
     end
   end
+
+  describe ".validate_machinery_compatibility" do
+    it "returns true on hosts that can run machinery" do
+      expect(LocalSystem).to receive(:os_object).and_return(OsOpenSuse13_1.new)
+
+      expect {
+        LocalSystem.validate_machinery_compatibility
+      }.not_to raise_error
+    end
+
+    it "raises Machinery::Errors::IncompatibleHost on hosts that can not run machinery" do
+      expect(LocalSystem).to receive(:os_object).and_return(OsSles11.new)
+
+      expect {
+        LocalSystem.validate_machinery_compatibility
+      }.to raise_error(Machinery::Errors::IncompatibleHost)
+    end
+
+    it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
+      expect(LocalSystem).to receive(:os_object).and_return(nil)
+
+      expect {
+        LocalSystem.validate_machinery_compatibility
+      }.to raise_error(Machinery::Errors::IncompatibleHost)
+    end
+  end
+
+  describe ".validate_existence_of_package" do
+    it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
+      allow(LocalSystem).to receive(:os_object).and_return(Os.new)
+
+      package = "does_not_exist"
+      expect { LocalSystem.validate_existence_of_package(package) }.to raise_error(Machinery::Errors::MissingRequirement, /#{package}/)
+    end
+
+    it "doesn't raise an error if the package exists" do
+      expect { LocalSystem.validate_existence_of_package("bash") }.not_to raise_error
+    end
+
+    it "explains how to install a missing package from a module on SLES12" do
+      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+      allow(Cheetah).to receive(:run).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+
+      expect {
+        LocalSystem.validate_existence_of_package("python-glanceclient")
+      }.to raise_error(Machinery::Errors::MissingRequirement, /Public Cloud Module/)
+    end
+  end
+
+  describe ".validate_build_compatibility" do
+    before(:each) do
+      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+    end
+
+    # let us build a sles11 system which is unsupported on sle12 host
+    let(:system_description) {
+      create_test_description(json: <<-EOF)
+      {
+        "os": {
+        "name": "SUSE Linux Enterprise Server 11"
+        }
+      }
+      EOF
+    }
+
+    it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do
+      expect { LocalSystem.validate_build_compatibility(system_description) }.to raise_error(Machinery::Errors::BuildFailed, /#{system_description.os.name}/)
+    end
+
+    it "doesn't raise if host and image builds a valid combination" do
+      # let us build a sles12 system which is supported on sle12 host
+      system_description.os.name = "SUSE Linux Enterprise Server 12"
+      expect { LocalSystem.validate_build_compatibility(system_description) }.not_to raise_error
+    end
+  end
 end

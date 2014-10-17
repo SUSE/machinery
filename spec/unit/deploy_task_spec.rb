@@ -31,7 +31,7 @@ describe DeployTask do
 
   before(:each) do
     allow_any_instance_of(Kernel).to receive(:system)
-    allow(Machinery).to receive(:check_package)
+    allow(LocalSystem).to receive(:validate_existence_of_package)
     allow(Dir).to receive(:mktmpdir).and_return(tmp_image_dir)
     FakeFS::FileSystem.clone("spec/data/deploy/", "/")
   end
@@ -74,7 +74,7 @@ describe DeployTask do
     end
 
     it "checks if glance is missing" do
-      expect(Machinery).to receive(:check_package) { |*s|
+      expect(LocalSystem).to receive(:validate_existence_of_package) { |*s|
         expect(s).to include("python-glanceclient")
       }
       deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)

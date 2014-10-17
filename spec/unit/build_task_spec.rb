@@ -118,7 +118,7 @@ describe BuildTask do
     end
 
     it "throws an error if kiwi doesn't exist" do
-      allow(Machinery).to receive(:check_package).and_raise(Machinery::Errors::MissingRequirement.new("kiwi"))
+      allow(LocalSystem).to receive(:validate_existence_of_package).and_raise(Machinery::Errors::MissingRequirement.new("kiwi"))
       expect{
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::MissingRequirement, /kiwi/)

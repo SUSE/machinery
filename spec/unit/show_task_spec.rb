@@ -59,7 +59,7 @@ describe ShowTask, "#show" do
 
   it "opens the system description in the web browser" do
     expect(Html).to receive(:generate)
-    expect(Machinery).to receive(:check_package).with("xdg-utils")
+    expect(LocalSystem).to receive(:validate_existence_of_package).with("xdg-utils")
     html_path = SystemDescriptionStore.new.html_path(system_description.name)
     expect(Cheetah).to receive(:run).with("xdg-open", html_path)
 

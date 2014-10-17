@@ -17,9 +17,9 @@
 
 class BuildTask
   def build(system_description, output_path, options = {})
-    Machinery::check_build_compatible_host(system_description)
-    Machinery::check_package("kiwi")
-    Machinery::check_package("kiwi-desc-vmxboot")
+    LocalSystem.validate_build_compatibility(system_description)
+    LocalSystem.validate_existence_of_package("kiwi")
+    LocalSystem.validate_existence_of_package("kiwi-desc-vmxboot")
 
     tmp_config_dir = Dir.mktmpdir("machinery-config", "/tmp")
     tmp_image_dir = Dir.mktmpdir("machinery-image", "/tmp")

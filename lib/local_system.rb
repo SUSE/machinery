@@ -16,11 +16,54 @@
 # you may find current contact information at www.suse.com
 
 class LocalSystem < System
-  def self.os_object
-    description = SystemDescription.new("localhost")
-    inspector = OsInspector.new
-    inspector.inspect(System.for("localhost"), description)
-    description.os_object
+  class <<self
+    def os_object
+      description = SystemDescription.new("localhost")
+      inspector = OsInspector.new
+      inspector.inspect(System.for("localhost"), description)
+      description.os_object
+    end
+
+    def validate_existence_of_package(package)
+      begin
+        Cheetah.run("rpm", "-q", package)
+      rescue
+        needed_module = os_object.module_required_by_package(package)
+        if needed_module
+          raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}' from module '#{needed_module}'. You can install it as follows:\n" \
+            "If you haven't selected the module '#{needed_module}' before, run `yast2 scc` and choose 'Select Extensions' and activate '#{needed_module}'.\nRun `zypper install #{package}` to install the package."))
+        else
+          raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}'. You can install it by running `zypper install #{package}`"))
+        end
+      end
+    end
+
+    def validate_machinery_compatibility
+      begin
+        os = os_object
+      rescue Machinery::Errors::SystemDescriptionError
+        os = nil
+      end
+
+      if !os || !os.can_run_machinery?
+        message = "Running Machinery is not supported on this system.\n" \
+          "Check the 'Installation' section in the README.md for more information " \
+          "about the requirements."
+
+        raise(Machinery::Errors::IncompatibleHost.new(message))
+      end
+    end
+
+    def validate_build_compatibility(system_description)
+      if !os_object.can_build?(system_description.os_object)
+        message = "Building '#{system_description.os_object.name}' images is " \
+          "not supported on this distribution.\n" \
+          "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
+          "further information which build targets are supported."
+
+        raise(Machinery::Errors::BuildFailed.new(message))
+      end
+    end
   end
 
   def requires_root?

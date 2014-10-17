@@ -28,7 +28,7 @@ class ShowTask
 
   def show_html(description)
     begin
-      Machinery::check_package("xdg-utils")
+      LocalSystem.validate_existence_of_package("xdg-utils")
       Html.generate(description)
       html_path = SystemDescriptionStore.new.html_path(description.name)
       LoggedCheetah.run("xdg-open", html_path)

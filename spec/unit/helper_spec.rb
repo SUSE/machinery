@@ -18,53 +18,6 @@
 require_relative "spec_helper"
 
 describe Machinery do
-  describe ".check_package" do
-    it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
-      allow_any_instance_of(SystemDescription).to receive(:os_object).and_return(Os.new)
-      package = "does_not_exist"
-      expect { Machinery::check_package(package) }.to raise_error(Machinery::Errors::MissingRequirement, /#{package}/)
-    end
-
-    it "doesn't raise an error if the package exists" do
-      expect { Machinery::check_package("bash") }.not_to raise_error
-    end
-
-    it "explains how to install a missing package from a module on SLES12" do
-      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
-      allow(Cheetah).to receive(:run).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
-      expect {
-        Machinery::check_package("python-glanceclient")
-      }.to raise_error(Machinery::Errors::MissingRequirement, /Public Cloud Module/)
-     end
-  end
-
-  describe ".check_build_compatible_host" do
-    before(:each) do
-      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
-    end
-
-    # let us build a sles11 system which is unsupported on sle12 host
-    let(:system_description) {
-      create_test_description(json: <<-EOF)
-      {
-        "os": {
-        "name": "SUSE Linux Enterprise Server 11"
-        }
-      }
-      EOF
-    }
-
-    it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do
-      expect { Machinery::check_build_compatible_host(system_description) }.to raise_error(Machinery::Errors::BuildFailed, /#{system_description.os.name}/)
-    end
-
-    it "doesn't raise if host and image builds a valid combination" do
-      # let us build a sles12 system which is supported on sle12 host
-      system_description.os.name = "SUSE Linux Enterprise Server 12"
-      expect { Machinery::check_build_compatible_host(system_description) }.not_to raise_error
-    end
-  end
-
   describe ".is_int?" do
     it "returns true if the string only consists numbers" do
       expect(Machinery::is_int?("12345")).to be(true)
@@ -78,32 +31,6 @@ describe Machinery do
       expect(Machinery::is_int?("1 ")).to be(false)
       expect(Machinery::is_int?(" 1")).to be(false)
       expect(Machinery::is_int?("")).to be(false)
-    end
-  end
-
-  describe ".check_compatible_host" do
-    it "returns true on hosts that can run machinery" do
-      expect(LocalSystem).to receive(:os_object).and_return(OsOpenSuse13_1.new)
-
-      expect {
-        Machinery.check_compatible_host
-      }.not_to raise_error
-    end
-
-    it "raises Machinery::Errors::IncompatibleHost on hosts that can not run machinery" do
-      expect(LocalSystem).to receive(:os_object).and_return(OsSles11.new)
-
-      expect {
-        Machinery.check_compatible_host
-      }.to raise_error(Machinery::Errors::IncompatibleHost)
-    end
-
-    it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
-      expect(LocalSystem).to receive(:os_object).and_return(nil)
-
-      expect {
-        Machinery.check_compatible_host
-      }.to raise_error(Machinery::Errors::IncompatibleHost)
     end
   end
 end

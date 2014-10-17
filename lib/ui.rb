@@ -40,7 +40,7 @@ module Machinery
           ENV['PAGER'] = 'less'
           ENV['LESS'] = 'FSRX'
           begin
-            Machinery::check_package("less")
+            LocalSystem.validate_existence_of_package("less")
             write_output_to_pager(output)
           rescue Machinery::Errors::MissingRequirement
             Machinery::Ui.puts output

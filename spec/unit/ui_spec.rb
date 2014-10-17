@@ -46,7 +46,7 @@ describe Machinery::Ui do
       ENV['PAGER'] = nil
 
       allow($stdout).to receive(:tty?).and_return(true)
-      allow(Machinery).to receive(:check_package).
+      allow(LocalSystem).to receive(:validate_existence_of_package).
         and_raise(Machinery::Errors::MissingRequirement)
       expect(Machinery::Ui).to receive(:puts).with(output)
 
