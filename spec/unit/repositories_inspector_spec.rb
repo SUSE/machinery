@@ -37,6 +37,9 @@ describe RepositoriesInspector do
         <repo alias="nu_novell_com:SLES11-SP3-Pool" name="SLES11-SP3-Pool" type="rpm-md" enabled="1" autorefresh="1" gpgcheck="1">
         <url>https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials</url>
         </repo>
+        <repo alias="SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool" name="SLES12-Pool" type="rpm-md" priority="99" enabled="1" autorefresh="0" gpgcheck="1">
+        <url>https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e</url>
+        </repo>
         </repo-list>
         </stream>
       EOF
@@ -46,9 +49,10 @@ describe RepositoriesInspector do
 Weird zypper warning message which shouldn't mess up the repository parsing.
 #  | Alias               | Name                        | Enabled | Refresh | Priority | Type   | URI                                                                     | Service
 ---+---------------------+-----------------------------+---------+---------+----------+--------+-------------------------------------------------------------------------+--------
- 8 | repo-oss            | openSUSE-Oss                | Yes     | Yes     |   23     | yast2  | http://download.opensuse.org/distribution/13.1/repo/oss/                |
-10 | repo-update         | openSUSE-Update             | Yes     | Yes     |   47     | rpm-md | http://download.opensuse.org/update/13.1/                               |
-15 | nu_novell_com:SLES11-SP3-Pool                    | SLES11-SP3-Pool                                  | Yes     | Yes     |   99     | rpm-md | https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials             | nu_novell_com
+1 | repo-oss            | openSUSE-Oss                | Yes     | Yes     |   23     | yast2  | http://download.opensuse.org/distribution/13.1/repo/oss/                |
+2 | repo-update         | openSUSE-Update             | Yes     | Yes     |   47     | rpm-md | http://download.opensuse.org/update/13.1/                               |
+3 | nu_novell_com:SLES11-SP3-Pool                    | SLES11-SP3-Pool                                  | Yes     | Yes     |   99     | rpm-md | https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials             | nu_novell_com
+4 | SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool              | SLES12-Pool              | Yes     | No      |   99     | rpm-md | https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e                   | SUSE_Linux_Enterprise_Server_12_x86_64
       EOF
     }
     let(:expected_repo_list) {
@@ -65,7 +69,19 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           username: "d4c0246d79334fa59a9ffe625fffef1d",
           password: "0a0918c876ef4a1d9c352e5c47421235"
         ),
-          Repository.new(
+        Repository.new(
+          alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
+          name: "SLES12-Pool",
+          type: "rpm-md",
+          enabled: true,
+          autorefresh: false,
+          gpgcheck: true,
+          priority: 99,
+          url: "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e",
+          username: "SCC_d91435cca69a232114cf2e14aa830ad5",
+          password: "2fdcb7499fd46842"
+        ),
+        Repository.new(
           alias: "repo-oss",
           name: "openSUSE-Oss",
           type: "yast2",
@@ -87,11 +103,17 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
         )
       ])
     }
-    let(:credentials_directories) { "NCCcredentials\n" }
+    let(:credentials_directories) { "NCCcredentials\nSCCcredentials\n" }
     let(:ncc_credentials) {
       <<-EOF
 username=d4c0246d79334fa59a9ffe625fffef1d
 password=0a0918c876ef4a1d9c352e5c47421235
+      EOF
+    }
+    let(:scc_credentials) {
+      <<-EOF
+username=SCC_d91435cca69a232114cf2e14aa830ad5
+password=2fdcb7499fd46842
       EOF
     }
     let(:credential_dir) { "/etc/zypp/credentials.d/" }
@@ -131,10 +153,16 @@ password=0a0918c876ef4a1d9c352e5c47421235
         :stdout => :capture
       ).and_return(ncc_credentials)
 
+      expect(system).to receive(:run_command).with(
+        "cat",
+        "/etc/zypp/credentials.d/SCCcredentials",
+        :stdout => :capture
+      ).and_return(scc_credentials)
+
       inspector = RepositoriesInspector.new
       summary = inspector.inspect(system, description)
-      expect(description.repositories).to eq(expected_repo_list)
-      expect(summary).to include("Found 3 repositories")
+      expect(description.repositories).to match_array(expected_repo_list)
+      expect(summary).to include("Found 4 repositories")
     end
 
     it "returns an empty array if there are no repositories" do
@@ -194,6 +222,7 @@ password=0a0918c876ef4a1d9c352e5c47421235
       expect(system).to receive(:run_command) { zypper_output_detail }
       expect(system).to receive(:run_command) { credentials_directories }
       expect(system).to receive(:run_command) { ncc_credentials }
+      expect(system).to receive(:run_command) { scc_credentials }
 
       inspector = RepositoriesInspector.new
 
