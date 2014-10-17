@@ -7,3 +7,7 @@ Style/NegatedIf:
 
 Metrics/LineLength:
   Max: 100
+
+# spec/ specific settings
+Style/Blocks:
+  Enabled: false
