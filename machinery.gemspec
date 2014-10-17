@@ -20,7 +20,7 @@
 require File.expand_path("../lib/version", __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = "machinery"
+  s.name        = "machinery-tool"
   s.version     = Machinery::VERSION
   s.license     = "GPL-3.0"
   s.platform    = Gem::Platform::RUBY
@@ -31,7 +31,6 @@ Gem::Specification.new do |s|
   s.description = "Machinery is a systems management toolkit for Linux. It supports configuration discovery, system validation, and service migration. It's based on the idea of a universal system description."
 
   s.required_rubygems_version = ">= 1.3.6"
-  s.rubyforge_project         = "machinery"
 
   s.add_dependency "cheetah", ">=0.4.0"
   s.add_dependency "json", ">=1.8.0"
