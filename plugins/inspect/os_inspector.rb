@@ -38,18 +38,6 @@ class OsInspector < Inspector
     special_version ? " #{special_version.gsub(/[0-9]{1,2}/," \\0")}" : ""
   end
 
-  def get_os(system)
-    # Use os-release file by default
-    os = get_os_from_os_release(system)
-
-    # Fall back to SuSE-release file
-    if !os
-      os = get_os_from_suse_release(system)
-    end
-
-    os
-  end
-
   def inspect(system, description, _options = {})
     system.check_requirement("cat", "--version") if system.is_a?(RemoteSystem)
 
@@ -68,6 +56,18 @@ class OsInspector < Inspector
   end
 
   private
+
+  def get_os(system)
+    # Use os-release file by default
+    os = get_os_from_os_release(system)
+
+    # Fall back to SuSE-release file
+    if !os
+      os = get_os_from_suse_release(system)
+    end
+
+    os
+  end
 
   # check for freedesktop standard: /etc/os-release
   def get_os_from_os_release(system)

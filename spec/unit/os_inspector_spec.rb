@@ -40,12 +40,12 @@ describe OsInspector do
     end
   end
 
-  describe "#get_os" do
+  describe "#get_os_from_os_release" do
     it "gets os info from os-release file" do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/os-release",
         "/etc/os-release")
 
-      os = inspector.get_os(system)
+      os = inspector.send(:get_os_from_os_release, system)
 
       expect(os).to eq(
         OsScope.new(
@@ -54,11 +54,13 @@ describe OsInspector do
         )
       )
     end
+  end
 
+  describe "#get_os_from_suse_release" do
     it "gets os info from SuSE-release file" do
       FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
         "/etc/SuSE-release")
-      os = inspector.get_os(system)
+      os = inspector.send(:get_os_from_suse_release, system)
 
       expect(os.name).to eq "SUSE Linux Enterprise Server 11"
       expect(os.version).to eq "11 SP3"
