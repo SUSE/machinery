@@ -18,43 +18,32 @@
 require_relative "spec_helper"
 
 describe OsInspector do
+  include FakeFS::SpecHelpers
+
   let(:description) {
     SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
   }
+  let(:system) { LocalSystem.new }
   subject(:inspector) { OsInspector.new }
 
-  def expect_read_file(inspector, system, file, content)
-    expect(inspector).to receive(:read_file_if_exists).with(
-      system, file).and_return(content)
+  before(:each) do
+    Dir.mkdir("/etc")
   end
 
-  it "reads a file from the inspected system" do
-    system = double
-    result = "Welcome to openSUSE 13.1 \"Bottle\" - Kernel \r (\l)."
-    filename = "spec/data/os/openSUSE13.1/etc/issue"
+  describe "#get_arch" do
+    it "gets the architecture of the inspected system" do
+      result = "x86_64"
 
-    expect(system).to receive(:run_command).with(
-      "sh", "-c", "if [ -e #{filename} ]; then cat #{filename} ; fi",
-      :stdout => :capture).and_return(result)
-
-    expect(inspector.read_file_if_exists(system, filename)).to eq(result)
-  end
-
-  it "gets the architecture of the inspected system" do
-    system = double
-    result = "x86_64"
-
-    expect(system).to receive(:run_command).with(
-      "uname", "-m", :stdout => :capture).and_return(result)
-    expect(inspector.get_arch(system)).to eq(result)
+      expect(system).to receive(:run_command).with(
+        "uname", "-m", stdout: :capture).and_return(result)
+      expect(inspector.get_arch(system)).to eq(result)
+    end
   end
 
   describe "#get_os" do
     it "gets os info from os-release file" do
-      system = double
-      os_release_file = File.read("spec/data/os/openSUSE13.1/etc/os-release")
-      os_release_name = "/etc/os-release"
-      expect_read_file(inspector, system, os_release_name, os_release_file)
+      FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/os-release",
+        "/etc/os-release")
 
       os = inspector.get_os(system)
 
@@ -67,12 +56,8 @@ describe OsInspector do
     end
 
     it "gets os info from SuSE-release file" do
-      system = double
-      suse_release_file = File.read("spec/data/os/SLES11/etc/SuSE-release")
-      suse_release_name = "/etc/SuSE-release"
-      expect_read_file(inspector, system, "/etc/os-release", "")
-      expect_read_file(inspector, system, suse_release_name, suse_release_file)
-
+      FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
+        "/etc/SuSE-release")
       os = inspector.get_os(system)
 
       expect(os.name).to eq "SUSE Linux Enterprise Server 11"
@@ -81,17 +66,12 @@ describe OsInspector do
   end
 
   describe ".inspect" do
-
     it "returns data about the operation system on a system with os-release" do
-      system = double
-      os_release_file = File.read("spec/data/os/openSUSE13.1/etc/os-release")
-      os_release_name = "/etc/os-release"
-      issue_file = File.read("spec/data/os/openSUSE13.1/etc/issue")
-      issue_name = "/etc/issue"
+      FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/os-release",
+        "/etc/os-release")
+      FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/issue",
+        "/etc/issue")
 
-      expect(system).to receive(:check_requirement)
-      expect_read_file(inspector, system, os_release_name, os_release_file)
-      expect_read_file(inspector, system, issue_name, issue_file)
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
       summary = inspector.inspect(system, description)
@@ -107,14 +87,9 @@ describe OsInspector do
     end
 
     it "returns data about the operation system on a system with suse-release" do
-      system = double
-      suse_release_file = File.read("spec/data/os/SLES11/etc/SuSE-release")
-      suse_release_name = "/etc/SuSE-release"
+      FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
+        "/etc/SuSE-release")
 
-      expect(system).to receive(:check_requirement)
-      expect_read_file(inspector, system, "/etc/os-release", "")
-      expect_read_file(inspector, system, suse_release_name, suse_release_file)
-      expect_read_file(inspector, system, "/etc/issue", "")
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
       summary = inspector.inspect(system, description)
@@ -126,15 +101,11 @@ describe OsInspector do
     end
 
     it "returns data containing additional version information if available" do
-      system = double
-      os_release_file = File.read("spec/data/os/SLES12/etc/os-release")
-      os_release_name = "/etc/os-release"
-      issue_file = File.read("spec/data/os/SLES12/etc/issue")
-      issue_name = "/etc/issue"
+      FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/os-release",
+        "/etc/os-release")
+      FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/issue",
+        "/etc/issue")
 
-      expect(system).to receive(:check_requirement)
-      expect_read_file(inspector, system, os_release_name, os_release_file)
-      expect_read_file(inspector, system, issue_name, issue_file)
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
       inspector.inspect(system, description)
@@ -143,16 +114,11 @@ describe OsInspector do
     end
 
     it "returns correct data if additonal version information contains double digits" do
-      system = double
-      suse_release_file = File.read("spec/data/os/SLES11/etc/SuSE-release")
-      suse_release_name = "/etc/SuSE-release"
-      issue_file = File.read("spec/data/os/SLES11/etc/issue")
-      issue_name = "/etc/issue"
+      FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
+        "/etc/SuSE-release")
+      FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/issue",
+        "/etc/issue")
 
-      expect(system).to receive(:check_requirement)
-      expect_read_file(inspector, system, "/etc/os-release", "")
-      expect_read_file(inspector, system, suse_release_name, suse_release_file)
-      expect_read_file(inspector, system, issue_name, issue_file)
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
       inspector.inspect(system, description)
@@ -161,12 +127,6 @@ describe OsInspector do
     end
 
     it "returns data containing nil when the operation system cannot be determined" do
-      system = double
-
-      expect(system).to receive(:check_requirement)
-      expect_read_file(inspector, system, "/etc/os-release", "")
-      expect_read_file(inspector, system, "/etc/SuSE-release", "")
-
       inspector.inspect(system, description)
 
       expect(description.os.name).to eq nil

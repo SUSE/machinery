@@ -17,15 +17,6 @@
 
 #  Inspect name, version, and other attributes of the operating system
 class OsInspector < Inspector
-  # returns file content if file exists
-  # returns empty string if file does not exist
-  def read_file_if_exists(system, filename)
-    system.run_command(
-      "sh", "-c", "if [ -e #{filename} ]; then cat #{filename} ; fi",
-      :stdout => :capture
-    )
-  end
-
   # determines the architecture
   def get_arch(system)
     system.run_command("uname", "-m", :stdout => :capture).chomp
@@ -41,8 +32,8 @@ class OsInspector < Inspector
 
   # checks for additional version information like Beta or RC
   def get_additional_version(system)
-    issue = read_file_if_exists(system, "/etc/issue")
-    special_version = issue.scan(/Beta\d+|RC\d|GMC\d*/).first
+    issue = system.read_file("/etc/issue")
+    special_version = issue.scan(/Beta\d+|RC\d|GMC\d*/).first if issue
 
     special_version ? " #{special_version.gsub(/[0-9]{1,2}/," \\0")}" : ""
   end
@@ -59,8 +50,8 @@ class OsInspector < Inspector
     os
   end
 
-  def inspect(system, description, options = {})
-    system.check_requirement("cat", "--version")
+  def inspect(system, description, _options = {})
+    system.check_requirement("cat", "--version") if system.is_a?(RemoteSystem)
 
     os = get_os(system)
     if os
@@ -80,8 +71,8 @@ class OsInspector < Inspector
 
   # check for freedesktop standard: /etc/os-release
   def get_os_from_os_release(system)
-    os_release = read_file_if_exists(system, "/etc/os-release")
-    return nil if os_release.empty?
+    os_release = system.read_file("/etc/os-release")
+    return if !os_release
 
     result = Hash.new
     key_value_pairs = Hash[os_release.split("\n").map { |l| l.split("=") }]
@@ -101,8 +92,8 @@ class OsInspector < Inspector
 
   # checks for old suse standard: /etc/SuSE-release
   def get_os_from_suse_release(system)
-    suse_release = read_file_if_exists(system, "/etc/SuSE-release")
-    return nil if suse_release.empty?
+    suse_release = system.read_file("/etc/SuSE-release")
+    return if !suse_release
 
     result = Hash.new
     # name is always the first line in /etc/SuSE-release
