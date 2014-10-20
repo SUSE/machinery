@@ -77,5 +77,21 @@ describe RemoteSystem do
         remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
       end
     end
+
+    describe "#read_file" do
+      it "retrieves the content of the remote file" do
+        expect(remote_system).to receive(:run_command).and_return("foo")
+
+        expect(remote_system.read_file("/foo")).to eq("foo")
+      end
+
+      it "returns nil when the file does not exist" do
+        status = double(exitstatus: 1)
+        expect(remote_system).to receive(:run_command).
+          and_raise(Cheetah::ExecutionFailed.new(nil, status, nil, nil))
+
+        expect(remote_system.read_file("/foo")).to be_nil
+      end
+    end
   end
 end
