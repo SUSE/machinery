@@ -13,10 +13,10 @@
   <users group="root">
     <user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root"/>
   </users>
-  <repository type="yast2" priority="99">
+  <repository alias="openSUSE_13.1_OSS" type="yast2" priority="99">
     <source path="http://download.opensuse.org/distribution/13.1/repo/oss/"/>
   </repository>
-  <repository type="rpm-md" priority="99">
+  <repository alias="openSUSE_13.1_Updates" type="rpm-md" priority="99">
     <source path="http://download.opensuse.org/update/13.1/"/>
   </repository>
   <packages type="bootstrap">
