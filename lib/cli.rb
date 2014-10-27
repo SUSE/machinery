@@ -37,6 +37,14 @@ class Cli
 
   post do |global_options,command,options,args|
     if command.is_a?(GLI::Commands::Help) && !global_options[:version]
+
+      Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
+      if Machinery::Config.new.hints
+        Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints off'."
+      else
+        Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints on'."
+      end
+
       Hint.get_started
     end
   end
@@ -583,6 +591,10 @@ class Cli
 
       task = ConfigTask.new
       task.config(key, value)
+
+      if key == "hints" && !Machinery::Config.new.hints
+        Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints on'."
+      end
     end
   end
 end
