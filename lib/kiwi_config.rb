@@ -216,7 +216,7 @@ EOF
     if @system_description.repositories
       @system_description.repositories.each do |repo|
         # only use accessible repositories as source for kiwi build
-        parameters = { type: repo.type, priority: repo.priority }
+        parameters = { alias: repo.alias, type: repo.type, priority: repo.priority }
         if repo.username && repo.password
           parameters[:username] = repo.username
           parameters[:password] = repo.password

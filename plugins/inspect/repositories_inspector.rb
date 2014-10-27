@@ -63,9 +63,19 @@ class RepositoriesInspector < Inspector
       result = reps.map do |rep|
         pri_value = rep["priority"] ? rep["priority"].to_i : prio[rep["alias"]]
 
+        # NCC
         rep.at_xpath("./url").text.match(/\?credentials=(\w*)/)
         cred_value = $1
         if cred_value && credentials[cred_value]
+          username = credentials[cred_value][:username]
+          password = credentials[cred_value][:password]
+        end
+
+        # SCC
+        rep.at_xpath("./url").text.match(/(https:\/\/updates.suse.com\/SUSE\/)/)
+        scc_url = $1
+        cred_value = "SCCcredentials"
+        if scc_url && credentials[cred_value]
           username = credentials[cred_value][:username]
           password = credentials[cred_value][:password]
         end
