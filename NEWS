@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.0.1 - Tue Oct 28 16:24:16 CET 2014 - thardeck@suse.de
+
 * Added autofs to the remote file system filter
 
 ## Version 1.0.0 - Tue Oct 14 12:41:35 CEST 2014 - thardeck@suse.de
