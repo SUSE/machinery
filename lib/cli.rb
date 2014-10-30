@@ -54,7 +54,7 @@ class Cli
   def self.handle_error(e)
     case e
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
-        GLI::UnknownCommand, GLI::BadCommandLine
+        GLI::UnknownCommand, GLI::BadCommandLine, OptionParser::MissingArgument
       Machinery::Ui.error e.to_s + "\n\n"
       command = ARGV & @commands.keys.map(&:to_s)
       run(command << "--help")
