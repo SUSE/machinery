@@ -110,6 +110,19 @@ describe LocalSystem do
       }.to raise_error(Machinery::Errors::IncompatibleHost)
     end
 
+    it "lists all supported operating systems if the host is not supported" do
+      allow(LocalSystem).to receive(:os_object).and_return(OsSles11.new)
+
+      expect {
+        LocalSystem.validate_machinery_compatibility
+      }.to raise_error(Machinery::Errors::IncompatibleHost) do |error|
+        expect(error.to_s).to end_with(
+          ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
+            " openSUSE 13.2 (Harlequin)"
+        )
+      end
+    end
+
     it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
       expect(LocalSystem).to receive(:os_object).and_return(nil)
 

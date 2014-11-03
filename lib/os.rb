@@ -32,6 +32,10 @@ class Os
     raise Machinery::Errors::UnknownOs.new("Unknown OS: '#{os_name}'")
   end
 
+  def self.supported_host_systems
+    descendants.select { |os| os.new.can_run_machinery? }
+  end
+
   def can_build?(os)
     if os.is_a?(Class)
       return @can_build.include?(os)

@@ -64,6 +64,14 @@ describe Os do
     end
   end
 
+  describe ".supported_host_systems" do
+    it "provides classes of all operating systems which are supported" do
+      expect(Os.supported_host_systems).to match_array(
+        [OsSles12, OsOpenSuse13_1, OsOpenSuse13_2]
+      )
+    end
+  end
+
   it "returns list of subclasses" do
     expect(Os.descendants).to be_a(Array)
     expect(Os.descendants.count).to be >= 3
@@ -78,5 +86,4 @@ describe Os do
       Os.for("unknow OS name")
     }.to raise_error(Machinery::Errors::UnknownOs)
   end
-
 end
