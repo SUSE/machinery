@@ -76,3 +76,11 @@ class OsOpenSuse13_1 < Os
     @can_run_machinery = true
   end
 end
+
+class OsOpenSuse13_2 < Os
+  def initialize
+    @can_build = [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
+    @name = "openSUSE 13.2 (Harlequin)"
+    @can_run_machinery = true
+  end
+end
