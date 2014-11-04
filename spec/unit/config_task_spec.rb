@@ -22,6 +22,10 @@ describe ConfigTask do
   let(:config_task) { ConfigTask.new }
 
   describe "#config" do
+    before(:each) do
+      allow(Machinery::Ui).to receive(:puts)
+    end
+
     it "sets a bool config variable to false" do
       key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(true)

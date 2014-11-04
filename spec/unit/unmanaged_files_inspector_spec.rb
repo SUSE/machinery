@@ -94,6 +94,7 @@ describe UnmanagedFilesInspector do
     }
 
     before(:each) do
+      allow(Machinery::Ui).to receive(:warn)
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
       description.store.save(description)
     end
