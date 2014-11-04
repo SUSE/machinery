@@ -15,6 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "file_scope"
 
 class ConfigFile < Machinery::Object
 end
@@ -23,7 +24,7 @@ class ConfigFileList < Machinery::Array
   has_elements class: ConfigFile
 end
 
-class ConfigFilesScope < Machinery::Object
+class ConfigFilesScope < FileScope
   include Machinery::ScopeMixin
   has_property :files, class: ConfigFileList
 end
