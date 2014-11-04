@@ -110,7 +110,7 @@ class Cli
 
   def self.shift_arg(args, name)
     if !res = args.shift
-      raise GLI::BadCommandLine.new("Machinery was called with missing argument #{name}.")
+      raise GLI::BadCommandLine.new("You need to provide the required argument #{name}.")
     end
     res
   end
