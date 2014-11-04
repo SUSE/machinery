@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["SUSE"]
   s.email       = ["machinery@lists.suse.com"]
-  s.homepage    = "https://github.com/SUSE/machinery/"
+  s.homepage    = "http://machinery-project.org"
   s.summary     = "Systems management toolkit"
   s.description = "Machinery is a systems management toolkit for Linux. It supports configuration discovery, system validation, and service migration. It's based on the idea of a universal system description."
 
