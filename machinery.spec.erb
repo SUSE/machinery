@@ -26,7 +26,7 @@ Release:        0
 %define mod_weight 1
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  ruby-macros >= 1
+BuildRequires:  ruby-macros >= 5
 # libxml2-devel and libxslt-devel are needed to install Nokogiri.
 BuildRequires:  libxml2-devel
 BuildRequires:  libxslt-devel
@@ -112,6 +112,11 @@ export NOKOGIRI_USE_SYSTEM_LIBRARIES=1
 bundle install --standalone --local
 
 rm -rf vendor .bundle Gemfile Gemfile.lock
+
+# remove Nokogiri build logs to prevent the following RPMLint error:
+# E: file-contains-buildroot (Badness: 10000)
+rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/mkmf.log
+rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/gem_make.out
 
 popd
 
