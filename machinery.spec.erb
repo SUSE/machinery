@@ -113,6 +113,11 @@ bundle install --standalone --local
 
 rm -rf vendor .bundle Gemfile Gemfile.lock
 
+# remove Nokogiri build logs to prevent the following RPMLint error:
+# E: file-contains-buildroot (Badness: 10000)
+rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/mkmf.log
+rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/gem_make.out
+
 popd
 
 # Adapt the binary
