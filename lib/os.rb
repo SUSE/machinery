@@ -32,6 +32,10 @@ class Os
     raise Machinery::Errors::UnknownOs.new("Unknown OS: '#{os_name}'")
   end
 
+  def self.supported_host_systems
+    descendants.select { |os| os.new.can_run_machinery? }
+  end
+
   def can_build?(os)
     if os.is_a?(Class)
       return @can_build.include?(os)
@@ -73,6 +77,14 @@ class OsOpenSuse13_1 < Os
   def initialize
     @can_build = [OsSles11, OsOpenSuse13_1]
     @name = "openSUSE 13.1 (Bottle)"
+    @can_run_machinery = true
+  end
+end
+
+class OsOpenSuse13_2 < Os
+  def initialize
+    @can_build = [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
+    @name = "openSUSE 13.2 (Harlequin)"
     @can_run_machinery = true
   end
 end
