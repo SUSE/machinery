@@ -68,10 +68,11 @@ class Release
   def publish
     prepare
     finalize_news_file
-    commit
 
     # Build gem and send everything to IBS
     Rake::Task['osc:commit'].invoke
+
+    commit
   end
 
   # Calculates the next version number according to the release type (:major, :minor or :patch)
