@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.0.3 - Thu Nov 06 15:51:07 CET 2014 - thardeck@suse.de
+
+* update to version 1.0.3
 * remove nokogiri build log files during package creation
 
 ## Version 1.0.2 - Mon Nov 03 11:22:41 CET 2014 - aduffeck@suse.de
