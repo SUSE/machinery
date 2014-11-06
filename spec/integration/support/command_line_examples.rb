@@ -90,7 +90,7 @@ shared_examples "CLI" do
           "machinery build --image-dir=/tmp/",
           :as => "vagrant",
           :stdout => :capture
-        ) }.to raise_error(ExecutionFailed, /was called with missing argument/)
+        ) }.to raise_error(ExecutionFailed, /You need to provide the required argument/)
       end
     end
   end
