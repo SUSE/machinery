@@ -77,8 +77,13 @@ class SystemDescription < Machinery::Object
       entries = hash.map do |key, value|
         next if key == "meta"
 
-        class_name = "#{key.split("_").map(&:capitalize).join}Scope"
-        value_converted = Object.const_get(class_name).from_json(value)
+        if key == "os"
+          os = Os.for(value["name"])
+          value_converted = os.set_attributes(value)
+        else
+          class_name = "#{key.split("_").map(&:capitalize).join}Scope"
+          value_converted = Object.const_get(class_name).from_json(value)
+        end
 
         # Set metadata
         if hash["meta"] && hash["meta"][key]
@@ -175,11 +180,12 @@ class SystemDescription < Machinery::Object
   def os_object
     assert_scopes("os")
 
-    begin
-      Os.for(self.os.name)
-    rescue Machinery::Errors::UnknownOs => e
+    os_object = Os.for(self.os.name)
+    if os_object.is_a?(OsUnknown)
       raise Machinery::Errors::SystemDescriptionError.new(e)
     end
+
+    os_object
   end
 
   def missing_files(scope, file_list)

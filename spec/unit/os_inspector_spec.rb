@@ -48,7 +48,7 @@ describe OsInspector do
       os = inspector.send(:get_os_from_os_release, system)
 
       expect(os).to eq(
-        OsScope.new(
+        OsOpenSuse13_1.new(
           name: "openSUSE 13.1 (Bottle)",
           version: "13.1 (Bottle)"
         )
@@ -79,7 +79,7 @@ describe OsInspector do
       summary = inspector.inspect(system, description)
 
       expect(description.os).to eq(
-        OsScope.new(
+        OsOpenSuse13_1.new(
           name: "openSUSE 13.1 (Bottle)",
           version: "13.1 (Bottle)",
           architecture: "x86_64"
@@ -128,12 +128,10 @@ describe OsInspector do
       expect(description.os.version).to eq("11 SP3 Beta 10")
     end
 
-    it "returns data containing nil when the operation system cannot be determined" do
-      inspector.inspect(system, description)
-
-      expect(description.os.name).to eq nil
-      expect(description.os.version).to eq nil
-      expect(description.os.architecture).to eq nil
+    it "throws exception when the operation system cannot be determined" do
+      expect {
+        inspector.inspect(system, description)
+      }.to raise_error(Machinery::Errors::UnknownOs)
     end
   end
 end

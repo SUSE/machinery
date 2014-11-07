@@ -50,12 +50,17 @@ module Machinery
     attr_reader :attributes
 
     def initialize(attrs = {})
+      set_attributes(attrs)
+    end
+
+    def set_attributes(attrs)
       @attributes = attrs.inject({}) do |attributes, (key, value)|
         key = key.to_sym if key.respond_to?(:to_sym)
 
         attributes[key] = value
         attributes
       end
+      self
     end
 
     def ==(other)

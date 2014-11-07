@@ -92,8 +92,11 @@ describe Os do
   it "returns os object for os name string" do
     expect(Os.for("SUSE Linux Enterprise Server 12")).to be_a(OsSles12)
     expect(Os.for("openSUSE 13.1 (Bottle)")).to be_a(OsOpenSuse13_1)
-    expect {
-      Os.for("unknow OS name")
-    }.to raise_error(Machinery::Errors::UnknownOs)
+    expect(Os.for("unknown OS name")).to be_a(OsUnknown)
+  end
+
+  it "initializes name with canonical name" do
+    os_name = "SUSE Linux Enterprise Server 12"
+    expect(Os.for(os_name).name).to eq os_name
   end
 end
