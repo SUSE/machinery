@@ -129,8 +129,8 @@ task :release, [:type] do |task, args|
   release = Release.new(new_version)
 
   # Check syntax, git and CI state
-  Rake::Task['check:syntax'].invoke
   Rake::Task['check:committed'].invoke
+  Rake::Task['check:syntax'].invoke
   release.check
 
   release.publish
