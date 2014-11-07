@@ -62,7 +62,7 @@ class SystemDescription < Machinery::Object
       end
 
       begin
-        description = self.new(name, self.create_attrs(json_hash), store)
+        description = self.new(name, self.create_scopes(json_hash), store)
       rescue NameError
         raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
@@ -73,7 +73,7 @@ class SystemDescription < Machinery::Object
       description
     end
 
-    def create_attrs(hash)
+    def create_scopes(hash)
       entries = hash.map do |key, value|
         next if key == "meta"
 
