@@ -140,7 +140,7 @@ suseSetupProduct
 suseImportBuildKey
 suseConfig
 EOF
-    case @system_description.os_object
+    case @system_description.os
       when OsOpenSuse13_1
         boot = "vmxboot/suse-13.1"
         bootloader = "grub2"
@@ -153,7 +153,7 @@ EOF
       else
         raise Machinery::Errors::KiwiExportFailed.new(
           "Building is not possible because the operating system " \
-          "'#{@system_description.os_object.canonical_name}' is not supported."
+          "'#{@system_description.os.canonical_name}' is not supported."
         )
     end
 
@@ -194,7 +194,7 @@ EOF
     build_filter = YAML.load_file(File.join(
       Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
     )
-    filter = build_filter[@system_description.os_object.canonical_name] || []
+    filter = build_filter[@system_description.os.canonical_name] || []
 
     xml.packages(type: "bootstrap") do
       if @system_description.packages
@@ -309,7 +309,7 @@ EOF
   end
 
   def enable_dhcp(output_location)
-    case @system_description.os_object
+    case @system_description.os
       when OsSles11
         write_dhcp_network_config(output_location, "eth0")
       when OsSles12

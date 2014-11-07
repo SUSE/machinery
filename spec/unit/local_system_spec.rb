@@ -159,24 +159,29 @@ describe LocalSystem do
       allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
     end
 
-    # let us build a sles11 system which is unsupported on sle12 host
-    let(:system_description) {
-      create_test_description(json: <<-EOF)
-      {
-        "os": {
-        "name": "SUSE Linux Enterprise Server 11"
-        }
-      }
-      EOF
-    }
-
     it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do
+      # system which is unsupported to build on sle12 host
+      system_description = create_test_description(json: <<-EOF)
+        {
+          "os": {
+          "name": "SUSE Linux Enterprise Server 11"
+          }
+        }
+        EOF
+
       expect { LocalSystem.validate_build_compatibility(system_description) }.to raise_error(Machinery::Errors::BuildFailed, /#{system_description.os.name}/)
     end
 
     it "doesn't raise if host and image builds a valid combination" do
-      # let us build a sles12 system which is supported on sle12 host
-      system_description.os.name = "SUSE Linux Enterprise Server 12"
+      # system which is supported to build on sle12 host
+      system_description = create_test_description(json: <<-EOF)
+        {
+          "os": {
+          "name": "SUSE Linux Enterprise Server 12"
+          }
+        }
+        EOF
+
       expect { LocalSystem.validate_build_compatibility(system_description) }.not_to raise_error
     end
   end

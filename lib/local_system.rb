@@ -21,7 +21,7 @@ class LocalSystem < System
       description = SystemDescription.new("localhost")
       inspector = OsInspector.new
       inspector.inspect(System.for("localhost"), description)
-      description.os_object
+      description.os
     end
 
     def validate_existence_of_package(package)
@@ -56,8 +56,8 @@ class LocalSystem < System
     end
 
     def validate_build_compatibility(system_description)
-      if !os_object.can_build?(system_description.os_object)
-        message = "Building '#{system_description.os_object.canonical_name}' images is " \
+      if !os_object.can_build?(system_description.os)
+        message = "Building '#{system_description.os.canonical_name}' images is " \
           "not supported on this distribution.\n" \
           "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
           "further information which build targets are supported."

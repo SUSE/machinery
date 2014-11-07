@@ -177,17 +177,6 @@ class SystemDescription < Machinery::Object
     self[scope] && self[scope].is_extractable? && self[scope].extracted
   end
 
-  def os_object
-    assert_scopes("os")
-
-    os_object = Os.for(self.os.name)
-    if os_object.is_a?(OsUnknown)
-      raise Machinery::Errors::SystemDescriptionError.new(e)
-    end
-
-    os_object
-  end
-
   def missing_files(scope, file_list)
     file_list.map! { |file| File.join(file_store(scope), file) }
 
