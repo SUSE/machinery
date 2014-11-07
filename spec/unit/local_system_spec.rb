@@ -23,7 +23,7 @@ describe LocalSystem do
 
   let(:local_system) { LocalSystem.new }
 
-  describe ".os_object" do
+  describe ".os" do
     before(:each) do
       expect_any_instance_of(OsInspector).to receive(:inspect) do |instance, system, description|
         system_description = create_test_description(json: <<-EOF)
@@ -38,7 +38,7 @@ describe LocalSystem do
     end
 
     it "returns os object for local host" do
-      expect(LocalSystem.os_object).to be_a(OsSles12)
+      expect(LocalSystem.os).to be_a(OsSles12)
     end
   end
 
@@ -95,7 +95,7 @@ describe LocalSystem do
 
   describe ".validate_machinery_compatibility" do
     it "returns true on hosts that can run machinery" do
-      allow(LocalSystem).to receive(:os_object).and_return(OsOpenSuse13_1.new)
+      allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
 
       expect {
         LocalSystem.validate_machinery_compatibility
@@ -103,7 +103,7 @@ describe LocalSystem do
     end
 
     it "raises Machinery::Errors::IncompatibleHost on hosts that can not run machinery" do
-      allow(LocalSystem).to receive(:os_object).and_return(OsSles11.new)
+      allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
 
       expect {
         LocalSystem.validate_machinery_compatibility
@@ -111,7 +111,7 @@ describe LocalSystem do
     end
 
     it "lists all supported operating systems if the host is not supported" do
-      allow(LocalSystem).to receive(:os_object).and_return(OsSles11.new)
+      allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
 
       expect {
         LocalSystem.validate_machinery_compatibility
@@ -124,7 +124,7 @@ describe LocalSystem do
     end
 
     it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
-      allow(LocalSystem).to receive(:os_object).and_return(nil)
+      allow(LocalSystem).to receive(:os).and_return(OsUnknown.new)
 
       expect {
         LocalSystem.validate_machinery_compatibility
@@ -134,7 +134,7 @@ describe LocalSystem do
 
   describe ".validate_existence_of_package" do
     it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
-      allow(LocalSystem).to receive(:os_object).and_return(Os.new)
+      allow(LocalSystem).to receive(:os).and_return(Os.new)
 
       package = "does_not_exist"
       expect { LocalSystem.validate_existence_of_package(package) }.to raise_error(Machinery::Errors::MissingRequirement, /#{package}/)
@@ -145,7 +145,7 @@ describe LocalSystem do
     end
 
     it "explains how to install a missing package from a module on SLES12" do
-      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
       allow(Cheetah).to receive(:run).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect {
@@ -156,7 +156,7 @@ describe LocalSystem do
 
   describe ".validate_build_compatibility" do
     before(:each) do
-      allow(LocalSystem).to receive(:os_object).and_return(OsSles12.new)
+      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
     end
 
     it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do

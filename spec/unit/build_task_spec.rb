@@ -57,7 +57,7 @@ describe BuildTask do
   let(:image_file) { system_description.name + ".x86_64-0.0.1.qcow2" }
 
   before(:each) {
-    allow(LocalSystem).to receive(:os_object).and_return(OsOpenSuse13_1.new)
+    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
 
     allow(Cheetah).to receive(:run)
 

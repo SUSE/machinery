@@ -25,9 +25,9 @@ class Os < Machinery::Object
   def self.for(os_name)
     descendants.each do |os_class|
       if os_name == os_class.canonical_name
-        os_object = os_class.new
-        os_object.name = os_name
-        return os_object
+        os = os_class.new
+        os.name = os_name
+        return os
       end
     end
     return OsUnknown.new
