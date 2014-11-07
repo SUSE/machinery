@@ -46,7 +46,7 @@ class LocalSystem < System
       end
 
       if !os || !os.can_run_machinery?
-        supported_oses = Os.supported_host_systems.map { |o| o.new.name }.
+        supported_oses = Os.supported_host_systems.map { |o| o.canonical_name }.
           sort.join(", ")
         message = "Running Machinery is not supported on this system.\n" \
           "Supported operating systems are: #{supported_oses}"
@@ -57,7 +57,7 @@ class LocalSystem < System
 
     def validate_build_compatibility(system_description)
       if !os_object.can_build?(system_description.os_object)
-        message = "Building '#{system_description.os_object.name}' images is " \
+        message = "Building '#{system_description.os_object.canonical_name}' images is " \
           "not supported on this distribution.\n" \
           "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
           "further information which build targets are supported."

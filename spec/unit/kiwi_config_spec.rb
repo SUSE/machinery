@@ -435,9 +435,12 @@ describe KiwiConfig do
   describe "#initialize" do
     it "raises exception when OS is not supported for building" do
       class OsOpenSuse99_1 < Os
-        def initialize
-          @can_build = []
-          @name = "openSUSE 99.1 (Repetition)"
+        def self.canonical_name
+          "openSUSE 99.1 (Repetition)"
+        end
+
+        def self.can_run_machinery?
+          false
         end
       end
 

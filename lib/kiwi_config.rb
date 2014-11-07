@@ -153,7 +153,7 @@ EOF
       else
         raise Machinery::Errors::KiwiExportFailed.new(
           "Building is not possible because the operating system " \
-          "'#{@system_description.os_object.name}' is not supported."
+          "'#{@system_description.os_object.canonical_name}' is not supported."
         )
     end
 
@@ -194,7 +194,7 @@ EOF
     build_filter = YAML.load_file(File.join(
       Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
     )
-    filter = build_filter[@system_description.os_object.name] || []
+    filter = build_filter[@system_description.os_object.canonical_name] || []
 
     xml.packages(type: "bootstrap") do
       if @system_description.packages
