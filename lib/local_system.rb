@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class LocalSystem < System
-  class <<self
+  class << self
     def os_object
       description = SystemDescription.new("localhost")
       inspector = OsInspector.new
