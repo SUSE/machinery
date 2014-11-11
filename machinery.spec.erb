@@ -31,7 +31,7 @@ BuildRequires:  ruby-macros >= 5
 BuildRequires:  libxml2-devel
 BuildRequires:  libxslt-devel
 BuildRequires:  fdupes
-%if %suse_version == 1315
+%if %suse_version > 1310
 %define rb_build_versions %{rb_default_ruby}
 BuildRequires:  %{rubydevel}
 BuildRequires:  %{rubygem gem2rpm}
