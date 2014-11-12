@@ -23,7 +23,7 @@ module Machinery
         @property_classes[name.to_sym] = options[:class]
       end
 
-      def from_json(json)
+      def hash_from_json(json)
         return nil unless json
 
         entries = json.map do |key, value|
@@ -43,6 +43,11 @@ module Machinery
           [key, value_converted]
         end
 
+        entries
+      end
+
+      def from_json(json)
+        entries = hash_from_json(json)
         new(Hash[entries])
       end
     end

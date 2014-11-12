@@ -33,6 +33,12 @@ class Os < Machinery::Object
     return OsUnknown.new
   end
 
+  def self.from_json(json)
+    scope_object = self.for(json["name"])
+    scope_object = scope_object.set_attributes(self.hash_from_json(json))
+    scope_object
+  end
+
   def scope_name
     "os"
   end

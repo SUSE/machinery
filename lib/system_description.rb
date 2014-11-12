@@ -74,26 +74,21 @@ class SystemDescription < Machinery::Object
     end
 
     def create_scopes(hash)
-      entries = hash.map do |key, value|
-        next if key == "meta"
+      scopes = hash.map do |scope_name, scope_json|
+        next if scope_name == "meta"
 
-        if key == "os"
-          os = Os.for(value["name"])
-          value_converted = os.set_attributes(value)
-        else
-          class_name = "#{key.split("_").map(&:capitalize).join}Scope"
-          value_converted = Object.const_get(class_name).from_json(value)
-        end
+        scope_class = Machinery::ScopeMixin.class_for(scope_name)
+        scope_object = scope_class.from_json(scope_json)
 
         # Set metadata
-        if hash["meta"] && hash["meta"][key]
-          value_converted.meta = Machinery::Object.from_json(hash["meta"][key])
+        if hash["meta"] && hash["meta"][scope_name]
+          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
         end
 
-        [key, value_converted]
+        [scope_name, scope_object]
       end.compact
 
-      Hash[entries]
+      Hash[scopes]
     end
 
     private
