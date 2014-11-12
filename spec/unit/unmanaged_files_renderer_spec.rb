@@ -22,7 +22,7 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "extracted": true,
+        "extracted": false,
         "files": [
           {
             "name": "/boot/backup_mbr",
@@ -97,6 +97,11 @@ describe UnmanagedFilesRenderer do
     it "prints a file without meta data if non exists" do
       actual_output = UnmanagedFilesRenderer.new.render(description_without_meta)
       expect(actual_output).to include("/boot/backup_mbr (file)")
+    end
+
+    it "shows the extraction status" do
+      actual_output = UnmanagedFilesRenderer.new.render(description_without_meta)
+      expect(actual_output).to include("Files extracted: no")
     end
 
     it "prints a link with meta data" do
