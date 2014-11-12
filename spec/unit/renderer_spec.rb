@@ -172,17 +172,6 @@ EOF
 
       expect(renderer.render(description)).to include("  line 1\n  line 2")
     end
-
-    it "appends the extraction state to extractable scopes" do
-      allow(renderer).to receive(:scope).and_return("config_files")
-      extracted_description = create_test_description(extracted_scopes: ["config_files"])
-      unextracted_description = create_test_description(scopes: ["config_files"])
-
-      expect(renderer.render(extracted_description)).to \
-        include("# Bar baz (extracted) [example.com]")
-      expect(renderer.render(unextracted_description)).to \
-        include("# Bar baz (not extracted) [example.com]")
-    end
   end
 
   describe "#render_comparison" do

@@ -68,6 +68,12 @@ describe ConfigFilesRenderer do
       expect(output).to include("md5")
     end
 
+    it "shows the extraction status" do
+      output = subject.render(system_description)
+
+      expect(output).to include("Files extracted: yes")
+    end
+
     describe "with the --show-diff option" do
       include FakeFS::SpecHelpers
 

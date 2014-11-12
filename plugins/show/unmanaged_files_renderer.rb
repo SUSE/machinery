@@ -20,6 +20,11 @@ class UnmanagedFilesRenderer < Renderer
     return unless @system_description["unmanaged_files"]
 
     list do
+      file_status = @system_description["unmanaged_files"].extracted
+      if !file_status.nil?
+        puts "Files extracted: #{file_status ? "yes" : "no"}"
+      end
+
       @system_description["unmanaged_files"].files.each do |p|
         if p.user && p.group
           item "#{p.name} (#{p.type})" do

@@ -19,19 +19,26 @@ class ChangedManagedFilesRenderer < Renderer
   def do_render
     return unless @system_description["changed_managed_files"]
 
-    files, errors = @system_description["changed_managed_files"].files.partition do |file|
-      file.status != "error"
+    if  @system_description["changed_managed_files"].files
+      files, errors = @system_description["changed_managed_files"].files.partition do |file|
+        file.status != "error"
+      end
     end
 
-    if !files.empty?
-      list do
+    list do
+      file_status = @system_description["changed_managed_files"].extracted
+      if !file_status.nil?
+        puts "Files extracted: #{file_status ? "yes" : "no"}"
+      end
+
+      if files && !files.empty?
         files.each do |p|
           item "#{p.name} (#{p.changes.join(", ")})"
         end
       end
     end
 
-    if !errors.empty?
+    if errors && !errors.empty?
       list("Errors") do
         errors.each do |p|
           item "#{p.name}: #{p.error_message}"

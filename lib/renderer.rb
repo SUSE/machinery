@@ -84,13 +84,6 @@ class Renderer
       header = display_name
       meta = system_description[scope].meta
 
-      if system_description[scope].is_extractable?
-        if @system_description.scope_extracted?(scope)
-          header += " (extracted)"
-        else
-          header += " (not extracted)"
-        end
-      end
       if meta
           header += " [#{meta.hostname}]"
           date = Time.parse(meta.modified).localtime

@@ -22,7 +22,7 @@ describe ChangedManagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "changed_managed_files": {
-        "extracted": true,
+        "extracted": false,
         "files": [
           {
             "name": "/deleted/file",
@@ -68,6 +68,10 @@ describe ChangedManagedFilesRenderer do
     it "prints a list of managed files" do
       expect(@output).to match(/\/deleted\/file.*deleted/)
       expect(@output).to match(/\/changed\/file.*md5, mode/)
+    end
+
+    it "shows the extraction status" do
+      expect(@output).to include("Files extracted: no")
     end
 
     it "prints errored files as a separate list" do
