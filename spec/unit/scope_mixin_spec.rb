@@ -46,6 +46,17 @@ describe Machinery::ScopeMixin do
     example { expect(MoreComplexScope.new.scope_name).to eq("more_complex") }
   end
 
+  it "lists all scopes" do
+    expect(Machinery::ScopeMixin.all_scopes).to include(SimpleScope)
+    expect(Machinery::ScopeMixin.all_scopes).to include(MoreComplexScope)
+  end
+
+  it "lists only scopes" do
+    Machinery::ScopeMixin.all_scopes.each do |scope|
+      expect(scope.included_modules).to include(Machinery::ScopeMixin)
+    end
+  end
+
   describe "#is_extractable?" do
     before(:each) do
       stub_const("SystemDescription::EXTRACTABLE_SCOPES", ["simple"])
@@ -53,5 +64,15 @@ describe Machinery::ScopeMixin do
 
     example { expect(subject.is_extractable?).to be(true) }
     example { expect(MoreComplexScope.new.is_extractable?).to be(false) }
+  end
+
+  describe "#class_for" do
+    it "returns simple scope" do
+      expect(Machinery::ScopeMixin.class_for("simple")).to be(SimpleScope)
+    end
+
+    it "returns complex scope" do
+      expect(Machinery::ScopeMixin.class_for("more_complex")).to be(MoreComplexScope)
+    end
   end
 end
