@@ -80,7 +80,9 @@ class RemoteSystem < System
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
       "Could not establish SSH connection to host '#{host}'. Please make sure that " \
-      "you can connect non-interactively as root, e.g. using ssh-agent."
+      "you can connect non-interactively as root, e.g. using ssh-agent.\n\n" \
+      "To copy your default ssh key to the machine run:\n" \
+      "ssh-copy-id root@#{host}"
     )
   end
 
