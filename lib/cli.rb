@@ -209,6 +209,7 @@ class Cli
         when "config-file-diffs"
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
+          Hint.show_analyze_data(name: name)
         else
           raise Machinery::Errors::InvalidCommandLine.new(
             "The operation '#{options[:operation]}' is not supported. " \
