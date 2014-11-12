@@ -46,7 +46,7 @@ module Machinery
 
     def scope_name
       scope = self.class.name.match(/^(.*)Scope$/)[1]
-      return scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+      scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
     end
 
     def is_extractable?

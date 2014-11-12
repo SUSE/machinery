@@ -62,7 +62,7 @@ class SystemDescription < Machinery::Object
       end
 
       begin
-        description = self.new(name, self.create_scopes(json_hash), store)
+        description = self.new(name, create_scopes(json_hash), store)
       rescue NameError
         raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
