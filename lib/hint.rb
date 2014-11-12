@@ -24,6 +24,11 @@ class Hint
     output "To show the data of the system you just inspected run:\n#{$0} show #{options[:name]}"
   end
 
+  def self.show_analyze_data(options)
+    output "To show the config file diffs you just created run:\n" \
+      "#{$0} show --scope config-files --show-diffs #{options[:name]}"
+  end
+
   def self.do_complete_inspection(options)
     output "To do a full inspection containing all scopes and to extract files run:\n" \
      "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
