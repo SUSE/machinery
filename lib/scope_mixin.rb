@@ -27,12 +27,8 @@ module Machinery
     end
 
     def scope_name
-      if self.class < Os
-        return "os"
-      else
-        scope = self.class.name.match(/^(.*)Scope$/)[1]
-        return scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
-      end
+      scope = self.class.name.match(/^(.*)Scope$/)[1]
+      return scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
     end
 
     def is_extractable?

@@ -24,4 +24,18 @@ describe "os model" do
   }
 
   it_behaves_like "Scope"
+
+  describe "has correct scope name" do
+    it "constructed with factory" do
+      expect(Os.for("some os").scope_name).to eq("os")
+    end
+
+    it "base class" do
+      expect(Os.new.scope_name).to eq("os")
+    end
+
+    it "sub class" do
+      expect(OsSles12.new.scope_name).to eq("os")
+    end
+  end
 end

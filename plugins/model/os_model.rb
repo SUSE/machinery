@@ -33,6 +33,10 @@ class Os < Machinery::Object
     return OsUnknown.new
   end
 
+  def scope_name
+    "os"
+  end
+
   def self.buildable_systems
     []
   end
