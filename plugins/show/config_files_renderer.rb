@@ -32,13 +32,20 @@ class ConfigFilesRenderer < Renderer
     end
 
     list do
-      @system_description["config_files"].files.each do |p|
-        if @options[:show_diffs] && p.changes.include?("md5")
-          item "#{p.name} (#{p.changes.join(", ")})" do
-            render_diff_file(diffs_dir, p.name)
+      file_status = @system_description["config_files"].extracted
+      if !file_status.nil?
+        puts "Files extracted: #{file_status ? "yes" : "no"}"
+      end
+      files = @system_description["config_files"].files
+      if files
+        files.each do |p|
+          if @options[:show_diffs] && p.changes.include?("md5")
+            item "#{p.name} (#{p.changes.join(", ")})" do
+              render_diff_file(diffs_dir, p.name)
+            end
+          else
+            item ("#{p.name} (#{p.changes.join(", ")})")
           end
-        else
-          item ("#{p.name} (#{p.changes.join(", ")})")
         end
       end
     end
