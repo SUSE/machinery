@@ -38,7 +38,7 @@ describe "match_machinery_show_scope matcher" do
 
   it "matches output with timestamps" do
     expected = <<-EOT
-      # Changed configuration files (extracted) [192.168.0.10] (2014-02-24 16:13:09)
+      # Changed configuration files [192.168.0.10] (2014-02-24 16:13:09)
 
       - /etc/crontab (md5)
         Diff:
@@ -48,7 +48,7 @@ describe "match_machinery_show_scope matcher" do
         +-*/15 * * * *   root  echo config_files_integration_test
     EOT
     actual = <<-EOT
-      # Changed configuration files (extracted) [192.168.0.10] (2014-02-24 16:13:09)
+      # Changed configuration files [192.168.0.10] (2014-02-24 16:13:09)
 
       - /etc/crontab (md5)
         Diff:
@@ -60,23 +60,6 @@ describe "match_machinery_show_scope matcher" do
 
     expect(actual).to match_machinery_show_scope(expected)
   end
-
-  it "matches output with extracted state" do
-    expected = <<-EOT
-      # Changed configuration files (extracted) [192.168.0.10] (2014-02-24 16:13:09)
-
-      - /etc/crontab
-    EOT
-    actual = <<-EOT
-      # Changed configuration files (not extracted) [192.168.0.10] (2014-02-24 16:13:09)
-
-      - /etc/crontab (md5)
-    EOT
-
-    expect(actual).to_not match_machinery_show_scope(expected)
-  end
-
-
 
   it "matches incorrect show output" do
     expected_output = <<-EOT
