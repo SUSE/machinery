@@ -1,0 +1,10 @@
+Documentation for defined boxes
+
+base_opensuse13.2_kvm:
+
+  OS: openSUSE 13.2 (64bit)
+  Disk size: 20GB
+  Memory: 1024MB
+  Credentials:
+    User: root, password: vagrant
+    User: vagrant, password: vagrant
