@@ -1,5 +1,6 @@
 # Changed configuration files [192.168.122.164] (2014-08-14 20:39:10)
 
+  Files extracted: yes
   * /etc/crontab (md5)
     Diff:
     --- a/etc/crontab
