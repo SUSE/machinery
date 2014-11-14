@@ -28,4 +28,31 @@ describe "unmanaged_files model" do
 
   specify { expect(scope.files).to be_a(UnmanagedFileList) }
   specify { expect(scope.files.first).to be_a(UnmanagedFile) }
+
+  describe UnmanagedFileList do
+    describe "#compare_with" do
+      it "only compares common properties" do
+        list = UnmanagedFileList.new([
+          UnmanagedFile.new(
+            a: 1
+          )
+        ])
+        list_equal = UnmanagedFileList.new([
+          UnmanagedFile.new(
+            a: 1,
+            b: 2
+          )
+        ])
+        list_different = UnmanagedFileList.new([
+          UnmanagedFile.new(
+            a: 2,
+            b: 2
+          )
+        ])
+
+        expect(list.compare_with(list_equal)).to eq([nil, nil, list])
+        expect(list.compare_with(list_different)).to eq([list, list_different, nil])
+      end
+    end
+  end
 end
