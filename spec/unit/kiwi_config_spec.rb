@@ -422,6 +422,40 @@ describe KiwiConfig do
     EOF
   }
 
+  let(:system_description_minimal) {
+    create_test_description(json: <<-EOF, name: name, store: store)
+      {
+        "packages": [
+          {
+            "name": "kernel-desktop-base",
+            "version": "3.7.10",
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+          }
+        ],
+        "repositories": [
+          {
+            "alias": "Alias With Spaces",
+            "name": "nodejs",
+            "type": "rpm-md",
+            "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+            "enabled": true,
+            "autorefresh": false,
+            "gpgcheck": true,
+            "priority": 1
+          }
+        ],
+        "os": {
+          "name": "SUSE Linux Enterprise Server 11",
+          "version": "11 SP3",
+          "architecture": "x86_64"
+        }
+      }
+    EOF
+  }
+
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "kiwi_helpers"))
     FakeFS::FileSystem.clone(File.join(
@@ -512,6 +546,17 @@ describe KiwiConfig do
 
       # NCC repositories are not added to the system, just used for building
       expect(config.sh).not_to include("https://nu.novell.com/")
+    end
+
+    it "escapes the repository aliases in the config.xml file" do
+      config = KiwiConfig.new(system_description_minimal)
+      repositories = config.xml.xpath("/image/repository")
+
+      # escapes the alias in the xml
+      expect(repositories[0].attr("alias")).to eq("Alias-With-Spaces")
+
+      # doesn't escape the alias in the config.sh
+      expect(config.sh).to include("Alias With Spaces")
     end
 
     it "applies sysvinit services to kiwi config" do

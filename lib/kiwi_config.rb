@@ -215,14 +215,16 @@ EOF
   def apply_repositories(xml)
     if @system_description.repositories
       @system_description.repositories.each do |repo|
-        # only use accessible repositories as source for kiwi build
-        parameters = { alias: repo.alias, type: repo.type, priority: repo.priority }
+        # workaround kiwi issue by replacing spaces
+        # the final image is not affected because the repositories are added by the config.sh
+        parameters = { alias: repo.alias.gsub(" ", "-"), type: repo.type, priority: repo.priority }
         if repo.username && repo.password
           parameters[:username] = repo.username
           parameters[:password] = repo.password
         end
         is_external_medium = repo.url.start_with?("cd://") ||
           repo.url.start_with?("dvd://")
+        # only use accessible repositories as source for kiwi build
         if repo.enabled && !repo.type.nil? && !is_external_medium
           xml.repository(parameters) do
             xml.source(path: repo.url)
