@@ -13,3 +13,11 @@ Style/Blocks:
 
 Style/AlignParameters:
   Enabled: false
+
+Style/CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    collect: map
+    collect!: map!
+    detect: find
+    find_all: select
