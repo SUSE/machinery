@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.1.0 - Mon Nov 17 16:30:44 CET 2014 - thardeck@suse.de
+
 * File extraction status is now shown in the comparison output
 * Fixed image building issue when the repository alias consisted spaces
 * Fixed compare output for unmanaged-files
