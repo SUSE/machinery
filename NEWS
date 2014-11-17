@@ -1,6 +1,10 @@
 # Machinery Release Notes
 
 * File extraction status is now shown in the comparison output
+* Fixed image building issue when the repository alias consisted spaces
+* Fixed compare output for unmanaged-files
+* Added hint for analyze how to show the diffs
+* Added hint to recommend ssh-copy-id if passwordless logins are not possible
 
 ## Version 1.0.1 - Tue Oct 28 16:24:16 CET 2014 - thardeck@suse.de
 
