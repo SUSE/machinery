@@ -65,7 +65,6 @@ module Machinery
         attributes[key] = value
         attributes
       end
-      self
     end
 
     def ==(other)
