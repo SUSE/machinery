@@ -19,7 +19,6 @@ require_relative "spec_helper"
 
 describe UpgradeFormatTask do
   initialize_system_description_factory_store
-  silence_machinery_output
 
   let(:outdated_json) {<<-EOF
     {
@@ -46,6 +45,7 @@ describe UpgradeFormatTask do
         system_description_factory_store.load("description1")
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
+      expect(Machinery::Ui).to receive(:puts).with(/upgraded/)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
 
       migrated_description = system_description_factory_store.load("description1")
@@ -57,11 +57,20 @@ describe UpgradeFormatTask do
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
 
+    it "doesn't upgrade an up to date system description" do
+      allow(Machinery::Ui).to receive(:puts)
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+
+      expect(Machinery::Ui).to receive(:puts).with(/up to date/)
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+    end
+
     it "upgrades all system descriptions when the --all switch is given" do
       expect {
         system_description_factory_store.load("description2")
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
+      expect(Machinery::Ui).to receive(:puts).with(/upgraded 2/i)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
 
       ["description1", "description2"].each do |description|
@@ -76,6 +85,7 @@ describe UpgradeFormatTask do
       end
       expect(Machinery::Ui).to receive(:error).twice
 
+      expect(Machinery::Ui).to receive(:puts).with(/no.*upgraded/i)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
     end
   end
