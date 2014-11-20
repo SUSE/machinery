@@ -20,36 +20,46 @@ require_relative "spec_helper"
 describe Os do
 
   it "returns list of Os sub classes it can build" do
-    os = OsSles12.new
+    buildable = OsSles12.buildable_systems
 
-    expect(os.can_build).to be_a(Array)
-    os.can_build.each do |target_os|
+    expect(buildable).to be_a(Array)
+    buildable.each do |target_os|
       expect(target_os < Os).to be true
     end
   end
 
   it "SLES 12 can build SLES 12" do
-    os = OsSles12.new
-
-    expect(os.can_build).to include OsSles12
+    expect(OsSles12.buildable_systems).to include OsSles12
   end
 
-  it "returns if it can build an Os given as class" do
-    os = OsSles12.new
-
-    expect(os.can_build?(OsSles12)).to be true
-    expect(os.can_build?(OsSles11)).to be false
+  it "returns if SLES 12 can run machinery from class" do
+    expect(OsSles12.can_run_machinery?).to be(true)
   end
 
-  it "returns if it can build an Os given as instance" do
-    os = OsSles12.new
-
-    expect(os.can_build?(OsSles12.new)).to be true
-    expect(os.can_build?(OsSles11.new)).to be false
+  it "returns if SLES 12 can run machinery from object" do
+    expect(OsSles12.new.can_run_machinery?).to be(true)
   end
 
-  it "returns a display name" do
-    expect(OsSles12.new.name).to eq "SUSE Linux Enterprise Server 12"
+  it "returns if SLES 12 can build SLES 11 and SLES 12" do
+    os = OsSles12.new
+
+    expect(os.can_build?(OsSles12.new)).to be(true)
+    expect(os.can_build?(OsSles11.new)).to be(false)
+  end
+
+  it "returns if SLES 11 can build SLES 11 and SLES 12" do
+    os = OsSles11.new
+
+    expect(os.can_build?(OsSles12.new)).to be(false)
+    expect(os.can_build?(OsSles12.new)).to be(false)
+  end
+
+  it "returns a display name from the class" do
+    expect(OsSles12.canonical_name).to eq "SUSE Linux Enterprise Server 12"
+  end
+
+  it "returns a display name from the object" do
+    expect(OsSles12.new.canonical_name).to eq "SUSE Linux Enterprise Server 12"
   end
 
   describe "#module_required_by_package" do
@@ -82,8 +92,11 @@ describe Os do
   it "returns os object for os name string" do
     expect(Os.for("SUSE Linux Enterprise Server 12")).to be_a(OsSles12)
     expect(Os.for("openSUSE 13.1 (Bottle)")).to be_a(OsOpenSuse13_1)
-    expect {
-      Os.for("unknow OS name")
-    }.to raise_error(Machinery::Errors::UnknownOs)
+    expect(Os.for("unknown OS name")).to be_a(OsUnknown)
+  end
+
+  it "initializes name with canonical name" do
+    os_name = "SUSE Linux Enterprise Server 12"
+    expect(Os.for(os_name).name).to eq os_name
   end
 end

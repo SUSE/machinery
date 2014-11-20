@@ -183,6 +183,40 @@ describe KiwiConfig do
     EOF
   }
 
+  let(:system_description_with_content_sles12) {
+    create_test_description(json: <<-EOF, name: name, store: store)
+      {
+        "packages": [
+          {
+            "name": "kernel-desktop",
+            "version": "3.7.10",
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+          }
+        ],
+        "repositories": [
+          {
+            "alias": "disabled_repo_alias",
+            "name": "disabled_repo",
+            "type": null,
+            "url": "http://disabled_repo",
+            "enabled": false,
+            "autorefresh": false,
+            "gpgcheck": true,
+            "priority": 3
+          }
+        ],
+        "os": {
+          "name": "SUSE Linux Enterprise Server 12",
+          "version": "12",
+          "architecture": "x86_64"
+        }
+      }
+    EOF
+  }
+
   let(:system_description_with_sysvinit_services) {
     create_test_description(json: <<-EOF, name: name, store: store)
       {
@@ -469,13 +503,16 @@ describe KiwiConfig do
   describe "#initialize" do
     it "raises exception when OS is not supported for building" do
       class OsOpenSuse99_1 < Os
-        def initialize
-          @can_build = []
-          @name = "openSUSE 99.1 (Repetition)"
+        def self.canonical_name
+          "openSUSE 99.1 (Repetition)"
+        end
+
+        def self.can_run_machinery?
+          false
         end
       end
 
-      allow_any_instance_of(SystemDescription).to receive(:os_object).
+      allow_any_instance_of(SystemDescription).to receive(:os).
         and_return(OsOpenSuse99_1.new)
       system_description_with_content.os.name = "openSUSE 99.1 (Repetition)"
       expect {
@@ -608,8 +645,7 @@ describe KiwiConfig do
     end
 
     it "sets the target distribution and bootloader for SLES12" do
-      system_description_with_content.os.name = "SUSE Linux Enterprise Server 12"
-      config = KiwiConfig.new(system_description_with_content)
+      config = KiwiConfig.new(system_description_with_content_sles12)
       type_node = config.xml.xpath("/image/preferences/type")[0]
 
       expect(type_node["boot"]).to eq("vmxboot/suse-SLES12")

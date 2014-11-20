@@ -23,7 +23,7 @@ module Machinery
         @property_classes[name.to_sym] = options[:class]
       end
 
-      def from_json(json)
+      def object_hash_from_json(json)
         return nil unless json
 
         entries = json.map do |key, value|
@@ -43,13 +43,21 @@ module Machinery
           [key, value_converted]
         end
 
-        new(Hash[entries])
+        Hash[entries]
+      end
+
+      def from_json(json)
+        new(object_hash_from_json(json))
       end
     end
 
     attr_reader :attributes
 
     def initialize(attrs = {})
+      set_attributes(attrs)
+    end
+
+    def set_attributes(attrs)
       @attributes = attrs.inject({}) do |attributes, (key, value)|
         key = key.to_sym if key.respond_to?(:to_sym)
 

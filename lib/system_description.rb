@@ -62,7 +62,7 @@ class SystemDescription < Machinery::Object
       end
 
       begin
-        description = self.new(name, self.create_attrs(json_hash), store)
+        description = self.new(name, create_scopes(json_hash), store)
       rescue NameError
         raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
@@ -73,22 +73,22 @@ class SystemDescription < Machinery::Object
       description
     end
 
-    def create_attrs(hash)
-      entries = hash.map do |key, value|
-        next if key == "meta"
+    def create_scopes(hash)
+      scopes = hash.map do |scope_name, scope_json|
+        next if scope_name == "meta"
 
-        class_name = "#{key.split("_").map(&:capitalize).join}Scope"
-        value_converted = Object.const_get(class_name).from_json(value)
+        scope_class = Machinery::ScopeMixin.class_for(scope_name)
+        scope_object = scope_class.from_json(scope_json)
 
         # Set metadata
-        if hash["meta"] && hash["meta"][key]
-          value_converted.meta = Machinery::Object.from_json(hash["meta"][key])
+        if hash["meta"] && hash["meta"][scope_name]
+          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
         end
 
-        [key, value_converted]
+        [scope_name, scope_object]
       end.compact
 
-      Hash[entries]
+      Hash[scopes]
     end
 
     private
@@ -170,16 +170,6 @@ class SystemDescription < Machinery::Object
 
   def scope_extracted?(scope)
     self[scope] && self[scope].is_extractable? && self[scope].extracted
-  end
-
-  def os_object
-    assert_scopes("os")
-
-    begin
-      Os.for(self.os.name)
-    rescue Machinery::Errors::UnknownOs => e
-      raise Machinery::Errors::SystemDescriptionError.new(e)
-    end
   end
 
   def missing_files(scope, file_list)

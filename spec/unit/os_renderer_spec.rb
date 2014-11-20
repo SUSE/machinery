@@ -22,7 +22,7 @@ describe OsRenderer do
     create_test_description(json: <<-EOF)
     {
       "os": {
-      "name": "openSUSE",
+      "name": "openSUSE 13.1 (Bottle)",
       "version": "13.1",
       "architecture": "x86_64"
       }
@@ -35,7 +35,7 @@ describe OsRenderer do
       expected_output = <<-EOF
 # Operating system
 
-  Name: openSUSE
+  Name: openSUSE 13.1 (Bottle)
   Version: 13.1
   Architecture: x86_64
 

@@ -17,6 +17,24 @@
 
 module Machinery
   module ScopeMixin
+    def self.included(mod)
+      @scopes ||= []
+      @scopes.push(mod)
+    end
+
+    def self.all_scopes
+      @scopes
+    end
+
+    def self.class_for(scope_name)
+      all_scopes.each do |scope|
+        if scope.new.scope_name == scope_name
+          return scope
+        end
+      end
+      nil
+    end
+
     attr_accessor :meta
 
     def set_metadata(timestring, host)

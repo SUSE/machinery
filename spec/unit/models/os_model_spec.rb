@@ -17,11 +17,25 @@
 
 require_relative "../spec_helper"
 
-describe "os model" do
+describe Os do
   let(:scope) {
     json = create_test_description_json(scopes: ["os"])
-    OsScope.from_json(JSON.parse(json)["os"])
+    Os.from_json(JSON.parse(json)["os"])
   }
 
   it_behaves_like "Scope"
+
+  describe "#scope_name" do
+    it "works when constructed with factory" do
+      expect(Os.for("some os").scope_name).to eq("os")
+    end
+
+    it "works on the base class" do
+      expect(Os.new.scope_name).to eq("os")
+    end
+
+    it "works on sub classes" do
+      expect(OsSles12.new.scope_name).to eq("os")
+    end
+  end
 end

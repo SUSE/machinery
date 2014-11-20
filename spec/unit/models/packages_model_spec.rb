@@ -26,4 +26,8 @@ describe "packages model" do
   it_behaves_like "Scope"
 
   specify { expect(scope.first).to be_a(Package) }
+
+  it "has correct scope name" do
+    expect(PackagesScope.new.scope_name).to eq("packages")
+  end
 end

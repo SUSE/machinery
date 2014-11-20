@@ -17,18 +17,18 @@
 
 class LocalSystem < System
   class << self
-    def os_object
+    def os
       description = SystemDescription.new("localhost")
       inspector = OsInspector.new
       inspector.inspect(System.for("localhost"), description)
-      description.os_object
+      description.os
     end
 
     def validate_existence_of_package(package)
       begin
         Cheetah.run("rpm", "-q", package)
       rescue
-        needed_module = os_object.module_required_by_package(package)
+        needed_module = os.module_required_by_package(package)
         if needed_module
           raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}' from module '#{needed_module}'. You can install it as follows:\n" \
             "If you haven't selected the module '#{needed_module}' before, run `yast2 scc` and choose 'Select Extensions' and activate '#{needed_module}'.\nRun `zypper install #{package}` to install the package."))
@@ -39,14 +39,8 @@ class LocalSystem < System
     end
 
     def validate_machinery_compatibility
-      begin
-        os = os_object
-      rescue Machinery::Errors::SystemDescriptionError
-        os = nil
-      end
-
-      if !os || !os.can_run_machinery?
-        supported_oses = Os.supported_host_systems.map { |o| o.new.name }.
+      if !os.can_run_machinery?
+        supported_oses = Os.supported_host_systems.map { |o| o.canonical_name }.
           sort.join(", ")
         message = "Running Machinery is not supported on this system.\n" \
           "Supported operating systems are: #{supported_oses}"
@@ -56,8 +50,8 @@ class LocalSystem < System
     end
 
     def validate_build_compatibility(system_description)
-      if !os_object.can_build?(system_description.os_object)
-        message = "Building '#{system_description.os_object.name}' images is " \
+      if !os.can_build?(system_description.os)
+        message = "Building '#{system_description.os.canonical_name}' images is " \
           "not supported on this distribution.\n" \
           "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
           "further information which build targets are supported."
