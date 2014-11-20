@@ -151,7 +151,7 @@ EOF
         boot = "vmxboot/suse-SLES11"
         bootloader = "grub"
       else
-        raise Machinery::Errors::KiwiExportFailed.new(
+        raise Machinery::Errors::ExportFailed.new(
           "Building is not possible because the operating system " \
           "'#{@system_description.os.canonical_name}' is not supported."
         )
@@ -298,7 +298,7 @@ EOF
                 # Don't do anything because these states are not supposed
                 # to be permanent.
               else
-                raise Machinery::Errors::KiwiExportFailed.new(
+                raise Machinery::Errors::ExportFailed.new(
                   "The systemd unit state #{service.state} is unknown."
                 )
             end

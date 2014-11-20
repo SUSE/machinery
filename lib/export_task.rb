@@ -15,22 +15,25 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class KiwiExportTask
-  def export(description, kiwi_dir, options)
-    if File.exists?(kiwi_dir)
+class ExportTask
+  def initialize(exporter)
+    @exporter = exporter
+  end
+
+  def export(output_dir, options)
+    if File.exists?(output_dir)
       if options[:force]
-        FileUtils.rm_r(kiwi_dir)
+        FileUtils.rm_r(output_dir)
       else
-        raise Machinery::Errors::KiwiExportFailed.new(
-          "The output directory '#{kiwi_dir}' already exists." \
+        raise Machinery::Errors::ExportFailed.new(
+          "The output directory '#{output_dir}' already exists." \
           " You can force overwriting it with the '--force' option."
         )
       end
     end
 
-    FileUtils.mkdir_p(kiwi_dir) unless Dir.exists?(kiwi_dir)
+    FileUtils.mkdir_p(output_dir) unless Dir.exists?(output_dir)
 
-    config = KiwiConfig.new(description)
-    config.write(kiwi_dir)
+    @exporter.write(output_dir)
   end
 end

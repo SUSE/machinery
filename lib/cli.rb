@@ -359,9 +359,13 @@ class Cli
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
       description = store.load(name)
+      exporter = KiwiConfig.new(description)
 
-      task = KiwiExportTask.new
-      task.export(description, File.expand_path(options["kiwi-dir"]), force: options[:force])
+      task = ExportTask.new(exporter)
+      task.export(
+        File.expand_path(options["kiwi-dir"]),
+        force: options[:force]
+      )
     end
   end
 

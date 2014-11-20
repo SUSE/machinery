@@ -17,45 +17,41 @@
 
 require_relative "spec_helper"
 
-describe KiwiExportTask do
+describe ExportTask do
   include FakeFS::SpecHelpers
 
-  subject { KiwiExportTask.new }
-  let(:kiwi_config) { double }
-
-  before(:each) do
-    allow(KiwiConfig).to receive(:new).and_return(kiwi_config)
-  end
+  let(:exporter) { double }
+  subject { ExportTask.new(exporter) }
 
   describe "#export" do
-    it "writes the KIWI config" do
-      expect(kiwi_config).to receive(:write).with("/bar")
+    it "writes the export" do
+      expect(exporter).to receive(:write).with("/bar")
 
-      subject.export(nil, "/bar", {})
+      subject.export("/bar", {})
     end
 
     describe "when the output directory already exists" do
-      let(:kiwi_dir) { "/foo" }
-      let(:kiwi_dir_content) { "/foo/bar" }
+      let(:output_dir) { "/foo" }
+      let(:content) { "/foo/bar" }
 
       before(:each) do
-        FileUtils.mkdir(kiwi_dir)
-        FileUtils.touch(kiwi_dir_content)
+        FileUtils.mkdir(output_dir)
+        FileUtils.touch(content)
       end
 
       it "raises an error when --force is not given" do
         expect {
-          subject.export(nil, kiwi_dir, force: false)
-        }.to raise_error(Machinery::Errors::KiwiExportFailed)
+          subject.export(output_dir, force: false)
+        }.to raise_error(Machinery::Errors::ExportFailed)
       end
 
       it "overwrites existing directory when --force is given" do
-        expect(kiwi_config).to receive(:write).with("/foo")
+        expect(exporter).to receive(:write).with("/foo")
         expect {
-          subject.export(nil, kiwi_dir, force: true)
+          subject.export(output_dir, force: true)
         }.to_not raise_error
 
-        expect(File.exists?(kiwi_dir_content)).to be(false)
+        expect(File.exists?(content)).to be(false)
       end
     end
   end

@@ -251,18 +251,21 @@ describe Cli do
     end
 
     describe "#export_kiwi" do
+      before(:each) do
+        @kiwi_config = double
+        allow(KiwiConfig).to receive(:new).and_return(@kiwi_config)
+      end
+
       it "triggers a KIWI export" do
-        description = create_test_description(json: test_manifest)
-        expect_any_instance_of(KiwiExportTask).to receive(:export).
-          with(description, "/tmp/export", force: false)
+        expect_any_instance_of(ExportTask).to receive(:export).
+          with("/tmp/export", force: false)
 
         run_command(["export-kiwi", "description1", "--kiwi-dir=/tmp/export"])
       end
 
       it "forwards the force option" do
-        description = create_test_description(json: test_manifest)
-        expect_any_instance_of(KiwiExportTask).to receive(:export).
-          with(description, "/tmp/export", force: true)
+        expect_any_instance_of(ExportTask).to receive(:export).
+          with("/tmp/export", force: true)
 
         run_command(["export-kiwi", "description1", "--kiwi-dir=/tmp/export", "--force"])
       end

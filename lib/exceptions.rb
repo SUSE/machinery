@@ -103,7 +103,7 @@ module Machinery
     class BuildFailed < MachineryError; end
     class DeployFailed < MachineryError; end
     class InspectionFailed < MachineryError; end
-    class KiwiExportFailed < MachineryError; end
+    class ExportFailed < MachineryError; end
 
     class SshConnectionFailed < MachineryError; end
     class RsyncFailed < MachineryError; end
