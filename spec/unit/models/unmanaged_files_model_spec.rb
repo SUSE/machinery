@@ -29,6 +29,26 @@ describe "unmanaged_files model" do
   specify { expect(scope.files).to be_a(UnmanagedFileList) }
   specify { expect(scope.files.first).to be_a(UnmanagedFile) }
 
+  describe UnmanagedFilesScope do
+    describe "#compare_with" do
+      it "shows a warning when comparing unextracted with extracted files" do
+        scope_a = UnmanagedFilesScope.new(extracted: false, files: UnmanagedFileList.new([]))
+        scope_b = UnmanagedFilesScope.new(extracted: true, files: UnmanagedFileList.new([]))
+        expect(Machinery::Ui).to receive(:warn)
+
+        scope_a.compare_with(scope_b)
+      end
+
+      it "doesn't show a warning when comparing extracted with extracted files" do
+        scope_a = UnmanagedFilesScope.new(extracted: true, files: UnmanagedFileList.new([]))
+        scope_b = UnmanagedFilesScope.new(extracted: true, files: UnmanagedFileList.new([]))
+        expect(Machinery::Ui).to_not receive(:warn)
+
+        scope_a.compare_with(scope_b)
+      end
+    end
+  end
+
   describe UnmanagedFileList do
     describe "#compare_with" do
       it "only compares common properties" do

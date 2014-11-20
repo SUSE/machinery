@@ -54,4 +54,13 @@ end
 class UnmanagedFilesScope < FileScope
   include Machinery::ScopeMixin
   has_property :files, class: UnmanagedFileList
+
+  def compare_with(other)
+    if extracted != other.extracted
+      Machinery::Ui.warn("Warning: Comparing extracted with unextracted" \
+        " unmanaged files. Only common attributes are considered.")
+    end
+
+    super
+  end
 end
