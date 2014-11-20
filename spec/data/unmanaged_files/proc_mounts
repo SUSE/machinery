@@ -3,3 +3,5 @@ devtmpfs /dev devtmpfs rw,relatime,size=8195708k,nr_inodes=2048927,mode=755 0 0
 host:/real-home/tux /homes/tux nfs rw,nosiuid,relatime 0 0
 /dev/mapper/lvm-data /data ext4 rw,relatime,data=ordered 0 0
 /dev/sda2 / ext4 rw,relatime,data=ordered 0 0
+none /var/lib/ntp/proc proc ro,nosuid,nodev,relatime 0 0
+tmpfs /var/lib/tmpfs tmpfs rw,nosuid,nodev,mode=755 0 0

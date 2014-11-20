@@ -28,7 +28,8 @@ describe MountPoints do
 
   describe "#all" do
     it "returns an array containing all mount points" do
-      expect(subject.all).to match_array(["/",  "/data", "/dev", "/homes/tux"])
+      expect(subject.all).
+        to match_array(["/",  "/data", "/dev", "/homes/tux", "/var/lib/ntp/proc", "/var/lib/tmpfs"])
     end
   end
 
@@ -41,6 +42,13 @@ describe MountPoints do
   describe "#local" do
     it "returns an array containing the local mount points" do
       expect(subject.local).to match_array(["/", "/data"])
+    end
+  end
+
+  describe "#special" do
+    it "returns an array containing the special mount points" do
+      expect(subject.special).
+        to match_array(["/dev", "/var/lib/ntp/proc", "/var/lib/tmpfs"])
     end
   end
 end
