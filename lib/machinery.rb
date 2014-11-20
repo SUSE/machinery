@@ -77,6 +77,7 @@ require_relative 'mountpoints'
 require_relative 'config_base'
 require_relative 'config'
 require_relative 'config_task'
+require_relative 'autoyast'
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

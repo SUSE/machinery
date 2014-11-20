@@ -271,6 +271,27 @@ describe Cli do
       end
     end
 
+    describe "#export_autoyast" do
+      before(:each) do
+        @autoyast = double
+        allow(Autoyast).to receive(:new).and_return(@autoyast)
+      end
+
+      it "triggers a AutoYaST export" do
+        expect_any_instance_of(ExportTask).to receive(:export).
+          with("/tmp/export", force: false)
+
+        run_command(["export-autoyast", "description1", "--autoyast-dir=/tmp/export"])
+      end
+
+      it "forwards the force option" do
+        expect_any_instance_of(ExportTask).to receive(:export).
+          with("/tmp/export", force: true)
+
+        run_command(["export-autoyast", "description1", "--autoyast-dir=/tmp/export", "--force"])
+      end
+    end
+
     describe "#analyze" do
       it "fails when an unsupported operation is called" do
         create_test_description(json: test_manifest)
