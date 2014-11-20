@@ -216,7 +216,7 @@ class UnmanagedFilesInspector < Inspector
 
     tmp_file_store = "unmanaged_files.tmp"
     final_file_store = "unmanaged_files"
-
+    mount_points = MountPoints.new(system)
 
     ignore_list = [
       "tmp",
@@ -253,13 +253,13 @@ class UnmanagedFilesInspector < Inspector
 
     rpm_files, rpm_dirs = extract_rpm_database(system)
 
-    mount_points = MountPoints.new(system)
     mounts = mount_points.local
     unmanaged_files = []
     unmanaged_trees = []
     excluded_files = []
     unmanaged_links = {}
     remote_dirs = mount_points.remote
+    special_dirs = mount_points.special
     ignore_list.each do |ignore|
       remote_dirs.delete_if { |e| e.start_with?(File.join("/", ignore, "/")) }
     end
@@ -304,6 +304,9 @@ class UnmanagedFilesInspector < Inspector
       # unmanaged dirs lead to removal of files and dirs below that dir
       while !unmanaged.empty?
         dir = unmanaged.shift
+
+        # Ignore special mounts, e.g. procfs mounts in a chroot
+        next if special_dirs.include?(find_dir + dir)
 
         # save into list of unmanaged trees
         if !remote_dirs.include?(find_dir + dir)

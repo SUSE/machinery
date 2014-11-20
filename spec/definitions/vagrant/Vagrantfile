@@ -10,6 +10,8 @@ def inject_test_data(base)
     mkdir /usr/local/magicapp/data
     touch /usr/local/magicapp/data/two
     touch /etc/magicapp.conf
+    mkdir /var/lib/chroot_proc
+    mount --bind /proc /var/lib/chroot_proc
 
     # config-files
     echo '-*/15 * * * *   root  echo config_files_integration_test &> /dev/null' >> /etc/crontab
