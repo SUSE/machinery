@@ -53,4 +53,13 @@
       </password_settings>
     </user>
   </users>
+  <groups config:type="list">
+    <group>
+      <encrypted config:type="boolean">true</encrypted>
+      <gid>17</gid>
+      <groupname>audio</groupname>
+      <group_password>x</group_password>
+      <userlist>tux,foo</userlist>
+    </group>
+  </groups>
 </profile>

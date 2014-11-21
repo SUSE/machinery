@@ -170,7 +170,8 @@ module SystemDescriptionFactory
         "name": "audio",
         "password": "x",
         "users": [
-
+          "tux",
+          "foo"
         ],
         "gid": 17
       }

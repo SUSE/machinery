@@ -37,6 +37,7 @@ class Autoyast
           apply_patterns(xml)
         end
         apply_users(xml)
+        apply_groups(xml)
       end
     end
 
@@ -101,6 +102,22 @@ class Autoyast
             xml.inact user.disable_days
             xml.expire user.disabled_date
           end
+        end
+      end
+    end
+  end
+
+  def apply_groups(xml)
+    return if !@system_description.groups
+
+    xml.groups("config:type" => "list") do
+      @system_description.groups.each do |group|
+        xml.group do
+          xml.encrypted "true", "config:type" => "boolean"
+          xml.gid group.gid
+          xml.groupname group.name
+          xml.group_password group.password
+          xml.userlist group.users.join(",")
         end
       end
     end

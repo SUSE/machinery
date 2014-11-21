@@ -27,8 +27,8 @@ describe KiwiConfig do
         "packages",
         "patterns",
         "repositories",
-        "users_with_passwords"
-
+        "users_with_passwords",
+        "groups"
       ]
     )
   }
