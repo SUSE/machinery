@@ -233,6 +233,38 @@ module SystemDescriptionFactory
       }
     ]
   EOF
+
+  EXAMPLE_SCOPES["users_with_passwords"] = <<-EOF
+    "users": [
+      {
+        "name": "root",
+        "password": "x",
+        "uid": 0,
+        "gid": 0,
+        "comment": "root",
+        "home": "/root",
+        "shell": "/bin/bash",
+        "encrypted_password": "$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.",
+        "last_changed_date": 16357
+      },
+      {
+        "name": "vagrant",
+        "password": "x",
+        "uid": 1000,
+        "gid": 100,
+        "comment": "",
+        "home": "/home/vagrant",
+        "shell": "/bin/bash",
+        "encrypted_password": "$6$6V/YKqrsHpkC$nSAsvrbcVE8kTI9D3Z7ubc1L/dBHXj47BlL5usy0JNINzXFDl3YXqF5QYjZLTo99BopLC5bdHYUvkUSBRC3a3/",
+        "last_changed_date": 16373,
+        "min_days": 0,
+        "max_days": 99999,
+        "warn_days": 7,
+        "disable_days": 30,
+        "disabled_date": 1234
+      }
+    ]
+  EOF
   EXAMPLE_SCOPES["services"] = <<-EOF
     "services": {
       "init_system": "systemd",

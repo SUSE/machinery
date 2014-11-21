@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE profile>
+<profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
+  <add-on>
+    <add_on_products config:type="list">
+      <listentry>
+        <media_url>http://download.opensuse.org/distribution/13.1/repo/oss/</media_url>
+        <name>openSUSE_13.1_OSS</name>
+      </listentry>
+    </add_on_products>
+  </add-on>
+  <software>
+    <packages config:type="list">
+      <package>bash</package>
+    </packages>
+    <patterns config:type="list">
+      <pattern>base</pattern>
+    </patterns>
+  </software>
+  <users config:type="list">
+    <user>
+      <username>root</username>
+      <user_password>$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.</user_password>
+      <encrypted config:type="boolean">true</encrypted>
+      <uid>0</uid>
+      <gid>0</gid>
+      <home>/root</home>
+      <shell>/bin/bash</shell>
+      <fullname>root</fullname>
+      <password_settings>
+        <min/>
+        <max/>
+        <warn/>
+        <inact/>
+        <expire/>
+      </password_settings>
+    </user>
+    <user>
+      <username>vagrant</username>
+      <user_password>$6$6V/YKqrsHpkC$nSAsvrbcVE8kTI9D3Z7ubc1L/dBHXj47BlL5usy0JNINzXFDl3YXqF5QYjZLTo99BopLC5bdHYUvkUSBRC3a3/</user_password>
+      <encrypted config:type="boolean">true</encrypted>
+      <uid>1000</uid>
+      <gid>100</gid>
+      <home>/home/vagrant</home>
+      <shell>/bin/bash</shell>
+      <fullname/>
+      <password_settings>
+        <min>0</min>
+        <max>99999</max>
+        <warn>7</warn>
+        <inact>30</inact>
+        <expire>1234</expire>
+      </password_settings>
+    </user>
+  </users>
+</profile>

@@ -274,7 +274,8 @@ describe Cli do
     describe "#export_autoyast" do
       before(:each) do
         @autoyast = double
-        allow(Autoyast).to receive(:new).and_return(@autoyast)
+        allow(Autoyast).to receive(:new).with(instance_of(SystemDescription)).
+          and_return(@autoyast)
       end
 
       it "triggers a AutoYaST export" do
