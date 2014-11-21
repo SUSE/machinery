@@ -518,7 +518,7 @@ describe KiwiConfig do
       expect {
         KiwiConfig.new(system_description_with_content)
       }.to raise_error(
-         Machinery::Errors::KiwiExportFailed,
+         Machinery::Errors::ExportFailed,
          /openSUSE 99.1/
       )
     end
@@ -632,7 +632,7 @@ describe KiwiConfig do
       system_description_with_systemd_services.services.services.first["state"] = "not_known"
       expect {
         KiwiConfig.new(system_description_with_systemd_services)
-      }.to raise_error(Machinery::Errors::KiwiExportFailed, /not_known/)
+      }.to raise_error(Machinery::Errors::ExportFailed, /not_known/)
     end
 
     it "sets the target distribution and bootloader for openSUSE 13.1" do

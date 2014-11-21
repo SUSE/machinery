@@ -15,20 +15,25 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-require_relative "integration_spec_helper"
-
-describe "machinery@openSUSE 13.1" do
-  before(:all) do
-    @machinery = start_system(box: "machinery_131")
+class ExportTask
+  def initialize(exporter)
+    @exporter = exporter
   end
 
-  include_examples "CLI"
-  include_examples "kiwi export"
-  include_examples "autoyast export"
-  include_examples "validate"
-  include_examples "inspect", ["opensuse131"]
-  include_examples "analyze", "opensuse131"
-  include_examples "build", "opensuse131"
-  include_examples "upgrade format"
-  include_examples "generate html"
+  def export(output_dir, options)
+    if File.exists?(output_dir)
+      if options[:force]
+        FileUtils.rm_r(output_dir)
+      else
+        raise Machinery::Errors::ExportFailed.new(
+          "The output directory '#{output_dir}' already exists." \
+          " You can force overwriting it with the '--force' option."
+        )
+      end
+    end
+
+    FileUtils.mkdir_p(output_dir) unless Dir.exists?(output_dir)
+
+    @exporter.write(output_dir)
+  end
 end

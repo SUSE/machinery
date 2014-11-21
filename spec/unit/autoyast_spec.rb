@@ -15,22 +15,29 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class KiwiExportTask
-  def export(description, kiwi_dir, options)
-    if File.exists?(kiwi_dir)
-      if options[:force]
-        FileUtils.rm_r(kiwi_dir)
-      else
-        raise Machinery::Errors::KiwiExportFailed.new(
-          "The output directory '#{kiwi_dir}' already exists." \
-          " You can force overwriting it with the '--force' option."
-        )
-      end
+require_relative "spec_helper"
+
+describe KiwiConfig do
+  let(:expected_profile) {
+    File.read(File.join(Machinery::ROOT, "spec/data/autoyast/simple.xml"))
+  }
+  let(:description) {
+    create_test_description(
+      scopes: [
+        "packages",
+        "patterns",
+        "repositories",
+        "users_with_passwords",
+        "groups"
+      ]
+    )
+  }
+
+  describe "#profile" do
+    it "creates the expected profile" do
+      autoyast = Autoyast.new(description)
+
+      expect(autoyast.profile).to eq(expected_profile)
     end
-
-    FileUtils.mkdir_p(kiwi_dir) unless Dir.exists?(kiwi_dir)
-
-    config = KiwiConfig.new(description)
-    config.write(kiwi_dir)
   end
 end

@@ -359,9 +359,42 @@ class Cli
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
       description = store.load(name)
+      exporter = KiwiConfig.new(description)
 
-      task = KiwiExportTask.new
-      task.export(description, File.expand_path(options["kiwi-dir"]), force: options[:force])
+      task = ExportTask.new(exporter)
+      task.export(
+        File.expand_path(options["kiwi-dir"]),
+        force: options[:force]
+      )
+    end
+  end
+
+
+
+  desc "Export system description as AutoYaST profile"
+  long_desc <<-LONGDESC
+    Export system description as AutoYaST profile
+
+    The profile will be placed in the location given by the 'autoyast-dir' option.
+  LONGDESC
+  arg "NAME"
+  command "export-autoyast" do |c|
+    c.flag ["autoyast-dir", :a], type: String, required: true,
+      desc: "Location where the autoyast profile will be stored", arg_name: "DIRECTORY"
+    c.switch :force, default_value: false, required: false, negatable: false,
+      desc: "Overwrite existing profile"
+
+    c.action do |_global_options, options, args|
+      name = shift_arg(args, "NAME")
+      store = SystemDescriptionStore.new
+      description = store.load(name)
+      exporter = Autoyast.new(description)
+
+      task = ExportTask.new(exporter)
+      task.export(
+        File.expand_path(options["autoyast-dir"]),
+        force: options[:force]
+      )
     end
   end
 
