@@ -1,10 +1,7 @@
-# Services [192.168.122.238] (2014-05-21 17:00:14)
+# Services [192.168.121.137] (2014-11-25 18:21:52)
 
-  * YaST2-Firstboot.service: enabled
-  * YaST2-Second-Stage.service: enabled
   * after-local.service: static
   * autofs.service: enabled
-  * autoyast-initscripts.service: disabled
   * blk-availability.service: disabled
   * cgroup.service: masked
   * cleanup.service: static
@@ -43,7 +40,6 @@
   * lvm2-lvmetad.service: disabled
   * lvm2-lvmetad.socket: disabled
   * lvm2-monitor.service: disabled
-  * multipathd.service: disabled
   * network.service: enabled
   * polkit.service: static
   * proc.service: masked

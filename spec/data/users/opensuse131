@@ -1,4 +1,4 @@
-# Users [192.168.122.238] (2014-05-21 13:59:16)
+# Users [192.168.121.137] (2014-11-25 18:21:52)
 
   * + (N/A, uid: N/A, gid: N/A, shell: )
   * bin (bin, uid: 1, gid: 1, shell: /bin/bash)
@@ -13,9 +13,9 @@
   * nobody (nobody, uid: 65534, gid: 65533, shell: /bin/bash)
   * polkitd (User for polkitd, uid: 496, gid: 495, shell: /sbin/nologin)
   * root (root, uid: 0, gid: 0, shell: /bin/bash)
-  * sshd (SSH daemon, uid: 498, gid: 498, shell: /bin/false)
+  * sshd (SSH daemon, uid: 498, gid: 496, shell: /bin/false)
   * statd (NFS statd daemon, uid: 497, gid: 65534, shell: /sbin/nologin)
   * uucp (Unix-to-Unix CoPy system, uid: 10, gid: 14, shell: /bin/bash)
-  * vagrant (vagrant, uid: 1000, gid: 100, shell: /bin/bash)
+  * vagrant (N/A, uid: 1000, gid: 1000, shell: /bin/bash)
   * wwwrun (WWW daemon apache, uid: 30, gid: 8, shell: /bin/false)
 
