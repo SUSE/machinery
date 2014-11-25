@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<image schemaversion="6.1" name="Base-openSUSE-13.1">
+    <description type="system">
+        <author>Machinery-Team</author>
+        <contact>machinery@lists.suse.com</contact>
+        <specification>
+            Base openSUSE 13.1 box
+        </specification>
+    </description>
+    <preferences>
+      <type image="vmx" filesystem="ext4" boot="vmxboot/suse-13.1" format="vagrant" bootloader="grub2"  kernelcmdline="root=/dev/vda1 disk=/dev/vda nomodeset LOCAL_BOOT=yes">
+            <vagrantconfig provider="libvirt" virtualsize="16"/>
+            <size unit="G">15</size>
+        </type>
+        <version>1.13.1</version>
+        <packagemanager>zypper</packagemanager>
+        <locale>en_US</locale>
+        <keytable>us.map.gz</keytable>
+        <timezone>Europe/Berlin</timezone>
+        <hwclock>utc</hwclock>
+        <rpm-excludedocs>true</rpm-excludedocs>
+    </preferences>
+    <users group="root">
+        <user name="root" password="vagrant" pwdformat="plain" home="/root"/>
+    </users>
+    <users group="vagrant">
+        <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant"/>
+    </users>
+    <repository type="yast2">
+        <source path="obs://13.1/repo/oss"/>
+    </repository>
+    <packages type="image">
+        <namedCollection name="base"/>
+        <product name="openSUSE"/>
+        <package name="ifplugd"/>
+        <package name="iputils"/>
+        <package name="vim"/>
+        <package name="grub2"/>
+        <package name="syslinux"/>
+        <package name="lvm2"/>
+        <package name="tar"/>
+        <package name="parted"/>
+        <package name="sudo"/>
+        <package name="rsync"/>
+        <package name="kernel-default"/>
+        <package name="squashfs"/>
+        <package name="iproute2"/>
+        <package name="cronie"/>
+        <package name="nfs-kernel-server"/>
+        <package name="autofs"/>
+    </packages>
+    <packages type="bootstrap">
+        <package name="udev"/>
+        <package name="filesystem"/>
+        <package name="glibc-locale"/>
+        <package name="cracklib-dict-full"/>
+        <package name="ca-certificates"/>
+        <package name="module-init-tools"/>
+    </packages>
+    <packages type="delete">
+        <package name="kernel-debug"/>
+    </packages>
+</image>
