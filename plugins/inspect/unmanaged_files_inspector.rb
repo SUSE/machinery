@@ -226,7 +226,8 @@ class UnmanagedFilesInspector < Inspector
       "var/lib/rpm",
       ".snapshots",
       description.store.base_path.sub(/^\//, ""),
-      "proc"
+      "proc",
+      "boot"
     ]
 
     # Information about users and groups are extracted by the according inspector
