@@ -141,5 +141,11 @@ describe ListTask do
       store.save(system_description_with_incompatible_data_format)
       list_task.list(store)
     end
+
+    it "shows list without details" do
+      store.save(system_description)
+      expect(Machinery::Ui).to receive(:puts).with(" #{name}")
+      list_task.list(store, quick: true)
+    end
   end
 end
