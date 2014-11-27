@@ -264,18 +264,25 @@ class UnmanagedFilesInspector < Inspector
     ignore_list.each do |ignore|
       remote_dirs.delete_if { |e| e.start_with?(File.join("/", ignore, "/")) }
     end
-    dirs_todo = [ "/" ]
-    start = start_depth
-    max = max_depth
-    find_count = 0
-    sub_tree_containing_remote_fs = []
     excluded_files += remote_dirs
+    excluded_files += special_dirs
 
     if !remote_dirs.empty?
       warning = "The content of the following remote directories is ignored: #{remote_dirs.uniq.join(", ")}."
       Machinery.logger.warn(warning)
       Machinery::Ui.warn(warning)
     end
+    if !special_dirs.empty?
+      warning = "The content of the following special directories is ignored: #{special_dirs.uniq.join(", ")}."
+      Machinery.logger.warn(warning)
+      Machinery::Ui.warn(warning)
+    end
+
+    dirs_todo = [ "/" ]
+    start = start_depth
+    max = max_depth
+    find_count = 0
+    sub_tree_containing_remote_fs = []
 
     while !dirs_todo.empty?
       find_dir = dirs_todo.first
