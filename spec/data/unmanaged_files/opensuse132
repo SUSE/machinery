@@ -497,11 +497,6 @@
     Mode: 644
     Size: 36 B
 
-  * /var/lib/zypp/AutoInstalled (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 2.1 KiB
-
   * /var/lib/zypp/LastDistributionFlavor (file)
     User/Group: root:root
     Mode: 644
