@@ -1,0 +1,7 @@
+# Changed managed files [192.168.121.194] (2014-11-25 18:38:32)
+
+  Files extracted: yes
+  * /usr/share/bash/helpfiles/cd (deleted)
+  * /usr/share/bash/helpfiles/read (md5)
+  * /var/lib/nfs/rpc_pipefs (mode)
+

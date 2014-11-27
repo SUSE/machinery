@@ -17,9 +17,9 @@
 
 require_relative "integration_spec_helper"
 
-describe "machinery@openSUSE 13.1" do
+describe "machinery@openSUSE 13.2" do
   before(:all) do
-    @machinery = start_system(box: "machinery_131")
+    @machinery = start_system(box: "machinery_132")
   end
 
   include_examples "CLI"
@@ -28,4 +28,8 @@ describe "machinery@openSUSE 13.1" do
   include_examples "validate"
   include_examples "upgrade format"
   include_examples "generate html"
+  include_examples "analyze", "opensuse131"
+  include_examples "inspect", ["opensuse132"]
+  include_examples "inspect", ["opensuse131"]
+  include_examples "build", "opensuse131"
 end

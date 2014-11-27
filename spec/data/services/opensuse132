@@ -1,4 +1,4 @@
-# Services [192.168.121.137] (2014-11-25 18:21:52)
+# Services [192.168.121.194] (2014-11-25 18:38:32)
 
   * after-local.service: static
   * autofs.service: enabled
@@ -7,7 +7,7 @@
   * cleanup.service: static
   * clock.service: masked
   * console-getty.service: disabled
-  * console-shell.service: disabled
+  * console-shell.service: static
   * cron.service: enabled
   * crypto-early.service: masked
   * crypto.service: masked
@@ -16,15 +16,28 @@
   * dbus-org.freedesktop.login1.service: static
   * dbus-org.freedesktop.machine1.service: static
   * dbus-org.freedesktop.timedate1.service: static
+  * dbus-org.opensuse.Network.AUTO4.service: enabled
+  * dbus-org.opensuse.Network.DHCP4.service: enabled
+  * dbus-org.opensuse.Network.DHCP6.service: enabled
+  * dbus-org.opensuse.Network.Nanny.service: enabled
   * dbus.service: static
   * dbus.socket: static
   * debug-shell.service: disabled
   * device-mapper.service: masked
-  * dm-event.service: disabled
-  * dm-event.socket: disabled
+  * dm-event.service: enabled
+  * dm-event.socket: enabled
+  * dracut-cmdline.service: static
+  * dracut-initqueue.service: static
+  * dracut-mount.service: static
+  * dracut-pre-mount.service: static
+  * dracut-pre-pivot.service: static
+  * dracut-pre-trigger.service: static
+  * dracut-pre-udev.service: static
+  * dracut-shutdown.service: static
   * earlysyslog.service: masked
   * earlyxdm.service: masked
   * emergency.service: static
+  * fstrim.service: static
   * halt-local.service: static
   * initrd-cleanup.service: static
   * initrd-parse-etc.service: static
@@ -37,8 +50,8 @@
   * loadmodules.service: masked
   * localfs.service: static
   * localnet.service: masked
-  * lvm2-lvmetad.service: disabled
-  * lvm2-lvmetad.socket: disabled
+  * lvm2-lvmetad.service: enabled
+  * lvm2-lvmetad.socket: enabled
   * lvm2-monitor.service: disabled
   * network.service: enabled
   * polkit.service: static
@@ -49,6 +62,7 @@
   * rc-local.service: static
   * rescue.service: static
   * rootfsck.service: static
+  * rpc-statd.service: static
   * rpcbind.service: enabled
   * rpcbind.socket: enabled
   * rsyncd.service: disabled
@@ -105,4 +119,10 @@
   * systemd-user-sessions.service: static
   * systemd-vconsole-setup.service: static
   * udev.service: static
+  * wicked.service: enabled
+  * wickedd-auto4.service: enabled
+  * wickedd-dhcp4.service: enabled
+  * wickedd-dhcp6.service: enabled
+  * wickedd-nanny.service: enabled
+  * wickedd.service: enabled
 

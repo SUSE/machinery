@@ -1,65 +1,9 @@
-# Repositories [192.168.122.238] (2014-05-21 13:59:16)
-
-  * Main Repository (NON-OSS)
-    URI: http://download.opensuse.org/distribution/13.1/repo/non-oss/
-    Alias: download.opensuse.org-non-oss
-    Enabled: Yes
-    Refresh: Yes
-    Priority: 99
+# Repositories [192.168.121.137] (2014-11-25 18:21:52)
 
   * Main Repository (OSS)
     URI: http://download.opensuse.org/distribution/13.1/repo/oss/
     Alias: download.opensuse.org-oss
     Enabled: Yes
-    Refresh: Yes
-    Priority: 99
-
-  * Main Update Repository
-    URI: http://download.opensuse.org/update/13.1/
-    Alias: download.opensuse.org-update
-    Enabled: Yes
-    Refresh: Yes
-    Priority: 99
-
-  * Update Repository (Non-Oss)
-    URI: http://download.opensuse.org/update/13.1-non-oss/
-    Alias: download.opensuse.org-13.1-non-oss
-    Enabled: Yes
-    Refresh: Yes
-    Priority: 99
-
-  * openSUSE-13.1-1.10
-    URI: cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00003
-    Alias: openSUSE-13.1-1.10
-    Enabled: Yes
-    Refresh: No
-    Priority: 99
-
-  * openSUSE-13.1-Debug
-    URI: http://download.opensuse.org/debug/distribution/13.1/repo/oss/
-    Alias: repo-debug
-    Enabled: No
-    Refresh: Yes
-    Priority: 99
-
-  * openSUSE-13.1-Source
-    URI: http://download.opensuse.org/source/distribution/13.1/repo/oss/
-    Alias: repo-source
-    Enabled: No
-    Refresh: Yes
-    Priority: 99
-
-  * openSUSE-13.1-Update-Debug
-    URI: http://download.opensuse.org/debug/update/13.1/
-    Alias: repo-debug-update
-    Enabled: No
-    Refresh: Yes
-    Priority: 99
-
-  * openSUSE-13.1-Update-Debug-Non-Oss
-    URI: http://download.opensuse.org/debug/update/13.1-non-oss/
-    Alias: repo-debug-update-non-oss
-    Enabled: No
     Refresh: Yes
     Priority: 99
 

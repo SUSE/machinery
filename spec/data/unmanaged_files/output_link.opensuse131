@@ -1,2 +1,2 @@
-  * /etc/mtab (link)
+  * /etc/systemd/system/default.target (link)
     User/Group: root:root

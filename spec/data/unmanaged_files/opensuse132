@@ -1,4 +1,4 @@
-# Unmanaged files [192.168.121.137] (2014-11-25 18:21:52)
+# Unmanaged files [192.168.121.194] (2014-11-25 18:38:32)
 
   Files extracted: yes
   * /etc/.pwd.lock (file)
@@ -14,21 +14,10 @@
   * /etc/YaST2/licenses/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 99.4 KiB
+    Size: 99.3 KiB
     Files: 17
 
-  * /etc/adjtime (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 16 B
-
-  * /etc/alternatives/awk (link)
-    User/Group: root:root
-
   * /etc/alternatives/openSUSE-default.xml (link)
-    User/Group: root:root
-
-  * /etc/alternatives/usr-bin-awk (link)
     User/Group: root:root
 
   * /etc/auto.remote_dir (file)
@@ -46,40 +35,13 @@
     Mode: 644
     Size: 462 B
 
-  * /etc/init.d/after.local (file)
-    User/Group: root:root
-    Mode: 744
-    Size: 520 B
-
-  * /etc/init.d/before.local (file)
-    User/Group: root:root
-    Mode: 744
-    Size: 505 B
-
-  * /etc/init.d/boot.local (file)
-    User/Group: root:root
-    Mode: 744
-    Size: 378 B
-
-  * /etc/init.d/halt.local (file)
-    User/Group: root:root
-    Mode: 744
-    Size: 343 B
-
-  * /etc/machine-id (file)
-    User/Group: root:root
-    Mode: 444
-    Size: 33 B
-
   * /etc/magicapp.conf (file)
     User/Group: root:root
     Mode: 644
     Size: 0 B
 
-  * /etc/mtab (file)
+  * /etc/mtab (link)
     User/Group: root:root
-    Mode: 644
-    Size: 445 B
 
   * /etc/pam.d/common-account.pam-config-backup (file)
     User/Group: root:root
@@ -99,12 +61,12 @@
   * /etc/pam.d/common-session.pam-config-backup (file)
     User/Group: root:root
     Mode: 644
-    Size: 488 B
+    Size: 482 B
 
   * /etc/passwd- (file)
     User/Group: root:root
     Mode: 644
-    Size: 808 B
+    Size: 915 B
 
   * /etc/resolv.conf (file)
     User/Group: root:root
@@ -114,7 +76,7 @@
   * /etc/shadow- (file)
     User/Group: root:shadow
     Mode: 640
-    Size: 284 B
+    Size: 374 B
 
   * /etc/ssh/ssh_host_dsa_key (file)
     User/Group: root:root
@@ -136,6 +98,16 @@
     Mode: 644
     Size: 172 B
 
+  * /etc/ssh/ssh_host_ed25519_key (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 399 B
+
+  * /etc/ssh/ssh_host_ed25519_key.pub (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 92 B
+
   * /etc/ssh/ssh_host_key (file)
     User/Group: root:root
     Mode: 600
@@ -156,30 +128,15 @@
     Mode: 644
     Size: 392 B
 
-  * /etc/sysconfig/autofs (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 5 KiB
-
   * /etc/sysconfig/backup (file)
     User/Group: root:root
     Mode: 644
     Size: 1.1 KiB
 
-  * /etc/sysconfig/boot (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.7 KiB
-
   * /etc/sysconfig/bootloader (file)
     User/Group: root:root
     Mode: 644
     Size: 0 B
-
-  * /etc/sysconfig/clock (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 2.5 KiB
 
   * /etc/sysconfig/console (file)
     User/Group: root:root
@@ -189,17 +146,7 @@
   * /etc/sysconfig/cron (file)
     User/Group: root:root
     Mode: 644
-    Size: 3 KiB
-
-  * /etc/sysconfig/dmraid (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 612 B
-
-  * /etc/sysconfig/kernel (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.9 KiB
+    Size: 2 KiB
 
   * /etc/sysconfig/keyboard (file)
     User/Group: root:root
@@ -246,11 +193,6 @@
     Mode: 644
     Size: 379 B
 
-  * /etc/sysconfig/shutdown (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.1 KiB
-
   * /etc/sysconfig/ssh (file)
     User/Group: root:root
     Mode: 644
@@ -260,6 +202,21 @@
     User/Group: root:root
     Mode: 644
     Size: 433 B
+
+  * /etc/sysctl.d/99-sysctl.conf (link)
+    User/Group: root:root
+
+  * /etc/systemd/system/dbus-org.opensuse.Network.AUTO4.service (link)
+    User/Group: root:root
+
+  * /etc/systemd/system/dbus-org.opensuse.Network.DHCP4.service (link)
+    User/Group: root:root
+
+  * /etc/systemd/system/dbus-org.opensuse.Network.DHCP6.service (link)
+    User/Group: root:root
+
+  * /etc/systemd/system/dbus-org.opensuse.Network.Nanny.service (link)
+    User/Group: root:root
 
   * /etc/systemd/system/default.target (link)
     User/Group: root:root
@@ -276,29 +233,50 @@
     Size: 0 B
     Files: 2
 
-  * /etc/systemd/system/graphical.target.wants/ (dir)
-    User/Group: root:root
-    Mode: 755
-    Size: 0 B
-    Files: 2
-
   * /etc/systemd/system/multi-user.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 8
 
-  * /etc/systemd/system/sockets.target.wants/ (dir)
+  * /etc/systemd/system/network-online.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 2
+
+  * /etc/systemd/system/network.service (link)
+    User/Group: root:root
+
+  * /etc/systemd/system/sockets.target.wants/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 4
+
+  * /etc/systemd/system/sysinit.target.wants/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 3
 
   * /etc/systemd/system/system-update.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 2
+
+  * /etc/systemd/system/wicked.service.wants/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 2
+
+  * /etc/systemd/system/wickedd.service.wants/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 5
 
   * /etc/vagrant_box_build_time (file)
     User/Group: root:root
@@ -320,177 +298,6 @@
     Mode: 755
     Size: 409 B
     Files: 7
-
-  * /lib/mkinitrd/boot/01-acpi.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/01-devfunctions.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/01-fv_guest.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/01-vendor.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/02-start.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/03-dm.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/03-rtc.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/03-scsi_dh.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/03-storage.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/04-udev.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/05-clock.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/05-kms.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/11-block.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/11-firewire.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/11-ibft.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/11-usb.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/12-network.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/13-netconsole.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/21-devinit_done.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/21-dmraid.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/21-nfs.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/22-kpartx.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/61-lvm2.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/81-mount.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/82-remount.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/91-createfb.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/91-killudev.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/91-mtab.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/91-shell.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/boot/92-boot.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/01-fv_guest.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/01-prepare.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/02-start.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/03-kms.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/03-udev.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/03-usb.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/11-storage.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/31-lvm2.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/51-kpartx.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/61-dmraid.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/62-dm.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/71-blockpartition.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/72-block.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/81-firewire.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/81-nfs.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/81-scsi_dh.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/82-network.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/83-ibft.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/91-acpi.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/91-clock.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/91-modules.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/91-mount.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/91-progs.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/91-vendor.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/92-sharedlibs.sh (link)
-    User/Group: root:root
-
-  * /lib/mkinitrd/setup/93-done.sh (link)
-    User/Group: root:root
-
-  * /lib64/libdmraid-events-isw.so.1.0.0.rc16-3 (link)
-    User/Group: root:root
 
   * /mnt/unmanaged/ (dir)
     User/Group: root:root
@@ -555,25 +362,19 @@
   * /var/cache/ldconfig/aux-cache (file)
     User/Group: root:root
     Mode: 600
-    Size: 12.3 KiB
+    Size: 13 KiB
 
   * /var/cache/zypp/raw/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 10.7 MiB
-    Files: 25
+    Size: 9.3 MiB
+    Files: 18
 
   * /var/cache/zypp/solv/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 10.3 MiB
+    Size: 10.9 MiB
     Files: 7
-
-  * /var/lib/dhcpcd/ (dir)
-    User/Group: root:root
-    Mode: 755
-    Size: 412 B
-    Files: 3
 
   * /var/lib/nfs/.etab.lock (file)
     User/Group: root:root
@@ -589,6 +390,17 @@
     User/Group: root:root
     Mode: 644
     Size: 0 B
+
+  * /var/lib/nfs/nfsdcltrack/ (dir)
+    User/Group: root:root
+    Mode: 700
+    Size: 5 KiB
+    Files: 2
+
+  * /var/lib/systemd/entropy_count (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 8 B
 
   * /var/lib/systemd/migrated/autofs (file)
     User/Group: root:root
@@ -625,6 +437,16 @@
     Mode: 644
     Size: 0 B
 
+  * /var/lib/systemd/migrated/nfs (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 0 B
+
+  * /var/lib/systemd/migrated/nfsserver (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 0 B
+
   * /var/lib/systemd/migrated/polkit (file)
     User/Group: root:root
     Mode: 644
@@ -650,6 +472,26 @@
     Mode: 644
     Size: 0 B
 
+  * /var/lib/systemd/migrated/wicked (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 0 B
+
+  * /var/lib/systemd/random-seed (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 512 B
+
+  * /var/lib/wicked/duid.xml (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 55 B
+
+  * /var/lib/wicked/lease-eth0-dhcp-ipv4.xml (file)
+    User/Group: root:root
+    Mode: 600
+    Size: 848 B
+
   * /var/lib/zypp/AnonymousUniqueId (file)
     User/Group: root:root
     Mode: 644
@@ -658,7 +500,7 @@
   * /var/lib/zypp/AutoInstalled (file)
     User/Group: root:root
     Mode: 644
-    Size: 1.4 KiB
+    Size: 2.1 KiB
 
   * /var/lib/zypp/LastDistributionFlavor (file)
     User/Group: root:root
@@ -674,12 +516,12 @@
   * /var/log/YaST2/mkinitrd.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 801 B
+    Size: 7.8 KiB
 
   * /var/log/alternatives.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 610 B
+    Size: 622 B
 
   * /var/log/boot.kiwi (file)
     User/Group: root:root
@@ -689,7 +531,7 @@
   * /var/log/zypp/history (file)
     User/Group: root:root
     Mode: 644
-    Size: 48.6 KiB
+    Size: 51.7 KiB
 
   * /var/spool/mail/vagrant (file)
     User/Group: vagrant:mail

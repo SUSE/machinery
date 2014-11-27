@@ -1,7 +1,6 @@
-# Changed managed files [192.168.122.238] (2014-05-21 17:00:14)
+# Changed managed files [192.168.121.137] (2014-11-25 18:21:52)
 
   Files extracted: yes
-  * /etc/cron.daily/mdadm (deleted)
   * /sys (mode)
   * /usr/share/bash/helpfiles/cd (deleted)
   * /usr/share/bash/helpfiles/read (md5)
