@@ -34,7 +34,7 @@
 class MountPoints
   attr_reader :mounts
   REMOTE_FILE_SYSTEMS = ["autofs", "cifs", "nfs", "nfs4"]
-  SPECIAL_FILE_SYSTEMS = ["proc", "sysfs", "devtmpfs", "tmpfs"]
+  SPECIAL_FILE_SYSTEMS = ["proc", "sysfs", "devtmpfs", "tmpfs", "fuse.gvfs-fuse-daemon"]
   LOCAL_FILE_SYSTEMS  = ["ext2", "ext3", "ext4", "reiserfs", "btrfs", "vfat", "xfs", "jfs"]
   def initialize(system)
     @mounts = parse_mounts(system.read_file("/proc/mounts"))

@@ -268,17 +268,19 @@ class UnmanagedFilesInspector < Inspector
     excluded_files += special_dirs
 
     if !remote_dirs.empty?
-      warning = "The content of the following remote directories is ignored: #{remote_dirs.uniq.join(", ")}."
+      warning = "The content of the following remote directories is ignored:" \
+        "#{remote_dirs.uniq.join(", ")}."
       Machinery.logger.warn(warning)
       Machinery::Ui.warn(warning)
     end
     if !special_dirs.empty?
-      warning = "The content of the following special directories is ignored: #{special_dirs.uniq.join(", ")}."
+      warning = "The content of the following special directories is ignored:" \
+        " #{special_dirs.uniq.join(", ")}."
       Machinery.logger.warn(warning)
       Machinery::Ui.warn(warning)
     end
 
-    dirs_todo = [ "/" ]
+    dirs_todo = ["/"]
     start = start_depth
     max = max_depth
     find_count = 0
