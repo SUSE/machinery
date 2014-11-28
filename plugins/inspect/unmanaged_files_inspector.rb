@@ -154,14 +154,21 @@ class UnmanagedFilesInspector < Inspector
     # "REPLACEMENT CHARACTER" (U+FFFD). That way we have both the raw data
     # (which is needed in order to be able to access the files) and the cleaned
     # string which can be safely used.
-    out = system.run_command(
-      "/bin/bash",
-      {
-        :stdin           => cmd,
-        :stdout          => :capture,
-        :disable_logging => true
-      }
-    ).force_encoding("binary")
+    out = ""
+    begin
+      out = system.run_command(
+        "/bin/bash",
+        stdin:           cmd,
+        stdout:          :capture,
+        disable_logging: true
+      ).force_encoding("binary")
+    rescue Cheetah::ExecutionFailed => e
+      out = e.stdout
+      message = "Warning: The command find of the unmanaged-file inspector" \
+       " ran into an issue. The error output was:\n#{e.stderr}"
+      Machinery.logger.warn(message)
+      Machinery::Ui.warn(message)
+    end
 
 
     # find creates three field per path
