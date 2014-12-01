@@ -271,8 +271,27 @@ module SystemDescriptionFactory
       "init_system": "systemd",
       "services": [
         {
-          "name": "after-local.service",
-          "state": "static"
+          "name": "sshd.service",
+          "state": "enabled"
+        },
+        {
+          "name": "rsyncd.service",
+          "state": "disabled"
+        }
+      ]
+    }
+  EOF
+  EXAMPLE_SCOPES["services_sysvinit"] = <<-EOF
+    "services": {
+      "init_system": "sysvinit",
+      "services": [
+        {
+          "name": "sshd",
+          "state": "on"
+        },
+        {
+          "name": "rsyncd",
+          "state": "off"
         }
       ]
     }

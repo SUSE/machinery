@@ -62,4 +62,16 @@
       <userlist>tux,foo</userlist>
     </group>
   </groups>
+  <services-manager>
+    <services>
+      <service>
+        <service_name>sshd.service</service_name>
+        <service_status>enable</service_status>
+      </service>
+      <service>
+        <service_name>rsyncd.service</service_name>
+        <service_status>disable</service_status>
+      </service>
+    </services>
+  </services-manager>
 </profile>

@@ -17,6 +17,15 @@
 
 
 class Service < Machinery::Object
+  def enabled?
+    # systemd vs sysvinit
+    state == "enabled" || state == "on"
+  end
+
+  def disabled?
+    # systemd vs sysvinit
+    state == "disabled" || state == "off"
+  end
 end
 
 class ServiceList < Machinery::Array
