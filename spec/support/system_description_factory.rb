@@ -271,8 +271,8 @@ module SystemDescriptionFactory
       "init_system": "systemd",
       "services": [
         {
-          "name": "after-local.service",
-          "state": "static"
+          "name": "sshd.service",
+          "state": "enabled"
         }
       ]
     }
