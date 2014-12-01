@@ -115,6 +115,13 @@ describe ConfigFilesRenderer do
           subject.render(system_description, show_diffs: true)
         }.to raise_error(Machinery::Errors::SystemDescriptionError)
       end
+
+      it "shows the package-name and version" do
+        output = subject.render(system_description)
+
+        expect(output).to include("/etc/default/grub (grub2-2.00, mode)")
+        expect(output).to include("/etc/postfix/main.cf (postfix-2.9.6, md5)")
+      end
     end
   end
 end

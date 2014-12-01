@@ -1,44 +1,44 @@
 /tmp/jeos/root:
 total 12
-drwxr-xr-x 2 vagrant users 4096  etc
-drwxrwxrwt 3 vagrant users 4096  tmp
-drwxr-xr-x 3 vagrant users 4096  usr
+drwxr-xr-x 2 vagrant vagrant 4096  etc
+drwxrwxrwt 3 vagrant vagrant 4096  tmp
+drwxr-xr-x 3 vagrant vagrant 4096  usr
 
 /tmp/jeos/root/etc:
 total 4
--rw-r--r-- 1 vagrant users 312  crontab
+-rw-r--r-- 1 vagrant vagrant 312  crontab
 
 /tmp/jeos/root/tmp:
 total 16
--rw-r--r-- 1 vagrant users 8163  merge_users_and_groups.pl
-drwxr-xr-x 3 vagrant users 4096  unmanaged_files
--rw-r--r-- 1 vagrant users   59  unmanaged_files_build_excludes
+-rw-r--r-- 1 vagrant vagrant 8163  merge_users_and_groups.pl
+drwxr-xr-x 3 vagrant vagrant 4096  unmanaged_files
+-rw-r--r-- 1 vagrant vagrant   59  unmanaged_files_build_excludes
 
 /tmp/jeos/root/tmp/unmanaged_files:
 total 8
--rw-r--r-- 1 vagrant users  220  files.tgz
-drwxr-xr-x 3 vagrant users 4096  trees
+-rw-r--r-- 1 vagrant vagrant  220  files.tgz
+drwxr-xr-x 3 vagrant vagrant 4096  trees
 
 /tmp/jeos/root/tmp/unmanaged_files/trees:
 total 4
-drwxr-xr-x 2 vagrant users 4096  etc
+drwxr-xr-x 2 vagrant vagrant 4096  etc
 
 /tmp/jeos/root/tmp/unmanaged_files/trees/etc:
 total 4
--rw-r--r-- 1 vagrant users 339  unmanaged-tree.tgz
+-rw-r--r-- 1 vagrant vagrant 339  unmanaged-tree.tgz
 
 /tmp/jeos/root/usr:
 total 4
-drwxr-xr-x 3 vagrant users 4096  share
+drwxr-xr-x 3 vagrant vagrant 4096  share
 
 /tmp/jeos/root/usr/share:
 total 4
-drwxr-xr-x 3 vagrant users 4096  bash
+drwxr-xr-x 3 vagrant vagrant 4096  bash
 
 /tmp/jeos/root/usr/share/bash:
 total 4
-drwxr-xr-x 2 vagrant users 4096  helpfiles
+drwxr-xr-x 2 vagrant vagrant 4096  helpfiles
 
 /tmp/jeos/root/usr/share/bash/helpfiles:
 total 4
--rw-r--r-- 1 vagrant users 1503  read
+-rw-r--r-- 1 vagrant vagrant 1503  read
