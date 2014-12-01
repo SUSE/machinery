@@ -77,7 +77,8 @@ rm /etc/cron.daily/*
 #======================================
 # Repositories
 #--------------------------------------
-zypper --gpg-auto-import-keys ar --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/13.1/repo/oss/ download.opensuse.org-oss
+zypper --non-interactive --gpg-auto-import-keys addrepo --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/13.1/repo/oss/ download.opensuse.org-oss
+zypper --non-interactive refresh
 
 #======================================
 # Umount kernel filesystems
