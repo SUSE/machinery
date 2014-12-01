@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe KiwiConfig do
+describe Autoyast do
   let(:expected_profile) {
     File.read(File.join(Machinery::ROOT, "spec/data/autoyast/simple.xml"))
   }
