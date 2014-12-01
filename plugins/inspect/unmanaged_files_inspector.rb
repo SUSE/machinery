@@ -154,14 +154,21 @@ class UnmanagedFilesInspector < Inspector
     # "REPLACEMENT CHARACTER" (U+FFFD). That way we have both the raw data
     # (which is needed in order to be able to access the files) and the cleaned
     # string which can be safely used.
-    out = system.run_command(
-      "/bin/bash",
-      {
-        :stdin           => cmd,
-        :stdout          => :capture,
-        :disable_logging => true
-      }
-    ).force_encoding("binary")
+    out = ""
+    begin
+      out = system.run_command(
+        "/bin/bash",
+        stdin:           cmd,
+        stdout:          :capture,
+        disable_logging: true
+      ).force_encoding("binary")
+    rescue Cheetah::ExecutionFailed => e
+      out = e.stdout
+      message = "Warning: The command find of the unmanaged-file inspector" \
+       " ran into an issue. The error output was:\n#{e.stderr}"
+      Machinery.logger.warn(message)
+      Machinery::Ui.warn(message)
+    end
 
 
     # find creates three field per path
@@ -264,18 +271,27 @@ class UnmanagedFilesInspector < Inspector
     ignore_list.each do |ignore|
       remote_dirs.delete_if { |e| e.start_with?(File.join("/", ignore, "/")) }
     end
-    dirs_todo = [ "/" ]
+    excluded_files += remote_dirs
+    excluded_files += special_dirs
+
+    if !remote_dirs.empty?
+      warning = "The content of the following remote directories is ignored:" \
+        "#{remote_dirs.uniq.join(", ")}."
+      Machinery.logger.warn(warning)
+      Machinery::Ui.warn(warning)
+    end
+    if !special_dirs.empty?
+      warning = "The content of the following special directories is ignored:" \
+        " #{special_dirs.uniq.join(", ")}."
+      Machinery.logger.warn(warning)
+      Machinery::Ui.warn(warning)
+    end
+
+    dirs_todo = ["/"]
     start = start_depth
     max = max_depth
     find_count = 0
     sub_tree_containing_remote_fs = []
-    excluded_files += remote_dirs
-
-    if !remote_dirs.empty?
-      warning = "The content of the following remote directories is ignored: #{remote_dirs.uniq.join(", ")}."
-      Machinery.logger.warn(warning)
-      Machinery::Ui.warn(warning)
-    end
 
     while !dirs_todo.empty?
       find_dir = dirs_todo.first
