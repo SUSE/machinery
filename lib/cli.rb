@@ -479,6 +479,8 @@ class Cli
   command :list do |c|
     c.switch :verbose, :required => false, :negatable => false,
       :desc => "Display additional information about origin of scopes"
+    c.switch :quick, :required => false, :negatable => false,
+      :desc => "Show quick list without details"
 
     c.action do |global_options,options,args|
       store = SystemDescriptionStore.new

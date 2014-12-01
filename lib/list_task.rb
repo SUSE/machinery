@@ -19,46 +19,52 @@ class ListTask
   def list(store, options = {})
     descriptions = store.list.sort
 
-    descriptions.each do |name|
-      name = File.basename(name)
-      begin
-        description = store.load(name)
-      rescue Machinery::Errors::SystemDescriptionError
-        Machinery::Ui.puts " #{name}:\n"
-        Machinery::Ui.puts "   This description has an incompatible data format or is broken.\n" \
-             "   Use `#{$0} validate #{name}` to see the error message.\n\n"
-        next
+    if options[:quick]
+      descriptions.each do |name|
+        Machinery::Ui.puts(" #{name}")
       end
-      scopes = []
+    else
+      descriptions.each do |name|
+        name = File.basename(name)
+        begin
+          description = store.load(name)
+        rescue Machinery::Errors::SystemDescriptionError
+          Machinery::Ui.puts " #{name}:\n"
+          Machinery::Ui.puts "   This description has an incompatible data format or is broken.\n" \
+              "   Use `#{$0} validate #{name}` to see the error message.\n\n"
+          next
+        end
+        scopes = []
 
-      description.scopes.each do |scope|
-        entry = Machinery::Ui.internal_scope_list_to_string(scope)
-        if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
-          if description.scope_extracted?(scope)
-            entry += " (extracted)"
-          else
-            entry += " (not extracted)"
+        description.scopes.each do |scope|
+          entry = Machinery::Ui.internal_scope_list_to_string(scope)
+          if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+            if description.scope_extracted?(scope)
+              entry += " (extracted)"
+            else
+              entry += " (not extracted)"
+            end
           end
+
+          if options["verbose"]
+            meta = description[scope].meta
+            if meta
+              time = Time.parse(meta.modified).getlocal
+              date = time.strftime "%Y-%m-%d %H:%M:%S"
+              hostname = meta.hostname
+            else
+              date = "unknown"
+              hostname = "Unknown hostname"
+            end
+            entry += "\n      Host: [#{hostname}]"
+            entry += "\n      Date: (#{date})"
+          end
+
+          scopes << entry
         end
 
-        if options["verbose"]
-          meta = description[scope].meta
-          if meta
-            time = Time.parse(meta.modified).getlocal
-            date = time.strftime "%Y-%m-%d %H:%M:%S"
-            hostname = meta.hostname
-          else
-            date = "unknown"
-            hostname = "Unknown hostname"
-          end
-          entry += "\n      Host: [#{hostname}]"
-          entry += "\n      Date: (#{date})"
-        end
-
-        scopes << entry
+        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
       end
-
-      Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
     end
   end
 end
