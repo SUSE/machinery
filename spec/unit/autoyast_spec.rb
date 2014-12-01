@@ -28,7 +28,8 @@ describe Autoyast do
         "patterns",
         "repositories",
         "users_with_passwords",
-        "groups"
+        "groups",
+        "services"
       ]
     )
   }

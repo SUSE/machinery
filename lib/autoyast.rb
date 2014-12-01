@@ -38,6 +38,7 @@ class Autoyast
         end
         apply_users(xml)
         apply_groups(xml)
+        apply_services(xml)
       end
     end
 
@@ -118,6 +119,29 @@ class Autoyast
           xml.groupname group.name
           xml.group_password group.password
           xml.userlist group.users.join(",")
+        end
+      end
+    end
+  end
+
+  def apply_services(xml)
+    xml.send("services-manager") do
+      xml.services do
+        @system_description.services.services.each do |service|
+          # systemd service states like "masked" and "static" are
+          # not supported by Autoyast
+          if service.enabled?
+            xml.service do
+              xml.service_name service.name
+              xml.service_status "enable"
+            end
+          end
+          if service.disabled?
+            xml.service do
+              xml.service_name service.name
+              xml.service_status "disable"
+            end
+          end
         end
       end
     end
