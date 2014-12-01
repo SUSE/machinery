@@ -273,6 +273,10 @@ module SystemDescriptionFactory
         {
           "name": "sshd.service",
           "state": "enabled"
+        },
+        {
+          "name": "rsyncd.service",
+          "state": "disabled"
         }
       ]
     }
@@ -284,6 +288,10 @@ module SystemDescriptionFactory
         {
           "name": "sshd",
           "state": "on"
+        },
+        {
+          "name": "rsyncd",
+          "state": "off"
         }
       ]
     }
