@@ -277,6 +277,17 @@ module SystemDescriptionFactory
       ]
     }
   EOF
+  EXAMPLE_SCOPES["services_sysvinit"] = <<-EOF
+    "services": {
+      "init_system": "sysvinit",
+      "services": [
+        {
+          "name": "sshd",
+          "state": "on"
+        }
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF
     "unmanaged_files": {
       "extracted": true,
