@@ -1,7 +1,7 @@
 # Changed configuration files [192.168.122.164] (2014-08-14 20:39:10)
 
   Files extracted: yes
-  * /etc/crontab (md5)
+  * /etc/crontab (cronie-1.4.8, md5)
     Diff:
     --- a/etc/crontab
     +++ b/etc/crontab
@@ -16,6 +16,6 @@
     -
     +-*/15 * * * *   root  echo config_files_integration_test
 
-  * /etc/postfix/LICENSE (deleted)
-  * /etc/postfix/TLS_LICENSE (mode, user, group)
+  * /etc/postfix/LICENSE (postfix-2.9.6, deleted)
+  * /etc/postfix/TLS_LICENSE (postfix-2.9.6, mode, user, group)
 
