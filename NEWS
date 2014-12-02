@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+* Fixed issue with Gnome Virtual File System mounts by ignoring them #393
+* Fixed package names are not shown during config-file comparison #392
+* Implemented filtering for special file systems like proc - fixes #384
 
 ## Version 1.1.0 - Mon Nov 17 16:30:44 CET 2014 - thardeck@suse.de
 
