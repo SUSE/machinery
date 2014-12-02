@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.1.1 - Tue Dec 02 13:24:38 CET 2014 - thardeck@suse.de
+
 * Skip Gnome Virtual File System mounts on inspection (issue #393)
 * Skip special file systems like proc, devtmpfs and so on (issue #384)
 * Show names of packages where changed config files come from (issue #392)
