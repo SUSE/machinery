@@ -47,6 +47,10 @@ def inject_test_data(base)
       /usr/sbin/rcautofs restart
     fi
     mount -t nfs 127.0.0.1:/tmp "/mnt/unmanaged/remote-dir/"
+
+    # mount proc to an uncommon directory for unmanaged-file inspector tests
+    mkdir -p "/mnt/uncommon-proc-mount"
+    mount -t proc proc /mnt/uncommon-proc-mount
   EOF
 
   base.vm.provision "shell", inline: prepare_test_environment_script
