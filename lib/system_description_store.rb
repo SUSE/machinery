@@ -54,6 +54,19 @@ class SystemDescriptionStore
     json = load_json(name)
     description = SystemDescription.from_json(name, json, self)
     description.validate_compatibility
+    begin
+      description.validate_file_data
+    rescue Machinery::Errors::SystemDescriptionValidationFailed => e
+      Machinery::Ui.warn("Warning: File validation errors:")
+      Machinery::Ui.warn(e.to_s)
+    end
+    description
+  end
+
+  def load!(name)
+    json = load_json(name)
+    description = SystemDescription.from_json(name, json, self)
+    description.validate_compatibility
     description.validate_file_data
     description
   end

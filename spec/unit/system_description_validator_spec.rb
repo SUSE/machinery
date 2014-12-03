@@ -189,19 +189,19 @@ EOF
     describe "validate config file presence" do
       it "validates unextracted description" do
         expect {
-          @store.load("config-files-unextracted")
+          @store.load!("config-files-unextracted")
         }.to_not raise_error
       end
 
       it "validates valid description" do
         expect {
-          @store.load("config-files-good")
+          @store.load!("config-files-good")
         }.to_not raise_error
       end
 
       it "throws error on invalid description" do
         expect {
-          @store.load("config-files-bad")
+          @store.load!("config-files-bad")
         }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
           expect(error.to_s).to eq(<<EOT
 Error validating description 'config-files-bad'
@@ -217,19 +217,19 @@ EOT
     describe "validate changed managed file presence" do
       it "validates unextracted description" do
         expect {
-          @store.load("changed-managed-files-unextracted")
+          @store.load!("changed-managed-files-unextracted")
         }.to_not raise_error
       end
 
       it "validates valid description" do
         expect {
-          @store.load("changed-managed-files-good")
+          @store.load!("changed-managed-files-good")
         }.to_not raise_error
       end
 
       it "throws error on invalid description" do
         expect {
-          @store.load("changed-managed-files-bad")
+          @store.load!("changed-managed-files-bad")
         }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
           expect(error.to_s).to eq(<<EOT
 Error validating description 'changed-managed-files-bad'
@@ -242,22 +242,47 @@ EOT
       end
     end
 
+    describe "validate changed managed file presence as warnings" do
+      it "validates unextracted description" do
+        expect(Machinery::Ui).to_not receive(:warn)
+        @store.load("changed-managed-files-unextracted")
+      end
+
+      it "validates valid description" do
+        expect(Machinery::Ui).to_not receive(:warn)
+        @store.load("changed-managed-files-good")
+      end
+
+      it "throws error on invalid description" do
+        expect(Machinery::Ui).to receive(:warn).with("Warning: File validation errors:")
+        expect(Machinery::Ui).to receive(:warn).with(<<EOT
+Error validating description 'changed-managed-files-bad'
+
+Scope 'changed_managed_files':
+  * File 'spec/data/descriptions/validation/changed-managed-files-bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
+EOT
+        )
+
+        @store.load("changed-managed-files-bad")
+      end
+    end
+
     describe "validate unmanaged file presence" do
       it "validates unextracted description" do
         expect {
-          @store.load("unmanaged-files-unextracted")
+          @store.load!("unmanaged-files-unextracted")
         }.to_not raise_error
       end
 
       it "validates valid description" do
         expect {
-          @store.load("unmanaged-files-good")
+          @store.load!("unmanaged-files-good")
         }.to_not raise_error
       end
 
       it "throws error on invalid description" do
         expect {
-          @store.load("unmanaged-files-bad")
+          @store.load!("unmanaged-files-bad")
         }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
           expect(error.to_s).to eq(<<EOT
 Error validating description 'unmanaged-files-bad'
@@ -278,13 +303,13 @@ EOT
       describe "for changed manged files" do
         it "validates existence of meta data" do
           expect {
-            @store.load("changed-managed-files-good")
+            @store.load!("changed-managed-files-good")
           }.to_not raise_error
         end
 
         it "throws an error on file exists without meta data" do
           expect {
-            @store.load("changed-managed-files-additional-files")
+            @store.load!("changed-managed-files-additional-files")
           }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
             expect(error.to_s).to include(
               "* File 'spec/data/descriptions/validation/changed-managed-files-additional-files/changed_managed_files/lib/mkinitrd/scripts/setup-done.sh' doesn't have meta data",
@@ -297,13 +322,13 @@ EOT
       describe "for config files" do
         it "validates existence of meta data" do
           expect {
-            @store.load("config-files-good")
+            @store.load!("config-files-good")
           }.to_not raise_error
         end
 
         it "throws an error on file exists without meta data" do
           expect {
-            @store.load("config-files-additional-files")
+            @store.load!("config-files-additional-files")
           }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
             expect(error.to_s).to include(
               "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/postfix/main.cf' doesn't have meta data",
@@ -316,13 +341,13 @@ EOT
       describe "for unmanaged files" do
         it "validates existence of meta data" do
           expect {
-            @store.load("unmanaged-files-good")
+            @store.load!("unmanaged-files-good")
           }.to_not raise_error
         end
 
         it "throws an error on file exists without meta data" do
           expect {
-            @store.load("unmanaged-files-additional-files")
+            @store.load!("unmanaged-files-additional-files")
           }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
             expect(error.to_s).to include(
               "* File 'spec/data/descriptions/validation/unmanaged-files-additional-files/unmanaged_files/files.tgz' doesn't have meta data"
