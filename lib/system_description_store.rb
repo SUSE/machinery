@@ -50,6 +50,10 @@ class SystemDescriptionStore
     File.read(file_name)
   end
 
+  # Load the system description with the given name
+  #
+  # If there are file validation errors these are put out as warnings but the
+  # loading of the system description succeeds.
   def load(name)
     json = load_json(name)
     description = SystemDescription.from_json(name, json, self)
@@ -63,6 +67,9 @@ class SystemDescriptionStore
     description
   end
 
+  # Load the system description with the given name
+  #
+  # If there are file validation errors the call fails with an exception
   def load!(name)
     json = load_json(name)
     description = SystemDescription.from_json(name, json, self)
