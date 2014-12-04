@@ -35,6 +35,15 @@ describe InspectTask, "#inspect_system" do
     end
   end
 
+  class BarInspector < Inspector
+    def inspect(system, description, options = nil)
+      result = SimpleInspectTaskScope.new("bar" => "baz")
+
+      description.bar = result
+      "summary"
+    end
+  end
+
   before :each do
     allow_any_instance_of(SystemDescriptionStore).to receive(:save)
     allow(System).to receive(:for).and_return(system)
@@ -68,6 +77,12 @@ describe InspectTask, "#inspect_system" do
     expect(Inspector).to receive(:for).with("foo").and_return(FooInspector.new)
 
     inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
+  end
+
+  it "saves the inspection data after each inspection and not just at the end" do
+    expect(store).to receive(:save).twice
+
+    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo", "bar"])
   end
 
   it "creates a proper system description" do

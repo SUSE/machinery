@@ -23,8 +23,6 @@ class InspectTask
     description, failed_inspections = build_description(store, name, system, scopes, options)
 
     if !description.attributes.empty?
-      description.name = name
-      store.save(description)
       print_description(description, scopes) if options[:show]
     end
 
@@ -85,6 +83,9 @@ class InspectTask
         next
       end
       description[inspector.scope].set_metadata(timestring, host)
+      if !description.attributes.empty?
+        store.save(description)
+      end
       Machinery::Ui.puts " -> " + summary
     end
 
