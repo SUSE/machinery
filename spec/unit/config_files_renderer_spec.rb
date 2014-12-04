@@ -85,7 +85,7 @@ describe ConfigFilesRenderer do
 
       context "when the diffs were generated" do
         before(:each) do
-          @diffs_dir = File.join(system_description.description_path, "config-file-diffs")
+          @diffs_dir = File.join(system_description.description_path, "analyze/config_file_diffs")
           FileUtils.mkdir_p(File.join(@diffs_dir, "/etc/postfix"))
           File.write(File.join(@diffs_dir, "/etc/postfix/main.cf.diff"), "main.cf.diff")
         end

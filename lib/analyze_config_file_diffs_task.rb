@@ -28,7 +28,7 @@ class AnalyzeConfigFileDiffsTask
     end
 
     with_repositories(description) do |zypper|
-      file_store = description.scope_file_store("config-file-diffs")
+      file_store = description.scope_file_store("analyze/config_file_diffs")
       file_store.create
       diffs_path = file_store.path
       extracted_files_path = description.scope_file_store("config_files").path
