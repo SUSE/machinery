@@ -44,6 +44,11 @@ flows. Machinery is targeted at the system administrator of the data center.
   - `machinery inspect --extract-files HOSTNAME`
   - `machinery deploy --cloud-config=~/openrc.sh HOSTNAME`
 
+### How to upgrade a SLES 11 SP3 system to SLES 12
+  - Machinery can help you to upgrade without affecting the original system.
+    For more details please read the Wiki Page: <br>
+    https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12
+
 
 ## CONCEPTUAL OVERVIEW
 
