@@ -29,7 +29,8 @@ describe Autoyast do
         "repositories",
         "users_with_passwords",
         "groups",
-        "services"
+        "services",
+        "config_files"
       ]
     )
   }

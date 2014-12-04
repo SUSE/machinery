@@ -39,6 +39,9 @@ class Autoyast
         apply_users(xml)
         apply_groups(xml)
         apply_services(xml)
+
+        ask_for_description_url(xml)
+        apply_config_files(xml)
       end
     end
 
@@ -46,6 +49,28 @@ class Autoyast
   end
 
   private
+
+  def ask_for_description_url(xml)
+    return if !@system_description.config_files
+
+    xml.general do
+      xml.send("ask-list", "config:type" => "list") do
+        xml.ask do
+          xml.question "Enter URL to system description"
+          xml.default "enter URL here"
+          xml.file "/tmp/description_url"
+          xml.stage "initial"
+          xml.script do
+            xml.rerun_on_error "true", "config:type" => "boolean"
+            xml.environment "true", "config:type" => "boolean"
+            xml.source do
+              xml.cdata "curl -f --head $VAL/manifest.json && exit 0 || exit 1"
+            end
+          end
+        end
+      end
+    end
+  end
 
   def apply_repositories(xml)
     return if !@system_description.repositories
@@ -141,6 +166,27 @@ class Autoyast
               xml.service_name service.name
               xml.service_status "disable"
             end
+          end
+        end
+      end
+    end
+  end
+
+  def apply_config_files(xml)
+    return if !@system_description.config_files
+
+    snippets = @system_description.config_files.files.map do |file|
+      <<-EOF
+        curl -o '/mnt#{file.name}' "`cat /tmp/description_url`/config_files#{file.name}"
+        chown #{file.user}:#{file.group} '#{file.name}'
+        chmod #{file.mode} '#{file.name}'
+      EOF
+    end
+    xml.scripts do
+      xml.send("chroot-scripts", "config:type" => "list") do
+        xml.script do
+          xml.source do
+            xml.cdata snippets.join("\n")
           end
         end
       end
