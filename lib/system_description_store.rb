@@ -15,6 +15,12 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# The responsibility of the SystemDescriptionStore class is to handle the
+# directory where the system description is stored. It provides methods to
+# create, delete, and copy descriptions within the top-level directory.
+#
+# System descriptions are represented by sub directories of this top-level
+# directory. They are handled by the SystemDescription class.
 class SystemDescriptionStore
   attr_reader :base_path
 

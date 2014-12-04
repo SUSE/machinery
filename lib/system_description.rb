@@ -15,6 +15,16 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# The responsibility of the SystemDescription class is to represent a system
+# description. This is our main data model.
+#
+# The content of the system description is stored in a directory, which contains
+# a manifest and sub directories for individual scopes. SystemDescription
+# handles all the data which is in the top level of the system description
+# directory.
+#
+# The sub directories storing the data for specific scopes are handled by the
+# ScopeFileStore class.
 class SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 2
   EXTRACTABLE_SCOPES = [
