@@ -276,7 +276,7 @@ class UnmanagedFilesInspector < Inspector
 
     if !remote_dirs.empty?
       warning = "The content of the following remote directories is ignored:" \
-        "#{remote_dirs.uniq.join(", ")}."
+        " #{remote_dirs.uniq.join(", ")}."
       Machinery.logger.warn(warning)
       Machinery::Ui.warn(warning)
     end
