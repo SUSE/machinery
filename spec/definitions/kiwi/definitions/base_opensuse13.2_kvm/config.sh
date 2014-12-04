@@ -67,8 +67,9 @@ echo 'solver.onlyRequires = true' >> /etc/zypp/zypp.conf
 rm /var/log/YaST2/config_diff_*.log
 rm /etc/zypp/repos.d/dir-*.repo
 
-# create this file to prevent non-deterministic behavior on rebuilds
+# create these files to prevent non-deterministic behavior on rebuilds or single inspections
 touch /var/lib/zypp/AutoInstalled
+touch /var/lib/zypp/LastDistributionFlavor
 
 # avoid mac address configured into system, this results in getting
 # eth1 instead of eth0 in virtualized environments sometimes
