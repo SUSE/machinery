@@ -383,4 +383,24 @@ EOF
       expect(unextracted_description.scope_extracted?("config_files")).to be(false)
     end
   end
+
+  describe ".validate_name" do
+    it "accepts valid name" do
+      expect {
+        SystemDescriptionStore.new.validate_name("valid_name")
+      }.to_not raise_error
+    end
+
+    it "rejects hidden names" do
+      expect {
+        SystemDescriptionStore.new.validate_name(".invalid_name")
+      }.to raise_error Machinery::Errors::SystemDescriptionError
+    end
+
+    it "rejects names with special characters" do
+      expect {
+        SystemDescriptionStore.new.validate_name("invalid_$name")
+      }.to raise_error Machinery::Errors::SystemDescriptionError
+    end
+  end
 end
