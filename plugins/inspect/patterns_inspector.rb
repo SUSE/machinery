@@ -19,7 +19,18 @@ class PatternsInspector < Inspector
   def inspect(system, description, options = {})
     system.check_requirement("zypper", "--version")
 
-    xml = system.run_command("zypper", "-xq", "patterns", "-i", :stdout => :capture)
+    begin
+      xml = system.run_command("zypper", "-xq", "patterns", "-i", stdout: :capture)
+    rescue Cheetah::ExecutionFailed => e
+      if e.stdout.include?("locked")
+        Machinery.logger.error(e.stdout)
+        raise Machinery::Errors::ZypperFailed.new(
+          "Zypper is locked."
+        )
+      else
+        raise
+      end
+    end
     pattern_list = Nokogiri::XML(xml).xpath("/stream/pattern-list/pattern")
 
     if pattern_list.count == 0

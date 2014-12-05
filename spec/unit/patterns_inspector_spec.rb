@@ -86,5 +86,15 @@ describe PatternsInspector do
       names = description.patterns.map(&:name)
       expect(names).to eq(names.sort)
     end
+
+    it "raises an error if zypper is locked" do
+      expect(system).to receive(:run_command).
+        with("zypper", "-xq", "patterns", "-i", stdout: :capture).
+        and_raise(Cheetah::ExecutionFailed.new(
+          nil, nil, "System management is locked by the application with pid 5480 (zypper).", nil)
+        )
+      expect { patterns_inspector.inspect(system, description) }.to raise_error(
+        Machinery::Errors::ZypperFailed, /Zypper is locked./)
+    end
   end
 end
