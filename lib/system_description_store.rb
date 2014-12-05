@@ -150,6 +150,14 @@ class SystemDescriptionStore
     mode
   end
 
+  def directory_for(name)
+    dir = description_path(name)
+    create_dir(dir)
+    dir
+  end
+
+  private
+
   def create_dir(dir, mode = 0700)
     unless Dir.exists?(dir)
       FileUtils.mkdir_p(dir, :mode => mode)

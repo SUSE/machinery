@@ -183,7 +183,7 @@ class SystemDescription < Machinery::Object
 
   def save(store)
     SystemDescription.validate_name(self.name)
-    store.create_dir(store.description_path(self.name))
+    store.directory_for(self.name)
     path = store.manifest_path(self.name)
     created = !File.exists?(path)
     File.write(path, self.to_json)

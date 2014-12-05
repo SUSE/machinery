@@ -210,6 +210,20 @@ describe SystemDescriptionStore do
     end
   end
 
+  describe "#directory_for" do
+    it "creates sub directory for system description" do
+      path = "/tmp/test_dir"
+      store = SystemDescriptionStore.new(path)
+      name = "my_description"
+
+      dir = store.directory_for(name)
+
+      expect(dir).to eq(File.join(path, name))
+      expect(File.exist?(dir)).to be(true)
+      expect(File.stat(dir).mode).to eq 0100700
+    end
+  end
+
   describe "file store methods" do
     before(:each) do
       create_machinery_dir
