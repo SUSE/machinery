@@ -122,6 +122,20 @@ class SystemDescription < Machinery::Object
       description
     end
 
+    def validate_name(name)
+      if ! /^[\w\.:-]*$/.match(name)
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "System description name \"#{name}\" is invalid. Only \"a-zA-Z0-9_:.-\" are valid characters."
+        )
+      end
+
+      if name.start_with?(".")
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "System description name \"#{name}\" is invalid. A dot is not allowed as first character."
+        )
+      end
+    end
+
     private
 
     def compatible_json?(json)
@@ -168,7 +182,7 @@ class SystemDescription < Machinery::Object
   end
 
   def save(store)
-    store.validate_name(self.name)
+    SystemDescription.validate_name(self.name)
     store.create_dir(store.description_path(self.name))
     path = store.manifest_path(self.name)
     created = !File.exists?(path)

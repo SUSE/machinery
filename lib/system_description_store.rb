@@ -46,7 +46,7 @@ class SystemDescriptionStore
   end
 
   def load_json(name)
-    validate_name(name)
+    SystemDescription.validate_name(name)
     file_name = manifest_path(name)
     unless File.exists?(file_name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
@@ -83,7 +83,7 @@ class SystemDescriptionStore
 
   def remove(name)
     unless name.empty?
-      validate_name(name)
+      SystemDescription.validate_name(name)
       FileUtils.rm_rf(description_path(name))
     else
       raise "The system description has no name specified and thus can't be deleted."
@@ -91,8 +91,8 @@ class SystemDescriptionStore
   end
 
   def copy(from, to)
-    validate_name(from)
-    validate_name(to)
+    SystemDescription.validate_name(from)
+    SystemDescription.validate_name(to)
     if !list.include?(from)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
         "System description \"#{from}\" does not exist."
@@ -154,20 +154,5 @@ class SystemDescriptionStore
     unless Dir.exists?(dir)
       FileUtils.mkdir_p(dir, :mode => mode)
     end
-  end
-
-  def validate_name(name)
-    if ! /^[\w\.:-]*$/.match(name)
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "System description name \"#{name}\" is invalid. Only \"a-zA-Z0-9_:.-\" are valid characters."
-      )
-    end
-
-    if name.start_with?(".")
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "System description name \"#{name}\" is invalid. A dot is not allowed as first character."
-      )
-    end
-
   end
 end

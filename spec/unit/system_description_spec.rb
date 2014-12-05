@@ -387,19 +387,19 @@ EOF
   describe ".validate_name" do
     it "accepts valid name" do
       expect {
-        SystemDescriptionStore.new.validate_name("valid_name")
+        SystemDescription.validate_name("valid_name")
       }.to_not raise_error
     end
 
     it "rejects hidden names" do
       expect {
-        SystemDescriptionStore.new.validate_name(".invalid_name")
+        SystemDescription.validate_name(".invalid_name")
       }.to raise_error Machinery::Errors::SystemDescriptionError
     end
 
     it "rejects names with special characters" do
       expect {
-        SystemDescriptionStore.new.validate_name("invalid_$name")
+        SystemDescription.validate_name("invalid_$name")
       }.to raise_error Machinery::Errors::SystemDescriptionError
     end
   end
