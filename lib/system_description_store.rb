@@ -61,27 +61,14 @@ class SystemDescriptionStore
   # If there are file validation errors these are put out as warnings but the
   # loading of the system description succeeds.
   def load(name)
-    json = load_json(name)
-    description = SystemDescription.from_json(name, json, self)
-    description.validate_compatibility
-    begin
-      description.validate_file_data
-    rescue Machinery::Errors::SystemDescriptionValidationFailed => e
-      Machinery::Ui.warn("Warning: File validation errors:")
-      Machinery::Ui.warn(e.to_s)
-    end
-    description
+    SystemDescription.load(name, self)
   end
 
   # Load the system description with the given name
   #
   # If there are file validation errors the call fails with an exception
   def load!(name)
-    json = load_json(name)
-    description = SystemDescription.from_json(name, json, self)
-    description.validate_compatibility
-    description.validate_file_data
-    description
+    SystemDescription.load!(name, self)
   end
 
   def save(description)

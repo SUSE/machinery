@@ -101,6 +101,27 @@ class SystemDescription < Machinery::Object
       Hash[scopes]
     end
 
+    def load!(name, store)
+      json = store.load_json(name)
+      description = SystemDescription.from_json(name, json, store)
+      description.validate_compatibility
+      description.validate_file_data
+      description
+    end
+
+    def load(name, store)
+      json = store.load_json(name)
+      description = SystemDescription.from_json(name, json, store)
+      description.validate_compatibility
+      begin
+        description.validate_file_data
+      rescue Machinery::Errors::SystemDescriptionValidationFailed => e
+        Machinery::Ui.warn("Warning: File validation errors:")
+        Machinery::Ui.warn(e.to_s)
+      end
+      description
+    end
+
     private
 
     def compatible_json?(json)
