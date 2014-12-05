@@ -1,0 +1,42 @@
+{
+  "config_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.12",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "600"
+      }
+    ]
+  },
+  "repositories": [
+    {
+      "alias": "download.opensuse.org-oss",
+      "name": "Main Repository (OSS)",
+      "type": "yast2",
+      "url": "http://download.opensuse.org/distribution/13.2/repo/oss/",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99
+    }
+  ],
+  "meta": {
+    "format_version": 2,
+    "config_files": {
+      "modified": "2014-12-04T14:57:58Z",
+      "hostname": "192.168.121.82"
+    },
+    "repositories": {
+      "modified": "2014-12-04T14:57:58Z",
+      "hostname": "192.168.121.82"
+    }
+  }
+}
