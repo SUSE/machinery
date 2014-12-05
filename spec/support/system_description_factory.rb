@@ -142,7 +142,10 @@ module SystemDescriptionFactory
           "status": "changed",
           "changes": [
             "deleted"
-          ]
+          ],
+          "user": "root",
+          "group": "root",
+          "mode": "644"
         }
       ]
     }

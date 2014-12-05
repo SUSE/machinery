@@ -30,7 +30,8 @@ describe Autoyast do
         "users_with_passwords",
         "groups",
         "services",
-        "config_files"
+        "config_files",
+        "changed_managed_files"
       ]
     )
   }

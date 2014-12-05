@@ -92,9 +92,15 @@
   <scripts>
     <chroot-scripts config:type="list">
       <script>
-        <source><![CDATA[        curl -o '/mnt/etc/crontab' "`cat /tmp/description_url`/config_files/etc/crontab"
-        chown root:root '/etc/crontab'
-        chmod 644 '/etc/crontab'
+        <source><![CDATA[        mkdir -p '/mnt/etc'
+        curl -o '/mnt/etc/crontab' "`cat /tmp/description_url`/config_files/etc/crontab"
+        chown root:root '/mnt/etc/crontab'
+        chmod 644 '/mnt/etc/crontab'
+
+        mkdir -p '/mnt/etc/cron.daily'
+        curl -o '/mnt/etc/cron.daily/mdadm' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/mdadm"
+        chown root:root '/mnt/etc/cron.daily/mdadm'
+        chmod 644 '/mnt/etc/cron.daily/mdadm'
 ]]></source>
       </script>
     </chroot-scripts>

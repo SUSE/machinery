@@ -41,7 +41,18 @@ class Autoyast
         apply_services(xml)
 
         ask_for_description_url(xml)
-        apply_config_files(xml)
+        chroot_scripts = []
+        chroot_scripts << config_files_script
+        chroot_scripts << changed_managed_files_script
+        xml.scripts do
+          xml.send("chroot-scripts", "config:type" => "list") do
+            xml.script do
+              xml.source do
+                xml.cdata chroot_scripts.join("\n")
+              end
+            end
+          end
+        end
       end
     end
 
@@ -51,7 +62,8 @@ class Autoyast
   private
 
   def ask_for_description_url(xml)
-    return if !@system_description.config_files
+    return if !@system_description.config_files &&
+      !@system_description.changed_managed_files
 
     xml.general do
       xml.send("ask-list", "config:type" => "list") do
@@ -172,24 +184,33 @@ class Autoyast
     end
   end
 
-  def apply_config_files(xml)
+  def config_files_script
     return if !@system_description.config_files
 
     snippets = @system_description.config_files.files.map do |file|
       <<-EOF
+        mkdir -p '/mnt#{File.dirname(file.name)}'
         curl -o '/mnt#{file.name}' "`cat /tmp/description_url`/config_files#{file.name}"
-        chown #{file.user}:#{file.group} '#{file.name}'
-        chmod #{file.mode} '#{file.name}'
+        chown #{file.user}:#{file.group} '/mnt#{file.name}'
+        chmod #{file.mode} '/mnt#{file.name}'
       EOF
     end
-    xml.scripts do
-      xml.send("chroot-scripts", "config:type" => "list") do
-        xml.script do
-          xml.source do
-            xml.cdata snippets.join("\n")
-          end
-        end
-      end
+
+    snippets.join("\n")
+  end
+
+  def changed_managed_files_script
+    return if !@system_description.changed_managed_files
+
+    snippets = @system_description.changed_managed_files.files.map do |file|
+      <<-EOF
+        mkdir -p '/mnt#{File.dirname(file.name)}'
+        curl -o '/mnt#{file.name}' "`cat /tmp/description_url`/changed_managed_files#{file.name}"
+        chown #{file.user}:#{file.group} '/mnt#{file.name}'
+        chmod #{file.mode} '/mnt#{file.name}'
+      EOF
     end
+
+    snippets.join("\n")
   end
 end
