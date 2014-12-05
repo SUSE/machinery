@@ -120,6 +120,21 @@ describe Cli do
         run_command(["inspect", "--scope=packages,repositories", example_host])
       end
 
+      it "only inspects a scope once even if it was provided multiple times" do
+        expect_any_instance_of(InspectTask).to receive(:inspect_system).
+          with(
+            an_instance_of(SystemDescriptionStore),
+            example_host,
+            example_host,
+            an_instance_of(CurrentUser),
+            ["packages"],
+            {}
+          ).
+          and_return(description)
+
+        run_command(["inspect", "--scope=packages,packages", example_host])
+      end
+
       it "inspects all scopes if no --scope is provided" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
