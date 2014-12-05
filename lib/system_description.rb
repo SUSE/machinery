@@ -167,6 +167,15 @@ class SystemDescription < Machinery::Object
     JSON.pretty_generate(to_hash)
   end
 
+  def save(store)
+    store.validate_name(self.name)
+    store.create_dir(store.description_path(self.name))
+    path = store.manifest_path(self.name)
+    created = !File.exists?(path)
+    File.write(path, self.to_json)
+    File.chmod(0600,path) if created
+  end
+
   def scopes
     scopes = attributes.map {
       |key, value| key.to_s

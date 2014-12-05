@@ -72,12 +72,7 @@ class SystemDescriptionStore
   end
 
   def save(description)
-    validate_name(description.name)
-    create_dir(description_path(description.name))
-    path = manifest_path(description.name)
-    created = !File.exists?(path)
-    File.write(path, description.to_json)
-    File.chmod(0600,path) if created
+    description.save(self)
   end
 
   def list
@@ -154,8 +149,6 @@ class SystemDescriptionStore
     end
     mode
   end
-
-  private
 
   def create_dir(dir, mode = 0700)
     unless Dir.exists?(dir)
