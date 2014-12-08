@@ -101,6 +101,16 @@
         curl -o '/mnt/etc/cron.daily/mdadm' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/mdadm"
         chown root:root '/mnt/etc/cron.daily/mdadm'
         chmod 644 '/mnt/etc/cron.daily/mdadm'
+
+      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
+
+        curl -o '/mnt/tmp/files.tgz'           "`cat /tmp/description_url`/unmanaged_files/files.tgz"
+        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'
+        rm '/mnt/tmp/files.tgz'
+
+        curl -o '/mnt/tmp/iscsi.tgz'           "`cat /tmp/description_url`/unmanaged_files/etc/iscsi.tgz"
+        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/iscsi.tgz'
+        rm '/mnt/tmp/iscsi.tgz'
 ]]></source>
       </script>
     </chroot-scripts>

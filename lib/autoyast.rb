@@ -44,6 +44,7 @@ class Autoyast
         chroot_scripts = []
         chroot_scripts << config_files_script
         chroot_scripts << changed_managed_files_script
+        chroot_scripts << unmanaged_files_script
         xml.scripts do
           xml.send("chroot-scripts", "config:type" => "list") do
             xml.script do
@@ -63,7 +64,8 @@ class Autoyast
 
   def ask_for_description_url(xml)
     return if !@system_description.config_files &&
-      !@system_description.changed_managed_files
+      !@system_description.changed_managed_files &&
+      !@system_description.unmanaged_files
 
     xml.general do
       xml.send("ask-list", "config:type" => "list") do
@@ -208,6 +210,32 @@ class Autoyast
         curl -o '/mnt#{file.name}' "`cat /tmp/description_url`/changed_managed_files#{file.name}"
         chown #{file.user}:#{file.group} '/mnt#{file.name}'
         chmod #{file.mode} '/mnt#{file.name}'
+      EOF
+    end
+
+    snippets.join("\n")
+  end
+
+  def unmanaged_files_script
+    return if !@system_description.unmanaged_files
+
+    base = Pathname(@system_description.file_store("unmanaged_files"))
+    snippets = []
+    snippets << <<-EOF
+      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
+    EOF
+
+    Dir["#{base}/**/*.tgz"].each do |path|
+      next if !path.end_with?(".tgz")
+
+      relative_path = Pathname(path).relative_path_from(base).to_s
+      tarball_name = File.basename(path)
+
+      snippets << <<-EOF
+        curl -o '/mnt/tmp/#{tarball_name}' \
+          "`cat /tmp/description_url`/unmanaged_files/#{relative_path}"
+        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/#{tarball_name}'
+        rm '/mnt/tmp/#{tarball_name}'
       EOF
     end
 

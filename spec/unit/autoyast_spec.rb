@@ -18,22 +18,30 @@
 require_relative "spec_helper"
 
 describe Autoyast do
+  initialize_system_description_factory_store
+
   let(:expected_profile) {
     File.read(File.join(Machinery::ROOT, "spec/data/autoyast/simple.xml"))
   }
   let(:description) {
-    create_test_description(
+    description = create_test_description(
+      store_on_disk: true,
+      extracted_scopes: [
+        "config_files",
+        "changed_managed_files",
+        "unmanaged_files"
+      ],
       scopes: [
         "packages",
         "patterns",
         "repositories",
         "users_with_passwords",
         "groups",
-        "services",
-        "config_files",
-        "changed_managed_files"
+        "services"
       ]
     )
+
+    description
   }
 
   describe "#profile" do
