@@ -26,59 +26,19 @@ describe ListTask do
   let(:hostname) { "example.com" }
   let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
   let(:system_description) {
-    create_test_description(json: <<-EOF, name: name, store: store)
-      {
-        "packages": [],
-        "repositories": [],
-        "meta": {
-          "format_version": 2,
-          "packages": {
-            "modified": "#{date}",
-            "hostname": "#{hostname}"
-          },
-          "repositories": {
-            "modified": "#{date}",
-            "hostname": "#{hostname}"
-          }
-        }
-      }
-    EOF
+    create_test_description(
+      scopes: ["packages", "repositories"], modified: date, hostname: hostname,
+      name: name, store: store
+    )
   }
   let(:system_description_without_scope_meta) {
-    create_test_description(json: <<-EOF, name: name, store: store)
-      {
-        "packages": [],
-        "meta": {
-          "format_version": 2
-        }
-      }
-    EOF
+    create_test_description(scopes: ["packages"], add_scope_meta: false, name: name, store: store)
   }
   let(:system_description_with_extracted_files) {
-    create_test_description(json: <<-EOF, name: name, store: store)
-      {
-        "config_files": {
-          "extracted": true,
-          "files": []
-        },
-        "changed_managed_files": {
-          "extracted": false,
-          "files": []
-        },
-        "unmanaged_files": {
-          "extracted": true,
-          "files": [
-            {
-              "name": "/boot/0xfcdaa824",
-              "type": "file"
-            }
-          ]
-        },
-        "meta": {
-          "format_version": 2
-        }
-      }
-    EOF
+    create_test_description(
+      scopes: ["changed_managed_files"],
+      extracted_scopes: ["config_files", "unmanaged_files"],
+      name: name, store: store)
   }
   let(:system_description_with_incompatible_data_format) {
     create_test_description(json: <<-EOF, name: name, store: store)

@@ -22,66 +22,8 @@ describe SystemDescription do
 
   before(:all) do
     @name = "name"
-    @description = '{
-      "repositories": [
-        {
-          "alias": "YaST:Head",
-          "name": "YaST:Head",
-          "url": "http://download.opensuse.org",
-          "type": "rpm-md",
-          "priority": 99,
-          "keep_packages": false,
-          "enabled": true,
-          "gpgcheck": true,
-          "autorefresh": true
-        }
-      ],
-      "packages": [
-        {
-          "name": "kernel-desktop",
-          "version": "3.7.10",
-          "release": "1.0",
-          "arch": "x86_64",
-          "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-          "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-        }
-      ],
-      "meta": {
-        "format_version": 2,
-        "packages": {
-          "modified": "2014-02-07T14:04:45Z",
-          "hostname": "192.168.122.216"
-        }
-      }
-    }'
-    @duplicate_description = '{
-      "meta": {
-        "format_version": 2
-      },
-      "packages": [
-        {
-          "name": "kernel-desktop",
-          "version": "3.7.10",
-          "release": "1.0",
-          "arch": "x86_64",
-          "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-          "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-        },
-        {
-          "name": "kernel-desktop",
-          "version": "3.7.10",
-          "release": "1.0",
-          "arch": "x86_64",
-          "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-          "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-        }
-      ]
-    }'
-    @empty_description = '{
-      "meta": {
-        "format_version": 2
-      }
-    }'
+    @description = create_test_description_json(scopes: ["packages", "repositories"])
+    @empty_description = create_test_description_json
     @mix_struct_hash_descr = '{
       "software": {
         "packages": {
@@ -101,7 +43,7 @@ describe SystemDescription do
 
   it "provides nested accessors for data attributes" do
     data = create_test_description(name: @name, json: @description)
-    expect(data.repositories.first.alias).to eq("YaST:Head")
+    expect(data.repositories.first.alias).to eq("openSUSE_13.1_OSS")
   end
 
   it "supports serialization from and to json" do

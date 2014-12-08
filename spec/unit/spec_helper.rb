@@ -46,26 +46,7 @@ end
 shared_context "machinery test directory" do
   include FakeFS::SpecHelpers
 
-  let(:test_manifest) {
-    test_manifest = <<EOF
-{
-  "packages": [
-    {
-      "name": "kernel-desktop",
-      "version": "3.7.10",
-      "release": "1.0",
-      "arch": "x86_64",
-      "vendor": "openSUSE",
-      "checksum": "6aa7aa6af76da1357219b65c5d32a52e"
-    }
-  ],
-  "meta": {
-    "format_version": 2
-  }
-}
-EOF
-    test_manifest.chomp
-  }
+  let(:test_manifest) { create_test_description(scopes: ["packages"]).to_json }
   let(:test_base_path) { "/home/tux/.machinery" }
   let(:test_name) { "description1" }
 
