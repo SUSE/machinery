@@ -21,6 +21,11 @@ class Autoyast
   end
 
   def write(output_dir)
+    FileUtils.mkdir_p(output_dir) if !Dir.exists?(output_dir)
+
+    Dir["#{@system_description.description_path}/*"].each do |content|
+      FileUtils.cp_r(content, output_dir)
+    end
     File.write(File.join(output_dir, "autoinst.xml"), profile)
   end
 

@@ -51,4 +51,24 @@ describe Autoyast do
       expect(autoyast.profile).to eq(expected_profile)
     end
   end
+
+  describe "#write" do
+    around(:each) do |example|
+      autoyast = Autoyast.new(description)
+      Dir.mktmpdir("autoyast_export_test") do |dir|
+        @output_dir = dir
+        autoyast.write(@output_dir)
+
+        example.run
+      end
+    end
+
+    it "copies over the system description" do
+      expect(File.exists?(File.join(@output_dir, "manifest.json"))).to be(true)
+    end
+
+    it "adds the autoinst.xml" do
+      expect(File.exists?(File.join(@output_dir, "autoinst.xml"))).to be(true)
+    end
+  end
 end
