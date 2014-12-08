@@ -104,7 +104,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 2
+      format_version: 3
     }
 
     (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
