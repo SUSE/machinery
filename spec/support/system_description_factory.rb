@@ -58,12 +58,18 @@ module SystemDescriptionFactory
   #   from it. Otherwise an empty description is created.
   # +scopes+: The list of scopes to include in the generated system description
   # +extracted_scopes+: The list of extractable scopes that should be extracted.
+  # +modified+: Modified date of the system description scopes.
+  # +hostname+: Hostname of the inspected host.
+  # +add_scope_meta+: Add meta data for each scope if true.
   def create_test_description(options = {})
     options = {
         name: "description",
         store_on_disk: false,
         scopes: [],
-        extracted_scopes: []
+        extracted_scopes: [],
+        modified: DateTime.now,
+        hostname: "example.com",
+        add_scope_meta: true
     }.merge(options)
 
     name  = options[:name] || "description"
@@ -98,10 +104,12 @@ module SystemDescriptionFactory
 
     (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
       json_objects << EXAMPLE_SCOPES[scope]
-      meta[scope] = {
-        modified: DateTime.now,
-        hostname: "example.com"
-      }
+      if options[:add_scope_meta]
+        meta[scope] = {
+          modified: options[:modified],
+          hostname: options[:hostname]
+        }
+      end
     end
 
     json_objects << "\"meta\": #{meta.to_json}"
