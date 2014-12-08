@@ -23,7 +23,7 @@ describe DeployTask do
   let(:store) { SystemDescriptionStore.new }
   let(:deploy_task) { DeployTask.new }
   let(:system_description) {
-    SystemDescription.new("test", {}, store)
+    SystemDescription.new("test", store)
   }
   let(:cloud_config_file) { "/example-openrc.sh" }
   let(:tmp_image_dir) { "/tmp/test-image2014" }

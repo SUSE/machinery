@@ -61,7 +61,7 @@ class InspectTask
     begin
       description = store.load(name)
     rescue Machinery::Errors::SystemDescriptionNotFound
-      description = SystemDescription.new(name, {}, store)
+      description = SystemDescription.new(name, store)
     end
     timestring = Time.now.utc.iso8601
     if system.class == LocalSystem

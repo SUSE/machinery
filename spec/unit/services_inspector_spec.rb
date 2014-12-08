@@ -22,7 +22,7 @@ describe ServicesInspector do
     subject(:inspector) { ServicesInspector.new }
 
     let(:description) {
-      SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+      SystemDescription.new("systemname", SystemDescriptionStore.new)
     }
 
     let(:systemctl_list_unit_files_output) {

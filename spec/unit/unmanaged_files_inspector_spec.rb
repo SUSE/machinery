@@ -90,7 +90,7 @@ describe UnmanagedFilesInspector do
     }
 
     let(:description) {
-      SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+      SystemDescription.new("systemname", SystemDescriptionStore.new)
     }
 
     before(:each) do

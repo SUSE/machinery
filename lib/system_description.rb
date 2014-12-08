@@ -72,7 +72,7 @@ class SystemDescription < Machinery::Object
       end
 
       begin
-        description = self.new(name, create_scopes(json_hash), store)
+        description = self.new(name, store, create_scopes(json_hash))
       rescue NameError
         raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
@@ -145,7 +145,7 @@ class SystemDescription < Machinery::Object
     end
   end
 
-  def initialize(name, hash = {}, store = nil)
+  def initialize(name, store = nil, hash = {})
     @name = name
     @store = store
     @format_version = CURRENT_FORMAT_VERSION

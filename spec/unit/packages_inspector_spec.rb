@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe PackagesInspector, ".inspect" do
   let(:description) {
-    SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+    SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
   let(:packages_inspector) { PackagesInspector.new }
 

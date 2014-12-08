@@ -22,7 +22,7 @@ describe ChangedManagedFilesInspector do
   let(:stat_result) { File.read("spec/data/changed_managed_files/stat_result") }
   let(:system) { double }
   let(:description) {
-    SystemDescription.new("foo", {}, SystemDescriptionStore.new)
+    SystemDescription.new("foo", SystemDescriptionStore.new)
   }
   subject {
     inspector = ChangedManagedFilesInspector.new
