@@ -39,7 +39,7 @@ shared_examples "autoyast export" do
         stdout: :capture,
         as: "vagrant"
       ).split("\n")
-      expect(file_list).to match_array(["autoinst.xml"])
+      expect(file_list).to include("autoinst.xml")
     end
 
     it "generates a proper profile" do
