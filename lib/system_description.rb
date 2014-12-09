@@ -38,7 +38,7 @@ class SystemDescription < Machinery::Object
   attr_accessor :format_version
 
   class << self
-    def from_json(name, json, store = nil)
+    def from_json(name, json, store)
       begin
         json_hash = JSON.parse(json)
       rescue JSON::ParserError => e
@@ -61,7 +61,7 @@ class SystemDescription < Machinery::Object
         error = "The JSON data of the system description '#{name}' " \
           "couldn't be parsed. The following error occured"
         error += " around line #{error_pos}" if error_pos
-        error += " in file '#{store.manifest_path(name)}'" if store
+        error += " in file '#{store.manifest_path(name)}'" if store.persistent?
         error += ":\n\n#{json_error}"
 
         raise Machinery::Errors::SystemDescriptionError.new(error)

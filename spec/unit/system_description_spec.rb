@@ -100,12 +100,12 @@ describe SystemDescription do
   end
 
   it "provides nested accessors for data attributes" do
-    data = SystemDescription.from_json(@name, @description)
+    data = create_transient_system_description(@name, @description)
     expect(data.repositories.first.alias).to eq("YaST:Head")
   end
 
   it "supports serialization from and to json" do
-    data = SystemDescription.from_json(@name, @description)
+    data = create_transient_system_description(@name, @description)
     expect(data.to_json.delete(' ')).to eq(@description.delete(' '))
   end
 
@@ -119,14 +119,14 @@ describe SystemDescription do
 
   it "raises InvalidSystemDescription if json input does not start with a hash" do
     class SystemDescriptionFooConfig < Machinery::Object; end
-    expect { SystemDescription.from_json(@name,
+    expect { create_transient_system_description(@name,
       '[ "system-description-foo", "xxx" ]'
     )}.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
   end
 
   it "validates compatible descriptions" do
     expect {
-      SystemDescription.from_json(@name, <<-EOT)
+      create_transient_system_description(@name, <<-EOT)
         {
           "meta": {
             "format_version": 2,
@@ -139,7 +139,7 @@ describe SystemDescription do
 
   it "doesn't validate incompatible descriptions" do
     expect {
-      SystemDescription.from_json(@name, <<-EOT)
+      create_transient_system_description(@name, <<-EOT)
         {
           "meta": {
             "os": "invalid"
@@ -166,7 +166,7 @@ unexpected token at '{
       }
 EOF
       expected.chomp!
-      expect { SystemDescription.from_json(@name,
+      expect { create_transient_system_description(@name,
          File.read("#{path}/missing_comma.json"))
       }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
@@ -178,8 +178,8 @@ The JSON data of the system description 'name' couldn't be parsed. The following
 An opening bracket, a comma or quotation is missing in one of the global scope definitions or in the meta section. Unlike issues with the elements of the scopes, our JSON parser isn't able to locate issues like these.
 EOF
       expected.chomp!
-      expect { SystemDescription.
-        from_json(@name,
+      expect {
+        create_transient_system_description(@name,
           File.read("#{path}/missing_opening_bracket.json"))
       }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
@@ -223,7 +223,7 @@ EOF
 
   describe "#to_hash" do
     it "saves version metadata for descriptions with format version" do
-      description = SystemDescription.from_json("name", <<-EOT)
+      description = create_transient_system_description("name", <<-EOT)
         {
           "meta": {
             "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION}
@@ -237,7 +237,7 @@ EOF
     end
 
     it "doesn't save version metadata for descriptions without format version" do
-      description = SystemDescription.from_json("name", "{}")
+      description = create_transient_system_description("name", "{}")
 
       hash = description.to_hash
 
@@ -257,14 +257,14 @@ EOF
 
   describe "#scopes" do
     it "returns a sorted list of scopes which are available in the system description" do
-      description = SystemDescription.from_json(@name, @description)
+      description = create_transient_system_description(@name, @description)
       expect(description.scopes).to eq(["packages", "repositories"])
     end
   end
 
   describe "#assert_scopes" do
     it "checks the system description for completeness" do
-      full_description = SystemDescription.from_json(@name, @description)
+      full_description = create_transient_system_description(@name, @description)
       [
         ["repositories"],
         ["packages"],
@@ -289,7 +289,7 @@ EOF
         {
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
 
       expect {
         description.short_os_version
@@ -305,7 +305,7 @@ EOF
           }
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
 
       expect(description.short_os_version).to eq("13.1")
     end
@@ -319,7 +319,7 @@ EOF
           }
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
 
       expect(description.short_os_version).to eq("sles11sp3")
     end
@@ -333,7 +333,7 @@ EOF
           }
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
 
       expect(description.short_os_version).to eq("sles12")
     end
@@ -347,7 +347,7 @@ EOF
           }
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
 
       expect(description.short_os_version).to eq("sles12")
     end
@@ -362,7 +362,7 @@ EOF
           }
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
     }
     let(:unextracted_description) {
       json = <<-EOF
@@ -372,7 +372,7 @@ EOF
           }
         }
       EOF
-      description = SystemDescription.from_json("name", json)
+      description = create_transient_system_description("name", json)
     }
 
     it "returns true" do

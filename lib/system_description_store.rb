@@ -28,6 +28,10 @@ class SystemDescriptionStore
     Machinery::DEFAULT_CONFIG_DIR
   end
 
+  def persistent?
+    true
+  end
+
   def initialize(base_path = default_path)
     @base_path = base_path
     create_dir(@base_path)

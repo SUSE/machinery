@@ -21,7 +21,7 @@ describe SystemDescriptionValidator do
   describe "#validate_json" do
     it "raises SystemDescriptionError on invalid global data in a description" do
       expect {
-        SystemDescription.from_json(@name, <<-EOT)
+        create_transient_system_description(@name, <<-EOT)
           {
             "meta": {
               "format_version": 2,
@@ -34,7 +34,7 @@ describe SystemDescriptionValidator do
 
     it "raises SystemDescriptionError on invalid scope data in a description" do
       expect {
-        SystemDescription.from_json(@name, <<-EOT)
+        create_transient_system_description(@name, <<-EOT)
           {
             "meta": {
               "format_version": 2
@@ -51,7 +51,7 @@ In scope config_files: The property #0 (files/changes) of type Hash did not matc
 EOF
       expected.chomp!
       expect {
-        SystemDescription.from_json(@name, <<-EOT)
+        create_transient_system_description(@name, <<-EOT)
           {
             "config_files": {
               "extracted": true,
@@ -84,7 +84,7 @@ EOF
 
     it "does not raise an error when a changed-managed-file is 'replaced'" do
       expect {
-        SystemDescription.from_json(@name, <<-EOT)
+        create_transient_system_description(@name, <<-EOT)
           {
             "changed_managed_files": {
               "extracted": true,
@@ -123,10 +123,10 @@ EOF
 In scope config_files: The property #0 (files) did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
-        expect { SystemDescription.
-          from_json(@name,
-            File.read("#{path}missing_attribute.json")) }.
-          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        expect {
+          create_transient_system_description(@name,
+            File.read("#{path}missing_attribute.json"))
+        }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
       it "raises in case of an unknown status" do
@@ -134,10 +134,10 @@ EOF
 In scope config_files: The property #0 (files/status) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
-        expect { SystemDescription.
-          from_json(@name,
-            File.read("#{path}unknown_status.json")) }.
-          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        expect {
+          create_transient_system_description(@name,
+            File.read("#{path}unknown_status.json"))
+        }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
       it "raises in case of a pattern mismatch" do
@@ -145,10 +145,10 @@ EOF
 In scope config_files: The property #0 (files/mode/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
-        expect { SystemDescription.
-          from_json(@name,
-            File.read("#{path}pattern_mismatch.json")) }.
-          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        expect {
+          create_transient_system_description(@name,
+            File.read("#{path}pattern_mismatch.json"))
+        }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
       it "raises for a deleted file in case of an empty changes array" do
@@ -156,10 +156,10 @@ EOF
 In scope config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
-        expect { SystemDescription.
-          from_json(@name,
-            File.read("#{path}deleted_without_changes.json")) }.
-          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        expect {
+          create_transient_system_description(@name,
+            File.read("#{path}deleted_without_changes.json"))
+          }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
     end
@@ -172,10 +172,10 @@ EOF
 In scope unmanaged_files: The property #0 (files) of type Array did not match any of the required schemas.
 EOF
         expected.chomp!
-        expect { SystemDescription.
-          from_json(@name,
-            File.read("#{path}/extracted_unknown_type.json")) }.
-          to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        expect {
+          create_transient_system_description(@name,
+            File.read("#{path}/extracted_unknown_type.json"))
+        }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
     end
   end

@@ -22,4 +22,7 @@
 # description or related data will result in an exception.
 
 class SystemDescriptionStoreMemory
+  def persistent?
+    false
+  end
 end
