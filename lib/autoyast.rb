@@ -198,13 +198,20 @@ class Autoyast
   def config_files_script
     return if !@system_description.config_files
 
-    snippets = @system_description.config_files.files.map do |file|
-      <<-EOF
-        mkdir -p '/mnt#{File.dirname(file.name)}'
-        curl -o '/mnt#{file.name}' "`cat /tmp/description_url`/config_files#{file.name}"
-        chown #{file.user}:#{file.group} '/mnt#{file.name}'
-        chmod #{file.mode} '/mnt#{file.name}'
-      EOF
+    base = Pathname(@system_description.file_store("config_files"))
+    snippets = []
+    Dir["#{base}/**/*"].each do |path|
+      next if File.directory?(path)
+
+      relative_path = Pathname(path).relative_path_from(base).to_s
+      snippets << "mkdir -p '/mnt/#{File.dirname(relative_path)}'"
+      snippets << "curl -o '/mnt/#{relative_path}' " \
+        "\"`cat /tmp/description_url`/config_files/#{relative_path}\""
+    end
+
+    @system_description.config_files.files.map do |file|
+      snippets << "chown #{file.user}:#{file.group} '/mnt#{file.name}'" if file.user
+      snippets << "chmod #{file.mode} '/mnt#{file.name}'" if file.mode
     end
 
     snippets.join("\n")
@@ -213,13 +220,20 @@ class Autoyast
   def changed_managed_files_script
     return if !@system_description.changed_managed_files
 
-    snippets = @system_description.changed_managed_files.files.map do |file|
-      <<-EOF
-        mkdir -p '/mnt#{File.dirname(file.name)}'
-        curl -o '/mnt#{file.name}' "`cat /tmp/description_url`/changed_managed_files#{file.name}"
-        chown #{file.user}:#{file.group} '/mnt#{file.name}'
-        chmod #{file.mode} '/mnt#{file.name}'
-      EOF
+    base = Pathname(@system_description.file_store("changed_managed_files"))
+    snippets = []
+    Dir["#{base}/**/*"].each do |path|
+      next if File.directory?(path)
+
+      relative_path = Pathname(path).relative_path_from(base).to_s
+      snippets << "mkdir -p '/mnt/#{File.dirname(relative_path)}'"
+      snippets << "curl -o '/mnt/#{relative_path}' " \
+        "\"`cat /tmp/description_url`/changed_managed_files/#{relative_path}\""
+    end
+
+    @system_description.changed_managed_files.files.map do |file|
+      snippets << "chown #{file.user}:#{file.group} '/mnt#{file.name}'" if file.user
+      snippets << "chmod #{file.mode} '/mnt#{file.name}'" if file.mode
     end
 
     snippets.join("\n")
