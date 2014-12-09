@@ -53,7 +53,7 @@ module SystemDescriptionFactory
   # +store+: The SystemDescriptionStore where the description should be stored.
   #   Default: The temporary factory description store.
   # +store_on_disk+: If true, the description will be stored in the temporary
-  #   description store. If false, the description is only create in-memory.
+  #   description store. If false, the description is only created in-memory.
   # +json+: If this option is given, the system description will be generated
   #   from it. Otherwise an empty description is created.
   # +scopes+: The list of scopes to include in the generated system description
