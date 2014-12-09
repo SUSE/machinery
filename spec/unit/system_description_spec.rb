@@ -403,4 +403,45 @@ EOF
       }.to raise_error Machinery::Errors::SystemDescriptionError
     end
   end
+
+  describe "#save" do
+    include_context "machinery test directory"
+
+    it "saves a SystemDescription" do
+      store = SystemDescriptionStore.new(test_base_path)
+      SystemDescription.from_json(test_name, store, test_manifest).save
+      descr_dir = store.description_path(test_name)
+      manifest = store.manifest_path(test_name)
+      content = File.read(manifest)
+
+      expect(File.stat(descr_dir).mode & 0777).to eq(0700)
+      expect(File.stat(manifest).mode & 0777).to eq(0600)
+      expect(content).to eq(test_manifest)
+    end
+
+    it "keeps permissions for existing files during save" do
+      store = SystemDescriptionStore.new(test_base_path)
+      SystemDescription.from_json(test_name, store, test_manifest).save
+
+      descr_dir = store.description_path(test_name)
+      File.chmod(0755,descr_dir)
+      manifest = store.manifest_path(test_name)
+      File.chmod(0644,manifest)
+
+      store = SystemDescriptionStore.new(test_base_path)
+      SystemDescription.from_json(test_name, store, test_manifest).save
+      expect(File.stat(descr_dir).mode & 0777).to eq(0755)
+      expect(File.stat(manifest).mode & 0777).to eq(0644)
+    end
+
+    it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
+      store = SystemDescriptionStore.new
+      expect {
+        SystemDescription.from_json("invalid/slash", store, test_manifest).save
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect {
+        SystemDescription.from_json(".invalid_dot", store, test_manifest).save
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+    end
+  end
 end

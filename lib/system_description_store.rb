@@ -60,10 +60,6 @@ class SystemDescriptionStore
     File.read(file_name)
   end
 
-  def save(description)
-    description.save
-  end
-
   def list
     Dir["#{@base_path}/*"].
       select { |item| File.exists?(manifest_path(File.basename(item)))}.

@@ -80,7 +80,7 @@ module SystemDescriptionFactory
       description = build_description(name, store, options)
     end
 
-    store.save(description) if options[:store_on_disk]
+    description.save if options[:store_on_disk]
 
     description
   end

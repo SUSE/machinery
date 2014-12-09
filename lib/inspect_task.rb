@@ -84,7 +84,7 @@ class InspectTask
       end
       description[inspector.scope].set_metadata(timestring, host)
       if !description.attributes.empty?
-        store.save(description)
+        description.save
       end
       Machinery::Ui.puts " -> " + summary
     end
