@@ -38,7 +38,7 @@ class SystemDescription < Machinery::Object
   attr_accessor :format_version
 
   class << self
-    def from_json(name, json, store)
+    def from_json(name, store, json)
       begin
         json_hash = JSON.parse(json)
       rescue JSON::ParserError => e
@@ -103,7 +103,7 @@ class SystemDescription < Machinery::Object
 
     def load!(name, store)
       json = store.load_json(name)
-      description = SystemDescription.from_json(name, json, store)
+      description = SystemDescription.from_json(name, store, json)
       description.validate_compatibility
       description.validate_file_data
       description
@@ -111,7 +111,7 @@ class SystemDescription < Machinery::Object
 
     def load(name, store)
       json = store.load_json(name)
-      description = SystemDescription.from_json(name, json, store)
+      description = SystemDescription.from_json(name, store, json)
       description.validate_compatibility
       begin
         description.validate_file_data

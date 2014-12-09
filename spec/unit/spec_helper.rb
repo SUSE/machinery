@@ -117,5 +117,5 @@ module FakeFS
 end
 
 def create_transient_system_description(name, json)
-  SystemDescription.from_json(name, json, SystemDescriptionStoreMemory.new)
+  SystemDescription.from_json(name, SystemDescriptionStoreMemory.new, json)
 end

@@ -88,7 +88,7 @@ describe SystemDescriptionStore do
   describe "#save" do
     it "saves a SystemDescription" do
       store = SystemDescriptionStore.new(test_base_path)
-      store.save(SystemDescription.from_json(test_name, test_manifest, store))
+      store.save(SystemDescription.from_json(test_name, store, test_manifest))
       descr_dir = store.description_path(test_name)
       manifest = store.manifest_path(test_name)
       content = File.read(manifest)
@@ -100,7 +100,7 @@ describe SystemDescriptionStore do
 
     it "keeps permissions for existing files during save" do
       store = SystemDescriptionStore.new(test_base_path)
-      store.save(SystemDescription.from_json(test_name, test_manifest, store))
+      store.save(SystemDescription.from_json(test_name, store, test_manifest))
 
       descr_dir = store.description_path(test_name)
       File.chmod(0755,descr_dir)
@@ -108,7 +108,7 @@ describe SystemDescriptionStore do
       File.chmod(0644,manifest)
 
       store = SystemDescriptionStore.new(test_base_path)
-      store.save(SystemDescription.from_json(test_name, test_manifest, store))
+      store.save(SystemDescription.from_json(test_name, store, test_manifest))
       expect(File.stat(descr_dir).mode & 0777).to eq(0755)
       expect(File.stat(manifest).mode & 0777).to eq(0644)
     end
@@ -116,12 +116,12 @@ describe SystemDescriptionStore do
     it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
       store = SystemDescriptionStore.new
       expect {
-        store.save(SystemDescription.from_json("invalid/slash", test_manifest,
-          store))
+        store.save(SystemDescription.from_json("invalid/slash", store,
+          test_manifest))
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
       expect {
-        store.save(SystemDescription.from_json(".invalid_dot", test_manifest,
-          store))
+        store.save(SystemDescription.from_json(".invalid_dot", store,
+          test_manifest))
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end
