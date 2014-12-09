@@ -78,7 +78,7 @@
     <ask-list config:type="list">
       <ask>
         <question>Enter URL to system description</question>
-        <default>enter URL here</default>
+        <default>http://</default>
         <file>/tmp/description_url</file>
         <stage>initial</stage>
         <script>

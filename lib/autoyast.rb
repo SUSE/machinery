@@ -80,7 +80,7 @@ class Autoyast
       xml.send("ask-list", "config:type" => "list") do
         xml.ask do
           xml.question "Enter URL to system description"
-          xml.default "enter URL here"
+          xml.default "http://"
           xml.file "/tmp/description_url"
           xml.stage "initial"
           xml.script do
