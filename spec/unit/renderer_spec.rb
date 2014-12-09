@@ -86,7 +86,9 @@ describe Renderer do
 
   describe "#render" do
     let(:renderer) { BarBazRenderer.new }
-    let(:description) { SystemDescription.new("foo") }
+    let(:description) {
+      SystemDescription.new("foo", SystemDescriptionStore.new)
+    }
     let(:date) { "2014-02-07T14:04:45Z" }
     let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
     let(:host) { "192.168.122.216" }

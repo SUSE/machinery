@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 describe SystemDescription do
-  subject { SystemDescription.new("foo") }
+  subject { SystemDescription.new("foo", SystemDescriptionStoreMemory.new) }
 
   before(:all) do
     @name = "name"
@@ -95,7 +95,7 @@ describe SystemDescription do
   end
 
   it "returns empty JSON structure on .new" do
-    data = SystemDescription.new("foo")
+    data = SystemDescription.new("foo", SystemDescriptionStoreMemory.new)
     expect(data.to_json.delete(' ')).to eq(@empty_description.delete(' '))
   end
 
@@ -110,7 +110,7 @@ describe SystemDescription do
   end
 
   it "allows mixture of object and hash in json serialization" do
-    data = SystemDescription.new("foo")
+    data = SystemDescription.new("foo", SystemDescriptionStoreMemory.new)
     data.software = Machinery::Object.new
     data.software.packages = Hash.new
     data.software.packages["foo"] = "bar"

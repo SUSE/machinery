@@ -131,7 +131,8 @@ describe AnalyzeConfigFileDiffsTask do
     it "raises an error when the description is missing information" do
       task = AnalyzeConfigFileDiffsTask.new
       expect {
-        task.analyze(SystemDescription.new("foo"))
+        task.analyze(SystemDescription.new("foo",
+          SystemDescriptionStoreMemory.new))
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end

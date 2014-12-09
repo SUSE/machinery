@@ -145,7 +145,7 @@ class SystemDescription < Machinery::Object
     end
   end
 
-  def initialize(name, store = nil, hash = {})
+  def initialize(name, store, hash = {})
     @name = name
     @store = store
     @format_version = CURRENT_FORMAT_VERSION
