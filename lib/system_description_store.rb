@@ -60,21 +60,6 @@ class SystemDescriptionStore
     File.read(file_name)
   end
 
-  # Load the system description with the given name
-  #
-  # If there are file validation errors these are put out as warnings but the
-  # loading of the system description succeeds.
-  def load(name)
-    SystemDescription.load(name, self)
-  end
-
-  # Load the system description with the given name
-  #
-  # If there are file validation errors the call fails with an exception
-  def load!(name)
-    SystemDescription.load!(name, self)
-  end
-
   def save(description)
     description.save
   end

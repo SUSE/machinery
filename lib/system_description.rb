@@ -101,6 +101,9 @@ class SystemDescription < Machinery::Object
       Hash[scopes]
     end
 
+    # Load the system description with the given name
+    #
+    # If there are file validation errors the call fails with an exception
     def load!(name, store)
       json = store.load_json(name)
       description = SystemDescription.from_json(name, store, json)
@@ -109,6 +112,10 @@ class SystemDescription < Machinery::Object
       description
     end
 
+    # Load the system description with the given name
+    #
+    # If there are file validation errors these are put out as warnings but the
+    # loading of the system description succeeds.
     def load(name, store)
       json = store.load_json(name)
       description = SystemDescription.from_json(name, store, json)

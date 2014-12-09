@@ -42,18 +42,20 @@ describe UpgradeFormatTask do
 
     it "upgrades a specific system description" do
       expect {
-        system_description_factory_store.load("description1")
+        SystemDescription.load("description1", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
       expect(Machinery::Ui).to receive(:puts).with(/upgraded/)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
 
-      migrated_description = system_description_factory_store.load("description1")
+      migrated_description = SystemDescription.load("description1",
+        system_description_factory_store)
       expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
 
       # description2 should still be in the old format
       expect {
-        system_description_factory_store.load("description2")
+        SystemDescription.load("descriptions2",
+          system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
 
@@ -67,14 +69,16 @@ describe UpgradeFormatTask do
 
     it "upgrades all system descriptions when the --all switch is given" do
       expect {
-        system_description_factory_store.load("description2")
+        SystemDescription.load("descriptions2",
+          system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
       expect(Machinery::Ui).to receive(:puts).with(/upgraded 2/i)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
 
       ["description1", "description2"].each do |description|
-        migrated_description = system_description_factory_store.load(description)
+        migrated_description = SystemDescription.load(description,
+          system_description_factory_store)
         expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
       end
     end

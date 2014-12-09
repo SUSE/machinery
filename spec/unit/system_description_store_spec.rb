@@ -60,7 +60,7 @@ describe SystemDescriptionStore do
 
     it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
       expect {
-        @store.load("not_existing")
+        SystemDescription.load("not_existing", @store)
       }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
   end
@@ -72,7 +72,7 @@ describe SystemDescriptionStore do
     end
 
     it "loads a SystemDescription" do
-      description = @store.load(test_name)
+      description = SystemDescription.load(test_name, @store)
 
       expect(description.to_json).to eq(test_manifest)
       expect(description.name).to eq(test_name)
@@ -81,7 +81,7 @@ describe SystemDescriptionStore do
     it "validates that the system description is compatible" do
       expect_any_instance_of(SystemDescription).to receive(:validate_compatibility)
 
-      @store.load(test_name)
+      SystemDescription.load(test_name, @store)
     end
   end
 

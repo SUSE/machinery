@@ -59,7 +59,7 @@ class InspectTask
 
   def build_description(store, name, system, scopes, options)
     begin
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
     rescue Machinery::Errors::SystemDescriptionNotFound
       description = SystemDescription.new(name, store)
     end

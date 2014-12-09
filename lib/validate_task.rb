@@ -17,7 +17,7 @@
 
 class ValidateTask
   def validate(store, name)
-    store.load!(name)
+    SystemDescription.load!(name, store)
     puts "Validation succeeded."
   end
 end
