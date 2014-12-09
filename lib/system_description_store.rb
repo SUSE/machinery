@@ -76,7 +76,7 @@ class SystemDescriptionStore
   end
 
   def save(description)
-    description.save(self)
+    description.save
   end
 
   def list
