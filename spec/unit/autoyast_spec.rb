@@ -70,5 +70,9 @@ describe Autoyast do
     it "adds the autoinst.xml" do
       expect(File.exists?(File.join(@output_dir, "autoinst.xml"))).to be(true)
     end
+
+    it "adds unmanaged files filter list" do
+      expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
+    end
   end
 end
