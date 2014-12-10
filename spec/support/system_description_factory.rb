@@ -122,7 +122,7 @@ module SystemDescriptionFactory
         if extracted_scope == "unmanaged_files"
           FileUtils.touch(File.join(description.file_store("unmanaged_files"), "files.tgz"))
           FileUtils.mkdir_p(File.join(description.file_store("unmanaged_files"), "etc"))
-          FileUtils.touch(File.join(description.file_store("unmanaged_files"), "etc", "iscsi.tgz"))
+          FileUtils.touch(File.join(description.file_store("unmanaged_files"), "etc", "tarball with spaces.tgz"))
         else
           description[extracted_scope].files.each do |file|
             file_name = File.join(description.file_store(extracted_scope), file.name)
@@ -143,7 +143,7 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
-          "name": "/etc/cron.daily/mdadm",
+          "name": "/etc/cron.daily/md adm",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
@@ -162,7 +162,7 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
-          "name": "/etc/crontab",
+          "name": "/etc/cron tab",
           "package_name": "cron",
           "package_version": "4.1",
           "status": "changed",
