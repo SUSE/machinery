@@ -208,9 +208,10 @@ class Autoyast
       next if File.directory?(path)
 
       relative_path = Pathname(path).relative_path_from(base).to_s
+      url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, relative_path))}"
+
       snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
-      snippets << "curl -o '#{File.join("/mnt", relative_path)}' " \
-        "\"`cat /tmp/description_url`/#{File.join(scope, relative_path)}\""
+      snippets << "curl -o '#{File.join("/mnt", relative_path)}' \"#{url}\""
     end
 
     @system_description[scope].files.map do |file|
@@ -236,10 +237,10 @@ class Autoyast
 
       relative_path = Pathname(path).relative_path_from(base).to_s
       tarball_name = File.basename(path)
+      url = "`cat /tmp/description_url`#{URI.escape(File.join("/unmanaged_files", relative_path))}"
 
       snippets << <<-EOF
-        curl -o '/mnt/tmp/#{tarball_name}' \
-          "`cat /tmp/description_url`#{File.join("/unmanaged_files", relative_path)}"
+        curl -o '/mnt/tmp/#{tarball_name}' "#{url}"
         tar -C /mnt/ -X '/mnt/tmp/filter' -xf '#{File.join("/mnt/tmp", tarball_name)}'
         rm '#{File.join("/mnt/tmp", tarball_name)}'
       EOF
@@ -248,3 +249,4 @@ class Autoyast
     snippets.join("\n")
   end
 end
+
