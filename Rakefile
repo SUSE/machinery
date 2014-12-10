@@ -20,6 +20,7 @@
 require_relative "lib/constants"
 require_relative "lib/version"
 require_relative "tools/release"
+require_relative "tools/upgrade_test_descriptions"
 require "rspec/core/rake_task"
 require "cheetah"
 require "packaging"
@@ -134,4 +135,28 @@ task :release, [:type] do |task, args|
   release.check
 
   release.publish
+end
+
+desc "Upgrade machinery unit/integration test descriptions"
+task :upgrade_test_descriptions do
+  DESCRIPTIONS_PATH = File.join(Machinery::ROOT, "spec", "data", "descriptions")
+  # we don't want to upgrade format_vX, invalid-json, so we list the ones
+  # we want to upgrade here
+  descriptions = [
+    "jeos",
+    "opensuse131-build",
+    "validation-error"
+  ]
+
+  upgrade_descriptions(DESCRIPTIONS_PATH, descriptions)
+  upgrade_descriptions(File.join(DESCRIPTIONS_PATH, "validation"))
+  upgrade_descriptions(File.join(Machinery::ROOT, "spec/data/schema/"),
+    ["faulty_description", "valid_description"]
+  )
+  update_json_format_version(
+    File.join(Machinery::ROOT, "spec/data/schema/validation_error/config_files")
+  )
+  update_json_format_version(
+    File.join(Machinery::ROOT, "spec/data/schema/validation_error/unmanaged_files")
+  )
 end

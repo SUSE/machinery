@@ -20,22 +20,28 @@ require_relative "spec_helper"
 describe Migration do
   initialize_system_description_factory_store
 
-  class Migrate1To2 < Migration
-    desc "Migrate version 1 to 2"
-    def migrate; end
-  end
-  class Migrate2To3 < Migration
-    desc "Migrate version 2 to 3"
-    def migrate; end
-  end
-  class Migrate3To4 < Migration
-    # Bad migration, it does not describe its purpose.
-    def migrate; end
-  end
-
   let(:store) { system_description_factory_store }
 
   before(:each) do
+    stub_const(
+      "Migrate1To2", Class.new(Migration) do
+        desc "Migrate version 1 to 2"
+        def migrate; end
+      end
+    )
+    stub_const(
+      "Migrate2To3", Class.new(Migration) do
+        desc "Migrate version 2 to 3"
+        def migrate; end
+      end
+    )
+    stub_const(
+      "Migrate3To4", Class.new(Migration) do
+        # Bad migration, it does not describe its purpose.
+        def migrate; end
+      end
+    )
+
     stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 3)
     stub_const("Machinery::DEFAULT_CONFIG_DIR", store.base_path)
     [1, 2, 3].each do |version|
