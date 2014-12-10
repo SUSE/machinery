@@ -122,7 +122,9 @@ module SystemDescriptionFactory
         if extracted_scope == "unmanaged_files"
           FileUtils.touch(File.join(description.file_store("unmanaged_files"), "files.tgz"))
           FileUtils.mkdir_p(File.join(description.file_store("unmanaged_files"), "etc"))
-          FileUtils.touch(File.join(description.file_store("unmanaged_files"), "etc", "tarball with spaces.tgz"))
+          FileUtils.touch(
+            File.join(description.file_store("unmanaged_files"), "etc", "tarball with spaces.tgz")
+          )
         else
           description[extracted_scope].files.each do |file|
             file_name = File.join(description.file_store(extracted_scope), file.name)

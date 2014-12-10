@@ -253,4 +253,3 @@ class Autoyast
     snippets.join("\n")
   end
 end
-
