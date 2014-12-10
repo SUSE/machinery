@@ -209,14 +209,14 @@ class Autoyast
       next if File.directory?(path)
 
       relative_path = Pathname(path).relative_path_from(base).to_s
-      snippets << "mkdir -p '/mnt/#{File.dirname(relative_path)}'"
-      snippets << "curl -o '/mnt/#{relative_path}' " \
-        "\"`cat /tmp/description_url`/config_files/#{relative_path}\""
+      snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
+      snippets << "curl -o '#{File.join("/mnt", relative_path)}' " \
+        "\"`cat /tmp/description_url`#{File.join("/config_files", relative_path)}\""
     end
 
     @system_description.config_files.files.map do |file|
-      snippets << "chown #{file.user}:#{file.group} '/mnt#{file.name}'" if file.user
-      snippets << "chmod #{file.mode} '/mnt#{file.name}'" if file.mode
+      snippets << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'" if file.user
+      snippets << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'" if file.mode
     end
 
     snippets.join("\n")
@@ -232,14 +232,14 @@ class Autoyast
       next if File.directory?(path)
 
       relative_path = Pathname(path).relative_path_from(base).to_s
-      snippets << "mkdir -p '/mnt/#{File.dirname(relative_path)}'"
-      snippets << "curl -o '/mnt/#{relative_path}' " \
-        "\"`cat /tmp/description_url`/changed_managed_files/#{relative_path}\""
+      snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
+      snippets << "curl -o '#{File.join("/mnt", relative_path)}' " \
+        "\"`cat /tmp/description_url`#{File.join("/changed_managed_files", relative_path)}\""
     end
 
     @system_description.changed_managed_files.files.map do |file|
-      snippets << "chown #{file.user}:#{file.group} '/mnt#{file.name}'" if file.user
-      snippets << "chmod #{file.mode} '/mnt#{file.name}'" if file.mode
+      snippets << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'" if file.user
+      snippets << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'" if file.mode
     end
 
     snippets.join("\n")
@@ -263,9 +263,9 @@ class Autoyast
 
       snippets << <<-EOF
         curl -o '/mnt/tmp/#{tarball_name}' \
-          "`cat /tmp/description_url`/unmanaged_files/#{relative_path}"
-        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/#{tarball_name}'
-        rm '/mnt/tmp/#{tarball_name}'
+          "`cat /tmp/description_url`#{File.join("/unmanaged_files", relative_path)}"
+        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '#{File.join("/mnt/tmp", tarball_name)}'
+        rm '#{File.join("/mnt/tmp", tarball_name)}'
       EOF
     end
 
