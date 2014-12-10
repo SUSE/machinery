@@ -43,7 +43,7 @@ describe Cli do
 
     let(:example_host) { "myhost" }
     let(:description) {
-      SystemDescription.new("foo", SystemDescriptionStoreMemory.new)
+      SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
     }
 
     before(:each) do

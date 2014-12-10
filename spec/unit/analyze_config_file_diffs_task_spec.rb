@@ -132,7 +132,7 @@ describe AnalyzeConfigFileDiffsTask do
       task = AnalyzeConfigFileDiffsTask.new
       expect {
         task.analyze(SystemDescription.new("foo",
-          SystemDescriptionStoreMemory.new))
+          SystemDescriptionMemoryStore.new))
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end

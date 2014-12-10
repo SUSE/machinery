@@ -23,7 +23,7 @@ describe ShowTask, "#show" do
 
   let(:show_task) { ShowTask.new }
   let(:system_description) {
-    SystemDescription.new("foo", SystemDescriptionStoreMemory.new)
+    SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
   }
   let(:description_with_packages) {
     create_test_description(json: <<-EOF)
