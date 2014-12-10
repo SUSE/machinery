@@ -71,7 +71,7 @@ module SystemDescriptionFactory
     if options[:store_on_disk] && !options[:store]
       store = system_description_factory_store
     else
-      store = options[:store]
+      store = options[:store] || SystemDescriptionStoreMemory.new
     end
 
     if options[:json]

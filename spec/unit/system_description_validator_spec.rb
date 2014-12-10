@@ -21,7 +21,7 @@ describe SystemDescriptionValidator do
   describe "#validate_json" do
     it "raises SystemDescriptionError on invalid global data in a description" do
       expect {
-        create_transient_system_description(@name, <<-EOT)
+        create_test_description(name: @name, json: <<-EOT)
           {
             "meta": {
               "format_version": 2,
@@ -34,7 +34,7 @@ describe SystemDescriptionValidator do
 
     it "raises SystemDescriptionError on invalid scope data in a description" do
       expect {
-        create_transient_system_description(@name, <<-EOT)
+        create_test_description(name: @name, json: <<-EOT)
           {
             "meta": {
               "format_version": 2
@@ -51,7 +51,7 @@ In scope config_files: The property #0 (files/changes) of type Hash did not matc
 EOF
       expected.chomp!
       expect {
-        create_transient_system_description(@name, <<-EOT)
+        create_test_description(name: @name, json: <<-EOT)
           {
             "config_files": {
               "extracted": true,
@@ -84,7 +84,7 @@ EOF
 
     it "does not raise an error when a changed-managed-file is 'replaced'" do
       expect {
-        create_transient_system_description(@name, <<-EOT)
+        create_test_description(name: @name, json: <<-EOT)
           {
             "changed_managed_files": {
               "extracted": true,
@@ -124,8 +124,8 @@ In scope config_files: The property #0 (files) did not contain a required proper
 EOF
         expected.chomp!
         expect {
-          create_transient_system_description(@name,
-            File.read("#{path}missing_attribute.json"))
+          create_test_description(name: @name,
+            json: File.read("#{path}missing_attribute.json"))
         }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
@@ -135,8 +135,8 @@ In scope config_files: The property #0 (files/status) of type Hash did not match
 EOF
         expected.chomp!
         expect {
-          create_transient_system_description(@name,
-            File.read("#{path}unknown_status.json"))
+          create_test_description(name: @name,
+            json: File.read("#{path}unknown_status.json"))
         }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
@@ -146,8 +146,8 @@ In scope config_files: The property #0 (files/mode/changes) of type Hash did not
 EOF
         expected.chomp!
         expect {
-          create_transient_system_description(@name,
-            File.read("#{path}pattern_mismatch.json"))
+          create_test_description(name: @name,
+            json: File.read("#{path}pattern_mismatch.json"))
         }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
@@ -157,8 +157,8 @@ In scope config_files: The property #0 (files/changes) of type Hash did not matc
 EOF
         expected.chomp!
         expect {
-          create_transient_system_description(@name,
-            File.read("#{path}deleted_without_changes.json"))
+          create_test_description(name: @name,
+            json: File.read("#{path}deleted_without_changes.json"))
           }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
 
@@ -173,8 +173,8 @@ In scope unmanaged_files: The property #0 (files) of type Array did not match an
 EOF
         expected.chomp!
         expect {
-          create_transient_system_description(@name,
-            File.read("#{path}/extracted_unknown_type.json"))
+          create_test_description(name: @name,
+            json: File.read("#{path}/extracted_unknown_type.json"))
         }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
     end
