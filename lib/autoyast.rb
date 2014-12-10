@@ -51,8 +51,8 @@ class Autoyast
 
         ask_for_description_url(xml)
         chroot_scripts = []
-        chroot_scripts << config_files_script
-        chroot_scripts << changed_managed_files_script
+        chroot_scripts << extracted_files_script("config_files")
+        chroot_scripts << extracted_files_script("changed_managed_files")
         chroot_scripts << unmanaged_files_script
         xml.scripts do
           xml.send("chroot-scripts", "config:type" => "list") do
@@ -199,11 +199,10 @@ class Autoyast
     end
   end
 
-  def config_files_script
-    return if !@system_description.config_files ||
-      !@system_description.config_files.extracted
+  def extracted_files_script(scope)
+    return if !@system_description[scope] || !@system_description[scope].extracted
 
-    base = Pathname(@system_description.file_store("config_files"))
+    base = Pathname(@system_description.file_store(scope))
     snippets = []
     Dir["#{base}/**/*"].each do |path|
       next if File.directory?(path)
@@ -211,33 +210,10 @@ class Autoyast
       relative_path = Pathname(path).relative_path_from(base).to_s
       snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
       snippets << "curl -o '#{File.join("/mnt", relative_path)}' " \
-        "\"`cat /tmp/description_url`#{File.join("/config_files", relative_path)}\""
+        "\"`cat /tmp/description_url`/#{File.join(scope, relative_path)}\""
     end
 
-    @system_description.config_files.files.map do |file|
-      snippets << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'" if file.user
-      snippets << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'" if file.mode
-    end
-
-    snippets.join("\n")
-  end
-
-  def changed_managed_files_script
-    return if !@system_description.changed_managed_files ||
-      !@system_description.changed_managed_files.extracted
-
-    base = Pathname(@system_description.file_store("changed_managed_files"))
-    snippets = []
-    Dir["#{base}/**/*"].each do |path|
-      next if File.directory?(path)
-
-      relative_path = Pathname(path).relative_path_from(base).to_s
-      snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
-      snippets << "curl -o '#{File.join("/mnt", relative_path)}' " \
-        "\"`cat /tmp/description_url`#{File.join("/changed_managed_files", relative_path)}\""
-    end
-
-    @system_description.changed_managed_files.files.map do |file|
+    @system_description[scope].files.map do |file|
       snippets << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'" if file.user
       snippets << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'" if file.mode
     end
