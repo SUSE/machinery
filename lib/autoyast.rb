@@ -72,9 +72,13 @@ class Autoyast
   private
 
   def ask_for_description_url(xml)
-    return if !@system_description.config_files &&
-      !@system_description.changed_managed_files &&
-      !@system_description.unmanaged_files
+    url_needed = [
+      "config_files",
+      "changed_managed_files",
+      "unmanaged_files"
+    ].any? { |scope| @system_description[scope] && @system_description[scope].extracted }
+
+    return if !url_needed
 
     xml.general do
       xml.send("ask-list", "config:type" => "list") do
@@ -196,7 +200,8 @@ class Autoyast
   end
 
   def config_files_script
-    return if !@system_description.config_files
+    return if !@system_description.config_files ||
+      !@system_description.config_files.extracted
 
     base = Pathname(@system_description.file_store("config_files"))
     snippets = []
@@ -218,7 +223,8 @@ class Autoyast
   end
 
   def changed_managed_files_script
-    return if !@system_description.changed_managed_files
+    return if !@system_description.changed_managed_files ||
+      !@system_description.changed_managed_files.extracted
 
     base = Pathname(@system_description.file_store("changed_managed_files"))
     snippets = []
@@ -240,7 +246,8 @@ class Autoyast
   end
 
   def unmanaged_files_script
-    return if !@system_description.unmanaged_files
+    return if !@system_description.unmanaged_files ||
+      !@system_description.unmanaged_files.extracted
 
     base = Pathname(@system_description.file_store("unmanaged_files"))
     snippets = []

@@ -50,6 +50,19 @@ describe Autoyast do
 
       expect(autoyast.profile).to eq(expected_profile)
     end
+
+    it "does not ask for export URL if files weren't extracted" do
+      [
+        "config_files",
+        "changed_managed_files",
+        "unmanaged_files"
+      ].each do |scope|
+        description[scope].extracted = false
+      end
+      autoyast = Autoyast.new(description)
+
+      expect(autoyast.profile).not_to include("Enter URL to system description")
+    end
   end
 
   describe "#write" do
