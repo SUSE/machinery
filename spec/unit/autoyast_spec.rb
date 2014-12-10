@@ -24,7 +24,7 @@ describe Autoyast do
     File.read(File.join(Machinery::ROOT, "spec/data/autoyast/simple.xml"))
   }
   let(:description) {
-    description = create_test_description(
+    create_test_description(
       store_on_disk: true,
       extracted_scopes: [
         "config_files",
@@ -40,8 +40,6 @@ describe Autoyast do
         "services"
       ]
     )
-
-    description
   }
 
   describe "#profile" do
