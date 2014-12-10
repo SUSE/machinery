@@ -85,5 +85,9 @@ describe Autoyast do
     it "adds unmanaged files filter list" do
       expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
     end
+
+    it "adds the autoyast export readme" do
+      expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
+    end
   end
 end

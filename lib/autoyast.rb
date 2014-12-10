@@ -27,6 +27,10 @@ class Autoyast
       File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
       output_dir
     )
+    FileUtils.cp(
+      File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
+      File.join(output_dir, "README.md")
+    )
     Dir["#{@system_description.description_path}/*"].each do |content|
       FileUtils.cp_r(content, output_dir)
     end
