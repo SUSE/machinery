@@ -491,7 +491,7 @@ describe KiwiConfig do
   }
 
   before(:each) do
-    FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "kiwi_helpers"))
+    FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
     FakeFS::FileSystem.clone(File.join(
       Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
     )

@@ -24,7 +24,7 @@ class Autoyast
     FileUtils.mkdir_p(output_dir) if !Dir.exists?(output_dir)
 
     FileUtils.cp(
-      File.join(Machinery::ROOT, "kiwi_helpers/unmanaged_files_build_excludes"),
+      File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
       output_dir
     )
     Dir["#{@system_description.description_path}/*"].each do |content|

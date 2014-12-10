@@ -30,7 +30,7 @@ class BuildTask
 
     if system_description["unmanaged_files"]
       filters = File.read(
-        File.join(Machinery::ROOT, "kiwi_helpers/unmanaged_files_build_excludes")
+        File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes")
       )
       Machinery::Ui.puts "\nUnmanaged files following these patterns are not added " \
         "to the built image:"

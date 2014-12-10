@@ -66,7 +66,7 @@ describe BuildTask do
     FileUtils.mkdir_p(output_path)
     FileUtils.touch(File.join(output_path, image_file))
 
-    FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "kiwi_helpers"))
+    FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
     FakeFS::FileSystem.clone(File.join(
       Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
     )
