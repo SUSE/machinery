@@ -159,9 +159,8 @@ EOF
         expect {
           create_test_description(name: @name,
             json: File.read("#{path}deleted_without_changes.json"))
-          }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
       end
-
     end
 
     describe "unmanaged_files scope" do

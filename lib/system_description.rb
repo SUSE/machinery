@@ -72,7 +72,7 @@ class SystemDescription < Machinery::Object
       end
 
       begin
-        description = self.new(name, store, create_scopes(json_hash))
+        description = new(name, store, create_scopes(json_hash))
       rescue NameError
         raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
@@ -132,13 +132,15 @@ class SystemDescription < Machinery::Object
     def validate_name(name)
       if ! /^[\w\.:-]*$/.match(name)
         raise Machinery::Errors::SystemDescriptionError.new(
-          "System description name \"#{name}\" is invalid. Only \"a-zA-Z0-9_:.-\" are valid characters."
+          "System description name \"#{name}\" is invalid. " +
+          "Only \"a-zA-Z0-9_:.-\" are valid characters."
         )
       end
 
       if name.start_with?(".")
         raise Machinery::Errors::SystemDescriptionError.new(
-          "System description name \"#{name}\" is invalid. A dot is not allowed as first character."
+          "System description name \"#{name}\" is invalid. " +
+          "A dot is not allowed as first character."
         )
       end
     end
@@ -189,12 +191,12 @@ class SystemDescription < Machinery::Object
   end
 
   def save
-    SystemDescription.validate_name(self.name)
-    @store.directory_for(self.name)
-    path = @store.manifest_path(self.name)
+    SystemDescription.validate_name(name)
+    @store.directory_for(name)
+    path = @store.manifest_path(name)
     created = !File.exists?(path)
-    File.write(path, self.to_json)
-    File.chmod(0600,path) if created
+    File.write(path, to_json)
+    File.chmod(0600, path) if created
   end
 
   def scopes

@@ -119,9 +119,10 @@ describe SystemDescription do
 
   it "raises InvalidSystemDescription if json input does not start with a hash" do
     class SystemDescriptionFooConfig < Machinery::Object; end
-    expect { create_test_description(name: @name,
-      json: '[ "system-description-foo", "xxx" ]'
-    )}.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
+    expect {
+      create_test_description(name: @name,
+        json: '[ "system-description-foo", "xxx" ]')
+    }.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
   end
 
   it "validates compatible descriptions" do
@@ -166,8 +167,9 @@ unexpected token at '{
       }
 EOF
       expected.chomp!
-      expect { create_test_description(name: @name,
-         json: File.read("#{path}/missing_comma.json"))
+      expect {
+        create_test_description(name: @name,
+          json: File.read("#{path}/missing_comma.json"))
       }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
 
@@ -362,7 +364,7 @@ EOF
           }
         }
       EOF
-      description = create_test_description(name: "name", json: json)
+      create_test_description(name: "name", json: json)
     }
     let(:unextracted_description) {
       json = <<-EOF
@@ -372,7 +374,7 @@ EOF
           }
         }
       EOF
-      description = create_test_description(name: "name", json: json)
+      create_test_description(name: "name", json: json)
     }
 
     it "returns true" do
@@ -424,9 +426,9 @@ EOF
       SystemDescription.from_json(test_name, store, test_manifest).save
 
       descr_dir = store.description_path(test_name)
-      File.chmod(0755,descr_dir)
+      File.chmod(0755, descr_dir)
       manifest = store.manifest_path(test_name)
-      File.chmod(0644,manifest)
+      File.chmod(0644, manifest)
 
       store = SystemDescriptionStore.new(test_base_path)
       SystemDescription.from_json(test_name, store, test_manifest).save

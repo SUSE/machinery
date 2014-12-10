@@ -24,7 +24,7 @@ describe ConfigFilesInspector do
     let(:name) { "systemname" }
     let(:store) { SystemDescriptionStore.new }
     let(:description) {
-      description = SystemDescription.new(name, store)
+      SystemDescription.new(name, store)
     }
 
     before(:each) do
