@@ -26,7 +26,7 @@ describe ListTask do
   let(:hostname) { "example.com" }
   let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
   let(:system_description) {
-    create_test_description(json: <<-EOF, name: name)
+    create_test_description(json: <<-EOF, name: name, store: store)
       {
         "packages": [],
         "repositories": [],
@@ -45,7 +45,7 @@ describe ListTask do
     EOF
   }
   let(:system_description_without_scope_meta) {
-    create_test_description(json: <<-EOF, name: name)
+    create_test_description(json: <<-EOF, name: name, store: store)
       {
         "packages": [],
         "meta": {
@@ -55,7 +55,7 @@ describe ListTask do
     EOF
   }
   let(:system_description_with_extracted_files) {
-    create_test_description(json: <<-EOF, name: name)
+    create_test_description(json: <<-EOF, name: name, store: store)
       {
         "config_files": {
           "extracted": true,
@@ -81,7 +81,7 @@ describe ListTask do
     EOF
   }
   let(:system_description_with_incompatible_data_format) {
-    create_test_description(json: <<-EOF, name: name)
+    create_test_description(json: <<-EOF, name: name, store: store)
       {
       }
     EOF
@@ -89,7 +89,7 @@ describe ListTask do
 
   describe "#list" do
     it "lists the system descriptions with scopes" do
-      store.save(system_description)
+      system_description.save
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("packages")
@@ -101,7 +101,7 @@ describe ListTask do
     end
 
     it "shows also the date and hostname of the descriptions if verbose is true" do
-      store.save(system_description)
+      system_description.save
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include(date_human)
@@ -111,7 +111,7 @@ describe ListTask do
     end
 
     it "verbose shows the date/hostname as unknown if there is no meta data for it" do
-      store.save(system_description_without_scope_meta)
+      system_description_without_scope_meta.save
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)
         expect(s).to include("unknown")
@@ -129,7 +129,7 @@ describe ListTask do
         expect(s).to include("changed-managed-files (not extracted)")
       }
 
-      store.save(system_description_with_extracted_files)
+      system_description_with_extracted_files.save
       list_task.list(store)
     end
 
@@ -138,12 +138,12 @@ describe ListTask do
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s.to_s).to include("incompatible data format")
       }
-      store.save(system_description_with_incompatible_data_format)
+      system_description_with_incompatible_data_format.save
       list_task.list(store)
     end
 
     it "shows list without details" do
-      store.save(system_description)
+      system_description.save
       expect(Machinery::Ui).to receive(:puts).with(" #{name}")
       list_task.list(store, quick: true)
     end

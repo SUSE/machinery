@@ -24,11 +24,11 @@ describe ConfigFilesInspector do
     let(:name) { "systemname" }
     let(:store) { SystemDescriptionStore.new }
     let(:description) {
-      description = SystemDescription.new(name, {}, store)
+      SystemDescription.new(name, store)
     }
 
     before(:each) do
-      store.save(create_test_description(json: "{}", name: name))
+      create_test_description(json: "{}", name: name, store: store).save
     end
 
     let(:rpm_qa_output_test1) {

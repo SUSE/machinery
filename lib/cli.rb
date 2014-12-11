@@ -203,7 +203,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
 
       case options[:operation]
         when "config-file-diffs"
@@ -238,7 +238,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
 
       task = BuildTask.new
       task.build(description, File.expand_path(options["image-dir"]), {:enable_dhcp => options["enable-dhcp"], :enable_ssh => options["enable-ssh"]})
@@ -272,8 +272,8 @@ class Cli
       name1 = shift_arg(args, "NAME1")
       name2 = shift_arg(args, "NAME2")
       store = SystemDescriptionStore.new
-      description1 = store.load(name1)
-      description2 = store.load(name2)
+      description1 = SystemDescription.load(name1, store)
+      description2 = SystemDescription.load(name2, store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
 
       task = CompareTask.new
@@ -327,7 +327,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
 
       task = DeployTask.new
       opts = {
@@ -358,7 +358,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
       exporter = KiwiConfig.new(description)
 
       task = ExportTask.new(exporter)
@@ -387,7 +387,7 @@ class Cli
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
       exporter = Autoyast.new(description)
 
       task = ExportTask.new(exporter)
@@ -544,7 +544,7 @@ class Cli
       end
 
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
 
 
@@ -605,7 +605,7 @@ class Cli
       name = shift_arg(args, "NAME")
 
       store = SystemDescriptionStore.new
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
       task = GenerateHtmlTask.new
       task.generate(description)
     end

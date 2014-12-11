@@ -59,9 +59,9 @@ class InspectTask
 
   def build_description(store, name, system, scopes, options)
     begin
-      description = store.load(name)
+      description = SystemDescription.load(name, store)
     rescue Machinery::Errors::SystemDescriptionNotFound
-      description = SystemDescription.new(name, {}, store)
+      description = SystemDescription.new(name, store)
     end
     timestring = Time.now.utc.iso8601
     if system.class == LocalSystem
@@ -84,7 +84,7 @@ class InspectTask
       end
       description[inspector.scope].set_metadata(timestring, host)
       if !description.attributes.empty?
-        store.save(description)
+        description.save
       end
       Machinery::Ui.puts " -> " + summary
     end

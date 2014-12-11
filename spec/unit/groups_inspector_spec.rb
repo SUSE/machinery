@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe GroupsInspector do
   let(:description) {
-    SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+    SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
   let(:group_content) {<<EOF
 root:x:0:

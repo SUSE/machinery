@@ -90,13 +90,13 @@ describe UnmanagedFilesInspector do
     }
 
     let(:description) {
-      SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+      SystemDescription.new("systemname", SystemDescriptionStore.new)
     }
 
     before(:each) do
       allow(Machinery::Ui).to receive(:warn)
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
-      description.store.save(description)
+      description.save
     end
 
 

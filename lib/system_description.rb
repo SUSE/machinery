@@ -15,6 +15,16 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# The responsibility of the SystemDescription class is to represent a system
+# description. This is our main data model.
+#
+# The content of the system description is stored in a directory, which contains
+# a manifest and sub directories for individual scopes. SystemDescription
+# handles all the data which is in the top level of the system description
+# directory.
+#
+# The sub directories storing the data for specific scopes are handled by the
+# ScopeFileStore class.
 class SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 2
   EXTRACTABLE_SCOPES = [
@@ -28,7 +38,7 @@ class SystemDescription < Machinery::Object
   attr_accessor :format_version
 
   class << self
-    def from_json(name, json, store = nil)
+    def from_json(name, store, json)
       begin
         json_hash = JSON.parse(json)
       rescue JSON::ParserError => e
@@ -51,7 +61,7 @@ class SystemDescription < Machinery::Object
         error = "The JSON data of the system description '#{name}' " \
           "couldn't be parsed. The following error occured"
         error += " around line #{error_pos}" if error_pos
-        error += " in file '#{store.manifest_path(name)}'" if store
+        error += " in file '#{store.manifest_path(name)}'" if store.persistent?
         error += ":\n\n#{json_error}"
 
         raise Machinery::Errors::SystemDescriptionError.new(error)
@@ -62,7 +72,7 @@ class SystemDescription < Machinery::Object
       end
 
       begin
-        description = self.new(name, create_scopes(json_hash), store)
+        description = new(name, store, create_scopes(json_hash))
       rescue NameError
         raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
       end
@@ -91,6 +101,50 @@ class SystemDescription < Machinery::Object
       Hash[scopes]
     end
 
+    # Load the system description with the given name
+    #
+    # If there are file validation errors the call fails with an exception
+    def load!(name, store)
+      json = store.load_json(name)
+      description = SystemDescription.from_json(name, store, json)
+      description.validate_compatibility
+      description.validate_file_data
+      description
+    end
+
+    # Load the system description with the given name
+    #
+    # If there are file validation errors these are put out as warnings but the
+    # loading of the system description succeeds.
+    def load(name, store)
+      json = store.load_json(name)
+      description = SystemDescription.from_json(name, store, json)
+      description.validate_compatibility
+      begin
+        description.validate_file_data
+      rescue Machinery::Errors::SystemDescriptionValidationFailed => e
+        Machinery::Ui.warn("Warning: File validation errors:")
+        Machinery::Ui.warn(e.to_s)
+      end
+      description
+    end
+
+    def validate_name(name)
+      if ! /^[\w\.:-]*$/.match(name)
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "System description name \"#{name}\" is invalid. " +
+          "Only \"a-zA-Z0-9_:.-\" are valid characters."
+        )
+      end
+
+      if name.start_with?(".")
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "System description name \"#{name}\" is invalid. " +
+          "A dot is not allowed as first character."
+        )
+      end
+    end
+
     private
 
     def compatible_json?(json)
@@ -100,7 +154,7 @@ class SystemDescription < Machinery::Object
     end
   end
 
-  def initialize(name, hash = {}, store = nil)
+  def initialize(name, store, hash = {})
     @name = name
     @store = store
     @format_version = CURRENT_FORMAT_VERSION
@@ -134,6 +188,15 @@ class SystemDescription < Machinery::Object
 
   def to_json
     JSON.pretty_generate(to_hash)
+  end
+
+  def save
+    SystemDescription.validate_name(name)
+    @store.directory_for(name)
+    path = @store.manifest_path(name)
+    created = !File.exists?(path)
+    File.write(path, to_json)
+    File.chmod(0600, path) if created
   end
 
   def scopes

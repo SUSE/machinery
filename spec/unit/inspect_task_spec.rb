@@ -45,7 +45,6 @@ describe InspectTask, "#inspect_system" do
   end
 
   before :each do
-    allow_any_instance_of(SystemDescriptionStore).to receive(:save)
     allow(System).to receive(:for).and_return(system)
   end
 
@@ -80,7 +79,7 @@ describe InspectTask, "#inspect_system" do
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
-    expect(store).to receive(:save).twice
+    expect_any_instance_of(SystemDescription).to receive(:save).twice
 
     inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo", "bar"])
   end

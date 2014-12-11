@@ -40,6 +40,11 @@ describe SystemDescriptionFactory do
       end
     end
 
+    it "uses transient store by default" do
+      description = create_test_description
+      expect(description.store).to be_a(SystemDescriptionMemoryStore)
+    end
+
     it "creates minimal description from JSON" do
       description = create_test_description(json: <<-EOT
         {

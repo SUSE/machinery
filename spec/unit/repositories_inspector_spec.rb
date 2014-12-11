@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe RepositoriesInspector do
   let(:description) {
-    SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+    SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
 
   describe ".inspect" do

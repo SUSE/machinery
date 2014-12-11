@@ -18,7 +18,8 @@
 class LocalSystem < System
   class << self
     def os
-      description = SystemDescription.new("localhost")
+      description = SystemDescription.new("localhost",
+        SystemDescriptionMemoryStore.new)
       inspector = OsInspector.new
       inspector.inspect(System.for("localhost"), description)
       description.os

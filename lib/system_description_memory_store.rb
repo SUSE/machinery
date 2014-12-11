@@ -15,9 +15,14 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ValidateTask
-  def validate(store, name)
-    SystemDescription.load!(name, store)
-    puts "Validation succeeded."
+# The SystemDescriptionMemoryStore class is an implementation of a
+# SystemDescriptionStore which keeps the description in memory. It is meant for
+# transient storage of a system description when it is only used internally in
+# a program and doesn't have to be persisted. Attempts to save the
+# description or related data will result in an exception.
+
+class SystemDescriptionMemoryStore
+  def persistent?
+    false
   end
 end

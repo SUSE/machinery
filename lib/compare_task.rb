@@ -26,21 +26,28 @@ class CompareTask
     output = ""
     identical = true
     common_scopes = false
+    store = description1.store
     scopes.each do |scope|
       if description1[scope] && description2[scope]
         comparison = description1[scope].compare_with(description2[scope])
 
         partial_description1 = SystemDescription.new(
           description1.name,
+          store,
           scope => comparison[0]
         )
 
         partial_description2 = SystemDescription.new(
           description2.name,
+          store,
           scope => comparison[1]
         )
 
-        partial_description_common = SystemDescription.new("common", scope => comparison[2])
+        partial_description_common = SystemDescription.new(
+          "common",
+          store,
+          scope => comparison[2]
+        )
 
         output += Renderer.for(scope).render_comparison(
           partial_description1,

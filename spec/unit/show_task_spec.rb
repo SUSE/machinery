@@ -22,7 +22,9 @@ describe ShowTask, "#show" do
   silence_machinery_output
 
   let(:show_task) { ShowTask.new }
-  let(:system_description) { SystemDescription.new("foo") }
+  let(:system_description) {
+    SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+  }
   let(:description_with_packages) {
     create_test_description(json: <<-EOF)
       {

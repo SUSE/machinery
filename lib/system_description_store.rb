@@ -15,11 +15,21 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# The responsibility of the SystemDescriptionStore class is to handle the
+# directory where the system description is stored. It provides methods to
+# create, delete, and copy descriptions within the top-level directory.
+#
+# System descriptions are represented by sub directories of this top-level
+# directory. They are handled by the SystemDescription class.
 class SystemDescriptionStore
   attr_reader :base_path
 
   def default_path
     Machinery::DEFAULT_CONFIG_DIR
+  end
+
+  def persistent?
+    true
   end
 
   def initialize(base_path = default_path)
@@ -40,7 +50,7 @@ class SystemDescriptionStore
   end
 
   def load_json(name)
-    validate_name(name)
+    SystemDescription.validate_name(name)
     file_name = manifest_path(name)
     unless File.exists?(file_name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
@@ -48,43 +58,6 @@ class SystemDescriptionStore
       )
     end
     File.read(file_name)
-  end
-
-  # Load the system description with the given name
-  #
-  # If there are file validation errors these are put out as warnings but the
-  # loading of the system description succeeds.
-  def load(name)
-    json = load_json(name)
-    description = SystemDescription.from_json(name, json, self)
-    description.validate_compatibility
-    begin
-      description.validate_file_data
-    rescue Machinery::Errors::SystemDescriptionValidationFailed => e
-      Machinery::Ui.warn("Warning: File validation errors:")
-      Machinery::Ui.warn(e.to_s)
-    end
-    description
-  end
-
-  # Load the system description with the given name
-  #
-  # If there are file validation errors the call fails with an exception
-  def load!(name)
-    json = load_json(name)
-    description = SystemDescription.from_json(name, json, self)
-    description.validate_compatibility
-    description.validate_file_data
-    description
-  end
-
-  def save(description)
-    validate_name(description.name)
-    create_dir(description_path(description.name))
-    path = manifest_path(description.name)
-    created = !File.exists?(path)
-    File.write(path, description.to_json)
-    File.chmod(0600,path) if created
   end
 
   def list
@@ -95,7 +68,7 @@ class SystemDescriptionStore
 
   def remove(name)
     unless name.empty?
-      validate_name(name)
+      SystemDescription.validate_name(name)
       FileUtils.rm_rf(description_path(name))
     else
       raise "The system description has no name specified and thus can't be deleted."
@@ -103,8 +76,8 @@ class SystemDescriptionStore
   end
 
   def copy(from, to)
-    validate_name(from)
-    validate_name(to)
+    SystemDescription.validate_name(from)
+    SystemDescription.validate_name(to)
     if !list.include?(from)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
         "System description \"#{from}\" does not exist."
@@ -162,26 +135,17 @@ class SystemDescriptionStore
     mode
   end
 
+  def directory_for(name)
+    dir = description_path(name)
+    create_dir(dir)
+    dir
+  end
+
   private
 
   def create_dir(dir, mode = 0700)
     unless Dir.exists?(dir)
       FileUtils.mkdir_p(dir, :mode => mode)
     end
-  end
-
-  def validate_name(name)
-    if ! /^[\w\.:-]*$/.match(name)
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "System description name \"#{name}\" is invalid. Only \"a-zA-Z0-9_:.-\" are valid characters."
-      )
-    end
-
-    if name.start_with?(".")
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "System description name \"#{name}\" is invalid. A dot is not allowed as first character."
-      )
-    end
-
   end
 end

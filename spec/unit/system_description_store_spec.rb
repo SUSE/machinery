@@ -60,7 +60,7 @@ describe SystemDescriptionStore do
 
     it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
       expect {
-        @store.load("not_existing")
+        SystemDescription.load("not_existing", @store)
       }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
   end
@@ -72,7 +72,7 @@ describe SystemDescriptionStore do
     end
 
     it "loads a SystemDescription" do
-      description = @store.load(test_name)
+      description = SystemDescription.load(test_name, @store)
 
       expect(description.to_json).to eq(test_manifest)
       expect(description.name).to eq(test_name)
@@ -81,46 +81,7 @@ describe SystemDescriptionStore do
     it "validates that the system description is compatible" do
       expect_any_instance_of(SystemDescription).to receive(:validate_compatibility)
 
-      @store.load(test_name)
-    end
-  end
-
-  describe "#save" do
-    it "saves a SystemDescription" do
-      store = SystemDescriptionStore.new(test_base_path)
-      store.save(SystemDescription.from_json(test_name, test_manifest))
-      descr_dir = store.description_path(test_name)
-      manifest = store.manifest_path(test_name)
-      content = File.read(manifest)
-
-      expect(File.stat(descr_dir).mode & 0777).to eq(0700)
-      expect(File.stat(manifest).mode & 0777).to eq(0600)
-      expect(content).to eq(test_manifest)
-    end
-
-    it "keeps permissions for existing files during save" do
-      store = SystemDescriptionStore.new(test_base_path)
-      store.save(SystemDescription.from_json(test_name, test_manifest))
-
-      descr_dir = store.description_path(test_name)
-      File.chmod(0755,descr_dir)
-      manifest = store.manifest_path(test_name)
-      File.chmod(0644,manifest)
-
-      store = SystemDescriptionStore.new(test_base_path)
-      store.save(SystemDescription.from_json(test_name, test_manifest))
-      expect(File.stat(descr_dir).mode & 0777).to eq(0755)
-      expect(File.stat(manifest).mode & 0777).to eq(0644)
-    end
-
-    it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
-      store = SystemDescriptionStore.new
-      expect {
-        store.save(SystemDescription.from_json("invalid/slash", test_manifest))
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-      expect {
-        store.save(SystemDescription.from_json(".invalid_dot", test_manifest))
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      SystemDescription.load(test_name, @store)
     end
   end
 
@@ -207,6 +168,20 @@ describe SystemDescriptionStore do
       expect {
         store.copy(test_name, new_name)
       }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{new_name}/)
+    end
+  end
+
+  describe "#directory_for" do
+    it "creates sub directory for system description" do
+      path = "/tmp/test_dir"
+      store = SystemDescriptionStore.new(path)
+      name = "my_description"
+
+      dir = store.directory_for(name)
+
+      expect(dir).to eq(File.join(path, name))
+      expect(File.exist?(dir)).to be(true)
+      expect(File.stat(dir).mode).to eq 0100700
     end
   end
 

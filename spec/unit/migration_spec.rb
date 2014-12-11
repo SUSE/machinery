@@ -80,7 +80,7 @@ describe Migration do
       expect_any_instance_of(Migrate2To3).to receive(:migrate)
 
       Migration.migrate_description(store, "v1_description")
-      description = store.load("v1_description")
+      description = SystemDescription.load("v1_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
@@ -89,7 +89,7 @@ describe Migration do
       expect_any_instance_of(Migrate2To3).to receive(:migrate)
 
       Migration.migrate_description(store, "v2_description")
-      description = store.load("v2_description")
+      description = SystemDescription.load("v2_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
@@ -98,7 +98,7 @@ describe Migration do
       expect_any_instance_of(Migrate2To3).to_not receive(:migrate)
 
       Migration.migrate_description(store, "v3_description")
-      description = store.load("v3_description")
+      description = SystemDescription.load("v3_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
     end
 

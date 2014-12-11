@@ -42,7 +42,9 @@ describe Cli do
     include_context "machinery test directory"
 
     let(:example_host) { "myhost" }
-    let(:description) { SystemDescription.new("foo") }
+    let(:description) {
+      SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+    }
 
     before(:each) do
       allow_any_instance_of(SystemDescriptionStore).to receive(:default_path).

@@ -15,9 +15,8 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ValidateTask
-  def validate(store, name)
-    SystemDescription.load!(name, store)
-    puts "Validation succeeded."
-  end
+# The responsibility of the ScopeFileStore class is to represent a sub directory
+# of a system description which is used to hold files belonging to a specific
+# scope.
+class ScopeFileStore
 end

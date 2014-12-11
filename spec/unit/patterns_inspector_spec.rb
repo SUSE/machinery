@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe PatternsInspector do
   let(:description) {
-    SystemDescription.new("systemname", {}, SystemDescriptionStore.new)
+    SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
 
   let(:zypper_output) {

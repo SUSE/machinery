@@ -53,7 +53,7 @@ module SystemDescriptionFactory
   # +store+: The SystemDescriptionStore where the description should be stored.
   #   Default: The temporary factory description store.
   # +store_on_disk+: If true, the description will be stored in the temporary
-  #   description store. If false, the description is only create in-memory.
+  #   description store. If false, the description is only created in-memory.
   # +json+: If this option is given, the system description will be generated
   #   from it. Otherwise an empty description is created.
   # +scopes+: The list of scopes to include in the generated system description
@@ -71,16 +71,16 @@ module SystemDescriptionFactory
     if options[:store_on_disk] && !options[:store]
       store = system_description_factory_store
     else
-      store = options[:store]
+      store = options[:store] || SystemDescriptionMemoryStore.new
     end
 
     if options[:json]
-      description = SystemDescription.from_json(name, options[:json], store)
+      description = SystemDescription.from_json(name, store, options[:json])
     else
       description = build_description(name, store, options)
     end
 
-    store.save(description) if options[:store_on_disk]
+    description.save if options[:store_on_disk]
 
     description
   end
@@ -112,7 +112,7 @@ module SystemDescriptionFactory
 
   def build_description(name, store, options)
     json = create_test_description_json(options)
-    description = SystemDescription.from_json(name, json, store)
+    description = SystemDescription.from_json(name, store, json)
 
 
     options[:extracted_scopes].each do |extracted_scope|
