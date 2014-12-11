@@ -254,6 +254,10 @@ class SystemDescription < Machinery::Object
     SystemDescriptionValidator.new(self).validate_file_data
   end
 
+  def description_path
+    @store.description_path(name)
+  end
+
   # Filestore handling
   def initialize_file_store(store_name)
     @store.initialize_file_store(self.name, store_name)
