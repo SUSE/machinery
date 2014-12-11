@@ -1,5 +1,9 @@
 # Machinery Release Notes
 
+* Added Autoyast export for system descriptions
+* Handle zypper locks gracefully (issue #415)
+* Prevent scopes from being inspected multiple times (issue #303)
+* Keep already extracted results after cancelling an inspection (issue #364)
 
 ## Version 1.1.1 - Tue Dec 02 13:24:38 CET 2014 - thardeck@suse.de
 
