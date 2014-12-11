@@ -1,3 +1,5 @@
+# Filtering system descriptions
+
 This draft describes a filtering mechanism for Machinery, which could be used
 to filter out elements from scopes when running commands.
 
