@@ -30,7 +30,9 @@ class Os < Machinery::Object
         return os
       end
     end
-    OsUnknown.new
+    os = OsUnknown.new
+    os.name = "Unknown: #{os_name}"
+    os
   end
 
   def self.from_json(json)

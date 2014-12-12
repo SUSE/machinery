@@ -128,6 +128,20 @@ describe OsInspector do
       expect(description.os.version).to eq("11 SP3 Beta 10")
     end
 
+    it "returns correct data if a legacy openSUSE version is inspected" do
+      FakeFS::FileSystem.clone("spec/data/os/openSUSE11.2/etc/SuSE-release",
+        "/etc/SuSE-release")
+      FakeFS::FileSystem.clone("spec/data/os/openSUSE11.2/etc/issue",
+        "/etc/issue")
+
+      expect(inspector).to receive(:get_arch).with(system).and_return("i586")
+
+      inspector.inspect(system, description)
+
+      expect(description.os.version).to eq("11.2")
+      expect(description.os.name).to eq("Unknown: openSUSE 11.2")
+    end
+
     it "throws exception when the operation system cannot be determined" do
       expect {
         inspector.inspect(system, description)

@@ -19,6 +19,8 @@ class ChangedManagedFilesInspector < Inspector
   include ChangedRpmFilesHelper
 
   def inspect(system, description, options = {})
+    system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
+
     @system = system
     store_name = "changed_managed_files"
 
