@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE profile>
 <profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
+  <networking>
+    <keep_install_network config:type="boolean">true</keep_install_network>
+  </networking>
   <add-on>
     <add_on_products config:type="list">
       <listentry>
@@ -63,33 +66,23 @@
     </group>
   </groups>
   <services-manager>
-    <services>
+    <services config:type="list">
       <service>
-        <service_name>sshd.service</service_name>
+        <service_name>sshd</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>rsyncd.service</service_name>
+        <service_name>rsyncd</service_name>
         <service_status>disable</service_status>
       </service>
     </services>
   </services-manager>
-  <general>
-    <ask-list config:type="list">
-      <ask>
-        <question>Enter URL to system description</question>
-        <default>http://</default>
-        <file>/tmp/description_url</file>
-        <stage>initial</stage>
-        <script>
-          <rerun_on_error config:type="boolean">true</rerun_on_error>
-          <environment config:type="boolean">true</environment>
-          <source><![CDATA[curl -f --head $VAL/manifest.json && exit 0 || exit 1]]></source>
-        </script>
-      </ask>
-    </ask-list>
-  </general>
   <scripts>
+    <pre-scripts config:type="list">
+      <script>
+        <source><![CDATA[sed -n '/.*autoyast2\?=\(.*\)\/.*[^\s]*/s//\1/p' /proc/cmdline > /tmp/description_url]]></source>
+      </script>
+    </pre-scripts>
     <chroot-scripts config:type="list">
       <script>
         <source><![CDATA[mkdir -p '/mnt/etc'

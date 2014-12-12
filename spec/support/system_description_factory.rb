@@ -289,6 +289,18 @@ module SystemDescriptionFactory
         {
           "name": "rsyncd.service",
           "state": "disabled"
+        },
+        {
+          "name": "lvm2-lvmetad.socket",
+          "state": "disabled"
+        },
+        {
+          "name": "console-shell.service",
+          "state": "static"
+        },
+        {
+          "name": "crypto.service",
+          "state": "masked"
         }
       ]
     }

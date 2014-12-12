@@ -27,6 +27,10 @@ class Autoyast
       File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
       output_dir
     )
+    # Filter log files to prevent an issue with hanging gzip during installation
+    File.open(File.join(output_dir, "unmanaged_files_build_excludes"), "a") do |file|
+      file.puts "var/log/*"
+    end
     FileUtils.cp(
       File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
       File.join(output_dir, "README.md")
@@ -35,6 +39,7 @@ class Autoyast
       FileUtils.cp_r(content, output_dir)
     end
     File.write(File.join(output_dir, "autoinst.xml"), profile)
+    FileUtils.chmod_R("a+rX", output_dir)
   end
 
   def profile
@@ -44,6 +49,7 @@ class Autoyast
         "xmlns" => "http://www.suse.com/1.0/yast2ns",
         "xmlns:config" => "http://www.suse.com/1.0/configns"
       ) do
+        setup_basic_network(xml)
         apply_repositories(xml)
         xml.software do
           apply_packages(xml)
@@ -53,12 +59,12 @@ class Autoyast
         apply_groups(xml)
         apply_services(xml)
 
-        ask_for_description_url(xml)
         chroot_scripts = []
         chroot_scripts << extracted_files_script("config_files")
         chroot_scripts << extracted_files_script("changed_managed_files")
         chroot_scripts << unmanaged_files_script
         xml.scripts do
+          apply_url_extraction(xml)
           xml.send("chroot-scripts", "config:type" => "list") do
             xml.script do
               xml.source do
@@ -75,31 +81,9 @@ class Autoyast
 
   private
 
-  def ask_for_description_url(xml)
-    url_needed = [
-      "config_files",
-      "changed_managed_files",
-      "unmanaged_files"
-    ].any? { |scope| @system_description[scope] && @system_description[scope].extracted }
-
-    return if !url_needed
-
-    xml.general do
-      xml.send("ask-list", "config:type" => "list") do
-        xml.ask do
-          xml.question "Enter URL to system description"
-          xml.default "http://"
-          xml.file "/tmp/description_url"
-          xml.stage "initial"
-          xml.script do
-            xml.rerun_on_error "true", "config:type" => "boolean"
-            xml.environment "true", "config:type" => "boolean"
-            xml.source do
-              xml.cdata "curl -f --head $VAL/manifest.json && exit 0 || exit 1"
-            end
-          end
-        end
-      end
+  def setup_basic_network(xml)
+    xml.networking do
+      xml.keep_install_network "true", "config:type" => "boolean"
     end
   end
 
@@ -182,22 +166,39 @@ class Autoyast
 
   def apply_services(xml)
     xml.send("services-manager") do
-      xml.services do
+      xml.services("config:type" => "list") do
         @system_description.services.services.each do |service|
+          name = service.name
+          if @system_description.services.init_system == "systemd"
+            # Yast can only handle services right now
+            next if !(name =~ /\.service$/)
+            name = name.gsub(/\.service$/, "")
+          end
           # systemd service states like "masked" and "static" are
           # not supported by Autoyast
           if service.enabled?
             xml.service do
-              xml.service_name service.name
+              xml.service_name name
               xml.service_status "enable"
             end
           end
           if service.disabled?
             xml.service do
-              xml.service_name service.name
+              xml.service_name name
               xml.service_status "disable"
             end
           end
+        end
+      end
+    end
+  end
+
+  def apply_url_extraction(xml)
+    xml.send("pre-scripts", "config:type" => "list") do
+      xml.script do
+        xml.source do
+          xml.cdata 'sed -n \'/.*autoyast2\?=\(.*\)\/.*[^\s]*/s//\1/p\'' \
+            ' /proc/cmdline > /tmp/description_url'
         end
       end
     end

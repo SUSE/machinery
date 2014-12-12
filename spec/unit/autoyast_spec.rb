@@ -86,8 +86,24 @@ describe Autoyast do
       expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
     end
 
+    it "filters log files from the Autoyast export" do
+      expect(File.read(File.join(@output_dir, "unmanaged_files_build_excludes"))).
+        to include("var/log/*")
+    end
+
     it "adds the autoyast export readme" do
       expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
+    end
+
+    it "makes all exported files and dirs readable" do
+      expect(File.stat(@output_dir).mode & 0777).to eq(0755)
+      Dir.glob(File.join(@output_dir, "/**/*")).each do |entry|
+        if File.directory?(entry)
+          expect(File.stat(entry).mode & 0777).to eq(0755)
+        else
+          expect(File.stat(entry).mode & 0777).to eq(0644)
+        end
+      end
     end
   end
 end
