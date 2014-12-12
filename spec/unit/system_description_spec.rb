@@ -386,6 +386,15 @@ EOF
     end
   end
 
+  describe "#description_path" do
+    it "returns the correct path" do
+      store = SystemDescriptionStore.new
+      description = SystemDescription.from_json("foo", store, @description)
+
+      expect(description.description_path).to eq(store.base_path + "/foo")
+    end
+  end
+
   describe ".validate_name" do
     it "accepts valid name" do
       expect {

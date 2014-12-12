@@ -52,7 +52,7 @@ Gem::Specification.new do |s|
     "NEWS",
     "COPYING",
     "helpers/*",
-    "kiwi_helpers/*",
+    "export_helpers/*",
     "schema/**/*",
     "html/**/*"
   ]

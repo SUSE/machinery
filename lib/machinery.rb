@@ -30,6 +30,8 @@ require "gli"
 require "json-schema"
 require "haml"
 require "kramdown"
+require "find"
+require "pathname"
 
 require_relative "machinery_logger"
 require_relative "zypper"

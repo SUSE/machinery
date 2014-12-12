@@ -20,7 +20,7 @@ require_relative "../unit/spec_helper"
 describe "merge_users_and_groups.pl" do
   let(:template) {
     ERB.new(
-      File.read(File.join(Machinery::ROOT, "kiwi_helpers", "merge_users_and_groups.pl.erb"))
+      File.read(File.join(Machinery::ROOT, "export_helpers", "merge_users_and_groups.pl.erb"))
     )
   }
 

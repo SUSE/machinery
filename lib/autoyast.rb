@@ -21,6 +21,19 @@ class Autoyast
   end
 
   def write(output_dir)
+    FileUtils.mkdir_p(output_dir) if !Dir.exists?(output_dir)
+
+    FileUtils.cp(
+      File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
+      output_dir
+    )
+    FileUtils.cp(
+      File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
+      File.join(output_dir, "README.md")
+    )
+    Dir["#{@system_description.description_path}/*"].each do |content|
+      FileUtils.cp_r(content, output_dir)
+    end
     File.write(File.join(output_dir, "autoinst.xml"), profile)
   end
 
@@ -39,6 +52,21 @@ class Autoyast
         apply_users(xml)
         apply_groups(xml)
         apply_services(xml)
+
+        ask_for_description_url(xml)
+        chroot_scripts = []
+        chroot_scripts << extracted_files_script("config_files")
+        chroot_scripts << extracted_files_script("changed_managed_files")
+        chroot_scripts << unmanaged_files_script
+        xml.scripts do
+          xml.send("chroot-scripts", "config:type" => "list") do
+            xml.script do
+              xml.source do
+                xml.cdata chroot_scripts.join("\n")
+              end
+            end
+          end
+        end
       end
     end
 
@@ -46,6 +74,34 @@ class Autoyast
   end
 
   private
+
+  def ask_for_description_url(xml)
+    url_needed = [
+      "config_files",
+      "changed_managed_files",
+      "unmanaged_files"
+    ].any? { |scope| @system_description[scope] && @system_description[scope].extracted }
+
+    return if !url_needed
+
+    xml.general do
+      xml.send("ask-list", "config:type" => "list") do
+        xml.ask do
+          xml.question "Enter URL to system description"
+          xml.default "http://"
+          xml.file "/tmp/description_url"
+          xml.stage "initial"
+          xml.script do
+            xml.rerun_on_error "true", "config:type" => "boolean"
+            xml.environment "true", "config:type" => "boolean"
+            xml.source do
+              xml.cdata "curl -f --head $VAL/manifest.json && exit 0 || exit 1"
+            end
+          end
+        end
+      end
+    end
+  end
 
   def apply_repositories(xml)
     return if !@system_description.repositories
@@ -145,5 +201,55 @@ class Autoyast
         end
       end
     end
+  end
+
+  def extracted_files_script(scope)
+    return if !@system_description[scope] || !@system_description[scope].extracted
+
+    base = Pathname(@system_description.file_store(scope))
+    snippets = []
+    Dir["#{base}/**/*"].each do |path|
+      next if File.directory?(path)
+
+      relative_path = Pathname(path).relative_path_from(base).to_s
+      url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, relative_path))}"
+
+      snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
+      snippets << "curl -o '#{File.join("/mnt", relative_path)}' \"#{url}\""
+    end
+
+    @system_description[scope].files.map do |file|
+      snippets << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'" if file.user
+      snippets << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'" if file.mode
+    end
+
+    snippets.join("\n")
+  end
+
+  def unmanaged_files_script
+    return if !@system_description.unmanaged_files ||
+      !@system_description.unmanaged_files.extracted
+
+    base = Pathname(@system_description.file_store("unmanaged_files"))
+    snippets = []
+    snippets << <<-EOF
+      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
+    EOF
+
+    Dir["#{base}/**/*.tgz"].each do |path|
+      next if !path.end_with?(".tgz")
+
+      relative_path = Pathname(path).relative_path_from(base).to_s
+      tarball_name = File.basename(path)
+      url = "`cat /tmp/description_url`#{URI.escape(File.join("/unmanaged_files", relative_path))}"
+
+      snippets << <<-EOF
+        curl -o '/mnt/tmp/#{tarball_name}' "#{url}"
+        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '#{File.join("/mnt/tmp", tarball_name)}'
+        rm '#{File.join("/mnt/tmp", tarball_name)}'
+      EOF
+    end
+
+    snippets.join("\n")
   end
 end

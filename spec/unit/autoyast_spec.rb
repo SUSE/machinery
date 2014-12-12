@@ -18,11 +18,19 @@
 require_relative "spec_helper"
 
 describe Autoyast do
+  initialize_system_description_factory_store
+
   let(:expected_profile) {
     File.read(File.join(Machinery::ROOT, "spec/data/autoyast/simple.xml"))
   }
   let(:description) {
     create_test_description(
+      store_on_disk: true,
+      extracted_scopes: [
+        "config_files",
+        "changed_managed_files",
+        "unmanaged_files"
+      ],
       scopes: [
         "packages",
         "patterns",
@@ -39,6 +47,47 @@ describe Autoyast do
       autoyast = Autoyast.new(description)
 
       expect(autoyast.profile).to eq(expected_profile)
+    end
+
+    it "does not ask for export URL if files weren't extracted" do
+      [
+        "config_files",
+        "changed_managed_files",
+        "unmanaged_files"
+      ].each do |scope|
+        description[scope].extracted = false
+      end
+      autoyast = Autoyast.new(description)
+
+      expect(autoyast.profile).not_to include("Enter URL to system description")
+    end
+  end
+
+  describe "#write" do
+    around(:each) do |example|
+      autoyast = Autoyast.new(description)
+      Dir.mktmpdir("autoyast_export_test") do |dir|
+        @output_dir = dir
+        autoyast.write(@output_dir)
+
+        example.run
+      end
+    end
+
+    it "copies over the system description" do
+      expect(File.exists?(File.join(@output_dir, "manifest.json"))).to be(true)
+    end
+
+    it "adds the autoinst.xml" do
+      expect(File.exists?(File.join(@output_dir, "autoinst.xml"))).to be(true)
+    end
+
+    it "adds unmanaged files filter list" do
+      expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
+    end
+
+    it "adds the autoyast export readme" do
+      expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
     end
   end
 end

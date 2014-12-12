@@ -42,7 +42,7 @@ class KiwiConfig
     File.write(File.join(output_location, "config.xml") , @xml.to_xml)
     File.write(File.join(output_location, "config.sh") , @sh)
     FileUtils.cp(
-       File.join(Machinery::ROOT, "kiwi_helpers/kiwi_export_readme.md"),
+       File.join(Machinery::ROOT, "export_helpers/kiwi_export_readme.md"),
        File.join(output_location, "README.md")
     )
 
@@ -65,7 +65,7 @@ class KiwiConfig
     merge_script_name = "merge_users_and_groups.pl"
 
     template = ERB.new(
-      File.read(File.join(Machinery::ROOT, "kiwi_helpers", "#{merge_script_name}.erb"))
+      File.read(File.join(Machinery::ROOT, "export_helpers", "#{merge_script_name}.erb"))
     )
 
     passwd_entries = @system_description.users.map do |u|
@@ -106,7 +106,7 @@ class KiwiConfig
       FileUtils.mkdir_p(destination, mode: 01777)
       FileUtils.cp_r(unmanaged_files_path, destination)
       FileUtils.cp(
-        File.join(Machinery::ROOT, "kiwi_helpers/#{filter}"),
+        File.join(Machinery::ROOT, "export_helpers/#{filter}"),
         destination
       )
 

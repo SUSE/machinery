@@ -119,9 +119,18 @@ module SystemDescriptionFactory
       description[extracted_scope].extracted = true
       if options[:store_on_disk]
         description.initialize_file_store(extracted_scope)
-        description[extracted_scope].files.each do |file|
-          File.write(File.join(description.file_store(extracted_scope), file.name),
-            "Stub data for #{file.name}.")
+        if extracted_scope == "unmanaged_files"
+          FileUtils.touch(File.join(description.file_store("unmanaged_files"), "files.tgz"))
+          FileUtils.mkdir_p(File.join(description.file_store("unmanaged_files"), "etc"))
+          FileUtils.touch(
+            File.join(description.file_store("unmanaged_files"), "etc", "tarball with spaces.tgz")
+          )
+        else
+          description[extracted_scope].files.each do |file|
+            file_name = File.join(description.file_store(extracted_scope), file.name)
+            FileUtils.mkdir_p(File.dirname(file_name))
+            File.write(file_name, "Stub data for #{file.name}.")
+          end
         end
       end
     end
@@ -136,13 +145,16 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
-          "name": "/etc/cron.daily/mdadm",
+          "name": "/etc/cron.daily/md adm",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
           "changes": [
             "deleted"
-          ]
+          ],
+          "user": "root",
+          "group": "root",
+          "mode": "644"
         }
       ]
     }
@@ -152,7 +164,7 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
-          "name": "/etc/crontab",
+          "name": "/etc/cron tab",
           "package_name": "cron",
           "package_version": "4.1",
           "status": "changed",
