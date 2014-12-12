@@ -800,7 +800,7 @@
     </group>
   </groups>
   <services-manager>
-    <services>
+    <services config:type="list">
       <service>
         <service_name>blk-availability</service_name>
         <service_status>disable</service_status>

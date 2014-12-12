@@ -66,7 +66,7 @@
     </group>
   </groups>
   <services-manager>
-    <services>
+    <services config:type="list">
       <service>
         <service_name>sshd</service_name>
         <service_status>enable</service_status>

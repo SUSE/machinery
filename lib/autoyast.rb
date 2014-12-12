@@ -194,7 +194,7 @@ class Autoyast
 
   def apply_services(xml)
     xml.send("services-manager") do
-      xml.services do
+      xml.services("config:type" => "list") do
         @system_description.services.services.each do |service|
           name = service.name
           if @system_description.services.init_system == "systemd"
