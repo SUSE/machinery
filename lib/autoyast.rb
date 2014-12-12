@@ -44,6 +44,7 @@ class Autoyast
         "xmlns" => "http://www.suse.com/1.0/yast2ns",
         "xmlns:config" => "http://www.suse.com/1.0/configns"
       ) do
+        setup_basic_network(xml)
         apply_repositories(xml)
         xml.software do
           apply_packages(xml)
@@ -100,6 +101,12 @@ class Autoyast
           end
         end
       end
+    end
+  end
+
+  def setup_basic_network(xml)
+    xml.networking do
+      xml.keep_install_network "true", "config:type" => "boolean"
     end
   end
 
