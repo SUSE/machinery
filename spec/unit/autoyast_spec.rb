@@ -89,5 +89,16 @@ describe Autoyast do
     it "adds the autoyast export readme" do
       expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
     end
+
+    it "makes all exported files and dirs readable" do
+      expect(File.stat(@output_dir).mode & 0777).to eq(0755)
+      Dir.glob(File.join(@output_dir, "/**/*")).each do |entry|
+        if File.directory?(entry)
+          expect(File.stat(entry).mode & 0777).to eq(0755)
+        else
+          expect(File.stat(entry).mode & 0777).to eq(0644)
+        end
+      end
+    end
   end
 end

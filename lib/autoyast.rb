@@ -35,6 +35,7 @@ class Autoyast
       FileUtils.cp_r(content, output_dir)
     end
     File.write(File.join(output_dir, "autoinst.xml"), profile)
+    FileUtils.chmod_R("a+rX", output_dir)
   end
 
   def profile
