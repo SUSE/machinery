@@ -27,6 +27,10 @@ class Autoyast
       File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
       output_dir
     )
+    # Filter log files to prevent an issue with hanging gzip during installation
+    File.open(File.join(output_dir, "unmanaged_files_build_excludes"), "a") do |file|
+      file.puts "var/log/*"
+    end
     FileUtils.cp(
       File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
       File.join(output_dir, "README.md")
