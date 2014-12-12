@@ -915,22 +915,12 @@
       </service>
     </services>
   </services-manager>
-  <general>
-    <ask-list config:type="list">
-      <ask>
-        <question>Enter URL to system description</question>
-        <default>http://</default>
-        <file>/tmp/description_url</file>
-        <stage>initial</stage>
-        <script>
-          <rerun_on_error config:type="boolean">true</rerun_on_error>
-          <environment config:type="boolean">true</environment>
-          <source><![CDATA[curl -f --head $VAL/manifest.json && exit 0 || exit 1]]></source>
-        </script>
-      </ask>
-    </ask-list>
-  </general>
   <scripts>
+    <pre-scripts config:type="list">
+      <script>
+        <source><![CDATA[sed -n '/.*autoyast2\?=\(.*\)\/.*[^\s]*/s//\1/p' /proc/cmdline > /tmp/description_url]]></source>
+      </script>
+    </pre-scripts>
     <chroot-scripts config:type="list">
       <script>
         <source><![CDATA[mkdir -p '/mnt/etc'
