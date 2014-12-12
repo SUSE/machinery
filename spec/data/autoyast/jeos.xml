@@ -802,127 +802,115 @@
   <services-manager>
     <services>
       <service>
-        <service_name>blk-availability.service</service_name>
+        <service_name>blk-availability</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>console-getty.service</service_name>
+        <service_name>console-getty</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>cron.service</service_name>
+        <service_name>cron</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>debug-shell.service</service_name>
+        <service_name>debug-shell</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>dm-event.service</service_name>
+        <service_name>dm-event</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>dm-event.socket</service_name>
+        <service_name>klog</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>klog.service</service_name>
+        <service_name>klogd</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>klogd.service</service_name>
+        <service_name>lvm2-lvmetad</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>lvm2-lvmetad.service</service_name>
+        <service_name>lvm2-monitor</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>lvm2-lvmetad.socket</service_name>
-        <service_status>disable</service_status>
-      </service>
-      <service>
-        <service_name>lvm2-monitor.service</service_name>
-        <service_status>disable</service_status>
-      </service>
-      <service>
-        <service_name>network.service</service_name>
+        <service_name>network</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>plymouth-halt.service</service_name>
+        <service_name>plymouth-halt</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-kexec.service</service_name>
+        <service_name>plymouth-kexec</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-poweroff.service</service_name>
+        <service_name>plymouth-poweroff</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-quit-wait.service</service_name>
+        <service_name>plymouth-quit-wait</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-quit.service</service_name>
+        <service_name>plymouth-quit</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-read-write.service</service_name>
+        <service_name>plymouth-read-write</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-reboot.service</service_name>
+        <service_name>plymouth-reboot</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>plymouth-start.service</service_name>
+        <service_name>plymouth-start</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>purge-kernels.service</service_name>
+        <service_name>purge-kernels</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>rpcbind.service</service_name>
+        <service_name>rpcbind</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>rpcbind.socket</service_name>
+        <service_name>rsyncd</service_name>
         <service_status>disable</service_status>
       </service>
       <service>
-        <service_name>rsyncd.service</service_name>
-        <service_status>disable</service_status>
-      </service>
-      <service>
-        <service_name>sshd.service</service_name>
+        <service_name>sshd</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>suse-studio-custom.service</service_name>
+        <service_name>suse-studio-custom</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>syslog-ng.service</service_name>
+        <service_name>syslog-ng</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>syslog.service</service_name>
+        <service_name>syslog</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>systemd-readahead-collect.service</service_name>
+        <service_name>systemd-readahead-collect</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>systemd-readahead-drop.service</service_name>
+        <service_name>systemd-readahead-drop</service_name>
         <service_status>enable</service_status>
       </service>
       <service>
-        <service_name>systemd-readahead-replay.service</service_name>
+        <service_name>systemd-readahead-replay</service_name>
         <service_status>enable</service_status>
       </service>
     </services>

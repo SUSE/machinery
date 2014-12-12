@@ -191,17 +191,23 @@ class Autoyast
     xml.send("services-manager") do
       xml.services do
         @system_description.services.services.each do |service|
+          name = service.name
+          if @system_description.services.init_system == "systemd"
+            # Yast can only handle services right now
+            next if !(name =~ /\.service$/)
+            name = name.gsub(/\.service$/, "")
+          end
           # systemd service states like "masked" and "static" are
           # not supported by Autoyast
           if service.enabled?
             xml.service do
-              xml.service_name service.name
+              xml.service_name name
               xml.service_status "enable"
             end
           end
           if service.disabled?
             xml.service do
-              xml.service_name service.name
+              xml.service_name name
               xml.service_status "disable"
             end
           end
