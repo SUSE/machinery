@@ -40,6 +40,10 @@ flows. Machinery is targeted at the system administrator of the data center.
   - `machinery inspect --extract-files HOSTNAME`
   - `machinery export-kiwi --kiwi-dir=~/kiwi HOSTNAME`
 
+### Fully Inspect a System and Export an AutoYaST Profile
+  - `machinery inspect --extract-files HOSTNAME`
+  - `machinery export-autoyast --autoyast-dir=~/autoyast HOSTNAME`
+
 ### Fully Inspect a System and Deploy a Replicate to the Cloud
   - `machinery inspect --extract-files HOSTNAME`
   - `machinery deploy --cloud-config=~/openrc.sh HOSTNAME`
