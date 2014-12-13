@@ -18,6 +18,10 @@
 class Autoyast
   def initialize(description)
     @system_description = description
+    @system_description.assert_scopes(
+      "repositories",
+      "packages"
+    )
   end
 
   def write(output_dir)
