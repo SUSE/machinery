@@ -94,7 +94,10 @@ module SystemDescriptionFactory
   def create_test_description_json(options = {})
     options = {
       scopes: [],
-      extracted_scopes: []
+      extracted_scopes: [],
+      modified: DateTime.now,
+      hostname: "example.com",
+      add_scope_meta: true
     }.merge(options)
 
     json_objects = []
