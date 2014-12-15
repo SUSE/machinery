@@ -18,6 +18,10 @@
 class Autoyast
   def initialize(description)
     @system_description = description
+    @system_description.assert_scopes(
+      "repositories",
+      "packages"
+    )
   end
 
   def write(output_dir)
@@ -209,7 +213,7 @@ class Autoyast
 
     base = Pathname(@system_description.file_store(scope))
     snippets = []
-    Dir["#{base}/**/*"].each do |path|
+    Dir["#{base}/**/*"].sort.each do |path|
       next if File.directory?(path)
 
       relative_path = Pathname(path).relative_path_from(base).to_s
@@ -237,7 +241,7 @@ class Autoyast
       curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
     EOF
 
-    Dir["#{base}/**/*.tgz"].each do |path|
+    Dir["#{base}/**/*.tgz"].sort.each do |path|
       next if !path.end_with?(".tgz")
 
       relative_path = Pathname(path).relative_path_from(base).to_s

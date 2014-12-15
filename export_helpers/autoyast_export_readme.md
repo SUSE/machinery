@@ -16,9 +16,4 @@ the installer via network, e.g. by running:
 You can then point the installer to the profile by specifying the "autoyast"
 option on the kernel command line:
 
-  autoyast=http://192.168.121.1:8000/autoinst.xml
-
-In the installer you will be prompted to enter the URL to the system
-description, which in this case would be
-
-  http://192.168.121.1:8000
+  autoyast2=http://192.168.121.1:8000/autoinst.xml
