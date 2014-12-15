@@ -94,45 +94,39 @@ class SystemDescriptionStore
   end
 
   def initialize_file_store(description_name, store_name)
-    dir = File.join(description_path(description_name), store_name)
-    create_dir(dir, new_dir_mode(description_name))
+    file_store = ScopeFileStore.new(description_path(description_name),
+      store_name)
+    file_store.create
   end
 
   def file_store(description_name, store_name)
-    dir = File.join(description_path(description_name), store_name)
-    Dir.exists?(dir) ? dir : nil
+    file_store = ScopeFileStore.new(description_path(description_name),
+      store_name)
+    file_store.path
   end
 
   def remove_file_store(description_name, store_name)
-    FileUtils.rm_rf(File.join(description_path(description_name), store_name))
+    file_store = ScopeFileStore.new(description_path(description_name),
+      store_name)
+    file_store.remove
   end
 
   def rename_file_store(description_name, store_old, store_new)
-    FileUtils.mv(
-      File.join(description_path(description_name), store_old),
-      File.join(description_path(description_name), store_new)
-    )
+    file_store = ScopeFileStore.new(description_path(description_name),
+      store_old)
+    file_store.rename(store_new)
   end
 
   def create_file_store_sub_dir(description_name, store_name, sub_dir)
-    dir = File.join(description_path(description_name), store_name, sub_dir)
-    create_dir(dir, new_dir_mode(description_name))
+    file_store = ScopeFileStore.new(description_path(description_name),
+      store_name)
+    file_store.create_sub_directory(sub_dir)
   end
 
   def list_file_store_content(description_name, store_name)
-    dir = File.join(description_path(description_name), store_name)
-
-    files = Dir.glob(File.join(dir, "**/{*,.*}"))
-    # filter parent directories because they should not be listed separately
-    files.reject { |f| files.index { |e| e =~ /^#{f}\/.+/ } }
-  end
-
-  def new_dir_mode(name)
-    mode = 0700
-    if Dir.exists?(description_path(name))
-      mode = File.stat(description_path(name)).mode & 0777
-    end
-    mode
+    file_store = ScopeFileStore.new(description_path(description_name),
+      store_name)
+    file_store.list_content
   end
 
   def directory_for(name)
