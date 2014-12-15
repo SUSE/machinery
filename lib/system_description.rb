@@ -38,39 +38,42 @@ class SystemDescription < Machinery::Object
   attr_accessor :format_version
 
   class << self
-    def from_json(name, store, json)
-      begin
-        json_hash = JSON.parse(json)
-      rescue JSON::ParserError => e
-        lines = e.message.split("\n")
-        error_pos = json.split("\n").length - lines.length + 2
-        block_end = lines.index { |l| l =~ / [\}\]],?$/ }
 
-        # remove needless json error information
-        lines[0].gsub!(/^\d+: (.*)$/, "\\1")
-        json_error = lines[0..block_end].join("\n")
+    def parse_json(name, store, json)
+      JSON.parse(json)
+    rescue JSON::ParserError => e
+      lines = e.message.split("\n")
+      error_pos = json.split("\n").length - lines.length + 2
+      block_end = lines.index { |l| l =~ / [\}\]],?$/ }
 
-        if error_pos == 1
-          json_error = "An opening bracket, a comma or quotation is missing " \
+      # remove needless json error information
+      lines[0].gsub!(/^\d+: (.*)$/, "\\1")
+      json_error = lines[0..block_end].join("\n")
+
+      if error_pos == 1
+        json_error = "An opening bracket, a comma or quotation is missing " \
             "in one of the global scope definitions or in the meta section. " \
             "Unlike issues with the elements of the scopes, our JSON parser " \
             "isn't able to locate issues like these."
-          error_pos = nil
-        end
+        error_pos = nil
+      end
 
-        error = "The JSON data of the system description '#{name}' " \
+      error = "The JSON data of the system description '#{name}' " \
           "couldn't be parsed. The following error occured"
-        error += " around line #{error_pos}" if error_pos
-        error += " in file '#{store.manifest_path(name)}'" if store.persistent?
-        error += ":\n\n#{json_error}"
+      error += " around line #{error_pos}" if error_pos
+      error += " in file '#{store.manifest_path(name)}'" if store.persistent?
+      error += ":\n\n#{json_error}"
 
-        raise Machinery::Errors::SystemDescriptionError.new(error)
-      end
+      raise Machinery::Errors::SystemDescriptionError.new(error)
+    end
 
-      if compatible_json?(json_hash)
-        SystemDescriptionValidator.new(self).validate_json(json_hash)
-      end
+    def validate_json_hash(json_hash)
+      return if !compatible_json?(json_hash)
 
+      SystemDescriptionValidator.new(self).validate_json(json_hash)
+    end
+
+    def from_json_hash(name, store, json_hash)
       begin
         description = new(name, store, create_scopes(json_hash))
       rescue NameError
@@ -81,6 +84,12 @@ class SystemDescription < Machinery::Object
       description.format_version = json_format_version
 
       description
+    end
+
+    def from_json(name, store, json)
+      json_hash = parse_json(name, store, json)
+      validate_json_hash(json_hash)
+      from_json_hash(name, store, json_hash)
     end
 
     def create_scopes(hash)
