@@ -25,8 +25,6 @@ class Autoyast
   end
 
   def write(output_dir)
-    FileUtils.mkdir_p(output_dir) if !Dir.exists?(output_dir)
-
     FileUtils.cp(
       File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
       output_dir
