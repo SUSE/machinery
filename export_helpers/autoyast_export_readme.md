@@ -17,3 +17,15 @@ You can then point the installer to the profile by specifying the "autoyast"
 option on the kernel command line:
 
   autoyast2=http://192.168.121.1:8000/autoinst.xml
+
+
+## Changing permissions of the AutoYaST export
+
+By default the AutoYaST export is only accessible by the user. This is also the
+case for all sub directories.
+
+The installation via for example an HTTP server is only possible if all files
+and sub directories are readable by the HTTP server user.
+To make the export directory readable for all users run:
+
+  chmod a+rX /path/to/autoyast_export

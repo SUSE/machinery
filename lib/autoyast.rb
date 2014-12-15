@@ -43,6 +43,11 @@ class Autoyast
     end
     File.write(File.join(output_dir, "autoinst.xml"), profile)
     FileUtils.chmod(0600, File.join(output_dir, "autoinst.xml"))
+    Machinery::Ui.puts(
+      "Note: The permssions of the AutoYaST directory are restricted to be" \
+        " only accessible by the current user. Further instructions are" \
+        " provided by the README.md in the exported directory."
+    )
   end
 
   def profile
