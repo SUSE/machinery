@@ -107,6 +107,24 @@ class SystemDescriptionStore
     backup_name
   end
 
+  def rename(from, to)
+    SystemDescription.validate_name(from)
+    SystemDescription.validate_name(to)
+    if !list.include?(from)
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
+        "System description \"#{from}\" does not exist."
+      )
+    end
+
+    if list.include?(to)
+      raise Machinery::Errors::SystemDescriptionError.new(
+        "A System description with the name \"#{to}\" does already exist."
+      )
+    end
+
+    FileUtils.mv(description_path(from), description_path(to))
+  end
+
   def initialize_file_store(description_name, store_name)
     dir = File.join(description_path(description_name), store_name)
     create_dir(dir, new_dir_mode(description_name))

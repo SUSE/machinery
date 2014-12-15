@@ -213,6 +213,35 @@ describe SystemDescriptionStore do
     end
   end
 
+  describe "#rename" do
+    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:new_name) { "description2" }
+
+    before(:each) do
+      create_machinery_dir
+    end
+
+    it "renames an existing system description" do
+      expect(store.list).to eq([test_name])
+      store.rename(test_name, new_name)
+      expect(store.list).to eq([new_name])
+    end
+
+    it "throws an error when the to be renamed system description does not exist" do
+      expect {
+        store.rename("foo_bar_does_not_exist", new_name)
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound, /foo_bar_does_not_exist/)
+    end
+
+    it "throws an error when the new name already exists" do
+      store.copy(test_name, new_name)
+      expect(store.list).to include(new_name)
+      expect {
+        store.rename(test_name, new_name)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{new_name}/)
+    end
+  end
+
   describe "file store methods" do
     before(:each) do
       create_machinery_dir
