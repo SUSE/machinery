@@ -185,6 +185,34 @@ describe SystemDescriptionStore do
     end
   end
 
+  describe "#backup" do
+    let(:store) { SystemDescriptionStore.new(test_base_path) }
+
+    before(:each) do
+      create_machinery_dir
+    end
+
+    it "backups an existing SystemDescription" do
+      expect(store.list).to eq([test_name])
+      store.backup(test_name)
+      expect(store.list).to match_array([test_name, test_name + ".backup"])
+    end
+
+    it "it raises the backup number if a backup already exists" do
+      expect(store.list).to eq([test_name])
+      3.times do
+        store.backup(test_name)
+      end
+      expect(store.list).to match_array(
+        [test_name, test_name + ".backup", test_name + ".backup.1", test_name + ".backup.2"]
+      )
+    end
+
+    it "returns the backup name" do
+      expect(store.backup(test_name)).to eq(test_name + ".backup")
+    end
+  end
+
   describe "file store methods" do
     before(:each) do
       create_machinery_dir
