@@ -25,7 +25,12 @@ describe Machinery::Ui do
 
     it "also accepts arrays" do
       expect(Machinery::Ui.internal_scope_list_to_string(["foo_bar", "bar_baz"])).
-        to eq("foo-bar,bar-baz")
+        to eq("foo-bar, bar-baz")
+    end
+
+    it "prints a space after comma" do
+      expect(Machinery::Ui.internal_scope_list_to_string(["foo", "bar"])).
+        to eq("foo, bar")
     end
   end
 
