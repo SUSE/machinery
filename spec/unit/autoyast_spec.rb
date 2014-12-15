@@ -95,13 +95,14 @@ describe Autoyast do
       expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
     end
 
-    it "makes all exported files and dirs readable" do
-      expect(File.stat(@output_dir).mode & 0777).to eq(0755)
-      Dir.glob(File.join(@output_dir, "/**/*")).each do |entry|
+    it "restricts permissions of all exported files and dirs to the user" do
+      expect(File.stat(@output_dir).mode & 0777).to eq(0700)
+      Dir.glob(File.join(@output_dir, "/*")).each do |entry|
+        next if entry.end_with?("/README.md")
         if File.directory?(entry)
-          expect(File.stat(entry).mode & 0777).to eq(0755)
+          expect(File.stat(entry).mode & 0777).to eq(0700), entry
         else
-          expect(File.stat(entry).mode & 0777).to eq(0644)
+          expect(File.stat(entry).mode & 0777).to eq(0600), entry
         end
       end
     end

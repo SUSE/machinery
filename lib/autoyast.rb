@@ -33,15 +33,16 @@ class Autoyast
     File.open(File.join(output_dir, "unmanaged_files_build_excludes"), "a") do |file|
       file.puts "var/log/*"
     end
+    FileUtils.chmod(0600, File.join(output_dir, "unmanaged_files_build_excludes"))
     FileUtils.cp(
       File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
       File.join(output_dir, "README.md")
     )
     Dir["#{@system_description.description_path}/*"].each do |content|
-      FileUtils.cp_r(content, output_dir)
+      FileUtils.cp_r(content, output_dir, preserve: true)
     end
     File.write(File.join(output_dir, "autoinst.xml"), profile)
-    FileUtils.chmod_R("a+rX", output_dir)
+    FileUtils.chmod(0600, File.join(output_dir, "autoinst.xml"))
   end
 
   def profile
