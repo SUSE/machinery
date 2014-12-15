@@ -19,7 +19,7 @@ module Machinery
   class Ui
     def self.internal_scope_list_to_string(scopes)
       list = Array(scopes)
-      list.map{ |e| e.tr("_", "-") }.join(",")
+      list.map { |e| e.tr("_", "-") }.join(", ")
     end
 
     def self.write_output_to_pager(output)
