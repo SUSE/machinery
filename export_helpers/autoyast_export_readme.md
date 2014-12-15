@@ -16,8 +16,7 @@ the installer via network, e.g. by running:
 You can then point the installer to the profile by specifying the "autoyast"
 option on the kernel command line:
 
-  autoyast2=http://192.168.121.1:8000/autoinst.xml
-
+  autoyast=http://192.168.121.1:8000/autoinst.xml netsetup=dhcp
 
 ## Changing permissions of the AutoYaST export
 
@@ -28,4 +27,4 @@ The installation via for example an HTTP server is only possible if all files
 and sub directories are readable by the HTTP server user.
 To make the export directory readable for all users run:
 
-  chmod a+rX /path/to/autoyast_export
+  chmod -R a+rX /path/to/autoyast_export
