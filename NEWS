@@ -4,7 +4,7 @@
 * Handle zypper locks gracefully (issue #415)
 * Prevent scopes from being inspected multiple times (issue #303)
 * Keep already extracted results after cancelling an inspection (issue #364)
-* Don't fail on validation errors, but report them as warnings (issue #391)
+* Don't fail on file validation errors, but report them as warnings (issue #391)
 
 ## Version 1.1.1 - Tue Dec 02 13:24:38 CET 2014 - thardeck@suse.de
 
