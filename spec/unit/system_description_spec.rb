@@ -342,4 +342,15 @@ describe SystemDescription do
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end
+
+  describe "#scope_file_store" do
+    initialize_system_description_factory_store
+
+    it "returns scope file store" do
+      description = create_test_description(store_on_disk: true)
+      file_store = description.scope_file_store("my_scope")
+      expect(file_store.store_name).to eq("my_scope")
+      expect(file_store.base_path).to eq(description.description_path)
+    end
+  end
 end

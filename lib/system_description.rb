@@ -196,6 +196,10 @@ class SystemDescription < Machinery::Object
     self[scope] && self[scope].is_extractable? && self[scope].extracted
   end
 
+  def scope_file_store(store_name)
+    ScopeFileStore.new(description_path, store_name)
+  end
+
   def missing_files(scope, file_list)
     file_list.map! { |file| File.join(file_store(scope), file) }
 
