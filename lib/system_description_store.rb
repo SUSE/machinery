@@ -49,17 +49,6 @@ class SystemDescriptionStore
     File.join(description_path(name), "index.html")
   end
 
-  def load_json(name)
-    SystemDescription.validate_name(name)
-    file_name = manifest_path(name)
-    unless File.exists?(file_name)
-      raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "A system description with the name #{name} was not found."
-      )
-    end
-    File.read(file_name)
-  end
-
   def list
     Dir["#{@base_path}/*"].
       select { |item| File.exists?(manifest_path(File.basename(item)))}.

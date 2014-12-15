@@ -52,19 +52,6 @@ describe SystemDescriptionStore do
     end
   end
 
-  describe "#load_json" do
-    before(:each) do
-      create_machinery_dir
-      @store = SystemDescriptionStore.new(test_base_path)
-    end
-
-    it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
-      expect {
-        SystemDescription.load("not_existing", @store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
-    end
-  end
-
   describe "#load" do
     before(:each) do
       create_machinery_dir

@@ -81,9 +81,9 @@ module SystemDescriptionFactory
     end
 
     if options[:json]
-      json_hash = SystemDescription.parse_json(name, store, options[:json])
-      SystemDescription.validate_json_hash(json_hash)
-      description = SystemDescription.from_json_hash(name, store, json_hash)
+      manifest = Manifest.new(name, options[:json])
+      manifest.validate
+      description = SystemDescription.from_hash(name, store, manifest.to_hash)
     else
       description = build_description(name, store, options)
     end
@@ -125,9 +125,9 @@ module SystemDescriptionFactory
 
   def build_description(name, store, options)
     json = create_test_description_json(options)
-    json_hash = SystemDescription.parse_json(name, store, json)
-    SystemDescription.validate_json_hash(json_hash)
-    description = SystemDescription.from_json_hash(name, store, json_hash)
+    manifest = Manifest.new(name, json)
+    manifest.validate
+    description = SystemDescription.from_hash(name, store, manifest.to_hash)
 
     options[:extracted_scopes].each do |extracted_scope|
       description[extracted_scope].extracted = true

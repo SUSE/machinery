@@ -103,8 +103,9 @@ describe Migration do
     end
 
     it "makes the hash and path available as instance variables in the migrations" do
+      manifest = Manifest.load("v2_description", store.manifest_path("v2_description"))
       validate_environment = ->(hash, path) {
-        expect(hash).to eq(JSON.parse(store.load_json("v2_description")))
+        expect(hash).to eq(manifest.to_hash)
         expect(path).to eq(store.description_path("v2_description"))
       }
 

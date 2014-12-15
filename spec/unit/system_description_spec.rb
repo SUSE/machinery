@@ -59,73 +59,16 @@ describe SystemDescription do
     expect(data.to_json.delete(' ')).to eq(@mix_struct_hash_descr.delete(' '))
   end
 
-  it "raises InvalidSystemDescription if json input does not start with a hash" do
-    class SystemDescriptionFooConfig < Machinery::Object; end
-    expect {
-      create_test_description(name: @name,
-        json: '[ "system-description-foo", "xxx" ]')
-    }.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
-  end
-
-  it "validates compatible descriptions" do
-    expect {
-      create_test_description(name: @name, json: <<-EOT)
-        {
-          "meta": {
-            "format_version": 2,
-            "os": "invalid"
-          }
-        }
-      EOT
-    }.to raise_error(Machinery::Errors::SystemDescriptionError)
-  end
-
-  it "doesn't validate incompatible descriptions" do
-    expect {
-      create_test_description(name: @name, json: <<-EOT)
-        {
-          "meta": {
-            "os": "invalid"
-          }
-        }
-      EOT
-    }.not_to raise_error
-  end
-
-  describe "json parser error handling" do
-    let(:path) { "spec/data/schema/invalid_json/" }
-
-    it "raises in case of a missing comma" do
-      expected = <<EOF
-The JSON data of the system description 'name' couldn't be parsed. The following error occured around line 13:
-
-unexpected token at '{
-        "name": "/boot/grub/e2fs_stage1_5",
-        "type": "file",
-        "user": "root"
-        "group": "root",
-        "size": 8608,
-        "mode": "644"
-      }
-EOF
-      expected.chomp!
+  describe ".from_hash" do
+    it "raises InvalidSystemDescription if json input does not start with a hash" do
+      class SystemDescriptionFooConfig < Machinery::Object; end
       expect {
-        create_test_description(name: @name,
-          json: File.read("#{path}/missing_comma.json"))
-      }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
-    end
-
-    it "raises in case of a missing opening bracket" do
-      expected = <<EOF
-The JSON data of the system description 'name' couldn't be parsed. The following error occured:
-
-An opening bracket, a comma or quotation is missing in one of the global scope definitions or in the meta section. Unlike issues with the elements of the scopes, our JSON parser isn't able to locate issues like these.
-EOF
-      expected.chomp!
-      expect {
-        create_test_description(name: @name,
-          json: File.read("#{path}/missing_opening_bracket.json"))
-      }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+        SystemDescription.from_hash(
+          @name,
+          SystemDescriptionMemoryStore.new,
+          JSON.parse('[ "system-description-foo", "xxx" ]')
+        )
+      }.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
     end
   end
 

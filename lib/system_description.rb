@@ -38,81 +38,14 @@ class SystemDescription < Machinery::Object
   attr_accessor :format_version
 
   class << self
-
-    def parse_json(name, store, json)
-      JSON.parse(json)
-    rescue JSON::ParserError => e
-      lines = e.message.split("\n")
-      error_pos = json.split("\n").length - lines.length + 2
-      block_end = lines.index { |l| l =~ / [\}\]],?$/ }
-
-      # remove needless json error information
-      lines[0].gsub!(/^\d+: (.*)$/, "\\1")
-      json_error = lines[0..block_end].join("\n")
-
-      if error_pos == 1
-        json_error = "An opening bracket, a comma or quotation is missing " \
-            "in one of the global scope definitions or in the meta section. " \
-            "Unlike issues with the elements of the scopes, our JSON parser " \
-            "isn't able to locate issues like these."
-        error_pos = nil
-      end
-
-      error = "The JSON data of the system description '#{name}' " \
-          "couldn't be parsed. The following error occured"
-      error += " around line #{error_pos}" if error_pos
-      error += " in file '#{store.manifest_path(name)}'" if store.persistent?
-      error += ":\n\n#{json_error}"
-
-      raise Machinery::Errors::SystemDescriptionError.new(error)
-    end
-
-    def validate_json_hash(json_hash)
-      return if !compatible_json?(json_hash)
-
-      SystemDescriptionValidator.new(self).validate_json(json_hash)
-    end
-
-    def from_json_hash(name, store, json_hash)
-      begin
-        description = new(name, store, create_scopes(json_hash))
-      rescue NameError
-        raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
-      end
-
-      json_format_version = json_hash["meta"]["format_version"] if json_hash["meta"]
-      description.format_version = json_format_version
-
-      description
-    end
-
-    def create_scopes(hash)
-      scopes = hash.map do |scope_name, scope_json|
-        next if scope_name == "meta"
-
-        scope_class = Machinery::ScopeMixin.class_for(scope_name)
-        scope_object = scope_class.from_json(scope_json)
-
-        # Set metadata
-        if hash["meta"] && hash["meta"][scope_name]
-          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
-        end
-
-        [scope_name, scope_object]
-      end.compact
-
-      Hash[scopes]
-    end
-
     # Load the system description with the given name
     #
     # If there are file validation errors the call fails with an exception
     def load!(name, store)
-      json = store.load_json(name)
-      json_hash = parse_json(name, store, json)
-      validate_json_hash(json_hash)
+      manifest = Manifest.load(name, store.manifest_path(name))
+      manifest.validate
 
-      description = from_json_hash(name, store, json_hash)
+      description = from_hash(name, store, manifest.to_hash)
       description.validate_compatibility
       description.validate_file_data
       description
@@ -123,11 +56,10 @@ class SystemDescription < Machinery::Object
     # If there are file validation errors these are put out as warnings but the
     # loading of the system description succeeds.
     def load(name, store)
-      json = store.load_json(name)
-      json_hash = parse_json(name, store, json)
-      validate_json_hash(json_hash)
+      manifest = Manifest.load(name, store.manifest_path(name))
+      manifest.validate
 
-      description = from_json_hash(name, store, json_hash)
+      description = from_hash(name, store, manifest.to_hash)
       description.validate_compatibility
       begin
         description.validate_file_data
@@ -154,12 +86,37 @@ class SystemDescription < Machinery::Object
       end
     end
 
+    def from_hash(name, store, hash)
+      begin
+        description = SystemDescription.new(name, store, create_scopes(hash))
+      rescue NameError
+        raise Machinery::Errors::SystemDescriptionIncompatible.new(name)
+      end
+
+      json_format_version = hash["meta"]["format_version"] if hash["meta"]
+      description.format_version = json_format_version
+
+      description
+    end
+
     private
 
-    def compatible_json?(json)
-      json.is_a?(Hash) &&
-        json["meta"].is_a?(Hash) &&
-        json["meta"]["format_version"] == CURRENT_FORMAT_VERSION
+    def create_scopes(hash)
+      scopes = hash.map do |scope_name, scope_json|
+        next if scope_name == "meta"
+
+        scope_class = Machinery::ScopeMixin.class_for(scope_name)
+        scope_object = scope_class.from_json(scope_json)
+
+        # Set metadata
+        if hash["meta"] && hash["meta"][scope_name]
+          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
+        end
+
+        [scope_name, scope_object]
+      end.compact
+
+      Hash[scopes]
     end
   end
 

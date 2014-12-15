@@ -66,7 +66,8 @@ class Migration
     def migrate_description(store, description_name)
       load_migrations
 
-      hash = JSON.parse(store.load_json(description_name))
+      manifest = Manifest.load(description_name, store.manifest_path(description_name))
+      hash = manifest.to_hash
       path = store.description_path(description_name)
 
       current_version = hash["meta"]["format_version"]
