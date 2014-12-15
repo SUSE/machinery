@@ -58,12 +58,18 @@ module SystemDescriptionFactory
   #   from it. Otherwise an empty description is created.
   # +scopes+: The list of scopes to include in the generated system description
   # +extracted_scopes+: The list of extractable scopes that should be extracted.
+  # +modified+: Modified date of the system description scopes.
+  # +hostname+: Hostname of the inspected host.
+  # +add_scope_meta+: Add meta data for each scope if true.
   def create_test_description(options = {})
     options = {
         name: "description",
         store_on_disk: false,
         scopes: [],
-        extracted_scopes: []
+        extracted_scopes: [],
+        modified: DateTime.now,
+        hostname: "example.com",
+        add_scope_meta: true
     }.merge(options)
 
     name  = options[:name] || "description"
@@ -88,7 +94,10 @@ module SystemDescriptionFactory
   def create_test_description_json(options = {})
     options = {
       scopes: [],
-      extracted_scopes: []
+      extracted_scopes: [],
+      modified: DateTime.now,
+      hostname: "example.com",
+      add_scope_meta: true
     }.merge(options)
 
     json_objects = []
@@ -98,13 +107,15 @@ module SystemDescriptionFactory
 
     (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
       json_objects << EXAMPLE_SCOPES[scope]
-      meta[scope] = {
-        modified: DateTime.now,
-        hostname: "example.com"
-      }
+      if options[:add_scope_meta]
+        meta[scope] = {
+          modified: options[:modified],
+          hostname: options[:hostname]
+        }
+      end
     end
 
-    json_objects << "\"meta\": #{meta.to_json}"
+    json_objects << "\"meta\": #{JSON.pretty_generate(meta)}"
     "{\n" + json_objects.join(",\n") + "\n}"
   end
 
@@ -140,7 +151,7 @@ module SystemDescriptionFactory
 
   EXAMPLE_SCOPES = {}
 
-  EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF
+  EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
       "extracted": false,
       "files": [
@@ -159,7 +170,7 @@ module SystemDescriptionFactory
       ]
     }
   EOF
-  EXAMPLE_SCOPES["config_files"] = <<-EOF
+  EXAMPLE_SCOPES["config_files"] = <<-EOF.chomp
     "config_files": {
       "extracted": false,
       "files": [
@@ -176,7 +187,7 @@ module SystemDescriptionFactory
       ]
     }
   EOF
-  EXAMPLE_SCOPES["groups"] = <<-EOF
+  EXAMPLE_SCOPES["groups"] = <<-EOF.chomp
     "groups": [
       {
         "name": "audio",
@@ -189,14 +200,14 @@ module SystemDescriptionFactory
       }
     ]
   EOF
-  EXAMPLE_SCOPES["os"] = <<-EOF
+  EXAMPLE_SCOPES["os"] = <<-EOF.chomp
     "os": {
       "name": "openSUSE 13.1 (Bottle)",
       "version": "13.1 (Bottle)",
       "architecture": "x86_64"
     }
   EOF
-  EXAMPLE_SCOPES["packages"] = <<-EOF
+  EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
     "packages": [
       {
         "name": "bash",
@@ -208,7 +219,7 @@ module SystemDescriptionFactory
       }
     ]
   EOF
-  EXAMPLE_SCOPES["patterns"] = <<-EOF
+  EXAMPLE_SCOPES["patterns"] = <<-EOF.chomp
     "patterns": [
       {
         "name": "base",
@@ -217,7 +228,7 @@ module SystemDescriptionFactory
       }
     ]
   EOF
-  EXAMPLE_SCOPES["repositories"] = <<-EOF
+  EXAMPLE_SCOPES["repositories"] = <<-EOF.chomp
     "repositories": [
       {
         "alias": "openSUSE_13.1_OSS",
@@ -231,7 +242,7 @@ module SystemDescriptionFactory
       }
     ]
   EOF
-  EXAMPLE_SCOPES["users"] = <<-EOF
+  EXAMPLE_SCOPES["users"] = <<-EOF.chomp
     "users": [
       {
         "name": "bin",
@@ -247,7 +258,7 @@ module SystemDescriptionFactory
     ]
   EOF
 
-  EXAMPLE_SCOPES["users_with_passwords"] = <<-EOF
+  EXAMPLE_SCOPES["users_with_passwords"] = <<-EOF.chomp
     "users": [
       {
         "name": "root",
@@ -278,7 +289,7 @@ module SystemDescriptionFactory
       }
     ]
   EOF
-  EXAMPLE_SCOPES["services"] = <<-EOF
+  EXAMPLE_SCOPES["services"] = <<-EOF.chomp
     "services": {
       "init_system": "systemd",
       "services": [
@@ -305,7 +316,7 @@ module SystemDescriptionFactory
       ]
     }
   EOF
-  EXAMPLE_SCOPES["services_sysvinit"] = <<-EOF
+  EXAMPLE_SCOPES["services_sysvinit"] = <<-EOF.chomp
     "services": {
       "init_system": "sysvinit",
       "services": [
@@ -320,7 +331,7 @@ module SystemDescriptionFactory
       ]
     }
   EOF
-  EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF
+  EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
       "extracted": true,
       "files": [
