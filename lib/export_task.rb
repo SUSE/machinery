@@ -32,7 +32,7 @@ class ExportTask
       end
     end
 
-    FileUtils.mkdir_p(output_dir) unless Dir.exists?(output_dir)
+    FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
 
     @exporter.write(output_dir)
   end
