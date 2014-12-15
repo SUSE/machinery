@@ -93,6 +93,20 @@ class SystemDescriptionStore
     FileUtils.cp_r(description_path(from), description_path(to))
   end
 
+  def backup(description_name)
+    SystemDescription.validate_name(description_name)
+    if !list.include?(description_name)
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
+        "System description \"#{description_name}\" does not exist."
+      )
+    end
+
+    backup_name = get_backup_name(description_name)
+
+    FileUtils.cp_r(description_path(description_name), description_path(backup_name))
+    backup_name
+  end
+
   def initialize_file_store(description_name, store_name)
     dir = File.join(description_path(description_name), store_name)
     create_dir(dir, new_dir_mode(description_name))
@@ -147,5 +161,17 @@ class SystemDescriptionStore
     unless Dir.exists?(dir)
       FileUtils.mkdir_p(dir, :mode => mode)
     end
+  end
+
+  def get_backup_name(description_name)
+    backup_name = "#{description_name}.backup"
+    number = 1
+
+    while list.include?(backup_name)
+      backup_name = "#{description_name}.backup.#{number}"
+      number += 1
+    end
+
+    backup_name
   end
 end
