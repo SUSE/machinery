@@ -331,7 +331,11 @@ EOF
   describe "#description_path" do
     it "returns the correct path" do
       store = SystemDescriptionStore.new
-      description = SystemDescription.from_json("foo", store, @description)
+      description = create_test_description(
+        name: "foo",
+        store: store,
+        json: @description
+      )
 
       expect(description.description_path).to eq(store.base_path + "/foo")
     end
@@ -362,7 +366,7 @@ EOF
 
     it "saves a SystemDescription" do
       store = SystemDescriptionStore.new(test_base_path)
-      SystemDescription.from_json(test_name, store, test_manifest).save
+      create_test_description(name: test_name, json: test_manifest, store: store).save
       descr_dir = store.description_path(test_name)
       manifest = store.manifest_path(test_name)
       content = File.read(manifest)
@@ -374,26 +378,24 @@ EOF
 
     it "keeps permissions for existing files during save" do
       store = SystemDescriptionStore.new(test_base_path)
-      SystemDescription.from_json(test_name, store, test_manifest).save
+      create_test_description(name: test_name, json: test_manifest, store: store).save
 
       descr_dir = store.description_path(test_name)
       File.chmod(0755, descr_dir)
       manifest = store.manifest_path(test_name)
       File.chmod(0644, manifest)
 
-      store = SystemDescriptionStore.new(test_base_path)
-      SystemDescription.from_json(test_name, store, test_manifest).save
+      create_test_description(json: test_manifest, store: store).save
       expect(File.stat(descr_dir).mode & 0777).to eq(0755)
       expect(File.stat(manifest).mode & 0777).to eq(0644)
     end
 
     it "raises Errors::SystemDescriptionInvalid if the system description name is invalid" do
-      store = SystemDescriptionStore.new
       expect {
-        SystemDescription.from_json("invalid/slash", store, test_manifest).save
+        create_test_description(name: "invalid/slash", json: test_manifest).save
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
       expect {
-        SystemDescription.from_json(".invalid_dot", store, test_manifest).save
+        create_test_description(name: ".invalid_dot", json: test_manifest).save
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end

@@ -86,12 +86,6 @@ class SystemDescription < Machinery::Object
       description
     end
 
-    def from_json(name, store, json)
-      json_hash = parse_json(name, store, json)
-      validate_json_hash(json_hash)
-      from_json_hash(name, store, json_hash)
-    end
-
     def create_scopes(hash)
       scopes = hash.map do |scope_name, scope_json|
         next if scope_name == "meta"
@@ -115,7 +109,10 @@ class SystemDescription < Machinery::Object
     # If there are file validation errors the call fails with an exception
     def load!(name, store)
       json = store.load_json(name)
-      description = SystemDescription.from_json(name, store, json)
+      json_hash = parse_json(name, store, json)
+      validate_json_hash(json_hash)
+
+      description = from_json_hash(name, store, json_hash)
       description.validate_compatibility
       description.validate_file_data
       description
@@ -127,7 +124,10 @@ class SystemDescription < Machinery::Object
     # loading of the system description succeeds.
     def load(name, store)
       json = store.load_json(name)
-      description = SystemDescription.from_json(name, store, json)
+      json_hash = parse_json(name, store, json)
+      validate_json_hash(json_hash)
+
+      description = from_json_hash(name, store, json_hash)
       description.validate_compatibility
       begin
         description.validate_file_data
