@@ -173,6 +173,8 @@ class Autoyast
   end
 
   def apply_services(xml)
+    return if !@system_description.services
+
     xml.send("services-manager") do
       xml.services("config:type" => "list") do
         @system_description.services.services.each do |service|
