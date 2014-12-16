@@ -19,4 +19,54 @@
 # of a system description which is used to hold files belonging to a specific
 # scope.
 class ScopeFileStore
+  attr_accessor :base_path, :store_name
+
+  def initialize(base_path, store_name)
+    @base_path = base_path
+    @store_name = store_name
+  end
+
+  def create
+    dir = File.join(base_path, store_name)
+    create_dir(dir, new_dir_mode)
+  end
+
+  def path
+    dir = File.join(base_path, store_name)
+    Dir.exists?(dir) ? dir : nil
+  end
+
+  def remove
+    FileUtils.rm_rf(File.join(base_path, store_name))
+  end
+
+  def rename(new_store_name)
+    FileUtils.mv(path, File.join(base_path, new_store_name))
+    @store_name = new_store_name
+  end
+
+  def create_sub_directory(sub_dir)
+    dir = File.join(base_path, store_name, sub_dir)
+    create_dir(dir, new_dir_mode)
+  end
+
+  def list_content
+    files = Dir.glob(File.join(path, "**/{*,.*}"))
+    # filter parent directories because they should not be listed separately
+    files.reject { |f| files.index { |e| e =~ /^#{f}\/.+/ } }
+  end
+
+  def new_dir_mode
+    mode = 0700
+    if Dir.exists?(base_path)
+      mode = File.stat(base_path).mode & 0777
+    end
+    mode
+  end
+
+  def create_dir(dir, mode = 0700)
+    unless Dir.exists?(dir)
+      FileUtils.mkdir_p(dir, mode: mode)
+    end
+  end
 end

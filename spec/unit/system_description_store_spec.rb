@@ -341,21 +341,6 @@ describe SystemDescriptionStore do
       end
     end
 
-    describe "#new_dir_mode" do
-      it "returns the mode of the system description directory" do
-        expect(store.new_dir_mode(test_name)).to eq(0700)
-
-        File.chmod(0755, store.description_path(test_name))
-        expect(store.new_dir_mode(test_name)).to eq(0755)
-      end
-
-      it "returns the default of 0700 if the description directory is missing" do
-        store.remove(test_name)
-        expect(Dir.exists?(store.description_path(test_name))).to be(false)
-        expect(store.new_dir_mode(test_name)).to eq(0700)
-      end
-    end
-
     describe "#list_file_store_content" do
       it "returns a list of files and dirs in the file store" do
         store.initialize_file_store(test_name, file_store_name)
