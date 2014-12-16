@@ -275,8 +275,9 @@ describe UnmanagedFilesInspector do
       expect_cat_mounts(system, add_files)
       expect_find_commands(system, add_files)
       if(extract)
-        description.initialize_file_store("unmanaged_files.tmp")
-        cfdir = description.file_store("unmanaged_files.tmp")
+        file_store = description.scope_file_store("unmanaged_files.tmp")
+        file_store.create
+        cfdir = file_store.path
         dlist = expected_data.files.select{ |s| s.type=="dir" }
         dlist.map!{ |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)
@@ -366,7 +367,7 @@ describe UnmanagedFilesInspector do
 
       expect(description["unmanaged_files"]).to eq(expected_data_meta)
       expect(summary).to include("Extracted #{expected_data.files.size} unmanaged files and trees")
-      cfdir = description.file_store("unmanaged_files")
+      cfdir = description.scope_file_store("unmanaged_files").path
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end
 
