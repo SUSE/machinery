@@ -18,9 +18,11 @@
 require_relative "spec_helper"
 
 describe AnalyzeConfigFileDiffsTask do
+  initialize_system_description_factory_store
+
   let(:store) { SystemDescriptionStore.new }
   let(:description) {
-    create_test_description(json: <<-EOF, store: store)
+    description = create_test_description(json: <<-EOF, store_on_disk: true)
       {
         "repositories": [
           {
@@ -86,20 +88,21 @@ describe AnalyzeConfigFileDiffsTask do
         }
       }
     EOF
+    FileUtils.mkdir_p(File.join(description.description_path, "config_files"))
+
+    description
   }
   subject {
     AnalyzeConfigFileDiffsTask.new
   }
 
   before(:each) do
-    allow(store).to receive(:file_store).and_return("/foo")
     allow_any_instance_of(Zypper).to receive(:add_repo)
     allow_any_instance_of(Zypper).to receive(:remove_repo)
     allow_any_instance_of(Zypper).to receive(:refresh)
   end
 
   describe "#analyze" do
-    include FakeFS::SpecHelpers
     silence_machinery_output
 
     it "analyzes all files with changes" do
@@ -113,8 +116,12 @@ describe AnalyzeConfigFileDiffsTask do
         and_return(double(diff: "some login diff"))
 
       subject.analyze(description)
-      expect(Dir.glob("/foo/**/*.diff").size).to eq(3)
-      expect(File.read("/foo/etc/pam.d/login.diff")).to eq("some login diff")
+      diff_count = Dir.glob(File.join(description.description_path, "/**/*.diff")).size
+      expect(diff_count).to eq(3)
+      example_content = File.read(
+        File.join(description.description_path, "config-file-diffs/etc/pam.d/login.diff")
+      )
+      expect(example_content).to eq("some login diff")
     end
 
     it "skips packages which couldn't be downloaded" do
