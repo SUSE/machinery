@@ -66,7 +66,7 @@ class ScopeFileStore
 
   def create_dir(dir, mode = 0700)
     unless Dir.exists?(dir)
-      FileUtils.mkdir_p(dir, :mode => mode)
+      FileUtils.mkdir_p(dir, mode: mode)
     end
   end
 end
