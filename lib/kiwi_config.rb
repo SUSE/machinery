@@ -94,7 +94,7 @@ class KiwiConfig < Exporter
 
   def inject_extracted_files(output_location)
     ["config_files", "changed_managed_files"].each do |dir|
-      path = @system_description.file_store(dir)
+      path = @system_description.scope_file_store(dir).path
       if path
         output_root_path = File.join(output_location, "root")
         FileUtils.mkdir_p(output_root_path)
@@ -102,7 +102,8 @@ class KiwiConfig < Exporter
       end
     end
 
-    unmanaged_files_path = @system_description.file_store("unmanaged_files")
+    unmanaged_files_path = @system_description
+      .scope_file_store("unmanaged_files").path
     if unmanaged_files_path
       filter = "unmanaged_files_build_excludes"
       destination = File.join(output_location, "root", "tmp")
@@ -124,7 +125,8 @@ class KiwiConfig < Exporter
     missing_scopes = []
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
 
-      if @system_description[scope] && !@system_description.file_store(scope)
+      if @system_description[scope] &&
+         !@system_description.scope_file_store(scope).path
         missing_scopes << scope
       end
     end
