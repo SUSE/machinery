@@ -36,7 +36,7 @@ describe ScopeFileStore do
     File.join(store.description_path(test_name), file_store_name)
   }
 
-  describe "#initialize_file_store" do
+  describe "#create" do
     it "creates a directory in the description directory" do
       expect(Dir.exists?(@file_store_path)).to be(false)
       @store.create
@@ -55,7 +55,7 @@ describe ScopeFileStore do
     end
   end
 
-  describe "#remove_file_store" do
+  describe "#remove" do
     it "removes the file store dir" do
       @store.create
       expect(Dir.exists?(@file_store_path)).to be(true)
@@ -72,7 +72,7 @@ describe ScopeFileStore do
     end
   end
 
-  describe "#rename_file_store" do
+  describe "#rename" do
     it "renames the file store dir" do
       file_store_name_new = "foo"
       file_store_path_new =
@@ -88,7 +88,7 @@ describe ScopeFileStore do
     end
   end
 
-  describe "#file_store" do
+  describe "#path" do
     it "returns the path to the file store dir" do
       @store.create
       expect(@store.path).to eq(@file_store_path)
@@ -100,7 +100,7 @@ describe ScopeFileStore do
     end
   end
 
-  describe "#create_file_store_sub_dir" do
+  describe "#create_sub_directory" do
     let(:sub_dir) { "foo/bar" }
     let(:sub_dir_path) { File.join(@file_store_path, sub_dir) }
 
@@ -140,7 +140,7 @@ describe ScopeFileStore do
     end
   end
 
-  describe "#list_file_store_content" do
+  describe "#list_content" do
     it "returns a list of files and dirs in the file store" do
       @store.create
       @store.create_sub_directory("foo/bar")
