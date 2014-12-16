@@ -132,16 +132,17 @@ module SystemDescriptionFactory
     options[:extracted_scopes].each do |extracted_scope|
       description[extracted_scope].extracted = true
       if options[:store_on_disk]
-        description.initialize_file_store(extracted_scope)
+        file_store = description.scope_file_store(extracted_scope)
+        file_store.create
         if extracted_scope == "unmanaged_files"
-          FileUtils.touch(File.join(description.file_store("unmanaged_files"), "files.tgz"))
-          FileUtils.mkdir_p(File.join(description.file_store("unmanaged_files"), "etc"))
+          FileUtils.touch(File.join(file_store.path, "files.tgz"))
+          FileUtils.mkdir_p(File.join(file_store.path, "etc"))
           FileUtils.touch(
-            File.join(description.file_store("unmanaged_files"), "etc", "tarball with spaces.tgz")
+            File.join(file_store.path, "etc", "tarball with spaces.tgz")
           )
         else
           description[extracted_scope].files.each do |file|
-            file_name = File.join(description.file_store(extracted_scope), file.name)
+            file_name = File.join(file_store.path, file.name)
             FileUtils.mkdir_p(File.dirname(file_name))
             File.write(file_name, "Stub data for #{file.name}.")
           end
