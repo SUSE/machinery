@@ -22,15 +22,15 @@ class ChangedManagedFilesInspector < Inspector
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     @system = system
-    store_name = "changed_managed_files"
+    file_store = description.scope_file_store("changed_managed_files")
 
     result = changed_files
 
-    description.remove_file_store(store_name)
+    file_store.remove
     if options[:extract_changed_managed_files]
-      description.initialize_file_store(store_name)
+      file_store.create
       existing_files = changed_files.reject { |f| f.changes.nil? || f.changes.include?("deleted") }
-      system.retrieve_files(existing_files.map(&:name), description.file_store(store_name))
+      system.retrieve_files(existing_files.map(&:name), file_store.path)
     end
 
     summary = "#{options[:extract_changed_managed_files] ? "Extracted" : "Found"} #{result.count} changed files."
