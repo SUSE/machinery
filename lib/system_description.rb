@@ -177,7 +177,7 @@ class SystemDescription < Machinery::Object
     meta = {}
     meta["format_version"] = self.format_version if self.format_version
 
-    attributes.each do |key, value|
+    attributes.keys.each do |key|
       meta[key] = self[key].meta.as_json if self[key].meta
     end
 
@@ -200,16 +200,11 @@ class SystemDescription < Machinery::Object
   end
 
   def scopes
-    scopes = attributes.map {
-      |key, value| key.to_s
-    }.sort
-    scopes
+    attributes.keys.map(&:to_s).sort
   end
 
   def assert_scopes(*scopes)
-    missing = scopes.reject do |e|
-      self.send(e) && !self.send(e).empty?
-    end
+    missing = scopes.select { |scope| !self[scope] || self[scope].empty? }
 
     unless missing.empty?
       raise Machinery::Errors::SystemDescriptionError.new(
@@ -238,9 +233,7 @@ class SystemDescription < Machinery::Object
   def missing_files(scope, file_list)
     file_list.map! { |file| File.join(file_store(scope), file) }
 
-    file_list.select do |file|
-      !File.exists?(file)
-    end
+    file_list.select { |file| !File.exists?(file) }
   end
 
   def additional_files(scope, file_list)
