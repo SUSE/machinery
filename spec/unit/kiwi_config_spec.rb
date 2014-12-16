@@ -496,7 +496,7 @@ describe KiwiConfig do
       Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
     )
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
-      system_description_with_content.initialize_file_store(scope)
+      system_description_with_content.scope_file_store(scope).create
     end
   end
 
@@ -661,7 +661,7 @@ describe KiwiConfig do
 
     it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
       scope = "config_files"
-      system_description_with_modified_files.remove_file_store(scope)
+      system_description_with_modified_files.scope_file_store(scope).remove
       expect {
         KiwiConfig.new(system_description_with_modified_files)
       }.to raise_error(Machinery::Errors::SystemDescriptionError,
@@ -670,7 +670,7 @@ describe KiwiConfig do
 
     it "throws an error if changed managed files are part of the system description but don't exist on the filesystem" do
       scope = "changed_managed_files"
-      system_description_with_modified_files.remove_file_store(scope)
+      system_description_with_modified_files.scope_file_store(scope).remove
       expect {
         KiwiConfig.new(system_description_with_modified_files)
       }.to raise_error(Machinery::Errors::SystemDescriptionError,
@@ -679,7 +679,7 @@ describe KiwiConfig do
 
     it "throws an error if unmanaged files are part of the system description but don't exist on the filesystem" do
       scope = "unmanaged_files"
-      system_description_with_modified_files.remove_file_store(scope)
+      system_description_with_modified_files.scope_file_store(scope).remove
       expect {
         KiwiConfig.new(system_description_with_modified_files)
       }.to raise_error(Machinery::Errors::SystemDescriptionError,
