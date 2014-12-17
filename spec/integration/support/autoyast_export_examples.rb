@@ -16,8 +16,6 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "autoyast export" do
-  let(:autoyast_export_dir) { "/tmp/autoyast-export" }
-
   describe "export-autoyast" do
     it "creates an autoyast profile" do
       @machinery.inject_directory(
@@ -29,13 +27,13 @@ shared_examples "autoyast export" do
 
       measure("export to autoyast") do
         @machinery.run_command(
-          "machinery export-autoyast jeos --autoyast-dir=#{autoyast_export_dir}",
+          "machinery export-autoyast jeos --autoyast-dir=/tmp",
           as: "vagrant"
         )
       end
 
       file_list = @machinery.run_command(
-        "ls #{autoyast_export_dir}",
+        "ls /tmp/jeos-autoyast",
         stdout: :capture,
         as: "vagrant"
       ).split("\n")
@@ -45,7 +43,7 @@ shared_examples "autoyast export" do
     it "generates a proper profile" do
       expected = File.read(File.join(Machinery::ROOT, "spec", "data", "autoyast", "jeos.xml"))
       actual = @machinery.run_command(
-        "cat #{autoyast_export_dir}/autoinst.xml",
+        "cat /tmp/jeos-autoyast/autoinst.xml",
         stdout: :capture,
         as: "vagrant"
       )

@@ -27,13 +27,13 @@ shared_examples "kiwi export" do
 
       measure("export to kiwi") do
         @machinery.run_command(
-          "machinery export-kiwi jeos --kiwi-dir=/tmp/jeos",
+          "machinery export-kiwi jeos --kiwi-dir=/tmp",
           as: "vagrant"
         )
       end
 
       file_list = @machinery.run_command(
-        "ls /tmp/jeos",
+        "ls /tmp/jeos-kiwi",
         stdout: :capture,
         as: "vagrant"
       ).split("\n")
@@ -43,7 +43,7 @@ shared_examples "kiwi export" do
     it "generates a proper config.sh" do
       expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "config.sh"))
       actual = @machinery.run_command(
-        "cat /tmp/jeos/config.sh",
+        "cat /tmp/jeos-kiwi/config.sh",
         stdout: :capture,
         as: "vagrant"
       )
@@ -53,7 +53,7 @@ shared_examples "kiwi export" do
     it "generates a proper config.xml" do
       expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "config.xml"))
       actual = @machinery.run_command(
-        "cat /tmp/jeos/config.xml",
+        "cat /tmp/jeos-kiwi/config.xml",
         stdout: :capture,
         as: "vagrant"
       )
@@ -64,7 +64,7 @@ shared_examples "kiwi export" do
     it "generates a proper root tree" do
       expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "root"))
       actual = @machinery.run_command(
-        "ls -lR --time-style=+ /tmp/jeos/root",
+        "ls -lR --time-style=+ /tmp/jeos-kiwi/root",
         stdout: :capture,
         as: "vagrant"
       )

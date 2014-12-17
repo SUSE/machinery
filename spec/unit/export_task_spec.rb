@@ -20,22 +20,24 @@ require_relative "spec_helper"
 describe ExportTask do
   include FakeFS::SpecHelpers
 
-  let(:exporter) { double }
+  let(:exporter) { double(export_name: "name-type") }
   subject { ExportTask.new(exporter) }
 
   describe "#export" do
     it "writes the export" do
-      expect(exporter).to receive(:write).with("/bar")
+      expect(exporter).to receive(:write).with("/bar/name-type")
+      expect(Machinery::Ui).to receive(:puts).with("Exported to '/bar/name-type'.")
 
       subject.export("/bar", {})
     end
 
     describe "when the output directory already exists" do
       let(:output_dir) { "/foo" }
-      let(:content) { "/foo/bar" }
+      let(:export_dir) { "/foo/name-type" }
+      let(:content) { "/foo/name-type/bar" }
 
       before(:each) do
-        FileUtils.mkdir(output_dir)
+        FileUtils.mkdir_p(export_dir)
         FileUtils.touch(content)
       end
 
@@ -46,7 +48,8 @@ describe ExportTask do
       end
 
       it "overwrites existing directory when --force is given" do
-        expect(exporter).to receive(:write).with("/foo")
+        expect(exporter).to receive(:write).with(export_dir)
+        expect(Machinery::Ui).to receive(:puts).with("Exported to '#{export_dir}'.")
         expect {
           subject.export(output_dir, force: true)
         }.to_not raise_error

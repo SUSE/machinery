@@ -21,6 +21,7 @@ class ExportTask
   end
 
   def export(output_dir, options)
+    output_dir = File.join(output_dir, @exporter.export_name)
     if File.exists?(output_dir)
       if options[:force]
         FileUtils.rm_r(output_dir)
@@ -35,5 +36,6 @@ class ExportTask
     FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
 
     @exporter.write(output_dir)
+    Machinery::Ui.puts "Exported to '#{output_dir}'."
   end
 end
