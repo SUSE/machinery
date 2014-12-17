@@ -85,7 +85,10 @@
     </pre-scripts>
     <chroot-scripts config:type="list">
       <script>
-        <source><![CDATA[mkdir -p '/mnt/etc'
+        <source><![CDATA[zypper -n mr --priority=99 'openSUSE_13.1_OSS' --name='openSUSE_13.1_OSS' --refresh
+zypper -n ar --name='openSUSE_13.1_NON_OSS' --type='yast2' --disable 'http://download.opensuse.org/distribution/13.1/repo/non-oss/' 'openSUSE_13.1_NON_OSS_ALIAS'
+zypper -n mr --priority=99 'openSUSE_13.1_NON_OSS_ALIAS' --name='openSUSE_13.1_NON_OSS' --no-refresh
+mkdir -p '/mnt/etc'
 curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20tab"
 chown root:root '/mnt/etc/cron tab'
 chmod 644 '/mnt/etc/cron tab'

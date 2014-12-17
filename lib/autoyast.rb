@@ -101,12 +101,34 @@ class Autoyast
     xml.send("add-on") do
       xml.add_on_products("config:type" => "list") do
         @system_description.repositories.each do |repository|
-          xml.listentry do
-            xml.media_url repository.url
-            xml.name repository.alias
+          if repository.enabled
+            xml.listentry do
+              xml.media_url repository.url
+              xml.name repository.alias
+            end
           end
         end
       end
+    end
+
+    @system_description.repositories.each do |repository|
+      # Disabled repositories can't be added by AutoYaST so we add them manually
+      if !repository.enabled
+        zypper_ar = "zypper -n ar --name='#{repository.name}'"
+        zypper_ar << " --type='#{repository.type}'" if repository.type
+        zypper_ar << " --disable" if !repository.enabled
+        zypper_ar << " '#{repository.url}' '#{repository.alias}'"
+        @chroot_scripts << zypper_ar.strip
+      end
+
+      zypper_mr = "zypper -n mr --priority=#{repository.priority} '#{repository.alias}'"
+      zypper_mr <<  " --name='#{repository.name}'"
+      if repository.autorefresh
+        zypper_mr << " --refresh"
+      else
+        zypper_mr << " --no-refresh"
+      end
+      @chroot_scripts << zypper_mr.strip
     end
   end
 
