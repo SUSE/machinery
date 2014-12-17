@@ -107,4 +107,12 @@ describe Autoyast do
       end
     end
   end
+
+  describe "#export_name" do
+    it "returns the export name" do
+      autoyast = Autoyast.new(description)
+
+      expect(autoyast.export_name).to eq("description-autoyast")
+    end
+  end
 end
