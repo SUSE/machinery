@@ -49,11 +49,17 @@ EOF
     end
 
     it "raises in case of a missing opening bracket" do
-      path = File.join(Machinery::ROOT, "spec/data/schema/invalid_json//missing_opening_bracket.json")
+      path = File.join(
+        Machinery::ROOT,
+        "spec/data/schema/invalid_json/missing_opening_bracket.json"
+      )
       expected = <<EOF
-The JSON data of the system description 'name' couldn't be parsed. The following error occured in file '#{path}':
+The JSON data of the system description 'name' couldn't be parsed. The following error occured \
+in file '#{path}':
 
-An opening bracket, a comma or quotation is missing in one of the global scope definitions or in the meta section. Unlike issues with the elements of the scopes, our JSON parser isn't able to locate issues like these.
+An opening bracket, a comma or quotation is missing in one of the global scope definitions or \
+in the meta section. Unlike issues with the elements of the scopes, our JSON parser isn't able \
+to locate issues like these.
 EOF
       expected.chomp!
       expect {
