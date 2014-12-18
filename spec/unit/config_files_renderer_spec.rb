@@ -18,8 +18,10 @@
 require_relative "spec_helper"
 
 describe ConfigFilesRenderer do
+  initialize_system_description_factory_store
+
   let(:system_description) {
-    create_test_description(json: <<-EOF)
+    create_test_description(json: <<-EOF, store_on_disk: true)
     {
       "config_files": {
         "extracted": true,
@@ -57,8 +59,6 @@ describe ConfigFilesRenderer do
   subject { ConfigFilesRenderer.new }
 
   describe "#render" do
-    include FakeFS::SpecHelpers
-
     it "prints a list of config files" do
       output = subject.render(system_description)
 
@@ -74,53 +74,51 @@ describe ConfigFilesRenderer do
       expect(output).to include("Files extracted: yes")
     end
 
-    describe "with the --show-diff option" do
-      include FakeFS::SpecHelpers
-
-      before(:each) do
-        allow(SystemDescriptionStore).to receive(:new).
-          and_return(double(file_store: "/tmp"))
-        FileUtils.mkdir_p("/tmp/etc/postfix")
-        File.write("/tmp/etc/postfix/main.cf.diff", "main.cf.diff")
+    context "with the --show-diff option" do
+      context "when the diffs were not generated yet" do
+        it "does not try to show a diff when the diffs were not generated yet" do
+          expect {
+            subject.render(system_description, show_diffs: true)
+          }.to raise_error(Machinery::Errors::SystemDescriptionError)
+        end
       end
 
-      it "shows the diffs if the '--show-diff' option is set" do
-        output = subject.render(system_description, show_diffs: true)
-
-        expect(output).to include("Diff:\n    main.cf.diff\n")
-      end
-
-      it "shows a message when a diff file was not found" do
-        File.delete "/tmp/etc/postfix/main.cf.diff"
-        expect(Machinery::Ui).to receive(:warn) do |s|
-          s.include?("Diff for /etc/postfix/main.cf was not found")
+      context "when the diffs were generated" do
+        before(:each) do
+          @diffs_dir = File.join(system_description.description_path, "config-file-diffs")
+          FileUtils.mkdir_p(File.join(@diffs_dir, "/etc/postfix"))
+          File.write(File.join(@diffs_dir, "/etc/postfix/main.cf.diff"), "main.cf.diff")
         end
 
-        subject.render(system_description, show_diffs: true)
-      end
+        it "shows the diffs if the '--show-diff' option is set" do
+          output = subject.render(system_description, show_diffs: true)
 
-      it "does not try to show a diff when the md5 did not change" do
-        system_description["config_files"].each do |config_file|
-          config_file.changes = ["deleted"]
+          expect(output).to include("Diff:\n    main.cf.diff\n")
         end
-        subject.render(system_description, show_diffs: true)
-        expect(subject).to_not receive(:render_diff_file)
-      end
 
-      it "does not try to show a diff when the diffs were not generated yet" do
-        expect(SystemDescriptionStore).to receive(:new).
-          and_return(double(file_store: nil))
+        it "shows a message when a diff file was not found" do
+          File.delete File.join(@diffs_dir, "/etc/postfix/main.cf.diff")
+          expect(Machinery::Ui).to receive(:warn) do |s|
+            s.include?("Diff for /etc/postfix/main.cf was not found")
+          end
 
-        expect {
           subject.render(system_description, show_diffs: true)
-        }.to raise_error(Machinery::Errors::SystemDescriptionError)
-      end
+        end
 
-      it "shows the package-name and version" do
-        output = subject.render(system_description)
+        it "does not try to show a diff when the md5 did not change" do
+          system_description["config_files"].each do |config_file|
+            config_file.changes = ["deleted"]
+          end
+          subject.render(system_description, show_diffs: true)
+          expect(subject).to_not receive(:render_diff_file)
+        end
 
-        expect(output).to include("/etc/default/grub (grub2-2.00, mode)")
-        expect(output).to include("/etc/postfix/main.cf (postfix-2.9.6, md5)")
+        it "shows the package-name and version" do
+          output = subject.render(system_description)
+
+          expect(output).to include("/etc/default/grub (grub2-2.00, mode)")
+          expect(output).to include("/etc/postfix/main.cf (postfix-2.9.6, md5)")
+        end
       end
     end
   end

@@ -19,9 +19,8 @@ class ConfigFilesRenderer < Renderer
   def do_render
     return unless @system_description["config_files"]
 
-    store = SystemDescriptionStore.new
     if @system_description.name
-      diffs_dir = store.file_store(@system_description.name, "config-file-diffs")
+      diffs_dir = @system_description.file_store("config-file-diffs")
     end
 
     if !diffs_dir && @options[:show_diffs]
