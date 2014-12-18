@@ -15,12 +15,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class KiwiConfig
+class KiwiConfig < Exporter
   attr_accessor :xml, :sh
 
   def initialize(system_description, options = {})
     @system_description = system_description
-    @name = system_description.name
     @options = options
 
     @system_description.assert_scopes(
@@ -47,6 +46,10 @@ class KiwiConfig
     )
 
     post_process_config(output_location)
+  end
+
+  def export_name
+    "#{@system_description.name}-kiwi"
   end
 
   private

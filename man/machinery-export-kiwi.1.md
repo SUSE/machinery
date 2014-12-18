@@ -33,6 +33,6 @@ image description.
 
 ### EXAMPLES
 
- * Export the `myhost` system description to `/tmp/export`:
+ * Export the `myhost` system description to `/tmp/myhost-kiwi`:
 
-   $ `machinery` export-kiwi myhost --kiwi-dir=/tmp/export
+   $ `machinery` export-kiwi myhost --kiwi-dir=/tmp

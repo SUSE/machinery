@@ -345,8 +345,8 @@ class Cli
   long_desc <<-LONGDESC
     Export system description as KIWI image description.
 
-    The description will be placed in the given location. The image format in the
-    description is 'vmx'.
+    The description will be placed in a subdirectory at the given location. The image format in
+    the description is 'vmx'.
   LONGDESC
   arg "NAME"
   command "export-kiwi" do |c|
@@ -375,7 +375,8 @@ class Cli
   long_desc <<-LONGDESC
     Export system description as AutoYaST profile
 
-    The profile will be placed in the location given by the 'autoyast-dir' option.
+    The profile will be placed in a subdirectory at the given location by the 'autoyast-dir'
+    option.
   LONGDESC
   arg "NAME"
   command "export-autoyast" do |c|

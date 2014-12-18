@@ -911,4 +911,12 @@ describe KiwiConfig do
       end
     end
   end
+
+  describe "#export_name" do
+    it "returns the export name" do
+      kiwi = KiwiConfig.new(system_description_with_content)
+
+      expect(kiwi.export_name).to eq("name-kiwi")
+    end
+  end
 end

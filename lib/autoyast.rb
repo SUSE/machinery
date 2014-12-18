@@ -51,6 +51,10 @@ class Autoyast
     )
   end
 
+  def export_name
+    "#{@system_description.name}-autoyast"
+  end
+
   def profile
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.doc.create_internal_subset("profile", nil, nil)

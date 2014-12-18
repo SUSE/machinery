@@ -52,6 +52,6 @@ profile.
 
 ### EXAMPLES
 
- * Export the `myhost` system description to `/tmp/export`:
+ * Export the `myhost` system description to `/tmp/myhost-autoyast`:
 
-   $ `machinery` export-autoyast myhost --autoyast-dir=/tmp/export
+   $ `machinery` export-autoyast myhost --autoyast-dir=/tmp

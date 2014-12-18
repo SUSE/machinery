@@ -15,27 +15,8 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ExportTask
-  def initialize(exporter)
-    @exporter = exporter
-  end
-
-  def export(output_dir, options)
-    output_dir = File.join(output_dir, @exporter.export_name)
-    if File.exists?(output_dir)
-      if options[:force]
-        FileUtils.rm_r(output_dir)
-      else
-        raise Machinery::Errors::ExportFailed.new(
-          "The output directory '#{output_dir}' already exists." \
-          " You can force overwriting it with the '--force' option."
-        )
-      end
-    end
-
-    FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
-
-    @exporter.write(output_dir)
-    Machinery::Ui.puts "Exported to '#{output_dir}'."
-  end
+# Interface class for exporter
+class Exporter
+  abstract_method :write
+  abstract_method :export_name
 end
