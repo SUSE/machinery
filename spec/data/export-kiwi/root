@@ -12,7 +12,7 @@ total 4
 total 16
 -rw-r--r-- 1 vagrant vagrant 8163  merge_users_and_groups.pl
 drwxr-xr-x 3 vagrant vagrant 4096  unmanaged_files
--rw-r--r-- 1 vagrant vagrant   59  unmanaged_files_build_excludes
+-rw-r--r-- 1 vagrant vagrant   72  unmanaged_files_build_excludes
 
 /tmp/jeos/root/tmp/unmanaged_files:
 total 8
