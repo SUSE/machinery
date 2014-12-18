@@ -242,6 +242,16 @@ module SystemDescriptionFactory
         "autorefresh": true,
         "gpgcheck": true,
         "priority": 99
+      },
+      {
+        "alias": "openSUSE_13.1_NON_OSS_ALIAS",
+        "name": "openSUSE_13.1_NON_OSS",
+        "type": "yast2",
+        "url": "http://download.opensuse.org/distribution/13.1/repo/non-oss/",
+        "enabled": false,
+        "autorefresh": false,
+        "gpgcheck": true,
+        "priority": 99
       }
     ]
   EOF

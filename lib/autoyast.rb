@@ -17,6 +17,7 @@
 
 class Autoyast
   def initialize(description)
+    @chroot_scripts = []
     @system_description = description
     @system_description.assert_scopes(
       "repositories",
@@ -67,16 +68,15 @@ class Autoyast
         apply_groups(xml)
         apply_services(xml)
 
-        chroot_scripts = []
-        chroot_scripts << extracted_files_script("config_files")
-        chroot_scripts << extracted_files_script("changed_managed_files")
-        chroot_scripts << unmanaged_files_script
+        apply_extracted_files("config_files")
+        apply_extracted_files("changed_managed_files")
+        apply_unmanaged_files
         xml.scripts do
           apply_url_extraction(xml)
           xml.send("chroot-scripts", "config:type" => "list") do
             xml.script do
               xml.source do
-                xml.cdata chroot_scripts.join("\n")
+                xml.cdata @chroot_scripts.join("\n")
               end
             end
           end
@@ -101,12 +101,34 @@ class Autoyast
     xml.send("add-on") do
       xml.add_on_products("config:type" => "list") do
         @system_description.repositories.each do |repository|
-          xml.listentry do
-            xml.media_url repository.url
-            xml.name repository.alias
+          if repository.enabled
+            xml.listentry do
+              xml.media_url repository.url
+              xml.name repository.alias
+            end
           end
         end
       end
+    end
+
+    @system_description.repositories.each do |repository|
+      # Disabled repositories can't be added by AutoYaST so we add them manually
+      if !repository.enabled
+        zypper_ar = "zypper -n ar --name='#{repository.name}'"
+        zypper_ar << " --type='#{repository.type}'" if repository.type
+        zypper_ar << " --disable" if !repository.enabled
+        zypper_ar << " '#{repository.url}' '#{repository.alias}'"
+        @chroot_scripts << zypper_ar.strip
+      end
+
+      zypper_mr = "zypper -n mr --priority=#{repository.priority} '#{repository.alias}'"
+      zypper_mr <<  " --name='#{repository.name}'"
+      if repository.autorefresh
+        zypper_mr << " --refresh"
+      else
+        zypper_mr << " --no-refresh"
+      end
+      @chroot_scripts << zypper_mr.strip
     end
   end
 
@@ -214,36 +236,36 @@ class Autoyast
     end
   end
 
-  def extracted_files_script(scope)
+  def apply_extracted_files(scope)
     return if !@system_description[scope] || !@system_description[scope].extracted
 
     base = Pathname(@system_description.file_store(scope))
-    snippets = []
     Dir["#{base}/**/*"].sort.each do |path|
       next if File.directory?(path)
 
       relative_path = Pathname(path).relative_path_from(base).to_s
       url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, relative_path))}"
 
-      snippets << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
-      snippets << "curl -o '#{File.join("/mnt", relative_path)}' \"#{url}\""
+      @chroot_scripts << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
+      @chroot_scripts << "curl -o '#{File.join("/mnt", relative_path)}' \"#{url}\""
     end
 
     @system_description[scope].files.map do |file|
-      snippets << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'" if file.user
-      snippets << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'" if file.mode
+      if file.user
+        @chroot_scripts << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+      end
+      if file.mode
+        @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
+      end
     end
-
-    snippets.join("\n")
   end
 
-  def unmanaged_files_script
+  def apply_unmanaged_files
     return if !@system_description.unmanaged_files ||
       !@system_description.unmanaged_files.extracted
 
     base = Pathname(@system_description.file_store("unmanaged_files"))
-    snippets = []
-    snippets << <<-EOF
+    @chroot_scripts << <<-EOF
       curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
     EOF
 
@@ -254,13 +276,11 @@ class Autoyast
       tarball_name = File.basename(path)
       url = "`cat /tmp/description_url`#{URI.escape(File.join("/unmanaged_files", relative_path))}"
 
-      snippets << <<-EOF
+      @chroot_scripts << <<-EOF
         curl -o '/mnt/tmp/#{tarball_name}' "#{url}"
         tar -C /mnt/ -X '/mnt/tmp/filter' -xf '#{File.join("/mnt/tmp", tarball_name)}'
         rm '#{File.join("/mnt/tmp", tarball_name)}'
       EOF
     end
-
-    snippets.join("\n")
   end
 end

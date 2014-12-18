@@ -923,7 +923,9 @@
     </pre-scripts>
     <chroot-scripts config:type="list">
       <script>
-        <source><![CDATA[mkdir -p '/mnt/etc'
+        <source><![CDATA[zypper -n mr --priority=99 'openSUSE_13.1_OSS' --name='openSUSE_13.1_OSS' --refresh
+zypper -n mr --priority=99 'openSUSE_13.1_Updates' --name='openSUSE_13.1_Updates' --refresh
+mkdir -p '/mnt/etc'
 curl -o '/mnt/etc/crontab' "`cat /tmp/description_url`/config_files/etc/crontab"
 chown root:root '/mnt/etc/crontab'
 chmod 644 '/mnt/etc/crontab'
