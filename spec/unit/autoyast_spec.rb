@@ -64,14 +64,10 @@ describe Autoyast do
   end
 
   describe "#write" do
-    around(:each) do |example|
-      autoyast = Autoyast.new(description)
-      Dir.mktmpdir("autoyast_export_test") do |dir|
-        @output_dir = dir
-        autoyast.write(@output_dir)
-
-        example.run
-      end
+    before(:each) do
+      expect(Machinery::Ui).to receive(:puts).with(/^Note/)
+      @output_dir = given_directory
+      Autoyast.new(description).write(@output_dir)
     end
 
     it "copies over the system description" do
@@ -96,7 +92,6 @@ describe Autoyast do
     end
 
     it "restricts permissions of all exported files and dirs to the user" do
-      expect(File.stat(@output_dir).mode & 0777).to eq(0700)
       Dir.glob(File.join(@output_dir, "/*")).each do |entry|
         next if entry.end_with?("/README.md")
         if File.directory?(entry)
