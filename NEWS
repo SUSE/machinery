@@ -7,6 +7,7 @@
 * Don't fail on file validation errors, but report them as warnings (gh#SUSE/machinery#391)
 * List scopes more natural with a space after comma (gh#SUSE/machinery#356)
 * Use UTF-8 for displaying HTML report (gh#SUSE/machinery#429)
+* Do not ignore Btrfs subvolumes during unmanaged-files inspection (gh#SUSE/machinery#427)
 
 ## Version 1.1.1 - Tue Dec 02 13:24:38 CET 2014 - thardeck@suse.de
 
