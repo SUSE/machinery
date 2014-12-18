@@ -209,7 +209,8 @@ describe UnmanagedFilesInspector do
         "/var/spool/lpd",
         "/var/spool/mail",
         "/var/spool/uucp",
-        "/usr/lib/coreutils"
+        "/usr/lib/coreutils",
+        "/opt"
       ]
 
       non_empty_dirs = {
@@ -258,6 +259,10 @@ describe UnmanagedFilesInspector do
       allow_any_instance_of(UnmanagedFilesInspector).to receive(:max_depth).and_return(3)
       allow_any_instance_of(UnmanagedFilesInspector).to receive(:start_depth).and_return(3)
       expect_requirements(system)
+
+      allow_any_instance_of(UnmanagedFilesInspector).to receive(:btrfs_subvolumes).
+        and_return(["opt"])
+
       if(extract)
         expect(system).to receive(:check_requirement).with(
           "tar", "--version"

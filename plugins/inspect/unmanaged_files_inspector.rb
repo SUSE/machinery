@@ -261,7 +261,10 @@ class UnmanagedFilesInspector < Inspector
 
     rpm_files, rpm_dirs = extract_rpm_database(system)
 
-    mounts = mount_points.local
+    # Btrfs subvolumes and local mounts need to be inspected separately because
+    # they are not part of the `get_find_data` return data
+    local_filesystems = mount_points.local + btrfs_subvolumes(system)
+
     unmanaged_files = []
     unmanaged_trees = []
     excluded_files = []
@@ -297,17 +300,17 @@ class UnmanagedFilesInspector < Inspector
       find_dir = dirs_todo.first
 
       # determine files and directories below find_dir until a certain depth
-      depth = mounts.include?(find_dir) ? start : max
+      depth = local_filesystems.include?(find_dir) ? start : max
       files, dirs, excluded = get_find_data( system, find_dir, depth )
       excluded_files += excluded
       find_count += 1
       find_dir += "/" if find_dir.size > 1
-      if !mounts.empty?
+      if !local_filesystems.empty?
         # force all mount points to be non-leave directories (find is called with -xdev)
-        mounts.each do |mp|
+        local_filesystems.each do |mp|
           dirs[mp] = true if dirs.has_key?(mp)
         end
-        mounts.reject!{ |mp| dirs.has_key?(mp) }
+        local_filesystems.reject! { |mp| dirs.has_key?(mp) }
       end
       if find_dir == "/"
         ignore_list.each do |d|
@@ -409,5 +412,13 @@ class UnmanagedFilesInspector < Inspector
     #
     # See also: http://stackoverflow.com/a/21315619
     s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
+  end
+
+  def btrfs_subvolumes(system)
+    system.run_command(
+      ["btrfs", "subvolume", "list", "/"],
+      ["awk", "{print $NF}"],
+      stdout: :capture
+    ).split
   end
 end
