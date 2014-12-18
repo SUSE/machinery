@@ -104,6 +104,9 @@ describe AnalyzeConfigFileDiffsTask do
 
   describe "#analyze" do
     silence_machinery_output
+    before(:each) do
+      allow(Zypper).to receive(:cleanup)
+    end
 
     it "analyzes all files with changes" do
       expect_any_instance_of(Zypper).to receive(:download_package).

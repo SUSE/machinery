@@ -24,6 +24,29 @@
 class Zypper
   attr_accessor :zypper_options
 
+  class <<self
+    def isolated(&block)
+      zypper_base = Dir.mktmpdir("machinery_zypper")
+      zypper = Zypper.new
+
+      zypper.zypper_options = [
+        "--non-interactive",
+        "--no-gpg-checks",
+        "--root", zypper_base
+      ]
+
+      block.call(zypper)
+    ensure
+      cleanup(zypper_base)
+    end
+
+    private
+
+    def cleanup(base)
+      LoggedCheetah.run("sudo", "rm", "-r", base)
+    end
+  end
+
   def add_repo(url, repo_alias)
     call_zypper "ar", url, repo_alias
   end
@@ -41,21 +64,6 @@ class Zypper
 
     xml = Nokogiri::XML(raw_xml)
     xml.xpath("//localfile/@path").to_s
-  end
-
-  def self.isolated(&block)
-    zypper_base = Dir.mktmpdir("machinery_zypper")
-    zypper = Zypper.new
-
-    zypper.zypper_options = [
-      "--non-interactive",
-      "--no-gpg-checks",
-      "--root", zypper_base
-    ]
-
-    block.call(zypper)
-  ensure
-    LoggedCheetah.run("sudo", "rm", "-r", zypper_base) if zypper_base.start_with?("/tmp/")
   end
 
   private
