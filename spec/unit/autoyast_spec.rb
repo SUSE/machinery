@@ -67,37 +67,31 @@ describe Autoyast do
     before(:each) do
       expect(Machinery::Ui).to receive(:puts).with(/^Note/)
       @output_dir = given_directory
-      @autoyast = Autoyast.new(description)
+      Autoyast.new(description).write(@output_dir)
     end
 
     it "copies over the system description" do
-      @autoyast.write(@output_dir)
       expect(File.exists?(File.join(@output_dir, "manifest.json"))).to be(true)
     end
 
     it "adds the autoinst.xml" do
-      @autoyast.write(@output_dir)
       expect(File.exists?(File.join(@output_dir, "autoinst.xml"))).to be(true)
     end
 
     it "adds unmanaged files filter list" do
-      @autoyast.write(@output_dir)
       expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
     end
 
     it "filters log files from the Autoyast export" do
-      @autoyast.write(@output_dir)
       expect(File.read(File.join(@output_dir, "unmanaged_files_build_excludes"))).
         to include("var/log/*")
     end
 
     it "adds the autoyast export readme" do
-      @autoyast.write(@output_dir)
       expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
     end
 
     it "restricts permissions of all exported files and dirs to the user" do
-      @autoyast.write(@output_dir)
       Dir.glob(File.join(@output_dir, "/*")).each do |entry|
         next if entry.end_with?("/README.md")
         if File.directory?(entry)
