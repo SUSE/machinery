@@ -98,7 +98,6 @@ describe Autoyast do
 
     it "restricts permissions of all exported files and dirs to the user" do
       @autoyast.write(@output_dir)
-      expect(File.stat(@output_dir).mode & 0777).to eq(0700)
       Dir.glob(File.join(@output_dir, "/*")).each do |entry|
         next if entry.end_with?("/README.md")
         if File.directory?(entry)
