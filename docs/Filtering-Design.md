@@ -141,9 +141,9 @@ be:
 }
 ```
 
-It might also be useful to have filters which apply to all scopes, but this is
+It might also be useful to have filters which apply to all commands, but this is
 not considered for now. The functionality can be achieved by copying filters
-to other scopes.
+to the sections for other commands.
 
 
 ## User interface
@@ -215,8 +215,8 @@ NAME:
 
     machinery inspect --skip-files=FILENAME1,FILENAME2 NAME
 
-Filter files from files inspection (for all file scopes) of system NME which are
-defined in a separate file FILTERS listing all file names which should be
+Filter files from files inspection (for all file scopes) of system NAME which
+are defined in a separate file FILTERS listing all file names which should be
 filtered:
 
     machinery inspect --skip-files=@FILTERS NAME
