@@ -225,10 +225,8 @@ EOF
           parameters[:username] = repo.username
           parameters[:password] = repo.password
         end
-        is_external_medium = repo.url.start_with?("cd://") ||
-          repo.url.start_with?("dvd://")
         # only use accessible repositories as source for kiwi build
-        if repo.enabled && !repo.type.nil? && !is_external_medium
+        if repo.enabled && !repo.type.nil? && !repo.external_medium?
           xml.repository(parameters) do
             xml.source(path: repo.url)
           end
