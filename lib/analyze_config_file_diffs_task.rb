@@ -17,7 +17,11 @@
 
 class AnalyzeConfigFileDiffsTask
   def analyze(description)
-    description.assert_scopes("repositories", "config_files")
+    description.assert_scopes(
+      "repositories",
+      "config_files",
+      "os"
+    )
     if !description.scope_extracted?("config_files")
       raise Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
     end
@@ -90,7 +94,8 @@ class AnalyzeConfigFileDiffsTask
 
   def with_repositories(description, &block)
     Machinery::Ui.puts "Setting up repository access..."
-    Zypper.isolated do |zypper|
+    arch = description.os.architecture
+    Zypper.isolated(arch: arch) do |zypper|
       begin
         remote_repos = description.repositories.reject do |repo|
           repo.url.start_with?("cd://") || repo.url.start_with?("dvd://")
