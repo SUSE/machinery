@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Autoyast
+class Autoyast < Exporter
   def initialize(description)
     @chroot_scripts = []
     @system_description = description
@@ -105,7 +105,7 @@ class Autoyast
     xml.send("add-on") do
       xml.add_on_products("config:type" => "list") do
         @system_description.repositories.each do |repository|
-          if repository.enabled
+          if repository.enabled && !repository.external_medium?
             xml.listentry do
               xml.media_url repository.url
               xml.name repository.alias
@@ -116,8 +116,8 @@ class Autoyast
     end
 
     @system_description.repositories.each do |repository|
-      # Disabled repositories can't be added by AutoYaST so we add them manually
-      if !repository.enabled
+      # Disabled repositories or external media can't be added by AutoYaST so we add them manually
+      if !repository.enabled || repository.external_medium?
         zypper_ar = "zypper -n ar --name='#{repository.name}'"
         zypper_ar << " --type='#{repository.type}'" if repository.type
         zypper_ar << " --disable" if !repository.enabled
