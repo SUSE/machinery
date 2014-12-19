@@ -24,7 +24,7 @@ image description.
 ### OPTIONS
 
   * `-k KIWI_DIR`, `--kiwi-dir=KIWI_DIR` (required):
-    Write the KIWI image description to the specified directory. The directory
+    Write the KIWI image description to a subdirectory at the specified directory. The directory
     will be created if it does not exist yet.
 
   * `--force` (optional):

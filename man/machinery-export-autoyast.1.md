@@ -24,7 +24,7 @@ profile.
 ### OPTIONS
 
   * `-a AUTOYAST_DIR`, `--autoyast-dir=AUTOYAST_DIR` (required):
-    Write the AutoYaST profile to the specified directory. The directory
+    Write the AutoYaST profile to a subdirectory at the specified directory. The directory
     will be created if it does not exist yet.
 
   * `--force` (optional):
