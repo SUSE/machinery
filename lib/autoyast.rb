@@ -62,7 +62,8 @@ class Autoyast < Exporter
         "xmlns" => "http://www.suse.com/1.0/yast2ns",
         "xmlns:config" => "http://www.suse.com/1.0/configns"
       ) do
-        setup_basic_network(xml)
+        apply_non_interactive_mode(xml)
+        apply_basic_network(xml)
         apply_repositories(xml)
         xml.software do
           apply_packages(xml)
@@ -93,7 +94,15 @@ class Autoyast < Exporter
 
   private
 
-  def setup_basic_network(xml)
+  def apply_non_interactive_mode(xml)
+    xml.general do
+      xml.mode do
+        xml.confirm "false", "config:type" => "boolean"
+      end
+    end
+  end
+
+  def apply_basic_network(xml)
     xml.networking do
       xml.keep_install_network "true", "config:type" => "boolean"
     end
