@@ -143,18 +143,6 @@ describe BuildTask do
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::BuildFailed, /kiwi-terminal-output.log/)
     end
-
-    it "shows the unmanaged file filters at the beginning" do
-      system_description.initialize_file_store("unmanaged_files")
-      system_description["unmanaged_files"] = {}
-
-      expect(Machinery::Ui).to receive(:puts).with("\nUnmanaged files following these patterns are not added to the built image:")
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s).to include("var/lib/rpm")
-      }
-      allow(Machinery::Ui).to receive(:puts)
-      build_task.build(system_description, output_path)
-    end
   end
 
   describe "#write_kiwi_wrapper" do
