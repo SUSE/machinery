@@ -73,9 +73,12 @@ module MachineryRpm
       cmd = "cd #{MACHINERY_ROOT} && export HOME=$(echo ~/) && " \
         "export LC_ALL=en_US.utf8 && SKIP_CLEANUP=true rake rpm:build#{obs_cmd} 2>&1"
       rpm_output = `env -i bash -lc "#{cmd}"`
-      @rpm = Dir.entries(File.join(MACHINERY_ROOT, "package")).select do |file|
-        file =~ /^machinery-\d.*\.x86_64\.rpm$/
-      end.first
+      package_root = File.join(MACHINERY_ROOT, "package")
+      @rpm = Dir.entries(package_root).
+        sort_by { |f| File.stat(File.join(package_root, f)).mtime }.
+        select do |file|
+          file =~ /^machinery-\d.*\.x86_64\.rpm$/
+        end.last
 
       if !$?.success? || !@rpm
         raise "Building the rpm package failed.\n#{rpm_output}"
