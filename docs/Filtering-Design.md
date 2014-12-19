@@ -56,8 +56,8 @@ where `scope` is the name of the scope, which should be filtered, `element` is
 the path to the element, which is used to check the matching condition, and `=`
 and `condition` are the operator and value used to match.
 
-When applied on a scope this filter results in a list of all elements but the
-ones matching the filter.
+When applied on a scope this filter results in a list of all elements excluding
+the ones matching the filter.
 
 When the matched element is a string it is used literally without the quotes to
 match against the condiditon, e.g. a JSON such as `"name": "apache"` matches
@@ -105,18 +105,43 @@ Match all deleted config files:
 ### Storing filter definitions
 
 Filters can be provided on the command line as described in the next section,
-but there are also situations where they need to be stored. When doing an
-inspection it needs to be stored what filters were used, so that users can judge
-if a file is missing from a description or if it has been filtered in the first
-place. When showing a description or using other commands consuming a system
+but there are also situations where they need to be stored. There are mainly two
+scenarios.
+
+First, when doing an inspection it needs to be stored what filters were used, so
+that users can judge if a file is missing from a description or if it has been
+filtered in the first place.
+
+Second, when showing a description or using other commands consuming a system
 description it is convenient to make filters persistent, so they don't have to
 be provided every time the command is run again.
 
 Storing filters is useful on different levels, system-wide, per user, and per
-description. As starting point only per description filters are considered.
+description.
 
-The filters are stored in the `meta` section of a description. An example would
-be:
+#### General filter storage format
+
+Filters are stored as JSON. With are specified per command. An example would be:
+
+```json
+"inspect": [
+  "/unmanaged_files/files/name=/home/alfred/",
+  "/unmanaged_files/files/name=/var/cache/"
+],
+"show": [
+  "/services/services/state=disabled"
+]
+```
+
+It might also be useful to have filters which apply to all commands, but this is
+not considered for now. The functionality can be achieved by copying filters
+to the sections for other commands.
+
+#### Store filters used for an inspection
+
+To preserve the information, what filters were used when inspecting a system,
+the filters are stored in the `meta` section of the description. An example
+would be:
 
 ```json
 "meta": {
@@ -125,76 +150,162 @@ be:
     "inspect": [
       "/unmanaged_files/files/name=/home/alfred/",
       "/unmanaged_files/files/name=/var/cache/"
-    ],
-    "show": [
-      "/services/services/state=disabled"
     ]
   },
   "unmanaged_files": {
     "modified": "2014-11-25T13:42:22Z",
     "hostname": "hal"
   },
-  "services": {
-    "modified": "2014-11-25T13:42:22Z",
-    "hostname": "hal"
-  }
+  ...
 }
 ```
 
-It might also be useful to have filters which apply to all commands, but this is
-not considered for now. The functionality can be achieved by copying filters
-to the sections for other commands.
+#### Persistent filters
+
+To make it more convenient to apply the same filters to repeated invocations of
+commands filters can be made persistent by storing them to a filter file listing
+all matchers used to exclude specific objects from certain commands.
+
+The filter files contain JSON according to the general filter format defined
+previously. The file is named `filters.json` and it is stored in the top-level
+directory of a system description.
+
+When executing a command the filters defined for the command are applied and the
+results are filtered excluding all objects matching any filter conditions.
+
+#### Cascading filters
+
+Filters can be defined on a system-wide level, per user, or per description.
+On all levels the filters are stored in the same format in a file called
+`filters.json`. The filters of all levels are combined and applied to the
+commands executed by the user.
+
+The system-wide filters are installed by the Machinery package to a system-wide
+location.
+
+The user-level filters are stored in the directory used to store the system
+descriptions, which is `~/.machinery` by default.
+
+Description-level filters are stored in the top-level directory of the system
+description.
+
+When executing a command the filters of all levels are concatenated and applied
+to the command as a whole.
+
+#### Disabling filters
+
+There are situations where it is needed to disable a filter, for example when a
+filter defined by a higher-level filter file should not be applied. This can be
+done by specifying the filter condition with a `-` prefix.
+
+For example the user-wide filter
+
+```json
+"inspect": [
+  "/unmanaged_files/files/name=/home/alfred/",
+  "/unmanaged_files/files/name=/var/cache/"
+]
+```
+
+and the description specific filter
+
+```json
+"inspect": [
+  "-/unmanaged_files/files/name=/home/alfred/",
+]
+```
+
+would result in the effective filter:
+
+```json
+"inspect": [
+  "/unmanaged_files/files/name=/var/cache/"
+]
+```
 
 
 ## User interface
 
 Filters can be managed on the command line. The details are described in this
-section. In addition they can be manipulated as they are stored in the
-description. This is up to the user and not considered further here.
+section. There are transient filters, which are only applied for one execution
+of a command, and there are persistent filters, which are applied on every
+execution of a command.
+
+There is a generic interface for applying and managing filters. To make common
+use cases more convenient there also are special interfaces which only apply to
+these use cases, but are simpler to use.
 
 
 ### Generic usage
 
 Using filters in their generic form is possible with the global
-`--filter=filter_definition` option which is available in all commands.
+`--exclude=filter_definition` option which is available in all commands.
+
+Multiple filters can be provided as comma-separated list or can be read from
+a file by using a `@`-prefixed file name as argument: `--exclude=@FILENAME`.
 
 #### Example: inspection
 
 Filter `/var/cache` from unmanaged files on inspection of host `NAME`:
 
-    machinery --filter=/unmanaged_files/files/name=/var/cache/ inspect NAME
+    machinery --exclude=/unmanaged_files/files/name=/var/cache/ inspect NAME
 
 The command ommits the directory `/var/cache/` from the inspection of
-unmanaged files and writes the filter as part of the meta data of the resulting
-description.
+unmanaged files. To preserve the information, which filters have been applied
+when creating the description, the filters are wirtten as part of the meta data
+of the resulting description.
 
 #### Example: show
 
 Show all enabled services in description NAME:
 
-    machinery --filter=!/services/services/state=enabled show NAME
+    machinery --exclude=!/services/services/state=enabled show NAME
 
 The filter removes all services which match the filter criterion from the
 output. In this case it is all services which are not enabled. So the result is
-all enabled services.
+all enabled services. Filters are not stored in this case as the system
+description is not modified.
 
 
 ### Managing filters
 
-Persistent filters which are stored in a description can either be edited in the
-JSON file or managed with the following commands:
+Persistent filters which are stored in `exclude.json` files can either be edited
+in the JSON file or managed with the following commands:
 
-List all filters:
+#### List filters
+
+The command
 
     machinery filter list NAME
 
-Add a filter:
+lists all filters. This includes filters from all levels for all commands.
 
-    machinery filter add NAME FILTER_DEFINITION
+With
 
-Remove a filter:
+    machinery filter list NAME --command=COMMAND
 
-    machinery filter remove NAME FILTER_DEFINITION
+the output is limited to the filters defined for the given command.
+
+#### Add filter
+
+The command
+
+    machinery filter add NAME FILTER_DEFINITION --command=COMMAND
+
+adds the filter FILTER_DEFINITION to the `filters.json` file of the system
+description NAME in the section for command COMMAND.
+
+#### Remove filter
+
+The command
+
+    machinery filter remove NAME FILTER_DEFINITION --command=COMMAND
+
+removes the filter FILTER_DEFINITION from the `filters.json` file of the system
+description NAME in the section for command COMMAND. If the filter is not
+stored in this file, but in a higher-level filter file, the filter is added
+as disabled to the description level file using the `-` prefix syntax described
+previously.
 
 
 ### Special interface for common use cases
