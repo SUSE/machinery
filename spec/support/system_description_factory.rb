@@ -252,6 +252,16 @@ module SystemDescriptionFactory
         "autorefresh": false,
         "gpgcheck": true,
         "priority": 99
+      },
+      {
+        "alias": "SLES12-12-0",
+        "name": "SLES12-12-0",
+        "type": "yast2",
+        "url": "cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001",
+        "enabled": true,
+        "autorefresh": false,
+        "gpgcheck": true,
+        "priority": 99
       }
     ]
   EOF
