@@ -17,6 +17,9 @@
 
 
 class Repository < Machinery::Object
+  def external_medium?
+    url.start_with?("cd://") || url.start_with?("dvd://")
+  end
 end
 
 class RepositoriesScope < Machinery::Array
