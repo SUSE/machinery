@@ -114,7 +114,8 @@ namespace :rpm do
     # base even when the unit tests are failing.
     Rake::Task["package"].prerequisites.delete("test")
 
-    release = Release.new
+    skip_cleanup = (ENV["SKIP_CLEANUP"] == "true")
+    release = Release.new(skip_cleanup: skip_cleanup)
     release.build_local
   end
 end
@@ -127,7 +128,7 @@ task :release, [:type] do |task, args|
   end
 
   new_version = Release.generate_release_version(args[:type])
-  release = Release.new(new_version)
+  release = Release.new(version: new_version)
 
   # Check syntax, git and CI state
   Rake::Task['check:committed'].invoke
