@@ -20,13 +20,33 @@ require_relative "spec_helper"
 describe ExportTask do
   include FakeFS::SpecHelpers
 
-  let(:exporter) { double(export_name: "name-type") }
+  let(:exporter) {
+    double(
+      export_name: "name-type",
+      system_description: create_test_description(scopes: ["unmanaged_files"])
+    )
+  }
   subject { ExportTask.new(exporter) }
+
+  before(:each) do
+    FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
+    allow(Machinery::Ui).to receive(:puts)
+  end
 
   describe "#export" do
     it "writes the export" do
       expect(exporter).to receive(:write).with("/bar/name-type")
       expect(Machinery::Ui).to receive(:puts).with("Exported to '/bar/name-type'.")
+
+      subject.export("/bar", {})
+    end
+
+    it "shows the unmanaged file filters at the beginning" do
+      allow(exporter).to receive(:write)
+      expect(Machinery::Ui).to receive(:puts) { |output|
+        expect(output).to include("Unmanaged files following these patterns are not exported:")
+        expect(output).to include("var/lib/rpm/")
+      }
 
       subject.export("/bar", {})
     end

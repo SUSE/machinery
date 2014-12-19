@@ -35,6 +35,15 @@ class ExportTask
 
     FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
 
+    if @exporter.system_description["unmanaged_files"]
+      filters = File.read(
+        File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes")
+      )
+      Machinery::Ui.puts(
+        "\nUnmanaged files following these patterns are not exported:\n#{filters}\n"
+      )
+    end
+
     @exporter.write(output_dir)
     Machinery::Ui.puts "Exported to '#{output_dir}'."
   end

@@ -17,6 +17,8 @@
 
 # Interface class for exporter
 class Exporter
+  attr_reader :system_description
+
   abstract_method :write
   abstract_method :export_name
 end
