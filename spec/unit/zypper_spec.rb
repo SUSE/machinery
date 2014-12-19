@@ -34,6 +34,19 @@ describe Zypper do
         zypper.refresh
       end
     end
+
+    it "sets the zypper runtime architecture" do
+      expect(Zypper).to receive(:cleanup)
+
+      Zypper.isolated(arch: :x86_64) do |zypper|
+        allow(LoggedCheetah).to receive(:run)
+        expect(LoggedCheetah).to receive(:run) do |*args|
+          expect(args).to include("--config")
+        end
+
+        zypper.refresh
+      end
+    end
   end
 
   describe "#download_package" do
