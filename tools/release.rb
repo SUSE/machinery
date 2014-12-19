@@ -31,16 +31,20 @@ class Release
     File.join(Machinery::ROOT, "RPM_CHANGES")
   ]
 
-  def initialize(version = generate_development_version)
-    @release_version = version
-    @tag             = "v#{version}"
+  def initialize(opts = {})
+    @options = {
+      version:      generate_development_version,
+      skip_cleanup: false
+    }.merge(opts)
+    @release_version = @options[:version]
+    @tag             = "v#{@release_version}"
     @release_time    = Time.now.strftime('%a %b %d %H:%M:%S %Z %Y')
     @mail            = Cheetah.run(["git", "config", "user.email"], :stdout => :capture).chomp
     @gemspec         = Gem::Specification.load("machinery.gemspec")
   end
 
   def prepare
-    remove_old_releases
+    remove_old_releases if !@options[:skip_cleanup]
     set_version
     generate_specfile
     copy_rpmlintrc
