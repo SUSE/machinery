@@ -204,11 +204,11 @@ class Release
 
   def generate_development_version
     # The development version RPMs have the following version number scheme:
-    # <base version>.<timestamp>git<short git hash>
+    # <base version>.<timestamp><os>git<short git hash>
     timestamp = Time.now.strftime("%Y%m%dT%H%M%SZ")
     commit_id = Cheetah.run("git", "rev-parse", "--short", "HEAD", :stdout => :capture).chomp
 
-    "#{Machinery::VERSION}.#{timestamp}git#{commit_id}"
+    "#{Machinery::VERSION}.#{timestamp}#{build_dist.gsub(/[._]/, "")}git#{commit_id}"
   end
 
   def create_rpm_header(version, time, mail)
