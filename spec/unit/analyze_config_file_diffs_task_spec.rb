@@ -85,6 +85,11 @@ describe AnalyzeConfigFileDiffsTask do
               ]
             }
           ]
+        },
+        "os": {
+          "name": "SUSE Linux Enterprise Server 11",
+          "version": "11 SP3",
+          "architecture": "x86_64"
         }
       }
     EOF

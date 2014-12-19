@@ -25,7 +25,7 @@ class Zypper
   attr_accessor :zypper_options
 
   class <<self
-    def isolated(&block)
+    def isolated(options = {}, &block)
       zypper_base = Dir.mktmpdir("machinery_zypper")
       zypper = Zypper.new
 
@@ -35,12 +35,29 @@ class Zypper
         "--root", zypper_base
       ]
 
+      if options[:arch]
+        config = create_arch_config(zypper_base, options[:arch])
+        zypper.zypper_options.unshift("--config", config)
+      end
+
       block.call(zypper)
     ensure
       cleanup(zypper_base)
     end
 
     private
+
+    def create_arch_config(base, arch)
+      config = File.join(base, "zypp.conf")
+
+      File.new(config, "w")
+      File.write(config,
+        "[main]\n" \
+        "arch=#{arch}"
+      )
+
+      config
+    end
 
     def cleanup(base)
       LoggedCheetah.run("sudo", "rm", "-r", base)
