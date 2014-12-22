@@ -13,8 +13,14 @@ the installer via network, e.g. by running:
 
   cd /path/to/autoyast_export; python -m SimpleHTTPServer
 
-You can then point the installer to the profile by specifying the "autoyast"
-option on the kernel command line:
+You can then point the installer to the profile by specifying the AutoYaST
+option on the kernel command line.
+
+For SLES12 and openSUSE 13.2:
+
+  autoyast2=http://192.168.121.1:8000/autoinst.xml
+
+For SLES11:
 
   autoyast=http://192.168.121.1:8000/autoinst.xml netsetup=dhcp
 
