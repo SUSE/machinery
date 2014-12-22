@@ -46,7 +46,7 @@ profile.
       <slp_discovery config:type="boolean">false</slp_discovery>
     </suse_register>
     ```
-  * More information can be found at the SUSE AutoYaST documentaion.
+  * More information can be found at the SUSE AutoYaST documentation.
     https://www.suse.com/documentation/sles-12/singlehtml/book_autoyast/book_autoyast.html
 
 

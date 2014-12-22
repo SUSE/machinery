@@ -34,3 +34,15 @@ and sub directories are readable by the HTTP server user.
 To make the export directory readable for all users run:
 
   chmod -R a+rX /path/to/autoyast_export
+
+## Reference
+
+Additional information regarding AutoYaST is available in the official documentation:
+
+For SLES12:
+
+  https://www.suse.com/documentation/sles-12/singlehtml/book_autoyast/book_autoyast.html
+
+For SLES11
+
+  https://www.suse.com/documentation/sles11/singlehtml/book_autoyast/book_autoyast.html
