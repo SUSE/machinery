@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.2.0 - Mon Dec 22 15:06:20 CET 2014 - aduffeck@suse.de
+
 * Added AutoYaST export for system descriptions
 * Handle zypper locks gracefully (gh#SUSE/machinery#415)
 * Prevent scopes from being inspected multiple times (gh#SUSE/machinery#303)
