@@ -341,3 +341,19 @@ are defined in a separate file FILTERS listing all file names which should be
 filtered:
 
     machinery inspect --skip-files=@FILTERS NAME
+
+
+## Implementation
+
+At the moment (2014-12-22) the design is a proposal, and nothing of it is
+implemented yet. This is a possible plan how to do it:
+
+* Step 1: Implement core filtering classes and move current filtering to them.
+  This includes storing filters used during inspection in the meta data of the
+  system description.
+* Step 2: Implement generic `--exclude` option to let users add additional
+  filters on demand. This option can also be used in our integration tests.
+* Step 3: Implement `--skip-files` option for the `inspect` command to make it
+  easier for users to add filters.
+* Step 4: Implement `filter` command and persistent per-description filters.
+* Step 5: Implement user-level persistent filters.
