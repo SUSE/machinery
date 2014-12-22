@@ -114,42 +114,6 @@ class SystemDescriptionStore
     FileUtils.mv(description_path(from), description_path(to))
   end
 
-  def initialize_file_store(description_name, store_name)
-    file_store = ScopeFileStore.new(description_path(description_name),
-      store_name)
-    file_store.create
-  end
-
-  def file_store(description_name, store_name)
-    file_store = ScopeFileStore.new(description_path(description_name),
-      store_name)
-    file_store.path
-  end
-
-  def remove_file_store(description_name, store_name)
-    file_store = ScopeFileStore.new(description_path(description_name),
-      store_name)
-    file_store.remove
-  end
-
-  def rename_file_store(description_name, store_old, store_new)
-    file_store = ScopeFileStore.new(description_path(description_name),
-      store_old)
-    file_store.rename(store_new)
-  end
-
-  def create_file_store_sub_dir(description_name, store_name, sub_dir)
-    file_store = ScopeFileStore.new(description_path(description_name),
-      store_name)
-    file_store.create_sub_directory(sub_dir)
-  end
-
-  def list_file_store_content(description_name, store_name)
-    file_store = ScopeFileStore.new(description_path(description_name),
-      store_name)
-    file_store.list_content
-  end
-
   def directory_for(name)
     dir = description_path(name)
     create_dir(dir)

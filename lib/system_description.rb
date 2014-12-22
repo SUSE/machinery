@@ -221,29 +221,4 @@ class SystemDescription < Machinery::Object
   def description_path
     @store.description_path(name)
   end
-
-  # Filestore handling
-  def initialize_file_store(store_name)
-    @store.initialize_file_store(self.name, store_name)
-  end
-
-  def file_store(store_name)
-    @store.file_store(self.name, store_name)
-  end
-
-  def remove_file_store(store_name)
-    @store.remove_file_store(self.name, store_name)
-  end
-
-  def rename_file_store(old_name, new_name)
-    @store.rename_file_store(self.name, old_name, new_name)
-  end
-
-  def list_file_store_content(store_name)
-    @store.list_file_store_content(self.name, store_name)
-  end
-
-  def create_file_store_sub_dir(store_name, sub_dir)
-    @store.create_file_store_sub_dir(self.name, store_name, sub_dir)
-  end
 end
