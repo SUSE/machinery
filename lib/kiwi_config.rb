@@ -102,8 +102,8 @@ class KiwiConfig < Exporter
       end
     end
 
-    unmanaged_files_path = @system_description
-      .scope_file_store("unmanaged_files").path
+    unmanaged_files_path = @system_description.
+      scope_file_store("unmanaged_files").path
     if unmanaged_files_path
       filter = "unmanaged_files_build_excludes"
       destination = File.join(output_location, "root", "tmp")
