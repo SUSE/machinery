@@ -22,7 +22,7 @@ class Html
     )
     target = description.store.description_path(description.name)
 
-    diffs_dir = description.store.file_store(description.name, "config-file-diffs")
+    diffs_dir = description.scope_file_store("config-file-diffs").path
     if description.config_files && diffs_dir
       # Enrich description with the config file diffs
       description.config_files.files.each do |file|

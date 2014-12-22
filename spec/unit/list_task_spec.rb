@@ -81,7 +81,6 @@ describe ListTask do
     end
 
     it "show the extracted state of extractable scopes" do
-      allow(store).to receive(:file_store).and_return(double)
       allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
       expect(Machinery::Ui).to receive(:puts) { |s|
         expect(s).to include(name)

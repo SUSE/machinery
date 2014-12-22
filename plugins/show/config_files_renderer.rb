@@ -19,9 +19,7 @@ class ConfigFilesRenderer < Renderer
   def do_render
     return unless @system_description["config_files"]
 
-    if @system_description.name
-      diffs_dir = @system_description.file_store("config-file-diffs")
-    end
+    diffs_dir = @system_description.scope_file_store("config-file-diffs").path
 
     if !diffs_dir && @options[:show_diffs]
       raise Machinery::Errors::SystemDescriptionError.new(

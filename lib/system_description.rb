@@ -196,15 +196,20 @@ class SystemDescription < Machinery::Object
     self[scope] && self[scope].is_extractable? && self[scope].extracted
   end
 
+  def scope_file_store(store_name)
+    ScopeFileStore.new(description_path, store_name)
+  end
+
   def missing_files(scope, file_list)
-    file_list.map! { |file| File.join(file_store(scope), file) }
+    file_list.map! { |file| File.join(scope_file_store(scope).path, file) }
 
     file_list.select { |file| !File.exists?(file) }
   end
 
   def additional_files(scope, file_list)
-    file_list.map! { |file| File.join(file_store(scope), file) }
-    files = list_file_store_content(scope)
+    file_store = scope_file_store(scope)
+    file_list.map! { |file| File.join(file_store.path, file) }
+    files = file_store.list_content
 
     files - file_list
   end

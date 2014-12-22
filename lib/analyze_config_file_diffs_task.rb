@@ -27,9 +27,10 @@ class AnalyzeConfigFileDiffsTask
     end
 
     with_repositories(description) do |zypper|
-      description.initialize_file_store("config-file-diffs")
-      diffs_path = description.file_store("config-file-diffs")
-      extracted_files_path = description.file_store("config_files")
+      file_store = description.scope_file_store("config-file-diffs")
+      file_store.create
+      diffs_path = file_store.path
+      extracted_files_path = description.scope_file_store("config_files").path
 
       Machinery::Ui.puts "Generating diffs..."
       cnt = 1

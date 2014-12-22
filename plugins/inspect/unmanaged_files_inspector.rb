@@ -80,9 +80,10 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def extract_unmanaged_files(system, description, files, trees, excluded, store_name)
-    description.remove_file_store(store_name)
-    description.initialize_file_store(store_name)
-    store_path = description.file_store(store_name)
+    file_store = description.scope_file_store(store_name)
+    file_store.remove
+    file_store.create
+    store_path = file_store.path
 
     archive_path = File.join(store_path, "files.tgz")
     system.create_archive(files.join("\0"), archive_path, excluded)
@@ -92,7 +93,7 @@ class UnmanagedFilesInspector < Inspector
       parent_dir = File.dirname(tree)
       sub_dir = File.join("trees", parent_dir)
 
-      description.create_file_store_sub_dir(store_name, sub_dir)
+      file_store.create_sub_directory(sub_dir)
       archive_path = File.join(store_path, sub_dir, "#{tree_name}.tgz")
       system.create_archive(tree, archive_path, excluded)
     end
@@ -221,8 +222,9 @@ class UnmanagedFilesInspector < Inspector
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(system, do_extract)
 
-    tmp_file_store = "unmanaged_files.tmp"
-    final_file_store = "unmanaged_files"
+    file_store_tmp = description.scope_file_store("unmanaged_files.tmp")
+    file_store_final = description.scope_file_store("unmanaged_files")
+
     mount_points = MountPoints.new(system)
 
     ignore_list = [
@@ -364,9 +366,10 @@ class UnmanagedFilesInspector < Inspector
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin
       if do_extract
-        extract_unmanaged_files(system, description, unmanaged_files, unmanaged_trees, excluded_files, tmp_file_store)
+        extract_unmanaged_files(system, description, unmanaged_files,
+          unmanaged_trees, excluded_files, file_store_tmp.store_name)
       else
-        description.remove_file_store(final_file_store)
+        file_store_final.remove
       end
       osl = unmanaged_files.map do |p|
         type = unmanaged_links.has_key?(p) ? "link" : "file"
@@ -374,11 +377,9 @@ class UnmanagedFilesInspector < Inspector
       end
       osl += unmanaged_trees.map { |p| UnmanagedFile.new( name: p + "/", type: "dir") }
       if do_extract
-        osl = extract_tar_metadata(osl, description.file_store(tmp_file_store))
-        description.remove_file_store(final_file_store)
-        description.rename_file_store(
-          tmp_file_store, final_file_store
-        )
+        osl = extract_tar_metadata(osl, file_store_tmp.path)
+        file_store_final.remove
+        file_store_tmp.rename(file_store_final.store_name)
       end
     rescue SignalException => e
       # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully

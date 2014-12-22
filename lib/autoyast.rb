@@ -252,7 +252,7 @@ class Autoyast < Exporter
   def apply_extracted_files(scope)
     return if !@system_description[scope] || !@system_description[scope].extracted
 
-    base = Pathname(@system_description.file_store(scope))
+    base = Pathname(@system_description.scope_file_store(scope).path)
     Dir["#{base}/**/*"].sort.each do |path|
       next if File.directory?(path)
 
@@ -277,7 +277,7 @@ class Autoyast < Exporter
     return if !@system_description.unmanaged_files ||
       !@system_description.unmanaged_files.extracted
 
-    base = Pathname(@system_description.file_store("unmanaged_files"))
+    base = Pathname(@system_description.scope_file_store("unmanaged_files").path)
     @chroot_scripts << <<-EOF
       curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
     EOF
