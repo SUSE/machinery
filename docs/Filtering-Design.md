@@ -68,6 +68,10 @@ condition. e.g. a JSON such as `"changes": ["deleted"]` matches
 `changes=deleted`, and a JSON such as `"changes":  ["mode", "user"]` matches
 `changes=mode,user`.
 
+As a first step only exact matches are supported, where the
+array has to have exactly the elements specified in the condition. Matches of
+sub arrays will be defined later.
+
 Filters can be inverted by prefixing them with a `!`:
 
     !/scope/element=condition
