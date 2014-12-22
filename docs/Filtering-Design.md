@@ -249,6 +249,11 @@ Using filters in their generic form is possible with the global
 Multiple filters can be provided as comma-separated list or can be read from
 a file by using a `@`-prefixed file name as argument: `--exclude=@FILENAME`.
 
+If filters contain commas the filter has to be quoted in double quotes, when it
+is part of a comma-separated list of filters. For example:
+
+    --exclude="/changed_managed_files/files/changes=mode,user",/changed_managed_files/files/changes=md5
+
 #### Example: inspection
 
 Filter `/var/cache` from unmanaged files on inspection of host `NAME`:
