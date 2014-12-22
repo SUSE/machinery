@@ -121,7 +121,8 @@ description.
 
 #### General filter storage format
 
-Filters are stored as JSON. With are specified per command. An example would be:
+Filters are stored as JSON. Filter criteria are specified per command. An
+example would be:
 
 ```json
 "inspect": [
@@ -250,9 +251,9 @@ Filter `/var/cache` from unmanaged files on inspection of host `NAME`:
 
     machinery --exclude=/unmanaged_files/files/name=/var/cache/ inspect NAME
 
-The command ommits the directory `/var/cache/` from the inspection of
+The command omits the directory `/var/cache/` from the inspection of
 unmanaged files. To preserve the information, which filters have been applied
-when creating the description, the filters are wirtten as part of the meta data
+when creating the description, the filters are written as part of the meta data
 of the resulting description.
 
 #### Example: show
