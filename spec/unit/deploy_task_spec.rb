@@ -20,11 +20,37 @@ require_relative "spec_helper"
 describe DeployTask do
   include FakeFS::SpecHelpers
 
-  let(:store) { SystemDescriptionStore.new }
   let(:deploy_task) { DeployTask.new }
   let(:system_description) {
-    SystemDescription.new("test", store)
+    create_test_description(json: <<-EOF, store: SystemDescriptionStore.new, name: "test")
+      {
+        "packages": [
+          {
+            "name": "kernel-desktop",
+            "version": "3.7.10",
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+          }
+        ],
+        "repositories": [
+          {
+            "alias": "nodejs",
+            "name": "nodejs",
+            "type": "rpm-md",
+            "url": "http://d.opensuse.org/r/devel:/languages:/nodejs/openSUSE_13.1/"
+          }
+        ],
+        "os": {
+          "name": "SUSE Linux Enterprise Server 11",
+          "version": "11 SP3",
+          "architecture": "x86_64"
+        }
+      }
+    EOF
   }
+
   let(:cloud_config_file) { "/example-openrc.sh" }
   let(:tmp_image_dir) { "/tmp/test-image2014" }
   let(:image_dir) { "/image" }
@@ -112,7 +138,16 @@ describe DeployTask do
       allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
       expect {
         deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)
-      }.to raise_error(Machinery::Errors::IncompatibleHost, /architecture/)
+      }.to raise_error(Machinery::Errors::IncompatibleHost,
+        /operation is not supported on architecture 'i586'/)
+    end
+
+    it "shows an error when the system description's architecture is not supported" do
+      allow(LocalSystem).to receive(:validate_architecture)
+      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      expect {
+        deploy_task.deploy(system_description, cloud_config_file)
+      }.to raise_error(Machinery::Errors::BuildFailed, /architecture/)
     end
   end
 end

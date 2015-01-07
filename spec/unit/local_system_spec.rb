@@ -177,7 +177,8 @@ describe LocalSystem do
       system_description = create_test_description(json: <<-EOF)
         {
           "os": {
-          "name": "SUSE Linux Enterprise Server 12"
+          "name": "SUSE Linux Enterprise Server 12",
+          "architecture": "x86_64"
           }
         }
         EOF

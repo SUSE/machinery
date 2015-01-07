@@ -57,7 +57,8 @@ class LocalSystem < System
 
     def validate_build_compatibility(system_description)
       if !os.can_build?(system_description.os)
-        message = "Building '#{system_description.os.canonical_name}' images is " \
+        message = "Building '#{system_description.os.canonical_name}' images with " \
+          "architecture '#{system_description.os.architecture}' is " \
           "not supported on this distribution.\n" \
           "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
           "further information which build targets are supported."
