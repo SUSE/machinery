@@ -60,7 +60,7 @@ class Zypper
     end
 
     def cleanup(base)
-      LoggedCheetah.run("sudo", "rm", "-r", base)
+      LoggedCheetah.run("rm", "-r", base)
     end
   end
 
@@ -86,7 +86,7 @@ class Zypper
   private
 
   def call_zypper(*args)
-    cmd = ["sudo", "zypper"]
+    cmd = ["zypper"]
     cmd += @zypper_options if @zypper_options
     cmd += args
 
