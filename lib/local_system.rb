@@ -60,6 +60,14 @@ class LocalSystem < System
         raise(Machinery::Errors::BuildFailed.new(message))
       end
     end
+
+    def validate_architecture(arch)
+      if os.architecture != arch
+        raise(Machinery::Errors::IncompatibleHost.new(
+          "This operation is not supported on architecture '#{os.architecture}'."
+        ))
+      end
+    end
   end
 
   def requires_root?

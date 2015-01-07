@@ -58,9 +58,8 @@ describe BuildTask do
 
   before(:each) {
     allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
-
     allow(Cheetah).to receive(:run)
-
+    allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
     Dir.mkdir("/tmp")
 
     FileUtils.mkdir_p(output_path)
@@ -142,6 +141,14 @@ describe BuildTask do
       expect{
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::BuildFailed, /kiwi-terminal-output.log/)
+    end
+
+    it "shows an error on non x86_64 architectures" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+
+      expect {
+        build_task.build(system_description, output_path)
+      }.to raise_error(Machinery::Errors::IncompatibleHost, /architecture/)
     end
   end
 
