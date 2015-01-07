@@ -70,8 +70,15 @@ module MachineryRpm
 
       # Vagrantfile sets up its own environment which prevents rake from working
       # So we reset the environment and specify the only missing environment variable
-      cmd = "cd #{MACHINERY_ROOT} && export HOME=$(echo ~/) && " \
-        "export LC_ALL=en_US.utf8 && SKIP_CLEANUP=true rake rpm:build#{obs_cmd} 2>&1"
+      cmds = []
+      cmds << "cd #{MACHINERY_ROOT}"
+      cmds << "export HOME=$(echo ~/)"
+      cmds << "export LC_ALL=en_US.utf8"
+      # Forward SKIP_CLEANUP environment variable to the new, clean environment
+      cmds << "export SKIP_CLEANUP=true" if ENV["SKIP_CLEANUP"] == "true"
+      cmds << "rake rpm:build#{obs_cmd}"
+
+      cmd = cmds.join(" && ") + " 2>&1"
       rpm_output = `env -i bash -lc "#{cmd}"`
       package_root = File.join(MACHINERY_ROOT, "package")
       @rpm = Dir.entries(package_root).
