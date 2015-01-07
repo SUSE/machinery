@@ -17,6 +17,7 @@
 
 class BuildTask
   def build(system_description, output_path, options = {})
+    LocalSystem.validate_architecture("x86_64")
     LocalSystem.validate_build_compatibility(system_description)
     LocalSystem.validate_existence_of_package("kiwi")
     LocalSystem.validate_existence_of_package("kiwi-desc-vmxboot")

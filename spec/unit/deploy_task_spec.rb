@@ -31,6 +31,8 @@ describe DeployTask do
 
   before(:each) do
     allow_any_instance_of(Kernel).to receive(:system)
+    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+    allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
     allow(LocalSystem).to receive(:validate_existence_of_package)
     allow(Dir).to receive(:mktmpdir).and_return(tmp_image_dir)
     FakeFS::FileSystem.clone("spec/data/deploy/", "/")
@@ -104,6 +106,13 @@ describe DeployTask do
       expect{
         deploy_task.deploy(system_description, "/tmp/doesnotexist.sh", image_dir: image_dir)
       }.to raise_error(Machinery::Errors::DeployFailed, /cloud config file.*could not be found/)
+    end
+
+    it "shows an error on non x86_64 architectures" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      expect {
+        deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)
+      }.to raise_error(Machinery::Errors::IncompatibleHost, /architecture/)
     end
   end
 end
