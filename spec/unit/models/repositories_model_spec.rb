@@ -37,7 +37,7 @@ describe Repository do
       expect(subject.external_medium?).to be(true)
     end
 
-    it "returns true in case of a cd" do
+    it "returns true in case of a dvd" do
       subject.url = "dvd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001"
       expect(subject.external_medium?).to be(true)
     end
