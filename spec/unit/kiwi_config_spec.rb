@@ -863,8 +863,8 @@ describe KiwiConfig do
         expect(config.sh).to match(/find \/tmp\/unmanaged_files.*tar/)
 
         # expect filter to be present
-        expect(File.exists?("/tmp/some_path/root/tmp/unmanaged_files_build_excludes")).to be(true)
-        expect(config.sh).to match(/tar.*-X '\/tmp\/unmanaged_files_build_excludes' /)
+        expect(File.exists?("/tmp/some_path/root/tmp/unmanaged_files_kiwi_excludes")).to be(true)
+        expect(config.sh).to match(/tar.*-X '\/tmp\/unmanaged_files_kiwi_excludes' /)
       end
 
       it "deletes deleted config and changed managed files" do
