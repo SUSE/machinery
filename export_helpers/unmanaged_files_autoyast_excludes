@@ -6,3 +6,4 @@ etc/fstab
 lib/mkinitrd
 etc/udev/rules.d/70-persistent-net.rules
 var/log/*
+etc/default/grub*
