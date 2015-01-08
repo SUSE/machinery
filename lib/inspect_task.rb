@@ -30,7 +30,7 @@ class InspectTask
       Machinery::Ui.puts "\n"
       message = failed_inspections.map { |scope, msg|
         "Errors while inspecting " \
-          "#{Machinery::Ui.internal_scope_list_to_string(scope)}:\n#{msg}" }.join("\n\n")
+          "#{Machinery::Ui.internal_scope_list_to_string(scope)}:\n -> #{msg}" }.join("\n\n")
       raise Machinery::Errors::InspectionFailed.new(message)
     end
     description
@@ -77,8 +77,7 @@ class InspectTask
       begin
         summary = inspector.inspect(system, description, options)
       rescue Machinery::Errors::MachineryError => e
-        Machinery::Ui.puts "Inspection of scope " \
-          "#{Machinery::Ui.internal_scope_list_to_string(inspector.scope)} failed!"
+        Machinery::Ui.puts " -> Inspection failed!"
         failed_inspections[inspector.scope] = e
         next
       end
