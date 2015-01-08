@@ -17,11 +17,6 @@
 
 shared_examples "analyze" do |base|
   describe "analyze #{base} system description" do
-    before(:all) do
-      @subject_system = start_system(box: base)
-      prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
-    end
-
     include_examples "analyze config file diffs", base
   end
 end
