@@ -51,6 +51,8 @@ built image. The list of filters is shown at the beginning of the build.
 
 ### BUILD SUPPORT MATRIX
 
+Machinery supports building x86_64 images on x86_64 systems.
+
 The following combinations of build hosts and targets are supported:
 
   * SUSE Linux Enterprise 12

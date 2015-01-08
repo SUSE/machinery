@@ -58,6 +58,9 @@ This command is particularly useful for testing, debugging, or for validation.
  * The `deploy` command requires the packages `kiwi` for building the image
    and `python-glanceclient` for uploading the image to the cloud.
 
+### SUPPORTED ARCHITECTURES
+
+Machinery supports deploying x86_64 images on x86_64 systems.
 
 ### EXAMPLES
 
