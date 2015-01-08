@@ -938,7 +938,7 @@ mkdir -p '/mnt/usr/share/bash/helpfiles'
 curl -o '/mnt/usr/share/bash/helpfiles/read' "`cat /tmp/description_url`/changed_managed_files/usr/share/bash/helpfiles/read"
 chown root:root '/mnt/usr/share/bash/helpfiles/read'
 chmod 644 '/mnt/usr/share/bash/helpfiles/read'
-      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
+      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
 
         curl -o '/mnt/tmp/files.tgz' "`cat /tmp/description_url`/unmanaged_files/files.tgz"
         tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'

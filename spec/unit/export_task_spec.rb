@@ -22,6 +22,7 @@ describe ExportTask do
 
   let(:exporter) {
     double(
+      name: "kiwi",
       export_name: "name-type",
       system_description: create_test_description(scopes: ["unmanaged_files"])
     )

@@ -63,7 +63,7 @@ systemctl enable systemd-readahead-replay.service
 perl /tmp/merge_users_and_groups.pl /etc/passwd /etc/shadow /etc/group
 rm /tmp/merge_users_and_groups.pl
 # Apply the extracted unmanaged files
-find /tmp/unmanaged_files -name *.tgz -exec tar -C / -X '/tmp/unmanaged_files_build_excludes' -xf {} \;
-rm -rf '/tmp/unmanaged_files' '/tmp/unmanaged_files_build_excludes'
+find /tmp/unmanaged_files -name *.tgz -exec tar -C / -X '/tmp/unmanaged_files_kiwi_excludes' -xf {} \;
+rm -rf '/tmp/unmanaged_files' '/tmp/unmanaged_files_kiwi_excludes'
 baseCleanMount
 exit 0

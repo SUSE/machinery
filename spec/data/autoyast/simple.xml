@@ -103,7 +103,7 @@ mkdir -p '/mnt/etc/cron.daily'
 curl -o '/mnt/etc/cron.daily/md adm' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/md%20adm"
 chown root:root '/mnt/etc/cron.daily/md adm'
 chmod 644 '/mnt/etc/cron.daily/md adm'
-      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
+      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
 
         curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
         tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'

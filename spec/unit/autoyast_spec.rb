@@ -79,11 +79,11 @@ describe Autoyast do
     end
 
     it "adds unmanaged files filter list" do
-      expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
+      expect(File.exists?(File.join(@output_dir, "unmanaged_files_autoyast_excludes"))).to be(true)
     end
 
     it "filters log files from the Autoyast export" do
-      expect(File.read(File.join(@output_dir, "unmanaged_files_build_excludes"))).
+      expect(File.read(File.join(@output_dir, "unmanaged_files_autoyast_excludes"))).
         to include("var/log/*")
     end
 

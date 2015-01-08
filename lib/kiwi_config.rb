@@ -17,8 +17,10 @@
 
 class KiwiConfig < Exporter
   attr_accessor :xml, :sh
+  attr_accessor :name
 
   def initialize(system_description, options = {})
+    @name = "kiwi"
     @system_description = system_description
     @options = options
 
@@ -105,7 +107,7 @@ class KiwiConfig < Exporter
     unmanaged_files_path = @system_description.
       scope_file_store("unmanaged_files").path
     if unmanaged_files_path
-      filter = "unmanaged_files_build_excludes"
+      filter = "unmanaged_files_#{@name}_excludes"
       destination = File.join(output_location, "root", "tmp")
       FileUtils.mkdir_p(destination, mode: 01777)
       FileUtils.cp_r(unmanaged_files_path, destination)

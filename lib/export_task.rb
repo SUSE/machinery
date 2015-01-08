@@ -37,7 +37,10 @@ class ExportTask
 
     if @exporter.system_description["unmanaged_files"]
       filters = File.read(
-        File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes")
+        File.join(
+          Machinery::ROOT,
+          "export_helpers/unmanaged_files_#{@exporter.name}_excludes"
+        )
       )
       Machinery::Ui.puts(
         "\nUnmanaged files following these patterns are not exported:\n#{filters}\n"
