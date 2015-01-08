@@ -26,6 +26,15 @@ class Autoyast < Exporter
       "repositories",
       "packages"
     )
+    if !description.users
+      Machinery::Ui.puts(
+        "\nWarning: Exporting a description without the scope 'users' as AutoYaST" \
+        " profile will result in a root account without a password which prevents" \
+        " logging in.\n" \
+        "So either inspect or add the scope 'users' before the export or" \
+        " add a section for the root user to the AutoYaST profile."
+      )
+    end
   end
 
   def write(output_dir)
