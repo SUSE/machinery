@@ -16,13 +16,18 @@
 # you may find current contact information at www.suse.com
 
 class LocalSystem < System
+  @@os = nil
+
   class << self
     def os
-      description = SystemDescription.new("localhost",
-        SystemDescriptionMemoryStore.new)
-      inspector = OsInspector.new
-      inspector.inspect(System.for("localhost"), description)
-      description.os
+      if !@@os
+        description = SystemDescription.new("localhost",
+          SystemDescriptionMemoryStore.new)
+        inspector = OsInspector.new
+        inspector.inspect(System.for("localhost"), description)
+        @@os = description.os
+      end
+      @@os
     end
 
     def validate_existence_of_package(package)
