@@ -34,3 +34,21 @@ describe Machinery do
     end
   end
 end
+
+describe "#with_env" do
+  it "sets the environment variable" do
+    expect(ENV.include?("MACHINERY_TEST")).to be false
+    with_env "MACHINERY_TEST" => "bla" do
+      expect(ENV.include?("MACHINERY_TEST")).to be true
+      expect(ENV.fetch("MACHINERY_TEST")).to eq("bla")
+    end
+  end
+
+  it "resets the environment variables after run" do
+    before_env = ENV
+    with_env "MACHINERY_TEST" => "bla" do
+      expect(ENV.include?("MACHINERY_TEST")).to be true
+    end
+    expect(ENV).to eq(before_env)
+  end
+end
