@@ -22,33 +22,9 @@ describe DeployTask do
 
   let(:deploy_task) { DeployTask.new }
   let(:system_description) {
-    create_test_description(json: <<-EOF, store: SystemDescriptionStore.new, name: "test")
-      {
-        "packages": [
-          {
-            "name": "kernel-desktop",
-            "version": "3.7.10",
-            "release": "1.0",
-            "arch": "x86_64",
-            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-          }
-        ],
-        "repositories": [
-          {
-            "alias": "nodejs",
-            "name": "nodejs",
-            "type": "rpm-md",
-            "url": "http://d.opensuse.org/r/devel:/languages:/nodejs/openSUSE_13.1/"
-          }
-        ],
-        "os": {
-          "name": "SUSE Linux Enterprise Server 11",
-          "version": "11 SP3",
-          "architecture": "x86_64"
-        }
-      }
-    EOF
+    create_test_description(
+      scopes: ["os", "repositories", "packages"], name: "test", store: SystemDescriptionStore.new
+    )
   }
 
   let(:cloud_config_file) { "/example-openrc.sh" }
