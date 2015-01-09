@@ -66,7 +66,7 @@ class Os < Machinery::Object
   end
 
   def can_build?(os)
-    self.class.buildable_systems.include?(os.class)
+    self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
   end
 
   def module_required_by_package(package)

@@ -17,8 +17,10 @@
 
 class DeployTask
   def deploy(description, cloud_config, options = {})
-    LocalSystem.validate_existence_of_package("python-glanceclient")
     LocalSystem.validate_architecture("x86_64")
+    LocalSystem.validate_existence_of_package("python-glanceclient")
+    LocalSystem.validate_build_compatibility(description)
+
     if !File.exists?(cloud_config)
       raise(Machinery::Errors::DeployFailed,
         "The cloud config file '#{cloud_config}' could not be found."

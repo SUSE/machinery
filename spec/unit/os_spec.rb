@@ -41,17 +41,19 @@ describe Os do
   end
 
   it "returns if SLES 12 can build SLES 11 and SLES 12" do
-    os = OsSles12.new
+    os = OsSles12.new(architecture: "x86_64")
 
-    expect(os.can_build?(OsSles12.new)).to be(true)
-    expect(os.can_build?(OsSles11.new)).to be(false)
+    expect(os.can_build?(OsSles12.new(architecture: "x86_64"))).to be(true)
+    expect(os.can_build?(OsSles11.new(architecture: "x86_64"))).to be(false)
+    expect(os.can_build?(OsSles12.new(architecture: "i586"))).to be(false)
   end
 
   it "returns if SLES 11 can build SLES 11 and SLES 12" do
-    os = OsSles11.new
+    os = OsSles11.new(architecture: "x86_64")
 
-    expect(os.can_build?(OsSles12.new)).to be(false)
-    expect(os.can_build?(OsSles12.new)).to be(false)
+    expect(os.can_build?(OsSles12.new(architecture: "x86_64"))).to be(false)
+    expect(os.can_build?(OsSles12.new(architecture: "x86_64"))).to be(false)
+    expect(os.can_build?(OsSles12.new(architecture: "i586"))).to be(false)
   end
 
   it "returns a display name from the class" do

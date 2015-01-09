@@ -57,7 +57,7 @@ describe BuildTask do
   let(:image_file) { system_description.name + ".x86_64-0.0.1.qcow2" }
 
   before(:each) {
-    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new(architecture: "x86_64"))
     allow(Cheetah).to receive(:run)
     allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
     Dir.mkdir("/tmp")
@@ -148,7 +148,16 @@ describe BuildTask do
 
       expect {
         build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::Errors::IncompatibleHost, /architecture/)
+      }.to raise_error(Machinery::Errors::IncompatibleHost,
+        /operation is not supported on architecture 'i586'/)
+    end
+
+    it "shows an error when the system description's architecture is not supported" do
+      allow(LocalSystem).to receive(:validate_architecture)
+      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      expect {
+        build_task.build(system_description, output_path)
+      }.to raise_error(Machinery::Errors::BuildFailed, /architecture/)
     end
   end
 
