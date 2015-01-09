@@ -148,16 +148,17 @@ class Renderer
     @stack = []
     missing_descriptions = Array.new
 
-    @buffer += "# #{display_name}\n"
-
-   if !description1[scope]
+    if !description1[scope]
       missing_descriptions << description1.name
     end
     if !description2[scope]
       missing_descriptions << description2.name
     end
 
-    indent { puts "Unable to compare, no data in '#{missing_descriptions.join("', '")}'" }
+    if missing_descriptions.count == 1
+      @buffer += "# #{display_name}\n"
+      indent { puts "Unable to compare, no data in '#{missing_descriptions.join("', '")}'" }
+    end
     @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
 
     @buffer
