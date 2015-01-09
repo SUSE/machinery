@@ -96,17 +96,4 @@ class Zypper
       LoggedCheetah.run *cmd
     end
   end
-
-  def with_env(env)
-    # ENV isn't a Hash, but a weird Hash-like object. Calling #to_hash on it
-    # will copy its items into a newly created Hash instance. This approach
-    # ensures that any modifications of ENV won't affect the stored value.
-    saved_env = ENV.to_hash
-    begin
-      ENV.replace(saved_env.merge(env))
-      yield
-    ensure
-      ENV.replace(saved_env)
-    end
-  end
 end
