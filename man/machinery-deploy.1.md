@@ -60,7 +60,7 @@ This command is particularly useful for testing, debugging, or for validation.
 
 ### SUPPORTED ARCHITECTURES
 
-Machinery supports deploying x86_64 images on x86_64 systems.
+Machinery only supports deploying x86_64 images on x86_64 systems.
 
 ### EXAMPLES
 
