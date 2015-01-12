@@ -20,7 +20,8 @@ class PatternsInspector < Inspector
     system.check_requirement("zypper", "--version")
 
     begin
-      xml = system.run_command("zypper", "-xq", "patterns", "-i", stdout: :capture)
+      xml = system.run_command("zypper", "-xq", "--no-refresh", "patterns",
+        "-i", stdout: :capture)
     rescue Cheetah::ExecutionFailed => e
       if e.stdout.include?("locked")
         Machinery.logger.error(e.stdout)

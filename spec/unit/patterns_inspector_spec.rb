@@ -56,7 +56,7 @@ describe PatternsInspector do
   describe "#inspect" do
     it "parses the patterns list into a Hash" do
       expect(system).to receive(:run_command).
-        with("zypper", "-xq", "patterns", "-i", {:stdout=>:capture}).
+        with("zypper", "-xq", "--no-refresh", "patterns", "-i", {:stdout=>:capture}).
         and_return(zypper_output)
       summary = patterns_inspector.inspect(system, description)
 
@@ -89,7 +89,8 @@ describe PatternsInspector do
 
     it "raises an error if zypper is locked" do
       expect(system).to receive(:run_command).
-        with("zypper", "-xq", "patterns", "-i", stdout: :capture).
+        with("zypper", "-xq", "--no-refresh", "patterns", "-i",
+          stdout: :capture).
         and_raise(Cheetah::ExecutionFailed.new(
           nil, nil, "System management is locked by the application with pid 5480 (zypper).", nil)
         )
