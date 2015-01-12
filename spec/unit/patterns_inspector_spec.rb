@@ -56,7 +56,7 @@ describe PatternsInspector do
   describe "#inspect" do
     it "parses the patterns list into a Hash" do
       expect(system).to receive(:run_command).
-        with("zypper", "-xq", "--no-refresh", "patterns", "-i", {:stdout=>:capture}).
+        with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
         and_return(zypper_output)
       summary = patterns_inspector.inspect(system, description)
 
