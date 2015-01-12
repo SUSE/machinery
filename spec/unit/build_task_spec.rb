@@ -148,7 +148,7 @@ describe BuildTask do
 
       expect {
         build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::Errors::IncompatibleHost,
+      }.to raise_error(Machinery::Errors::UnsupportedArchitecture,
         /operation is not supported on architecture 'i586'/)
     end
 
