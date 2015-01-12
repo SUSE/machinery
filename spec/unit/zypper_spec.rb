@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -35,13 +35,18 @@ describe Zypper do
       end
     end
 
-    it "sets the zypper runtime architecture" do
-      expect(Zypper).to receive(:cleanup)
+    it "sets architecture in config file" do
+      Zypper.isolated(arch: :ppc64le) do |zypper|
+        expect(File.readlines(zypper.zypp_config)).to include("arch=ppc64le")
+      end
+    end
 
-      Zypper.isolated(arch: :x86_64) do |zypper|
+    it "sets a ZYPP_CONF environment variable" do
+      Zypper.isolated(arch: :ppc64le) do |zypper|
         allow(LoggedCheetah).to receive(:run)
         expect(LoggedCheetah).to receive(:run) do |*args|
-          expect(args).to include("--config")
+          expect(ENV.include?("ZYPP_CONF")).to be true
+          expect(ENV.fetch("ZYPP_CONF")).to eq(zypper.zypp_config)
         end
 
         zypper.refresh

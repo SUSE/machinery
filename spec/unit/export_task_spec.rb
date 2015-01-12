@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -22,6 +22,7 @@ describe ExportTask do
 
   let(:exporter) {
     double(
+      name: "kiwi",
       export_name: "name-type",
       system_description: create_test_description(scopes: ["unmanaged_files"])
     )

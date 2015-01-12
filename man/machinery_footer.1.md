@@ -23,4 +23,4 @@
 
 ## COPYRIGHT
 
-Copyright \(c) 2013-2014 [SUSE LLC](http://www.suse.com)
+Copyright \(c) 2013-2015 [SUSE LLC](http://www.suse.com)

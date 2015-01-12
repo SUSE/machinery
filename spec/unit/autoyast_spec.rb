@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -79,11 +79,11 @@ describe Autoyast do
     end
 
     it "adds unmanaged files filter list" do
-      expect(File.exists?(File.join(@output_dir, "unmanaged_files_build_excludes"))).to be(true)
+      expect(File.exists?(File.join(@output_dir, "unmanaged_files_autoyast_excludes"))).to be(true)
     end
 
     it "filters log files from the Autoyast export" do
-      expect(File.read(File.join(@output_dir, "unmanaged_files_build_excludes"))).
+      expect(File.read(File.join(@output_dir, "unmanaged_files_autoyast_excludes"))).
         to include("var/log/*")
     end
 

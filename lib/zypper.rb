@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -23,6 +23,7 @@
 # polluting the host.
 class Zypper
   attr_accessor :zypper_options
+  attr_accessor :zypp_config
 
   class <<self
     def isolated(options = {}, &block)
@@ -36,8 +37,7 @@ class Zypper
       ]
 
       if options[:arch]
-        config = create_arch_config(zypper_base, options[:arch])
-        zypper.zypper_options.unshift("--config", config)
+        zypper.zypp_config = create_zypp_config(zypper_base, options[:arch])
       end
 
       block.call(zypper)
@@ -47,20 +47,22 @@ class Zypper
 
     private
 
-    def create_arch_config(base, arch)
-      config = File.join(base, "zypp.conf")
+    def create_zypp_config(base_path, arch)
+      zypp_dir = File.join(base_path, "/etc/zypp")
+      zypp_config = File.join(zypp_dir, "zypp.conf")
 
-      File.new(config, "w")
-      File.write(config,
+      FileUtils.mkdir_p(zypp_dir)
+
+      File.write(zypp_config,
         "[main]\n" \
         "arch=#{arch}"
       )
 
-      config
+      zypp_config
     end
 
     def cleanup(base)
-      LoggedCheetah.run("sudo", "rm", "-r", base)
+      LoggedCheetah.run("rm", "-r", base)
     end
   end
 
@@ -86,10 +88,12 @@ class Zypper
   private
 
   def call_zypper(*args)
-    cmd = ["sudo", "zypper"]
+    cmd = ["zypper"]
     cmd += @zypper_options if @zypper_options
     cmd += args
 
-    LoggedCheetah.run(*cmd)
+    with_env "ZYPP_CONF" => @zypp_config do
+      LoggedCheetah.run *cmd
+    end
   end
 end

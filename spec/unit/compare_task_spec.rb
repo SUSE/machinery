@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -177,9 +177,6 @@ Common to both systems:
 # Bar
   Unable to compare, no data in 'name4'
 
-# Baz
-  Unable to compare, no data in 'name3', 'name4'
-
 # Foobar
 
 Only in 'name3':
@@ -194,12 +191,6 @@ Only in 'name4':
     let(:output_missing_same) {
       <<-EOT
 Compared descriptions are identical.
-# Foo
-  Unable to compare, no data in 'name3', 'name3'
-
-# Baz
-  Unable to compare, no data in 'name3', 'name3'
-
       EOT
     }
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -16,25 +16,33 @@
 # you may find current contact information at www.suse.com
 
 class Autoyast < Exporter
+  attr_accessor :name
+
   def initialize(description)
+    @name = "autoyast"
     @chroot_scripts = []
     @system_description = description
     @system_description.assert_scopes(
       "repositories",
       "packages"
     )
+    if !description.users
+      Machinery::Ui.puts(
+        "\nWarning: Exporting a description without the scope 'users' as AutoYaST" \
+        " profile will result in a root account without a password which prevents" \
+        " logging in.\n" \
+        "So either inspect or add the scope 'users' before the export or" \
+        " add a section for the root user to the AutoYaST profile."
+      )
+    end
   end
 
   def write(output_dir)
     FileUtils.cp(
-      File.join(Machinery::ROOT, "export_helpers/unmanaged_files_build_excludes"),
+      File.join(Machinery::ROOT, "export_helpers/unmanaged_files_#{@name}_excludes"),
       output_dir
     )
-    # Filter log files to prevent an issue with hanging gzip during installation
-    File.open(File.join(output_dir, "unmanaged_files_build_excludes"), "a") do |file|
-      file.puts "var/log/*"
-    end
-    FileUtils.chmod(0600, File.join(output_dir, "unmanaged_files_build_excludes"))
+    FileUtils.chmod(0600, File.join(output_dir, "unmanaged_files_#{@name}_excludes"))
     FileUtils.cp(
       File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
       File.join(output_dir, "README.md")
@@ -279,7 +287,7 @@ class Autoyast < Exporter
 
     base = Pathname(@system_description.scope_file_store("unmanaged_files").path)
     @chroot_scripts << <<-EOF
-      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_build_excludes"
+      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_#{@name}_excludes"
     EOF
 
     Dir["#{base}/**/*.tgz"].sort.each do |path|

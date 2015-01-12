@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -66,7 +66,7 @@ class Os < Machinery::Object
   end
 
   def can_build?(os)
-    self.class.buildable_systems.include?(os.class)
+    self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
   end
 
   def module_required_by_package(package)

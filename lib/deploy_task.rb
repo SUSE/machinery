@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -17,8 +17,10 @@
 
 class DeployTask
   def deploy(description, cloud_config, options = {})
-    LocalSystem.validate_existence_of_package("python-glanceclient")
     LocalSystem.validate_architecture("x86_64")
+    LocalSystem.validate_existence_of_package("python-glanceclient")
+    LocalSystem.validate_build_compatibility(description)
+
     if !File.exists?(cloud_config)
       raise(Machinery::Errors::DeployFailed,
         "The cloud config file '#{cloud_config}' could not be found."

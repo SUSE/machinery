@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -32,5 +32,23 @@ describe Machinery do
       expect(Machinery::is_int?(" 1")).to be(false)
       expect(Machinery::is_int?("")).to be(false)
     end
+  end
+end
+
+describe "#with_env" do
+  it "sets the environment variable" do
+    expect(ENV.include?("MACHINERY_TEST")).to be false
+    with_env "MACHINERY_TEST" => "bla" do
+      expect(ENV.include?("MACHINERY_TEST")).to be true
+      expect(ENV.fetch("MACHINERY_TEST")).to eq("bla")
+    end
+  end
+
+  it "resets the environment variables after run" do
+    before_env = ENV
+    with_env "MACHINERY_TEST" => "bla" do
+      expect(ENV.include?("MACHINERY_TEST")).to be true
+    end
+    expect(ENV).to eq(before_env)
   end
 end

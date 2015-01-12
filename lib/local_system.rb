@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -16,13 +16,18 @@
 # you may find current contact information at www.suse.com
 
 class LocalSystem < System
+  @@os = nil
+
   class << self
     def os
-      description = SystemDescription.new("localhost",
-        SystemDescriptionMemoryStore.new)
-      inspector = OsInspector.new
-      inspector.inspect(System.for("localhost"), description)
-      description.os
+      if !@@os
+        description = SystemDescription.new("localhost",
+          SystemDescriptionMemoryStore.new)
+        inspector = OsInspector.new
+        inspector.inspect(System.for("localhost"), description)
+        @@os = description.os
+      end
+      @@os
     end
 
     def validate_existence_of_package(package)
@@ -52,7 +57,8 @@ class LocalSystem < System
 
     def validate_build_compatibility(system_description)
       if !os.can_build?(system_description.os)
-        message = "Building '#{system_description.os.canonical_name}' images is " \
+        message = "Building '#{system_description.os.canonical_name}' images with " \
+          "architecture '#{system_description.os.architecture}' is " \
           "not supported on this distribution.\n" \
           "Check the 'BUILD SUPPORT MATRIX' section in our man page for " \
           "further information which build targets are supported."
@@ -63,7 +69,7 @@ class LocalSystem < System
 
     def validate_architecture(arch)
       if os.architecture != arch
-        raise(Machinery::Errors::IncompatibleHost.new(
+        raise(Machinery::Errors::UnsupportedArchitecture.new(
           "This operation is not supported on architecture '#{os.architecture}'."
         ))
       end
@@ -108,24 +114,4 @@ class LocalSystem < System
     # File not found, return nil
     return
   end
-
-  private
-
-  def with_c_locale(&block)
-    with_env "LC_ALL" => "C", &block
-  end
-
-  def with_env(env)
-    # ENV isn't a Hash, but a weird Hash-like object. Calling #to_hash on it
-    # will copy its items into a newly created Hash instance. This approach
-    # ensures that any modifications of ENV won't affect the stored value.
-    saved_env = ENV.to_hash
-    begin
-      ENV.replace(saved_env.merge(env))
-      yield
-    ensure
-      ENV.replace(saved_env)
-    end
-  end
-
 end

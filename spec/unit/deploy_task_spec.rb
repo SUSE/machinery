@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2014 SUSE LLC
+# Copyright (c) 2013-2015 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -20,11 +20,13 @@ require_relative "spec_helper"
 describe DeployTask do
   include FakeFS::SpecHelpers
 
-  let(:store) { SystemDescriptionStore.new }
   let(:deploy_task) { DeployTask.new }
   let(:system_description) {
-    SystemDescription.new("test", store)
+    create_test_description(
+      scopes: ["os", "repositories", "packages"], name: "test", store: SystemDescriptionStore.new
+    )
   }
+
   let(:cloud_config_file) { "/example-openrc.sh" }
   let(:tmp_image_dir) { "/tmp/test-image2014" }
   let(:image_dir) { "/image" }
@@ -112,7 +114,16 @@ describe DeployTask do
       allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
       expect {
         deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)
-      }.to raise_error(Machinery::Errors::IncompatibleHost, /architecture/)
+      }.to raise_error(Machinery::Errors::UnsupportedArchitecture,
+        /operation is not supported on architecture 'i586'/)
+    end
+
+    it "shows an error when the system description's architecture is not supported" do
+      allow(LocalSystem).to receive(:validate_architecture)
+      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      expect {
+        deploy_task.deploy(system_description, cloud_config_file)
+      }.to raise_error(Machinery::Errors::BuildFailed, /architecture/)
     end
   end
 end
