@@ -69,7 +69,7 @@ class LocalSystem < System
 
     def validate_architecture(arch)
       if os.architecture != arch
-        raise(Machinery::Errors::IncompatibleHost.new(
+        raise(Machinery::Errors::UnsupportedArchitecture.new(
           "This operation is not supported on architecture '#{os.architecture}'."
         ))
       end

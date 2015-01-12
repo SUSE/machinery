@@ -114,7 +114,7 @@ describe DeployTask do
       allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
       expect {
         deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)
-      }.to raise_error(Machinery::Errors::IncompatibleHost,
+      }.to raise_error(Machinery::Errors::UnsupportedArchitecture,
         /operation is not supported on architecture 'i586'/)
     end
 

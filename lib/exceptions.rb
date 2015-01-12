@@ -110,5 +110,6 @@ module Machinery
     class OpenInBrowserFailed < MachineryError; end
     class ZypperFailed < MachineryError; end
     class UnknownConfig < MachineryError; end
+    class UnsupportedArchitecture < MachineryError; end
   end
 end
