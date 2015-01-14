@@ -21,7 +21,7 @@ require "given_filesystem/spec_helpers"
 require File.expand_path('../../../lib/machinery', __FILE__)
 
 require_relative "../support/system_description_factory"
-require_relative "../support/machinery_output_silencer"
+require_relative "../support/machinery_output"
 Dir[File.join(Machinery::ROOT, "/spec/unit/support/*.rb")].each { |f| require f }
 
 bin_path = File.expand_path( "../../../bin/", __FILE__ )
@@ -35,7 +35,7 @@ Machinery.initialize_logger("/tmp/machinery_test.log")
 
 RSpec.configure do |config|
   config.include(SystemDescriptionFactory)
-  config.include(MachineryOutputSilencer)
+  config.include(MachineryOutput)
 
   config.before(:each) do
     allow_any_instance_of(System).to receive(:check_requirement)
