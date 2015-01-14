@@ -27,4 +27,54 @@ module MachineryOutput
       end
     end
   end
+
+  def capture_machinery_output
+    before(:each) do
+      stub_const(
+        "Machinery::Ui", Class.new(Machinery::Ui) do
+          def self.puts(s)
+            @output ||= ""
+            @stdout ||= ""
+            @output += "\n" + s
+            @stdout += "\n" + s
+          end
+
+          def self.warn(s)
+            @output ||= ""
+            @stderr ||= ""
+            @output += "\n" + s
+            @stderr += "\n" + s
+          end
+
+          def self.error(s)
+            warn(s)
+          end
+
+          def self.output
+            @output
+          end
+
+          def self.stdout
+            @stdout
+          end
+
+          def self.stderr
+            @stderr
+          end
+        end
+      )
+    end
+  end
+
+  def captured_machinery_output
+    Machinery::Ui.output || ""
+  end
+
+  def captured_machinery_stdout
+    Machinery::Ui.stdout || ""
+  end
+
+  def captured_machinery_stderr
+    Machinery::Ui.stderr || ""
+  end
 end
