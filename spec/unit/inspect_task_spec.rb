@@ -97,13 +97,25 @@ describe InspectTask, "#inspect_system" do
   end
 
   describe "in case of inspection errors" do
+    capture_machinery_output
+
     it "raises Machinery::Errors::ScopeFailed on 'expected errors'" do
       expect_any_instance_of(FooInspector).to receive(:inspect).
-        and_raise(Machinery::Errors::SshConnectionFailed)
+        and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
         inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"])
-      }.to raise_error(Machinery::Errors::InspectionFailed)
+      }.to raise_error(
+        Machinery::Errors::InspectionFailed,
+        /Errors while inspecting foo:\n -> This is an SSH error/
+      )
+      expect(captured_machinery_output).to include(
+        <<-EOF
+
+Inspecting foo...
+ -> Inspection failed!
+        EOF
+      )
     end
 
     it "bubbles up 'unexpected errors'" do
