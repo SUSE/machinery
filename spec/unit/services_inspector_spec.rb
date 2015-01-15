@@ -37,18 +37,10 @@ syslog.socket     enabled
 EOF
     }
 
-    let(:chkconfig_output) {
-      <<-EOF
-boot.isapnp               on
-alsasound                 on
-autofs                    off
-EOF
-    }
-
     it "returns data about systemd services when systemd is present" do
       system = double
-      expect(system).to receive(:run_command).
-        with("systemctl", "--version")
+      allow(system).to receive(:has_command?).
+        with("systemctl", "--version").and_return(true)
       expect(system).to receive(:run_command).
         with(
           "systemctl",
@@ -71,19 +63,21 @@ EOF
       expect(summary).to eq("Found 3 services.")
     end
 
-    it "returns data about SysVinit services when no systemd is present" do
+    it "returns data about SysVinit services on a suse system when no systemd is present" do
       system = double
-      expect(system).to receive(:run_command).
-        with("systemctl", "--version").
+      allow(system).to receive(:has_command?).
+        with("systemctl", "--version").and_return(false)
+      allow(system).to receive(:run_command).
+        with("chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
-      expect(system).to receive(:check_requirement).
-        with("chkconfig", "--help")
-      expect(system).to receive(:run_command).
-        with("chkconfig", "--allservices", :stdout => :capture).
-        and_return(chkconfig_output)
+
+      expect(inspector).to receive(:parse_suse_chkconfig).
+        and_return([
+          Service.new(name: "alsasound",   state: "on"),
+          Service.new(name: "autofs",      state: "off"),
+          Service.new(name: "boot.isapnp", state: "on")])
 
       summary = inspector.inspect(system, description)
-
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",
@@ -98,8 +92,10 @@ EOF
 
     it "raises an exception when requirements are not fulfilled" do
       system = double
-      expect(system).to receive(:run_command).
-        with("systemctl", "--version").
+      allow(system).to receive(:has_command?).
+        with("systemctl", "--version").and_return(false)
+      allow(system).to receive(:run_command).
+        with("chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
       expect(system).to receive(:check_requirement).
         with("chkconfig", "--help").
@@ -108,6 +104,95 @@ EOF
       expect {
         inspector.inspect(system, description)
       }.to raise_error(Machinery::Errors::MissingRequirement)
+    end
+
+    it "returns data about SysVinit services on a redhat system" do
+      system = double
+      allow(system).to receive(:has_command?).
+        with("systemctl", "--version").and_return(false)
+      allow(system).to receive(:run_command).
+        with("chkconfig", "--version")
+      expect(inspector).to receive(:parse_redhat_chkconfig).
+        and_return([
+          Service.new(name: "crond", state: "on"),
+          Service.new(name: "dnsmasq", state: "off")])
+
+      summary = inspector.inspect(system, description)
+
+      expect(description.services).to eq(ServicesScope.new(
+        init_system: "sysvinit",
+        services: ServiceList.new([
+          Service.new(name: "crond", state: "on"),
+          Service.new(name: "dnsmasq", state: "off"),
+        ])
+      ))
+      expect(summary).to eq("Found 2 services.")
+    end
+  end
+
+  describe "parse_suse_chkconfig" do
+    it "returns data about SysVinit services on a suse system" do
+      chkconfig_suse_output =
+        <<-EOF
+boot.isapnp               on
+alsasound                 on
+autofs                    off
+EOF
+      system = double
+      inspector = ServicesInspector.new
+
+      allow(system).to receive(:has_command?).
+        with("systemctl", "--version").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("chkconfig", "--version").and_return(false)
+
+      expect(system).to receive(:check_requirement).
+        with("chkconfig", "--help")
+
+      expect(system).to receive(:run_command).
+        with("chkconfig", "--allservices", stdout: :capture).
+      and_return(chkconfig_suse_output)
+      services = inspector.send(:parse_suse_chkconfig, system)
+
+      expect(services).to match_array([
+        Service.new(name: "alsasound",   state: "on"),
+        Service.new(name: "boot.isapnp", state: "on"),
+        Service.new(name: "autofs",      state: "off")
+      ])
+    end
+  end
+
+  describe "parse_redhat_chkconfig" do
+    it "returns data about SysVinit services on a redhat system" do
+      chkconfig_redhat_output =
+        <<-EOF
+crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
+dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
+EOF
+      system = double
+      inspector = ServicesInspector.new
+
+      allow(system).to receive(:has_command?).
+        with("systemctl", "--version").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("chkconfig", "--version").and_return(true)
+
+      expect(system).to receive(:check_requirement).
+        with("chkconfig", "--version")
+      expect(system).to receive(:check_requirement).
+        with("runlevel")
+      expect(system).to receive(:run_command).
+        with("runlevel", stdout: :capture).
+        and_return("N 5")
+      expect(system).to receive(:run_command).
+        with("chkconfig", "--list", stdout: :capture).
+      and_return(chkconfig_redhat_output)
+      services = inspector.send(:parse_redhat_chkconfig, system)
+
+      expect(services).to eq([
+        Service.new(name: "crond", state: "on"),
+        Service.new(name: "dnsmasq", state: "off")
+      ])
     end
   end
 end
