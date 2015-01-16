@@ -39,32 +39,6 @@ class PatternsInspector < Inspector
       return "Found 0 patterns."
     end
 
-    # The zypper patterns output looks like this:
-    #
-    # <?xml version='1.0'?>
-    # <stream>
-    # <pattern-list>
-    # <pattern name="base" version="13.1" release="13.6.1" epoch="0" arch="i586" vendor="openSUSE" summary="Base System" repo="repo-oss" installed="1" uservisible="1">
-    # <description>This is the base runtime system.  It contains only a minimal multiuser booting system. For running on real hardware, you need to add additional packages and pattern to make this pattern useful on its own.</description>
-    # </pattern>
-    # <pattern name="base" version="13.1" release="13.6.1" epoch="0" arch="x86_64" vendor="openSUSE" summary="Base System" repo="repo-oss" installed="1" uservisible="1">
-    # <description>This is the base runtime system.  It contains only a minimal multiuser booting system. For running on real hardware, you need to add additional packages and pattern to make this pattern useful on its own.</description>
-    # </pattern>
-    # </pattern-list>
-    # </stream>
-    #
-    #
-    # and we want to return an array of pattern objects like this:
-    #
-    # [
-    #   {
-    #     name: "base",
-    #     version: "13.1-13.6.1",
-    #   }
-    # ]
-    #
-    # Patterns listed for different architectures should be combined.
-
     patterns = pattern_list.map do |pattern|
       Pattern.new(
         name: pattern["name"],
