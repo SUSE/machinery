@@ -117,4 +117,18 @@ describe System do
       end
     end
   end
+
+  describe "#has_command" do
+    it "returns true if the system has the command" do
+      system = LocalSystem.new
+
+      expect(system.has_command?("echo")).to be(true)
+    end
+
+    it "returns false if the system hasn't the command" do
+      system = LocalSystem.new
+
+      expect(system.has_command?("not_existing_command")).to be(false)
+    end
+  end
 end

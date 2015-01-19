@@ -78,4 +78,11 @@ class System
 
     run_command("bash", "-c", script, *args)
   end
+
+  def has_command?(command)
+    run_command("bash", "-c", "type -P #{command}", stdout: :capture)
+    true
+  rescue Cheetah::ExecutionFailed
+    false
+  end
 end
