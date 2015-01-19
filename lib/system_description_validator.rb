@@ -73,9 +73,7 @@ class SystemDescriptionValidator
       end
     end
 
-    if !errors.empty?
-      raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
-    end
+    errors
   end
 
   def missing_files_for_plain_scope(scope)
@@ -149,11 +147,7 @@ class SystemDescriptionValidator
       end
     end
 
-    if !errors.empty?
-      e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
-      e.header = "Error validating description '#{@description.name}'"
-      raise e
-    end
+    errors
   end
 
   def cleanup_json_error_message(message, scope)

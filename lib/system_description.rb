@@ -43,11 +43,11 @@ class SystemDescription < Machinery::Object
     # If there are file validation errors the call fails with an exception
     def load!(name, store)
       manifest = Manifest.load(name, store.manifest_path(name))
-      manifest.validate
+      manifest.validate!
 
       description = from_hash(name, store, manifest.to_hash)
       description.validate_compatibility
-      description.validate_file_data
+      description.validate_file_data!
       description
     end
 
@@ -61,12 +61,7 @@ class SystemDescription < Machinery::Object
 
       description = from_hash(name, store, manifest.to_hash)
       description.validate_compatibility
-      begin
-        description.validate_file_data
-      rescue Machinery::Errors::SystemDescriptionValidationFailed => e
-        Machinery::Ui.warn("Warning: File validation errors:")
-        Machinery::Ui.warn(e.to_s)
-      end
+      description.validate_file_data
       description
     end
 
@@ -215,7 +210,21 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_file_data
-    SystemDescriptionValidator.new(self).validate_file_data
+    errors = SystemDescriptionValidator.new(self).validate_file_data
+    if !errors.empty?
+      Machinery::Ui.warn("Warning: File validation errors:")
+      Machinery::Ui.warn("Error validating description '#{@name}'\n\n")
+      Machinery::Ui.warn(errors)
+    end
+  end
+
+  def validate_file_data!
+    errors = SystemDescriptionValidator.new(self).validate_file_data
+    if !errors.empty?
+      e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
+      e.header = "Error validating description '#{@name}'"
+      raise e
+    end
   end
 
   def description_path

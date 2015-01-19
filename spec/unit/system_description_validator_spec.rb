@@ -252,14 +252,17 @@ EOT
         SystemDescription.load("changed-managed-files-good", @store)
       end
 
-      it "throws error on invalid description" do
+      it "throws a warning on invalid description" do
         expect(Machinery::Ui).to receive(:warn).with("Warning: File validation errors:")
-        expect(Machinery::Ui).to receive(:warn).with(<<EOT
-Error validating description 'changed-managed-files-bad'
-
-Scope 'changed_managed_files':
-  * File 'spec/data/descriptions/validation/changed-managed-files-bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
-EOT
+        expect(Machinery::Ui).to receive(:warn).with(
+          "Error validating description 'changed-managed-files-bad'\n\n"
+        )
+        expect(Machinery::Ui).to receive(:warn).with(
+          [
+            "Scope 'changed_managed_files':\n" \
+            "  * File 'spec/data/descriptions/validation/changed-managed-files-bad/" \
+            "changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist"
+          ]
         )
 
         SystemDescription.load("changed-managed-files-bad", @store)
