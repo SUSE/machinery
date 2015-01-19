@@ -1,6 +1,7 @@
 # Machinery Release Notes
 
-* Add support for inspecting s390 systems
+* Added support for inspecting System z systems
+* Added support for inspecting POWER LE systems
 
 ## Version 1.2.0 - Mon Dec 22 15:06:20 CET 2014 - aduffeck@suse.de
 
