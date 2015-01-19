@@ -19,5 +19,8 @@ class ValidateTask
   def validate(store, name)
     SystemDescription.load!(name, store)
     Machinery::Ui.puts "Validation succeeded."
+  rescue
+    Machinery::Ui.puts "Validation failed."
+    raise
   end
 end
