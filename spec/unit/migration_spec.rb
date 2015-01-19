@@ -106,7 +106,7 @@ describe Migration do
       manifest = Manifest.load("v2_description", store.manifest_path("v2_description"))
       validate_environment = ->(hash, path) {
         expect(hash).to eq(manifest.to_hash)
-        expect(path).to eq(store.description_path("v2_description"))
+        expect(path).to eq(store.description_path("v2_description.backup"))
       }
 
       Migrate2To3.send(:define_method, :migrate) do

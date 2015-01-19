@@ -586,13 +586,20 @@ class Cli
   command "upgrade-format" do |c|
     c.switch :all, :negatable => false,
       :desc => "Upgrade all system descriptions"
+    c.switch :force, :default_value => false, :required => false, :negatable => false,
+      :desc => "Keep backup after migration and ingnore validation errors"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME") if !options[:all]
 
       store = SystemDescriptionStore.new
       task = UpgradeFormatTask.new
-      task.upgrade(store, name, :all => options[:all])
+      task.upgrade(
+        store,
+        name,
+        :all => options[:all],
+        :force => options[:force]
+      )
     end
   end
 

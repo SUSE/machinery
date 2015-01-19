@@ -63,7 +63,7 @@ class Migration
       @migration_desc = s
     end
 
-    def migrate_description(store, description_name)
+    def migrate_description(store, description_name, options = {})
       load_migrations
 
       manifest = Manifest.load(description_name, store.manifest_path(description_name))
@@ -79,9 +79,17 @@ class Migration
       end
 
       if current_version == SystemDescription::CURRENT_FORMAT_VERSION
-        # Nothing to do here
+        Machinery::Ui.puts "System description \"#{description_name}\" is up to " \
+          "date, no upgrade necessary."
         return false
       end
+
+      Machinery::Ui.puts "Creating copy from \"#{description_name}\"..."
+      backup_description = store.backup(description_name)
+      backup_path = store.description_path(backup_description)
+      backup_hash = Manifest.load(
+        backup_description, store.manifest_path(backup_description)
+      ).to_hash
 
       (current_version..SystemDescription::CURRENT_FORMAT_VERSION-1).each do |version|
         next_version = version + 1
@@ -99,11 +107,28 @@ class Migration
           )
         end
 
-        klass.new(hash, path).migrate
-        hash["meta"]["format_version"] = next_version
+        klass.new(backup_hash, backup_path).migrate
+        backup_hash["meta"]["format_version"] = next_version
       end
 
-      File.write(store.manifest_path(description_name), JSON.pretty_generate(hash))
+      File.write(store.manifest_path(backup_description), JSON.pretty_generate(backup_hash))
+
+      if options[:force]
+        store.rename(description_name, description_name + ".tmp")
+        store.rename(backup_description, description_name)
+        store.rename(description_name + ".tmp", backup_description)
+        SystemDescription.load(description_name, store)
+        Machinery::Ui.puts "Saved backup to #{backup_path}"
+      else
+        begin
+          SystemDescription.load!(backup_description, store)
+          store.remove(description_name)
+          store.rename(backup_description, description_name)
+        rescue Machinery::Errors::SystemDescriptionValidationFailed
+          store.remove(backup_description)
+          raise
+        end
+      end
 
       true
     end

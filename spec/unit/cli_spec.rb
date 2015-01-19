@@ -366,14 +366,20 @@ describe Cli do
   describe "#upgrade_format" do
     it "triggers the upgrade task for a specific description" do
       expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
-        with(an_instance_of(SystemDescriptionStore), "foo", {all: false})
+        with(an_instance_of(SystemDescriptionStore), "foo", all: false, force: false)
       run_command(["upgrade-format", "foo"])
     end
 
     it "triggers the upgrade task for all descriptions" do
       expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
-        with(an_instance_of(SystemDescriptionStore), nil, {all: true})
+        with(an_instance_of(SystemDescriptionStore), nil, all: true, force: false)
       run_command(["upgrade-format", "--all"])
+    end
+
+    it "triggers the upgrade task with force option" do
+      expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
+        with(an_instance_of(SystemDescriptionStore), "foo", all: false, force: true)
+      run_command(["upgrade-format", "--force", "foo"])
     end
   end
 

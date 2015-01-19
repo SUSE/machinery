@@ -33,10 +33,10 @@ class UpgradeFormatTask
     descriptions.each do |description|
       begin
         Machinery.logger.info "Upgrading description \"#{description}\""
-        migrated = Migration.migrate_description(store, description)
+        migrated = Migration.migrate_description(store, description, force: options[:force])
         migrations_done += 1 if migrated
       rescue StandardError => e
-        msg = "Upgrading description \"#{description}\" failed: #{e.to_s}"
+        msg = "Upgrading description \"#{description}\" failed:\n#{e}"
         Machinery.logger.error msg
         Machinery::Ui.error msg
       end
@@ -51,8 +51,6 @@ class UpgradeFormatTask
     else
       if migrations_done > 0
         Machinery::Ui.puts "System description \"#{name}\" successfully upgraded."
-      else
-        Machinery::Ui.puts "System description \"#{name}\" is up to date, no upgrade necessary."
       end
     end
   end
