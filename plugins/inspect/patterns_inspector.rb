@@ -17,8 +17,20 @@
 
 class PatternsInspector < Inspector
   def inspect(system, description, options = {})
-    system.check_requirement("zypper", "--version")
+    if system.has_command?("zypper")
+      inspect_with_zypper(system, description)
+    elsif system.has_command?("yum")
+      inspect_with_yum(description)
+    else
+      raise Machinery::Errors::MissingRequirement.new(
+        "Need binary zypper or yum to be available on the inspected system."
+      )
+    end
+  end
 
+  private
+
+  def inspect_with_zypper(system, description)
     begin
       xml = system.run_command("zypper", "-xq", "--no-refresh", "patterns",
         "-i", stdout: :capture)
@@ -35,7 +47,7 @@ class PatternsInspector < Inspector
     pattern_list = Nokogiri::XML(xml).xpath("/stream/pattern-list/pattern")
 
     if pattern_list.count == 0
-      description.patterns = PatternsScope.new()
+      description.patterns = PatternsScope.new
       return "Found 0 patterns."
     end
 
@@ -49,5 +61,10 @@ class PatternsInspector < Inspector
 
     description.patterns = PatternsScope.new(patterns)
     "Found #{patterns.count} patterns."
+  end
+
+  def inspect_with_yum(description)
+    description.patterns = PatternsScope.new
+    "Patterns are not supported on this system."
   end
 end
