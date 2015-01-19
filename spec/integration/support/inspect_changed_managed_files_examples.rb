@@ -61,7 +61,7 @@ shared_examples "inspect changed managed files" do |base|
 
       # test file content
       actual_content = @machinery.run_command(
-          "cat ~/.machinery/#{@subject_system.ip}/changed_managed_files/usr/share/bash/helpfiles/read",
+          "cat ~/.machinery/#{@subject_system.ip}/changed_managed_files/usr/share/info/sed.info.gz",
           as: "vagrant", stdout: :capture
       )
       expect(actual_content).to include("changed managed files test entry")

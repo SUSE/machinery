@@ -11,8 +11,8 @@ mount --bind /proc /var/lib/chroot_proc
 echo '-*/15 * * * *   root  echo config_files_integration_test &> /dev/null' >> /etc/crontab
 
 # changed-managed-files
-echo '# changed managed files test entry\n' >> /usr/share/bash/helpfiles/read
-rm '/usr/share/bash/helpfiles/cd'
+echo '# changed managed files test entry\n' >> /usr/share/info/sed.info.gz
+rm '/usr/share/man/man1/sed.1.gz'
 
 # add NIS placeholder to users/groups
 echo "+::::::" >> /etc/passwd
