@@ -19,7 +19,6 @@
         <keytable>us.map.gz</keytable>
         <timezone>Europe/Berlin</timezone>
         <hwclock>utc</hwclock>
-        <rpm-excludedocs>true</rpm-excludedocs>
     </preferences>
     <users group="root">
         <user name="root" password="vagrant" pwdformat="plain" home="/root"/>
