@@ -40,7 +40,7 @@ EOF
     it "returns data about systemd services when systemd is present" do
       system = double
       allow(system).to receive(:has_command?).
-        with("systemctl", "--version").and_return(true)
+        with("systemctl").and_return(true)
       expect(system).to receive(:run_command).
         with(
           "systemctl",
@@ -66,7 +66,7 @@ EOF
     it "returns data about SysVinit services on a suse system when no systemd is present" do
       system = double
       allow(system).to receive(:has_command?).
-        with("systemctl", "--version").and_return(false)
+        with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
         with("chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -93,7 +93,7 @@ EOF
     it "raises an exception when requirements are not fulfilled" do
       system = double
       allow(system).to receive(:has_command?).
-        with("systemctl", "--version").and_return(false)
+        with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
         with("chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -109,7 +109,7 @@ EOF
     it "returns data about SysVinit services on a redhat system" do
       system = double
       allow(system).to receive(:has_command?).
-        with("systemctl", "--version").and_return(false)
+        with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
         with("chkconfig", "--version")
       expect(inspector).to receive(:parse_redhat_chkconfig).
@@ -142,7 +142,7 @@ EOF
       inspector = ServicesInspector.new
 
       allow(system).to receive(:has_command?).
-        with("systemctl", "--version").and_return(false)
+        with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
         with("chkconfig", "--version").and_return(false)
 
@@ -173,7 +173,7 @@ EOF
       inspector = ServicesInspector.new
 
       allow(system).to receive(:has_command?).
-        with("systemctl", "--version").and_return(false)
+        with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
         with("chkconfig", "--version").and_return(true)
 
