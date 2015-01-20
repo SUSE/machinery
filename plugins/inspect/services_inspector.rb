@@ -17,15 +17,15 @@
 
 class ServicesInspector < Inspector
   def inspect(system, description, options = {})
-    if has_systemd(system)
+    if system.has_command?("systemctl")
       result = ServicesScope.new(
         init_system: "systemd",
-        services:    inspect_systemd_services(system)
+        services: inspect_systemd_services(system)
       )
     else
       result = ServicesScope.new(
         init_system: "sysvinit",
-        services:    inspect_sysvinit_services(system)
+        services: inspect_sysvinit_services(system)
       )
     end
 
@@ -34,13 +34,6 @@ class ServicesInspector < Inspector
   end
 
   private
-
-  def has_systemd(system)
-    system.run_command("systemctl", "--version")
-    true
-  rescue Cheetah::ExecutionFailed
-    false
-  end
 
   def inspect_systemd_services(system)
     output = system.run_command(
@@ -54,35 +47,65 @@ class ServicesInspector < Inspector
     # separator and a summary (e.g. "197 unit files listed"). We also filter
     # templates.
     lines = output.lines[1..-3].reject { |l| l =~ /@/ }
-
-    @summary = "Found #{lines.size} services."
-
     services = lines.map do |line|
       name, state = line.split(/\s+/)
 
       Service.new(name: name, state: state)
     end
 
+    @summary = "Found #{services.size} services."
     ServiceList.new(services.sort_by(&:name))
   end
 
   def inspect_sysvinit_services(system)
-    system.check_requirement("chkconfig", "--help")
+    # Red Hat's chkconfig behaves differently than SUSE's: It takes different
+    # command line arguments and has a different output format. We determine
+    # if it's Red Hat by calling 'chkconfig --version'. On SUSE it exits with
+    # an error, on Red Hat it doesn't.
+    #
+    begin
+      system.run_command("chkconfig", "--version")
+      services = parse_redhat_chkconfig(system)
+    rescue
+      services = parse_suse_chkconfig(system)
+    end
 
+    @summary = "Found #{services.size} services."
+    ServiceList.new(services.sort_by(&:name))
+  end
+
+  def parse_suse_chkconfig(system)
+    system.check_requirement("chkconfig", "--help")
     output = system.run_command(
       "chkconfig",
       "--allservices",
       :stdout => :capture
     )
 
-    @summary = "Found #{output.lines.size} services."
-
     services = output.lines.map do |line|
       name, state = line.split(/\s+/)
-
       Service.new(name: name, state: state)
     end
+  end
 
-    ServiceList.new(services.sort_by(&:name))
+  def parse_redhat_chkconfig(system)
+    system.check_requirement("chkconfig", "--version")
+    system.check_requirement("runlevel")
+    _, runlevel = system.run_command(
+      "runlevel",
+      stdout: :capture
+    ).split(" ")
+
+    output = system.run_command(
+      "chkconfig", "--list",
+      stdout: :capture
+    )
+
+    services = output.lines.map do |line|
+      state = []
+      name, state[0], state[1], state[2], state[3], state[4], state[5], state[6] = line.split(/\s+/)
+      Service.new(name: name, state: state[runlevel.to_i].split(":")[1])
+    end
+    services
   end
 end
