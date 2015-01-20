@@ -17,7 +17,7 @@
 
 class ServicesInspector < Inspector
   def inspect(system, description, options = {})
-    if system.has_command?("systemctl", "--version")
+    if system.has_command?("systemctl")
       result = ServicesScope.new(
         init_system: "systemd",
         services: inspect_systemd_services(system)
