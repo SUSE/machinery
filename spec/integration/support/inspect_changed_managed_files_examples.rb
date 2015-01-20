@@ -47,8 +47,8 @@ shared_examples "inspect changed managed files" do |base|
 
       # directories are also extracted and to make sure to only list the actual
       # changed sub directory or file the parent directories are filtered
-      actual_managed_files = actual_managed_files_list.reject { |e|
-        actual_managed_files_list.grep(/^#{e}.+/).any?
+      actual_managed_files = actual_managed_files_list.reject { |element|
+        actual_managed_files_list.grep(/^#{element}.+/).any? || element == "."
       }
 
       expected_managed_files = []
@@ -61,7 +61,7 @@ shared_examples "inspect changed managed files" do |base|
 
       # test file content
       actual_content = @machinery.run_command(
-          "cat ~/.machinery/#{@subject_system.ip}/changed_managed_files/usr/share/bash/helpfiles/read",
+          "cat ~/.machinery/#{@subject_system.ip}/changed_managed_files/usr/share/info/sed.info.gz",
           as: "vagrant", stdout: :capture
       )
       expect(actual_content).to include("changed managed files test entry")

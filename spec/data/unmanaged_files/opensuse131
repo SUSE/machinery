@@ -25,6 +25,9 @@
   * /etc/alternatives/awk (link)
     User/Group: root:root
 
+  * /etc/alternatives/awk.1.gz (link)
+    User/Group: root:root
+
   * /etc/alternatives/openSUSE-default.xml (link)
     User/Group: root:root
 

@@ -49,7 +49,7 @@ shared_examples "inspect config files" do |base|
       expected_config_files = []
       expected_files_list = File.read("spec/data/config_files/#{base}")
       expected_files_list.split("\n").each do |e|
-        if e.start_with?("  * ")
+        if e.start_with?("  * ") && !e.end_with?("deleted)")
           expected_config_files << ".#{e.split[1]}"
         end
       end

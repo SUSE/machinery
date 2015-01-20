@@ -2,8 +2,8 @@
 
   Files extracted: yes
   * /sys (mode)
-  * /usr/share/bash/helpfiles/cd (deleted)
-  * /usr/share/bash/helpfiles/read (md5)
+  * /usr/share/info/sed.info.gz (md5)
+  * /usr/share/man/man1/sed.1.gz (deleted)
   * /var/lib/ca-certificates/openssl (mode)
   * /var/lib/ca-certificates/pem (mode)
   * /var/lib/nfs/rpc_pipefs (mode)
