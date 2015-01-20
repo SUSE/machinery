@@ -131,3 +131,13 @@ class OsOpenSuse13_2 < Os
     [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
   end
 end
+
+class Rhel < Os
+  def self.canonical_name
+    "Red Hat Enterprise Linux Server"
+  end
+
+  def self.can_run_machinery?
+    false
+  end
+end
