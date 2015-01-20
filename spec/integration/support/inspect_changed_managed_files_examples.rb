@@ -47,8 +47,8 @@ shared_examples "inspect changed managed files" do |base|
 
       # directories are also extracted and to make sure to only list the actual
       # changed sub directory or file the parent directories are filtered
-      actual_managed_files = actual_managed_files_list.reject { |e|
-        actual_managed_files_list.grep(/^#{e}.+/).any? || e == "."
+      actual_managed_files = actual_managed_files_list.reject { |element|
+        actual_managed_files_list.grep(/^#{element}.+/).any? || element == "."
       }
 
       expected_managed_files = []
