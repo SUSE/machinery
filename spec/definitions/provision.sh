@@ -33,12 +33,19 @@ if [ -x /bin/systemd ]; then
   systemctl restart nfsserver.service
   systemctl restart autofs.service
 else
-  /sbin/chkconfig rpcbind on
-  /sbin/chkconfig nfsserver on
-  /sbin/chkconfig autofs on
-  /sbin/rcrpcbind restart
-  /usr/sbin/rcnfsserver restart
-  /usr/sbin/rcautofs restart
+  if [ -x /etc/init.d/nfsserver ]; then
+    /sbin/chkconfig rpcbind on
+    /sbin/chkconfig nfsserver on
+    /sbin/chkconfig autofs on
+    /sbin/rcrpcbind restart
+    /usr/sbin/rcnfsserver restart
+    /usr/sbin/rcautofs restart
+  else
+    /sbin/chkconfig nfs on
+    /sbin/chkconfig autofs on
+    /etc/init.d/nfs restart
+    /etc/init.d/autofs restart
+  fi
 fi
 mount -t nfs 127.0.0.1:/tmp "/mnt/unmanaged/remote-dir/"
 
