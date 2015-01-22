@@ -520,7 +520,7 @@
     Size: 808 B
     Files: 2
 
-  * /srv/www/htdocs/test/ (dir)
+  * /srv/test/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 73.4 KiB
