@@ -204,6 +204,40 @@ password=2fdcb7499fd46842
     end
 
 
+    it "returns an empty array if zypper exits with ZYPPER_EXIT_NO_REPOS" do
+      system = double
+      zypper_empty_output_xml = <<-EOF
+        <?xml version='1.0'?>
+        <stream>
+        <repo-list>
+        </repo-list>
+        </stream>
+      EOF
+
+      expect(system).to receive(:check_requirement).with(
+        "zypper", "--version"
+      )
+
+      # zypper exits with 6 (ZYPPER_EXIT_NO_REPOS) when there are no repos
+      status = double
+      allow(status).to receive(:exitstatus).and_return(6)
+      zypper_exception = Cheetah::ExecutionFailed.new("zypper",status,"","")
+      expect(system).to receive(:run_command).with(
+        "zypper",
+        "--non-interactive",
+        "--xmlout",
+        "repos",
+        "--details",
+        :stdout => :capture
+      ).and_raise(zypper_exception)
+
+      inspector = RepositoriesInspector.new
+      summary = inspector.inspect(system, description)
+      expect(description.repositories).to eq(RepositoriesScope.new([]))
+      expect(summary).to include("Found 0 repositories")
+    end
+
+
     it "raise an error when requirements are not fulfilled" do
       system = double
       expect(system).to receive(:check_requirement).with(

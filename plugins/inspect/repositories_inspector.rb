@@ -21,13 +21,22 @@ class RepositoriesInspector < Inspector
   def inspect(system, description, options = {})
     system.check_requirement("zypper", "--version")
 
-    xml = system.run_command(
-      "zypper", "--non-interactive", "--xmlout", "repos", "--details", :stdout => :capture
-    )
-    details = system.run_command(
-      "zypper", "--non-interactive", "repos", "--details", :stdout => :capture
-    ).split("\n").select { |l| l =~ /\A# +\| |\A *\d+ \| / }.
-      map { |l| l.split("|").map(&:strip) }
+    begin
+      xml = system.run_command(
+        "zypper", "--non-interactive", "--xmlout", "repos", "--details", :stdout => :capture
+      )
+      details = system.run_command(
+        "zypper", "--non-interactive", "repos", "--details", :stdout => :capture
+      ).split("\n").select { |l| l =~ /\A# +\| |\A *\d+ \| / }.
+        map { |l| l.split("|").map(&:strip) }
+    rescue Cheetah::ExecutionFailed => e
+      if e.status.exitstatus == 6
+        description.repositories = RepositoriesScope.new([])
+        return "Found 0 repositories."
+      else
+        raise e
+      end
+    end
 
     if !details.empty?
       # parse and remove header
