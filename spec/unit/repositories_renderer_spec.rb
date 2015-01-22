@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe PackagesRenderer do
+describe RepositoriesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
