@@ -51,18 +51,25 @@ describe RepositoriesRenderer do
     it "prints a repository list" do
       output = RepositoriesRenderer.new.render(system_description)
 
-      expect(output).to include("openSUSE-13.1-1.10")
-      expect(output).to include("/dev/sr0")
-      expect(output).to include("Alias: openSUSE-13.1-1.10")
-      expect(output).to include("Enabled: Yes")
-      expect(output).to include("Refresh: No")
-      expect(output).to include("Priority: 99")
-      expect(output).to include("openSUSE-13.1-Debug")
-      expect(output).to include("http://download.opensuse.org/debug/distribution/13.1/repo/oss")
-      expect(output).to include("Alias: repo-debug")
-      expect(output).to include("Enabled: No")
-      expect(output).to include("Refresh: Yes")
-      expect(output).to include("Priority: 98")
+      expected_output = <<EOT
+# Repositories
+
+  * openSUSE-13.1-1.10
+    URI: cd:///?devices=/dev/disk/by-id/ata-HL-DT-ST_DVD+_-RW_GHA2N_KEID27K1340,/dev/sr0
+    Alias: openSUSE-13.1-1.10
+    Enabled: Yes
+    Refresh: No
+    Priority: 99
+
+  * openSUSE-13.1-Debug
+    URI: http://download.opensuse.org/debug/distribution/13.1/repo/oss/
+    Alias: repo-debug
+    Enabled: No
+    Refresh: Yes
+    Priority: 98
+
+EOT
+      expect(output).to eq(expected_output)
     end
   end
 end
