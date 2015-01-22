@@ -131,7 +131,7 @@ password=2fdcb7499fd46842
         "--xmlout",
         "repos",
         "--details",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(output)
     end
 
@@ -141,7 +141,7 @@ password=2fdcb7499fd46842
         "--non-interactive",
         "repos",
         "--details",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(output)
     end
 
@@ -149,13 +149,13 @@ password=2fdcb7499fd46842
       # zypper exits with 6 (ZYPPER_EXIT_NO_REPOS) when there are no repos
       status = double
       allow(status).to receive(:exitstatus).and_return(6)
-      zypper_exception = Cheetah::ExecutionFailed.new("zypper",status,"","")
+      zypper_exception = Cheetah::ExecutionFailed.new("zypper", status, "", "")
       expect(system).to receive(:run_command).with(
         "zypper",
         "--non-interactive",
         "repos",
         "--details",
-        :stdout => :capture
+        stdout: :capture
       ).and_raise(zypper_exception)
     end
 
@@ -168,19 +168,19 @@ password=2fdcb7499fd46842
       expect(system).to receive(:run_command).with(
         "bash", "-c",
         "test -d '#{credential_dir}' && ls -1 '#{credential_dir}' || echo ''",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(credentials_directories)
 
       expect(system).to receive(:run_command).with(
         "cat",
         "/etc/zypp/credentials.d/NCCcredentials",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(ncc_credentials)
 
       expect(system).to receive(:run_command).with(
         "cat",
         "/etc/zypp/credentials.d/SCCcredentials",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(scc_credentials)
 
       inspector = RepositoriesInspector.new

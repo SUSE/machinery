@@ -21,10 +21,11 @@ class RepositoriesInspector < Inspector
 
     begin
       xml = system.run_command(
-        "zypper", "--non-interactive", "--xmlout", "repos", "--details", :stdout => :capture
+        "zypper", "--non-interactive", "--xmlout", "repos", "--details",
+        stdout: :capture
       )
       details = system.run_command(
-        "zypper", "--non-interactive", "repos", "--details", :stdout => :capture
+        "zypper", "--non-interactive", "repos", "--details", stdout: :capture
       ).split("\n").select { |l| l =~ /\A# +\| |\A *\d+ \| / }.
         map { |l| l.split("|").map(&:strip) }
     rescue Cheetah::ExecutionFailed => e
@@ -57,7 +58,7 @@ class RepositoriesInspector < Inspector
     details.shift
 
     prio = {}
-    details.each_with_index do |entry,idx|
+    details.each do |entry|
       prio[entry[idx_alias]] = entry[idx_prio].to_i
     end
 
@@ -70,11 +71,11 @@ class RepositoriesInspector < Inspector
     credential_files = system.run_command(
       "bash", "-c",
       "test -d '#{credential_dir}' && ls -1 '#{credential_dir}' || echo ''",
-      :stdout => :capture
+      stdout: :capture
     )
     credential_files.split("\n").each do |f|
       content = system.run_command(
-        "cat", "/etc/zypp/credentials.d/#{f}", :stdout => :capture
+        "cat", "/etc/zypp/credentials.d/#{f}", stdout: :capture
       )
       content.match(/username=(\w*)\npassword=(\w*)/)
       credentials[f] = {
