@@ -32,6 +32,7 @@ require "haml"
 require "kramdown"
 require "find"
 require "pathname"
+require "nokogiri"
 
 require_relative "machinery_logger"
 require_relative "zypper"

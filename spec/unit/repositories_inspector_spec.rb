@@ -44,7 +44,7 @@ describe RepositoriesInspector do
         </stream>
       EOF
     }
-    let(:zypper_output_detail) {
+    let(:zypper_output_details) {
       <<-EOF
 Weird zypper warning message which shouldn't mess up the repository parsing.
 #  | Alias               | Name                        | Enabled | Refresh | Priority | Type   | URI                                                                     | Service
@@ -118,45 +118,69 @@ password=2fdcb7499fd46842
     }
     let(:credential_dir) { "/etc/zypp/credentials.d/" }
 
-
-    it "returns data about repositories when requirements are fulfilled" do
-      system = double
+    def setup_expectation_requirements(system)
       expect(system).to receive(:check_requirement).with(
         "zypper", "--version"
       )
+    end
+
+    def setup_expectation_zypper_xml(system, output)
       expect(system).to receive(:run_command).with(
         "zypper",
         "--non-interactive",
         "--xmlout",
         "repos",
         "--details",
-        :stdout => :capture
-      ).and_return(zypper_output_xml)
+        stdout: :capture
+      ).and_return(output)
+    end
 
+    def setup_expectation_zypper_details(system, output)
       expect(system).to receive(:run_command).with(
         "zypper",
         "--non-interactive",
         "repos",
         "--details",
-        :stdout => :capture
-      ).and_return(zypper_output_detail)
+        stdout: :capture
+      ).and_return(output)
+    end
+
+    def setup_expectation_zypper_details_exit_6(system)
+      # zypper exits with 6 (ZYPPER_EXIT_NO_REPOS) when there are no repos
+      status = double
+      allow(status).to receive(:exitstatus).and_return(6)
+      zypper_exception = Cheetah::ExecutionFailed.new("zypper", status, "", "")
+      expect(system).to receive(:run_command).with(
+        "zypper",
+        "--non-interactive",
+        "repos",
+        "--details",
+        stdout: :capture
+      ).and_raise(zypper_exception)
+    end
+
+    it "returns data about repositories when requirements are fulfilled" do
+      system = double
+      setup_expectation_requirements(system)
+      setup_expectation_zypper_xml(system, zypper_output_xml)
+      setup_expectation_zypper_details(system, zypper_output_details)
 
       expect(system).to receive(:run_command).with(
         "bash", "-c",
         "test -d '#{credential_dir}' && ls -1 '#{credential_dir}' || echo ''",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(credentials_directories)
 
       expect(system).to receive(:run_command).with(
         "cat",
         "/etc/zypp/credentials.d/NCCcredentials",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(ncc_credentials)
 
       expect(system).to receive(:run_command).with(
         "cat",
         "/etc/zypp/credentials.d/SCCcredentials",
-        :stdout => :capture
+        stdout: :capture
       ).and_return(scc_credentials)
 
       inspector = RepositoriesInspector.new
@@ -174,28 +198,12 @@ password=2fdcb7499fd46842
         </repo-list>
         </stream>
       EOF
-      zypper_empty_output_detail = "No repositories defined. Use the " \
+      zypper_empty_output_details = "No repositories defined. Use the " \
         "'zypper addrepo' command to add one or more repositories."
 
-      expect(system).to receive(:check_requirement).with(
-        "zypper", "--version"
-      )
-      expect(system).to receive(:run_command).with(
-        "zypper",
-        "--non-interactive",
-        "--xmlout",
-        "repos",
-        "--details",
-        :stdout => :capture
-      ).and_return(zypper_empty_output_xml)
-
-      expect(system).to receive(:run_command).with(
-        "zypper",
-        "--non-interactive",
-        "repos",
-        "--details",
-        :stdout => :capture
-      ).and_return(zypper_empty_output_detail)
+      setup_expectation_requirements(system)
+      setup_expectation_zypper_xml(system, zypper_empty_output_xml)
+      setup_expectation_zypper_details(system, zypper_empty_output_details)
 
       inspector = RepositoriesInspector.new
       summary = inspector.inspect(system, description)
@@ -203,6 +211,25 @@ password=2fdcb7499fd46842
       expect(summary).to include("Found 0 repositories")
     end
 
+    it "returns an empty array if zypper exits with ZYPPER_EXIT_NO_REPOS" do
+      system = double
+      zypper_empty_output_xml = <<-EOF
+        <?xml version='1.0'?>
+        <stream>
+        <repo-list>
+        </repo-list>
+        </stream>
+      EOF
+
+      setup_expectation_requirements(system)
+      setup_expectation_zypper_xml(system, zypper_empty_output_xml)
+      setup_expectation_zypper_details_exit_6(system)
+
+      inspector = RepositoriesInspector.new
+      summary = inspector.inspect(system, description)
+      expect(description.repositories).to eq(RepositoriesScope.new([]))
+      expect(summary).to include("Found 0 repositories")
+    end
 
     it "raise an error when requirements are not fulfilled" do
       system = double
@@ -217,9 +244,9 @@ password=2fdcb7499fd46842
 
     it "returns sorted data" do
       system = double
-      expect(system).to receive(:check_requirement) { true }
-      expect(system).to receive(:run_command) { zypper_output_xml }
-      expect(system).to receive(:run_command) { zypper_output_detail }
+      setup_expectation_requirements(system)
+      setup_expectation_zypper_xml(system, zypper_output_xml)
+      setup_expectation_zypper_details(system, zypper_output_details)
       expect(system).to receive(:run_command) { credentials_directories }
       expect(system).to receive(:run_command) { ncc_credentials }
       expect(system).to receive(:run_command) { scc_credentials }
