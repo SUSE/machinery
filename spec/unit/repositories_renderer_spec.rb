@@ -71,5 +71,19 @@ describe RepositoriesRenderer do
 EOT
       expect(output).to eq(expected_output)
     end
+
+    it "prints an empty list" do
+      description = create_test_description(json: '{ "repositories": [] }')
+
+      output = RepositoriesRenderer.new.render(description)
+
+      expected_output = <<EOT
+# Repositories
+
+  System has no repositories
+
+EOT
+      expect(output).to eq(expected_output)
+    end
   end
 end
