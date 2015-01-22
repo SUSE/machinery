@@ -29,7 +29,7 @@ class RepositoriesInspector < Inspector
       ).split("\n").select { |l| l =~ /\A# +\| |\A *\d+ \| / }.
         map { |l| l.split("|").map(&:strip) }
     rescue Cheetah::ExecutionFailed => e
-      if e.status.exitstatus == 6
+      if e.status.exitstatus == 6 # ZYPPER_EXIT_NO_REPOS
         description.repositories = RepositoriesScope.new([])
         return "Found 0 repositories."
       else
