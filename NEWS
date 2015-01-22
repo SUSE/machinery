@@ -2,6 +2,8 @@
 
 * Added support for inspecting System z systems
 * Added support for inspecting POWER LE systems
+* Added support to run Machinery on System z
+* Added support to run Machinery on POWER LE
 
 ## Version 1.2.0 - Mon Dec 22 15:06:20 CET 2014 - aduffeck@suse.de
 
