@@ -27,7 +27,7 @@ describe Tarball do
       expect(tarball.list).to eq([
         { path: "dir",         type: :dir,  size:  0, mode:  "755", user: "nobody", group: "users" },
         { path: "file",        type: :file, size: 10, mode:  "644", user: "nobody", group: "users" },
-        { path: "link",        type: :link, size:  0, mode:  "777", user: "nobody", group: "users" },
+        { path: "hardlink",    type: :file, size:  0, mode:  "644", user: "nobody", group: "users" },
         { path: "perms-0000",  type: :file, size:  0, mode:  "000", user: "nobody", group: "users" },
         { path: "perms-0001",  type: :file, size:  0, mode:  "001", user: "nobody", group: "users" },
         { path: "perms-0002",  type: :file, size:  0, mode:  "002", user: "nobody", group: "users" },
@@ -44,6 +44,7 @@ describe Tarball do
         { path: "perms-2010",  type: :file, size:  0, mode: "2010", user: "nobody", group: "users" },
         { path: "perms-4000",  type: :file, size:  0, mode: "4000", user: "nobody", group: "users" },
         { path: "perms-4100",  type: :file, size:  0, mode: "4100", user: "nobody", group: "users" },
+        { path: "softlink",    type: :link, size:  0, mode:  "777", user: "nobody", group: "users" },
         { path: "s p a c e s", type: :file, size:  0, mode:  "644", user: "nobody", group: "users" },
       ])
     end

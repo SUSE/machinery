@@ -158,12 +158,13 @@ shared_examples "inspect unmanaged files" do |base|
 
       # check content of test tarball
       tmp_dir = Dir.mktmpdir("unmanaged_files", "/tmp")
-      expected_output = `cd "#{tmp_dir}"; tar -xf "#{test_tarball}"; md5sum "#{tmp_dir}/srv/www/htdocs/test/"*`
+      expected_output = `cd "#{tmp_dir}"; tar -xf "#{test_tarball}"; md5sum "#{tmp_dir}/srv/test/"*`
       FileUtils.rm_r(tmp_dir)
       expected_md5sums = parse_md5sums(expected_output)
 
       output = @machinery.run_command(
-        "cd /tmp; tar -xf ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees/srv/www/htdocs/test.tgz; md5sum /tmp/srv/www/htdocs/test/*",
+        "cd /tmp; tar -xf ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees/srv/test.tgz;" \
+          " md5sum /tmp/srv/test/*",
         as: "vagrant", stdout: :capture
       )
       actual_md5sums = parse_md5sums(output)
