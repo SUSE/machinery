@@ -19,6 +19,10 @@ class RepositoriesRenderer < Renderer
   def do_render
     return unless @system_description.repositories
 
+    if @system_description.repositories.empty?
+      puts "System has no repositories"
+    end
+
     list do
       @system_description.repositories.each do |p|
         item "#{p.name}" do
