@@ -114,6 +114,26 @@ class SystemDescriptionStore
     FileUtils.mv(description_path(from), description_path(to))
   end
 
+  def swap(description_name_1, description_name_2)
+    if !list.include?(description_name_1)
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
+        "System description \"#{description_name_1}\" does not exist."
+      )
+    end
+
+    if !list.include?(description_name_2)
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
+        "System description \"#{description_name_2}\" does not exist."
+      )
+    end
+
+    tmp_description_name = "#{description_name_1}-#{Time.now.to_i}-#{rand(1000)}"
+
+    FileUtils.mv(description_path(description_name_1), description_path(tmp_description_name))
+    FileUtils.mv(description_path(description_name_2), description_path(description_name_1))
+    FileUtils.mv(description_path(tmp_description_name), description_path(description_name_2))
+  end
+
   def directory_for(name)
     dir = description_path(name)
     create_dir(dir)
