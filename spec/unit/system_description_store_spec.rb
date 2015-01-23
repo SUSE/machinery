@@ -228,4 +228,57 @@ describe SystemDescriptionStore do
       }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{new_name}/)
     end
   end
+
+  describe "#swap" do
+    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:test_name_2) { "description2" }
+
+    before(:each) do
+      create_machinery_dir
+
+      FileUtils.mkdir_p(File.join(test_base_path, test_name_2))
+      File.write(
+        File.join(test_base_path, test_name_2, "manifest.json"),
+        create_test_description(scopes: ["packages", "patterns"]).to_json
+      )
+    end
+
+    it "swaps two existing SystemDescriptions" do
+      expect(
+        Dir.entries(File.join(test_base_path, test_name))
+      ).to match_array([".", "..", "manifest.json"])
+      description = SystemDescription.load(test_name, store)
+      expect(description.scopes).to match_array(["packages"])
+
+      expect(
+        Dir.entries(File.join(test_base_path, test_name_2))
+      ).to match_array([".", "..", "manifest.json"])
+      description = SystemDescription.load(test_name_2, store)
+      expect(description.scopes).to match_array(["packages", "patterns"])
+
+      store.swap(test_name, test_name_2)
+
+      expect(
+        Dir.entries(File.join(test_base_path, test_name))
+      ).to match_array([".", "..", "manifest.json"])
+      description = SystemDescription.load(test_name, store)
+      expect(description.scopes).to match_array(["packages", "patterns"])
+
+      expect(
+        Dir.entries(File.join(test_base_path, test_name_2))
+      ).to match_array([".", "..", "manifest.json"])
+      description = SystemDescription.load(test_name_2, store)
+      expect(description.scopes).to match_array(["packages"])
+    end
+
+    it "throws an error when the system descriptions does not exist" do
+      expect {
+        store.swap("foo_bar_does_not_exist", test_name_2)
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound, /foo_bar_does_not_exist/)
+
+      expect {
+        store.swap(test_name, "foo_bar_does_not_exist")
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound, /foo_bar_does_not_exist/)
+    end
+  end
 end
