@@ -79,8 +79,31 @@ EOF
         }
       EOT
       expect {
-        manifest.validate
+        manifest.validate!
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
+    end
+
+    it "shows a warning when validating compatible descriptions" do
+      manifest = Manifest.new("name", <<-EOT)
+        {
+          "meta": {
+            "format_version": 2,
+            "os": "invalid"
+          }
+        }
+      EOT
+
+      expect(Machinery::Ui).to receive(:warn).with(
+        "Warning: System Description validation errors:"
+      )
+      expect(Machinery::Ui).to receive(:warn).with(
+        [
+          "The property '#/meta/os' of type String did not match the following " \
+          "type: object in schema b5a414ed-d79e-5362-92f8-a0640edcc3fd#"
+        ]
+      )
+
+      manifest.validate
     end
 
     it "doesn't validate incompatible descriptions" do
@@ -91,6 +114,10 @@ EOF
           }
         }
       EOT
+      expect {
+        manifest.validate!
+      }.not_to raise_error
+
       expect {
         manifest.validate
       }.not_to raise_error

@@ -33,10 +33,16 @@ EOF
   end
 
   it "prints a message in case of successful validation" do
-    expect($stdout).to receive(:puts) { |s|
-     expect(s).to include("Validation succeeded")
-    }
+    expect(Machinery::Ui).to receive(:puts).with(/Validation succeeded/)
 
     validate_task.validate(store, "valid_description")
+  end
+
+  it "prints a message in case of failed validation" do
+    expect(Machinery::Ui).to receive(:puts).with(/Validation failed/)
+
+    expect {
+      validate_task.validate(store, "faulty_description")
+    }.to raise_error(Machinery::Errors::SystemDescriptionError)
   end
 end

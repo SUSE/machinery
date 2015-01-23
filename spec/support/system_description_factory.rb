@@ -82,7 +82,7 @@ module SystemDescriptionFactory
 
     if options[:json]
       manifest = Manifest.new(name, options[:json])
-      manifest.validate
+      manifest.validate!
       description = SystemDescription.from_hash(name, store, manifest.to_hash)
     else
       description = build_description(name, store, options)
@@ -126,7 +126,7 @@ module SystemDescriptionFactory
   def build_description(name, store, options)
     json = create_test_description_json(options)
     manifest = Manifest.new(name, json)
-    manifest.validate
+    manifest.validate!
     description = SystemDescription.from_hash(name, store, manifest.to_hash)
 
     options[:extracted_scopes].each do |extracted_scope|

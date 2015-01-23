@@ -6,10 +6,11 @@ wiki: [https://github.com/SUSE/machinery/wiki/System-Description-Format](https:/
 
 Machinery validates descriptions on load. It checks that the JSON structure of
 the manifest file, which contains the primary and meta data of a description, is
-correct and it adheres to the schema. It also checks that the information about
-extracted files is consistent. Missing files or extra files without reference
-in the manifest are treated as warnings. All other issues are errors which need
-to be fixed so that Machinery can use the description.
+correct and it adheres to the schema. Validation errors are reported as warnings.
+It also checks that the information about extracted files is consistent. Missing
+files or extra files without reference in the manifest are treated also as
+warnings. All other issues are errors which need to be fixed so that Machinery
+can use the description
 
 To manually validate a description use the `machinery validate` command.
 

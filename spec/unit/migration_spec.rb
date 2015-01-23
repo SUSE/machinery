@@ -106,7 +106,7 @@ describe Migration do
       manifest = Manifest.load("v2_description", store.manifest_path("v2_description"))
       validate_environment = ->(hash, path) {
         expect(hash).to eq(manifest.to_hash)
-        expect(path).to eq(store.description_path("v2_description"))
+        expect(path).to eq(store.description_path("v2_description.backup"))
       }
 
       Migrate2To3.send(:define_method, :migrate) do
@@ -121,6 +121,15 @@ describe Migration do
       expect {
         Migration.migrate_description(store, "v3_description")
       }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate3To4'/)
+    end
+
+    it "deletes the backup if the migration failed" do
+      allow(SystemDescription).to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
+
+      expect {
+        Migration.migrate_description(store, "v1_description")
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect(Dir.entries(store.base_path)).not_to include("v1_description.backup")
     end
   end
 end
