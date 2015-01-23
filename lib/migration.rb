@@ -68,7 +68,6 @@ class Migration
 
       manifest = Manifest.load(description_name, store.manifest_path(description_name))
       hash = manifest.to_hash
-      path = store.description_path(description_name)
 
       current_version = hash["meta"]["format_version"]
       if !current_version
@@ -84,7 +83,6 @@ class Migration
         return false
       end
 
-      Machinery::Ui.puts "Creating copy from \"#{description_name}\"..."
       backup_description = store.backup(description_name)
       backup_path = store.description_path(backup_description)
       backup_hash = Manifest.load(
