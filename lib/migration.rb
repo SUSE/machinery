@@ -122,7 +122,7 @@ class Migration
           SystemDescription.load!(backup_description, store)
           store.remove(description_name)
           store.rename(backup_description, description_name)
-        rescue Machinery::Errors::SystemDescriptionValidationFailed
+        rescue Machinery::Errors::SystemDescriptionError
           store.remove(backup_description)
           raise
         end

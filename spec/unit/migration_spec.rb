@@ -122,5 +122,14 @@ describe Migration do
         Migration.migrate_description(store, "v3_description")
       }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate3To4'/)
     end
+
+    it "deletes the backup if the migration failed" do
+      allow(SystemDescription).to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
+
+      expect {
+        Migration.migrate_description(store, "v1_description")
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect(Dir.entries(store.base_path)).not_to include("v1_description.backup")
+    end
   end
 end
