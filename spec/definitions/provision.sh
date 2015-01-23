@@ -6,6 +6,8 @@ touch /usr/local/magicapp/data/two
 touch /etc/magicapp.conf
 mkdir /var/lib/chroot_proc
 mount --bind /proc /var/lib/chroot_proc
+# fix issues of alternating names
+rm -rf "/var/lib/yum/history/"*
 
 # config-files
 echo '-*/15 * * * *   root  echo config_files_integration_test &> /dev/null' >> /etc/crontab
