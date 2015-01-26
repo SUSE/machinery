@@ -98,17 +98,19 @@ class OsUnknown < Os
   end
 end
 
-class OsSles11 < Os
+class OsSuse < Os
+  def can_be_analyzed?
+    true
+  end
+end
+
+class OsSles11 < OsSuse
   def self.canonical_name
     "SUSE Linux Enterprise Server 11"
   end
 
   def self.can_run_machinery?
     false
-  end
-
-  def can_be_analyzed?
-    true
   end
 
   def display_name
@@ -118,7 +120,7 @@ class OsSles11 < Os
   end
 end
 
-class OsSles12 < Os
+class OsSles12 < OsSuse
   def self.canonical_name
     "SUSE Linux Enterprise Server 12"
   end
@@ -131,20 +133,12 @@ class OsSles12 < Os
     { "python-glanceclient" => "Public Cloud Module" }
   end
 
-  def can_be_analyzed?
-    true
-  end
-
   def display_name
     "#{name} (#{architecture})"
   end
 end
 
-class OsOpenSuse < Os
-  def can_be_analyzed?
-    true
-  end
-
+class OsOpenSuse < OsSuse
   def display_name
     name =~ /(.*) \(.*\)/
     name_and_version_without_codename = $1
