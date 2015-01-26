@@ -341,7 +341,7 @@ describe Cli do
   describe "#remove" do
     it "triggers the remove task" do
       expect_any_instance_of(RemoveTask).to receive(:remove).
-        with(an_instance_of(SystemDescriptionStore), "foo", anything())
+        with(an_instance_of(SystemDescriptionStore), ["foo"], anything())
 
       run_command(["remove", "foo"])
     end

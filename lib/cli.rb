@@ -506,11 +506,10 @@ class Cli
       :desc => "Explain what is being done"
 
     c.action do |global_options,options,args|
-      name = shift_arg(args, "NAME") if !options[:all]
 
       store = SystemDescriptionStore.new
       task = RemoveTask.new
-      task.remove(store, name, :verbose => options[:verbose], :all => options[:all])
+      task.remove(store, args, :verbose => options[:verbose], :all => options[:all])
     end
   end
 
