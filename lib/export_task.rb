@@ -21,6 +21,9 @@ class ExportTask
   end
 
   def export(output_dir, options)
+    @exporter.system_description.assert_scopes("os")
+    @exporter.system_description.validate_export_compatibility
+
     output_dir = File.join(output_dir, @exporter.export_name)
     if File.exists?(output_dir)
       if options[:force]

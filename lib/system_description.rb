@@ -141,6 +141,13 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  def validate_export_compatibility
+    if !os.can_be_exported?
+      raise Machinery::Errors::ExportFailed.new("Export of operating " +
+        "system '#{os.display_name}' is not supported.")
+    end
+  end
+
   def to_hash
     meta = {}
     meta["format_version"] = self.format_version if self.format_version

@@ -75,6 +75,10 @@ class Os < Machinery::Object
     false
   end
 
+  def can_be_exported?
+    false
+  end
+
   def module_required_by_package(package)
     self.class.module_dependencies[package]
   end
@@ -100,6 +104,10 @@ end
 
 class OsSuse < Os
   def can_be_analyzed?
+    true
+  end
+
+  def can_be_exported?
     true
   end
 end
