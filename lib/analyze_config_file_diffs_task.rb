@@ -21,7 +21,7 @@ class AnalyzeConfigFileDiffsTask
     description.validate_analysis_compatibility
     description.assert_scopes(
       "repositories",
-      "config_files",
+      "config_files"
     )
     if !description.scope_extracted?("config_files")
       raise Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
