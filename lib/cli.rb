@@ -492,13 +492,13 @@ class Cli
 
 
 
-  desc "Remove system description"
+  desc "Remove system descriptions"
   long_desc <<-LONGDESC
-    Remove system description stored under the specified name.
+    Removes all specified descriptions stored under the specified names.
 
     The success of a removal can be shown with the verbose option.
   LONGDESC
-  arg "NAME"
+  arg "NAME..."
   command :remove do |c|
     c.switch :all, :negatable => false,
       :desc => "Remove all system descriptions"
