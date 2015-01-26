@@ -92,18 +92,18 @@ describe SystemDescription do
     end
   end
 
-  describe "#validate_compatibility" do
-    it "does not raise an exception if the description is compatible" do
+  describe "#validate_format_compatibility" do
+    it "does not raise an exception if the description format is compatible" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
       expect {
-        subject.validate_compatibility
+        subject.validate_format_compatibility
       }.to_not raise_error
     end
 
-    it "raises an exception if the description is incompatible" do
+    it "raises an exception if the description format is incompatible" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
       expect {
-        subject.validate_compatibility
+        subject.validate_format_compatibility
       }.to raise_error
     end
   end

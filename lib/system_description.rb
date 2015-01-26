@@ -46,7 +46,7 @@ class SystemDescription < Machinery::Object
       manifest.validate!
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_compatibility
+      description.validate_format_compatibility
       description.validate_file_data!
       description
     end
@@ -60,7 +60,7 @@ class SystemDescription < Machinery::Object
       manifest.validate
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_compatibility
+      description.validate_format_compatibility
       description.validate_file_data
       description
     end
@@ -128,7 +128,7 @@ class SystemDescription < Machinery::Object
       format_version == SystemDescription::CURRENT_FORMAT_VERSION
   end
 
-  def validate_compatibility
+  def validate_format_compatibility
     if !compatible?
       raise Machinery::Errors::SystemDescriptionIncompatible.new(self.name)
     end
