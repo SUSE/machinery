@@ -56,10 +56,10 @@ describe RemoveTask do
     end
 
     it "removes all given SystemDescription directorys" do
-      create_machinery_dir
+      create_machinery_dir("description1")
       create_machinery_dir("description2")
-      expect(store.list).to match_array([test_name, "description2"])
-      remove_task.remove(store, [test_name, "description2"])
+      expect(store.list).to match_array(["description1", "description2"])
+      remove_task.remove(store, ["description1", "description2"])
       expect(store.list).to be_empty
     end
   end
