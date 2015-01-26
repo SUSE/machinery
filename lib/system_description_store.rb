@@ -67,28 +67,16 @@ class SystemDescriptionStore
   def copy(from, to)
     SystemDescription.validate_name(from)
     SystemDescription.validate_name(to)
-    if !list.include?(from)
-      raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{from}\" does not exist."
-      )
-    end
 
-    if list.include?(to)
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "A System description with the name \"#{to}\" does already exist."
-      )
-    end
+    system_description_exists!(from)
+    system_description_exists?(to)
 
     FileUtils.cp_r(description_path(from), description_path(to))
   end
 
   def backup(description_name)
     SystemDescription.validate_name(description_name)
-    if !list.include?(description_name)
-      raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{description_name}\" does not exist."
-      )
-    end
+    system_description_exists!(description_name)
 
     backup_name = get_backup_name(description_name)
 
@@ -99,33 +87,16 @@ class SystemDescriptionStore
   def rename(from, to)
     SystemDescription.validate_name(from)
     SystemDescription.validate_name(to)
-    if !list.include?(from)
-      raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{from}\" does not exist."
-      )
-    end
 
-    if list.include?(to)
-      raise Machinery::Errors::SystemDescriptionError.new(
-        "A System description with the name \"#{to}\" does already exist."
-      )
-    end
+    system_description_exists!(from)
+    system_description_exists?(to)
 
     FileUtils.mv(description_path(from), description_path(to))
   end
 
   def swap(description_name_1, description_name_2)
-    if !list.include?(description_name_1)
-      raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{description_name_1}\" does not exist."
-      )
-    end
-
-    if !list.include?(description_name_2)
-      raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{description_name_2}\" does not exist."
-      )
-    end
+    system_description_exists!(description_name_1)
+    system_description_exists!(description_name_2)
 
     tmp_description_name = "#{description_name_1}-#{Time.now.to_i}-#{rand(1000)}"
 
@@ -158,5 +129,21 @@ class SystemDescriptionStore
     end
 
     backup_name
+  end
+
+  def system_description_exists!(description_name)
+    if !list.include?(description_name)
+      raise Machinery::Errors::SystemDescriptionNotFound.new(
+        "System description \"#{description_name}\" does not exist."
+      )
+    end
+  end
+
+  def system_description_exists?(description_name)
+    if list.include?(description_name)
+      raise Machinery::Errors::SystemDescriptionError.new(
+        "A System description with the name \"#{description_name}\" does already exist."
+      )
+    end
   end
 end
