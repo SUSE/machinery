@@ -134,6 +134,13 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  def validate_analysis_compatibility
+    if !os.can_be_analyzed?
+      raise Machinery::Errors::AnalysisFailed.new("Analysis of operating " +
+        "system '#{os.display_name}' is not supported.")
+    end
+  end
+
   def to_hash
     meta = {}
     meta["format_version"] = self.format_version if self.format_version

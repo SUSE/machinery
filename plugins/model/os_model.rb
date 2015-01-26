@@ -31,7 +31,7 @@ class Os < Machinery::Object
       end
     end
     os = OsUnknown.new
-    os.name = "Unknown: #{os_name}"
+    os.name = os_name
     os
   end
 
@@ -69,12 +69,20 @@ class Os < Machinery::Object
     self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
   end
 
+  def can_be_analyzed?
+    false
+  end
+
   def module_required_by_package(package)
     self.class.module_dependencies[package]
   end
 
   def canonical_name
     self.class.canonical_name
+  end
+
+  def display_name
+    "#{name} #{version} (#{architecture})"
   end
 end
 
@@ -96,6 +104,10 @@ class OsSles11 < Os
   def self.can_run_machinery?
     false
   end
+
+  def can_be_analyzed?
+    true
+  end
 end
 
 class OsSles12 < Os
@@ -110,6 +122,14 @@ class OsSles12 < Os
   def self.module_dependencies
     { "python-glanceclient" => "Public Cloud Module" }
   end
+
+  def can_be_analyzed?
+    true
+  end
+
+  def display_name
+    "#{name} (#{architecture})"
+  end
 end
 
 class OsOpenSuse13_1 < Os
@@ -120,6 +140,10 @@ class OsOpenSuse13_1 < Os
   def self.buildable_systems
     [OsSles11, OsOpenSuse13_1]
   end
+
+  def can_be_analyzed?
+    true
+  end
 end
 
 class OsOpenSuse13_2 < Os
@@ -129,6 +153,10 @@ class OsOpenSuse13_2 < Os
 
   def self.buildable_systems
     [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
+  end
+
+  def can_be_analyzed?
+    true
   end
 end
 

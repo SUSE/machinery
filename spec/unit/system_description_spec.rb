@@ -353,4 +353,36 @@ describe SystemDescription do
       expect(file_store.base_path).to eq(description.description_path)
     end
   end
+
+  describe "#validate_analysis_compatibility" do
+    it "accepts a supported os" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "openSUSE 13.1 (Bottle)",
+            "version": "13.1 (Bottle)"
+          }
+        }
+      EOF
+      description = create_test_description(name: "name", json: json)
+      expect {
+        description.validate_analysis_compatibility
+      }.to_not raise_error
+    end
+
+    it "rejects an unsupported os" do
+      json = <<-EOF
+      {
+        "os": {
+          "name": "RHEL",
+          "version": "6.6"
+        }
+      }
+      EOF
+      description = create_test_description(name: "name", json: json)
+      expect {
+        description.validate_analysis_compatibility
+      }.to raise_error(Machinery::Errors::AnalysisFailed)
+    end
+  end
 end

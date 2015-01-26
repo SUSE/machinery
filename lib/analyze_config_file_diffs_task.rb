@@ -17,10 +17,11 @@
 
 class AnalyzeConfigFileDiffsTask
   def analyze(description)
+    description.assert_scopes("os")
+    description.validate_analysis_compatibility
     description.assert_scopes(
       "repositories",
       "config_files",
-      "os"
     )
     if !description.scope_extracted?("config_files")
       raise Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])

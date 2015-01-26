@@ -56,11 +56,11 @@ describe Os do
     expect(os.can_build?(OsSles12.new(architecture: "i586"))).to be(false)
   end
 
-  it "returns a display name from the class" do
+  it "returns a canonical name from the class" do
     expect(OsSles12.canonical_name).to eq "SUSE Linux Enterprise Server 12"
   end
 
-  it "returns a display name from the object" do
+  it "returns a canonical name from the object" do
     expect(OsSles12.new.canonical_name).to eq "SUSE Linux Enterprise Server 12"
   end
 
@@ -100,5 +100,21 @@ describe Os do
   it "initializes name with canonical name" do
     os_name = "SUSE Linux Enterprise Server 12"
     expect(Os.for(os_name).name).to eq os_name
+  end
+
+  describe "#display_name" do
+    it "returns display name for a known OS" do
+      os = Os.for("SUSE Linux Enterprise Server 12")
+      os.version = "12"
+      os.architecture = "x86_64"
+      expect(os.display_name).to eq("SUSE Linux Enterprise Server 12 (x86_64)")
+    end
+
+    it "returns display name for an unknown OS" do
+      os = Os.for("The OS which will never exist")
+      os.version = "3.14"
+      os.architecture = "x87"
+      expect(os.display_name).to eq("The OS which will never exist 3.14 (x87)")
+    end
   end
 end
