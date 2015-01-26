@@ -47,12 +47,19 @@ describe RemoveTask do
       remove_task.remove(store, test_name, { :verbose => true })
     end
 
-    it "show a warning when SystemDescription does not exist" do
-      expect(Machinery::Ui).to receive(:warn).with(
-        "System description \"foo_bar_does_not_exist\" does not exist."
-      )
+    it "throws an error when SystemDescription does not exist" do
+      expect {
+        remove_task.remove(store, "foo_bar_does_not_exist")
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
+    end
 
-      remove_task.remove(store, "foo_bar_does_not_exist")
+    it "throws an error when SystemDescription does not exist but deletes all given" do
+      create_machinery_dir("description1")
+      expect(store.list).to match_array(["description1"])
+      expect {
+        remove_task.remove(store, ["foo_bar_does_not_exist", "description1"])
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
+      expect(store.list).to be_empty
     end
 
     it "removes all given SystemDescription directorys" do
