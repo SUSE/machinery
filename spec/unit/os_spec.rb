@@ -89,6 +89,7 @@ describe Os do
     expect(Os.descendants.count).to be >= 3
     expect(Os.descendants).to include OsSles12
     expect(Os.descendants).to include OsOpenSuse13_1
+    expect(Os.descendants).to_not include OsOpenSuse # We only want leaves
   end
 
   it "returns os object for os name string" do
