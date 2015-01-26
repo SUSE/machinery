@@ -50,12 +50,12 @@ shared_context "machinery test directory" do
   let(:test_base_path) { "/home/tux/.machinery" }
   let(:test_name) { "description1" }
 
-  def create_machinery_dir
+  def create_machinery_dir(name = test_name)
     FileUtils.mkdir_p(test_base_path)
 
-    FileUtils.mkdir_p(File.join(test_base_path, test_name), :mode => 0700)
+    FileUtils.mkdir_p(File.join(test_base_path, name), :mode => 0700)
     FileUtils.touch(File.join(test_base_path, "machinery.log"))
-    File.write(File.join(test_base_path, test_name, "manifest.json"), test_manifest)
+    File.write(File.join(test_base_path, name, "manifest.json"), test_manifest)
   end
 end
 

@@ -16,27 +16,26 @@
 # you may find current contact information at www.suse.com
 
 class RemoveTask
-  def remove(store, name, options = {})
-    if !options[:all] && !store.list.include?(name)
-        raise Machinery::Errors::SystemDescriptionNotFound.new(
-          "System description \"#{name}\" does not exist."
-        )
-    end
-
+  def remove(store, names, options = {})
     if options[:all]
       removed_descriptions = store.list
       removed_descriptions.each do |name|
         store.remove(name)
       end
-    else
-      store.remove(name)
+
+      if options[:verbose]
+        Machinery::Ui.puts "Removed #{removed_descriptions.length} system descriptions successfully."
+      end
     end
 
-    if options[:verbose]
-      if options[:all]
-        Machinery::Ui.puts "Removed #{removed_descriptions.length} system descriptions successfully."
+    Array(names).each do |name|
+      if !store.list.include?(name)
+        Machinery::Ui.warn("System description \"#{name}\" does not exist.")
       else
-        Machinery::Ui.puts "System description \"#{name}\" successfully removed."
+        store.remove(name)
+        if options[:verbose]
+          Machinery::Ui.puts "System description \"#{name}\" successfully removed."
+        end
       end
     end
   end

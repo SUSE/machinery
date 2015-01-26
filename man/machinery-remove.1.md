@@ -1,5 +1,5 @@
 
-## remove — Remove System Description
+## remove — Remove System Descriptions
 
 ### SYNOPSIS
 
@@ -11,7 +11,7 @@
 
 ### DESCRIPTION
 
-The `remove` command removes a stored system description.
+The `remove` command removes all specified system descriptions.
 
 
 ### OPTIONS
@@ -25,8 +25,8 @@ The `remove` command removes a stored system description.
 
 ### ARGUMENTS
 
-  * `NAME` (required):
-    Remove specified system description.
+  * `NAME...` (required):
+    Remove specified system descriptions.
 
 
 ### EXAMPLES
@@ -34,6 +34,10 @@ The `remove` command removes a stored system description.
   * Remove the system description stored as `earth`:
 
     $ `machinery` remove earth
+
+  * Remove the system descriptions stored as `earth` and `moon`:
+
+    $ `machinery` remove earth moon
 
   * Remove all stored system descriptions:
 
