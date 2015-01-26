@@ -68,15 +68,15 @@ class SystemDescriptionStore
     SystemDescription.validate_name(from)
     SystemDescription.validate_name(to)
 
-    system_description_exists!(from)
-    system_description_exists?(to)
+    validate_existence_of_description(from)
+    validate_nonexistence_of_description(to)
 
     FileUtils.cp_r(description_path(from), description_path(to))
   end
 
   def backup(description_name)
     SystemDescription.validate_name(description_name)
-    system_description_exists!(description_name)
+    validate_existence_of_description(description_name)
 
     backup_name = get_backup_name(description_name)
 
@@ -88,15 +88,15 @@ class SystemDescriptionStore
     SystemDescription.validate_name(from)
     SystemDescription.validate_name(to)
 
-    system_description_exists!(from)
-    system_description_exists?(to)
+    validate_existence_of_description(from)
+    validate_nonexistence_of_description(to)
 
     FileUtils.mv(description_path(from), description_path(to))
   end
 
   def swap(description_name_1, description_name_2)
-    system_description_exists!(description_name_1)
-    system_description_exists!(description_name_2)
+    validate_existence_of_description(description_name_1)
+    validate_existence_of_description(description_name_2)
 
     tmp_description_name = "#{description_name_1}-#{Time.now.to_i}-#{rand(1000)}"
 
@@ -131,7 +131,7 @@ class SystemDescriptionStore
     backup_name
   end
 
-  def system_description_exists!(description_name)
+  def validate_existence_of_description(description_name)
     if !list.include?(description_name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
         "System description \"#{description_name}\" does not exist."
@@ -139,7 +139,7 @@ class SystemDescriptionStore
     end
   end
 
-  def system_description_exists?(description_name)
+  def validate_nonexistence_of_description(description_name)
     if list.include?(description_name)
       raise Machinery::Errors::SystemDescriptionError.new(
         "A System description with the name \"#{description_name}\" does already exist."
