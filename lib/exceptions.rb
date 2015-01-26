@@ -104,6 +104,7 @@ module Machinery
     class DeployFailed < MachineryError; end
     class InspectionFailed < MachineryError; end
     class ExportFailed < MachineryError; end
+    class AnalysisFailed < MachineryError; end
 
     class SshConnectionFailed < MachineryError; end
     class RsyncFailed < MachineryError; end

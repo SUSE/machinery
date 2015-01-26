@@ -19,7 +19,9 @@ class Os < Machinery::Object
   include Machinery::ScopeMixin
 
   def self.descendants
-    ObjectSpace.each_object(::Class).select { |klass| klass < self }
+    ObjectSpace.each_object(::Class).select do |klass|
+      klass < self && klass.descendants.empty?
+    end
   end
 
   def self.for(os_name)
@@ -31,7 +33,7 @@ class Os < Machinery::Object
       end
     end
     os = OsUnknown.new
-    os.name = "Unknown: #{os_name}"
+    os.name = os_name
     os
   end
 
@@ -69,12 +71,24 @@ class Os < Machinery::Object
     self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
   end
 
+  def can_be_analyzed?
+    false
+  end
+
+  def can_be_exported?
+    false
+  end
+
   def module_required_by_package(package)
     self.class.module_dependencies[package]
   end
 
   def canonical_name
     self.class.canonical_name
+  end
+
+  def display_name
+    "#{name} #{version} (#{architecture})"
   end
 end
 
@@ -88,7 +102,17 @@ class OsUnknown < Os
   end
 end
 
-class OsSles11 < Os
+class OsSuse < Os
+  def can_be_analyzed?
+    true
+  end
+
+  def can_be_exported?
+    true
+  end
+end
+
+class OsSles11 < OsSuse
   def self.canonical_name
     "SUSE Linux Enterprise Server 11"
   end
@@ -96,9 +120,15 @@ class OsSles11 < Os
   def self.can_run_machinery?
     false
   end
+
+  def display_name
+    version =~ /11 (.*)/
+    sp = $1
+    "#{name} #{sp} (#{architecture})"
+  end
 end
 
-class OsSles12 < Os
+class OsSles12 < OsSuse
   def self.canonical_name
     "SUSE Linux Enterprise Server 12"
   end
@@ -110,9 +140,21 @@ class OsSles12 < Os
   def self.module_dependencies
     { "python-glanceclient" => "Public Cloud Module" }
   end
+
+  def display_name
+    "#{name} (#{architecture})"
+  end
 end
 
-class OsOpenSuse13_1 < Os
+class OsOpenSuse < OsSuse
+  def display_name
+    name =~ /(.*) \(.*\)/
+    name_and_version_without_codename = $1
+    "#{name_and_version_without_codename} (#{architecture})"
+  end
+end
+
+class OsOpenSuse13_1 < OsOpenSuse
   def self.canonical_name
     "openSUSE 13.1 (Bottle)"
   end
@@ -122,7 +164,7 @@ class OsOpenSuse13_1 < Os
   end
 end
 
-class OsOpenSuse13_2 < Os
+class OsOpenSuse13_2 < OsOpenSuse
   def self.canonical_name
     "openSUSE 13.2 (Harlequin)"
   end

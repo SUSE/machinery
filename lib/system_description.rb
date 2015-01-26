@@ -46,7 +46,7 @@ class SystemDescription < Machinery::Object
       manifest.validate!
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_compatibility
+      description.validate_format_compatibility
       description.validate_file_data!
       description
     end
@@ -60,7 +60,7 @@ class SystemDescription < Machinery::Object
       manifest.validate
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_compatibility
+      description.validate_format_compatibility
       description.validate_file_data
       description
     end
@@ -128,9 +128,23 @@ class SystemDescription < Machinery::Object
       format_version == SystemDescription::CURRENT_FORMAT_VERSION
   end
 
-  def validate_compatibility
+  def validate_format_compatibility
     if !compatible?
       raise Machinery::Errors::SystemDescriptionIncompatible.new(self.name)
+    end
+  end
+
+  def validate_analysis_compatibility
+    if !os.can_be_analyzed?
+      raise Machinery::Errors::AnalysisFailed.new("Analysis of operating " +
+        "system '#{os.display_name}' is not supported.")
+    end
+  end
+
+  def validate_export_compatibility
+    if !os.can_be_exported?
+      raise Machinery::Errors::ExportFailed.new("Export of operating " +
+        "system '#{os.display_name}' is not supported.")
     end
   end
 

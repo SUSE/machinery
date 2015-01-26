@@ -24,7 +24,7 @@ describe ExportTask do
     double(
       name: "kiwi",
       export_name: "name-type",
-      system_description: create_test_description(scopes: ["unmanaged_files"])
+      system_description: create_test_description(scopes: ["os", "unmanaged_files"])
     )
   }
   subject { ExportTask.new(exporter) }

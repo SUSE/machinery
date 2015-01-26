@@ -164,7 +164,7 @@ describe OsInspector do
       inspector.inspect(system, description)
 
       expect(description.os.version).to eq("11.2")
-      expect(description.os.name).to eq("Unknown: openSUSE 11.2")
+      expect(description.os.name).to eq("openSUSE 11.2")
     end
 
     it "throws exception when the operation system cannot be determined" do

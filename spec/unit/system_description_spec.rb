@@ -92,18 +92,18 @@ describe SystemDescription do
     end
   end
 
-  describe "#validate_compatibility" do
-    it "does not raise an exception if the description is compatible" do
+  describe "#validate_format_compatibility" do
+    it "does not raise an exception if the description format is compatible" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
       expect {
-        subject.validate_compatibility
+        subject.validate_format_compatibility
       }.to_not raise_error
     end
 
-    it "raises an exception if the description is incompatible" do
+    it "raises an exception if the description format is incompatible" do
       subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
       expect {
-        subject.validate_compatibility
+        subject.validate_format_compatibility
       }.to raise_error
     end
   end
@@ -351,6 +351,70 @@ describe SystemDescription do
       file_store = description.scope_file_store("my_scope")
       expect(file_store.store_name).to eq("my_scope")
       expect(file_store.base_path).to eq(description.description_path)
+    end
+  end
+
+  describe "#validate_analysis_compatibility" do
+    it "accepts a supported os" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "openSUSE 13.1 (Bottle)",
+            "version": "13.1 (Bottle)"
+          }
+        }
+      EOF
+      description = create_test_description(name: "name", json: json)
+      expect {
+        description.validate_analysis_compatibility
+      }.to_not raise_error
+    end
+
+    it "rejects an unsupported os" do
+      json = <<-EOF
+      {
+        "os": {
+          "name": "OS Which Will Never Exist",
+          "version": "6.6"
+        }
+      }
+      EOF
+      description = create_test_description(name: "name", json: json)
+      expect {
+        description.validate_analysis_compatibility
+      }.to raise_error(Machinery::Errors::AnalysisFailed)
+    end
+  end
+
+  describe "#validate_export_compatibility" do
+    it "accepts a supported os" do
+      json = <<-EOF
+        {
+          "os": {
+            "name": "openSUSE 13.1 (Bottle)",
+            "version": "13.1 (Bottle)"
+          }
+        }
+      EOF
+      description = create_test_description(name: "name", json: json)
+      expect {
+        description.validate_export_compatibility
+      }.to_not raise_error
+    end
+
+    it "rejects an unsupported os" do
+      json = <<-EOF
+      {
+        "os": {
+          "name": "OS Which Will Never Exist",
+          "version": "6.6"
+        }
+      }
+      EOF
+      description = create_test_description(name: "name", json: json)
+      expect {
+        description.validate_export_compatibility
+      }.to raise_error(Machinery::Errors::ExportFailed)
     end
   end
 end
