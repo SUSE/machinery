@@ -103,11 +103,18 @@ describe Os do
   end
 
   describe "#display_name" do
-    it "returns display name for a known OS" do
+    it "returns display name for SLES 12" do
       os = Os.for("SUSE Linux Enterprise Server 12")
       os.version = "12"
       os.architecture = "x86_64"
       expect(os.display_name).to eq("SUSE Linux Enterprise Server 12 (x86_64)")
+    end
+
+    it "returns display name for SLES 11" do
+      os = Os.for("SUSE Linux Enterprise Server 11")
+      os.version = "11 SP3"
+      os.architecture = "x86_64"
+      expect(os.display_name).to eq("SUSE Linux Enterprise Server 11 SP3 (x86_64)")
     end
 
     it "returns display name for an unknown OS" do

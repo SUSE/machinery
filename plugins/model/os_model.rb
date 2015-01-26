@@ -108,6 +108,12 @@ class OsSles11 < Os
   def can_be_analyzed?
     true
   end
+
+  def display_name
+    version =~ /11 (.*)/
+    sp = $1
+    "#{name} #{sp} (#{architecture})"
+  end
 end
 
 class OsSles12 < Os
