@@ -1,6 +1,8 @@
 # Machinery RPM Changelog
 
 
+* tracking bug (#bnc914712)
+
 ## Version 1.2.0 - Mon Dec 22 15:06:20 CET 2014 - aduffeck@suse.de
 
 * update to version 1.2.0
