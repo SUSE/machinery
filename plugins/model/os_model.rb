@@ -150,6 +150,12 @@ class OsOpenSuse13_1 < Os
   def can_be_analyzed?
     true
   end
+
+  def display_name
+    name =~ /(.*) \(.*\)/
+    name_and_version_without_codename = $1
+    "#{name_and_version_without_codename} (#{architecture})"
+  end
 end
 
 class OsOpenSuse13_2 < Os
@@ -163,6 +169,12 @@ class OsOpenSuse13_2 < Os
 
   def can_be_analyzed?
     true
+  end
+
+  def display_name
+    name =~ /(.*) \(.*\)/
+    name_and_version_without_codename = $1
+    "#{name_and_version_without_codename} (#{architecture})"
   end
 end
 

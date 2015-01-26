@@ -117,6 +117,22 @@ describe Os do
       expect(os.display_name).to eq("SUSE Linux Enterprise Server 11 SP3 (x86_64)")
     end
 
+    describe "openSUSE" do
+      it "returns display name for 13.1" do
+        os = Os.for("openSUSE 13.1 (Bottle)")
+        os.version = "13.1 (Bottle)"
+        os.architecture = "x86_64"
+        expect(os.display_name).to eq("openSUSE 13.1 (x86_64)")
+      end
+
+      it "returns display name for 13.2" do
+        os = Os.for("openSUSE 13.2 (Harlequin)")
+        os.version = "13.2 (Harlequin)"
+        os.architecture = "x86_64"
+        expect(os.display_name).to eq("openSUSE 13.2 (x86_64)")
+      end
+    end
+
     it "returns display name for an unknown OS" do
       os = Os.for("The OS which will never exist")
       os.version = "3.14"
