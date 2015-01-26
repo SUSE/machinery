@@ -374,7 +374,7 @@ describe SystemDescription do
       json = <<-EOF
       {
         "os": {
-          "name": "RHEL",
+          "name": "OS Which Will Never Exist",
           "version": "6.6"
         }
       }
