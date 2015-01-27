@@ -123,7 +123,7 @@ describe DeployTask do
       allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
       expect {
         deploy_task.deploy(system_description, cloud_config_file)
-      }.to raise_error(Machinery::Errors::BuildFailed, /architecture/)
+      }.to raise_error(Machinery::Errors::BuildFailed, /i586/)
     end
   end
 end
