@@ -159,8 +159,8 @@ EOF
         bootloader = "grub"
       else
         raise Machinery::Errors::ExportFailed.new(
-          "Building is not possible because the operating system " \
-          "'#{@system_description.os.canonical_name}' is not supported."
+          "Export is not possible because the operating system " \
+          "'#{@system_description.os.display_name}' is not supported."
         )
     end
 
