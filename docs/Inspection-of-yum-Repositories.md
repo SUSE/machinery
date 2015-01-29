@@ -23,8 +23,9 @@ This section presents different ways of accessing the yum repository data and li
 
 ### Accessing the python api
 * Advantages:
-  * All repos and repo attrributes accessible (you need to know the attribute name, though)
+  * All repos and repo attrributes accessible (you need to know the attribute's name, though)
 * Disadvantages:
+  * It's not clear how to get the repo's url using the api, yet
   * Copying script to target needed
 
 ### Calling `yum-config-manager`
@@ -36,3 +37,79 @@ This section presents different ways of accessing the yum repository data and li
 
 
 ## Storing the repository data in the system description
+
+There are different ways how the repositories can be stored in our data structure. This sections lists
+various approaches and their advantages and disadvantages.
+
+
+### Seperate Sub-Sections for zypp and yum
+
+```
+* repositories
+  * zypp
+    * zypp 1
+    * zypp 2
+  * yum
+    * yum 1
+    * yum 2
+```
+
+* Advantages:
+  * Lists repos seperately
+  * Different repos type can contain different attributes
+* Disadvantages:
+  * Schema migration needed
+
+### Flat Data Structure
+
+```
+* repositories
+  * zypp 1
+  * zypp 2
+  * yum 1
+  * yum 2
+```
+This approach includes storing the repository type.
+
+
+* Advantages:
+* Disadvantages:
+  * Schema migration needed
+
+### Flat Data Structure
+
+```
+* repositories
+  * zypp 1
+  * zypp 2
+  * yum 1
+  * yum 2
+```
+This approach doesn't include storing the repository type.
+Attributes of yum repos are mapped to zypp's attributes.
+
+* Advantages:
+  * No schema migration needed
+* Disadvantages:
+  * No easy to build images using the available data
+
+
+
+## References
+* http://yum.baseurl.org/api/yum-3.2.26/yum.repos.Repository-class.html
+* Pyhton script to access repository data:
+
+```
+#!/usr/bin/python -tt
+
+import os
+import sys
+import yum
+
+yb = yum.YumBase()
+yb.conf.cache = os.geteuid() != 0
+
+for repo in yb.repos.sort():
+        print "%s: [%s] enabled: %s " % (repo, repo.name, repo.isEnabled())
+```
+
