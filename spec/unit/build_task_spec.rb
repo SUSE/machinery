@@ -157,7 +157,7 @@ describe BuildTask do
       allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
       expect {
         build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::Errors::BuildFailed, /architecture/)
+      }.to raise_error(Machinery::Errors::BuildFailed, /i586/)
     end
   end
 
