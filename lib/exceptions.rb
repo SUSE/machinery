@@ -64,7 +64,7 @@ module Machinery
         end.compact.first || "<HOSTNAME>"
         formatted_scopes = Machinery::Ui.internal_scope_list_to_string(@scopes)
 
-        cmd = "#{$0} inspect --extract-files --scope=#{formatted_scopes}"
+        cmd = "#{$0} inspect --extract-files --scope=#{formatted_scopes.delete(" ")}"
         cmd += " --name='#{@description.name}'" if hostname != @description.name
         cmd += " #{hostname}"
 
