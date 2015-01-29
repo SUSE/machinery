@@ -19,7 +19,7 @@ class Os < Machinery::Object
   include Machinery::ScopeMixin
 
   def self.descendants
-    ObjectSpace.each_object(::Class).select do |klass|
+    @descendants ||= ObjectSpace.each_object(::Class).select do |klass|
       klass < self && klass.descendants.empty?
     end
   end
