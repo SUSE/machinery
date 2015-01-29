@@ -30,7 +30,7 @@ describe Machinery::Errors::MissingExtractedFiles do
         "system description" \
         " but the corresponding files weren't extracted during inspection.\n" \
         "The files are required to continue with this command. " \
-        "Run `#{$0} inspect --extract-files --scope=config-files, changed-managed-files " \
+        "Run `#{$0} inspect --extract-files --scope=config-files,changed-managed-files " \
         "--name='#{name}' example.com` to extract them."
       )
   end
