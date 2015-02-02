@@ -22,11 +22,14 @@ require_relative "../support/system_description_factory"
 
 def prepare_machinery_for_host(system, ip, opts = {})
   opts = {
-    password: "linux",
     user:     "vagrant"
   }.merge(opts)
 
-  SshKeysImporter.import(ip, opts[:password], File.join(Machinery::ROOT, "spec/keys/machinery_rsa.pub"))
+  if opts[:password]
+    SshKeysImporter.import(
+      ip, opts[:password], File.join(Machinery::ROOT, "spec/keys/machinery_rsa.pub")
+    )
+  end
 
   system.inject_file(
     File.join(Machinery::ROOT, "spec/keys/machinery_rsa"),
