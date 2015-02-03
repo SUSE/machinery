@@ -95,59 +95,5 @@ describe UpgradeFormatTask do
       expect(Machinery::Ui).to receive(:puts).with(/no.*upgraded/i)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
     end
-
-    it "keeps the orginal description if the migration failed without --force option" do
-      expect {
-        SystemDescription.load("descriptions1", system_description_factory_store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-
-      expect(Machinery::Ui).to receive(:error).with(/failed/)
-
-      expect(Migration).to receive(:migrate_description).
-      and_raise(Machinery::Errors::SystemDescriptionValidationFailed.new(["foo"]))
-
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-
-      expect {
-        SystemDescription.load("descriptions1", system_description_factory_store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-    end
-
-    it "deletes the backup if no --force option is given" do
-      expect {
-        SystemDescription.load("descriptions1", system_description_factory_store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-
-      allow(Machinery::Ui).to receive(:puts)
-      expect(Machinery::Ui).to receive(:puts).with(/upgraded/)
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-
-      migrated_description = SystemDescription.load("description1",
-        system_description_factory_store)
-      expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
-
-      expect {
-        SystemDescription.load("descriptions1.backup", system_description_factory_store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
-    end
-
-    it "keeps the backup if --force option is enabled" do
-      expect {
-        SystemDescription.load("descriptions1", system_description_factory_store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-
-      allow(Machinery::Ui).to receive(:puts)
-      expect(Machinery::Ui).to receive(:puts).with(/upgraded/)
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1", force: :true)
-
-      migrated_description = SystemDescription.load("description1",
-        system_description_factory_store)
-      expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
-
-      expect {
-        SystemDescription.load("descriptions1.backup", system_description_factory_store)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError)
-    end
-
   end
 end

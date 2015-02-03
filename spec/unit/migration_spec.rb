@@ -131,5 +131,26 @@ describe Migration do
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
       expect(Dir.entries(store.base_path)).not_to include("v1_description.backup")
     end
+
+    it "keeps the backup if --force option is enabled" do
+      expect(Dir.entries(store.base_path)).to_not include("v1_description.backup")
+      expect(Machinery::Ui).to receive(:puts).with(/Saved backup to .*\/v1_description.backup/)
+
+      Migration.migrate_description(store, "v1_description", force: :true)
+      expect(Dir.entries(store.base_path)).to include("v1_description.backup")
+    end
+
+    it "keeps the orginal description if the migration failed without --force option" do
+      manifest_hash = Manifest.load("v2_description", store.manifest_path("v2_description")).to_hash
+
+      allow(SystemDescription).to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
+
+      expect {
+        Migration.migrate_description(store, "v2_description")
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+      expect(manifest_hash).to eq(
+        Manifest.load("v2_description", store.manifest_path("v2_description")).to_hash
+      )
+    end
   end
 end
