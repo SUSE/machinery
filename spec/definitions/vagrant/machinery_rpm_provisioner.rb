@@ -74,8 +74,8 @@ module MachineryRpm
       cmds << "cd #{MACHINERY_ROOT}"
       cmds << "export HOME=$(echo ~/)"
       cmds << "export LC_ALL=en_US.utf8"
-      # Forward SKIP_CLEANUP environment variable to the new, clean environment
-      cmds << "export SKIP_CLEANUP=true" if ENV["SKIP_CLEANUP"] == "true"
+      # Forward SKIP_RPM_CLEANUP environment variable to the new, clean environment
+      cmds << "export SKIP_RPM_CLEANUP=true" if ENV["SKIP_RPM_CLEANUP"] == "true"
       cmds << "rake rpm:build#{obs_cmd}"
 
       cmd = cmds.join(" && ") + " 2>&1"
