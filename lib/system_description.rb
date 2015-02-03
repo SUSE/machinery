@@ -41,13 +41,17 @@ class SystemDescription < Machinery::Object
     # Load the system description with the given name
     #
     # If there are file validation errors the call fails with an exception
-    def load!(name, store)
+    def load!(name, store, options = {})
       manifest = Manifest.load(name, store.manifest_path(name))
       manifest.validate!
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_format_compatibility
       description.validate_file_data!
+
+      if !options[:skip_format_compatibility]
+        description.validate_format_compatibility
+      end
+
       description
     end
 
@@ -55,13 +59,17 @@ class SystemDescription < Machinery::Object
     #
     # If there are file validation errors these are put out as warnings but the
     # loading of the system description succeeds.
-    def load(name, store)
+    def load(name, store, options = {})
       manifest = Manifest.load(name, store.manifest_path(name))
       manifest.validate
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_format_compatibility
       description.validate_file_data
+
+      if !options[:skip_format_compatibility]
+        description.validate_format_compatibility
+      end
+
       description
     end
 
