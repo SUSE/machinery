@@ -112,9 +112,7 @@ class Migration
       File.write(store.manifest_path(backup_description), JSON.pretty_generate(backup_hash))
 
       if options[:force]
-        store.rename(description_name, description_name + ".tmp")
-        store.rename(backup_description, description_name)
-        store.rename(description_name + ".tmp", backup_description)
+        store.swap(description_name, backup_description)
         SystemDescription.load(description_name, store)
         Machinery::Ui.puts "Saved backup to #{backup_path}"
       else
