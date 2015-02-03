@@ -96,6 +96,7 @@ describe Migration do
     it "doesn't run migrations when there's nothing to do" do
       expect_any_instance_of(Migrate1To2).to_not receive(:migrate)
       expect_any_instance_of(Migrate2To3).to_not receive(:migrate)
+      expect(Machinery::Ui).to receive(:puts).with(/no upgrade necessary/)
 
       Migration.migrate_description(store, "v3_description")
       description = SystemDescription.load("v3_description", store)
