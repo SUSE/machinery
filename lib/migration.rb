@@ -56,7 +56,7 @@
 class Migration
   MIGRATIONS_DIR= File.join(Machinery::ROOT, "schema/migrations")
 
-  class <<self
+  class << self
     attr_reader :migration_desc
 
     def desc(s)
