@@ -34,6 +34,8 @@ This section presents different ways of accessing the yum repository data and li
 * Disadvantages:
   * You need to know the attribute's name
 
+You can find an example script below in the References section.
+
 ### Calling `yum-config-manager`
 * Advantages:
   * Lists all repo attributes (incl. defaults)
@@ -201,8 +203,8 @@ Attributes of yum repos are mapped to zypp's attributes.
 
 When reading the list of repositories we want to get all repositories, thus
 calling `yum-config-manager` or reading `/etc/yum.repos.d` doesn't work for us.
-`yum -v repolist all` is the prefered choice if we can deal with the line breaks in its output,
-because then we don't have to copy a file to the target system.
+Using the python api is the prefered choice because it provides all repos and
+their attributes.
 
 The usecase for storing yum repositories is the inspection of a Red Hat system
 and creation of a human readable report. Building Red Hat images is out of scope
