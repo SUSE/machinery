@@ -25,8 +25,7 @@ This section presents different ways of accessing the yum repository data and li
 * Advantages:
   * All repos and repo attrributes accessible (you need to know the attribute's name, though)
 * Disadvantages:
-  * It's not clear how to get the repo's url using the api, yet
-  * Copying script to target needed
+  * none
 
 ### Calling `yum-config-manager`
 * Advantages:
@@ -34,7 +33,6 @@ This section presents different ways of accessing the yum repository data and li
 * Disadvantages:
   * Hard to parse
   * Disabled repos missing
-
 
 ## Storing the repository data in the system description
 
@@ -110,6 +108,10 @@ yb = yum.YumBase()
 yb.conf.cache = os.geteuid() != 0
 
 for repo in yb.repos.sort():
-        print "%s: [%s] enabled: %s " % (repo, repo.name, repo.isEnabled())
+          print "repo: %s" % repo
+          print "      name: %s" % repo.name
+          print "      enabled: %s" % repo.isEnabled()
+          print "      url: %s" % repo.getAttribute("metalink")
+          print "----------------------------------------"
 ```
-
+The script can be run without being copied to the host as follows: `ssh root@redhathost 'python' < yum.py`.
