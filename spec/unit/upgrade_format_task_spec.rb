@@ -75,7 +75,7 @@ describe UpgradeFormatTask do
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
       allow(Machinery::Ui).to receive(:puts)
-      expect(Machinery::Ui).to receive(:puts).with(/upgraded 2/i)
+      expect(Machinery::Ui).to receive(:puts).with("Upgraded 2 system descriptions successfully.")
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
 
       ["description1", "description2"].each do |description|
@@ -89,11 +89,13 @@ describe UpgradeFormatTask do
       stub_const("Migrate0To1", Class.new do
         def migrate; raise StandardError.new; end
       end)
-      expect(Machinery::Ui).to receive(:error).twice
 
-      allow(Machinery::Ui).to receive(:puts)
-      expect(Machinery::Ui).to receive(:puts).with(/no.*upgraded/i)
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
+      expect {
+        UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      }.to raise_error(
+        Machinery::Errors::UpgradeFailed,
+        /Upgrading description ".*" failed:\n.*\nUpgrading description ".*" failed:\n.*/i
+      )
     end
   end
 end

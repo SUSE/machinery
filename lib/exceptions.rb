@@ -105,6 +105,7 @@ module Machinery
     class InspectionFailed < MachineryError; end
     class ExportFailed < MachineryError; end
     class AnalysisFailed < MachineryError; end
+    class UpgradeFailed < MachineryError; end
 
     class SshConnectionFailed < MachineryError; end
     class RsyncFailed < MachineryError; end
