@@ -149,6 +149,8 @@ The same repository could be used with both, zypper and yum.
   * Common representation, which makes it easier to deal with repositories in a more abstract way, e.g. for display or comparison
 * Disadvantages:
   * Schema migration needed
+  * Entries on the same level with differing content. This can't be expressed well in a schema.
+  * If done right, we need to separte elements. This would make it equivalent to the "separate sub-sections" variant.
 
 ### Flat Data Structure w/o Schema Change
 
@@ -200,6 +202,56 @@ Attributes of yum repos are mapped to zypp's attributes.
   * No schema migration needed
 * Disadvantages:
   * Building Red Hat images not straight forward: We can find out that it is a yum repo because it doesn't have priority nor autorefresh
+  * Finding out if it's a yum repo by missing attributes is a fragile and error-prone solution.
+
+
+### Flat Data Structure with Optional Elements
+
+```
+"repositories":
+  [
+    {
+      "alias": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Pool",
+      "name": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Pool",
+      "type": "rpm-md",
+      "url": "http://smt.suse.de/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
+      "enabled": true,
+      "autorefresh": false,
+      "gpgcheck": true,
+      "priority": 99
+    },
+    {
+      "alias": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Updates",
+      "name": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Updates",
+      "type": "rpm-md",
+      "url": "http://smt.suse.de/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-x86_64?credentials=NCCcredentials",
+      "enabled": true,
+      "autorefresh": false,
+      "gpgcheck": true,
+      "priority": 99
+    },
+    {
+      "alias": "res6-suse-manager-tools-x86_64",
+      "name": "RES6 SUSE-Manager-Tools x86_64",
+      "type": "rpm-md",
+      "url": "https://manager.suse.de/XMLRPC/GET-REQ/res6-suse-manager-tools-x86_64",
+      "enabled": true,
+      "packagemanager": "yum"
+    }
+  ]
+}
+```
+This approach is very similar to the approach above but has a optional attributes. The type of package manager is stored in "packagemanager", it's optional and defaults to "zypp".
+
+* Advantages:
+  * Stores the relevant data
+  * No schema change
+  * Treats the data in a general way
+  * No special-case for package managers
+
+* Disadvantages:
+  * None
+
 
 
 ## Use Cases
