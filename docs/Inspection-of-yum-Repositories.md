@@ -1,6 +1,31 @@
 # Inspection of yum Repositories
 
-When a Red Hat system is inspected we need to handle yum repositories. There are two aspects we have to consider:
+## Use Cases
+
+Inspection of yum repositories is relevant when inspecting Red Hat systems in
+several user scenarios.
+
+The primary use case is migration:
+
+* Generating a report of a Red Hat system
+* Migrating a Red Hat system to a SUSE system. Generating a report by inspection
+  is the first step of a manual work flow to migrate the system.
+
+Secondary use cases, which are relevant as part of the migration:
+
+* Comparing a Red Hat system with a SUSE system
+
+There are more use cases which are out of scope at the moment:
+
+* Deploying Red Hat systems to physical, virtual, or cloud systems
+* Building Red Hat images
+
+The focus of the use cases is inspection and display of data from a Red Hat
+system, not further processing with Machinery for automatic migration.
+
+When a Red Hat system with yum repositories is inspected we have to consider
+two aspects:
+
 * Reading the repository data from the system
 * Storing the repository data in the manifest file
 
@@ -8,9 +33,17 @@ When a Red Hat system is inspected we need to handle yum repositories. There are
 
 This section presents different ways of accessing the yum repository data and lists their advantages and disadvantages.
 
+Yum uses variables like `$releasever`, `$basearch` which are expanded by the
+yum tools. The yum.conf file (link in the References section) lists the
+available variables and explains how they are expanded.
+
 ### Parse output of `yum -v repolist all`
+
+Expands yum variables, so the user gets to see the repositories which are
+actually used to retrieve packages from.
+
 * Advantages:
-  * Lists all repos
+  * Lists all repos including the ones from plugins
   * Lists the important repo attributes:
     * Repo-id
     * Repo-name
@@ -22,32 +55,40 @@ This section presents different ways of accessing the yum repository data and li
   * Parsing not trivial (line breaks depend on length of output)
   * Not all repo attributes accessible (e.g. failovermethod, gpgcheck)
 
-### Parse the repo files in `/etc/yum.repos.d`
-* Advantages:
-  * list (almost) all repo attributes
-* Disadvantages:
-  * Repos from plugins missing (e.g. suse manager's repos)
-    The yum-rhn-plugin reads the configuration files `/etc/yum/pluginconf.d/rhnplugin.conf` and `/etc/sysconfig/rhn/up2date`.
-
 ### Accessing the python api
+
+Expands variables, so output is similar to using the yum tool, but better
+control about how to get data and parse results.
+
 * Advantages:
   * All repos and repo attributes accessible
 * Disadvantages:
-  * You need to know the attribute's name
+  * You need to explicitly read attributes. There is no way to get all
+    attributes with one API call.
 
 You can find an example script below in the References section.
 
 ### Calling `yum-config-manager`
+
+Tool part of yum to see the "raw" configuration data.
+
 * Advantages:
   * Lists all repo attributes (incl. defaults)
 * Disadvantages:
   * Hard to parse
   * Disabled repos missing
-  * Variables `$releasever`, `$basearch` in repo files raise questions:
-    * What about the variables used in repo files?
-    * Should we store them or the expanded value?
-    * Where do the values of the variables come from, and should we capture that as well?
-  * The yum.conf file (link in the References section) lists the available variables and explains how they are expanded.
+
+### Parse yum configuration files
+
+Parse repository list from `/etc/yum.repos.d`, plugin configuration from
+`/etc/yum/pluginconf.d/rhnplugin.conf` and `/etc/sysconfig/rhn/up2date` (read by
+the yum-rhn-plugin), general configuration from `/etc/yum.conf`.
+
+* Advantages:
+  * List all repo attributes stored in configuration files
+* Disadvantages:
+  * Run-time resolution of configuration is not done, so expansion of variables
+    or data retrieved from a server is not captured.
 
 
 ## Storing the repository data in the system description
@@ -82,7 +123,7 @@ various approaches and their advantages and disadvantages.
       "priority": 99
     }
   ],
-"yum":
+  "yum":
   [
     {
       "repoid": "res6-suse-manager-tools-x86_64",
@@ -97,62 +138,14 @@ various approaches and their advantages and disadvantages.
 ```
 
 * Advantages:
-  * Lists repos separately
-  * Different repos type can contain different attributes
+  * Keep information which repository is managed by which package manager
+  * Captures package manager specific attributes
 * Disadvantages:
   * Schema migration needed
   * No common representation, complicates code dealing with repositories in a more abstract way, e.g. for display or comparison
 
-### Flat Data Structure w/ Schema Change
 
-```
-"repositories":
-  [
-    {
-      "alias": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Pool",
-      "name": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Pool",
-      "type": "rpm-md",
-      "url": "http://smt.suse.de/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
-      "enabled": true,
-      "autorefresh": false,
-      "gpgcheck": true,
-      "priority": 99,
-      "packagemanager": "zypp"
-    },
-    {
-      "alias": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Updates",
-      "name": "SMT-http_smt_suse_de:SLE11-SDK-SP3-Updates",
-      "type": "rpm-md",
-      "url": "http://smt.suse.de/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-x86_64?credentials=NCCcredentials",
-      "enabled": true,
-      "autorefresh": false,
-      "gpgcheck": true,
-      "priority": 99,
-      "packagemanager": "zypp"
-    },
-    {
-      "repoid": "res6-suse-manager-tools-x86_64",
-      "name": "RES6 SUSE-Manager-Tools x86_64",
-      "type": "rpm-md",
-      "baseurl": "https://manager.suse.de/XMLRPC/GET-REQ/res6-suse-manager-tools-x86_64",
-      "enabled": true,
-      "gpgcheck": false,
-      "packagemanager": "yum"
-    }
-  ]
-}
-```
-This approach includes storing how the repository is used in the system.
-The same repository could be used with both, zypper and yum.
-
-* Advantages:
-  * Common representation, which makes it easier to deal with repositories in a more abstract way, e.g. for display or comparison
-* Disadvantages:
-  * Schema migration needed
-  * Entries on the same level with differing content. This can't be expressed well in a schema.
-  * If done right, we need to separte elements. This would make it equivalent to the "separate sub-sections" variant.
-
-### Flat Data Structure w/o Schema Change
+### Flat Data Structure without Schema Change
 
 ```
 "repositories":
@@ -187,8 +180,10 @@ The same repository could be used with both, zypper and yum.
   ]
 }
 ```
-This approach is similar to the approach above but doesn't include storing the repository type.
-Attributes of yum repos are mapped to zypp's attributes.
+
+This approach uses the existing schema and maps the yum attributes to the
+general description also used for zypp.
+
 * Mapping:
   * Repo-id => alias
   * Repo-name => name
@@ -201,8 +196,11 @@ Attributes of yum repos are mapped to zypp's attributes.
 * Advantages:
   * No schema migration needed
 * Disadvantages:
-  * Building Red Hat images not straight forward: We can find out that it is a yum repo because it doesn't have priority nor autorefresh
-  * Finding out if it's a yum repo by missing attributes is a fragile and error-prone solution.
+  * We lose data which can't be represented in the general schema
+  * We lose information about if it's a repository managed by yum. This can only
+    indirectly be determined by relying on the os scope or deducing it from
+    values of specific attributes (e.g. a repository without a priority is
+    likely to be a yum repository).
 
 
 ### Flat Data Structure with Optional Elements
@@ -241,7 +239,8 @@ Attributes of yum repos are mapped to zypp's attributes.
   ]
 }
 ```
-This approach is very similar to the approach above but has a optional attributes. The type of package manager is stored in "packagemanager", it's optional and defaults to "zypp".
+
+This approach is very similar to the approach of using the existing schema but adds an optional attribute for the package manager. The type of package manager is stored in "packagemanager", it's optional and defaults to "zypp".
 
 * Advantages:
   * Stores the relevant data
@@ -250,24 +249,9 @@ This approach is very similar to the approach above but has a optional attribute
   * No special-case for package managers
 
 * Disadvantages:
-  * None
-
-
-
-## Use Cases
-
-* Less relevant:
-  * building Red Hat images
-
-* More relevant use cases:
-  * (manually) migrate a Red Hat system to a SUSE system
-  * generate a report of a Red Hat system
-  * compare a Red Hat system with a SUSE system
-
-
-## Remarks
-
-When we only want to use the description as result of an inspection and not for anything else, we might want to think about if we need to flag the description somehow, so the tool can help the user to do the right things with it.
+  * Optional elements are not enforced (can be done later with a schema change),
+    values of missing elements are only implicitly defined by the defaults.
+  * Doesn't store additional yum attributes (these could be added as additional option elements, though)
 
 
 ## Considerations
@@ -275,15 +259,29 @@ When we only want to use the description as result of an inspection and not for 
 When reading the list of repositories we want to get all repositories, thus
 calling `yum-config-manager` or reading `/etc/yum.repos.d` doesn't work for us.
 Using the python api is the prefered choice because it provides all repos and
-their attributes.
+their attributes. Using `yum -v repolist all` gives the relevant subset of the
+information, but is harder to access programmatically.
 
-The usecase for storing yum repositories is the inspection of a Red Hat system
-and creation of a human readable report. Building Red Hat images is out of scope
-for know, thus the 3rd option would do the trick. The advantage is that no
-schema change whould be needed.
+Information about repositories exists on two levels. The high-level information
+is about which repositories are used in the system to install packages from. The
+lower-level information is about the configuration of the package manager and
+how it deals with the repositories.
+
+For inspection the high-level information is more relevant, because it shows
+explicitly where the packages are from. For replication of a system the lower
+level information is more relevant, because it captures the full state of the
+system. It doesn't provide insight into the high-level information without
+further processing, though.
+
+Extracting high-level information to the manifest of the description and
+extracting low-level information as configuration via the file inspection keeps
+both levels. It needs special consideration to keep the data consistent, when
+parts of the descriptions are changed, and when building images, and deploying
+or exporting a description.
 
 
 ## References
+
 * http://yum.baseurl.org/api/yum-3.2.26/yum.repos.Repository-class.html
 * http://linux.die.net/man/5/yum.conf
 * Python script to access repository data:
