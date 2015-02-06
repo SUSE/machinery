@@ -98,8 +98,7 @@ EOF
       )
       expect(Machinery::Ui).to receive(:warn).with(
         [
-          "The property '#/meta/os' of type String did not match the following " \
-          "type: object in schema b5a414ed-d79e-5362-92f8-a0640edcc3fd#"
+          /The property '#\/meta\/os' of type String did not match the following type:/
         ]
       )
 
