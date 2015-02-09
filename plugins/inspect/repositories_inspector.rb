@@ -17,8 +17,18 @@
 
 class RepositoriesInspector < Inspector
   def inspect(system, description, options = {})
-    system.check_requirement("zypper", "--version")
+    if system.has_command?("zypper")
+      description.repositories, summary = inspect_zypper_repositories(system)
+    elsif system.has_command?("yum")
+      description.repositories, summary = inspect_yum_repositories(system)
+    else
+      raise Machinery::Errors::MissingRequirement.new("Need either the binary 'zypper' or 'yum' to be available on the inspected system.")
+    end
 
+    summary
+  end
+
+  def inspect_zypper_repositories(system)
     begin
       xml = system.run_command(
         "zypper", "--non-interactive", "--xmlout", "repos", "--details",
@@ -30,8 +40,7 @@ class RepositoriesInspector < Inspector
         map { |l| l.split("|").map(&:strip) }
     rescue Cheetah::ExecutionFailed => e
       if e.status.exitstatus == 6 # ZYPPER_EXIT_NO_REPOS
-        description.repositories = RepositoriesScope.new([])
-        return "Found 0 repositories."
+        details = []
       else
         raise e
       end
@@ -47,8 +56,21 @@ class RepositoriesInspector < Inspector
       summary = "Found #{result.count} repositories."
     end
 
-    description.repositories = RepositoriesScope.new(result)
-    summary
+    [RepositoriesScope.new(result), summary]
+  end
+
+  def inspect_yum_repositories(system)
+    script = File.read(File.join(Machinery::ROOT, "helpers", "yum_repositories.py"))
+    begin
+      repositories = JSON.parse(system.run_command(
+        "bash", "-c", "python", stdin: script, stdout: :capture
+      ).split("\n").last).map { |element| Repository.new(element) }
+    rescue JSON::ParserError => e
+      raise Machinery::Errors::InspectionFailed.new("Extraction of YUM repositories failed.")
+    end
+
+    summary = "Found #{repositories.count} repositories"
+    [RepositoriesScope.new(repositories), summary]
   end
 
   def parse_priorities_from_details(details)

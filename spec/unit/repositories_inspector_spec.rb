@@ -26,7 +26,7 @@ describe RepositoriesInspector do
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
 
-  describe ".inspect" do
+  describe "zypper repositories" do
     let(:zypper_output_xml) {
       <<-EOF
         <?xml version='1.0'?>
@@ -122,10 +122,8 @@ password=2fdcb7499fd46842
     }
     let(:credential_dir) { "/etc/zypp/credentials.d/" }
 
-    def setup_expectation_requirements(system)
-      expect(system).to receive(:check_requirement).with(
-        "zypper", "--version"
-      )
+    before(:each) do
+      allow(system).to receive(:has_command?).with("zypper").and_return(true)
     end
 
     def setup_expectation_zypper_xml(system, output)
@@ -164,7 +162,6 @@ password=2fdcb7499fd46842
     end
 
     it "returns data about repositories when requirements are fulfilled" do
-      setup_expectation_requirements(system)
       setup_expectation_zypper_xml(system, zypper_output_xml)
       setup_expectation_zypper_details(system, zypper_output_details)
 
@@ -203,7 +200,6 @@ password=2fdcb7499fd46842
       zypper_empty_output_details = "No repositories defined. Use the " \
         "'zypper addrepo' command to add one or more repositories."
 
-      setup_expectation_requirements(system)
       setup_expectation_zypper_xml(system, zypper_empty_output_xml)
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
@@ -222,7 +218,6 @@ password=2fdcb7499fd46842
         </stream>
       EOF
 
-      setup_expectation_requirements(system)
       setup_expectation_zypper_xml(system, zypper_empty_output_xml)
       setup_expectation_zypper_details_exit_6(system)
 
@@ -233,17 +228,15 @@ password=2fdcb7499fd46842
     end
 
     it "raise an error when requirements are not fulfilled" do
-      expect(system).to receive(:check_requirement).with(
-        "zypper", "--version"
-      ).and_raise(Machinery::Errors::MissingRequirement)
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("yum").and_return(false)
 
       inspector = RepositoriesInspector.new
       expect{inspector.inspect(system, description)}.to raise_error(
-        Machinery::Errors::MissingRequirement)
+        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper' or 'yum'/)
     end
 
     it "returns sorted data" do
-      setup_expectation_requirements(system)
       setup_expectation_zypper_xml(system, zypper_output_xml)
       setup_expectation_zypper_details(system, zypper_output_details)
       expect(system).to receive(:run_command) { credentials_directories }
@@ -256,6 +249,68 @@ password=2fdcb7499fd46842
       names = description.repositories.map(&:name)
 
       expect(names).to eq(names.sort)
+    end
+  end
+
+  describe "yum repositories" do
+    let(:expected_yum_extractor_output) {
+      output = <<-EOF
+"Loaded plugins: priorities"
+[{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "enabled": true, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "gpgcheck": true, "packagemanager": "yum", "type": "rpm-md"}, {"name": "Red Hat Enterprise Linux 6Server - x86_64 - Source", "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/", "enabled": false, "alias": "rhel-source", "gpgcheck": true, "packagemanager": "yum", "type": "rpm-md"}]
+EOF
+      output.chomp
+    }
+
+    let(:faulty_yum_extractor_output) {<<-EOF
+broken json
+output
+EOF
+    }
+
+    let(:expected_yum_repo_list) {
+      RepositoriesScope.new([
+        Repository.new(
+          name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+          url: "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+          enabled: true,
+          alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
+          gpgcheck: true,
+          type: "rpm-md",
+          packagemanager: "yum"
+        ),
+        Repository.new(
+          name: "Red Hat Enterprise Linux 6Server - x86_64 - Source",
+          url: "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
+          enabled: false,
+          alias: "rhel-source",
+          gpgcheck: true,
+          type: "rpm-md",
+          packagemanager: "yum"
+        )
+      ])
+    }
+
+    before(:each) do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("yum").and_return(true)
+    end
+
+    it "inspects repos" do
+      expect(system).to receive(:run_command).and_return(expected_yum_extractor_output)
+
+      inspector = RepositoriesInspector.new
+      summary = inspector.inspect(system, description)
+      expect(description.repositories).to match_array(expected_yum_repo_list)
+      expect(summary).to include("Found 2 repositories")
+    end
+
+    it "throws an error if the python output is not parseable by json" do
+      expect(system).to receive(:run_command).and_return(faulty_yum_extractor_output)
+
+      inspector = RepositoriesInspector.new
+      expect{ inspector.inspect(system, description) }.to raise_error(
+        Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed./
+      )
     end
   end
 end
