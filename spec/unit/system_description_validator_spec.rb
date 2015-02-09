@@ -115,6 +115,38 @@ EOF
         }.not_to raise_error
     end
 
+    it "validates against the system description format version 1" do
+      expect(File).to receive(:read).with(/schema\/v1/).at_least(:once).and_call_original
+      expect(File).to_not receive(:read).with(/schema\/v2/)
+      create_test_description(name: @name, json: <<-EOT)
+        {
+          "meta": {
+            "format_version": 1,
+            "changed_managed_files": {
+              "modified": "2014-08-12T09:12:54Z",
+              "hostname": "host.example.com"
+            }
+          }
+        }
+      EOT
+    end
+
+    it "validates against the system description format version 2" do
+      expect(File).to_not receive(:read).with(/schema\/v1/)
+      expect(File).to receive(:read).with(/schema\/v2/).at_least(:once).and_call_original
+      create_test_description(name: @name, json: <<-EOT)
+        {
+          "meta": {
+            "format_version": 2,
+            "changed_managed_files": {
+              "modified": "2014-08-12T09:12:54Z",
+              "hostname": "host.example.com"
+            }
+          }
+        }
+      EOT
+    end
+
     describe "config-files" do
       let(:path) { "spec/data/schema/validation_error/config_files/" }
 

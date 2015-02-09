@@ -16,50 +16,23 @@
 # you may find current contact information at www.suse.com
 
 class SystemDescriptionValidator
-  class << self
-    def load_global_schema
-      JSON.parse(File.read(File.join(
-        Machinery::ROOT,
-        "schema",
-        "v#{SystemDescription::CURRENT_FORMAT_VERSION}",
-        "system-description-global.schema.json"
-      )))
-    end
-
-    def load_scope_schemas
-      schema_dir = File.join(
-        Machinery::ROOT,
-        "plugins",
-        "schema",
-        "v#{SystemDescription::CURRENT_FORMAT_VERSION}",
-      )
-
-      Hash[
-        Dir["#{schema_dir}/*.schema.json"].map do |file|
-          scope = file.match(/system-description-(.*)\.schema\.json$/)[1].tr("-", "_")
-          schema = JSON.parse(File.read(file))
-
-          [scope, schema]
-        end
-      ]
-    end
-  end
-
-  GLOBAL_SCHEMA = load_global_schema
-  SCOPE_SCHEMAS = load_scope_schemas
-
   def initialize(description)
     @description = description
   end
 
   def validate_json(json)
-    errors = JSON::Validator.fully_validate(GLOBAL_SCHEMA, json)
+    format_version = json["meta"]["format_version"]
+
+    global_schema = load_global_schema(format_version)
+    scope_schemas = load_scope_schemas(format_version)
+
+    errors = JSON::Validator.fully_validate(global_schema, json)
 
     scopes = json.keys
     scopes.delete("meta")
 
     errors += scopes.flat_map do |scope|
-      schema = SCOPE_SCHEMAS[scope]
+      schema = scope_schemas[scope]
 
       if schema
         issue = JSON::Validator.fully_validate(schema, json[scope]).map do |error|
@@ -157,6 +130,33 @@ class SystemDescriptionValidator
   end
 
   private
+
+  def load_global_schema(format_version = SystemDescription::CURRENT_FORMAT_VERSION)
+    JSON.parse(File.read(File.join(
+      Machinery::ROOT,
+      "schema",
+      "v#{format_version}",
+      "system-description-global.schema.json"
+    )))
+  end
+
+  def load_scope_schemas(format_version = SystemDescription::CURRENT_FORMAT_VERSION)
+    schema_dir = File.join(
+      Machinery::ROOT,
+      "plugins",
+      "schema",
+      "v#{format_version}",
+    )
+
+    Hash[
+      Dir["#{schema_dir}/*.schema.json"].map do |file|
+        scope = file.match(/system-description-(.*)\.schema\.json$/)[1].tr("-", "_")
+        schema = JSON.parse(File.read(file))
+
+        [scope, schema]
+      end
+    ]
+  end
 
   def cleanup_json_path(message, scope)
     old_path = message[/The property '#\/(.*?)'/,1]

@@ -298,6 +298,8 @@ EOF
     end
 
     it "returns schema compliant data" do
+      allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
+
       system = double
       expect_inspect_configfiles(system, true)
 

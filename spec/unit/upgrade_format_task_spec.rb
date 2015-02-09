@@ -23,7 +23,7 @@ describe UpgradeFormatTask do
   let(:outdated_json) {<<-EOF
     {
       "meta": {
-        "format_version": 0
+        "format_version": 1
       }
    }
    EOF
@@ -86,7 +86,7 @@ describe UpgradeFormatTask do
     end
 
     it "handles failed upgrades and continues" do
-      stub_const("Migrate0To1", Class.new do
+      stub_const("Migrate1To2", Class.new do
         def migrate; raise StandardError.new; end
       end)
 
