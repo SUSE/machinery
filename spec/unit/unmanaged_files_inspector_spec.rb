@@ -94,6 +94,7 @@ describe UnmanagedFilesInspector do
     }
 
     before(:each) do
+      allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
       allow(Machinery::Ui).to receive(:warn)
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
       description.save

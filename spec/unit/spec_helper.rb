@@ -50,6 +50,10 @@ shared_context "machinery test directory" do
   let(:test_base_path) { "/home/tux/.machinery" }
   let(:test_name) { "description1" }
 
+  before(:each) do
+    FakeFS::FileSystem.clone("schema/")
+  end
+
   def create_machinery_dir(name = test_name)
     FileUtils.mkdir_p(test_base_path)
 

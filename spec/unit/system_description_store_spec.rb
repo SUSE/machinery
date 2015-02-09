@@ -71,6 +71,12 @@ describe SystemDescriptionStore do
 
       SystemDescription.load(test_name, @store)
     end
+
+    it "doesn't validate the description format when format_compatibility option is set to false" do
+      expect_any_instance_of(SystemDescription).to_not receive(:validate_format_compatibility)
+
+      SystemDescription.load(test_name, @store, skip_format_compatibility: true)
+    end
   end
 
   describe "#description_path" do

@@ -53,6 +53,8 @@ describe Migration do
         }
       EOF
     end
+
+    allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
   end
 
   it "loads migration definitions" do

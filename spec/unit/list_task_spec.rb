@@ -48,6 +48,10 @@ describe ListTask do
   }
 
   describe "#list" do
+    before(:each) do
+      allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
+    end
+
     it "lists the system descriptions with scopes" do
       system_description.save
       expect(Machinery::Ui).to receive(:puts) { |s|

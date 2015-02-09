@@ -66,8 +66,16 @@ class Migration
     def migrate_description(store, description_name, options = {})
       load_migrations
 
-      manifest = Manifest.load(description_name, store.manifest_path(description_name))
-      hash = manifest.to_hash
+      if options[:force]
+        description = SystemDescription.load(
+          description_name, store, skip_format_compatibility: true
+        )
+      else
+        description = SystemDescription.load!(
+          description_name, store, skip_format_compatibility: true
+        )
+      end
+      hash = description.to_hash
 
       current_version = hash["meta"]["format_version"]
       if !current_version
