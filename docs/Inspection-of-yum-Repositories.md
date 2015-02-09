@@ -280,6 +280,37 @@ parts of the descriptions are changed, and when building images, and deploying
 or exporting a description.
 
 
+## Conclusion
+
+Main goal is to show the most relevant data in a user-friendly form. For that
+we need to extract the high-level information, which mostly can be represented
+in the current schema.
+
+Using a common schema for both package managers keeps the code simple as we
+don't need to introduce special cases to the code dealing with repository data.
+The differences are not too relevant for the use cases we address.
+
+We do want to store the information about which package manager is used. For
+that we add a `packagemanager` attribute. We also have to make the attributes
+`priority` and `autorefresh` optional as they are not supported by yum.
+
+To have a clean schema we increment the format version and add a migration. We
+bundle the schema change with other pending schema changes to minimize the
+number of migrations users have to do.
+
+To read the high-level data we use the Python API, because that is the most
+reliable way to access the data programmatically. We remotely execute a Python
+script which prints the data in a format which can be processed on the
+inspecting machine. The preference would be to use a JSON format as close to
+the one we use to store the data as possible.
+
+The full yum and repository configuration is stored in the configuration files,
+which we extract with the file inspectors. This way users have the complete
+information when needed. As manipulating these data and deployment are out of
+scope for the current implementation, the duplication of data is not an issue.
+This will be addressed in a more generic way in the future.
+
+
 ## References
 
 * http://yum.baseurl.org/api/yum-3.2.26/yum.repos.Repository-class.html
