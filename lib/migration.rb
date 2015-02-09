@@ -67,15 +67,12 @@ class Migration
       load_migrations
 
       if options[:force]
-        description = SystemDescription.load(
-          description_name, store, skip_format_compatibility: true
-        )
+        hash = Manifest.load(description_name, store.manifest_path(description_name)).to_hash
       else
-        description = SystemDescription.load!(
+        hash = SystemDescription.load!(
           description_name, store, skip_format_compatibility: true
-        )
+        ).to_hash
       end
-      hash = description.to_hash
 
       current_version = hash["meta"]["format_version"]
       if !current_version
