@@ -18,6 +18,10 @@
 require_relative "spec_helper"
 
 describe RepositoriesInspector do
+  let(:system) {
+    double
+  }
+
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
@@ -160,7 +164,6 @@ password=2fdcb7499fd46842
     end
 
     it "returns data about repositories when requirements are fulfilled" do
-      system = double
       setup_expectation_requirements(system)
       setup_expectation_zypper_xml(system, zypper_output_xml)
       setup_expectation_zypper_details(system, zypper_output_details)
@@ -190,7 +193,6 @@ password=2fdcb7499fd46842
     end
 
     it "returns an empty array if there are no repositories" do
-      system = double
       zypper_empty_output_xml = <<-EOF
         <?xml version='1.0'?>
         <stream>
@@ -212,7 +214,6 @@ password=2fdcb7499fd46842
     end
 
     it "returns an empty array if zypper exits with ZYPPER_EXIT_NO_REPOS" do
-      system = double
       zypper_empty_output_xml = <<-EOF
         <?xml version='1.0'?>
         <stream>
@@ -232,7 +233,6 @@ password=2fdcb7499fd46842
     end
 
     it "raise an error when requirements are not fulfilled" do
-      system = double
       expect(system).to receive(:check_requirement).with(
         "zypper", "--version"
       ).and_raise(Machinery::Errors::MissingRequirement)
@@ -243,7 +243,6 @@ password=2fdcb7499fd46842
     end
 
     it "returns sorted data" do
-      system = double
       setup_expectation_requirements(system)
       setup_expectation_zypper_xml(system, zypper_output_xml)
       setup_expectation_zypper_details(system, zypper_output_details)
