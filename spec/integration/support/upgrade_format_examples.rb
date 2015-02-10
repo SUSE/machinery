@@ -67,10 +67,19 @@ shared_examples "upgrade format" do
           stdout: :capture
       )
       expected = File.read(
-        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded")
+        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_config_files")
+      )
+      expect(show_after_migration).to match_machinery_show_scope(expected)
+
+      show_after_migration = @machinery.run_command(
+          "machinery show format_v2 --scope=repositories --show-diffs",
+          as: "vagrant",
+          stdout: :capture
+      )
+      expected = File.read(
+        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_repositories")
       )
       expect(show_after_migration).to match_machinery_show_scope(expected)
     end
-
   end
 end

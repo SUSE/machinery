@@ -1,0 +1,9 @@
+# Repositories [192.168.121.82] (2014-12-04 15:57:58)
+
+  * Main Repository (OSS)
+    URI: http://download.opensuse.org/distribution/13.2/repo/oss/
+    Alias: download.opensuse.org-oss
+    Enabled: Yes
+    Refresh: Yes
+    Priority: 99
+    Package Manager: zypper
