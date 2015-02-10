@@ -236,8 +236,9 @@ password=2fdcb7499fd46842
       allow(system).to receive(:has_command?).with("yum").and_return(false)
 
       inspector = RepositoriesInspector.new
-      expect{inspector.inspect(system, description)}.to raise_error(
-        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper' or 'yum'/)
+      expect { inspector.inspect(system, description) }.to raise_error(
+        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper' or 'yum'/
+      )
     end
 
     it "returns sorted data" do
@@ -312,7 +313,7 @@ EOF
       expect(system).to receive(:run_command).and_return(faulty_yum_extractor_output)
 
       inspector = RepositoriesInspector.new
-      expect{ inspector.inspect(system, description) }.to raise_error(
+      expect { inspector.inspect(system, description) }.to raise_error(
         Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed./
       )
     end
