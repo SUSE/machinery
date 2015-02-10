@@ -4,7 +4,7 @@
   "type": "array",
   "items" : {
     "type" : "object",
-    "required": ["alias", "name", "url", "type", "enabled", "autorefresh", "gpgcheck", "priority"],
+    "required": ["alias", "name", "url", "type", "enabled", "gpgcheck"],
     "properties": {
       "alias": {
         "type": "string",
