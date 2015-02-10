@@ -234,13 +234,13 @@ general description also used for zypp.
       "type": "rpm-md",
       "url": "https://manager.suse.de/XMLRPC/GET-REQ/res6-suse-manager-tools-x86_64",
       "enabled": true,
-      "packagemanager": "yum"
+      "package_manager": "yum"
     }
   ]
 }
 ```
 
-This approach is very similar to the approach of using the existing schema but adds an optional attribute for the package manager. The type of package manager is stored in "packagemanager", it's optional and defaults to "zypp".
+This approach is very similar to the approach of using the existing schema but adds an optional attribute for the package manager. The type of package manager is stored in "package_manager", it's optional and defaults to "zypp".
 
 * Advantages:
   * Stores the relevant data
@@ -291,7 +291,7 @@ don't need to introduce special cases to the code dealing with repository data.
 The differences are not too relevant for the use cases we address.
 
 We do want to store the information about which package manager is used. For
-that we add a `packagemanager` attribute. We also have to make the attributes
+that we add a `package_manager` attribute. We also have to make the attributes
 `priority` and `autorefresh` optional as they are not supported by yum.
 
 To have a clean schema we increment the format version and add a migration. We
