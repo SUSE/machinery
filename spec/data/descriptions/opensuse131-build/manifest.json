@@ -2081,14 +2081,15 @@
       "enabled": true,
       "autorefresh": true,
       "gpgcheck": true,
-      "priority": 99
+      "priority": 99,
+      "package_manager": "zypper"
     }
   ],
   "patterns": [
 
   ],
   "meta": {
-    "format_version": 2,
+    "format_version": 3,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
