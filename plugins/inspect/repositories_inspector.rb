@@ -65,7 +65,7 @@ class RepositoriesInspector < Inspector
       repositories = JSON.parse(system.run_command(
         "bash", "-c", "python", stdin: script, stdout: :capture
       ).split("\n").last).map { |element| Repository.new(element) }
-    rescue JSON::ParserError => e
+    rescue JSON::ParserError
       raise Machinery::Errors::InspectionFailed.new("Extraction of YUM repositories failed.")
     end
 
