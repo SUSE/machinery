@@ -234,13 +234,13 @@ general description also used for zypp.
       "type": "rpm-md",
       "url": "https://manager.suse.de/XMLRPC/GET-REQ/res6-suse-manager-tools-x86_64",
       "enabled": true,
-      "packagemanager": "yum"
+      "package_manager": "yum"
     }
   ]
 }
 ```
 
-This approach is very similar to the approach of using the existing schema but adds an optional attribute for the package manager. The type of package manager is stored in "packagemanager", it's optional and defaults to "zypp".
+This approach is very similar to the approach of using the existing schema but adds an optional attribute for the package manager. The type of package manager is stored in "package_manager", it's optional and defaults to "zypp".
 
 * Advantages:
   * Stores the relevant data
