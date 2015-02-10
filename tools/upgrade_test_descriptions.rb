@@ -30,7 +30,8 @@ def upgrade_descriptions(path, descriptions = [])
   end
 
   descriptions.each do |description|
-    Migration.migrate_description(store, description)
+    puts description
+    Migration.migrate_description(store, description, force: true)
   end
 end
 
