@@ -291,7 +291,7 @@ don't need to introduce special cases to the code dealing with repository data.
 The differences are not too relevant for the use cases we address.
 
 We do want to store the information about which package manager is used. For
-that we add a `packagemanager` attribute. We also have to make the attributes
+that we add a `package_manager` attribute. We also have to make the attributes
 `priority` and `autorefresh` optional as they are not supported by yum.
 
 To have a clean schema we increment the format version and add a migration. We
