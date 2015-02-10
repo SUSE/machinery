@@ -34,6 +34,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: Yes
     Priority: 99
+    Package Manager: zypper
 
   * openSUSE_13.1_NON_OSS
     URI: http://download.opensuse.org/distribution/13.1/repo/non-oss/
@@ -41,6 +42,7 @@ describe RepositoriesRenderer do
     Enabled: No
     Refresh: No
     Priority: 99
+    Package Manager: zypper
 
   * SLES12-12-0
     URI: cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001
@@ -48,6 +50,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 99
+    Package Manager: zypper
 
 EOT
       expect(output).to include(expected_output)

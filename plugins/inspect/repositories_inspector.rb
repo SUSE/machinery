@@ -142,7 +142,8 @@ class RepositoriesInspector < Inspector
         enabled:     rep["enabled"] == "1",
         autorefresh: rep["autorefresh"] == "1",
         gpgcheck:    rep["gpgcheck"] == "1",
-        priority:    pri_value
+        priority:    pri_value,
+        package_manager: "zypper"
       )
       if username && password
         repository[:username] = username

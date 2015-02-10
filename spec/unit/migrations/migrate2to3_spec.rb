@@ -71,4 +71,22 @@ describe Migrate2To3 do
       File.directory?(File.join(description_base, "analyze", "config_file_diffs", "etc"))
     ).to be(true)
   end
+
+  it "adds zypper as package_manager attribute to repositories" do
+    expected_hash = {
+      "alias" => "download.opensuse.org-oss",
+      "name" => "Main Repository (OSS)",
+      "type" => "yast2",
+      "url" => "http://download.opensuse.org/distribution/13.2/repo/oss/",
+      "enabled" => true,
+      "autorefresh" => true,
+      "gpgcheck" => true,
+      "priority" => 99,
+      "package_manager" => "zypper"
+    }
+    migration = Migrate2To3.new(description_hash, description_base)
+    migration.migrate
+
+    expect(description_hash["repositories"].first).to eq(expected_hash)
+  end
 end

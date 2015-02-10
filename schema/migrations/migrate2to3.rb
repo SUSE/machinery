@@ -21,6 +21,8 @@ class Migrate2To3 < Migration
     'analyze' and config files diffs in the config_file_diffs
     subdirectory.
     So the existing directory config-file-diffs needs to be moved.
+
+    It also adds a package_manager attribute to to the repository.
   EOT
 
   def migrate
@@ -29,6 +31,12 @@ class Migrate2To3 < Migration
     if File.directory?(old_path)
       FileUtils.mkdir_p(File.join(@path, "analyze"))
       FileUtils.mv(old_path, new_path)
+    end
+
+    if @hash.has_key?("repositories")
+      @hash["repositories"].each do |repository|
+        repository["package_manager"] = "zypper"
+      end
     end
   end
 end

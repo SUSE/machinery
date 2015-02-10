@@ -242,7 +242,8 @@ module SystemDescriptionFactory
         "enabled": true,
         "autorefresh": true,
         "gpgcheck": true,
-        "priority": 99
+        "priority": 99,
+        "package_manager": "zypper"
       },
       {
         "alias": "openSUSE_13.1_NON_OSS_ALIAS",
@@ -252,7 +253,8 @@ module SystemDescriptionFactory
         "enabled": false,
         "autorefresh": false,
         "gpgcheck": true,
-        "priority": 99
+        "priority": 99,
+        "package_manager": "zypper"
       },
       {
         "alias": "SLES12-12-0",
@@ -262,7 +264,8 @@ module SystemDescriptionFactory
         "enabled": true,
         "autorefresh": false,
         "gpgcheck": true,
-        "priority": 99
+        "priority": 99,
+        "package_manager": "zypper"
       }
     ]
   EOF
