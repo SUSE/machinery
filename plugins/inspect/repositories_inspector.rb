@@ -22,7 +22,9 @@ class RepositoriesInspector < Inspector
     elsif system.has_command?("yum")
       description.repositories, summary = inspect_yum_repositories(system)
     else
-      raise Machinery::Errors::MissingRequirement.new("Need either the binary 'zypper' or 'yum' to be available on the inspected system.")
+      raise Machinery::Errors::MissingRequirement.new(
+        "Need either the binary 'zypper' or 'yum' to be available on the inspected system."
+      )
     end
 
     summary
