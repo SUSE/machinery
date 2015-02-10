@@ -19,12 +19,7 @@
 
 require "abstract_method"
 require "json"
-require_relative "../lib/constants"
-require_relative "../lib/object"
-require_relative "../lib/exceptions"
-require_relative "../lib/system_description"
-require_relative "../lib/system_description_store"
-require_relative "../lib/migration"
+require_relative "../lib/machinery"
 
 # descriptions can be provided to prevent it from using every directory in the
 # description path
