@@ -30,6 +30,7 @@ class RepositoriesInspector < Inspector
     summary
   end
 
+  private
   def inspect_zypper_repositories(system)
     begin
       xml = system.run_command(
