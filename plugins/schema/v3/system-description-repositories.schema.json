@@ -34,6 +34,10 @@
       "priority": {
         "type": "integer",
         "minimum": 1
+      },
+      "package_manager": {
+        "type": "string",
+        "minLength": 1
       }
     }
   }
