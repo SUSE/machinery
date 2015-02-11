@@ -35,7 +35,7 @@ class Migrate2To3 < Migration
 
     if @hash.has_key?("repositories")
       @hash["repositories"].each do |repository|
-        repository["package_manager"] = "zypper"
+        repository["package_manager"] = "zypp"
       end
     end
   end

@@ -18,7 +18,7 @@
 class RepositoriesInspector < Inspector
   def inspect(system, description, options = {})
     if system.has_command?("zypper")
-      description.repositories, summary = inspect_zypper_repositories(system)
+      description.repositories, summary = inspect_zypp_repositories(system)
     elsif system.has_command?("yum")
       description.repositories, summary = inspect_yum_repositories(system)
     else
@@ -31,7 +31,8 @@ class RepositoriesInspector < Inspector
   end
 
   private
-  def inspect_zypper_repositories(system)
+
+  def inspect_zypp_repositories(system)
     begin
       xml = system.run_command(
         "zypper", "--non-interactive", "--xmlout", "repos", "--details",
@@ -146,7 +147,7 @@ class RepositoriesInspector < Inspector
         autorefresh: rep["autorefresh"] == "1",
         gpgcheck:    rep["gpgcheck"] == "1",
         priority:    pri_value,
-        package_manager: "zypper"
+        package_manager: "zypp"
       )
       if username && password
         repository[:username] = username

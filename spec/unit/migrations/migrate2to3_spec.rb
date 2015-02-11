@@ -72,7 +72,7 @@ describe Migrate2To3 do
     ).to be(true)
   end
 
-  it "adds zypper as package_manager attribute to repositories" do
+  it "adds zypp as package_manager attribute to repositories" do
     expected_hash = {
       "alias" => "download.opensuse.org-oss",
       "name" => "Main Repository (OSS)",
@@ -82,7 +82,7 @@ describe Migrate2To3 do
       "autorefresh" => true,
       "gpgcheck" => true,
       "priority" => 99,
-      "package_manager" => "zypper"
+      "package_manager" => "zypp"
     }
     migration = Migrate2To3.new(description_hash, description_base)
     migration.migrate

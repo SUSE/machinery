@@ -8,7 +8,7 @@
       "autorefresh": true,
       "gpgcheck": true,
       "priority": 99,
-      "package_manager": "zypper"
+      "package_manager": "zypp"
     },
     {
       "alias": "download.opensuse.org-oss",
@@ -19,7 +19,7 @@
       "autorefresh": true,
       "gpgcheck": true,
       "priority": 99,
-      "package_manager": "zypper"
+      "package_manager": "zypp"
     }
   ],
   "services": {

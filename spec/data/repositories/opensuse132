@@ -6,5 +6,5 @@
     Enabled: Yes
     Refresh: Yes
     Priority: 99
-    Package Manager: zypper
+    Package Manager: zypp
 

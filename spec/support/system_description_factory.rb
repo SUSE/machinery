@@ -243,7 +243,7 @@ module SystemDescriptionFactory
         "autorefresh": true,
         "gpgcheck": true,
         "priority": 99,
-        "package_manager": "zypper"
+        "package_manager": "zypp"
       },
       {
         "alias": "openSUSE_13.1_NON_OSS_ALIAS",
@@ -254,7 +254,7 @@ module SystemDescriptionFactory
         "autorefresh": false,
         "gpgcheck": true,
         "priority": 99,
-        "package_manager": "zypper"
+        "package_manager": "zypp"
       },
       {
         "alias": "SLES12-12-0",
@@ -265,7 +265,7 @@ module SystemDescriptionFactory
         "autorefresh": false,
         "gpgcheck": true,
         "priority": 99,
-        "package_manager": "zypper"
+        "package_manager": "zypp"
       }
     ]
   EOF

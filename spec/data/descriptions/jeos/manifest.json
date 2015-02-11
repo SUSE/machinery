@@ -3087,7 +3087,7 @@
       "autorefresh": true,
       "gpgcheck": true,
       "priority": 99,
-      "package_manager": "zypper"
+      "package_manager": "zypp"
     },
     {
       "alias": "openSUSE_13.1_Updates",
@@ -3098,7 +3098,7 @@
       "autorefresh": true,
       "gpgcheck": true,
       "priority": 99,
-      "package_manager": "zypper"
+      "package_manager": "zypp"
     }
   ],
   "patterns": [

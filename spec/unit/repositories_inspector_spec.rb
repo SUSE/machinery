@@ -72,7 +72,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           url: "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials",
           username: "d4c0246d79334fa59a9ffe625fffef1d",
           password: "0a0918c876ef4a1d9c352e5c47421235",
-          package_manager: "zypper"
+          package_manager: "zypp"
         ),
         Repository.new(
           alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
@@ -85,7 +85,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           url: "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e",
           username: "SCC_d91435cca69a232114cf2e14aa830ad5",
           password: "2fdcb7499fd46842",
-          package_manager: "zypper"
+          package_manager: "zypp"
         ),
         Repository.new(
           alias: "repo-oss",
@@ -96,7 +96,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           gpgcheck: true,
           priority: 22,
           url: "http://download.opensuse.org/distribution/13.1/repo/oss/",
-          package_manager: "zypper"
+          package_manager: "zypp"
         ),
           Repository.new(
           alias: "repo-update",
@@ -107,7 +107,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
           gpgcheck: false,
           priority: 47,
           url: "http://download.opensuse.org/update/13.1/",
-          package_manager: "zypper"
+          package_manager: "zypp"
         )
       ])
     }
