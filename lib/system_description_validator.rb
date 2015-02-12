@@ -51,23 +51,18 @@ class SystemDescriptionValidator
     if @format_version == 1
       [:config_files, :changed_managed_files, :unmanaged_files].each do |scope|
         if @hash[scope] && scope_file_store(scope).path && Dir.exists?(scope_file_store(scope).path)
-          missing_files = missing_files_for_scope(scope)
-          additional_files = additional_files_for_scope(scope)
 
-          if !missing_files.empty? or !additional_files.empty?
-            errors.push(format_file_errors(scope, missing_files, additional_files))
-          end
+          file_errors = FileValidator.validate(ScopeFileStore.new(@path, scope.to_s), expected_files(scope))
+          errors << "Scope '#{scope}':\n" + file_errors.join("\n") if !file_errors.empty?
         end
       end
     else
       [:config_files, :changed_managed_files, :unmanaged_files].each do |scope|
         if @hash[scope] && @hash[scope][:extracted]
-          missing_files = missing_files_for_scope(scope)
-          additional_files = additional_files_for_scope(scope)
 
-          if !missing_files.empty? or !additional_files.empty?
-            errors.push(format_file_errors(scope, missing_files, additional_files))
-          end
+          file_errors = FileValidator.validate(ScopeFileStore.new(@path, scope.to_s), expected_files(scope))
+
+          errors << "Scope '#{scope}':\n" + file_errors.join("\n") if !file_errors.empty?
         end
       end
     end
@@ -75,79 +70,24 @@ class SystemDescriptionValidator
     errors
   end
 
-  def missing_files_for_plain_scope(scope)
-    expected_files = @hash[scope][:files].reject { |file| file[:changes].include?("deleted") }
-    missing_files(scope, expected_files.map {|file| file[:name] })
-  end
-
-  def expected_files_for_tared_scope(scope)
-    has_files_tarball = @hash[scope][:files].any? { |f| f[:type] == "file" || f[:type] == "link" }
-    tree_tarballs = @hash[scope][:files].
-      select { |f| f[:type] == "dir" }.
-      map { |d| File.join("trees", d[:name].sub(/\/$/, "") + ".tgz") }
-
-    expected_files = []
-    expected_files << "files.tgz" if has_files_tarball
-    expected_files += tree_tarballs
-  end
-
-  def missing_files_for_tared_scope(scope)
-    expected_files = expected_files_for_tared_scope(scope)
-    missing_files(scope, expected_files)
-  end
-
-  def missing_files_for_scope(scope)
+  def expected_files(scope)
     if scope == :unmanaged_files
-      missing_files_for_tared_scope(scope)
+      has_files_tarball = @hash[scope][:files].any? { |f| f[:type] == "file" || f[:type] == "link" }
+      tree_tarballs = @hash[scope][:files].
+        select { |f| f[:type] == "dir" }.
+        map { |d| File.join("trees", d[:name].sub(/\/$/, "") + ".tgz") }
+
+      expected_files = []
+      expected_files << "files.tgz" if has_files_tarball
+      expected_files += tree_tarballs
     else
-      missing_files_for_plain_scope(scope)
+      expected_files = @hash[scope][:files]
+        .reject { |file| file[:changes].include?("deleted") }
+        .map {|file| file[:name] }
     end
-  end
 
-  def additional_files_for_tared_scope(scope)
-    expected_files = expected_files_for_tared_scope(scope)
-    additional_files(scope, expected_files)
-  end
-
-  def additional_files_for_plain_scope(scope)
-    expected_files = @hash[scope][:files].reject { |file| file[:changes].include?("deleted") }
-    additional_files(scope, expected_files.map {|file| file[:name] })
-  end
-
-  def additional_files_for_scope(scope)
-    if scope == :unmanaged_files
-      additional_files_for_tared_scope(scope)
-    else
-      additional_files_for_plain_scope(scope)
-    end
-  end
-
-  def scope_file_store(store_name)
-    ScopeFileStore.new(@path, store_name.to_s)
-  end
-
-  def missing_files(scope, file_list)
-    file_list.map! { |file| File.join(scope_file_store(scope).path, file) }
-
-    file_list.select { |file| !File.exists?(file) }
-  end
-
-  def additional_files(scope, file_list)
-    file_store = scope_file_store(scope)
-    file_list.map! { |file| File.join(file_store.path, file) }
-    files = file_store.list_content
-
-    files - file_list
-  end
-
-  def format_file_errors(scope, missing_files, additional_files)
-    errors = missing_files.map do |file|
-      "  * File '" + file + "' doesn't exist"
-    end
-    errors += additional_files.map do |file|
-      "  * File '" + file + "' doesn't have meta data"
-    end
-    "Scope '#{scope}':\n" + errors.join("\n")
+    store_base_path = ScopeFileStore.new(@path, scope.to_s).path
+    expected_files.map { |file| File.join(store_base_path, file) }
   end
 
   private
