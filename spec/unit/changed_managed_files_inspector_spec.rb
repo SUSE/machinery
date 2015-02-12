@@ -100,7 +100,7 @@ describe ChangedManagedFilesInspector do
     it "returns schema compliant data" do
       json_hash = JSON.parse(description.to_json)
       expect {
-        SystemDescriptionValidator.new(description).validate_json(json_hash)
+        SystemDescriptionValidator.new(json_hash, nil).validate_json
       }.to_not raise_error
     end
 

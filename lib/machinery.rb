@@ -85,6 +85,7 @@ require_relative "config_task"
 require_relative "autoyast"
 require_relative "system_description_memory_store"
 require_relative "scope_file_store"
+require_relative "json_validator"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

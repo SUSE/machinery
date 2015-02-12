@@ -217,22 +217,8 @@ class SystemDescription < Machinery::Object
     ScopeFileStore.new(description_path, store_name)
   end
 
-  def missing_files(scope, file_list)
-    file_list.map! { |file| File.join(scope_file_store(scope).path, file) }
-
-    file_list.select { |file| !File.exists?(file) }
-  end
-
-  def additional_files(scope, file_list)
-    file_store = scope_file_store(scope)
-    file_list.map! { |file| File.join(file_store.path, file) }
-    files = file_store.list_content
-
-    files - file_list
-  end
-
   def validate_file_data
-    errors = SystemDescriptionValidator.new(self).validate_file_data
+    errors = SystemDescriptionValidator.new(to_hash, description_path).validate_file_data
     if !errors.empty?
       Machinery::Ui.warn("Warning: File validation errors:")
       Machinery::Ui.warn("Error validating description '#{@name}'\n\n")
@@ -241,7 +227,7 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_file_data!
-    errors = SystemDescriptionValidator.new(self).validate_file_data
+    errors = SystemDescriptionValidator.new(to_hash, description_path).validate_file_data
     if !errors.empty?
       e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
       e.header = "Error validating description '#{@name}'"
