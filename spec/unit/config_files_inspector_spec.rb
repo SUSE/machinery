@@ -306,10 +306,8 @@ EOF
       inspector = ConfigFilesInspector.new
       inspector.inspect(system, description, extract_changed_config_files: true )
 
-      json_hash = JSON.parse(description.to_json)
-
       expect {
-        SystemDescriptionValidator.new(json_hash, nil).validate_json
+        SystemDescriptionValidator.new(description.to_hash, nil).validate_json
       }.to_not raise_error
     end
 
