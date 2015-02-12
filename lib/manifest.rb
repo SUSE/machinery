@@ -94,6 +94,6 @@ class Manifest
   end
 
   def compatible_json?
-    @hash.is_a?(Hash) && @hash["meta"].is_a?(Hash) && @hash["meta"]["format_version"]
+    @hash && @hash["meta"] && @hash["meta"]["format_version"]
   end
 end

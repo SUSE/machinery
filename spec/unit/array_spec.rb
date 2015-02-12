@@ -115,7 +115,7 @@ describe Machinery::Array do
       array = ArrayExampleArray.new([1, embedded_array, embedded_object])
 
       result = array.as_json
-      expect(result).to eq([1, ["a"], {b: "b"}])
+      expect(result).to eq([1, ["a"], {"b" => "b"}])
     end
   end
 

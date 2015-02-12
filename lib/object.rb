@@ -20,15 +20,15 @@ module Machinery
     class << self
       def has_property(name, options)
         @property_classes ||= {}
-        @property_classes[name.to_sym] = options[:class]
+        @property_classes[name.to_s] = options[:class]
       end
 
       def object_hash_from_json(json)
         return nil unless json
 
         entries = json.map do |key, value|
-          value_converted = if @property_classes && @property_classes[key.to_sym]
-            @property_classes[key.to_sym].from_json(value)
+          value_converted = if @property_classes && @property_classes[key.to_s]
+            @property_classes[key.to_s].from_json(value)
           else
             case value
               when ::Array
@@ -59,7 +59,7 @@ module Machinery
 
     def set_attributes(attrs)
       @attributes = attrs.inject({}) do |attributes, (key, value)|
-        key = key.to_sym if key.respond_to?(:to_sym)
+        key = key.to_s if key.is_a?(Symbol)
 
         attributes[key] = value
         attributes
@@ -80,11 +80,11 @@ module Machinery
     end
 
     def [](key)
-      @attributes[key.to_sym]
+      @attributes[key.to_s]
     end
 
     def []=(key, value)
-      @attributes[key.to_sym] = value
+      @attributes[key.to_s] = value
     end
 
     def empty?
@@ -96,15 +96,14 @@ module Machinery
         if args.size != 1
           raise ArgumentError, "wrong number of arguments (#{args.size} for 1)"
         end
-
-        @attributes[name.to_s[0..-2].to_sym] = args.first
+        @attributes[name.to_s[0..-2].to_s] = args.first
       else
-        if @attributes.has_key?(name)
+        if @attributes.has_key?(name.to_s)
           if !args.empty?
             raise ArgumentError, "wrong number of arguments (#{args.size} for 0)"
           end
 
-          @attributes[name]
+          @attributes[name.to_s]
         else
           nil
         end

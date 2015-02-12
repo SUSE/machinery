@@ -35,7 +35,7 @@ class FileScope < Machinery::Object
   private
 
   def validate_attributes(other)
-    expected_attributes = [:extracted, :files]
+    expected_attributes = ["extracted", "files"]
     actual_attributes = (attributes.keys + other.attributes.keys).uniq.sort
 
     if actual_attributes != expected_attributes

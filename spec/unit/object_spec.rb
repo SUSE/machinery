@@ -32,7 +32,7 @@ describe Machinery::Object do
         "a" => "a",
         1   => "1"
       )
-      expect(object.attributes.keys).to eq([:a, 1])
+      expect(object.attributes.keys).to eq(["a", 1])
     end
   end
 
@@ -57,7 +57,7 @@ describe Machinery::Object do
     before(:all) do
       class FooObject < Machinery::Object; end
       class ObjectWithProperty < Machinery::Object
-        has_property :foo, class: FooObject
+        has_property "foo", class: FooObject
         has_property "bar", class: FooObject
       end
     end
@@ -116,9 +116,9 @@ describe Machinery::Object do
 
       result = object.as_json
       expected = {
-        a: ["a"],
-        b: {b: "b"},
-        c: 1
+        "a" => ["a"],
+        "b" => {"b" => "b"},
+        "c" => 1
       }
       expect(result).to eq(expected)
     end
