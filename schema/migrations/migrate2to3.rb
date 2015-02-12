@@ -18,11 +18,11 @@
 class Migrate2To3 < Migration
   desc <<-EOT
     Schema version 3 stores the analyzed data under the directory
-    'analyze' and config files diffs in the config_file_diffs
+    "analyze" and config files diffs in the config_file_diffs
     subdirectory.
     So the existing directory config-file-diffs needs to be moved.
 
-    It also adds a package_manager attribute to to the repository.
+    It also adds a "package_manager" attribute to the repository.
   EOT
 
   def migrate
