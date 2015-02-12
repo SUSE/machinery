@@ -44,29 +44,39 @@ $(document).ready(function () {
       };
   })()
 
+  var filterdocument = (function() {
+    window.scrollTo(0, 0)
+    var rows = $("body").find("tr");
+    if($("#filter").val() == "") {
+      rows.show();
+      return;
+    }
+
+    var filters = $("#filter").val().split(" ");
+
+    rows
+      .hide()
+      .filter(function() {
+        var $t = $(this);
+        for(var i = 0; i < filters.length; ++i) {
+          if($t.is(":contains('" + filters[i] + "')")) {
+            return true;
+          }
+        }
+        return false;
+      })
+      .show();
+  })
+
   $("#filter").keyup(function() {
     run_when_done_typing(function() {
-      window.scrollTo(0, 0)
-      var rows = $("body").find("tr");
-      if($("#filter").val() == "") {
-        rows.show();
-        return;
-      }
+      filterdocument()
+    }, 500)
+  })
 
-      var filters = $("#filter").val().split(" ");
-
-      rows
-        .hide()
-        .filter(function() {
-          var $t = $(this);
-          for(var i = 0; i < filters.length; ++i) {
-            if($t.is(":contains('" + filters[i] + "')")) {
-              return true;
-            }
-          }
-          return false;
-        })
-        .show();
+  $("#resetfilter").click(function() {
+    run_when_done_typing(function() {
+      filterdocument()
     }, 500)
   })
 
