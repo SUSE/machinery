@@ -19,7 +19,8 @@ shared_examples "inspect unmanaged files" do |base|
   let(:ignore_list) {
     [
       "var/lib/logrotate.status",
-      "var/spool/cron/lastrun/cron.daily"
+      "var/spool/cron/lastrun/cron.daily",
+      "var/log/sa"
     ]
   }
   describe "--scope=unmanaged-files" do

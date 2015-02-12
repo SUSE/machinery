@@ -31,7 +31,7 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": 2
+        "format_version": 3
       }
     }'
   end

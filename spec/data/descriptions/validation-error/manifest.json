@@ -7,7 +7,8 @@
       "enabled": true,
       "autorefresh": true,
       "gpgcheck": true,
-      "priority": 99
+      "priority": 99,
+      "package_manager": "zypp"
     },
     {
       "alias": "download.opensuse.org-oss",
@@ -17,7 +18,8 @@
       "enabled": true,
       "autorefresh": true,
       "gpgcheck": true,
-      "priority": 99
+      "priority": 99,
+      "package_manager": "zypp"
     }
   ],
   "services": {
@@ -46,7 +48,7 @@
     ]
   },
   "meta": {
-    "format_version": 2,
+    "format_version": 3,
     "repositories": {
       "modified": "2014-08-29T11:10:03Z",
       "hostname": "192.168.121.56"

@@ -47,5 +47,39 @@ shared_examples "upgrade format" do
       )
       expect(show_after_migration).to match_machinery_show_scope(expected)
     end
+
+    it "Upgrades format v2 to v3" do
+      @machinery.inject_directory(
+        File.join(Machinery::ROOT, "spec/data/descriptions/format_v2/"),
+        "/home/vagrant/.machinery/",
+        owner: "vagrant",
+        group: "users"
+      )
+
+      @machinery.run_command(
+        "machinery upgrade-format format_v2",
+        as: "vagrant"
+      )
+
+      show_after_migration = @machinery.run_command(
+          "machinery show format_v2 --scope=config-files --show-diffs",
+          as: "vagrant",
+          stdout: :capture
+      )
+      expected = File.read(
+        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_config_files")
+      )
+      expect(show_after_migration).to match_machinery_show_scope(expected)
+
+      show_after_migration = @machinery.run_command(
+          "machinery show format_v2 --scope=repositories --show-diffs",
+          as: "vagrant",
+          stdout: :capture
+      )
+      expected = File.read(
+        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_repositories")
+      )
+      expect(show_after_migration).to match_machinery_show_scope(expected)
+    end
   end
 end

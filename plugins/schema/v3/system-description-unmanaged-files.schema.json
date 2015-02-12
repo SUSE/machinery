@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "required": ["extracted", "files"],
+  "properties": {
+    "extracted": {
+      "type": "boolean"
+    },
+    "files": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/file_extracted" },
+              { "$ref": "#/definitions/file_remote_dir" }
+            ]
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/definitions/file_not_extracted" },
+              { "$ref": "#/definitions/file_remote_dir" }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "file_common": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "file_not_extracted": {
+      "allOf": [
+        { "$ref": "#/definitions/file_common" },
+        {
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "enum": ["file", "dir", "link", "remote_dir"]
+            }
+          },
+          "not": { "$ref": "#/definitions/file_extracted" }
+        }
+      ]
+    },
+    "file_extracted": {
+      "allOf": [
+        { "$ref": "#/definitions/file_common" },
+        {
+          "required": ["user", "group"],
+          "properties": {
+          "user": {
+          "type": "string",
+          "minLength": 1
+          },
+          "group": {
+          "type": "string",
+          "minLength": 1
+          }
+          },
+          "oneOf": [
+          { "$ref": "#/definitions/file_extracted_file" },
+          { "$ref": "#/definitions/file_extracted_dir" },
+          { "$ref": "#/definitions/file_extracted_link" }
+          ]
+        }
+      ]
+    },
+    "file_extracted_file": {
+      "required": ["type", "size", "mode"],
+      "properties": {
+        "type": {
+          "enum": ["file"]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-7]{3,4}$"
+        }
+      }
+    },
+    "file_extracted_dir": {
+      "required": ["type", "size", "mode", "files"],
+      "properties": {
+        "type": {
+          "enum": ["dir"]
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-4]?[0-7]{3}$"
+        },
+        "files": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "file_extracted_link": {
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": ["link"]
+        }
+      }
+    },
+    "file_remote_dir": {
+      "allOf": [
+        { "$ref": "#/definitions/file_common" },
+        {
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "enum": ["remote_dir"]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

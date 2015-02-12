@@ -19,32 +19,7 @@ require_relative "spec_helper"
 
 describe RepositoriesRenderer do
   let(:system_description) {
-    create_test_description(json: <<-EOF)
-    {
-      "repositories": [
-      {
-        "alias": "openSUSE-13.1-1.10",
-        "name": "openSUSE-13.1-1.10",
-        "type": "yast2",
-        "url": "cd:///?devices=/dev/disk/by-id/ata-HL-DT-ST_DVD+_-RW_GHA2N_KEID27K1340,/dev/sr0",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 99
-      },
-      {
-        "alias": "repo-debug",
-        "name": "openSUSE-13.1-Debug",
-        "type": null,
-        "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
-        "enabled": false,
-        "autorefresh": true,
-        "gpgcheck": true,
-        "priority": 98
-      }
-    ]
-    }
-    EOF
+    create_test_description(scopes: ["repositories"])
   }
 
   describe "show" do
@@ -52,24 +27,33 @@ describe RepositoriesRenderer do
       output = RepositoriesRenderer.new.render(system_description)
 
       expected_output = <<EOT
-# Repositories
 
-  * openSUSE-13.1-1.10
-    URI: cd:///?devices=/dev/disk/by-id/ata-HL-DT-ST_DVD+_-RW_GHA2N_KEID27K1340,/dev/sr0
-    Alias: openSUSE-13.1-1.10
+  * openSUSE_13.1_OSS
+    URI: http://download.opensuse.org/distribution/13.1/repo/oss/
+    Alias: openSUSE_13.1_OSS
+    Enabled: Yes
+    Refresh: Yes
+    Priority: 99
+    Package Manager: zypp
+
+  * openSUSE_13.1_NON_OSS
+    URI: http://download.opensuse.org/distribution/13.1/repo/non-oss/
+    Alias: openSUSE_13.1_NON_OSS_ALIAS
+    Enabled: No
+    Refresh: No
+    Priority: 99
+    Package Manager: zypp
+
+  * SLES12-12-0
+    URI: cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001
+    Alias: SLES12-12-0
     Enabled: Yes
     Refresh: No
     Priority: 99
-
-  * openSUSE-13.1-Debug
-    URI: http://download.opensuse.org/debug/distribution/13.1/repo/oss/
-    Alias: repo-debug
-    Enabled: No
-    Refresh: Yes
-    Priority: 98
+    Package Manager: zypp
 
 EOT
-      expect(output).to eq(expected_output)
+      expect(output).to include(expected_output)
     end
 
     it "prints an empty list" do
