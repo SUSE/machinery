@@ -118,7 +118,6 @@ class Migration
 
       if options[:force]
         store.swap(description_name, backup_description)
-        SystemDescription.load(description_name, store)
         Machinery::Ui.puts "Saved backup to #{backup_path}"
       else
         begin
