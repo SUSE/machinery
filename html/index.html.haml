@@ -414,7 +414,9 @@
                 {{#services.services}}
                 %tr
                   %td {{name}}
-                  %td {{state}}
+                  %td
+                    %div{:class=>"{{services.init_system}}_{{state}}"}
+                      {{state}}
                 {{/services.services}}
       {{/services.services.length}}
 

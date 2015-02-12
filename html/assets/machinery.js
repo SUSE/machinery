@@ -145,4 +145,18 @@ $(document).ready(function () {
       }
     }, 500);
   });
+
+  // Tooltips for service states
+  $("div.systemd_enabled").attr("title", 'Enabled through a symlink in .wants directory (permanently or just in /run).')
+  $("div.systemd_enabled-runtime").attr("title", 'Enabled through a symlink in .wants directory (permanently or just in /run).')
+  $("div.systemd_linked").attr("title", 'Made available through a symlink to the unit file (permanently or just in /run).')
+  $("div.systemd_linked-runtime").attr("title", 'Made available through a symlink to the unit file (permanently or just in /run).')
+  $("div.systemd_masked").attr("title", 'Disabled entirely (permanently or just in /run).')
+  $("div.systemd_masked-runtime").attr("title", 'Disabled entirely (permanently or just in /run).')
+  $("div.systemd_static").attr("title", 'Unit file is not enabled, and has no provisions for enabling in the "[Install]" section.')
+  $("div.systemd_indirect").attr("title", 'Unit file itself is not enabled, but it has a non-empty Also= setting in the "[Install]" section, listing other unit files that might be enabled.')
+  $("div.systemd_disabled").attr("title", 'Unit file is not enabled.')
+  $("div.sysvinit_on").attr("title", 'Service is enabled')
+  $("div.sysvinit_off").attr("title", 'Service is disabled')
+
 })
