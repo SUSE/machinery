@@ -22,6 +22,24 @@ describe FileValidator do
     before(:each) do
       path = "spec/data/descriptions/validation"
       @store = SystemDescriptionStore.new(path)
+      @store_v1 = SystemDescriptionStore.new("spec/data/descriptions/validation/v1")
+    end
+
+    describe "validating a format version 1 description" do
+      it "throws error on invalid format v1 description" do
+        manifest = Manifest.load("bad", @store_v1.manifest_path("bad"))
+
+        validator = SystemDescriptionValidator.new(manifest.to_hash, @store_v1.description_path("bad"))
+        errors = validator.validate_file_data
+        expect(errors.join("\n")).to eq(<<EOT.chomp)
+Scope 'config_files':
+  * File 'spec/data/descriptions/validation/v1/bad/config_files/etc/postfix/main.cf' doesn't exist
+Scope 'changed_managed_files':
+  * File 'spec/data/descriptions/validation/v1/bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
+Scope 'unmanaged_files':
+  * File 'spec/data/descriptions/validation/v1/bad/unmanaged_files/trees/root/.ssh.tgz' doesn't exist
+EOT
+      end
     end
 
     describe "validate config file presence" do
