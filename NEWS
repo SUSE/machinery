@@ -1,6 +1,7 @@
 # Machinery Release Notes
 
 
+* Usability improvements of the HTML view (gh#SUSE/machinery#359)
 * Support inspection of Red Hat Enterprise Linux 6 systems
 * Introduce system description format version 3 (see https://github.com/SUSE/machinery/wiki/System-Description-Format#version-3)
 
