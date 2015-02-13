@@ -46,9 +46,9 @@ class FileValidator
 
   private
 
-  def validate_scope(scope, expected)
-    missing_files = missing_files(expected)
-    additional_files = additional_files(expected, scope)
+  def validate_scope(scope, expected_files)
+    missing_files = missing_files(expected_files)
+    additional_files = additional_files(expected_files, scope)
 
     format_file_errors(missing_files, additional_files)
   end
