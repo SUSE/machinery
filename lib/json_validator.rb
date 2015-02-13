@@ -26,7 +26,7 @@ class JsonValidator
   end
 
   def validate_scope(hash, scope)
-    return if !@scope_schemas[scope]
+    return [] if !@scope_schemas[scope]
 
     errors = JSON::Validator.fully_validate(@scope_schemas[scope], hash).map do |error|
       "In scope #{scope}: #{error}"
