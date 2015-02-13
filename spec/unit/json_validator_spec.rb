@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe JsonValidator do
   let(:v2_validator) { JsonValidator.new(2) }
 
-  describe ".validate" do
+  describe "#validate" do
     it "complains about invalid global data in a description" do
       errors = v2_validator.validate(JSON.parse(<<-EOT))
         {
@@ -35,7 +35,7 @@ describe JsonValidator do
     end
   end
 
-  describe ".valide_scope" do
+  describe "#validate_scope" do
     it "complains about invalid scope data in a description" do
       errors = v2_validator.validate_scope(JSON.parse(<<-EOT), "os")
         {
