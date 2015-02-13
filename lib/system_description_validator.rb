@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class SystemDescriptionValidator
-  def initialize(hash, path)
+  def initialize(hash, path = nil)
     @hash = hash
     @path = path
 
