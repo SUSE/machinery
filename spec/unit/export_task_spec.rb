@@ -31,7 +31,7 @@ describe ExportTask do
 
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
-    allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
+    allow(JsonValidator).to receive(:new).and_return(double(validate: []))
     allow(Machinery::Ui).to receive(:puts)
   end
 

@@ -29,6 +29,7 @@ describe ConfigFilesInspector do
 
     before(:each) do
       create_test_description(json: "{}", name: name, store: store).save
+      FakeFS::FileSystem.clone("schema/")
     end
 
     let(:rpm_qa_output_test1) {
@@ -298,8 +299,6 @@ EOF
     end
 
     it "returns schema compliant data" do
-      allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
-
       system = double
       expect_inspect_configfiles(system, true)
 
@@ -307,7 +306,7 @@ EOF
       inspector.inspect(system, description, extract_changed_config_files: true )
 
       expect {
-        SystemDescriptionValidator.new(description.to_hash, nil).validate_json
+        JsonValidator.new(description.to_hash).validate
       }.to_not raise_error
     end
 

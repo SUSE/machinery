@@ -53,8 +53,6 @@ describe Migration do
         }
       EOF
     end
-
-    allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
   end
 
   it "loads migration definitions" do
@@ -160,9 +158,9 @@ describe Migration do
       silence_machinery_output
 
       it "raises an error if validation fails when --force is not set" do
-        expect_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).
+        expect_any_instance_of(JsonValidator).to receive(:validate).
           and_return(["json error"])
-        expect_any_instance_of(SystemDescriptionValidator).to receive(:validate_file_data).
+        expect_any_instance_of(FileValidator).to receive(:validate).
           and_return(["file error"])
         expect {
           Migration.migrate_description(store, "v1_description")
@@ -170,8 +168,8 @@ describe Migration do
       end
 
       it "does not validate when --force is set" do
-        expect_any_instance_of(SystemDescriptionValidator).to_not receive(:validate_json)
-        expect_any_instance_of(SystemDescriptionValidator).to_not receive(:validate_file_data)
+        expect(JsonValidator).to_not receive(:new)
+        expect(FileValidator).to_not receive(:new)
 
         Migration.migrate_description(store, "v1_description", force: true)
       end

@@ -28,9 +28,8 @@ describe FileValidator do
       it "throws error on invalid format v1 description" do
         manifest = Manifest.load("bad", @store_v1.manifest_path("bad"))
 
-        validator = SystemDescriptionValidator.new(manifest.to_hash,
-          @store_v1.description_path("bad"))
-        errors = validator.validate_file_data
+        validator = FileValidator.new(manifest.to_hash, @store_v1.description_path("bad"))
+        errors = validator.validate
         expect(errors.join("\n")).to eq(<<EOT.chomp)
 Scope 'config_files':
   * File 'spec/data/descriptions/validation/v1/bad/config_files/etc/postfix/main.cf' doesn't exist

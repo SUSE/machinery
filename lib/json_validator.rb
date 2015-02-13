@@ -16,23 +16,44 @@
 # you may find current contact information at www.suse.com
 
 class JsonValidator
-  def initialize(format_version)
+  def initialize(json_hash)
+    @json_hash = json_hash
+
+    format_version = @json_hash["meta"]["format_version"] if @json_hash["meta"]
+
+    if !format_version
+      raise Machinery::Errors::SystemDescriptionValidationFailed.new(
+        ["Could not determine format version"]
+      )
+    end
+
     @global_schema = global_schema(format_version)
     @scope_schemas = scope_schemas(format_version)
   end
 
-  def validate(hash)
-    JSON::Validator.fully_validate(@global_schema, hash)
+  def validate
+    errors = JSON::Validator.fully_validate(@global_schema, @json_hash)
+
+    scopes = @json_hash.keys
+    scopes.delete("meta")
+
+    errors += scopes.flat_map do |scope|
+      validate_scope(@json_hash[scope], scope)
+    end
+
+    errors
   end
 
-  def validate_scope(hash, scope)
+  private
+
+  def validate_scope(scope_hash, scope)
     return [] if !@scope_schemas[scope]
 
-    errors = JSON::Validator.fully_validate(@scope_schemas[scope], hash).map do |error|
+    errors = JSON::Validator.fully_validate(@scope_schemas[scope], scope_hash).map do |error|
       "In scope #{scope}: #{error}"
     end
     errors.map do |error|
-      cleanup_json_error_message(error, scope)
+      JsonValidationErrorCleaner.cleanup_error(error, scope)
     end
   end
 
@@ -61,63 +82,5 @@ class JsonValidator
         [scope, schema]
       end
     ]
-  end
-
-  private
-
-  def cleanup_json_error_message(message, scope)
-    message = cleanup_json_path(message, scope)
-    message = remove_json_error_uuid(message)
-    message
-  end
-
-  def cleanup_json_path(message, scope)
-    old_path = message[/The property '#\/(.*?)'/, 1]
-
-    position = error_position_from_json_path(old_path)
-    details = extract_details_from_json_path(old_path, scope)
-
-    new_path = "The property"
-    new_path += " ##{position}" if position > -1
-    new_path += " (#{details})" if !details.empty?
-
-    message.gsub(/The property '#\/.*?'/, new_path)
-  end
-
-  def error_position_from_json_path(path)
-    elements = path.split("/")
-
-    position = -1
-    elements.each do |e|
-      if Machinery::is_int?(e)
-        number = e.to_i
-        position = number if number > position
-      end
-    end
-    position
-  end
-
-  def extract_details_from_json_path(path, scope)
-    elements = path.split("/")
-
-    elements.uniq!
-
-    # filter numbers since the position is calculated elswhere
-    elements.reject! { |e| Machinery::is_int?(e) }
-
-    # The json schema path often contains the word "type" in many messages
-    # but this information adds no value for the user since it is not related
-    # to our manifest.json
-    # So we filter it for all scopes except of repositories since this is the
-    # only scope which does have an attribute called "type"
-    if scope != "repositories"
-      elements.reject! { |e| e == "type" }
-    end
-
-    elements.join("/")
-  end
-
-  def remove_json_error_uuid(message)
-    message.gsub(/ in schema .*$/, ".")
   end
 end

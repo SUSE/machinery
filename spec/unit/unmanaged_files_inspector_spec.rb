@@ -94,7 +94,7 @@ describe UnmanagedFilesInspector do
     }
 
     before(:each) do
-      allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
+      allow(JsonValidator).to receive(:new).and_return(double(validate: []))
       allow(Machinery::Ui).to receive(:warn)
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
       description.save
@@ -380,7 +380,7 @@ describe UnmanagedFilesInspector do
 
       json_hash = JSON.parse(description.to_json)
       expect {
-        SystemDescriptionValidator.new(json_hash, nil).validate_json
+        JsonValidator.new(json_hash).validate
       }.to_not raise_error
     end
   end
