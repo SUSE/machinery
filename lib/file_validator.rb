@@ -39,7 +39,7 @@ class FileValidator
       errors += missing_files.map do |file|
         "  * File '" + file + "' doesn't exist"
       end
-      errors += additional_files.map do |file|
+      errors + additional_files.map do |file|
         "  * File '" + file + "' doesn't have meta data"
       end
     end

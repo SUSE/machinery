@@ -36,7 +36,6 @@ class JsonValidator
     end
   end
 
-
   def global_schema(format_version = SystemDescription::CURRENT_FORMAT_VERSION)
     JSON.parse(File.read(File.join(
       Machinery::ROOT,
@@ -73,7 +72,7 @@ class JsonValidator
   end
 
   def cleanup_json_path(message, scope)
-    old_path = message[/The property '#\/(.*?)'/,1]
+    old_path = message[/The property '#\/(.*?)'/, 1]
 
     position = error_position_from_json_path(old_path)
     details = extract_details_from_json_path(old_path, scope)

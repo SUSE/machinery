@@ -79,9 +79,9 @@ class SystemDescriptionValidator
       expected_files << "files.tgz" if has_files_tarball
       expected_files += tree_tarballs
     else
-      expected_files = files
-        .reject { |file| file["changes"].include?("deleted") }
-        .map {|file| file["name"] }
+      expected_files = files.
+        reject { |file| file["changes"].include?("deleted") }.
+        map { |file| file["name"] }
     end
 
     store_base_path = ScopeFileStore.new(@path, scope.to_s).path
