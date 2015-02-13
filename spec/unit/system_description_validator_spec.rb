@@ -86,4 +86,41 @@ describe SystemDescriptionValidator do
       expect(errors[1]).to match(expected_scope_error)
     end
   end
+
+  describe "#validate_file_data" do
+    let(:store) { SystemDescriptionStore.new("spec/data/descriptions/validation") }
+    let(:store_v1) { SystemDescriptionStore.new("spec/data/descriptions/validation/v1") }
+
+    it "validates v1 data" do
+      manifest = Manifest.load("bad", store_v1.manifest_path("bad"))
+      validator = SystemDescriptionValidator.new(manifest.to_hash, store_v1.description_path("bad"))
+
+      expect(FileValidator).to receive(:validate).with(anything, [
+        "spec/data/descriptions/validation/v1/bad/config_files/etc/default/grub",
+        "spec/data/descriptions/validation/v1/bad/config_files/etc/postfix/main.cf"
+      ]).and_return([])
+      expect(FileValidator).to receive(:validate).with(anything, [
+        "spec/data/descriptions/validation/v1/bad/changed_managed_files/lib/mkinitrd/scripts/setup-done.sh",
+        "spec/data/descriptions/validation/v1/bad/changed_managed_files/usr/share/bash/helpfiles/read"
+      ]).and_return([])
+      expect(FileValidator).to receive(:validate).with(anything, [
+        "spec/data/descriptions/validation/v1/bad/unmanaged_files/files.tgz",
+        "spec/data/descriptions/validation/v1/bad/unmanaged_files/trees/root/.ssh.tgz"
+      ]).and_return([])
+
+      validator.validate_file_data
+    end
+
+    it "validates v1 data" do
+      manifest = Manifest.load("config-files-good", store.manifest_path("config-files-good"))
+      validator = SystemDescriptionValidator.new(manifest.to_hash, store.description_path("config-files-good"))
+
+      expect(FileValidator).to receive(:validate).with(anything, [
+        "spec/data/descriptions/validation/config-files-good/config_files/etc/default/grub",
+        "spec/data/descriptions/validation/config-files-good/config_files/etc/postfix/main.cf"
+      ]).and_return([])
+
+      validator.validate_file_data
+    end
+  end
 end

@@ -41,16 +41,9 @@ class SystemDescriptionValidator
     errors = []
 
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
-      if @format_version == 1
-        next if !@hash[scope] || !ScopeFileStore.new(@path, scope.to_s).path
+      next if !scope_extracted?(scope)
 
-        expected_files = expected_files_v1(scope)
-      else
-        next if !@hash[scope] || !@hash[scope]["extracted"]
-
-        expected_files = expected_files(scope)
-      end
-
+      expected_files = expected_files(scope)
       file_errors = FileValidator.validate(ScopeFileStore.new(@path, scope.to_s), expected_files)
 
       errors << "Scope '#{scope}':\n" + file_errors.join("\n") if !file_errors.empty?
@@ -59,30 +52,26 @@ class SystemDescriptionValidator
     errors
   end
 
-  def expected_files_v1(scope)
-    if scope == "unmanaged_files"
-      has_files_tarball = @hash[scope].any? { |f| f["type"] == "file" || f["type"] == "link" }
-      tree_tarballs = @hash[scope].
-        select { |f| f["type"] == "dir" }.
-        map { |d| File.join("trees", d["name"].sub(/\/$/, "") + ".tgz") }
+  private
 
-      expected_files = []
-      expected_files << "files.tgz" if has_files_tarball
-      expected_files += tree_tarballs
+  def scope_extracted?(scope)
+    if @format_version == 1
+      @hash[scope] && ScopeFileStore.new(@path, scope.to_s).path
     else
-      expected_files = @hash[scope]
-        .reject { |file| file["changes"].include?("deleted") }
-        .map {|file| file["name"] }
+      @hash[scope] && @hash[scope]["extracted"]
     end
-
-    store_base_path = ScopeFileStore.new(@path, scope.to_s).path
-    expected_files.map { |file| File.join(store_base_path, file) }
   end
 
   def expected_files(scope)
+    if @format_version == 1
+      files = @hash[scope]
+    else
+      files = @hash[scope]["files"]
+    end
+
     if scope == "unmanaged_files"
-      has_files_tarball = @hash[scope]["files"].any? { |f| f["type"] == "file" || f["type"] == "link" }
-      tree_tarballs = @hash[scope]["files"].
+      has_files_tarball = files.any? { |f| f["type"] == "file" || f["type"] == "link" }
+      tree_tarballs = files.
         select { |f| f["type"] == "dir" }.
         map { |d| File.join("trees", d["name"].sub(/\/$/, "") + ".tgz") }
 
@@ -90,7 +79,7 @@ class SystemDescriptionValidator
       expected_files << "files.tgz" if has_files_tarball
       expected_files += tree_tarballs
     else
-      expected_files = @hash[scope]["files"]
+      expected_files = files
         .reject { |file| file["changes"].include?("deleted") }
         .map {|file| file["name"] }
     end

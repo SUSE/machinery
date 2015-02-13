@@ -20,8 +20,7 @@ require_relative "spec_helper"
 describe FileValidator do
   describe "#validate" do
     before(:each) do
-      path = "spec/data/descriptions/validation"
-      @store = SystemDescriptionStore.new(path)
+      @store = SystemDescriptionStore.new("spec/data/descriptions/validation")
       @store_v1 = SystemDescriptionStore.new("spec/data/descriptions/validation/v1")
     end
 
