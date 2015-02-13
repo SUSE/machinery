@@ -28,7 +28,7 @@ for repo in yb.repos.sort():
   repo_dict["alias"] = repo.id
   repo_dict["name"] = repo.name
   repo_dict["type"] = "rpm-md"
-  repo_dict["url"] = repo.getAttribute("metalink") or repo.baseurl[0]
+  repo_dict["url"] = repo.baseurl[0] if repo.baseurl else ""
   repo_dict["enabled"] = repo.enabled
   repo_dict["gpgcheck"] = repo.gpgcheck
   repo_dict["package_manager"] = "yum"
