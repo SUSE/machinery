@@ -70,8 +70,11 @@ class Migration
 
       if !options[:force]
         validator = SystemDescriptionValidator.new(hash, store.description_path(description_name))
-        validator.validate_json
-        validator.validate_file_data
+        errors = validator.validate_json
+        errors += validator.validate_file_data
+        if !errors.empty?
+          raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
+        end
       end
 
       current_version = hash["meta"]["format_version"]
