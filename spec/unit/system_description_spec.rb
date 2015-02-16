@@ -417,4 +417,55 @@ describe SystemDescription do
       }.to raise_error(Machinery::Errors::ExportFailed)
     end
   end
+
+  describe "load methods" do
+    initialize_system_description_factory_store
+    let(:store) { system_description_factory_store }
+
+    before(:each) do
+      create_test_description(name: "description1", store_on_disk: true)
+    end
+
+    describe ".load" do
+      it "loads a system description" do
+        expect(SystemDescription.load("description1", store)).to be_a(SystemDescription)
+      end
+
+      it "validates the description by default" do
+        expect_any_instance_of(Manifest).to receive(:validate).and_call_original
+        expect_any_instance_of(SystemDescription).to receive(
+          :validate_file_data
+        ).and_call_original
+        expect_any_instance_of(SystemDescription).to receive(
+          :validate_format_compatibility
+        ).and_call_original
+
+        SystemDescription.load("description1", store)
+      end
+
+      it "skips data and file validation in case of the option skip_validation" do
+        expect_any_instance_of(Manifest).not_to receive(:validate)
+        expect_any_instance_of(SystemDescription).not_to receive(
+          :validate_file_data
+        )
+        expect_any_instance_of(SystemDescription).to receive(
+          :validate_format_compatibility
+        ).and_call_original
+
+        SystemDescription.load("description1", store, skip_validation: true)
+      end
+
+      it "skips format version validation in case of the option skip_format_compatibility" do
+        expect_any_instance_of(Manifest).to receive(:validate).and_call_original
+        expect_any_instance_of(SystemDescription).to receive(
+          :validate_file_data
+        )
+        expect_any_instance_of(SystemDescription).not_to receive(
+          :validate_format_compatibility
+        )
+
+        SystemDescription.load("description1", store, skip_format_compatibility: true)
+      end
+    end
+  end
 end
