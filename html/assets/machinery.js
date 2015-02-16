@@ -153,4 +153,15 @@ $(document).ready(function () {
       }
     }, 500);
   });
+
+  // Tooltips for service states
+  $("td.systemd_enabled, td.systemd_enabled-runtime").attr("title", 'Enabled through a symlink in .wants directory (permanently or just in /run).')
+  $("td.systemd_linked, td.systemd_linked-runtime").attr("title", 'Made available through a symlink to the unit file (permanently or just in /run).')
+  $("td.systemd_masked, td.systemd_masked-runtime").attr("title", 'Disabled entirely (permanently or just in /run).')
+  $("td.systemd_static").attr("title", 'Unit file is not enabled, and has no provisions for enabling in the "[Install]" section.')
+  $("td.systemd_indirect").attr("title", 'Unit file itself is not enabled, but it has a non-empty Also= setting in the "[Install]" section, listing other unit files that might be enabled.')
+  $("td.systemd_disabled").attr("title", 'Unit file is not enabled.')
+  $("td.sysvinit_on").attr("title", 'Service is enabled')
+  $("td.sysvinit_off").attr("title", 'Service is disabled')
+
 });
