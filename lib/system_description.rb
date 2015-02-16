@@ -66,9 +66,7 @@ class SystemDescription < Machinery::Object
       description = from_hash(name, store, manifest.to_hash)
       description.validate_file_data if !options[:skip_validation]
 
-      if !options[:skip_format_compatibility]
-        description.validate_format_compatibility
-      end
+      description.validate_format_compatibility if !options[:skip_format_compatibility]
 
       description
     end
