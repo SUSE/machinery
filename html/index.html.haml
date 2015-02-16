@@ -263,7 +263,8 @@
                   %td {{name}}
                   %td {{alias}}
                   %td {{type}}
-                  %td {{url}}
+                  %td
+                    %a{:href => "{{url}}" } {{url}}
                   %td {{enabled}}
                   %td {{autorefresh}}
                   %td {{gpgcheck}}
@@ -467,4 +468,6 @@
                 Machinery
             .filter-input
               %input#filter{:placeholder => "Type To Filter"}/
+              %img{:src => "assets/reset.png", :titel => "Reset Filter", :onclick=>"clearFilter()" }
+
       #content_container

@@ -69,6 +69,13 @@ class RepositoriesInspector < Inspector
       repositories = JSON.parse(system.run_command(
         "bash", "-c", "python", stdin: script, stdout: :capture
       ).split("\n").last).map { |element| Repository.new(element) }
+      repositories.each do |repository|
+        if repository.url.empty?
+          raise Machinery::Errors::InspectionFailed.new(
+            "Yum repository baseurl is missing. Metalinks are not supported at the moment."
+          )
+        end
+      end
     rescue JSON::ParserError
       raise Machinery::Errors::InspectionFailed.new("Extraction of YUM repositories failed.")
     end

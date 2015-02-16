@@ -49,7 +49,7 @@ describe ListTask do
 
   describe "#list" do
     before(:each) do
-      allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
+      allow(JsonValidator).to receive(:new).and_return(double(validate: []))
     end
 
     it "lists the system descriptions with scopes" do

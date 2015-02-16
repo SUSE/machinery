@@ -53,8 +53,6 @@ describe Migration do
         }
       EOF
     end
-
-    allow_any_instance_of(SystemDescriptionValidator).to receive(:validate_json).and_return([])
   end
 
   it "loads migration definitions" do
@@ -154,6 +152,27 @@ describe Migration do
       expect(manifest_hash).to eq(
         Manifest.load("v2_description", store.manifest_path("v2_description")).to_hash
       )
+    end
+
+    context "validation" do
+      silence_machinery_output
+
+      it "raises an error if validation fails when --force is not set" do
+        expect_any_instance_of(JsonValidator).to receive(:validate).
+          and_return(["json error"])
+        expect_any_instance_of(FileValidator).to receive(:validate).
+          and_return(["file error"])
+        expect {
+          Migration.migrate_description(store, "v1_description")
+        }.to raise_error(Machinery::Errors::SystemDescriptionError, /json error.*file error/m)
+      end
+
+      it "does not validate when --force is set" do
+        expect(JsonValidator).to_not receive(:new)
+        expect(FileValidator).to_not receive(:new)
+
+        Migration.migrate_description(store, "v1_description", force: true)
+      end
     end
   end
 end

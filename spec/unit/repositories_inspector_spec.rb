@@ -272,6 +272,11 @@ output
 EOF
     }
 
+    let(:unsupported_metalink_repo) {<<-EOF
+[{"package_manager": "yum", "name": "Fedora 21 - x86_64", "url": "", "enabled": true, "alias": "fedora", "gpgcheck": true, "type": "rpm-md"}]
+EOF
+    }
+
     let(:expected_yum_repo_list) {
       RepositoriesScope.new([
         Repository.new(
@@ -315,6 +320,16 @@ EOF
       inspector = RepositoriesInspector.new
       expect { inspector.inspect(system, description) }.to raise_error(
         Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed./
+      )
+    end
+
+    # We don't support Yum Metalink repositories atm
+    it "throws an Machinery AnalysisFailed error when the url is empty" do
+      expect(system).to receive(:run_command).and_return(unsupported_metalink_repo)
+
+      inspector = RepositoriesInspector.new
+      expect { inspector.inspect(system, description) }.to raise_error(
+        Machinery::Errors::InspectionFailed, /Yum repository baseurl is missing/
       )
     end
   end

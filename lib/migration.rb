@@ -66,12 +66,14 @@ class Migration
     def migrate_description(store, description_name, options = {})
       load_migrations
 
-      if options[:force]
-        hash = Manifest.load(description_name, store.manifest_path(description_name)).to_hash
-      else
-        hash = SystemDescription.load!(
-          description_name, store, skip_format_compatibility: true
-        ).to_hash
+      hash = Manifest.load(description_name, store.manifest_path(description_name)).to_hash
+
+      if !options[:force]
+        errors = JsonValidator.new(hash).validate
+        errors += FileValidator.new(hash, store.description_path(description_name)).validate
+        if !errors.empty?
+          raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
+        end
       end
 
       current_version = hash["meta"]["format_version"]
@@ -118,7 +120,6 @@ class Migration
 
       if options[:force]
         store.swap(description_name, backup_description)
-        SystemDescription.load(description_name, store)
         Machinery::Ui.puts "Saved backup to #{backup_path}"
       else
         begin
