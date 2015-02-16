@@ -53,7 +53,7 @@ class UpgradeFormatTask
       else
         Machinery::Ui.puts "No system descriptions were upgraded."
       end
-    else
+    elsif migrations_done > 0
       Machinery::Ui.puts "System description \"#{name}\" successfully upgraded."
     end
   end
