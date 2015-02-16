@@ -27,7 +27,7 @@ class ListTask
       descriptions.each do |name|
         name = File.basename(name)
         begin
-          description = SystemDescription.load(name, store)
+          description = SystemDescription.load(name, store, skip_validation: true)
         rescue Machinery::Errors::SystemDescriptionError
           Machinery::Ui.puts " #{name}:\n"
           Machinery::Ui.puts "   This description has an incompatible data format or is broken.\n" \
