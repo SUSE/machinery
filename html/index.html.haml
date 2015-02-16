@@ -465,9 +465,7 @@
               %a{:href => "http://machinery-project.org", :target => "_blank"}
                 Machinery
             .filter-input
-              %form
-                %input#filter{:placeholder => "Type To Filter"}/
-                %input#resetfilter{:type => "reset"}
-                %img{:src => "assets/reset.png", :titel => "Reset Filter", :onclick=>"document.getElementById('resetfilter').click()" }
+              %input#filter{:placeholder => "Type To Filter"}/
+              %img{:src => "assets/reset.png", :titel => "Reset Filter", :onclick=>"clearFilter()" }
 
       #content_container

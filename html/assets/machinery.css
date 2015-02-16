@@ -18,10 +18,6 @@ body {
   text-decoration: none;
 }
 
-#resetfilter {
-  display: none;
-}
-
 a.scope_anchor {
   display: block;
   visibility: hidden;

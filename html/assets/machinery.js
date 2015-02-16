@@ -74,11 +74,10 @@ $(document).ready(function () {
     }, 500)
   })
 
-  $("#resetfilter").click(function() {
-    run_when_done_typing(function() {
-      filterdocument()
-    }, 500)
-  })
+  clearFilter = function() {
+    $("#filter").val("");
+    filterdocument()
+  }
 
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20
