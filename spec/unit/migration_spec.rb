@@ -167,11 +167,17 @@ describe Migration do
         }.to raise_error(Machinery::Errors::SystemDescriptionError, /json error.*file error/m)
       end
 
-      it "does not validate when --force is set" do
-        expect(JsonValidator).to_not receive(:new)
-        expect(FileValidator).to_not receive(:new)
+      it "only reports validation warnings when --force is set" do
+        expect_any_instance_of(JsonValidator).to receive(:validate).
+          and_return(["json error"])
+        expect_any_instance_of(FileValidator).to receive(:validate).
+          and_return(["file error"])
 
-        Migration.migrate_description(store, "v1_description", force: true)
+        expect(Machinery::Ui).to receive(:warn).with(/validation errors/)
+        expect(Machinery::Ui).to receive(:warn).with(["json error", "file error"])
+        expect {
+          Migration.migrate_description(store, "v1_description", force: true)
+        }.to_not raise_error
       end
     end
   end
