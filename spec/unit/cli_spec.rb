@@ -52,6 +52,18 @@ describe Cli do
       create_machinery_dir
     end
 
+    describe "#system_description_store" do
+      it "returns the default store by default" do
+        expect(Cli.system_description_store.base_path).to eq(test_base_path)
+      end
+
+      it "uses the store specified by MACHINERY_DIR" do
+        with_env("MACHINERY_DIR" => "/tmp/machinery") do
+          expect(Cli.system_description_store.base_path).to eq("/tmp/machinery")
+        end
+      end
+    end
+
     describe "#inspect" do
       include_context "machinery test directory"
 

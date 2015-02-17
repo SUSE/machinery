@@ -202,8 +202,7 @@ class Cli
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
 
       case options[:operation]
         when "config-file-diffs"
@@ -237,8 +236,7 @@ class Cli
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
 
       task = BuildTask.new
       task.build(description, File.expand_path(options["image-dir"]), {:enable_dhcp => options["enable-dhcp"], :enable_ssh => options["enable-ssh"]})
@@ -271,7 +269,7 @@ class Cli
     c.action do |global_options,options,args|
       name1 = shift_arg(args, "NAME1")
       name2 = shift_arg(args, "NAME2")
-      store = SystemDescriptionStore.new
+      store = system_description_store
       description1 = SystemDescription.load(name1, store)
       description2 = SystemDescription.load(name2, store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
@@ -298,9 +296,8 @@ class Cli
     c.action do |global_options,options,args|
       from = shift_arg(args, "FROM_NAME")
       to = shift_arg(args, "TO_NAME")
-      store = SystemDescriptionStore.new
       task = CopyTask.new
-      task.copy(store, from, to)
+      task.copy(system_description_store, from, to)
     end
   end
 
@@ -326,8 +323,7 @@ class Cli
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
 
       task = DeployTask.new
       opts = {
@@ -357,8 +353,7 @@ class Cli
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
       exporter = KiwiConfig.new(description)
 
       task = ExportTask.new(exporter)
@@ -387,8 +382,7 @@ class Cli
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
       exporter = Autoyast.new(description)
 
       task = ExportTask.new(exporter)
@@ -431,7 +425,6 @@ class Cli
 
     c.action do |global_options,options,args|
       host = shift_arg(args, "HOSTNAME")
-      store = SystemDescriptionStore.new
       inspector_task = InspectTask.new
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
       name = options[:name] || host
@@ -457,7 +450,7 @@ class Cli
       end
 
       inspector_task.inspect_system(
-        store, host, name, CurrentUser.new, scope_list, inspect_options
+        system_description_store, host, name, CurrentUser.new, scope_list, inspect_options
       )
 
       Hint.show_data(:name => name)
@@ -482,9 +475,8 @@ class Cli
       :desc => "Display additional information about origin of scopes"
 
     c.action do |global_options,options,args|
-      store = SystemDescriptionStore.new
       task = ListTask.new
-      task.list(store, options)
+      task.list(system_description_store, options)
     end
   end
 
@@ -504,10 +496,8 @@ class Cli
       :desc => "Explain what is being done"
 
     c.action do |global_options,options,args|
-
-      store = SystemDescriptionStore.new
       task = RemoveTask.new
-      task.remove(store, args, :verbose => options[:verbose], :all => options[:all])
+      task.remove(system_description_store, args, :verbose => options[:verbose], :all => options[:all])
     end
   end
 
@@ -540,9 +530,7 @@ class Cli
       if name == "localhost" && !CurrentUser.new.is_root?
         Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
-
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
 
 
@@ -569,9 +557,8 @@ class Cli
         Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
 
-      store = SystemDescriptionStore.new
       task = ValidateTask.new
-      task.validate(store, name)
+      task.validate(system_description_store, name)
     end
   end
 
@@ -589,10 +576,9 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME") if !options[:all]
 
-      store = SystemDescriptionStore.new
       task = UpgradeFormatTask.new
       task.upgrade(
-        store,
+        system_description_store,
         name,
         :all => options[:all],
         :force => options[:force]
@@ -609,8 +595,7 @@ class Cli
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
 
-      store = SystemDescriptionStore.new
-      description = SystemDescription.load(name, store)
+      description = SystemDescription.load(name, system_description_store)
       task = GenerateHtmlTask.new
       task.generate(description)
     end
@@ -636,6 +621,14 @@ class Cli
       if key == "hints" && !Machinery::Config.new.hints
         Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints on'."
       end
+    end
+  end
+
+  def self.system_description_store
+    if ENV.has_key?("MACHINERY_DIR")
+      SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
+    else
+      SystemDescriptionStore.new
     end
   end
 end
