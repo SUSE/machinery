@@ -55,7 +55,7 @@ class System
     out = File.open(archive, "w")
     begin
       run_command(
-        "tar", "--directory=/", "--create", "--gzip", "--null", "--files-from=-",
+        "tar", "--create", "--gzip", "--null", "--files-from=-",
         *exclude.flat_map { |f| ["--exclude", f]},
         :stdout => out,
         :stdin => filelist
