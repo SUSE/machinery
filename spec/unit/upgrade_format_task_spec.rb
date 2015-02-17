@@ -66,6 +66,9 @@ describe UpgradeFormatTask do
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
 
       expect(Machinery::Ui).to receive(:puts).with(/up to date/)
+      expect(Machinery::Ui).not_to receive(:puts).with(
+        /System description .+ successfully upgraded/
+      )
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
     end
 
