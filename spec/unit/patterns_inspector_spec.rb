@@ -56,7 +56,6 @@ describe PatternsInspector do
   describe "#inspect" do
     before(:each) do
       allow(system).to receive(:has_command?).with("zypper").and_return(true)
-      allow(system).to receive(:has_command?).with("yum").and_return(false)
     end
 
     it "parses the patterns list into a Hash" do
@@ -103,22 +102,12 @@ describe PatternsInspector do
         Machinery::Errors::ZypperFailed, /Zypper is locked./)
     end
 
-    it "returns an empty array when yum is installed" do
+    it "returns an empty array when no zypper is installed and shows an unsupported message" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
-      allow(system).to receive(:has_command?).with("yum").and_return(true)
 
-      patterns_inspector.inspect(system, description)
+      summary = patterns_inspector.inspect(system, description)
+      expect(summary).to eq("Patterns are not supported on this system.")
       expect(description.patterns).to eql(PatternsScope.new)
-    end
-
-    it "raises an error if neither zypper nor yum is installed" do
-      allow(system).to receive(:has_command?).with("zypper").and_return(false)
-      allow(system).to receive(:has_command?).with("yum").and_return(false)
-
-      expect {  patterns_inspector.inspect(system, description) }.to raise_error(
-        Machinery::Errors::MissingRequirement,
-        /Need binary zypper or yum to be available on the inspected system/
-      )
     end
   end
 end

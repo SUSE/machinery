@@ -19,12 +19,9 @@ class PatternsInspector < Inspector
   def inspect(system, description, options = {})
     if system.has_command?("zypper")
       inspect_with_zypper(system, description)
-    elsif system.has_command?("yum")
-      inspect_with_yum(description)
     else
-      raise Machinery::Errors::MissingRequirement.new(
-        "Need binary zypper or yum to be available on the inspected system."
-      )
+      description.patterns = PatternsScope.new
+      "Patterns are not supported on this system."
     end
   end
 
@@ -61,10 +58,5 @@ class PatternsInspector < Inspector
 
     description.patterns = PatternsScope.new(patterns)
     "Found #{patterns.count} patterns."
-  end
-
-  def inspect_with_yum(description)
-    description.patterns = PatternsScope.new
-    "Patterns are not supported on this system."
   end
 end
