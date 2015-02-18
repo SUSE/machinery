@@ -15,27 +15,38 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "autoyast export" do
+shared_examples "autoyast export" do |opts|
+  let(:options) { opts || {
+    machinery_dir: "/home/vagrant/.machinery",
+    owner: "vagrant",
+    group: "vagrant"
+  }
+  }
+
+  after(:all) do
+    @machinery.run_command("rm", "-r", "/tmp/jeos-autoyast")
+  end
+
   describe "export-autoyast" do
     it "creates an autoyast profile" do
       @machinery.inject_directory(
         File.join(Machinery::ROOT, "spec/data/descriptions/jeos/"),
-        "/home/vagrant/.machinery/",
-        owner: "vagrant",
-        group: "users"
+        options[:machinery_dir],
+        owner: options[:owner],
+        group: options[:group]
       )
 
       measure("export to autoyast") do
         @machinery.run_command(
           "machinery export-autoyast jeos --autoyast-dir=/tmp",
-          as: "vagrant"
+          as: options[:owner]
         )
       end
 
       file_list = @machinery.run_command(
         "ls /tmp/jeos-autoyast",
         stdout: :capture,
-        as: "vagrant"
+        as: options[:owner]
       ).split("\n")
       expect(file_list).to include("autoinst.xml")
     end

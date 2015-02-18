@@ -40,4 +40,5 @@ describe "machinery@local" do
 
   include_examples "CLI"
   include_examples "kiwi export", test_config
+  include_examples "autoyast export", test_config
 end
