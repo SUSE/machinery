@@ -54,6 +54,20 @@ describe OsInspector do
         )
       )
     end
+
+    it "gets os info from RHEL7 os-release file" do
+      FakeFS::FileSystem.clone("spec/data/os/rhel7/etc/os-release",
+        "/etc/os-release")
+
+      os = inspector.send(:get_os_from_os_release, system)
+
+      expect(os).to eq(
+        OsUnknown.new(
+          name: "Red Hat Enterprise Linux Server 7.0 (Maipo)",
+          version: "7.0 (Maipo)"
+        )
+      )
+    end
   end
 
   describe "#get_os_from_suse_release" do
