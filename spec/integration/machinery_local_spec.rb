@@ -18,23 +18,26 @@
 require_relative "integration_spec_helper"
 
 describe "machinery@local" do
-  let(:tmp_dir) { Dir.mktmpdir("machinery") }
+  current_user = Etc.getlogin
+  group = Etc.getgrgid(Etc.getpwnam(current_user).gid).name
+  test_config = {
+    machinery_dir: Dir.mktmpdir("machinery"),
+    owner: current_user,
+    group: group
+  }
 
   before(:all) do
-    @machinery_dir = Dir.mktmpdir("machinery")
-    @owner = ENV["USER"]
-    @group = "users"
     @machinery = start_system(
       local: true,
-      env: { "MACHINERY_DIR" => @machinery_dir },
+      env: { "MACHINERY_DIR" => test_config[:machinery_dir] },
       command_map: { "machinery" => File.join(Machinery::ROOT, "bin/machinery") }
     )
   end
 
   after(:all) do
-    FileUtils.rm_r @machinery_dir
+    FileUtils.rm_r test_config[:machinery_dir]
   end
 
   include_examples "CLI"
-  include_examples "kiwi export"
+  include_examples "kiwi export", test_config
 end
