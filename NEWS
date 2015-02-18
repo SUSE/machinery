@@ -1,6 +1,8 @@
 # Machinery Release Notes
 
 
+## Version 1.4.0 - Wed Feb 18 16:51:43 CET 2015 - thardeck@suse.de
+
 * Support inspection of Red Hat Enterprise Linux 6 systems
 * Introduce system description format version 3 (see https://github.com/SUSE/machinery/wiki/System-Description-Format#version-3)
 * Usability improvements of the HTML view (gh#SUSE/machinery#359)
