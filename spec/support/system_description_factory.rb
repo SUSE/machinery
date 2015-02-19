@@ -417,6 +417,26 @@ module SystemDescriptionFactory
         {
           "name": "crypto.service",
           "state": "masked"
+        },
+        {
+          "name": "static.service",
+          "state": "static"
+        },
+        {
+          "name": "linked.service",
+          "state": "linked"
+        },
+        {
+          "name": "enabled_runtime.service",
+          "state": "enabled-runtime"
+        },
+        {
+          "name": "linked_runtime.service",
+          "state": "linked-runtime"
+        },
+        {
+          "name": "masked_runtime.service",
+          "state": "masked-runtime"
         }
       ]
     }
