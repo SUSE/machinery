@@ -220,6 +220,14 @@ module SystemDescriptionFactory
         "arch": "x86_64",
         "vendor": "openSUSE",
         "checksum": "533e40ba8a5551204b528c047e45c169"
+      },
+      {
+        "name": "openSUSE-release-dvd",
+        "version": "13.1",
+        "release": "1.10",
+        "arch": "x86_64",
+        "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+        "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
       }
     ]
   EOF

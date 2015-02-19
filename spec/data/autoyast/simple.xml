@@ -36,6 +36,7 @@
   <software>
     <packages config:type="list">
       <package>bash</package>
+      <package>openSUSE-release-dvd</package>
     </packages>
     <patterns config:type="list">
       <pattern>base</pattern>
