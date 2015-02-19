@@ -22,7 +22,7 @@ require_relative '../lib/machinery'
 begin
   LocalSystem.validate_machinery_compatibility
   Machinery.initialize_logger(ENV["MACHINERY_LOG_FILE"] || Machinery::DEFAULT_LOG_FILE)
-  Machinery.logger.info "Executing '#{$0} #{ARGV.join(" ")}'"
+  Machinery.logger.info "Executing (Version #{Machinery::VERSION}) '#{$0} #{ARGV.join(" ")}'"
   Cli.run(ARGV)
 rescue Machinery::Errors::IncompatibleHost => e
   puts e

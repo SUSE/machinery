@@ -27,6 +27,6 @@ describe "machinery" do
     # Example of expected log line:
     #
     # I, [2014-02-27T15:59:21.630562 #2648]  INFO -- : Executing '/space/machinery/bin/machinery --version'...
-    expect(logged_line).to match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*#\d+.*INFO.*machinery --version/)
+    expect(logged_line).to match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*#\d+.*INFO.*Executing \(Version \d+\.\d+\.\d+\).*machinery --version/)
   end
 end
