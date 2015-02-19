@@ -21,6 +21,19 @@ require_relative "../../../pennyworth/lib/ssh_keys_importer"
 require_relative "../support/system_description_factory"
 
 def prepare_machinery_for_host(system, ip, opts = {})
+  if system.runner.is_a?(LocalRunner)
+    prepare_local_machinery_for_host(system, ip)
+  else
+    prepare_remote_machinery_for_host(system, ip, opts)
+  end
+end
+
+def prepare_local_machinery_for_host(system, ip)
+  system.run_command("ssh-keygen -R #{ip}")
+  system.run_command("ssh-keyscan -H #{ip} >> ~/.ssh/known_hosts")
+end
+
+def prepare_remote_machinery_for_host(system, ip, opts)
   opts = {
     user:     "vagrant"
   }.merge(opts)
