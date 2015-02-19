@@ -43,7 +43,7 @@ describe SystemDescription do
 
   it "provides nested accessors for data attributes" do
     data = create_test_description(name: @name, json: @description)
-    expect(data.repositories.first.alias).to eq("openSUSE_13.1_OSS")
+    expect(data.repositories.first.alias).to eq("nodejs_alias")
   end
 
   it "supports serialization from and to json" do

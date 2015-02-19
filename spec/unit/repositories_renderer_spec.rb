@@ -27,31 +27,61 @@ describe RepositoriesRenderer do
       output = RepositoriesRenderer.new.render(system_description)
 
       expected_output = <<EOT
-
-  * openSUSE_13.1_OSS
-    URI: http://download.opensuse.org/distribution/13.1/repo/oss/
-    Alias: openSUSE_13.1_OSS
+  * nodejs
+    URI: http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/
+    Alias: nodejs_alias
     Enabled: Yes
-    Refresh: Yes
-    Priority: 99
+    Refresh: No
+    Priority: 1
     Package Manager: zypp
 
-  * openSUSE_13.1_NON_OSS
-    URI: http://download.opensuse.org/distribution/13.1/repo/non-oss/
-    Alias: openSUSE_13.1_NON_OSS_ALIAS
+  * openSUSE-13.1-1.7
+    URI: cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
+    Alias: openSUSE-13.1-1.7_alias
     Enabled: No
     Refresh: No
-    Priority: 99
+    Priority: 2
     Package Manager: zypp
 
-  * SLES12-12-0
-    URI: cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001
-    Alias: SLES12-12-0
+  * repo_without_type
+    URI: http://repo-without-type
+    Alias: repo_without_type_alias
     Enabled: Yes
     Refresh: No
-    Priority: 99
+    Priority: 3
     Package Manager: zypp
 
+  * disabled_repo
+    URI: http://disabled-repo
+    Alias: disabled_repo_alias
+    Enabled: No
+    Refresh: No
+    Priority: 3
+    Package Manager: zypp
+
+  * autorefresh_enabled
+    URI: http://autorefreshed-repo
+    Alias: autorefresh_enabled_alias
+    Enabled: Yes
+    Refresh: Yes
+    Priority: 2
+    Package Manager: zypp
+
+  * dvd_entry
+    URI: dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
+    Alias: dvd_entry_alias
+    Enabled: Yes
+    Refresh: No
+    Priority: 2
+    Package Manager: zypp
+
+  * NCC Repository
+    URI: https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials
+    Alias: NCCRepo
+    Enabled: Yes
+    Refresh: Yes
+    Priority: 2
+    Package Manager: zypp
 EOT
       expect(output).to include(expected_output)
     end
