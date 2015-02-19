@@ -79,7 +79,7 @@ class OsInspector < Inspector
     return if !os_release
 
     result = Hash.new
-    key_value_pairs = Hash[os_release.split("\n").map { |l| l.split("=") }]
+    key_value_pairs = Hash[os_release.split("\n").reject(&:empty?).map { |l| l.split("=") }]
     key_value_pairs.each_pair do |k,v|
       result[k.downcase] = v.strip.gsub(/^"|"$/,"")
     end
