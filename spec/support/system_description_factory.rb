@@ -211,6 +211,13 @@ module SystemDescriptionFactory
       "architecture": "x86_64"
     }
   EOF
+  EXAMPLE_SCOPES["os_sles12"] = <<-EOF.chomp
+    "os": {
+      "name": "SUSE Linux Enterprise Server 12",
+      "version": "12",
+      "architecture": "x86_64"
+    }
+  EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
     "packages": [
       {
