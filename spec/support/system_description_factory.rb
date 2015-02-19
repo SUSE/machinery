@@ -458,7 +458,7 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": true,
+      "extracted": false,
       "files": [
         {
           "name": "/etc/unmanaged-file",
