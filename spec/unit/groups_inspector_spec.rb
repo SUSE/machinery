@@ -21,11 +21,11 @@ describe GroupsInspector do
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
-  let(:group_content) {<<EOF
-root:x:0:
-tftp:x:493:dnsmasq,tftp
-+:::
-EOF
+  let(:group_content) {<<-EOF.gsub(/^\s+/, "").gsub(/\s+$/, "\n")
+      root:x:0:
+      tftp:x:493:dnsmasq,tftp
+      +:::
+    EOF
   }
   let(:system) { double }
   subject { GroupsInspector.new }
