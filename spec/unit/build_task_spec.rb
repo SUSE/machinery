@@ -18,46 +18,15 @@
 require_relative "spec_helper"
 
 describe BuildTask do
-  include FakeFS::SpecHelpers
+  initialize_system_description_factory_store
 
   let(:system_description) {
-    create_test_description(json: <<-EOF, store: SystemDescriptionStore.new)
-      {
-        "packages": [
-          {
-            "name": "kernel-desktop",
-            "version": "3.7.10",
-            "release": "1.0",
-            "arch": "x86_64",
-            "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-            "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-          }
-        ],
-        "repositories": [
-          {
-            "alias": "nodejs_alias",
-            "name": "nodejs",
-            "type": "rpm-md",
-            "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
-            "enabled": true,
-            "autorefresh": false,
-            "gpgcheck": true,
-            "priority": 1,
-            "package_manager": "zypp"
-          }
-        ],
-        "os": {
-          "name": "SUSE Linux Enterprise Server 11",
-          "version": "11 SP3",
-          "architecture": "x86_64"
-        }
-      }
-    EOF
+    create_test_description(scopes: ["os", "packages", "repositories"], store_on_disk: true)
   }
   let(:build_task) { BuildTask.new }
-  let(:output_path) { "/tmp/output" }
-  let(:tmp_config_dir) { "/tmp/machinery-config" }
-  let(:tmp_image_dir) { "/tmp/machinery-image" }
+  let(:output_path) { given_directory }
+  let(:tmp_config_dir) { given_directory }
+  let(:tmp_image_dir) { given_directory }
   let(:image_extension) { "qcow2" }
   let(:image_file) { system_description.name + ".x86_64-0.0.1.qcow2" }
 
@@ -65,21 +34,15 @@ describe BuildTask do
     allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new(architecture: "x86_64"))
     allow(Cheetah).to receive(:run)
     allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
-    Dir.mkdir("/tmp")
+    allow(Dir).to receive(:mktmpdir).
+      with("machinery-config", "/tmp").and_return(tmp_config_dir)
+    allow(Dir).to receive(:mktmpdir).
+      with("machinery-image", "/tmp").and_return(tmp_image_dir)
 
-    FileUtils.mkdir_p(output_path)
     FileUtils.touch(File.join(output_path, image_file))
-
-    FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
-    FakeFS::FileSystem.clone(File.join(
-      Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
-    )
   }
 
   describe "#build" do
-    let(:tmp_config_dir) { Dir["/tmp/machinery-config*"].first }
-    let(:tmp_image_dir) { Dir["/tmp/machinery-img*"].first }
-
     it "stores the kiwi config to a temporary directory" do
       build_task.build(system_description, output_path)
       expect(File.exists?(File.join(tmp_config_dir, "config.xml"))).to be(true)
@@ -104,12 +67,7 @@ describe BuildTask do
     end
 
     it "raises an exception if the temporary directories are not in /tmp" do
-      correct_path = "/tmp/machinery-config-test"
-      expect(Dir).to receive(:mktmpdir).
-        with("machinery-config", "/tmp").and_return(correct_path)
-      Dir.mkdir(correct_path)
-
-      expect(Dir).to receive(:mktmpdir).
+      allow(Dir).to receive(:mktmpdir).
         with("machinery-image", "/tmp").and_return("/something/wrong/tmp/")
       expect {
         build_task.build(system_description, output_path)
