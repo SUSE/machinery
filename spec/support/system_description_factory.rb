@@ -160,7 +160,7 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
-          "name": "/etc/cron.daily/md adm",
+          "name": "/etc/deleted changed managed",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
@@ -170,6 +170,16 @@ module SystemDescriptionFactory
           "user": "root",
           "group": "root",
           "mode": "644"
+        },
+        {
+          "name": "/etc/cron.daily/cleanup",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["md5"],
+          "user": "user",
+          "group": "group",
+          "mode": "644"
         }
       ]
     }
@@ -178,6 +188,18 @@ module SystemDescriptionFactory
     "config_files": {
       "extracted": false,
       "files": [
+        {
+          "name": "/etc/deleted config",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": [
+            "deleted"
+          ],
+          "user": "root",
+          "group": "root",
+          "mode": "644"
+        },
         {
           "name": "/etc/cron tab",
           "package_name": "cron",
@@ -211,6 +233,20 @@ module SystemDescriptionFactory
       "architecture": "x86_64"
     }
   EOF
+  EXAMPLE_SCOPES["os_sles12"] = <<-EOF.chomp
+    "os": {
+      "name": "SUSE Linux Enterprise Server 12",
+      "version": "12",
+      "architecture": "x86_64"
+    }
+  EOF
+  EXAMPLE_SCOPES["os_sles11"] = <<-EOF.chomp
+    "os": {
+      "name": "SUSE Linux Enterprise Server 11",
+      "version": "11 SP3",
+      "architecture": "x86_64"
+    }
+  EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
     "packages": [
       {
@@ -220,6 +256,14 @@ module SystemDescriptionFactory
         "arch": "x86_64",
         "vendor": "openSUSE",
         "checksum": "533e40ba8a5551204b528c047e45c169"
+      },
+      {
+        "name": "openSUSE-release-dvd",
+        "version": "13.1",
+        "release": "1.10",
+        "arch": "x86_64",
+        "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+        "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
       }
     ]
   EOF
@@ -235,40 +279,96 @@ module SystemDescriptionFactory
   EXAMPLE_SCOPES["repositories"] = <<-EOF.chomp
     "repositories": [
       {
-        "alias": "openSUSE_13.1_OSS",
-        "name": "openSUSE_13.1_OSS",
-        "type": "yast2",
-        "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+        "alias": "nodejs_alias",
+        "name": "nodejs",
+        "type": "rpm-md",
+        "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
         "enabled": true,
-        "autorefresh": true,
+        "autorefresh": false,
         "gpgcheck": true,
-        "priority": 99,
+        "priority": 1,
         "package_manager": "zypp"
       },
       {
-        "alias": "openSUSE_13.1_NON_OSS_ALIAS",
-        "name": "openSUSE_13.1_NON_OSS",
+        "alias": "openSUSE-13.1-1.7_alias",
+        "name": "openSUSE-13.1-1.7",
         "type": "yast2",
-        "url": "http://download.opensuse.org/distribution/13.1/repo/non-oss/",
+        "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
         "enabled": false,
         "autorefresh": false,
         "gpgcheck": true,
-        "priority": 99,
+        "priority": 2,
         "package_manager": "zypp"
       },
       {
-        "alias": "SLES12-12-0",
-        "name": "SLES12-12-0",
-        "type": "yast2",
-        "url": "cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001",
+        "alias": "repo_without_type_alias",
+        "name": "repo_without_type",
+        "type": null,
+        "url": "http://repo-without-type",
         "enabled": true,
         "autorefresh": false,
         "gpgcheck": true,
-        "priority": 99,
+        "priority": 3,
+        "package_manager": "zypp"
+      },
+      {
+        "alias": "disabled_repo_alias",
+        "name": "disabled_repo",
+        "type": null,
+        "url": "http://disabled-repo",
+        "enabled": false,
+        "autorefresh": false,
+        "gpgcheck": true,
+        "priority": 3,
+        "package_manager": "zypp"
+      },
+      {
+        "alias": "autorefresh_enabled_alias",
+        "name": "autorefresh_enabled",
+        "type": null,
+        "url": "http://autorefreshed-repo",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 2,
+        "package_manager": "zypp"
+      },
+      {
+        "alias": "dvd_entry_alias",
+        "name": "dvd_entry",
+        "type": "yast2",
+        "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+        "enabled": true,
+        "autorefresh": false,
+        "gpgcheck": true,
+        "priority": 2,
+        "package_manager": "zypp"
+      },
+      {
+        "alias": "NCCRepo",
+        "name": "NCC Repository",
+        "type": "yast2",
+        "url": "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 2,
+        "package_manager": "zypp"
+      },
+      {
+        "alias": "Alias With Spaces",
+        "name": "nodejs",
+        "type": "rpm-md",
+        "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+        "enabled": true,
+        "autorefresh": false,
+        "gpgcheck": true,
+        "priority": 1,
         "package_manager": "zypp"
       }
     ]
   EOF
+
   EXAMPLE_SCOPES["users"] = <<-EOF.chomp
     "users": [
       {
@@ -339,6 +439,26 @@ module SystemDescriptionFactory
         {
           "name": "crypto.service",
           "state": "masked"
+        },
+        {
+          "name": "static.service",
+          "state": "static"
+        },
+        {
+          "name": "linked.service",
+          "state": "linked"
+        },
+        {
+          "name": "enabled_runtime.service",
+          "state": "enabled-runtime"
+        },
+        {
+          "name": "linked_runtime.service",
+          "state": "linked-runtime"
+        },
+        {
+          "name": "masked_runtime.service",
+          "state": "masked-runtime"
         }
       ]
     }
@@ -360,7 +480,7 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": true,
+      "extracted": false,
       "files": [
         {
           "name": "/etc/unmanaged-file",

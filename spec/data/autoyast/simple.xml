@@ -12,14 +12,31 @@
   <add-on>
     <add_on_products config:type="list">
       <listentry>
-        <media_url>http://download.opensuse.org/distribution/13.1/repo/oss/</media_url>
-        <name>openSUSE_13.1_OSS</name>
+        <media_url>http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/</media_url>
+        <name>nodejs_alias</name>
+      </listentry>
+      <listentry>
+        <media_url>http://repo-without-type</media_url>
+        <name>repo_without_type_alias</name>
+      </listentry>
+      <listentry>
+        <media_url>http://autorefreshed-repo</media_url>
+        <name>autorefresh_enabled_alias</name>
+      </listentry>
+      <listentry>
+        <media_url>https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials</media_url>
+        <name>NCCRepo</name>
+      </listentry>
+      <listentry>
+        <media_url>http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/</media_url>
+        <name>Alias With Spaces</name>
       </listentry>
     </add_on_products>
   </add-on>
   <software>
     <packages config:type="list">
       <package>bash</package>
+      <package>openSUSE-release-dvd</package>
     </packages>
     <patterns config:type="list">
       <pattern>base</pattern>
@@ -90,19 +107,33 @@
     </pre-scripts>
     <chroot-scripts config:type="list">
       <script>
-        <source><![CDATA[zypper -n mr --priority=99 'openSUSE_13.1_OSS' --name='openSUSE_13.1_OSS' --refresh
-zypper -n ar --name='openSUSE_13.1_NON_OSS' --type='yast2' --disable 'http://download.opensuse.org/distribution/13.1/repo/non-oss/' 'openSUSE_13.1_NON_OSS_ALIAS'
-zypper -n mr --priority=99 'openSUSE_13.1_NON_OSS_ALIAS' --name='openSUSE_13.1_NON_OSS' --no-refresh
-zypper -n ar --name='SLES12-12-0' --type='yast2' 'cd:///?devices=/dev/disk/by-id/ata-QEMU_DVD-ROM_QM00001' 'SLES12-12-0'
-zypper -n mr --priority=99 'SLES12-12-0' --name='SLES12-12-0' --no-refresh
+        <source><![CDATA[zypper -n mr --priority=1 'nodejs_alias' --name='nodejs' --no-refresh
+zypper -n ar --name='openSUSE-13.1-1.7' --type='yast2' --disable 'cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0' 'openSUSE-13.1-1.7_alias'
+zypper -n mr --priority=2 'openSUSE-13.1-1.7_alias' --name='openSUSE-13.1-1.7' --no-refresh
+zypper -n mr --priority=3 'repo_without_type_alias' --name='repo_without_type' --no-refresh
+zypper -n ar --name='disabled_repo' --disable 'http://disabled-repo' 'disabled_repo_alias'
+zypper -n mr --priority=3 'disabled_repo_alias' --name='disabled_repo' --no-refresh
+zypper -n mr --priority=2 'autorefresh_enabled_alias' --name='autorefresh_enabled' --refresh
+zypper -n ar --name='dvd_entry' --type='yast2' 'dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0' 'dvd_entry_alias'
+zypper -n mr --priority=2 'dvd_entry_alias' --name='dvd_entry' --no-refresh
+zypper -n mr --priority=2 'NCCRepo' --name='NCC Repository' --refresh
+zypper -n mr --priority=1 'Alias With Spaces' --name='nodejs' --no-refresh
 mkdir -p '/mnt/etc'
 curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20tab"
+mkdir -p '/mnt/etc'
+curl -o '/mnt/etc/deleted config' "`cat /tmp/description_url`/config_files/etc/deleted%20config"
+chown root:root '/mnt/etc/deleted config'
+chmod 644 '/mnt/etc/deleted config'
 chown root:root '/mnt/etc/cron tab'
 chmod 644 '/mnt/etc/cron tab'
 mkdir -p '/mnt/etc/cron.daily'
-curl -o '/mnt/etc/cron.daily/md adm' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/md%20adm"
-chown root:root '/mnt/etc/cron.daily/md adm'
-chmod 644 '/mnt/etc/cron.daily/md adm'
+curl -o '/mnt/etc/cron.daily/cleanup' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/cleanup"
+mkdir -p '/mnt/etc'
+curl -o '/mnt/etc/deleted changed managed' "`cat /tmp/description_url`/changed_managed_files/etc/deleted%20changed%20managed"
+chown root:root '/mnt/etc/deleted changed managed'
+chmod 644 '/mnt/etc/deleted changed managed'
+chown user:group '/mnt/etc/cron.daily/cleanup'
+chmod 644 '/mnt/etc/cron.daily/cleanup'
       curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
 
         curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
