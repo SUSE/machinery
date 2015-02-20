@@ -120,6 +120,10 @@ zypper -n mr --priority=2 'NCCRepo' --name='NCC Repository' --refresh
 zypper -n mr --priority=1 'Alias With Spaces' --name='nodejs' --no-refresh
 mkdir -p '/mnt/etc'
 curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20tab"
+mkdir -p '/mnt/etc'
+curl -o '/mnt/etc/deleted config' "`cat /tmp/description_url`/config_files/etc/deleted%20config"
+chown root:root '/mnt/etc/deleted config'
+chmod 644 '/mnt/etc/deleted config'
 chown root:root '/mnt/etc/cron tab'
 chmod 644 '/mnt/etc/cron tab'
 mkdir -p '/mnt/etc/cron.daily'

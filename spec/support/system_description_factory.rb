@@ -189,6 +189,18 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
+          "name": "/etc/deleted config",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": [
+            "deleted"
+          ],
+          "user": "root",
+          "group": "root",
+          "mode": "644"
+        },
+        {
           "name": "/etc/cron tab",
           "package_name": "cron",
           "package_version": "4.1",
