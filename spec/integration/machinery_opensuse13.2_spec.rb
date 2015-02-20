@@ -18,6 +18,14 @@
 require_relative "integration_spec_helper"
 
 describe "machinery@openSUSE 13.2" do
+  let(:machinery_config) {
+    {
+      machinery_dir: "/home/vagrant/.machinery",
+      owner: "vagrant",
+      group: "vagrant"
+    }
+  }
+
   before(:all) do
     @machinery = start_system(box: "machinery_132")
   end

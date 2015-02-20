@@ -20,14 +20,14 @@ shared_examples "inspect changed managed files" do |base|
     it "extracts list of managed files" do
       measure("Inspect system") do
         @machinery.run_command(
-            "machinery inspect #{@subject_system.ip} --scope=changed-managed-files --extract-files",
-            as: "vagrant"
+          "machinery inspect #{@subject_system.ip} --scope=changed-managed-files --extract-files",
+          as: machinery_config[:owner]
         )
       end
 
       actual_files_list = @machinery.run_command(
-          "machinery show #{@subject_system.ip} --scope=changed-managed-files",
-          as: "vagrant", stdout: :capture
+        "machinery show #{@subject_system.ip} --scope=changed-managed-files",
+        as: machinery_config[:owner], stdout: :capture
       )
 
       expected_files_list = File.read("spec/data/changed_managed_files/#{base}")
@@ -38,10 +38,12 @@ shared_examples "inspect changed managed files" do |base|
     it "extracts files from the system" do
       expected_files_list = File.read("spec/data/changed_managed_files/#{base}")
       actual_managed_files_list = nil
+
       measure("Gather information about extracted files") do
         actual_managed_files_list = @machinery.run_command(
-            "cd ~/.machinery/#{@subject_system.ip}/changed_managed_files/; find",
-            as: "vagrant", stdout: :capture
+          "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/; find",
+          as: machinery_config[:owner],
+          stdout: :capture
         ).split("\n")
       end
 
@@ -61,8 +63,8 @@ shared_examples "inspect changed managed files" do |base|
 
       # test file content
       actual_content = @machinery.run_command(
-          "cat ~/.machinery/#{@subject_system.ip}/changed_managed_files/usr/share/info/sed.info.gz",
-          as: "vagrant", stdout: :capture
+        "cat #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/usr/share/info/sed.info.gz",
+        as: machinery_config[:owner], stdout: :capture
       )
       expect(actual_content).to include("changed managed files test entry")
     end
