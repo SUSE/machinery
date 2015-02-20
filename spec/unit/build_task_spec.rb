@@ -35,10 +35,15 @@ describe BuildTask do
         ],
         "repositories": [
           {
-            "alias": "nodejs",
+            "alias": "nodejs_alias",
             "name": "nodejs",
             "type": "rpm-md",
-            "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"
+            "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+            "enabled": true,
+            "autorefresh": false,
+            "gpgcheck": true,
+            "priority": 1,
+            "package_manager": "zypp"
           }
         ],
         "os": {

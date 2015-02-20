@@ -139,6 +139,28 @@ describe KiwiConfig do
       expect(config.sh).not_to include("https://nu.novell.com/")
     end
 
+    it "raises an error if no repository is activated" do
+      description = system_description_with_content
+      description["repositories"].each do |repository|
+        repository.enabled = false
+      end
+      expect { KiwiConfig.new(description) }.to raise_error(
+        Machinery::Errors::MissingRequirement,
+        /The system description doesn't contain any enabled or network reachable repository/
+      )
+    end
+
+    it "raises an error if no repository is reachable via network" do
+      description = system_description_with_content
+      description["repositories"].each do |repository|
+        repository.url = "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0"
+      end
+      expect { KiwiConfig.new(description) }.to raise_error(
+        Machinery::Errors::MissingRequirement,
+        /The system description doesn't contain any enabled or network reachable repository/
+      )
+    end
+
     it "escapes the repository aliases in the config.xml file" do
       config = KiwiConfig.new(
         create_test_description(
