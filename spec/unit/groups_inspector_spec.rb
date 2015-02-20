@@ -21,12 +21,37 @@ describe GroupsInspector do
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
-  let(:group_content) {<<-EOF.gsub(/^\s+/, "").gsub(/\s+$/, "\n")
+  let(:group_content) {
+    <<-EOF.gsub(/^\s+/, "").gsub(/\s+$/, "\n")
       root:x:0:
       tftp:x:493:dnsmasq,tftp
       +:::
     EOF
   }
+  let(:expected_groups) {
+    GroupsScope.new([
+      Group.new(
+        name: "+",
+        password: "",
+        gid: nil,
+        users: []
+      ),
+      Group.new(
+        name: "root",
+        password: "x",
+        gid: 0,
+        users: []
+      ),
+      Group.new(
+        name: "tftp",
+        password: "x",
+        gid: 493,
+        users: ["dnsmasq", "tftp"]
+      ),
+
+    ])
+  }
+
   let(:system) { double }
   subject { GroupsInspector.new }
 
@@ -43,31 +68,16 @@ describe GroupsInspector do
     it "returns the groups" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
-      expected = GroupsScope.new([
-        Group.new(
-          name: "+",
-          password: "",
-          gid:  nil,
-          users: []
-        ),
-        Group.new(
-          name: "root",
-          password: "x",
-          gid: 0,
-          users: []
-        ),
-        Group.new(
-          name: "tftp",
-          password: "x",
-          gid: 493,
-          users: ["dnsmasq", "tftp"]
-        ),
+      summary = subject.inspect(system, description)
+      expect(description.groups).to eq(expected_groups)
+      expect(summary).to eq("Found 3 groups.")
+    end
 
-      ])
+    it "can handle a missing newline at the end in /etc/group" do
+      expect(system).to receive(:read_file).with("/etc/group").and_return(group_content.chomp)
 
       summary = subject.inspect(system, description)
-      expect(description.groups).to eq(expected)
-      expect(summary).to eq("Found 3 groups.")
+      expect(description.groups).to eq(expected_groups)
     end
 
     it "returns sorted data" do
