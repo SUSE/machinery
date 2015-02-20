@@ -160,7 +160,7 @@ module SystemDescriptionFactory
       "extracted": false,
       "files": [
         {
-          "name": "/etc/cron.daily/md adm",
+          "name": "/etc/deleted changed managed",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
@@ -169,6 +169,16 @@ module SystemDescriptionFactory
           ],
           "user": "root",
           "group": "root",
+          "mode": "644"
+        },
+        {
+          "name": "/etc/cron.daily/cleanup",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["md5"],
+          "user": "user",
+          "group": "group",
           "mode": "644"
         }
       ]

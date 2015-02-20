@@ -123,9 +123,13 @@ curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20
 chown root:root '/mnt/etc/cron tab'
 chmod 644 '/mnt/etc/cron tab'
 mkdir -p '/mnt/etc/cron.daily'
-curl -o '/mnt/etc/cron.daily/md adm' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/md%20adm"
-chown root:root '/mnt/etc/cron.daily/md adm'
-chmod 644 '/mnt/etc/cron.daily/md adm'
+curl -o '/mnt/etc/cron.daily/cleanup' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/cleanup"
+mkdir -p '/mnt/etc'
+curl -o '/mnt/etc/deleted changed managed' "`cat /tmp/description_url`/changed_managed_files/etc/deleted%20changed%20managed"
+chown root:root '/mnt/etc/deleted changed managed'
+chmod 644 '/mnt/etc/deleted changed managed'
+chown user:group '/mnt/etc/cron.daily/cleanup'
+chmod 644 '/mnt/etc/cron.daily/cleanup'
       curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
 
         curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
