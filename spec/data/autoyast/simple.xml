@@ -134,16 +134,13 @@ chown root:root '/mnt/etc/deleted changed managed'
 chmod 644 '/mnt/etc/deleted changed managed'
 chown user:group '/mnt/etc/cron.daily/cleanup'
 chmod 644 '/mnt/etc/cron.daily/cleanup'
-      curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
-
-        curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
-        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
-        rm '/mnt/tmp/tarball with spaces.tgz'
-
-        curl -o '/mnt/tmp/files.tgz' "`cat /tmp/description_url`/unmanaged_files/files.tgz"
-        tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'
-        rm '/mnt/tmp/files.tgz'
-]]></source>
+curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
+curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
+tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
+rm '/mnt/tmp/tarball with spaces.tgz'
+curl -o '/mnt/tmp/files.tgz' "`cat /tmp/description_url`/unmanaged_files/files.tgz"
+tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'
+rm '/mnt/tmp/files.tgz']]></source>
       </script>
     </chroot-scripts>
   </scripts>

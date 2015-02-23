@@ -286,7 +286,7 @@ class Autoyast < Exporter
       !@system_description.unmanaged_files.extracted
 
     base = Pathname(@system_description.scope_file_store("unmanaged_files").path)
-    @chroot_scripts << <<-EOF
+    @chroot_scripts << <<-EOF.chomp.gsub(/^\s+/, "")
       curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_#{@name}_excludes"
     EOF
 
@@ -297,7 +297,7 @@ class Autoyast < Exporter
       tarball_name = File.basename(path)
       url = "`cat /tmp/description_url`#{URI.escape(File.join("/unmanaged_files", relative_path))}"
 
-      @chroot_scripts << <<-EOF
+      @chroot_scripts << <<-EOF.chomp.gsub(/^\s+/, "")
         curl -o '/mnt/tmp/#{tarball_name}' "#{url}"
         tar -C /mnt/ -X '/mnt/tmp/filter' -xf '#{File.join("/mnt/tmp", tarball_name)}'
         rm '#{File.join("/mnt/tmp", tarball_name)}'
