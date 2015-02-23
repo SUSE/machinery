@@ -29,6 +29,8 @@ class GroupsInspector < Inspector
 
   def parse_groups(content)
     content.lines.map do |line|
+      # prevent split from ignoring the last entry if it is empty and there is no newline
+      line += "\n" if line.end_with?(":")
       name, password, gid, users = line.split(":").map(&:chomp)
 
       gid = Machinery::is_int?(gid) ? gid.to_i : nil
