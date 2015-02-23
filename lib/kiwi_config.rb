@@ -221,6 +221,7 @@ EOF
 
   def apply_repositories(xml)
     if @system_description.repositories
+      usable_repositories = false
       @system_description.repositories.each do |repo|
         # workaround kiwi issue by replacing spaces
         # the final image is not affected because the repositories are added by the config.sh
@@ -231,6 +232,7 @@ EOF
         end
         # only use accessible repositories as source for kiwi build
         if repo.enabled && !repo.type.nil? && !repo.external_medium?
+          usable_repositories = true
           xml.repository(parameters) do
             xml.source(path: repo.url)
           end
@@ -243,6 +245,15 @@ EOF
           @sh << "'#{repo.url}' '#{repo.alias}'\n"
           @sh << "zypper -n mr --priority=#{repo.priority} '#{repo.name}'\n"
         end
+      end
+      if !usable_repositories
+        raise(
+          Machinery::Errors::MissingRequirement.new(
+            "The system description doesn't contain any enabled or network reachable repository." \
+              " Please make sure that there is at least one accessible repository with all the" \
+              " required packages."
+          )
+        )
       end
     end
   end
