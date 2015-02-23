@@ -21,17 +21,6 @@ require 'prophet'
 require 'logger'
 require 'yaml'
 
-def run_tests(test_runs_success, config, log)
-  yield
-  test_runs_success << true
-rescue Cheetah::ExecutionFailed => e
-  test_runs_success << false
-  config.comment_failure += e.message
-  log.error e.message
-  log.error "\n\nStandard output:\n #{e.stdout}\n"
-  log.error "\n\nError output:\n #{e.stderr}\n"
-end
-
 Prophet.setup do |config|
 
   # Setup custom logger.
@@ -44,20 +33,14 @@ Prophet.setup do |config|
     # The GitHub (GH) username/password to use for commenting on a successful run.
     config.username = options["default"]["git_username"]
     config.password = options["default"]["git_password"]
-
-    # The Git credentials for commenting on failing runs (can be the same as above).
-    # NOTE: If you specify two different accounts with different avatars, it's
-    # a lot easier to spot failing test runs at first glance.
-    config.username_fail = options["default"]["git_username_fail"]
-    config.password_fail = options["default"]["git_password_fail"]
   end
+  config.status_context = "prophet/unit"
+  config.disable_comments = true
 
   # Add Jenkins URL if available.
   jenkins_url = `echo $BUILD_URL`.chomp
   unless jenkins_url.empty?
-    message = "Prophet reports failure.\n#{jenkins_url}console"
-    message += "\nIf the given link has expired, you can force a Prophet rerun by just deleting this comment."
-    config.comment_failure = message
+    config.status_target_url = "#{jenkins_url}console"
   end
 
   # Specify when to run your code.
@@ -67,7 +50,6 @@ Prophet.setup do |config|
   config.rerun_on_target_change = true
 
   # Add custom messages for comments and statuses.
-  config.comment_success = 'Well Done! Your tests are still passing.'
   config.status_pending = 'Tests are still running.'
   config.status_success = 'Tests are passing.'
   config.status_failure = 'Tests are failing.'
