@@ -62,8 +62,13 @@ describe BuildTask do
     end
 
     it "deletes the wrapper script after usage" do
+      tmp_dir = given_directory
+      allow(Tempfile).to receive(:new).and_return(
+        Tempfile.new("machinery-kiwi-wrapper-script", given_directory)
+      )
+
       build_task.build(system_description, output_path)
-      expect(Dir.glob("/tmp/machinery-kiwi-wrapper-script*")).to be_empty
+      expect(Dir.glob(File.join(tmp_dir, "machinery-kiwi-wrapper-script*"))).to be_empty
     end
 
     it "raises an exception if the temporary directories are not in /tmp" do
