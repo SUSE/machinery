@@ -27,22 +27,21 @@ class Zypper
 
   class <<self
     def isolated(options = {}, &block)
-      zypper_base = Dir.mktmpdir("machinery_zypper")
-      zypper = Zypper.new
+      Dir.mktmpdir("machinery_zypper") do |zypper_base|
+        zypper = Zypper.new
 
-      zypper.zypper_options = [
-        "--non-interactive",
-        "--no-gpg-checks",
-        "--root", zypper_base
-      ]
+        zypper.zypper_options = [
+          "--non-interactive",
+          "--no-gpg-checks",
+          "--root", zypper_base
+        ]
 
-      if options[:arch]
-        zypper.zypp_config = create_zypp_config(zypper_base, options[:arch])
+        if options[:arch]
+          zypper.zypp_config = create_zypp_config(zypper_base, options[:arch])
+        end
+
+        block.call(zypper)
       end
-
-      block.call(zypper)
-    ensure
-      cleanup(zypper_base)
     end
 
     private
@@ -59,10 +58,6 @@ class Zypper
       )
 
       zypp_config
-    end
-
-    def cleanup(base)
-      LoggedCheetah.run("rm", "-r", base)
     end
   end
 
