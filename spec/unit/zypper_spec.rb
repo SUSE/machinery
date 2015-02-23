@@ -22,8 +22,6 @@ describe Zypper do
 
   describe ".isolated" do
     it "calls zypper in a chroot environment" do
-      expect(Zypper).to receive(:cleanup)
-
       Zypper.isolated do |zypper|
         allow(LoggedCheetah).to receive(:run)
         expect(LoggedCheetah).to receive(:run) do |*args|
