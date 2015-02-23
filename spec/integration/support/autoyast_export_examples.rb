@@ -39,15 +39,5 @@ shared_examples "autoyast export" do
       ).split("\n")
       expect(file_list).to include("autoinst.xml")
     end
-
-    it "generates a proper profile" do
-      expected = File.read(File.join(Machinery::ROOT, "spec", "data", "autoyast", "jeos.xml"))
-      actual = @machinery.run_command(
-        "cat /tmp/jeos-autoyast/autoinst.xml",
-        stdout: :capture,
-        as: "vagrant"
-      )
-      expect(actual).to eq(expected)
-    end
   end
 end
