@@ -21,17 +21,6 @@ require 'prophet'
 require 'logger'
 require 'yaml'
 
-def run_tests(test_runs_success, config, log)
-  yield
-  test_runs_success << true
-rescue Cheetah::ExecutionFailed => e
-  test_runs_success << false
-  config.comment_failure += e.message
-  log.error e.message
-  log.error "\n\nStandard output:\n #{e.stdout}\n"
-  log.error "\n\nError output:\n #{e.stderr}\n"
-end
-
 Prophet.setup do |config|
 
   # Setup custom logger.
