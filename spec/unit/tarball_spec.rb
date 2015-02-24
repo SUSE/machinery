@@ -21,7 +21,7 @@ describe Tarball do
   describe "#list" do
     it "returns a list of files in the tarball with attributes" do
       tarball = Tarball.new(
-        File.expand_path("../fixtures/tarball.tar.gz", __FILE__)
+        File.join(Machinery::ROOT, "spec/data/tarball/tarball.tar.gz")
       )
 
       expect(tarball.list).to eq([
