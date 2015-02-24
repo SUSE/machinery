@@ -30,8 +30,10 @@ describe "machinery@local" do
   before(:all) do
     @machinery = start_system(
       local: true,
-      env: { "MACHINERY_DIR" => machinery_config[:machinery_dir] },
-      command_map: { "machinery" => File.join(Machinery::ROOT, "bin/machinery") }
+      env: {
+        "MACHINERY_DIR" => machinery_config[:machinery_dir],
+        "PATH" => File.join(Machinery::ROOT, "bin") + ":" + ENV["PATH"]
+      }
     )
   end
 
