@@ -15,6 +15,8 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require "etc"
+
 require_relative "../../lib/machinery"
 require_relative "../../../pennyworth/lib/spec"
 require_relative "../../../pennyworth/lib/ssh_keys_importer"
