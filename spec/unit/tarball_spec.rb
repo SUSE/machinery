@@ -28,6 +28,14 @@ describe Tarball do
         { path: "dir",         type: :dir,  size:  0, mode:  "755", user: "nobody", group: "users" },
         { path: "file",        type: :file, size: 10, mode:  "644", user: "nobody", group: "users" },
         { path: "hardlink",    type: :file, size:  0, mode:  "644", user: "nobody", group: "users" },
+        {
+          path: "lot_of_spaces                           .txt",
+          type: :file,
+          size: 0,
+          mode: "644",
+          user: "nobody",
+          group: "users"
+        },
         { path: "perms-0000",  type: :file, size:  0, mode:  "000", user: "nobody", group: "users" },
         { path: "perms-0001",  type: :file, size:  0, mode:  "001", user: "nobody", group: "users" },
         { path: "perms-0002",  type: :file, size:  0, mode:  "002", user: "nobody", group: "users" },
