@@ -17,27 +17,32 @@
 
 require_relative "integration_spec_helper"
 
-describe "machinery@openSUSE 13.2" do
-  let(:machinery_config) {
-    {
-      machinery_dir: "/home/vagrant/.machinery",
-      owner: "vagrant",
-      group: "vagrant"
-    }
+describe "machinery@local" do
+  current_user = Etc.getlogin
+  group = Etc.getgrgid(Etc.getpwnam(current_user).gid).name
+  machinery_config = {
+    machinery_dir: Dir.mktmpdir("machinery"),
+    owner: current_user,
+    group: group
   }
+  let(:machinery_config) { machinery_config }
 
   before(:all) do
-    @machinery = start_system(box: "machinery_132")
+    @machinery = start_system(
+      local: true,
+      env: {
+        "MACHINERY_DIR" => machinery_config[:machinery_dir],
+        "PATH" => File.join(Machinery::ROOT, "bin") + ":" + ENV["PATH"]
+      }
+    )
+  end
+
+  after(:all) do
+    FileUtils.rm_r machinery_config[:machinery_dir]
   end
 
   include_examples "CLI"
+  include_examples "inspect", ["opensuse131"]
   include_examples "kiwi export"
   include_examples "autoyast export"
-  include_examples "validate"
-  include_examples "upgrade format"
-  include_examples "generate html"
-  include_examples "analyze", "opensuse131"
-  include_examples "inspect", ["opensuse132"]
-  include_examples "inspect", ["opensuse131"]
-  include_examples "build", "opensuse131"
 end

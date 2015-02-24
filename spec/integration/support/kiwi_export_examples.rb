@@ -16,26 +16,30 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "kiwi export" do
+  after(:all) do
+    @machinery.run_command("test -d /tmp/jeos-kiwi && rm -r /tmp/jeos-kiwi")
+  end
+
   describe "export-kiwi" do
     it "creates a kiwi description" do
       @machinery.inject_directory(
         File.join(Machinery::ROOT, "spec/data/descriptions/jeos/"),
-        "/home/vagrant/.machinery/",
-        owner: "vagrant",
-        group: "users"
+        machinery_config[:machinery_dir],
+        owner: machinery_config[:owner],
+        group: machinery_config[:group]
       )
 
       measure("export to kiwi") do
         @machinery.run_command(
-          "machinery export-kiwi jeos --kiwi-dir=/tmp",
-          as: "vagrant"
+          "machinery export-kiwi jeos --kiwi-dir=/tmp --force",
+          as: machinery_config[:owner]
         )
       end
 
       file_list = @machinery.run_command(
         "ls /tmp/jeos-kiwi",
         stdout: :capture,
-        as: "vagrant"
+        as: machinery_config[:owner]
       ).split("\n")
       expect(file_list).to match_array(["README.md", "config.sh", "config.xml", "root"])
     end
@@ -45,7 +49,7 @@ shared_examples "kiwi export" do
       actual = @machinery.run_command(
         "cat /tmp/jeos-kiwi/config.sh",
         stdout: :capture,
-        as: "vagrant"
+        as: machinery_config[:owner]
       )
       expect(actual).to eq(expected)
     end
@@ -55,18 +59,19 @@ shared_examples "kiwi export" do
       actual = @machinery.run_command(
         "cat /tmp/jeos-kiwi/config.xml",
         stdout: :capture,
-        as: "vagrant"
+        as: machinery_config[:owner]
       )
 
       expect(actual).to eq(expected)
     end
 
     it "generates a proper root tree" do
-      expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "root"))
+      expected = File.
+        read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "root"))
       actual = @machinery.run_command(
-        "ls -lR --time-style=+ /tmp/jeos-kiwi/root",
+        "ls -1R --time-style=+ /tmp/jeos-kiwi/root",
         stdout: :capture,
-        as: "vagrant"
+        as: machinery_config[:owner]
       )
       expect(actual).to eq(expected)
     end

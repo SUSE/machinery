@@ -77,7 +77,7 @@ shared_examples "inspect unmanaged files" do |base|
 
       it "does not extract unmanaged directories which are remote file systems" do
         actual_tarballs = @machinery.run_command(
-          "cd ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
+          "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
           as: "vagrant", stdout: :capture
         ).split("\n")
 
@@ -127,12 +127,12 @@ shared_examples "inspect unmanaged files" do |base|
       actual_filestgz_list = nil
       measure("Gather information about extracted files") do
         actual_tarballs = @machinery.run_command(
-          "cd ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
+          "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
           as: "vagrant", stdout: :capture
         ).split("\n")
 
         actual_filestgz_list = @machinery.run_command(
-          "tar -tf ~/.machinery/#{@subject_system.ip}/unmanaged_files/files.tgz",
+          "tar -tf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/files.tgz",
           as: "vagrant", stdout: :capture
         ).split("\n")
       end
@@ -164,7 +164,7 @@ shared_examples "inspect unmanaged files" do |base|
       expected_md5sums = parse_md5sums(expected_output)
 
       output = @machinery.run_command(
-        "cd /tmp; tar -xf ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees/srv/test.tgz;" \
+        "cd /tmp; tar -xf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/srv/test.tgz;" \
           " md5sum /tmp/srv/test/*",
         as: "vagrant", stdout: :capture
       )
@@ -202,7 +202,7 @@ shared_examples "inspect unmanaged files" do |base|
       )
 
       file_output = @machinery.run_command(
-        "ls ~/.machinery/#{@subject_system.ip}/unmanaged_files/trees/opt/test-quote-char/test-dir-name-with-\\'\\ quote-char\\ \\'/unmanaged-dir-with-\\'\\ quote\\ \\'.tgz",
+        "ls #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/opt/test-quote-char/test-dir-name-with-\\'\\ quote-char\\ \\'/unmanaged-dir-with-\\'\\ quote\\ \\'.tgz",
         as: "vagrant", stdout: :capture
       )
       expect(file_output).to include("unmanaged-dir-with-' quote '.tgz")

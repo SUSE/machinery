@@ -1,44 +1,34 @@
 /tmp/jeos-kiwi/root:
-total 12
-drwxr-xr-x 2 vagrant vagrant 4096  etc
-drwxrwxrwt 3 vagrant vagrant 4096  tmp
-drwxr-xr-x 3 vagrant vagrant 4096  usr
+etc
+tmp
+usr
 
 /tmp/jeos-kiwi/root/etc:
-total 4
--rw-r--r-- 1 vagrant vagrant 312  crontab
+crontab
 
 /tmp/jeos-kiwi/root/tmp:
-total 16
--rw-r--r-- 1 vagrant vagrant 8163  merge_users_and_groups.pl
-drwxr-xr-x 3 vagrant vagrant 4096  unmanaged_files
--rw-r--r-- 1 vagrant vagrant  132  unmanaged_files_kiwi_excludes
+merge_users_and_groups.pl
+unmanaged_files
+unmanaged_files_kiwi_excludes
 
 /tmp/jeos-kiwi/root/tmp/unmanaged_files:
-total 8
--rw-r--r-- 1 vagrant vagrant  220  files.tgz
-drwxr-xr-x 3 vagrant vagrant 4096  trees
+files.tgz
+trees
 
 /tmp/jeos-kiwi/root/tmp/unmanaged_files/trees:
-total 4
-drwxr-xr-x 2 vagrant vagrant 4096  etc
+etc
 
 /tmp/jeos-kiwi/root/tmp/unmanaged_files/trees/etc:
-total 4
--rw-r--r-- 1 vagrant vagrant 339  unmanaged-tree.tgz
+unmanaged-tree.tgz
 
 /tmp/jeos-kiwi/root/usr:
-total 4
-drwxr-xr-x 3 vagrant vagrant 4096  share
+share
 
 /tmp/jeos-kiwi/root/usr/share:
-total 4
-drwxr-xr-x 3 vagrant vagrant 4096  bash
+bash
 
 /tmp/jeos-kiwi/root/usr/share/bash:
-total 4
-drwxr-xr-x 2 vagrant vagrant 4096  helpfiles
+helpfiles
 
 /tmp/jeos-kiwi/root/usr/share/bash/helpfiles:
-total 4
--rw-r--r-- 1 vagrant vagrant 1503  read
+read
