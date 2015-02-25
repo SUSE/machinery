@@ -32,13 +32,13 @@ shared_examples "inspect unmanaged files" do |base|
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
         @machinery.run_command(
-          "machinery inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
+          "#{machinery_command} inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
           as: "vagrant"
         )
       end
 
       actual_output = @machinery.run_command(
-        "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+        "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant", stdout: :capture
       )
       # Remove timestamp, so comparison doesn't fail on that.
@@ -56,7 +56,7 @@ shared_examples "inspect unmanaged files" do |base|
 
     it "extracts meta data of unmanaged files" do
       actual_output = @machinery.run_command(
-        "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+        "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant", stdout: :capture
       )
 
@@ -86,7 +86,7 @@ shared_examples "inspect unmanaged files" do |base|
 
       it "lists remote fs directories as 'remote_dir'" do
         actual_output = @machinery.run_command(
-          "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+          "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
           as: "vagrant", stdout: :capture
         )
 
@@ -95,7 +95,7 @@ shared_examples "inspect unmanaged files" do |base|
 
       it "also shows remote fs which are mounted in a sub directory of a tree" do
         actual_output = @machinery.run_command(
-          "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+          "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
           as: "vagrant", stdout: :capture
         )
 
@@ -108,7 +108,7 @@ shared_examples "inspect unmanaged files" do |base|
 
       measure("Get list of unmanaged-files") do
         entries = @machinery.run_command(
-          "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+          "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
           as: "vagrant", stdout: :capture
         )
       end
@@ -197,7 +197,7 @@ shared_examples "inspect unmanaged files" do |base|
       )
 
       @machinery.run_command(
-        "machinery inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
+        "#{machinery_command} inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
         as: "vagrant"
       )
 
@@ -208,7 +208,7 @@ shared_examples "inspect unmanaged files" do |base|
       expect(file_output).to include("unmanaged-dir-with-' quote '.tgz")
 
       show_output = @machinery.run_command(
-        "machinery show #{@subject_system.ip} --scope=unmanaged-files",
+        "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant", stdout: :capture
       )
       expect(show_output).to include("unmanaged-file-with-' quote '")

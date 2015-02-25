@@ -31,7 +31,7 @@ shared_examples "autoyast export" do
 
       measure("export to autoyast") do
         @machinery.run_command(
-          "machinery export-autoyast jeos --autoyast-dir=/tmp",
+          "#{machinery_command} export-autoyast jeos --autoyast-dir=/tmp",
           as: machinery_config[:owner]
         )
       end

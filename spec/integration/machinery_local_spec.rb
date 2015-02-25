@@ -26,13 +26,13 @@ describe "machinery@local" do
     group: group
   }
   let(:machinery_config) { machinery_config }
+  let(:machinery_command) { File.join(Machinery::ROOT, "bin", "machinery") }
 
   before(:all) do
     @machinery = start_system(
       local: true,
       env: {
-        "MACHINERY_DIR" => machinery_config[:machinery_dir],
-        "PATH" => File.join(Machinery::ROOT, "bin") + ":" + ENV["PATH"]
+        "MACHINERY_DIR" => machinery_config[:machinery_dir]
       }
     )
   end

@@ -19,7 +19,7 @@ shared_examples "CLI" do
   describe "CLI" do
     it "throws an error on invalid command" do
       expect { @machinery.run_command(
-        "machinery invalid_command",
+        "#{machinery_command} invalid_command",
         :as => "vagrant",
         :stdout => :capture
       ) }.to raise_error(ExecutionFailed)
@@ -27,7 +27,7 @@ shared_examples "CLI" do
 
     it "processes help option" do
       output = @machinery.run_command(
-        "machinery -h",
+        "#{machinery_command} -h",
         :as => "vagrant",
         :stdout => :capture
       )
@@ -38,7 +38,7 @@ shared_examples "CLI" do
 
     it "processes help option for subcommands" do
       output = @machinery.run_command(
-        "machinery inspect --help",
+        "#{machinery_command} inspect --help",
         :as => "vagrant",
         :stdout => :capture
       )
@@ -47,17 +47,17 @@ shared_examples "CLI" do
 
     it "does not offer --no-help or unneccessary negatable options" do
       global_output = @machinery.run_command(
-        "machinery --help",
+        "#{machinery_command} --help",
         :as => "vagrant",
         :stdout => :capture
       )
       inspect_help_output = @machinery.run_command(
-        "machinery inspect --help",
+        "#{machinery_command} inspect --help",
         :as => "vagrant",
         :stdout => :capture
       )
       show_help_output = @machinery.run_command(
-        "machinery inspect --help",
+        "#{machinery_command} inspect --help",
         :as => "vagrant",
         :stdout => :capture
       )
@@ -69,7 +69,7 @@ shared_examples "CLI" do
     describe "inspect" do
       it "fails inspect for non existing scope" do
         expect { @machinery.run_command(
-          "sudo machinery inspect localhost --scope=foobar --name=test",
+          "sudo #{machinery_command} inspect localhost --scope=foobar --name=test",
           :as => "vagrant",
           :stdout => :capture
         ) }.to raise_error(ExecutionFailed, /The following scope is not supported: foobar/)
@@ -79,7 +79,7 @@ shared_examples "CLI" do
     describe "build" do
       it "fails without an output path" do
         expect { @machinery.run_command(
-          "machinery build test",
+          "#{machinery_command} build test",
           :as => "vagrant",
           :stdout => :capture
         ) }.to raise_error(ExecutionFailed, /image-dir is required/)
@@ -87,7 +87,7 @@ shared_examples "CLI" do
 
       it "fails without a name" do
         expect { @machinery.run_command(
-          "machinery build --image-dir=/tmp/",
+          "#{machinery_command} build --image-dir=/tmp/",
           :as => "vagrant",
           :stdout => :capture
         ) }.to raise_error(ExecutionFailed, /You need to provide the required argument/)
