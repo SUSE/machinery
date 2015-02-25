@@ -25,26 +25,26 @@ class Tarball
     output = LoggedCheetah.run("tar", "tvf", @file, :stdout => :capture)
 
     output.lines.map do |line|
-      mode, user_and_group, size, date, time, *rest = line.split(" ")
+      mode, user_and_group, size, _date, _time, rest = line.split(" ", 6)
 
       case mode[0]
       when "l"
         type = :link
         # This may fail for files with "->" in their name, but there is no way
         # how to avoid this when using "tar".
-        path = rest.join(" ").split(" -> ").first
+        path = rest.split(" -> ").first
       when "h"
         type = :file
         # This may fail for files with "link to" in their name, but there is no way
         # how to avoid this when using "tar" unless we use the parameter
         # --hard-dereference with tar to get rid of hard links
-        path = rest.join(" ").split(" link to ").first
+        path = rest.split(" link to ").first
       when "d"
         type = :dir
-        path = rest.join(" ")[0..-2]   # Strip trailing "/".
+        path = rest.chomp("/\n")
       else
         type = :file
-        path = rest.join(" ")
+        path = rest.chomp
       end
 
       user, group = user_and_group.split("/")
