@@ -20,7 +20,7 @@ shared_examples "inspect simple scope" do |scope, base|
     it "inspects #{scope}" do
       measure("Inspect #{scope}") do
         @machinery.run_command(
-            "machinery inspect #{@subject_system.ip} --scope=#{scope} --name=test",
+            "#{machinery_command} inspect #{@subject_system.ip} --scope=#{scope} --name=test",
             :as => "vagrant",
             :stdout => :capture
         )
@@ -28,7 +28,7 @@ shared_examples "inspect simple scope" do |scope, base|
 
       expected = File.read("spec/data/#{scope}/#{base}")
       actual = @machinery.run_command(
-          "machinery show test --scope=#{scope}",
+          "#{machinery_command} show test --scope=#{scope}",
           :as => "vagrant",
           :stdout => :capture
       )

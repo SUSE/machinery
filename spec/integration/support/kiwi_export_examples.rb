@@ -31,7 +31,7 @@ shared_examples "kiwi export" do
 
       measure("export to kiwi") do
         @machinery.run_command(
-          "machinery export-kiwi jeos --kiwi-dir=/tmp --force",
+          "#{machinery_command} export-kiwi jeos --kiwi-dir=/tmp --force",
           as: machinery_config[:owner]
         )
       end

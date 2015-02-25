@@ -25,6 +25,7 @@ describe "machinery@openSUSE 13.1" do
       group: "vagrant"
     }
   }
+  let(:machinery_command) { "machinery" }
 
   before(:all) do
     @machinery = start_system(box: "machinery_131")
