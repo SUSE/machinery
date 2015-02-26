@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Add "--short" option to list command for showing a short list of all descriptions
 * Improve error output for system descriptions which have outdated formats
 
 ## Version 1.4.0 - Wed Feb 18 16:51:43 CET 2015 - thardeck@suse.de
