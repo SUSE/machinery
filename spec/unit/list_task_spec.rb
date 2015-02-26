@@ -80,7 +80,7 @@ describe ListTask do
         expect(s).to include(date_human)
         expect(s).to include(hostname)
       }
-      list_task.list(store, {"verbose" => true})
+      list_task.list(store, verbose: true)
     end
 
     it "verbose shows the date/hostname as unknown if there is no meta data for it" do
@@ -90,7 +90,7 @@ describe ListTask do
         expect(s).to include("unknown")
         expect(s).to include("Unknown hostname")
       }
-      list_task.list(store, {"verbose" => true})
+      list_task.list(store, verbose: true)
     end
 
     it "show the extracted state of extractable scopes" do

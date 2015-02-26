@@ -54,7 +54,7 @@ class ListTask
           end
         end
 
-        if options["verbose"]
+        if options[:verbose]
           meta = description[scope].meta
           if meta
             time = Time.parse(meta.modified).getlocal
