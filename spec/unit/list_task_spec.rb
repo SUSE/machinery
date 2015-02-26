@@ -73,6 +73,16 @@ describe ListTask do
       list_task.list(store)
     end
 
+    it "if short is true it lists only the description names" do
+      system_description.save
+      expect(Machinery::Ui).to receive(:puts) { |s|
+        expect(s).to include(name)
+        expect(s).not_to include("packages")
+        expect(s).not_to include("repositories")
+      }
+      list_task.list(store, short: true)
+    end
+
     it "shows also the date and hostname of the descriptions if verbose is true" do
       system_description.save
       expect(Machinery::Ui).to receive(:puts) { |s|
@@ -111,6 +121,14 @@ describe ListTask do
       }
       system_description_with_old_data_format.save
       list_task.list(store)
+    end
+
+    it "marks descriptions with old data format despite using the short option" do
+      expect(Machinery::Ui).to receive(:puts) { |s|
+        expect(s.to_s).to include("needs to be upgraded.")
+      }
+      system_description_with_old_data_format.save
+      list_task.list(store, short: true)
     end
 
     it "marks descriptions with incompatible data format" do

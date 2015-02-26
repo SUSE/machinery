@@ -476,6 +476,8 @@ class Cli
   command :list do |c|
     c.switch :verbose, required: false, negatable: false,
       desc: "Display additional information about origin of scopes"
+    c.switch :short, required: false, negatable: false,
+      desc: "List only description names"
 
     c.action do |global_options,options,args|
       task = ListTask.new
