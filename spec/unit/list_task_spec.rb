@@ -42,7 +42,7 @@ describe ListTask do
   }
   let(:system_description_with_newer_data_format) {
     create_test_description(json: <<-EOF, name: name, store: store)
-      { "meta": { "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION+1} } }
+      { "meta": { "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION + 1} } }
     EOF
   }
   let(:system_description_with_old_data_format) {

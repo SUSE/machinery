@@ -140,7 +140,7 @@ class SystemDescription < Machinery::Object
 
   def validate_format_compatibility
     if !compatible?
-      raise Machinery::Errors::SystemDescriptionIncompatible.new(self.name, format_version)
+      raise Machinery::Errors::SystemDescriptionIncompatible.new(name, format_version)
     end
   end
 
