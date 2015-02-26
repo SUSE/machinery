@@ -22,9 +22,9 @@ class Cli
   preserve_argv(true)
   @version = Machinery::VERSION + " (system description format version " +
     "#{SystemDescription::CURRENT_FORMAT_VERSION})"
-  switch :version, :negatable => false, :desc => "Show version"
-  switch :debug, :negatable => false, :desc => "Enable debug mode"
-  switch [:help, :h], :negatable => false, :desc => "Show help"
+  switch :version, negatable: false, desc: "Show version"
+  switch :debug, negatable: false, desc: "Enable debug mode"
+  switch [:help, :h], negatable: false, desc: "Show help"
 
   sort_help :manually
   pre do |global_options,command,options,args|
@@ -197,8 +197,8 @@ class Cli
   LONGDESC
   arg "NAME"
   command :analyze do |c|
-    c.flag [:operation, :o], :type => String, :required => true,
-      :desc => "The analyze operation to perform", :arg_name => "OPERATION"
+    c.flag [:operation, :o], type: String, required: true,
+      desc: "The analyze operation to perform", arg_name: "OPERATION"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -227,19 +227,22 @@ class Cli
   LONGDESC
   arg "NAME"
   command :build do |c|
-    c.flag ["image-dir", :i], :type => String, :required => true,
-      :desc => "Store the image under the specified path", :arg_name => "DIRECTORY"
-    c.switch ["enable-dhcp", :d], :required => false, :negatable => false,
-      :desc => "Enable DCHP client on first network card of built image"
-    c.switch ["enable-ssh", :s], :required => false, :negatable => false,
-      :desc => "Enable SSH service in built image"
+    c.flag ["image-dir", :i], type: String, required: true,
+      desc: "Store the image under the specified path", arg_name: "DIRECTORY"
+    c.switch ["enable-dhcp", :d], required: false, negatable: false,
+      desc: "Enable DCHP client on first network card of built image"
+    c.switch ["enable-ssh", :s], required: false, negatable: false,
+      desc: "Enable SSH service in built image"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       description = SystemDescription.load(name, system_description_store)
 
       task = BuildTask.new
-      task.build(description, File.expand_path(options["image-dir"]), {:enable_dhcp => options["enable-dhcp"], :enable_ssh => options["enable-ssh"]})
+      task.build(
+        description, File.expand_path(options["image-dir"]),
+        enable_dhcp: options["enable-dhcp"], enable_ssh: options["enable-ssh"]
+      )
     end
   end
 
@@ -257,14 +260,14 @@ class Cli
   arg "NAME1"
   arg "NAME2"
   command :compare do |c|
-    c.flag [:scope, :s], :type => String, :required => false,
-      :desc => "Compare specified scopes", :arg_name => "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], :type => String, :required => false,
-      :desc => "Exclude specified scopes", :arg_name => "SCOPE_LIST"
-    c.switch "show-all", :required => false, :negatable => false,
-      :desc => "Show also common properties"
-    c.switch "pager", :required => false, :default_value => true,
-      :desc => "Pipe output into a pager"
+    c.flag [:scope, :s], type: String, required: false,
+      desc: "Compare specified scopes", arg_name: "SCOPE_LIST"
+    c.flag ["exclude-scope", :e], type: String, required: false,
+      desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
+    c.switch "show-all", required: false, negatable: false,
+      desc: "Show also common properties"
+    c.switch "pager", required: false, default_value: true,
+      desc: "Pipe output into a pager"
 
     c.action do |global_options,options,args|
       name1 = shift_arg(args, "NAME1")
@@ -312,14 +315,14 @@ class Cli
   LONGDESC
   arg "NAME"
   command :deploy do |c|
-    c.flag ["cloud-config", :c], :type => String, :required => true, :arg_name => "FILE",
-      :desc => "Path to file where the cloud config (openrc.sh) is located"
-    c.flag ["image-dir", :i], :type => String, :required => false,
-      :desc => "Directory where the image is located", :arg_name => "DIRECTORY"
-    c.switch [:insecure, :s], :required => false, :negatable => false,
-      :desc => "Explicitly allow glanceclient to perform 'insecure SSL' (https) requests."
-    c.flag ["cloud-image-name", :n], :type => String, :required => false,
-      :desc => "Name of the image in the cloud", :arg_name => "NAME"
+    c.flag ["cloud-config", :c], type: String, required: true, arg_name: "FILE",
+      desc: "Path to file where the cloud config (openrc.sh) is located"
+    c.flag ["image-dir", :i], type: String, required: false,
+      desc: "Directory where the image is located", arg_name: "DIRECTORY"
+    c.switch [:insecure, :s], required: false, negatable: false,
+      desc: "Explicitly allow glanceclient to perform 'insecure SSL' (https) requests."
+    c.flag ["cloud-image-name", :n], type: String, required: false,
+      desc: "Name of the image in the cloud", arg_name: "NAME"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -346,10 +349,10 @@ class Cli
   LONGDESC
   arg "NAME"
   command "export-kiwi" do |c|
-    c.flag ["kiwi-dir", :k], :type => String, :required => true,
-      :desc => "Location where the description will be stored", :arg_name => "DIRECTORY"
-    c.switch :force, :default_value => false, :required => false, :negatable => false,
-      :desc => "Overwrite existing description"
+    c.flag ["kiwi-dir", :k], type: String, required: true,
+      desc: "Location where the description will be stored", arg_name: "DIRECTORY"
+    c.switch :force, default_value: false, required: false, negatable: false,
+      desc: "Overwrite existing description"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -406,22 +409,22 @@ class Cli
   LONGDESC
   arg "HOSTNAME"
   command :inspect do |c|
-    c.flag [:name, :n], :type => String, :required => false, :arg_name => "NAME",
-      :desc => "Store system description under the specified name"
-    c.flag [:scope, :s], :type => String, :required => false,
-      :desc => "Show specified scopes", :arg_name => "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], :type => String, :required => false,
-      :desc => "Exclude specified scopes", :arg_name => "SCOPE_LIST"
-    c.switch ["extract-files", :x], :required => false, :negatable => false,
-      :desc => "Extract changed configuration files and unmanaged files from inspected system"
-    c.switch "extract-changed-config-files", :required => false, :negatable => false,
-      :desc => "Extract changed configuration files from inspected system"
-    c.switch "extract-unmanaged-files", :required => false, :negatable => false,
-      :desc => "Extract unmanaged files from inspected system"
-    c.switch "extract-changed-managed-files", :required => false, :negatable => false,
-      :desc => "Extract changed managed files from inspected system"
-    c.switch :show, :required => false, :negatable => false,
-      :desc => "Print inspection result"
+    c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
+      desc: "Store system description under the specified name"
+    c.flag [:scope, :s], type: String, required: false,
+      desc: "Show specified scopes", arg_name: "SCOPE_LIST"
+    c.flag ["exclude-scope", :e], type: String, required: false,
+      desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
+    c.switch ["extract-files", :x], required: false, negatable: false,
+      desc: "Extract changed configuration files and unmanaged files from inspected system"
+    c.switch "extract-changed-config-files", required: false, negatable: false,
+      desc: "Extract changed configuration files from inspected system"
+    c.switch "extract-unmanaged-files", required: false, negatable: false,
+      desc: "Extract unmanaged files from inspected system"
+    c.switch "extract-changed-managed-files", required: false, negatable: false,
+      desc: "Extract changed managed files from inspected system"
+    c.switch :show, required: false, negatable: false,
+      desc: "Print inspection result"
 
     c.action do |global_options,options,args|
       host = shift_arg(args, "HOSTNAME")
@@ -453,10 +456,10 @@ class Cli
         system_description_store, host, name, CurrentUser.new, scope_list, inspect_options
       )
 
-      Hint.show_data(:name => name)
+      Hint.show_data(name: name)
 
       if !options["extract-files"] || Inspector.all_scopes.count != scope_list.count
-        Hint.do_complete_inspection(:name => name, :host => host)
+        Hint.do_complete_inspection(name: name, host: host)
       end
     end
   end
@@ -471,8 +474,8 @@ class Cli
     option.
   LONGDESC
   command :list do |c|
-    c.switch :verbose, :required => false, :negatable => false,
-      :desc => "Display additional information about origin of scopes"
+    c.switch :verbose, required: false, negatable: false,
+      desc: "Display additional information about origin of scopes"
 
     c.action do |global_options,options,args|
       task = ListTask.new
@@ -490,14 +493,14 @@ class Cli
   LONGDESC
   arg "NAME..."
   command :remove do |c|
-    c.switch :all, :negatable => false,
-      :desc => "Remove all system descriptions"
-    c.switch :verbose, :required => false, :negatable => false,
-      :desc => "Explain what is being done"
+    c.switch :all, negatable: false,
+      desc: "Remove all system descriptions"
+    c.switch :verbose, required: false, negatable: false,
+      desc: "Explain what is being done"
 
     c.action do |global_options,options,args|
       task = RemoveTask.new
-      task.remove(system_description_store, args, :verbose => options[:verbose], :all => options[:all])
+      task.remove(system_description_store, args, verbose: options[:verbose], all: options[:all])
     end
   end
 
@@ -514,16 +517,16 @@ class Cli
   LONGDESC
   arg "NAME"
   command :show do |c|
-    c.flag [:scope, :s], :type => String, :required => false,
-      :desc => "Show specified scopes", :arg_name => "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], :type => String, :required => false,
-      :desc => "Exclude specified scopes", :arg_name => "SCOPE_LIST"
-    c.switch "pager", :required => false, :default_value => true,
-      :desc => "Pipe output into a pager"
-    c.switch "show-diffs", :required => false, :negatable => false,
-      :desc => "Show diffs of configuration files changes."
-    c.switch "html", :required => false, :negatable => false,
-      :desc => "Open system description in HTML format in your web browser."
+    c.flag [:scope, :s], type: String, required: false,
+      desc: "Show specified scopes", arg_name: "SCOPE_LIST"
+    c.flag ["exclude-scope", :e], type: String, required: false,
+      desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
+    c.switch "pager", required: false, default_value: true,
+      desc: "Pipe output into a pager"
+    c.switch "show-diffs", required: false, negatable: false,
+      desc: "Show diffs of configuration files changes."
+    c.switch "html", required: false, negatable: false,
+      desc: "Open system description in HTML format in your web browser."
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -568,10 +571,10 @@ class Cli
   LONGDESC
   arg "NAME"
   command "upgrade-format" do |c|
-    c.switch :all, :negatable => false,
-      :desc => "Upgrade all system descriptions"
-    c.switch :force, :default_value => false, :required => false, :negatable => false,
-      :desc => "Keep backup after migration and ingnore validation errors"
+    c.switch :all, negatable: false,
+      desc: "Upgrade all system descriptions"
+    c.switch :force, default_value: false, required: false, negatable: false,
+      desc: "Keep backup after migration and ingnore validation errors"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME") if !options[:all]
@@ -580,8 +583,8 @@ class Cli
       task.upgrade(
         system_description_store,
         name,
-        :all => options[:all],
-        :force => options[:force]
+        all: options[:all],
+        force: options[:force]
       )
     end
   end
