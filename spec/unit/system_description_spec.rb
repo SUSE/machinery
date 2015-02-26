@@ -68,7 +68,7 @@ describe SystemDescription do
           SystemDescriptionMemoryStore.new,
           JSON.parse('[ "system-description-foo", "xxx" ]')
         )
-      }.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end
 

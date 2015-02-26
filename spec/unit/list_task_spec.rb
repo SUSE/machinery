@@ -40,10 +40,19 @@ describe ListTask do
       extracted_scopes: ["config_files", "unmanaged_files"],
       name: name, store: store)
   }
+  let(:system_description_with_newer_data_format) {
+    create_test_description(json: <<-EOF, name: name, store: store)
+      { "meta": { "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION+1} } }
+    EOF
+  }
+  let(:system_description_with_old_data_format) {
+    create_test_description(json: <<-EOF, name: name, store: store)
+      { "meta": { "format_version": 1 } }
+    EOF
+  }
   let(:system_description_with_incompatible_data_format) {
     create_test_description(json: <<-EOF, name: name, store: store)
-      {
-      }
+      {}
     EOF
   }
 
@@ -96,12 +105,27 @@ describe ListTask do
       list_task.list(store)
     end
 
-    it "marks descriptions with incompatible data format" do
-      expect(Machinery::Ui).to receive(:puts).with(" foo:\n")
+    it "marks descriptions with old data format" do
       expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s.to_s).to include("incompatible data format")
+        expect(s.to_s).to include("needs to be upgraded.")
+      }
+      system_description_with_old_data_format.save
+      list_task.list(store)
+    end
+
+    it "marks descriptions with incompatible data format" do
+      expect(Machinery::Ui).to receive(:puts) { |s|
+        expect(s.to_s).to include("Can not be upgraded.")
       }
       system_description_with_incompatible_data_format.save
+      list_task.list(store)
+    end
+
+    it "marks descriptions with newer data format" do
+      expect(Machinery::Ui).to receive(:puts) { |s|
+        expect(s.to_s).to include("upgrade Machinery")
+      }
+      system_description_with_newer_data_format.save
       list_task.list(store)
     end
   end
