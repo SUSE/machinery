@@ -20,7 +20,6 @@ class ListTask
     descriptions = store.list.sort
 
     descriptions.each do |name|
-      name = File.basename(name)
       begin
         description = SystemDescription.load(name, store, skip_validation: true)
       rescue Machinery::Errors::SystemDescriptionIncompatible => e
