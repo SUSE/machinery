@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Improve error output for system descriptions which have outdated formats
 
 ## Version 1.4.0 - Wed Feb 18 16:51:43 CET 2015 - thardeck@suse.de
 
