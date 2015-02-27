@@ -20,58 +20,72 @@ class ListTask
     descriptions = store.list.sort
 
     descriptions.each do |name|
-      name = File.basename(name)
       begin
         description = SystemDescription.load(name, store, skip_validation: true)
       rescue Machinery::Errors::SystemDescriptionIncompatible => e
         if !e.format_version
-          Machinery::Ui.puts " #{name}: incompatible format version. Can not be upgraded.\n\n"
+          show_error("#{name}: incompatible format version. Can not be upgraded.\n", options)
         elsif e.format_version < SystemDescription::CURRENT_FORMAT_VERSION
-          Machinery::Ui.puts " #{name}: format version #{e.format_version}, " \
-            "needs to be upgraded.\n\n"
+          show_error("#{name}: format version #{e.format_version}, " \
+            "needs to be upgraded.\n", options)
         else
-          Machinery::Ui.puts " #{name}: format version #{e.format_version}. " \
-            "Please upgrade Machinery to the latest version.\n\n"
+          show_error("#{name}: format version #{e.format_version}. " \
+            "Please upgrade Machinery to the latest version.\n", options)
         end
         next
       rescue Machinery::Errors::SystemDescriptionValidationFailed
-        Machinery::Ui.puts " #{name}: This description is broken. Use " \
-          "`#{$0} validate #{name}` to see the error message.\n\n"
+        show_error("#{name}: This description is broken. Use " \
+          "`#{$0} validate #{name}` to see the error message.\n", options)
         next
       rescue Machinery::Errors::SystemDescriptionError
-        Machinery::Ui.puts " #{name}: This description is broken.\n\n"
+        show_error("#{name}: This description is broken.\n", options)
         next
       end
-      scopes = []
 
-      description.scopes.each do |scope|
-        entry = Machinery::Ui.internal_scope_list_to_string(scope)
-        if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
-          if description.scope_extracted?(scope)
-            entry += " (extracted)"
-          else
-            entry += " (not extracted)"
+      if options[:short]
+        Machinery::Ui.puts name
+      else
+        scopes = []
+
+        description.scopes.each do |scope|
+          entry = Machinery::Ui.internal_scope_list_to_string(scope)
+          if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+            if description.scope_extracted?(scope)
+              entry += " (extracted)"
+            else
+              entry += " (not extracted)"
+            end
           end
+
+          if options[:verbose]
+            meta = description[scope].meta
+            if meta
+              time = Time.parse(meta.modified).getlocal
+              date = time.strftime "%Y-%m-%d %H:%M:%S"
+              hostname = meta.hostname
+            else
+              date = "unknown"
+              hostname = "Unknown hostname"
+            end
+            entry += "\n      Host: [#{hostname}]"
+            entry += "\n      Date: (#{date})"
+          end
+
+          scopes << entry
         end
 
-        if options["verbose"]
-          meta = description[scope].meta
-          if meta
-            time = Time.parse(meta.modified).getlocal
-            date = time.strftime "%Y-%m-%d %H:%M:%S"
-            hostname = meta.hostname
-          else
-            date = "unknown"
-            hostname = "Unknown hostname"
-          end
-          entry += "\n      Host: [#{hostname}]"
-          entry += "\n      Date: (#{date})"
-        end
-
-        scopes << entry
+        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
       end
+    end
+  end
 
-      Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
+  private
+
+  def show_error(error_message, options)
+    if options[:short]
+      Machinery::Ui.puts(error_message)
+    else
+      Machinery::Ui.puts(" " + error_message + "\n")
     end
   end
 end

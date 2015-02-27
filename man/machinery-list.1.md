@@ -20,6 +20,8 @@ scopes for each system.
   * `--verbose` (optional):
     Print additional information about the origin of scopes.
     Currently displays [HOSTNAME] and (DATE).
+  * `--short` (optional):
+    List only descripton names.
 
 
 ### EXAMPLES
@@ -31,3 +33,7 @@ scopes for each system.
   * Same as previous command, but additionally prints the date of each scope:
 
     $ `machinery` list --verbose
+
+  * Lists all available system description names without any additional details:
+
+    $ `machinery` list --short
