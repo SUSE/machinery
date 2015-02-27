@@ -39,6 +39,23 @@ describe Filter do
     end
   end
 
+  describe "#add_criterion_set" do
+    it "adds set of two definitions" do
+      filter = Filter.new
+      filter.add_criteria_set("/unmanaged_files/files/name",
+        ["/home/alfred", "/var/cache"])
+      expect(filter.criteria).to eq([@criterion1, @criterion2])
+    end
+  end
+
+  describe "#criteria_values" do
+    it "returns criteria values for given locator" do
+      filter = Filter.new([@criterion1, @criterion2])
+      expect(filter.criteria_values("/unmanaged_files/files/name")).
+        to eq(["/home/alfred", "/var/cache"])
+    end
+  end
+
   describe "#matches?" do
     it "returns true on matching value" do
       filter = Filter.new(@criterion1)

@@ -17,6 +17,22 @@ class Filter
     @criteria.push(filter_definition)
   end
 
+  def add_criteria_set(locator, value_set)
+    value_set.each do |value|
+      add_criterion("#{locator}=#{value}")
+    end
+  end
+
+  def criteria_values(locator)
+    values = []
+    @criteria.each do |criterion|
+      if criterion =~ /^#{locator}=(.*)$/
+        values.push($1)
+      end
+    end
+    values
+  end
+
   def matches?(locator, value)
     @criteria.each do |criterion|
       if criterion == "#{locator}=#{value}"
