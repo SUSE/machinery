@@ -74,7 +74,6 @@ class Manifest
 
     # remove needless json error information
     lines[0].gsub!(/^\d+: (.*)$/, "\\1")
-    json_error = lines[0..block_end].join("\n")
 
     if error_pos == 1
       json_error = "An opening bracket, a comma or quotation is missing " \
@@ -83,6 +82,8 @@ class Manifest
               "isn't able to locate issues like these."
       error_pos = nil
     end
+
+    json_error ||= lines[0..block_end].join("\n")
 
     error = "The JSON data of the system description '#{name}' " \
             "couldn't be parsed. The following error occured"
