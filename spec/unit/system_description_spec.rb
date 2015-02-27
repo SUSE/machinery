@@ -60,7 +60,7 @@ describe SystemDescription do
   end
 
   describe ".from_hash" do
-    it "raises InvalidSystemDescription if json input does not start with a hash" do
+    it "raises SystemDescriptionError if json input does not start with a hash" do
       class SystemDescriptionFooConfig < Machinery::Object; end
       expect {
         SystemDescription.from_hash(
