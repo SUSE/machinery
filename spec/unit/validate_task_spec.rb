@@ -25,11 +25,12 @@ describe ValidateTask, "#validate" do
   it "raises an error when encountering fauly description" do
     expected = <<EOF
 In scope packages: The property #0 (checksum) value "Invalid Checksum" did not match the regex '^[a-f0-9]+$'.
+
 EOF
     expected.chomp!
     expect {
       validate_task.validate(store, "faulty_description")
-    }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
+    }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed, expected)
   end
 
   it "prints a message in case of successful validation" do

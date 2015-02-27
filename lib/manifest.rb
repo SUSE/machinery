@@ -55,7 +55,7 @@ class Manifest
 
     errors = JsonValidator.new(@hash).validate
     if !errors.empty?
-      raise Machinery::Errors::SystemDescriptionError.new(errors.join("\n"))
+      raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
     end
   end
 
