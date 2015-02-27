@@ -34,6 +34,7 @@
     </add_on_products>
   </add-on>
   <software>
+    <install_recommended config:type="boolean">false</install_recommended>
     <packages config:type="list">
       <package>bash</package>
       <package>openSUSE-release-dvd</package>

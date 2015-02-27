@@ -74,6 +74,7 @@ class Autoyast < Exporter
         apply_basic_network(xml)
         apply_repositories(xml)
         xml.software do
+          apply_software_settings(xml)
           apply_packages(xml)
           apply_patterns(xml)
         end
@@ -101,6 +102,10 @@ class Autoyast < Exporter
   end
 
   private
+
+  def apply_software_settings(xml)
+    xml.install_recommended "false", "config:type" => "boolean"
+  end
 
   def apply_non_interactive_mode(xml)
     xml.general do
