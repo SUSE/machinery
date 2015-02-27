@@ -102,7 +102,7 @@
   <scripts>
     <pre-scripts config:type="list">
       <script>
-        <source><![CDATA[sed -n '/.*autoyast2\?=\(.*\)\/.*[^\s]*/s//\1/p' /proc/cmdline > /tmp/description_url]]></source>
+        <source><![CDATA[sed -n '/.*autoyast2\?=\([^ ]*\)\/.*[^\s]*/s//\1/p' /proc/cmdline > /tmp/description_url]]></source>
       </script>
     </pre-scripts>
     <chroot-scripts config:type="list">

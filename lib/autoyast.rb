@@ -250,7 +250,7 @@ class Autoyast < Exporter
     xml.send("pre-scripts", "config:type" => "list") do
       xml.script do
         xml.source do
-          xml.cdata 'sed -n \'/.*autoyast2\?=\(.*\)\/.*[^\s]*/s//\1/p\'' \
+          xml.cdata 'sed -n \'/.*autoyast2\?=\([^ ]*\)\/.*[^\s]*/s//\1/p\'' \
             ' /proc/cmdline > /tmp/description_url'
         end
       end
