@@ -38,10 +38,11 @@ module Machinery
     class SystemDescriptionNotFound < SystemDescriptionError; end
 
     class SystemDescriptionIncompatible < SystemDescriptionError
-      attr_reader :name
+      attr_reader :name, :format_version
 
-      def initialize(name)
+      def initialize(name, format_version)
         @name = name
+        @format_version = format_version
       end
 
       def to_s
