@@ -218,15 +218,7 @@ class UnmanagedFilesInspector < Inspector
     3
   end
 
-  def inspect(system, description, options = nil)
-    do_extract = options && options[:extract_unmanaged_files]
-    check_requirements(system, do_extract)
-
-    file_store_tmp = description.scope_file_store("unmanaged_files.tmp")
-    file_store_final = description.scope_file_store("unmanaged_files")
-
-    mount_points = MountPoints.new(system)
-
+  def ignore_list(description)
     ignore_list = [
       "tmp",
       "var/tmp",
@@ -260,6 +252,45 @@ class UnmanagedFilesInspector < Inspector
       "etc/init.d/rc6.d",
       "etc/init.d/rcS.d"
     ]
+  end
+
+  def ignore_list_dirs(description)
+    list = [
+      "/tmp/*",
+      "/var/tmp/*",
+      "/lost+found/*",
+      "/var/run/*",
+      "/var/lib/rpm/*",
+      "/.snapshots/*",
+      description.store.base_path + "/*",
+      "/proc/*",
+      "/boot/*"
+    ]
+
+    # Information about services is extracted by the ServicesInspector, so
+    # we ignore the links representing the same information when inspecting
+    # unmanaged files.
+    list += [
+      "/etc/init.d/boot.d/*",
+      "/etc/init.d/rc0.d/*",
+      "/etc/init.d/rc1.d/*",
+      "/etc/init.d/rc2.d/*",
+      "/etc/init.d/rc3.d/*",
+      "/etc/init.d/rc4.d/*",
+      "/etc/init.d/rc5.d/*",
+      "/etc/init.d/rc6.d/*",
+      "/etc/init.d/rcS.d/*"
+    ]
+  end
+
+  def inspect(system, description, options = nil)
+    do_extract = options && options[:extract_unmanaged_files]
+    check_requirements(system, do_extract)
+
+    file_store_tmp = description.scope_file_store("unmanaged_files.tmp")
+    file_store_final = description.scope_file_store("unmanaged_files")
+
+    mount_points = MountPoints.new(system)
 
     rpm_files, rpm_dirs = extract_rpm_database(system)
 
@@ -273,9 +304,13 @@ class UnmanagedFilesInspector < Inspector
     unmanaged_links = {}
     remote_dirs = mount_points.remote
     special_dirs = mount_points.special
-    ignore_list.each do |ignore|
-      remote_dirs.delete_if { |e| e.start_with?(File.join("/", ignore, "/")) }
-    end
+
+    filter_locator = "/unmanaged_files/files/name"
+    filter_dirs = Filter.new
+    filter_dirs.add_criteria_set(filter_locator, ignore_list_dirs(description))
+
+    remote_dirs.delete_if { |e| filter_dirs.matches?(filter_locator, e) }
+
     excluded_files += remote_dirs
     excluded_files += special_dirs
 
@@ -315,10 +350,17 @@ class UnmanagedFilesInspector < Inspector
         local_filesystems.reject! { |mp| dirs.has_key?(mp) }
       end
       if find_dir == "/"
-        ignore_list.each do |d|
-          td_with_slash = d + "/"
-          dirs.reject! {|p| p == d || p.start_with?(td_with_slash) }
-          files.reject! {|p| p == d || p.start_with?(td_with_slash) }
+        filter = Filter.new
+        filter.add_criteria_set(filter_locator, ignore_list(description))
+
+        dirs.reject! do |dir|
+          filter_dirs.matches?(filter_locator, "/" + dir) ||
+            filter.matches?(filter_locator, dir)
+        end
+
+        files.reject! do |dir|
+          filter_dirs.matches?(filter_locator, "/" + dir) ||
+            filter.matches?(filter_locator, dir)
         end
       end
       managed, unmanaged = dirs.keys.partition{ |d| rpm_dirs.has_key?(find_dir + d) }
