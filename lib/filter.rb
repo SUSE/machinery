@@ -2,19 +2,25 @@ class Filter
   attr_accessor :criteria
 
   def initialize(filter_definition = nil)
-    if filter_definition.nil?
-      @criteria = []
-    elsif filter_definition.is_a?(String)
-      @criteria = [ filter_definition ]
+    @criteria = []
+    @start_criteria = []
+    if filter_definition.is_a?(String)
+      add_criterion(filter_definition)
     elsif filter_definition.is_a?(Array)
-      @criteria = filter_definition
-    else
+      filter_definition.each do |definition|
+        add_criterion(definition)
+      end
+    elsif !filter_definition.nil?
       raise "Wrong type"
     end
   end
 
   def add_criterion(filter_definition)
-    @criteria.push(filter_definition)
+    if filter_definition.end_with?("*")
+      @start_criteria.push(filter_definition[0..-2])
+    else
+      @criteria.push(filter_definition)
+    end
   end
 
   def add_criteria_set(locator, value_set)
@@ -34,8 +40,14 @@ class Filter
   end
 
   def matches?(locator, value)
+    match = "#{locator}=#{value}"
     @criteria.each do |criterion|
-      if criterion == "#{locator}=#{value}"
+      if match == criterion
+        return true
+      end
+    end
+    @start_criteria.each do |criterion|
+      if match.start_with?(criterion)
         return true
       end
     end

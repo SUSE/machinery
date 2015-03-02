@@ -68,5 +68,27 @@ describe Filter do
       expect(filter.matches?("/unmanaged_files/files/name", "/home/berta")).
         to be(false)
     end
+
+    describe "matches beginning of a value" do
+      before(:each) do
+        @filter = Filter.new("path=/home/alfred/*")
+      end
+
+      it "returns false on shorter value" do
+        expect(@filter.matches?("path", "/home/alfred")).to be(false)
+      end
+
+      it "returns true on minimal match" do
+        expect(@filter.matches?("path", "/home/alfred/")).to be(true)
+      end
+
+      it "returns true on longer match" do
+        expect(@filter.matches?("path", "/home/alfred/and/berta")).to be(true)
+      end
+
+      it "returns true on value with star at the end" do
+        expect(@filter.matches?("path", "/home/alfred/*")).to be(true)
+      end
+    end
   end
 end

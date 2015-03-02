@@ -63,6 +63,14 @@ When the matched element is a string it is used literally without the quotes to
 match against the condiditon, e.g. a JSON such as `"name": "apache"` matches
 `name=apache`.
 
+It is possible to match the beginning of a string by adding `*` as a suffix. For
+example
+
+    /unmanaged_files/files/name=/etc/ssh/ssh_host_key*
+
+would match all files whose name starts with the given value, such as
+`/etc/ssh/ssh_host_key` and `/etc/ssh/ssh_host_key.pub`.
+
 If it is an array, the its string representation is matched against the
 condition. e.g. a JSON such as `"changes": ["deleted"]` matches
 `changes=deleted`, and a JSON such as `"changes":  ["mode", "user"]` matches
