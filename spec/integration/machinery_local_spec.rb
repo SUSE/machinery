@@ -17,7 +17,7 @@
 
 require_relative "integration_spec_helper"
 
-describe "machinery@local" do
+describe "machinery@local", ci: true do
   current_user = Etc.getlogin
   group = Etc.getgrgid(Etc.getpwnam(current_user).gid).name
   machinery_config = {
