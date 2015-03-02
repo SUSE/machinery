@@ -17,12 +17,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-require 'prophet'
-require 'logger'
-require 'yaml'
+require "prophet"
+require "logger"
+require "yaml"
 
 Prophet.setup do |config|
-
   # Setup custom logger.
   config.logger = log = Logger.new(STDOUT)
   log.level = Logger::INFO
@@ -50,32 +49,31 @@ Prophet.setup do |config|
   config.rerun_on_target_change = true
 
   # Add custom messages for comments and statuses.
-  config.status_pending = 'Tests are still running.'
-  config.status_success = 'Tests are passing.'
-  config.status_failure = 'Tests are failing.'
+  config.status_pending = "Tests are still running."
+  config.status_success = "Tests are passing."
+  config.status_failure = "Tests are failing."
 
   # If you need to make some system calls before looping through the pull requests,
   # you specify them here. This block will only be executed once and defaults to an
   # empty block.
-  #config.preparation do
-  #  # Example: Setup jenkins.
-  #  `rake -f /usr/lib/ruby/gems/1.9.1/gems/ci_reporter-1.7.0/stub.rake`
-  #  `rake ci:setup:testunit`
-  #end
+  # config.preparation do
+  #   # Example: Setup jenkins.
+  #   `rake -f /usr/lib/ruby/gems/1.9.1/gems/ci_reporter-1.7.0/stub.rake`
+  #   `rake ci:setup:testunit`
+  # end
 
   # Finally, specify which code to run. (Defaults to `rake`.)
   # NOTE: If you don't set config.success manually to a boolean value,Prophet
   # will try to determine it by looking at whether the last system call returned
   # 0 (= success).
   config.execution do
-    log.info 'Running tests ...'
+    log.info "Running tests ..."
 
     system("cd ..; (bundle check || sudo bundle install) && rspec spec/integration --tag=ci")
     config.success = ($? == 0)
 
-    log.info "Tests are #{config.success ? 'passing' : 'failing'}."
+    log.info "Tests are #{config.success ? "passing" : "failing"}."
   end
-
 end
 
 Prophet.run
