@@ -45,7 +45,7 @@ module ChangedRpmFilesHelper
     end
 
     if changes.empty?
-      changes << "other_rpm_change"
+      changes << "other_rpm_changes"
     end
 
     if rpm_changes.include?("?")

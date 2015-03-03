@@ -42,7 +42,7 @@ describe "parse_rpm_changes_line" do
     line = "........S  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
     expect(file).to eq("/etc/pulse/client.conf")
-    expect(changes).to eq(["other_rpm_change"])
+    expect(changes).to eq(["other_rpm_changes"])
     expect(flag).to eq("c")
   end
 
