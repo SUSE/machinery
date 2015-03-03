@@ -50,6 +50,27 @@ describe ConfigFilesRenderer do
             "group": "root",
             "mode": "644",
             "md5_hash": "7b937326e997ce6b79b1bcd4431fc57a"
+          },
+          {
+            "name": "/etc/my.cnf",
+            "package_name": "mariadb",
+            "package_version": "5.5.33",
+            "status": "changed",
+            "changes": [
+              "size",
+              "mode",
+              "md5",
+              "device_number",
+              "link_path",
+              "user",
+              "group",
+              "time",
+              "capabilities"
+            ],
+            "user": "root",
+            "group": "root",
+            "mode": "600",
+            "md5_hash": "b738b8a889b08ce1203901712bf653a9"
           }
         ]
       }
@@ -88,6 +109,7 @@ describe ConfigFilesRenderer do
           @diffs_dir = File.join(system_description.description_path, "analyze/config_file_diffs")
           FileUtils.mkdir_p(File.join(@diffs_dir, "/etc/postfix"))
           File.write(File.join(@diffs_dir, "/etc/postfix/main.cf.diff"), "main.cf.diff")
+          File.write(File.join(@diffs_dir, "/etc/my.cnf.diff"), "my.cf.diff")
         end
 
         it "shows the diffs if the '--show-diff' option is set" do
@@ -118,6 +140,13 @@ describe ConfigFilesRenderer do
 
           expect(output).to include("/etc/default/grub (grub2-2.00, mode)")
           expect(output).to include("/etc/postfix/main.cf (postfix-2.9.6, md5)")
+        end
+
+        it "shows all known rpm changes" do
+          output = subject.render(system_description)
+
+          expect(output).to include("/etc/my.cnf (mariadb-5.5.33, size, mode, md5, "\
+            "device_number, link_path, user, group, time, capabilities)")
         end
       end
     end

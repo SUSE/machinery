@@ -50,7 +50,7 @@ describe ChangedManagedFilesInspector do
               package_name: "hwinfo",
               package_version: "15.50",
               status: "changed",
-              changes: ["md5"],
+              changes: ["size", "md5", "time"],
               user: "wwwrun",
               group: "wwwrun",
               mode: "400"
@@ -60,7 +60,7 @@ describe ChangedManagedFilesInspector do
               package_name: "hwinfo",
               package_version: "15.50",
               status: "changed",
-              changes: ["md5"],
+              changes: ["md5", "time"],
               user: "root",
               group: "root",
               mode: "644"
@@ -70,7 +70,7 @@ describe ChangedManagedFilesInspector do
               package_name: "zypper",
               package_version: "1.6.311",
               status: "changed",
-              changes: ["mode", "md5", "user", "group"],
+              changes: ["size", "mode", "md5", "user", "group", "time"],
               user: "root",
               group: "root",
               mode: "6644",

@@ -51,7 +51,7 @@
         "changes": {
           "type": "array",
           "items": {
-            "enum": ["mode", "md5", "group", "user", "replaced"]
+            "enum": ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities", "replaced", "other_rpm_changes"]
           },
           "minItems": 1
         },

@@ -33,11 +33,25 @@ module ChangedRpmFilesHelper
       changes << "replaced"
       path.slice!(/ \(replaced\)$/)
     else
+      changes << "size" if rpm_changes[0] == "S"
       changes << "mode" if rpm_changes[1] == "M"
       changes << "md5" if rpm_changes[2] == "5"
+      changes << "device_number" if rpm_changes[3] == "D"
+      changes << "link_path" if rpm_changes[4] == "L"
       changes << "user" if rpm_changes[5] == "U"
       changes << "group" if rpm_changes[6] == "G"
+      changes << "time" if rpm_changes[7] == "T"
+      changes << "capabilities" if rpm_changes[8] == "P"
     end
+
+    if changes.empty?
+      changes << "other_rpm_changes"
+    end
+
+    if rpm_changes.include?("?")
+      Machinery::Ui.warn("Warning: Could not perform all tests on rpm changes for file '#{path}'.")
+    end
+
     [path, changes, type]
   end
 

@@ -169,7 +169,7 @@ EOF
         package_name:    "apache2",
         package_version: "2.4.6",
         status:          "changed",
-        changes:         ["md5"],
+        changes:         ["size", "md5", "time"],
         user:            "root",
         group:           "root",
         mode:            "644"
@@ -180,6 +180,7 @@ EOF
 
       apache_2 = md5_os.dup
       apache_2.name = "/etc/apache2/listen.conf"
+      apache_2.changes = ["md5", "time"]
       apache_2.mode = "6644"
 
       apache_3 = md5_os.dup
@@ -204,7 +205,7 @@ EOF
       )
 
       iscsi_1 = md5_os.dup
-      iscsi_1.changes = ["mode", "md5", "user", "group"]
+      iscsi_1.changes = ["size", "mode", "md5", "user", "group", "time"]
       iscsi_1.name = "/etc/iscsi/iscsid.conf"
       iscsi_1.package_name = "open-iscsi"
       iscsi_1.package_version = "2.0.873"

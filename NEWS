@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix issue with changes of managed files on RHEL (gh#SUSE/machinery#636)
 * Add "--short" option to list command for showing a short list of all descriptions
 * Improve error output for system descriptions which have outdated formats
 
