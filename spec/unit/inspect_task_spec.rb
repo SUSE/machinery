@@ -59,7 +59,6 @@ describe InspectTask, "#inspect_system" do
     )
   }
 
-
   let(:current_user_root) {
     current_user = double
     allow(current_user).to receive(:is_root?).and_return(true)
@@ -94,6 +93,27 @@ describe InspectTask, "#inspect_system" do
     )
 
     expect(description.foo).to eql(SimpleInspectTaskScope.new("bar" => "baz"))
+  end
+
+  describe "with the :skip_files option" do
+    it "maps it to an unmanaged_files filter" do
+      expect_any_instance_of(FooInspector).
+        to receive(:inspect) do |_inspector, _description, _system, options|
+        filter = options[:filter]
+        expect(filter.element_filters.length).to eq(1)
+        expect(filter.element_filters["/unmanaged_files/files/name"].matchers).
+          to eq(["/foo/bar"])
+      end.and_call_original
+
+      inspect_task.inspect_system(
+        store,
+        host,
+        name,
+        current_user_non_root,
+        ["foo"],
+        skip_files: "/foo/bar"
+      )
+    end
   end
 
   describe "in case of inspection errors" do

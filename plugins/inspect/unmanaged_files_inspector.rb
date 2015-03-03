@@ -241,7 +241,7 @@ class UnmanagedFilesInspector < Inspector
     # Information about services is extracted by the ServicesInspector, so
     # we ignore the links representing the same information when inspecting
     # unmanaged files.
-    ignore_list +=  [
+    ignore_list += [
       "/etc/init.d/boot.d",
       "/etc/init.d/rc0.d",
       "/etc/init.d/rc1.d",

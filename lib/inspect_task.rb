@@ -72,6 +72,11 @@ class InspectTask
 
     failed_inspections = {}
 
+    skip_files = options.delete(:skip_files)
+    if skip_files
+      options[:filter] = Filter.new("/unmanaged_files/files/name=#{skip_files}")
+    end
+
     scopes.map { |s| Inspector.for(s) }.each do |inspector|
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
       begin

@@ -183,6 +183,21 @@ describe Cli do
         run_command(["inspect", "--exclude-scope=packages,repositories", example_host])
       end
 
+      it "forwards the --skip-files option to the InspectTask" do
+        expect_any_instance_of(InspectTask).to receive(:inspect_system).
+          with(
+            an_instance_of(SystemDescriptionStore),
+            example_host,
+            example_host,
+            an_instance_of(CurrentUser),
+            Inspector.all_scopes,
+            skip_files: "/foo/bar"
+          ).
+          and_return(description)
+
+        run_command(["inspect", "--skip-files=/foo/bar", example_host])
+      end
+
       describe "file extraction" do
         it "doesn't extract files when --extract-files is not specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
