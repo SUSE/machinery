@@ -51,11 +51,11 @@ describe Filter do
     it "returns the correct filter" do
       filter = Filter.new(complex_definition)
 
-      element_filter = filter.filter_for("/unmanaged_files/files/name")
+      element_filter = filter.element_filter_for("/unmanaged_files/files/name")
       expect(element_filter.path).to eq("/unmanaged_files/files/name")
       expect(element_filter.matchers).to eq(["/home/alfred", "/var/cache"])
 
-      element_filter = filter.filter_for("/changed_managed_files/files/name")
+      element_filter = filter.element_filter_for("/changed_managed_files/files/name")
       expect(element_filter.path).to eq("/changed_managed_files/files/name")
       expect(element_filter.matchers).to eq(["/usr/lib/something"])
     end

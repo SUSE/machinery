@@ -15,13 +15,13 @@ class Filter
   end
 
   def matches?(path, value)
-    filter = filter_for(path)
+    filter = element_filter_for(path)
     return false if !filter
 
     filter.matches?(value)
   end
 
-  def filter_for(path)
+  def element_filter_for(path)
     element_filters[path]
   end
 end
