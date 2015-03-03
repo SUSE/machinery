@@ -19,7 +19,7 @@ describe Filter do
     end
 
     it "creates filter object with an array of definitions" do
-      matcher = [ @matcher1, @matcher2 ]
+      matcher = [@matcher1, @matcher2]
       filter = Filter.new(@path, matcher)
       expect(filter.matcher).to eq(matcher)
     end

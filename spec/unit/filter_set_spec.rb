@@ -5,7 +5,7 @@ describe FilterSet do
   let(:definition2) { "/unmanaged_files/files/name=/home/alfred,/var/cache" }
   let(:complex_definition) {
     "\"/unmanaged_files/files/name=/home/alfred,/var/cache\"," +
-    "/changed_managed_files/files/name=/usr/lib/something"
+      "/changed_managed_files/files/name=/usr/lib/something"
   }
 
   describe "#initialize" do
@@ -36,8 +36,8 @@ describe FilterSet do
       expect(filters.keys.length).to eq(2)
       expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
       expect(filters["/unmanaged_files/files/name"].matcher).to eq(["/home/alfred", "/var/cache"])
-      expect(filters["/changed_managed_files/files/name"].path)
-        .to eq("/changed_managed_files/files/name")
+      expect(filters["/changed_managed_files/files/name"].path).
+        to eq("/changed_managed_files/files/name")
       expect(filters["/changed_managed_files/files/name"].matcher).to eq(["/usr/lib/something"])
     end
   end
