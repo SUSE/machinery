@@ -306,10 +306,10 @@ class UnmanagedFilesInspector < Inspector
     special_dirs = mount_points.special
 
     filter_locator = "/unmanaged_files/files/name"
-    filter_dirs = Filter.new
-    filter_dirs.add_criteria_set(filter_locator, ignore_list_dirs(description))
+    filter_dirs = Filter.new(filter_locator)
+    filter_dirs.add_matcher(ignore_list_dirs(description))
 
-    remote_dirs.delete_if { |e| filter_dirs.matches?(filter_locator, e) }
+    remote_dirs.delete_if { |e| filter_dirs.matches?(e) }
 
     excluded_files += remote_dirs
     excluded_files += special_dirs
@@ -350,17 +350,17 @@ class UnmanagedFilesInspector < Inspector
         local_filesystems.reject! { |mp| dirs.has_key?(mp) }
       end
       if find_dir == "/"
-        filter = Filter.new
-        filter.add_criteria_set(filter_locator, ignore_list(description))
+        filter = Filter.new(filter_locator)
+        filter.add_matcher(ignore_list(description))
 
         dirs.reject! do |dir|
-          filter_dirs.matches?(filter_locator, "/" + dir) ||
-            filter.matches?(filter_locator, dir)
+          filter_dirs.matches?("/" + dir) ||
+            filter.matches?(dir)
         end
 
         files.reject! do |dir|
-          filter_dirs.matches?(filter_locator, "/" + dir) ||
-            filter.matches?(filter_locator, dir)
+          filter_dirs.matches?("/" + dir) ||
+            filter.matches?(dir)
         end
       end
       managed, unmanaged = dirs.keys.partition{ |d| rpm_dirs.has_key?(find_dir + d) }
