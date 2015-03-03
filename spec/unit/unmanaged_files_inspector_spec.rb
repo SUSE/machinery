@@ -131,7 +131,7 @@ describe UnmanagedFilesInspector do
       expect(system).to receive(:read_file).and_return(ret_val)
     end
 
-    def expect_find_commands(system,add_files)
+    def expect_find_commands(system,add_files, filtered_paths)
       dirs = [
         "/",
         "/etc/ppp/ip 'down.d",
@@ -213,6 +213,9 @@ describe UnmanagedFilesInspector do
         "/usr/lib/coreutils",
         "/opt"
       ]
+      if filtered_paths
+        dirs.delete_if { |d| filtered_paths.any? { |f| d.start_with?(f) } }
+      end
 
       non_empty_dirs = {
         "/" => "root",
@@ -256,7 +259,7 @@ describe UnmanagedFilesInspector do
       end
     end
 
-    def expect_inspect_unmanaged(system,add_files,extract)
+    def expect_inspect_unmanaged(system, add_files, extract, filtered_paths = nil)
       allow_any_instance_of(UnmanagedFilesInspector).to receive(:max_depth).and_return(3)
       allow_any_instance_of(UnmanagedFilesInspector).to receive(:start_depth).and_return(3)
       expect_requirements(system)
@@ -274,7 +277,7 @@ describe UnmanagedFilesInspector do
       end
       expect_rpm_qa(system)
       expect_cat_mounts(system, add_files)
-      expect_find_commands(system, add_files)
+      expect_find_commands(system, add_files, filtered_paths)
       if(extract)
         file_store = description.scope_file_store("unmanaged_files.tmp")
         file_store.create
@@ -342,6 +345,30 @@ describe UnmanagedFilesInspector do
       expect_inspect_unmanaged(system, true, false)
 
       subject.inspect(system, description)
+      names = description["unmanaged_files"].files.map(&:name)
+
+      expect(names).to eq(names.sort)
+    end
+
+    it "adheres to simple filters" do
+      system = double
+
+      expect_inspect_unmanaged(system, true, false, ["/usr/local"])
+
+      filter = Filter.new("/unmanaged_files/files/name=/usr/local/*")
+      subject.inspect(system, description, filter: filter)
+      names = description["unmanaged_files"].files.map(&:name)
+
+      expect(names).to eq(names.sort)
+    end
+
+    it "adheres to more complex filters" do
+      system = double
+
+      expect_inspect_unmanaged(system, true, false, ["/usr/local", "/etc/skel/.config"])
+
+      filter = Filter.new("/unmanaged_files/files/name=/usr/local/*,/etc/skel/.config")
+      subject.inspect(system, description, filter: filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
