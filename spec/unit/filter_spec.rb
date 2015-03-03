@@ -10,28 +10,30 @@ describe Filter do
 
   describe "#initialize" do
     it "creates Filter" do
-      filter = Filter.new("")
+      filter = Filter.new
       expect(filter).to be_a(Filter)
     end
 
-    it "creates Filter with one filter" do
+    it "parses the filter definition" do
       filters = Filter.new(definition1).element_filters
 
       expect(filters.keys.length).to eq(1)
       expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
       expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred"])
     end
+  end
 
-    it "creates Filter with one filter containing multiple matcher" do
-      filters = Filter.new(definition2).element_filters
+  describe "#parse_filter_definition" do
+    it "parses element filter containing multiple matcher" do
+      filters = subject.parse_filter_definition(definition2)
 
       expect(filters.keys.length).to eq(1)
       expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
       expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred", "/var/cache"])
     end
 
-    it "creates Filter with multiple filters" do
-      element_filter = Filter.new(complex_definition).element_filters
+    it "parses element filter with multiple filters" do
+      element_filter = subject.parse_filter_definition(complex_definition)
 
       expect(element_filter.keys.length).to eq(2)
       expect(element_filter["/unmanaged_files/files/name"].path).
