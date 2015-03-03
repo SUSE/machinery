@@ -1,91 +1,74 @@
 require_relative "spec_helper"
 
 describe Filter do
-  before(:each) do
-    @path = "/unmanaged_files/files/name"
-    @matcher1 = "/home/alfred"
-    @matcher2 = "/var/cache"
-  end
+  let(:definition1) { "/unmanaged_files/files/name=/home/alfred" }
+  let(:definition2) { "/unmanaged_files/files/name=/home/alfred,/var/cache" }
+  let(:complex_definition) {
+    "\"/unmanaged_files/files/name=/home/alfred,/var/cache\"," +
+      "/changed_managed_files/files/name=/usr/lib/something"
+  }
 
   describe "#initialize" do
-    it "creates filter object" do
-      filter = Filter.new(@path)
+    it "creates Filter" do
+      filter = Filter.new("")
       expect(filter).to be_a(Filter)
     end
 
-    it "creates filter object with one definition" do
-      filter = Filter.new(@path, @matcher1)
-      expect(filter.matcher).to eq([@matcher1])
+    it "creates Filter with one filter" do
+      filters = Filter.new(definition1).element_filters
+
+      expect(filters.keys.length).to eq(1)
+      expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
+      expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred"])
     end
 
-    it "creates filter object with an array of definitions" do
-      matcher = [@matcher1, @matcher2]
-      filter = Filter.new(@path, matcher)
-      expect(filter.matcher).to eq(matcher)
-    end
-  end
+    it "creates Filter with one filter containing multiple matcher" do
+      filters = Filter.new(definition2).element_filters
 
-  describe "#add_matcher" do
-    it "adds one filter definition" do
-      filter = Filter.new(@path)
-      filter.add_matcher(@matcher1)
-      expect(filter.matcher).to eq([@matcher1])
+      expect(filters.keys.length).to eq(1)
+      expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
+      expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred", "/var/cache"])
     end
 
-    it "adds two filter definition" do
-      filter = Filter.new(@path)
-      filter.add_matcher(@matcher1)
-      filter.add_matcher(@matcher2)
-      expect(filter.matcher).to eq([@matcher1, @matcher2])
-    end
+    it "creates Filter with multiple filters" do
+      element_filter = Filter.new(complex_definition).element_filters
 
-    it "adds set of two definitions" do
-      filter = Filter.new(@path)
-      filter.add_matcher(["/home/alfred", "/var/cache"])
-      expect(filter.matcher).to eq([@matcher1, @matcher2])
+      expect(element_filter.keys.length).to eq(2)
+      expect(element_filter["/unmanaged_files/files/name"].path).
+        to eq("/unmanaged_files/files/name")
+      expect(element_filter["/unmanaged_files/files/name"].matchers).
+        to eq(["/home/alfred", "/var/cache"])
+      expect(element_filter["/changed_managed_files/files/name"].path).
+        to eq("/changed_managed_files/files/name")
+      expect(element_filter["/changed_managed_files/files/name"].matchers).
+        to eq(["/usr/lib/something"])
     end
   end
 
-  describe "#matcher" do
-    it "returns all matcher" do
-      filter = Filter.new(@path, [@matcher1, @matcher2])
-      expect(filter.matcher).to eq(["/home/alfred", "/var/cache"])
+  describe "#filter_for" do
+    it "returns the correct filter" do
+      filter = Filter.new(complex_definition)
+
+      element_filter = filter.filter_for("/unmanaged_files/files/name")
+      expect(element_filter.path).to eq("/unmanaged_files/files/name")
+      expect(element_filter.matchers).to eq(["/home/alfred", "/var/cache"])
+
+      element_filter = filter.filter_for("/changed_managed_files/files/name")
+      expect(element_filter.path).to eq("/changed_managed_files/files/name")
+      expect(element_filter.matchers).to eq(["/usr/lib/something"])
     end
   end
 
   describe "#matches?" do
-    it "returns true on matching value" do
-      filter = Filter.new(@path, @matcher1)
-      expect(filter.matches?("/home/alfred")).
-        to be(true)
+    let(:filter) { Filter.new(complex_definition) }
+
+    it "returns false when no filter is set" do
+      expect(filter.matches?("/some/path", "some_value")).to be(false)
     end
 
-    it "returns false on non-matching value" do
-      filter = Filter.new(@path, @matcher1)
-      expect(filter.matches?("/home/berta")).
-        to be(false)
-    end
-
-    describe "matches beginning of a value" do
-      before(:each) do
-        @filter = Filter.new("path", "/home/alfred/*")
-      end
-
-      it "returns false on shorter value" do
-        expect(@filter.matches?("/home/alfred")).to be(false)
-      end
-
-      it "returns true on minimal match" do
-        expect(@filter.matches?("/home/alfred/")).to be(true)
-      end
-
-      it "returns true on longer match" do
-        expect(@filter.matches?("/home/alfred/and/berta")).to be(true)
-      end
-
-      it "returns true on value with star at the end" do
-        expect(@filter.matches?("/home/alfred/*")).to be(true)
-      end
+    it "asks the proper filter if it matches" do
+      expect(filter.matches?("/unmanaged_files/files/name", "/var/cache")).to be(true)
+      expect(filter.matches?("/changed_managed_files/files/name", "/var/cache")).to be(false)
     end
   end
 end
