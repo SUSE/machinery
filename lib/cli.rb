@@ -416,7 +416,8 @@ class Cli
     c.flag ["exclude-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag "skip-files", required: false, negatable: false,
-      desc: "Do not consider given files or directories during inspection (separate by commas)"
+      desc: "Do not consider given files or directories during inspection. " \
+        "Either provide one file or directory name or a list of names separated by commas."
     c.switch ["extract-files", :x], required: false, negatable: false,
       desc: "Extract changed configuration files and unmanaged files from inspected system"
     c.switch "extract-changed-config-files", required: false, negatable: false,

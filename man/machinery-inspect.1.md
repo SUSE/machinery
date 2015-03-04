@@ -57,7 +57,8 @@ trigger errors.
     Extract changed managed files from inspected system.
 
   * `--skip-files` (optional):
-    Do not consider given files or directories during inspection (separate by commas)
+    Do not consider given files or directories during inspection. Either provide
+    one file or directory name or a list of names separated by commas.
 
 ### PREREQUISITES
 
