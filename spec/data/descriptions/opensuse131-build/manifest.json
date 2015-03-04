@@ -1988,6 +1988,7 @@
         "package_version": "1.4.8",
         "status": "changed",
         "changes": [
+          "size",
           "md5"
         ],
         "user": "root",
@@ -2060,6 +2061,7 @@
         "package_version": "3.0.9",
         "status": "changed",
         "changes": [
+          "size",
           "mode",
           "md5",
           "user",
