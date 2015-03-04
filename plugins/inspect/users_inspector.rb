@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class UsersInspector < Inspector
-  def inspect(system, description, options = {})
+  def inspect(system, description, _filter, _options = {})
     passwd = system.read_file("/etc/passwd")
     shadow = system.read_file("/etc/shadow")
 

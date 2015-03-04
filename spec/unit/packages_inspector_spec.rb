@@ -21,6 +21,7 @@ describe PackagesInspector, ".inspect" do
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
+  let(:filter) { nil }
   let(:packages_inspector) { PackagesInspector.new }
 
   let(:package_example) { <<EOF
@@ -64,7 +65,7 @@ EOF
 
     expect(system).to receive(:run_command) { data }
 
-    inspector.inspect(system, description)
+    inspector.inspect(system, description, filter)
     description.packages
   end
 
@@ -86,7 +87,7 @@ EOF
     expect(system).to receive(:check_requirement) { true }
     expect(system).to receive(:run_command) { package_example }
 
-    summary = packages_inspector.inspect(system, description)
+    summary = packages_inspector.inspect(system, description, filter)
     expect(summary).to include("Found 2 packages")
   end
 

@@ -256,7 +256,7 @@ class UnmanagedFilesInspector < Inspector
     ignore_list
   end
 
-  def inspect(system, description, options = {})
+  def inspect(system, description, filter, options = {})
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(system, do_extract)
 
@@ -278,16 +278,14 @@ class UnmanagedFilesInspector < Inspector
     remote_dirs = mount_points.remote
     special_dirs = mount_points.special
 
-    if options[:filter]
-      filter = options[:filter].element_filter_for("/unmanaged_files/files/name")
-    end
-    filter ||= ElementFilter.new("/unmanaged_files/files/name")
-    filter.add_matchers(ignore_list(description))
+    file_filter = filter.element_filter_for("/unmanaged_files/files/name") if filter
+    file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
+    file_filter.add_matchers(ignore_list(description))
 
     # Add a recursive pendant to each ignored element
-    filter.add_matchers(filter.matchers.map { |entry| entry + "/*" })
+    file_filter.add_matchers(file_filter.matchers.map { |entry| entry + "/*" })
 
-    remote_dirs.delete_if { |e| filter.matches?(e) }
+    remote_dirs.delete_if { |e| file_filter.matches?(e) }
 
     excluded_files += remote_dirs
     excluded_files += special_dirs
@@ -329,11 +327,11 @@ class UnmanagedFilesInspector < Inspector
       end
       if find_dir == "/"
         dirs.reject! do |dir|
-          filter.matches?("/" + dir)
+          file_filter.matches?("/" + dir)
         end
 
         files.reject! do |dir|
-          filter.matches?("/" + dir)
+          file_filter.matches?("/" + dir)
         end
       end
       managed, unmanaged = dirs.keys.partition{ |d| rpm_dirs.has_key?(find_dir + d) }

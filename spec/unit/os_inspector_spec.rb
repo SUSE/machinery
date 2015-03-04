@@ -24,6 +24,7 @@ describe OsInspector do
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
   let(:system) { LocalSystem.new }
+  let(:filter) { nil }
   subject(:inspector) { OsInspector.new }
 
   before(:each) do
@@ -101,7 +102,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      summary = inspector.inspect(system, description)
+      summary = inspector.inspect(system, description, filter)
 
       expect(description.os).to eq(
         OsOpenSuse13_1.new(
@@ -119,7 +120,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      summary = inspector.inspect(system, description)
+      summary = inspector.inspect(system, description, filter)
 
       expect(description.os.name).to eq "Red Hat Enterprise Linux Server"
       expect(description.os.version).to eq "6.5 (Santiago)"
@@ -133,7 +134,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      summary = inspector.inspect(system, description)
+      summary = inspector.inspect(system, description, filter)
 
       expect(description.os.name).to eq "SUSE Linux Enterprise Server 11"
       expect(description.os.version).to eq "11 SP3"
@@ -149,7 +150,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      inspector.inspect(system, description)
+      inspector.inspect(system, description, filter)
 
       expect(description.os.version).to eq("12 Beta 1")
     end
@@ -162,7 +163,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      inspector.inspect(system, description)
+      inspector.inspect(system, description, filter)
 
       expect(description.os.version).to eq("11 SP3 Beta 10")
     end
@@ -175,7 +176,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("i586")
 
-      inspector.inspect(system, description)
+      inspector.inspect(system, description, filter)
 
       expect(description.os.version).to eq("11.2")
       expect(description.os.name).to eq("openSUSE 11.2")
@@ -183,7 +184,7 @@ describe OsInspector do
 
     it "throws exception when the operation system cannot be determined" do
       expect {
-        inspector.inspect(system, description)
+        inspector.inspect(system, description, filter)
       }.to raise_error(Machinery::Errors::UnknownOs)
     end
   end

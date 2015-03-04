@@ -24,7 +24,7 @@ class LocalSystem < System
         description = SystemDescription.new("localhost",
           SystemDescriptionMemoryStore.new)
         inspector = OsInspector.new
-        inspector.inspect(System.for("localhost"), description)
+        inspector.inspect(System.for("localhost"), description, nil)
         @@os = description.os
       end
       @@os

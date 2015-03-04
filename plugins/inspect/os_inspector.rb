@@ -38,7 +38,7 @@ class OsInspector < Inspector
     special_version ? " #{special_version.gsub(/[0-9]{1,2}/," \\0")}" : ""
   end
 
-  def inspect(system, description, _options = {})
+  def inspect(system, description, _filter, _options = {})
     system.check_requirement("cat", "--version") if system.is_a?(RemoteSystem)
 
     os = get_os(system)

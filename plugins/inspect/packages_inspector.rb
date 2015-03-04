@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class PackagesInspector < Inspector
-  def inspect(system, description, options = {})
+  def inspect(system, description, _filter, _options = {})
     system.check_requirement("rpm", "--version")
 
     packages = Array.new

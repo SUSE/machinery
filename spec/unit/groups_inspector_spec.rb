@@ -21,6 +21,7 @@ describe GroupsInspector do
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
+  let(:filter) { nil }
   let(:group_content) {
     <<-EOF.gsub(/^\s+/, "").gsub(/\s+$/, "\n")
       root:x:0:
@@ -59,7 +60,7 @@ describe GroupsInspector do
     it "return an empty list when /etc/group is missing" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(nil)
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
 
       expect(description.groups).to be_empty
       expect(summary).to eq("Found 0 groups.")
@@ -68,7 +69,7 @@ describe GroupsInspector do
     it "returns the groups" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
       expect(description.groups).to eq(expected_groups)
       expect(summary).to eq("Found 3 groups.")
     end
@@ -76,14 +77,14 @@ describe GroupsInspector do
     it "can handle a missing newline at the end in /etc/group" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content.chomp)
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
       expect(description.groups).to eq(expected_groups)
     end
 
     it "returns sorted data" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
-      subject.inspect(system, description)
+      subject.inspect(system, description, filter)
       names = description.groups.map(&:name)
       expect(names).to eq(names.sort)
     end

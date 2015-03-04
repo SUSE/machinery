@@ -24,6 +24,7 @@ describe ChangedManagedFilesInspector do
   let(:description) {
     SystemDescription.new("foo", SystemDescriptionStore.new)
   }
+  let(:filter) { nil }
   subject {
     inspector = ChangedManagedFilesInspector.new
 
@@ -38,7 +39,7 @@ describe ChangedManagedFilesInspector do
 
   describe "#inspect" do
     before(:each) do
-      subject.inspect(system, description)
+      subject.inspect(system, description, filter)
     end
 
     it "returns a list of all changed files" do

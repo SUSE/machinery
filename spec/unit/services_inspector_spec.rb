@@ -24,6 +24,7 @@ describe ServicesInspector do
     let(:description) {
       SystemDescription.new("systemname", SystemDescriptionStore.new)
     }
+    let(:filter) { nil }
 
     let(:systemctl_list_unit_files_output) {
       <<-EOF
@@ -50,7 +51,7 @@ EOF
         ).
         and_return(systemctl_list_unit_files_output)
 
-      summary = inspector.inspect(system, description)
+      summary = inspector.inspect(system, description, filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "systemd",
@@ -77,7 +78,7 @@ EOF
           Service.new(name: "autofs",      state: "off"),
           Service.new(name: "boot.isapnp", state: "on")])
 
-      summary = inspector.inspect(system, description)
+      summary = inspector.inspect(system, description, filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",
@@ -102,7 +103,7 @@ EOF
         and_raise(Machinery::Errors::MissingRequirement)
 
       expect {
-        inspector.inspect(system, description)
+        inspector.inspect(system, description, filter)
       }.to raise_error(Machinery::Errors::MissingRequirement)
     end
 
@@ -117,7 +118,7 @@ EOF
           Service.new(name: "crond", state: "on"),
           Service.new(name: "dnsmasq", state: "off")])
 
-      summary = inspector.inspect(system, description)
+      summary = inspector.inspect(system, description, filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",

@@ -32,6 +32,7 @@ lp:*:16125:1:2:3:4:5
 EOF
   }
   let(:system) { double }
+  let(:filter) { nil }
   subject { UsersInspector.new }
 
   describe "#inspect" do
@@ -39,7 +40,7 @@ EOF
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(nil)
       expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
       expect(description.users).to be_empty
       expect(summary).to eq("Found 0 users.")
     end
@@ -78,7 +79,7 @@ EOF
         )
       ])
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
 
       expect(description.users).to eq(expected)
       expect(summary).to eq("Found 2 users.")
@@ -104,7 +105,7 @@ EOF
         )
       ])
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
 
       expect(description.users).to eq(expected)
     end
@@ -134,7 +135,7 @@ EOF
         )
       ])
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, filter)
 
       expect(description.users).to eq(expected)
       expect(summary).to eq("Found 2 users.")
@@ -144,7 +145,7 @@ EOF
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
       expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
-      subject.inspect(system, description)
+      subject.inspect(system, description, filter)
       names = description.users.map(&:name)
       expect(names).to eq(names.sort)
     end

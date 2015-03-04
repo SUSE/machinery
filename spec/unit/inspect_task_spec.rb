@@ -27,7 +27,7 @@ describe InspectTask, "#inspect_system" do
   end
 
   class FooInspector < Inspector
-    def inspect(_system, description, _options = nil)
+    def inspect(_system, description, _filter, _options = nil)
       result = SimpleInspectTaskScope.new("bar" => "baz")
 
       description.foo = result
@@ -36,7 +36,7 @@ describe InspectTask, "#inspect_system" do
   end
 
   class BarInspector < Inspector
-    def inspect(_system, description, _options = nil)
+    def inspect(_system, description, _filter, _options = nil)
       result = SimpleInspectTaskScope.new("bar" => "baz")
 
       description.bar = result

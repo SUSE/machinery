@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class RepositoriesInspector < Inspector
-  def inspect(system, description, options = {})
+  def inspect(system, description, _filter, _options = {})
     if system.has_command?("zypper")
       description.repositories, summary = inspect_zypp_repositories(system)
     elsif system.has_command?("yum")

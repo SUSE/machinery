@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class ServicesInspector < Inspector
-  def inspect(system, description, options = {})
+  def inspect(system, description, _filter, _options = {})
     if system.has_command?("systemctl")
       result = ServicesScope.new(
         init_system: "systemd",

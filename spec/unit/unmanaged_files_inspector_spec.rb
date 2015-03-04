@@ -318,7 +318,7 @@ describe UnmanagedFilesInspector do
       system = double
       expect_inspect_unmanaged(system, false, false)
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, nil)
 
       expected = UnmanagedFilesScope.new(
         extracted: false,
@@ -333,7 +333,7 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false)
 
-      summary = subject.inspect(system, description)
+      summary = subject.inspect(system, description, nil)
 
       expect(description["unmanaged_files"]).to eq(expected_data)
       expect(summary).to include("Found #{expected_data.files.size} unmanaged files and trees")
@@ -344,7 +344,7 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false)
 
-      subject.inspect(system, description)
+      subject.inspect(system, description, nil)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -356,7 +356,7 @@ describe UnmanagedFilesInspector do
       expect_inspect_unmanaged(system, true, false, ["/usr/local"])
 
       filter = Filter.new("/unmanaged_files/files/name=/usr/local/*")
-      subject.inspect(system, description, filter: filter)
+      subject.inspect(system, description, filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -368,7 +368,7 @@ describe UnmanagedFilesInspector do
       expect_inspect_unmanaged(system, true, false, ["/usr/local", "/etc/skel/.config"])
 
       filter = Filter.new("/unmanaged_files/files/name=/usr/local/*,/etc/skel/.config")
-      subject.inspect(system, description, filter: filter)
+      subject.inspect(system, description, filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -380,7 +380,7 @@ describe UnmanagedFilesInspector do
         "rpm", "--version"
       ).and_raise(Machinery::Errors::MissingRequirement)
 
-      expect{subject.inspect(system, description)}.to raise_error(
+      expect{subject.inspect(system, description, nil)}.to raise_error(
         Machinery::Errors::MissingRequirement)
     end
 
@@ -389,7 +389,7 @@ describe UnmanagedFilesInspector do
       expect_inspect_unmanaged(system, true, true)
 
       summary = subject.inspect(
-        system, description,
+        system, description, nil,
         :extract_unmanaged_files => true
       )
 
@@ -403,7 +403,7 @@ describe UnmanagedFilesInspector do
       system = double
       expect_inspect_unmanaged(system, true, true)
 
-      subject.inspect(system, description, extract_unmanaged_files: true)
+      subject.inspect(system, description, nil, extract_unmanaged_files: true)
 
       json_hash = JSON.parse(description.to_json)
       expect {

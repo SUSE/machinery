@@ -82,7 +82,7 @@ class ConfigFilesInspector < Inspector
     end
   end
 
-  def inspect(system, description, options = {})
+  def inspect(system, description, _filter, _options = {})
     do_extract = options[:extract_changed_config_files]
     check_requirements(system, do_extract)
 

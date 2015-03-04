@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class GroupsInspector < Inspector
-  def inspect(system, description, options = {})
+  def inspect(system, description, _filter, _options = {})
     group_content = system.read_file("/etc/group")
 
     groups = group_content ? parse_groups(group_content) : []
