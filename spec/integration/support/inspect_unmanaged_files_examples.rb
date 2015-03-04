@@ -32,7 +32,7 @@ shared_examples "inspect unmanaged files" do |base|
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
         @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} --scope=unmanaged-files --extract-files",
+          "#{machinery_command} inspect #{@subject_system.ip} --scope=unmanaged-files --skip-files=/etc/ssh --extract-files",
           as: "vagrant"
         )
       end
@@ -119,6 +119,15 @@ shared_examples "inspect unmanaged files" do |base|
       expect(entries).to_not include("  - /var/run")
       expect(entries).to_not include("  - /var/lib/rpm")
       expect(entries).to_not include("  - /.snapshots")
+    end
+
+    it "adheres to user provided filters" do
+      entries = @machinery.run_command(
+        "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
+        as: "vagrant", stdout: :capture
+      )
+
+      expect(entries).to_not include("/etc/ssh")
     end
 
     it "extracts unmanaged files as tarballs" do

@@ -119,46 +119,6 @@
     Mode: 640
     Size: 284 B
 
-  * /etc/ssh/ssh_host_dsa_key (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 668 B
-
-  * /etc/ssh/ssh_host_dsa_key.pub (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 600 B
-
-  * /etc/ssh/ssh_host_ecdsa_key (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 227 B
-
-  * /etc/ssh/ssh_host_ecdsa_key.pub (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 172 B
-
-  * /etc/ssh/ssh_host_key (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 975 B
-
-  * /etc/ssh/ssh_host_key.pub (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 640 B
-
-  * /etc/ssh/ssh_host_rsa_key (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 1.6 KiB
-
-  * /etc/ssh/ssh_host_rsa_key.pub (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 392 B
-
   * /etc/sysconfig/autofs (file)
     User/Group: root:root
     Mode: 644

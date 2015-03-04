@@ -22,7 +22,9 @@ class ChangedManagedFilesInspector < Inspector
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     if options[:filter]
-      Machinery::Ui.warn("Warning: Filtering is not yet supported for the \"changed-managed-files\" scope")
+      Machinery::Ui.warn(
+        "Warning: Filtering is not yet supported for the \"changed-managed-files\" scope"
+      )
     end
 
     @system = system
