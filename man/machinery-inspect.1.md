@@ -56,6 +56,9 @@ trigger errors.
   * `--extract-changed-managed-files` (optional):
     Extract changed managed files from inspected system.
 
+  * `--skip-files` (optional):
+    Do not consider given files or directories during inspection (separate by commas)
+
 ### PREREQUISITES
 
   * Inspecting a local system requires running `machinery` as root.
