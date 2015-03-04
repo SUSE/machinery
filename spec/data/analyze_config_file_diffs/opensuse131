@@ -1,7 +1,7 @@
 # Changed configuration files [192.168.122.164] (2014-08-14 20:39:10)
 
   Files extracted: yes
-  * /etc/crontab (cronie-1.4.8, md5)
+  * /etc/crontab (cronie-1.4.8, size, md5)
     Diff:
     --- a/etc/crontab
     +++ b/etc/crontab
