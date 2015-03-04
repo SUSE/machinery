@@ -21,6 +21,10 @@ class ChangedManagedFilesInspector < Inspector
   def inspect(system, description, options = {})
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
+    if options[:filter]
+      Machinery::Ui.warn("Warning: Filtering is not yet supported for the \"changed-managed-files\" scope")
+    end
+
     @system = system
     file_store = description.scope_file_store("changed_managed_files")
 
