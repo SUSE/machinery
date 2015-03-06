@@ -74,13 +74,13 @@ describe InspectTask, "#inspect_system" do
   it "runs the proper inspector when a scope is given" do
     expect(Inspector).to receive(:for).with("foo").and_return(FooInspector.new)
 
-    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], "")
+    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
     expect_any_instance_of(SystemDescription).to receive(:save).twice
 
-    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo", "bar"], "")
+    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo", "bar"], Filter.new)
   end
 
   it "creates a proper system description" do
@@ -90,7 +90,7 @@ describe InspectTask, "#inspect_system" do
       name,
       current_user_non_root,
       ["foo"],
-      ""
+      Filter.new
     )
 
     expect(description.foo).to eql(SimpleInspectTaskScope.new("bar" => "baz"))
@@ -104,7 +104,7 @@ describe InspectTask, "#inspect_system" do
         and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
-        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], "")
+        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
       }.to raise_error(
         Machinery::Errors::InspectionFailed,
         /Errors while inspecting foo:\n -> This is an SSH error/
@@ -122,7 +122,7 @@ Inspecting foo...
       expect_any_instance_of(FooInspector).to receive(:inspect).and_raise(RuntimeError)
 
       expect {
-        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], "")
+        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
       }.to raise_error(RuntimeError)
     end
   end
@@ -135,7 +135,7 @@ Inspecting foo...
 
       it "raises an exception we don't run as root" do
         expect {
-          inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"], "")
+          inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"], Filter.new)
         }.to raise_error(Machinery::Errors::MissingRequirement)
       end
 
@@ -143,7 +143,7 @@ Inspecting foo...
         allow(Inspector).to receive(:all) { [] }
 
         expect {
-          inspect_task.inspect_system(store, "localhost", name, current_user_root, ["foo"], "")
+          inspect_task.inspect_system(store, "localhost", name, current_user_root, ["foo"], Filter.new)
         }.not_to raise_error
       end
     end
@@ -157,35 +157,9 @@ Inspecting foo...
         allow(Inspector).to receive(:all) { [] }
 
         expect {
-          inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], "")
+          inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
         }.not_to raise_error
       end
-    end
-  end
-
-  describe "with the :skip_files option" do
-    it "maps it to an unmanaged_files filter" do
-      inspector = FooInspector.new
-      expect(Inspector).to receive(:for).and_return(inspector)
-
-      expect(inspector).to receive(:inspect) do |_system, description, filter, _options|
-        expect(filter.element_filters.length).to eq(1)
-        expect(filter.element_filters["/unmanaged_files/files/name"].matchers).
-          to eq(["/foo/bar"])
-
-        description.foo = SimpleInspectTaskScope.new
-        ""
-      end
-
-      inspect_task.inspect_system(
-        store,
-        host,
-        name,
-        current_user_non_root,
-        ["foo"],
-        "",
-        skip_files: "/foo/bar"
-      )
     end
   end
 
@@ -209,7 +183,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        "\"/foo=bar,baz\""
+        Filter.new("\"/foo=bar,baz\"")
       )
     end
 
@@ -220,7 +194,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        "\"/foo=bar,baz\""
+        Filter.new("\"/foo=bar,baz\"")
       )
 
       expected = ["/foo=bar,baz"]
@@ -239,7 +213,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        "\"/foo=baz\""
+        Filter.new("\"/foo=baz\"")
       )
 
       expected = [
