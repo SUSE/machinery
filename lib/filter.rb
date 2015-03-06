@@ -3,8 +3,9 @@ class Filter
 
   def self.parse_filter_definition(filter_definition)
     element_filters = {}
-    filter_definition.scan(/\"([^,]*?)=([^\"]*)\"|([^,]+)=([^,]*)/).map(&:compact).each do |path, matcher_definition|
-      element_filters[path] = ElementFilter.new(path, matcher_definition.split(","))
+    filter_definition.scan(/\"([^,]*?)=([^\"]*)\"|([^,]+)=([^,]*)/).
+      map(&:compact).each do |path, matcher_definition|
+        element_filters[path] = ElementFilter.new(path, matcher_definition.split(","))
     end
 
     element_filters

@@ -3,7 +3,7 @@ require_relative "spec_helper"
 describe Filter do
   let(:definition1) { "/unmanaged_files/files/name=/home/alfred" }
   let(:definition2) { "\"/unmanaged_files/files/name=/home/alfred,/var/cache\"" }
-  let(:simple_list_definition) { "/foo=bar,/baz=qux"}
+  let(:simple_list_definition) { "/foo=bar,/baz=qux" }
   let(:complex_definition) {
     "\"/unmanaged_files/files/name=/home/alfred,/var/cache\"," +
       "/changed_managed_files/files/name=/usr/lib/something"

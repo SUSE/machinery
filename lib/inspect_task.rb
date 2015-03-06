@@ -21,7 +21,8 @@ class InspectTask
     check_root(system, current_user)
 
     filter = prepare_filter(filter_definition, options)
-    description, failed_inspections = build_description(store, name, system, scopes, filter, options)
+    description, failed_inspections = build_description(store, name, system,
+      scopes, filter, options)
 
     if !description.attributes.empty?
       print_description(description, scopes) if options[:show]
