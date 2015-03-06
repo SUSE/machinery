@@ -423,7 +423,15 @@ describe SystemDescription do
     let(:store) { system_description_factory_store }
 
     before(:each) do
-      create_test_description(name: "description1", store_on_disk: true)
+      create_test_description(
+        name: "description1",
+        store_on_disk: true,
+        filters: {
+          "inspect" => [
+            "/unmanaged_files/files/name=/opt*"
+          ]
+        }
+      )
     end
 
     describe ".load" do
@@ -465,6 +473,13 @@ describe SystemDescription do
         )
 
         SystemDescription.load("description1", store, skip_format_compatibility: true)
+      end
+
+      it "reads the filter information" do
+        description = SystemDescription.load("description1", store)
+        expect(description.filters["inspect"]).to be_a(Filter)
+        expect(description.filters["inspect"].
+          element_filter_for("/unmanaged_files/files/name").matchers).to eq(["/opt*"])
       end
     end
   end

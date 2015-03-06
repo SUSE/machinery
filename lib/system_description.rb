@@ -102,6 +102,15 @@ class SystemDescription < Machinery::Object
 
       description.format_version = json_format_version
 
+      if hash["meta"] && hash["meta"]["filters"]
+        hash["meta"]["filters"].each do |command, filter_definitions|
+          description.filters[command] = Filter.new
+          filter_definitions.each do |definition|
+            description.filters[command].add_element_filter_from_definition(definition)
+          end
+        end
+      end
+
       description
     end
 
