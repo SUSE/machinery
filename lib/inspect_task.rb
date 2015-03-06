@@ -16,11 +16,10 @@
 # you may find current contact information at www.suse.com
 
 class InspectTask
-  def inspect_system(store, host, name, current_user, scopes, filter_definition, options = {})
+  def inspect_system(store, host, name, current_user, scopes, filter, options = {})
     system = System.for(host)
     check_root(system, current_user)
 
-    filter = prepare_filter(filter_definition, options)
     description, failed_inspections = build_description(store, name, system,
       scopes, filter, options)
 
@@ -57,17 +56,6 @@ class InspectTask
       output = renderer.render(description)
       Machinery::Ui.puts output if output
     end
-  end
-
-  def prepare_filter(definition, options)
-    filter = Filter.new(definition)
-
-    skip_files = options.delete(:skip_files)
-    if skip_files
-      filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{skip_files}")
-    end
-
-    filter
   end
 
   def adapt_filter_in_metadata(filter_in_metadata, scope, filter)
