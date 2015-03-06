@@ -8,6 +8,30 @@ describe Filter do
       "/changed_managed_files/files/name=/usr/lib/something"
   }
 
+  describe ".parse_filter_definition" do
+    it "parses element filter containing multiple matcher" do
+      filters = Filter.parse_filter_definition(definition2)
+
+      expect(filters.keys.length).to eq(1)
+      expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
+      expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred", "/var/cache"])
+    end
+
+    it "parses element filter with multiple filters" do
+      element_filter = Filter.parse_filter_definition(complex_definition)
+
+      expect(element_filter.keys.length).to eq(2)
+      expect(element_filter["/unmanaged_files/files/name"].path).
+        to eq("/unmanaged_files/files/name")
+      expect(element_filter["/unmanaged_files/files/name"].matchers).
+        to eq(["/home/alfred", "/var/cache"])
+      expect(element_filter["/changed_managed_files/files/name"].path).
+        to eq("/changed_managed_files/files/name")
+      expect(element_filter["/changed_managed_files/files/name"].matchers).
+        to eq(["/usr/lib/something"])
+    end
+  end
+
   describe "#initialize" do
     it "creates Filter" do
       filter = Filter.new
@@ -20,30 +44,6 @@ describe Filter do
       expect(filters.keys.length).to eq(1)
       expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
       expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred"])
-    end
-  end
-
-  describe "#parse_filter_definition" do
-    it "parses element filter containing multiple matcher" do
-      filters = subject.parse_filter_definition(definition2)
-
-      expect(filters.keys.length).to eq(1)
-      expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
-      expect(filters["/unmanaged_files/files/name"].matchers).to eq(["/home/alfred", "/var/cache"])
-    end
-
-    it "parses element filter with multiple filters" do
-      element_filter = subject.parse_filter_definition(complex_definition)
-
-      expect(element_filter.keys.length).to eq(2)
-      expect(element_filter["/unmanaged_files/files/name"].path).
-        to eq("/unmanaged_files/files/name")
-      expect(element_filter["/unmanaged_files/files/name"].matchers).
-        to eq(["/home/alfred", "/var/cache"])
-      expect(element_filter["/changed_managed_files/files/name"].path).
-        to eq("/changed_managed_files/files/name")
-      expect(element_filter["/changed_managed_files/files/name"].matchers).
-        to eq(["/usr/lib/something"])
     end
   end
 

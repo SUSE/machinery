@@ -1,17 +1,17 @@
 class Filter
   attr_accessor :element_filters
 
-  def initialize(filter_definition = "")
-    @element_filters = parse_filter_definition(filter_definition)
-  end
-
-  def parse_filter_definition(filter_definition)
+  def self.parse_filter_definition(filter_definition)
     element_filters = {}
     filter_definition.scan(/\"?([^,]*?)=([^\"]*)\"?,?/).each do |path, matcher_definition|
       element_filters[path] = ElementFilter.new(path, matcher_definition.split(","))
     end
 
     element_filters
+  end
+
+  def initialize(filter_definition = "")
+    @element_filters = Filter.parse_filter_definition(filter_definition)
   end
 
   def matches?(path, value)
