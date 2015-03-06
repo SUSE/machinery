@@ -22,8 +22,8 @@ describe Filter do
   let(:definition2) { "\"/changed_managed_files/files/changes=md5,size\"" }
   let(:complex_definition) {
     "/unmanaged_files/files/name=/home/alfred," +
-    "/unmanaged_files/files/name=/var/cache," +
-    "\"/changed_managed_files/files/changes=md5,size\""
+      "/unmanaged_files/files/name=/var/cache," +
+      "\"/changed_managed_files/files/changes=md5,size\""
   }
 
   describe ".parse_filter_definition" do
@@ -31,7 +31,8 @@ describe Filter do
       filters = Filter.parse_filter_definition(definition2)
 
       expect(filters.keys.length).to eq(1)
-      expect(filters["/changed_managed_files/files/changes"].path).to eq("/changed_managed_files/files/changes")
+      expect(filters["/changed_managed_files/files/changes"].path).
+        to eq("/changed_managed_files/files/changes")
       expect(filters["/changed_managed_files/files/changes"].matchers).to eq([["md5", "size"]])
     end
 
