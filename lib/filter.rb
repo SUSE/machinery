@@ -23,6 +23,10 @@ class Filter
     end
   end
 
+  def add_element_filter(element_filter)
+    @element_filters[element_filter.path] = element_filter
+  end
+
   def to_array
     @element_filters.map do |path, element_filter|
       "#{path}=#{element_filter.matchers.join(",")}"

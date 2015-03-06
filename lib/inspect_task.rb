@@ -16,11 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class InspectTask
-  def inspect_system(store, host, name, current_user, scopes, options = {})
+  def inspect_system(store, host, name, current_user, scopes, filter_definition, options = {})
     system = System.for(host)
     check_root(system, current_user)
 
-    description, failed_inspections = build_description(store, name, system, scopes, options)
+    description, failed_inspections = build_description(store, name, system, scopes, filter_definition, options)
 
     if !description.attributes.empty?
       print_description(description, scopes) if options[:show]
@@ -57,7 +57,7 @@ class InspectTask
     end
   end
 
-  def build_description(store, name, system, scopes, options)
+  def build_description(store, name, system, scopes, filter_definition, options)
     begin
       description = SystemDescription.load(name, store)
     rescue Machinery::Errors::SystemDescriptionNotFound
@@ -71,11 +71,17 @@ class InspectTask
     end
 
     failed_inspections = {}
-    filter = nil
+    filter = Filter.new(filter_definition)
 
     skip_files = options.delete(:skip_files)
     if skip_files
-      filter = Filter.new("/unmanaged_files/files/name=#{skip_files}")
+      filter.add_filter_definition("/unmanaged_files/files/name=#{skip_files}")
+    end
+
+    if description.filters["inspect"]
+      filter_in_metadata = description.filters["inspect"]
+    else
+      filter_in_metadata = Filter.new
     end
 
     scopes.map { |s| Inspector.for(s) }.each do |inspector|
@@ -88,7 +94,17 @@ class InspectTask
         next
       end
       description[inspector.scope].set_metadata(timestring, host)
+
+      filter_in_metadata.element_filters.
+        reject! { |path, _filter| path.start_with?("/#{inspector.scope}") }
+      filter.element_filters.
+        select { |path, _filter| path.start_with?("/#{inspector.scope}") }.
+        each do |_path, element_filter|
+          filter_in_metadata.add_element_filter(element_filter)
+      end
+
       if !description.attributes.empty?
+        description.set_filter("inspect", filter_in_metadata)
         description.save
       end
       Machinery::Ui.puts " -> " + summary
