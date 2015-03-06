@@ -218,44 +218,6 @@ class UnmanagedFilesInspector < Inspector
     3
   end
 
-  def ignore_list(description)
-    ignore_list = [
-      "/tmp",
-      "/var/tmp",
-      "/lost+found",
-      "/var/run",
-      "/var/lib/rpm",
-      "/.snapshots",
-      description.store.base_path,
-      "/proc",
-      "/boot"
-    ]
-
-    # Information about users and groups are extracted by the according inspector
-    ignore_list += [
-      "/etc/passwd",
-      "/etc/shadow",
-      "/etc/group"
-    ]
-
-    # Information about services is extracted by the ServicesInspector, so
-    # we ignore the links representing the same information when inspecting
-    # unmanaged files.
-    ignore_list += [
-      "/etc/init.d/boot.d",
-      "/etc/init.d/rc0.d",
-      "/etc/init.d/rc1.d",
-      "/etc/init.d/rc2.d",
-      "/etc/init.d/rc3.d",
-      "/etc/init.d/rc4.d",
-      "/etc/init.d/rc5.d",
-      "/etc/init.d/rc6.d",
-      "/etc/init.d/rcS.d"
-    ]
-
-    ignore_list
-  end
-
   def inspect(system, description, filter, options = {})
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(system, do_extract)
@@ -280,7 +242,7 @@ class UnmanagedFilesInspector < Inspector
 
     file_filter = filter.element_filter_for("/unmanaged_files/files/name") if filter
     file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
-    file_filter.add_matchers(ignore_list(description))
+    file_filter.add_matchers(description.store.base_path)
 
     # Add a recursive pendant to each ignored element
     file_filter.add_matchers(file_filter.matchers.map { |entry| entry + "/*" })

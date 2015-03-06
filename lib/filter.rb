@@ -61,6 +61,22 @@ class Filter
     element_filters
   end
 
+  def self.from_default_definition(command)
+    filter = Filter.new
+
+    default_filters_file = File.join(Machinery::ROOT, "helpers/default_filters.json")
+    if File.exists?(default_filters_file)
+      default_filters = JSON.parse(File.read(default_filters_file))
+      if default_filters[command]
+        default_filters[command].each do |definition|
+          filter.add_element_filter_from_definition(definition)
+        end
+      end
+    end
+
+    filter
+  end
+
   def initialize(filter_definition = "")
     @element_filters = Filter.parse_filter_definition(filter_definition)
   end

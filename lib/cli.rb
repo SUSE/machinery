@@ -455,7 +455,7 @@ class Cli
         inspect_options[:extract_unmanaged_files] = true
       end
 
-      filter = prepare_filter("", options)
+      filter = prepare_filter("inspect", options)
 
       inspector_task.inspect_system(
         system_description_store,
@@ -649,8 +649,8 @@ class Cli
   end
 
 
-  def self.prepare_filter(definition, options)
-    filter = Filter.new(definition)
+  def self.prepare_filter(command, options)
+    filter = Filter.from_default_definition(command)
 
     skip_files = options.delete("skip-files")
     if skip_files

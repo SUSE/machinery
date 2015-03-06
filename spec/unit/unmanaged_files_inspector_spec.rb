@@ -23,6 +23,9 @@ describe UnmanagedFilesInspector do
 
     subject { UnmanagedFilesInspector.new }
     let(:test_file_path) { "spec/data/unmanaged_files" }
+    let(:default_filter) {
+      Filter.from_default_definition("inspect")
+    }
 
     let(:expected_data) {
       UnmanagedFilesScope.new(
@@ -97,6 +100,7 @@ describe UnmanagedFilesInspector do
       allow(JsonValidator).to receive(:new).and_return(double(validate: []))
       allow(Machinery::Ui).to receive(:warn)
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
+      FakeFS::FileSystem.clone("helpers/")
       description.save
     end
 
@@ -318,7 +322,7 @@ describe UnmanagedFilesInspector do
       system = double
       expect_inspect_unmanaged(system, false, false)
 
-      summary = subject.inspect(system, description, nil)
+      summary = subject.inspect(system, description, default_filter)
 
       expected = UnmanagedFilesScope.new(
         extracted: false,
@@ -333,7 +337,7 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false)
 
-      summary = subject.inspect(system, description, nil)
+      summary = subject.inspect(system, description, default_filter)
 
       expect(description["unmanaged_files"]).to eq(expected_data)
       expect(summary).to include("Found #{expected_data.files.size} unmanaged files and trees")
@@ -344,7 +348,7 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false)
 
-      subject.inspect(system, description, nil)
+      subject.inspect(system, description, default_filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -355,8 +359,8 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false, ["/usr/local"])
 
-      filter = Filter.new("/unmanaged_files/files/name=/usr/local/*")
-      subject.inspect(system, description, filter)
+      default_filter.add_element_filter_from_definition("/unmanaged_files/files/name=/usr/local/*")
+      subject.inspect(system, description, default_filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -367,10 +371,10 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false, ["/usr/local", "/etc/skel/.config"])
 
-      filter = Filter.new(
+      default_filter.add_element_filter_from_definition(
         "/unmanaged_files/files/name=/usr/local/*,/unmanaged_files/files/name=/etc/skel/.config"
       )
-      subject.inspect(system, description, filter)
+      subject.inspect(system, description, default_filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -382,7 +386,7 @@ describe UnmanagedFilesInspector do
         "rpm", "--version"
       ).and_raise(Machinery::Errors::MissingRequirement)
 
-      expect{subject.inspect(system, description, nil)}.to raise_error(
+      expect{subject.inspect(system, description, default_filter)}.to raise_error(
         Machinery::Errors::MissingRequirement)
     end
 
@@ -391,7 +395,7 @@ describe UnmanagedFilesInspector do
       expect_inspect_unmanaged(system, true, true)
 
       summary = subject.inspect(
-        system, description, nil,
+        system, description, default_filter,
         :extract_unmanaged_files => true
       )
 
@@ -404,8 +408,7 @@ describe UnmanagedFilesInspector do
     it "returns schema compliant data" do
       system = double
       expect_inspect_unmanaged(system, true, true)
-
-      subject.inspect(system, description, nil, extract_unmanaged_files: true)
+      subject.inspect(system, description, default_filter, extract_unmanaged_files: true)
 
       json_hash = JSON.parse(description.to_json)
       expect {
