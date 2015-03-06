@@ -2,7 +2,8 @@ require_relative "spec_helper"
 
 describe Filter do
   let(:definition1) { "/unmanaged_files/files/name=/home/alfred" }
-  let(:definition2) { "/unmanaged_files/files/name=/home/alfred,/var/cache" }
+  let(:definition2) { "\"/unmanaged_files/files/name=/home/alfred,/var/cache\"" }
+  let(:simple_list_definition) { "/foo=bar,/baz=qux"}
   let(:complex_definition) {
     "\"/unmanaged_files/files/name=/home/alfred,/var/cache\"," +
       "/changed_managed_files/files/name=/usr/lib/something"
@@ -30,6 +31,15 @@ describe Filter do
       expect(element_filter["/changed_managed_files/files/name"].matchers).
         to eq(["/usr/lib/something"])
     end
+
+    it "parses simple lists" do
+      element_filter = Filter.parse_filter_definition(simple_list_definition)
+      expect(element_filter.keys.length).to eq(2)
+      expect(element_filter["/foo"].matchers).
+        to eq(["bar"])
+      expect(element_filter["/baz"].matchers).
+        to eq(["qux"])
+    end
   end
 
   describe "#initialize" do
@@ -49,7 +59,7 @@ describe Filter do
 
   describe "#add_filter_definition" do
     it "adds definitions" do
-      filter = Filter.new("foo=bar,baz")
+      filter = Filter.new("\"foo=bar,baz\"")
       filter.add_filter_definition("bar=baz")
 
       element_filters = filter.element_filters
@@ -58,7 +68,7 @@ describe Filter do
     end
 
     it "merges new definitions with existing element filter" do
-      filter = Filter.new("foo=bar,baz")
+      filter = Filter.new("\"foo=bar,baz\"")
       filter.add_filter_definition("foo=qux")
 
       element_filters = filter.element_filters
