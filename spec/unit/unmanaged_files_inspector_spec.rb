@@ -367,7 +367,7 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false, ["/usr/local", "/etc/skel/.config"])
 
-      filter = Filter.new("\"/unmanaged_files/files/name=/usr/local/*,/etc/skel/.config\"")
+      filter = Filter.new("/unmanaged_files/files/name=/usr/local/*,/unmanaged_files/files/name=/etc/skel/.config")
       subject.inspect(system, description, filter)
       names = description["unmanaged_files"].files.map(&:name)
 

@@ -5,7 +5,12 @@ class Filter
     element_filters = {}
     filter_definition.scan(/\"([^,]*?)=([^\"]*)\"|([^,]+)=([^=]*)$|([^,]+)=([^,]*)/).
       map(&:compact).each do |path, matcher_definition|
-        element_filters[path] = ElementFilter.new(path, matcher_definition.split(","))
+        element_filters[path] ||= ElementFilter.new(path)
+        if matcher_definition.index(",")
+          element_filters[path].add_matchers([matcher_definition.split(",")])
+        else
+          element_filters[path].add_matchers(matcher_definition)
+        end
     end
 
     element_filters
@@ -25,12 +30,16 @@ class Filter
   end
 
   def add_element_filter(element_filter)
-    @element_filters[element_filter.path] = element_filter
+    path = element_filter.path
+    @element_filters[path] ||= ElementFilter.new(path)
+    @element_filters[path].add_matchers(element_filter.matchers)
   end
 
   def to_array
-    @element_filters.map do |path, element_filter|
-      "#{path}=#{element_filter.matchers.join(",")}"
+    @element_filters.flat_map do |path, element_filter|
+      element_filter.matchers.map do |matcher|
+        "#{path}=#{Array(matcher).join(",")}"
+      end
     end
   end
 

@@ -197,7 +197,7 @@ Inspecting foo...
       expect(inspector).to receive(:inspect) do |_system, description, filter, _options|
         expect(filter.element_filters.length).to eq(1)
         expect(filter.element_filters["/foo"].matchers).
-          to eq(["bar", "baz"])
+          to eq([["bar", "baz"]])
 
         description.foo = SimpleInspectTaskScope.new
         ""

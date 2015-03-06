@@ -7,7 +7,7 @@ class ElementFilter
 
     raise("Wrong type") if ![NilClass, String, Array].include?(matchers.class)
 
-    add_matchers(matchers)
+    add_matchers(matchers) if matchers
   end
 
   def add_matchers(matchers)

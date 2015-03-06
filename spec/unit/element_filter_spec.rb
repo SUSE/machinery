@@ -41,8 +41,8 @@ describe ElementFilter do
 
     it "adds set of two definitions" do
       filter = ElementFilter.new(@path)
-      filter.add_matchers(["/home/alfred", "/var/cache"])
-      expect(filter.matchers).to eq([@matcher1, @matcher2])
+      filter.add_matchers([["/home/alfred", "/var/cache"]])
+      expect(filter.matchers).to eq([[@matcher1, @matcher2]])
     end
   end
 

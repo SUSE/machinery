@@ -474,9 +474,9 @@ describe SystemDescription do
 
     it "sets the inspection filters" do
       expect(subject.to_hash["meta"]["filters"]).to be(nil)
-      expected = ["/foo=bar", "/scope=filter"]
+      expected = ["/foo=bar", "/foo=baz", "/scope=filter"]
 
-      subject.set_filter("inspect", Filter.new("/foo=bar,/scope=filter"))
+      subject.set_filter("inspect", Filter.new("/foo=bar,/foo=baz,/scope=filter"))
       filters = subject.to_hash["meta"]["filters"]["inspect"]
       expect(filters).to eq(expected)
     end
