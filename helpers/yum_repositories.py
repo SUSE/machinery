@@ -35,7 +35,6 @@ for repo in yb.repos.sort():
     repo_dict["url"] = repo.baseurl[0]
   else:
     repo_dict["url"] = ""
-
   repo_dict["enabled"] = repo.enabled
   repo_dict["gpgcheck"] = repo.gpgcheck
   repo_dict["package_manager"] = "yum"
