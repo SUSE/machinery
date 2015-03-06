@@ -76,6 +76,15 @@ describe Filter do
     end
   end
 
+  describe "#to_array" do
+    it "returns the element filter definitions as a string array" do
+      filter = Filter.new("\"foo=bar,baz\",scope=matcher")
+      expect(filter.to_array).to eq([
+        "foo=bar,baz", "scope=matcher"
+      ])
+    end
+  end
+
   describe "#filter_for" do
     it "returns the correct filter" do
       filter = Filter.new(complex_definition)

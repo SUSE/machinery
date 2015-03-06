@@ -23,6 +23,12 @@ class Filter
     end
   end
 
+  def to_array
+    @element_filters.map do |path, element_filter|
+      "#{path}=#{element_filter.matchers.join(",")}"
+    end
+  end
+
   def matches?(path, value)
     filter = element_filter_for(path)
     return false if !filter
