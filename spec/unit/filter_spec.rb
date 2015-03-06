@@ -47,6 +47,25 @@ describe Filter do
     end
   end
 
+  describe "#add_filter_definition" do
+    it "adds definitions" do
+      filter = Filter.new("foo=bar,baz")
+      filter.add_filter_definition("bar=baz")
+
+      element_filters = filter.element_filters
+      expect(element_filters["foo"].matchers).to eq(["bar", "baz"])
+      expect(element_filters["bar"].matchers).to eq(["baz"])
+    end
+
+    it "merges new definitions with existing element filter" do
+      filter = Filter.new("foo=bar,baz")
+      filter.add_filter_definition("foo=qux")
+
+      element_filters = filter.element_filters
+      expect(element_filters["foo"].matchers).to eq(["bar", "baz", "qux"])
+    end
+  end
+
   describe "#filter_for" do
     it "returns the correct filter" do
       filter = Filter.new(complex_definition)

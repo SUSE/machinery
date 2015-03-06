@@ -14,6 +14,15 @@ class Filter
     @element_filters = Filter.parse_filter_definition(filter_definition)
   end
 
+  def add_filter_definition(filter_definition)
+    new_element_filters = Filter.parse_filter_definition(filter_definition)
+
+    new_element_filters.each do |path, element_filter|
+      @element_filters[path] ||= ElementFilter.new(path)
+      @element_filters[path].add_matchers(element_filter.matchers)
+    end
+  end
+
   def matches?(path, value)
     filter = element_filter_for(path)
     return false if !filter
