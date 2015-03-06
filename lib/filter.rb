@@ -15,7 +15,7 @@ class Filter
     @element_filters = Filter.parse_filter_definition(filter_definition)
   end
 
-  def add_filter_definition(filter_definition)
+  def add_element_filter_from_definition(filter_definition)
     new_element_filters = Filter.parse_filter_definition(filter_definition)
 
     new_element_filters.each do |path, element_filter|

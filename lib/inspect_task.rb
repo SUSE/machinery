@@ -64,7 +64,7 @@ class InspectTask
 
     skip_files = options.delete(:skip_files)
     if skip_files
-      filter.add_filter_definition("/unmanaged_files/files/name=#{skip_files}")
+      filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{skip_files}")
     end
 
     filter

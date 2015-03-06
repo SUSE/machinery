@@ -60,7 +60,7 @@ describe Filter do
   describe "#add_filter_definition" do
     it "adds definitions" do
       filter = Filter.new("\"foo=bar,baz\"")
-      filter.add_filter_definition("bar=baz")
+      filter.add_element_filter_from_definition("bar=baz")
 
       element_filters = filter.element_filters
       expect(element_filters["foo"].matchers).to eq(["bar", "baz"])
@@ -69,7 +69,7 @@ describe Filter do
 
     it "merges new definitions with existing element filter" do
       filter = Filter.new("\"foo=bar,baz\"")
-      filter.add_filter_definition("foo=qux")
+      filter.add_element_filter_from_definition("foo=qux")
 
       element_filters = filter.element_filters
       expect(element_filters["foo"].matchers).to eq(["bar", "baz", "qux"])
