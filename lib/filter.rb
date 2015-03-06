@@ -15,6 +15,34 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# The Filter class is used to hold the information about the filter conditions
+# that should be applied during certain Machinery commands.
+#
+# Filters are usually created by passing a filter definition string to the
+# constructor, e.g.
+#
+#   filter = Filter.new("/unmanaged_files/files/name=/opt")
+#
+# Existing filters can be extended by amending the definition:
+#
+#   filter.add_element_filter_from_definition("/unmanaged_files/files/name=/srv")
+#
+# or by adding ElementFilters directly:
+#
+#   element_filter = ElementFilter.new("/unmanaged_files/files/name", ["/opt", "/srv"])
+#   filter.add_element_filter(element_filter)
+#
+#
+# The actual filtering can be done by passing values to Filter#matches?
+#
+#   filter = Filter.new("/unmanaged_files/files/name=/opt*")
+#   filter.matches?("/unmanaged_files/files/name", "/opt/foo")
+#   => true
+#   filter.matches?("/unmanaged_files/files/name", "/srv/bar")
+#   => false
+#
+# More details about how the filter work can be found at
+# https://github.com/SUSE/machinery/blob/master/docs/Filtering-Design.md
 class Filter
   attr_accessor :element_filters
 
