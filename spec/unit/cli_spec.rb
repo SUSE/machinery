@@ -81,6 +81,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            "",
             {}
           ).
           and_return(description)
@@ -97,6 +98,7 @@ describe Cli do
             name,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            "",
             {}
            ).
            and_return(description)
@@ -112,6 +114,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            "",
             {}
            ).
           and_return(description)
@@ -127,6 +130,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             ["packages", "repositories"],
+            "",
             {}
           ).
           and_return(description)
@@ -142,6 +146,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             ["packages"],
+            "",
             {}
           ).
           and_return(description)
@@ -157,6 +162,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            "",
             {}
           ).
           and_return(description)
@@ -176,6 +182,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             scope_list,
+            "",
             {}
           ).
           and_return(description)
@@ -191,6 +198,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            "",
             skip_files: "/foo/bar"
           ).
           and_return(description)
@@ -207,6 +215,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              "",
               {}
             ).
             and_return(description)
@@ -222,6 +231,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              "",
               :extract_changed_config_files=>true, :extract_unmanaged_files=>true, :extract_changed_managed_files=>true
             ).
             and_return(description)
@@ -237,6 +247,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              "",
               :extract_changed_config_files=>true
             ).
             and_return(description)
@@ -252,6 +263,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              "",
               :extract_unmanaged_files=>true
             ).
             and_return(description)

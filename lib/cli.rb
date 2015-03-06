@@ -456,8 +456,16 @@ class Cli
         inspect_options[:extract_unmanaged_files] = true
       end
 
+      filter_definition = ""
+
       inspector_task.inspect_system(
-        system_description_store, host, name, CurrentUser.new, scope_list, inspect_options
+        system_description_store,
+        host,
+        name,
+        CurrentUser.new,
+        scope_list,
+        filter_definition,
+        inspect_options
       )
 
       Hint.show_data(name: name)
