@@ -17,7 +17,10 @@
 # you may find current contact information at www.suse.com
 
 import yum
-import json
+try:
+  import json
+except:
+  import simplejson as json
 
 yb = yum.YumBase()
 
@@ -28,7 +31,11 @@ for repo in yb.repos.sort():
   repo_dict["alias"] = repo.id
   repo_dict["name"] = repo.name
   repo_dict["type"] = "rpm-md"
-  repo_dict["url"] = repo.baseurl[0] if repo.baseurl else ""
+  if repo.baseurl:
+    repo_dict["url"] = repo.baseurl[0]
+  else:
+    repo_dict["url"] = ""
+
   repo_dict["enabled"] = repo.enabled
   repo_dict["gpgcheck"] = repo.gpgcheck
   repo_dict["package_manager"] = "yum"
