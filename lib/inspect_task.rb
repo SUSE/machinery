@@ -20,7 +20,8 @@ class InspectTask
     system = System.for(host)
     check_root(system, current_user)
 
-    description, failed_inspections = build_description(store, name, system, scopes, filter_definition, options)
+    filter = prepare_filter(filter_definition, options)
+    description, failed_inspections = build_description(store, name, system, scopes, filter, options)
 
     if !description.attributes.empty?
       print_description(description, scopes) if options[:show]
@@ -57,7 +58,28 @@ class InspectTask
     end
   end
 
-  def build_description(store, name, system, scopes, filter_definition, options)
+  def prepare_filter(definition, options)
+    filter = Filter.new(definition)
+
+    skip_files = options.delete(:skip_files)
+    if skip_files
+      filter.add_filter_definition("/unmanaged_files/files/name=#{skip_files}")
+    end
+
+    filter
+  end
+
+  def adapt_filter_in_metadata(filter_in_metadata, scope, filter)
+    filter_in_metadata.element_filters.
+      reject! { |path, _filter| path.start_with?("/#{scope}") }
+    filter.element_filters.
+      select { |path, _filter| path.start_with?("/#{scope}") }.
+      each do |_path, element_filter|
+      filter_in_metadata.add_element_filter(element_filter)
+    end
+  end
+
+  def build_description(store, name, system, scopes, filter, options)
     begin
       description = SystemDescription.load(name, store)
     rescue Machinery::Errors::SystemDescriptionNotFound
@@ -71,12 +93,6 @@ class InspectTask
     end
 
     failed_inspections = {}
-    filter = Filter.new(filter_definition)
-
-    skip_files = options.delete(:skip_files)
-    if skip_files
-      filter.add_filter_definition("/unmanaged_files/files/name=#{skip_files}")
-    end
 
     if description.filters["inspect"]
       filter_in_metadata = description.filters["inspect"]
@@ -95,13 +111,7 @@ class InspectTask
       end
       description[inspector.scope].set_metadata(timestring, host)
 
-      filter_in_metadata.element_filters.
-        reject! { |path, _filter| path.start_with?("/#{inspector.scope}") }
-      filter.element_filters.
-        select { |path, _filter| path.start_with?("/#{inspector.scope}") }.
-        each do |_path, element_filter|
-          filter_in_metadata.add_element_filter(element_filter)
-      end
+      adapt_filter_in_metadata(filter_in_metadata, inspector.scope, filter)
 
       if !description.attributes.empty?
         description.set_filter("inspect", filter_in_metadata)
