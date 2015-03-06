@@ -35,7 +35,13 @@ class ChangedManagedFilesInspector < Inspector
     file_store.remove
     if options[:extract_changed_managed_files]
       file_store.create
-      existing_files = changed_files.reject { |f| f.changes.nil? || f.changes.include?("deleted") }
+
+      existing_files = changed_files.reject do |f|
+        f.changes.nil? ||
+        f.changes.include?("deleted") ||
+        f.name == "/"
+      end
+
       system.retrieve_files(existing_files.map(&:name), file_store.path)
     end
 
