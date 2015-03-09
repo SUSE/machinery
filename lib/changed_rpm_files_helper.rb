@@ -49,7 +49,9 @@ module ChangedRpmFilesHelper
     end
 
     if rpm_changes.include?("?")
-      Machinery::Ui.warn("Warning: Could not perform all tests on rpm changes for file '#{path}'.")
+      message = "Could not perform all tests on rpm changes for file '#{path}'."
+      Machinery.logger.warn(message)
+      Machinery::Ui.warn("Warning: #{message}")
     end
 
     [path, changes, type]
