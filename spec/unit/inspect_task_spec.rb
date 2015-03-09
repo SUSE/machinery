@@ -217,7 +217,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("\"/foo=baz\"")
+        Filter.new("/foo=baz,/baz=somethingelse")
       )
 
       expected = [
