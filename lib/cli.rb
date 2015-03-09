@@ -654,7 +654,13 @@ class Cli
 
     skip_files = options.delete("skip-files")
     if skip_files
-      skip_files.split(",").each do |file|
+      files = if skip_files.start_with?("@")
+        File.read(skip_files[1..-1]).lines.map(&:chomp)
+      else
+        skip_files.split(",")
+      end
+
+      files.each do |file|
         filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")
       end
     end

@@ -200,6 +200,27 @@ describe Cli do
         run_command(["inspect", "--skip-files=/foo/bar,/baz", example_host])
       end
 
+      it "the --skip-files option reads a list of excluded files from a file" do
+        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
+          _host, _name, _user, _scopes, filter, _options|
+          expect(filter.element_filter_for("/unmanaged_files/files/name").matchers).
+            to include("/foo/bar", "/baz")
+        end.and_return(description)
+
+        FileUtils.mkdir_p("/tmp")
+        exclude_file = Tempfile.new('exclude_file')
+        begin
+          File.write(exclude_file.path, <<EOF)
+/foo/bar
+/baz
+EOF
+          run_command(["inspect", "--skip-files=@#{exclude_file.path}", example_host])
+        ensure
+          exclude_file.close
+          exclude_file.unlink
+        end
+      end
+
       describe "file extraction" do
         it "doesn't extract files when --extract-files is not specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
