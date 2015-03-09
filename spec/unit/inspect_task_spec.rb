@@ -80,7 +80,8 @@ describe InspectTask, "#inspect_system" do
   it "saves the inspection data after each inspection and not just at the end" do
     expect_any_instance_of(SystemDescription).to receive(:save).twice
 
-    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo", "bar"], Filter.new)
+    inspect_task.inspect_system(store, host, name, current_user_non_root,
+      ["foo", "bar"], Filter.new)
   end
 
   it "creates a proper system description" do
@@ -104,7 +105,8 @@ describe InspectTask, "#inspect_system" do
         and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
-        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
+        inspect_task.inspect_system(store, host, name, current_user_non_root,
+          ["foo"], Filter.new)
       }.to raise_error(
         Machinery::Errors::InspectionFailed,
         /Errors while inspecting foo:\n -> This is an SSH error/
@@ -135,7 +137,8 @@ Inspecting foo...
 
       it "raises an exception we don't run as root" do
         expect {
-          inspect_task.inspect_system(store, "localhost", name, current_user_non_root, ["foo"], Filter.new)
+          inspect_task.inspect_system(store, "localhost", name, current_user_non_root,
+            ["foo"], Filter.new)
         }.to raise_error(Machinery::Errors::MissingRequirement)
       end
 
@@ -143,7 +146,8 @@ Inspecting foo...
         allow(Inspector).to receive(:all) { [] }
 
         expect {
-          inspect_task.inspect_system(store, "localhost", name, current_user_root, ["foo"], Filter.new)
+          inspect_task.inspect_system(store, "localhost", name, current_user_root,
+            ["foo"], Filter.new)
         }.not_to raise_error
       end
     end

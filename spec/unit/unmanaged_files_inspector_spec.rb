@@ -386,7 +386,7 @@ describe UnmanagedFilesInspector do
         "rpm", "--version"
       ).and_raise(Machinery::Errors::MissingRequirement)
 
-      expect{subject.inspect(system, description, default_filter)}.to raise_error(
+      expect { subject.inspect(system, description, default_filter) }.to raise_error(
         Machinery::Errors::MissingRequirement)
     end
 

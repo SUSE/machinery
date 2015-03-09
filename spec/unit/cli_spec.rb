@@ -191,8 +191,10 @@ describe Cli do
       end
 
       it "forwards the --skip-files option to the InspectTask as an unmanaged_files filter" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store, _host, _name, _user, _scopes, filter, _options|
-          expect(filter.element_filter_for("/unmanaged_files/files/name").matchers).to include("/foo/bar")
+        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
+          _host, _name, _user, _scopes, filter, _options|
+          expect(filter.element_filter_for("/unmanaged_files/files/name").matchers).
+            to include("/foo/bar")
         end.and_return(description)
 
         run_command(["inspect", "--skip-files=/foo/bar", example_host])
