@@ -657,7 +657,7 @@ class Cli
       files = if skip_files.start_with?("@")
         File.read(skip_files[1..-1]).lines.map(&:chomp)
       else
-        skip_files.split(",")
+        skip_files.split(/(?<!\\),/) # Do not split on escaped commas
       end
 
       files.each do |file|

@@ -58,7 +58,10 @@ trigger errors.
 
   * `--skip-files` (optional):
     Do not consider given files or directories during inspection. Either provide
-    one file or directory name or a list of names separated by commas.
+    one file or directory name or a list of names separated by commas. If a
+    filename contains a comma it needs to be escaped, e.g.
+
+      $ `machinery` inspect --skip-files=/file\\,with_comma myhost
 
 ### PREREQUISITES
 

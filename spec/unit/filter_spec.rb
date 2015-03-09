@@ -34,6 +34,13 @@ describe Filter do
       expect(element_filter["/foo"].matchers).
         to eq([["bar", "baz"]])
     end
+
+    it "handles escaped commas" do
+      element_filter = Filter.parse_filter_definitions("/foo=bar,baz\\,qux")
+      expect(element_filter.keys.length).to eq(1)
+      expect(element_filter["/foo"].matchers).
+        to eq([["bar", "baz,qux"]])
+    end
   end
 
   describe "#initialize" do

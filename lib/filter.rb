@@ -53,7 +53,10 @@ class Filter
 
       element_filters[path] ||= ElementFilter.new(path)
       if matcher_definition.index(",")
-        element_filters[path].add_matchers([matcher_definition.split(",")])
+        matchers = matcher_definition.split(/(?<!\\),/)
+        matchers.map! { |matcher| matcher.gsub("\\,", ",") } # Unescape escaped commas
+
+        element_filters[path].add_matchers([matchers])
       else
         element_filters[path].add_matchers(matcher_definition)
       end
