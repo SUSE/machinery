@@ -61,6 +61,7 @@ module SystemDescriptionFactory
   # +modified+: Modified date of the system description scopes.
   # +hostname+: Hostname of the inspected host.
   # +add_scope_meta+: Add meta data for each scope if true.
+  # +filters+: Add filter information to the meta section
   def create_test_description(options = {})
     options = {
         name: "description",
@@ -106,6 +107,7 @@ module SystemDescriptionFactory
     meta = {
       format_version: 3
     }
+    meta[:filters] = options[:filters] if options[:filters]
 
     (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
       json_objects << EXAMPLE_SCOPES[scope]

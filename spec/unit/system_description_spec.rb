@@ -423,7 +423,15 @@ describe SystemDescription do
     let(:store) { system_description_factory_store }
 
     before(:each) do
-      create_test_description(name: "description1", store_on_disk: true)
+      create_test_description(
+        name: "description1",
+        store_on_disk: true,
+        filters: {
+          "inspect" => [
+            "/unmanaged_files/files/name=/opt*"
+          ]
+        }
+      )
     end
 
     describe ".load" do
@@ -466,6 +474,32 @@ describe SystemDescription do
 
         SystemDescription.load("description1", store, skip_format_compatibility: true)
       end
+
+      it "reads the filter information" do
+        description = SystemDescription.load("description1", store)
+        expect(description.filters["inspect"]).to be_a(Filter)
+        expect(description.filters["inspect"].
+          element_filter_for("/unmanaged_files/files/name").matchers).to eq(["/opt*"])
+      end
+    end
+  end
+
+  describe "#set_filter" do
+    subject { create_test_description }
+
+    it "sets the inspection filters" do
+      expect(subject.to_hash["meta"]["filters"]).to be(nil)
+      expected = ["/foo=bar", "/foo=baz", "/scope=filter"]
+
+      subject.set_filter("inspect", Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]))
+      filters = subject.to_hash["meta"]["filters"]["inspect"]
+      expect(filters).to eq(expected)
+    end
+
+    it "only supports inspection filters" do
+      expect {
+        subject.set_filter("show", Filter.new(["/foo=bar", "/scope=filter"]))
+      }.to raise_error(/not supported/)
     end
   end
 end

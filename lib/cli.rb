@@ -442,7 +442,6 @@ class Cli
       Machinery::Ui.puts "Inspecting #{host}#{inspected_scopes}..."
 
       inspect_options = {}
-      inspect_options[:skip_files] = options["skip-files"] if options["skip-files"]
       if options["show"]
         inspect_options[:show] = true
       end
@@ -456,8 +455,16 @@ class Cli
         inspect_options[:extract_unmanaged_files] = true
       end
 
+      filter = prepare_filter("inspect", options)
+
       inspector_task.inspect_system(
-        system_description_store, host, name, CurrentUser.new, scope_list, inspect_options
+        system_description_store,
+        host,
+        name,
+        CurrentUser.new,
+        scope_list,
+        filter,
+        inspect_options
       )
 
       Hint.show_data(name: name)
@@ -639,5 +646,25 @@ class Cli
     else
       SystemDescriptionStore.new
     end
+  end
+
+
+  def self.prepare_filter(command, options)
+    filter = Filter.from_default_definition(command)
+
+    skip_files = options.delete("skip-files")
+    if skip_files
+      files = if skip_files.start_with?("@")
+        File.read(skip_files[1..-1]).lines.map(&:chomp)
+      else
+        skip_files.split(",")
+      end
+
+      files.each do |file|
+        filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")
+      end
+    end
+
+    filter
   end
 end

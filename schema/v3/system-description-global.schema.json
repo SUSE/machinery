@@ -10,6 +10,18 @@
         "format_version": {
           "type": "integer",
           "minimum": 1
+        },
+        "filters": {
+          "type": "object",
+          "required": ["inspect"],
+          "properties": {
+            "inspect": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
       },
       "additionalProperties": {

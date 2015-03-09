@@ -81,6 +81,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            an_instance_of(Filter),
             {}
           ).
           and_return(description)
@@ -97,6 +98,7 @@ describe Cli do
             name,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            an_instance_of(Filter),
             {}
            ).
            and_return(description)
@@ -112,6 +114,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            an_instance_of(Filter),
             {}
            ).
           and_return(description)
@@ -127,6 +130,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             ["packages", "repositories"],
+            an_instance_of(Filter),
             {}
           ).
           and_return(description)
@@ -142,6 +146,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             ["packages"],
+            an_instance_of(Filter),
             {}
           ).
           and_return(description)
@@ -157,6 +162,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
+            an_instance_of(Filter),
             {}
           ).
           and_return(description)
@@ -176,6 +182,7 @@ describe Cli do
             example_host,
             an_instance_of(CurrentUser),
             scope_list,
+            an_instance_of(Filter),
             {}
           ).
           and_return(description)
@@ -183,19 +190,35 @@ describe Cli do
         run_command(["inspect", "--exclude-scope=packages,repositories", example_host])
       end
 
-      it "forwards the --skip-files option to the InspectTask" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system).
-          with(
-            an_instance_of(SystemDescriptionStore),
-            example_host,
-            example_host,
-            an_instance_of(CurrentUser),
-            Inspector.all_scopes,
-            skip_files: "/foo/bar"
-          ).
-          and_return(description)
+      it "forwards the --skip-files option to the InspectTask as an unmanaged_files filter" do
+        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
+          _host, _name, _user, _scopes, filter, _options|
+          expect(filter.element_filter_for("/unmanaged_files/files/name").matchers).
+            to include("/foo/bar", "/baz")
+        end.and_return(description)
 
-        run_command(["inspect", "--skip-files=/foo/bar", example_host])
+        run_command(["inspect", "--skip-files=/foo/bar,/baz", example_host])
+      end
+
+      it "the --skip-files option reads a list of excluded files from a file" do
+        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
+          _host, _name, _user, _scopes, filter, _options|
+          expect(filter.element_filter_for("/unmanaged_files/files/name").matchers).
+            to include("/foo/bar", "/baz")
+        end.and_return(description)
+
+        FileUtils.mkdir_p("/tmp")
+        exclude_file = Tempfile.new('exclude_file')
+        begin
+          File.write(exclude_file.path, <<EOF)
+/foo/bar
+/baz
+EOF
+          run_command(["inspect", "--skip-files=@#{exclude_file.path}", example_host])
+        ensure
+          exclude_file.close
+          exclude_file.unlink
+        end
       end
 
       describe "file extraction" do
@@ -207,6 +230,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              an_instance_of(Filter),
               {}
             ).
             and_return(description)
@@ -222,6 +246,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              an_instance_of(Filter),
               :extract_changed_config_files=>true, :extract_unmanaged_files=>true, :extract_changed_managed_files=>true
             ).
             and_return(description)
@@ -237,6 +262,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              an_instance_of(Filter),
               :extract_changed_config_files=>true
             ).
             and_return(description)
@@ -252,6 +278,7 @@ describe Cli do
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
+              an_instance_of(Filter),
               :extract_unmanaged_files=>true
             ).
             and_return(description)

@@ -52,6 +52,7 @@ shared_context "machinery test directory" do
 
   before(:each) do
     FakeFS::FileSystem.clone("schema/")
+    FakeFS::FileSystem.clone("helpers/")
   end
 
   def create_machinery_dir(name = test_name)
