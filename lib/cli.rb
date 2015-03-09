@@ -660,6 +660,7 @@ class Cli
         skip_files.split(/(?<!\\),/) # Do not split on escaped commas
       end
 
+      files.map! { |file| file.gsub("\\@", "@") } # Unescape escaped @s
       files.each do |file|
         filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")
       end

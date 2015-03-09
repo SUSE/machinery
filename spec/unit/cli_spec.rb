@@ -551,6 +551,15 @@ EOF
           "/unmanaged_files/files/name=/file,with_comma"
         ])
       end
+
+      it "handles escaped @s" do
+        filter = Cli.prepare_filter("inspect", "skip-files" => "\\@file_with_at,/foo")
+
+        expect(filter.to_array).to eq([
+          "/unmanaged_files/files/name=@file_with_at",
+          "/unmanaged_files/files/name=/foo"
+        ])
+      end
     end
   end
 
