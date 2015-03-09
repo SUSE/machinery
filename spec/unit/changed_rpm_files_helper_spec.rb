@@ -26,7 +26,7 @@ describe "parse_rpm_changes_line" do
     line = "..5......  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
     expect(file).to eq("/etc/pulse/client.conf")
-    expect(changes).to eq(["md5"])
+    expect(changes).to match_array(["md5"])
     expect(flag).to eq("c")
   end
 
@@ -34,7 +34,7 @@ describe "parse_rpm_changes_line" do
     line = "SM5DLUGTP  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
     expect(file).to eq("/etc/pulse/client.conf")
-    expect(changes).to eq(
+    expect(changes).to match_array(
       ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities"]
     )
     expect(flag).to eq("c")
@@ -44,7 +44,7 @@ describe "parse_rpm_changes_line" do
     line = "........S  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
     expect(file).to eq("/etc/pulse/client.conf")
-    expect(changes).to eq(["other_rpm_changes"])
+    expect(changes).to match_array(["other_rpm_changes"])
     expect(flag).to eq("c")
   end
 
