@@ -516,8 +516,9 @@ Backtrace:
 /foo/bar
 /baz
 EOF
-          filter = Cli.prepare_filter("inspect", "skip-files" => "@#{exclude_file.path}")
+          filter = Cli.prepare_filter("inspect", "skip-files" => "/foo,@#{exclude_file.path}")
           expect(filter.to_array).to match_array([
+            "/unmanaged_files/files/name=/foo",
             "/unmanaged_files/files/name=/foo/bar",
             "/unmanaged_files/files/name=/baz"
           ])
@@ -549,6 +550,15 @@ EOF
           "/unmanaged_files/files/name=/foo",
           "/unmanaged_files/files/name=/bar",
           "/unmanaged_files/files/name=/file,with_comma"
+        ])
+      end
+
+      it "handles escaped @s" do
+        filter = Cli.prepare_filter("inspect", "skip-files" => "\\@file_with_at,/foo")
+
+        expect(filter.to_array).to eq([
+          "/unmanaged_files/files/name=@file_with_at",
+          "/unmanaged_files/files/name=/foo"
         ])
       end
     end
