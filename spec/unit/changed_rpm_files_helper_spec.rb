@@ -20,6 +20,8 @@ require_relative "spec_helper"
 include ChangedRpmFilesHelper
 
 describe "parse_rpm_changes_line" do
+  silence_machinery_output
+
   it "parses an md5 change" do
     line = "..5......  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
