@@ -56,10 +56,10 @@ describe ElementFilter do
       expect(filter.matchers).to eq([@matcher1, @matcher2])
     end
 
-    it "adds set of two definitions" do
+    it "adds an array matcher definition" do
       filter = ElementFilter.new(@path)
-      filter.add_matchers([["/home/alfred", "/var/cache"]])
-      expect(filter.matchers).to eq([[@matcher1, @matcher2]])
+      filter.add_matchers([["md5", "size"]])
+      expect(filter.matchers).to eq([["md5", "size"]])
     end
   end
 
