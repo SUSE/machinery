@@ -654,7 +654,9 @@ class Cli
 
     skip_files = options.delete("skip-files")
     if skip_files
-      filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{skip_files}")
+      skip_files.split(",").each do |file|
+        filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")
+      end
     end
 
     filter
