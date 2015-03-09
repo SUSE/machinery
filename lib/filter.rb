@@ -46,16 +46,17 @@
 class Filter
   attr_accessor :element_filters
 
-  def self.parse_filter_definition(filter_definition)
+  def self.parse_filter_definitions(filter_definitions)
     element_filters = {}
-    filter_definition.scan(/\"([^,]*?)=([^\"]*)\"|([^,]+)=([^=]*)$|([^,]+)=([^,]*)/).
-      map(&:compact).each do |path, matcher_definition|
-        element_filters[path] ||= ElementFilter.new(path)
-        if matcher_definition.index(",")
-          element_filters[path].add_matchers([matcher_definition.split(",")])
-        else
-          element_filters[path].add_matchers(matcher_definition)
-        end
+    Array(filter_definitions).each do |definition|
+      path, matcher_definition = definition.split("=", 2)
+
+      element_filters[path] ||= ElementFilter.new(path)
+      if matcher_definition.index(",")
+        element_filters[path].add_matchers([matcher_definition.split(",")])
+      else
+        element_filters[path].add_matchers(matcher_definition)
+      end
     end
 
     element_filters
@@ -77,12 +78,12 @@ class Filter
     filter
   end
 
-  def initialize(filter_definition = "")
-    @element_filters = Filter.parse_filter_definition(filter_definition)
+  def initialize(definitions = [])
+    @element_filters = Filter.parse_filter_definitions(definitions)
   end
 
   def add_element_filter_from_definition(filter_definition)
-    new_element_filters = Filter.parse_filter_definition(filter_definition)
+    new_element_filters = Filter.parse_filter_definitions(filter_definition)
 
     new_element_filters.each do |path, element_filter|
       @element_filters[path] ||= ElementFilter.new(path)

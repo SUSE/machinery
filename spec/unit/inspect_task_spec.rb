@@ -187,7 +187,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("\"/foo=bar,baz\"")
+        Filter.new("/foo=bar,baz")
       )
     end
 
@@ -198,7 +198,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("\"/foo=bar,baz\"")
+        Filter.new("/foo=bar,baz")
       )
 
       expected = ["/foo=bar,baz"]
@@ -209,7 +209,7 @@ Inspecting foo...
       description = SystemDescription.new(name, store)
       expect(SystemDescription).to receive(:load).and_return(description)
 
-      description.set_filter("inspect", Filter.new("/foo=bar,/baz=qux"))
+      description.set_filter("inspect", Filter.new(["/foo=bar", "/baz=qux"]))
 
       description = inspect_task.inspect_system(
         store,
@@ -217,7 +217,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("/foo=baz,/baz=somethingelse")
+        Filter.new(["/foo=baz", "/baz=somethingelse"])
       )
 
       expected = [

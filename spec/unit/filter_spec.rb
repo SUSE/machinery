@@ -18,40 +18,9 @@
 require_relative "spec_helper"
 
 describe Filter do
-  let(:definition1) { "/unmanaged_files/files/name=/home/alfred" }
-  let(:definition2) { "\"/changed_managed_files/files/changes=md5,size\"" }
-  let(:complex_definition) {
-    "/unmanaged_files/files/name=/home/alfred," +
-      "/unmanaged_files/files/name=/var/cache," +
-      "\"/changed_managed_files/files/changes=md5,size\""
-  }
-
-  describe ".parse_filter_definition" do
-    it "parses element filter containing multiple matcher" do
-      filters = Filter.parse_filter_definition(definition2)
-
-      expect(filters.keys.length).to eq(1)
-      expect(filters["/changed_managed_files/files/changes"].path).
-        to eq("/changed_managed_files/files/changes")
-      expect(filters["/changed_managed_files/files/changes"].matchers).to eq([["md5", "size"]])
-    end
-
-    it "parses element filter with multiple filters" do
-      element_filter = Filter.parse_filter_definition(complex_definition)
-
-      expect(element_filter.keys.length).to eq(2)
-      expect(element_filter["/unmanaged_files/files/name"].path).
-        to eq("/unmanaged_files/files/name")
-      expect(element_filter["/unmanaged_files/files/name"].matchers).
-        to eq(["/home/alfred", "/var/cache"])
-      expect(element_filter["/changed_managed_files/files/changes"].path).
-        to eq("/changed_managed_files/files/changes")
-      expect(element_filter["/changed_managed_files/files/changes"].matchers).
-        to eq([["md5", "size"]])
-    end
-
-    it "parses simple definition with multiple filters" do
-      element_filter = Filter.parse_filter_definition("/foo=bar,/baz=qux")
+  describe ".parse_filter_definitions" do
+    it "parses array of definitions" do
+      element_filter = Filter.parse_filter_definitions(["/foo=bar", "/baz=qux"])
       expect(element_filter.keys.length).to eq(2)
       expect(element_filter["/foo"].matchers).
         to eq(["bar"])
@@ -59,8 +28,8 @@ describe Filter do
         to eq(["qux"])
     end
 
-    it "parses simple definition with multiple matcher" do
-      element_filter = Filter.parse_filter_definition("/foo=bar,baz")
+    it "parses definition with multiple matcher" do
+      element_filter = Filter.parse_filter_definitions("/foo=bar,baz")
       expect(element_filter.keys.length).to eq(1)
       expect(element_filter["/foo"].matchers).
         to eq([["bar", "baz"]])
@@ -74,7 +43,7 @@ describe Filter do
     end
 
     it "parses the filter definition" do
-      filters = Filter.new(definition1).element_filters
+      filters = Filter.new("/unmanaged_files/files/name=/home/alfred").element_filters
 
       expect(filters.keys.length).to eq(1)
       expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
@@ -103,7 +72,7 @@ describe Filter do
 
   describe "#to_array" do
     it "returns the element filter definitions as a string array" do
-      filter = Filter.new("\"foo=bar,baz\",foo=qux,scope=matcher")
+      filter = Filter.new(["foo=bar,baz", "foo=qux", "scope=matcher"])
       expect(filter.to_array).to eq([
         "foo=bar,baz", "foo=qux", "scope=matcher"
       ])
@@ -112,7 +81,11 @@ describe Filter do
 
   describe "#filter_for" do
     it "returns the correct filter" do
-      filter = Filter.new(complex_definition)
+      filter = Filter.new([
+        "/unmanaged_files/files/name=/home/alfred",
+        "/unmanaged_files/files/name=/var/cache",
+        "/changed_managed_files/files/changes=md5,size"
+      ])
 
       element_filter = filter.element_filter_for("/unmanaged_files/files/name")
       expect(element_filter.path).to eq("/unmanaged_files/files/name")
@@ -125,7 +98,13 @@ describe Filter do
   end
 
   describe "#matches?" do
-    let(:filter) { Filter.new(complex_definition) }
+    let(:filter) {
+      Filter.new([
+          "/unmanaged_files/files/name=/home/alfred",
+          "/unmanaged_files/files/name=/var/cache",
+          "/changed_managed_files/files/changes=md5,size"
+      ])
+    }
 
     it "returns false when no filter is set" do
       expect(filter.matches?("/some/path", "some_value")).to be(false)
