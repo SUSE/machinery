@@ -516,8 +516,9 @@ Backtrace:
 /foo/bar
 /baz
 EOF
-          filter = Cli.prepare_filter("inspect", "skip-files" => "@#{exclude_file.path}")
+          filter = Cli.prepare_filter("inspect", "skip-files" => "/foo,@#{exclude_file.path}")
           expect(filter.to_array).to match_array([
+            "/unmanaged_files/files/name=/foo",
             "/unmanaged_files/files/name=/foo/bar",
             "/unmanaged_files/files/name=/baz"
           ])

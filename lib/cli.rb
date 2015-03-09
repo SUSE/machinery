@@ -654,10 +654,13 @@ class Cli
 
     skip_files = options.delete("skip-files")
     if skip_files
-      files = if skip_files.start_with?("@")
-        File.read(skip_files[1..-1]).lines.map(&:chomp)
-      else
-        skip_files.split(/(?<!\\),/) # Do not split on escaped commas
+      files = skip_files.split(/(?<!\\),/) # Do not split on escaped commas
+      files = files.flat_map do |file|
+        if file.start_with?("@")
+          File.read(file[1..-1]).lines.map(&:chomp)
+        else
+          file
+        end
       end
 
       files.map! { |file| file.gsub("\\@", "@") } # Unescape escaped @s
