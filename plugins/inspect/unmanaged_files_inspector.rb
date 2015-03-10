@@ -245,7 +245,7 @@ class UnmanagedFilesInspector < Inspector
     file_filter.add_matchers(description.store.base_path)
 
     # Add a recursive pendant to each ignored element
-    file_filter.add_matchers(file_filter.matchers.map { |entry| entry + "/*" })
+    file_filter.add_matchers(file_filter.matchers.map { |entry| entry.chomp("/") + "/*" })
 
     remote_dirs.delete_if { |e| file_filter.matches?(e) }
 
