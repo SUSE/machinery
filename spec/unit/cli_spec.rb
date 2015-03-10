@@ -561,6 +561,20 @@ EOF
           "/unmanaged_files/files/name=/foo"
         ])
       end
+
+      it "fails gracefully when a filter file does not exist" do
+        expect {
+          Cli.prepare_filter("inspect", "skip-files" => "@does_not_exist")
+        }.to raise_error(Machinery::Errors::MachineryError, /does not exist/)
+      end
+
+      it "expands filter file paths" do
+        FileUtils.mkdir_p("/tmp")
+        File.write("/tmp/filter_file", "/foo")
+
+        filter = Cli.prepare_filter("inspect", "skip-files" => "@/tmp/foo/../filter_file")
+        expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
+      end
     end
   end
 

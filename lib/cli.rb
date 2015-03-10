@@ -657,7 +657,14 @@ class Cli
       files = skip_files.split(/(?<!\\),/) # Do not split on escaped commas
       files = files.flat_map do |file|
         if file.start_with?("@")
-          File.read(file[1..-1]).lines.map(&:chomp)
+          filename = File.expand_path(file[1..-1])
+
+          if !File.exists?(filename)
+            raise Machinery::Errors::MachineryError.new(
+              "The filter file '#{filename}' does not exist."
+            )
+          end
+          File.read(filename).lines.map(&:chomp)
         else
           file
         end
