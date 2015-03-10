@@ -670,6 +670,7 @@ class Cli
         end
       end
 
+      files.reject!(&:empty?) # Ignore empty filters
       files.map! { |file| file.gsub("\\@", "@") } # Unescape escaped @s
       files.each do |file|
         filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")

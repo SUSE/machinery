@@ -575,6 +575,17 @@ EOF
         filter = Cli.prepare_filter("inspect", "skip-files" => "@/tmp/foo/../filter_file")
         expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
       end
+
+      it "ignores empty filters" do
+        FileUtils.mkdir_p("/tmp")
+        File.write("/tmp/filter_file", "/foo\n\n/bar\n")
+        filter = Cli.prepare_filter("inspect", "skip-files" => "@/tmp/filter_file")
+
+        expect(filter.to_array).to eq([
+          "/unmanaged_files/files/name=/foo",
+          "/unmanaged_files/files/name=/bar"
+        ])
+      end
     end
   end
 
