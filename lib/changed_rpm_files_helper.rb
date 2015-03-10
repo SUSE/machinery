@@ -16,10 +16,19 @@
 # you may find current contact information at www.suse.com
 
 module ChangedRpmFilesHelper
+  def expected_tag?(character, position)
+    if @rpm_changes[position] == character
+      true
+    else
+      @unknown_tag ||= ![".", "?"].include?(@rpm_changes[position])
+      false
+    end
+  end
+
   def parse_rpm_changes_line(line)
     # rpm provides lines per config file where first 9 characters indicate which
     # properties of the file are modified
-    rpm_changes, *fields = line.split(" ")
+    @rpm_changes, *fields = line.split(" ")
 
     # For config or documentation files there's an additional field which
     # contains "c" or "d"
@@ -27,28 +36,28 @@ module ChangedRpmFilesHelper
     path = fields.join(" ")
 
     changes = []
-    if rpm_changes == "missing"
+    if @rpm_changes == "missing"
       changes << "deleted"
-    elsif rpm_changes == "........." && path.end_with?(" (replaced)")
+    elsif @rpm_changes == "........." && path.end_with?(" (replaced)")
       changes << "replaced"
       path.slice!(/ \(replaced\)$/)
     else
-      changes << "size" if rpm_changes[0] == "S"
-      changes << "mode" if rpm_changes[1] == "M"
-      changes << "md5" if rpm_changes[2] == "5"
-      changes << "device_number" if rpm_changes[3] == "D"
-      changes << "link_path" if rpm_changes[4] == "L"
-      changes << "user" if rpm_changes[5] == "U"
-      changes << "group" if rpm_changes[6] == "G"
-      changes << "time" if rpm_changes[7] == "T"
-      changes << "capabilities" if rpm_changes[8] == "P"
+      changes << "size" if expected_tag?("S", 0)
+      changes << "mode" if expected_tag?("M", 1)
+      changes << "md5" if expected_tag?("5", 2)
+      changes << "device_number" if expected_tag?("D", 3)
+      changes << "link_path" if expected_tag?("L", 4)
+      changes << "user" if expected_tag?("U", 5)
+      changes << "group" if expected_tag?("G", 6)
+      changes << "time" if expected_tag?("T", 7)
+      changes << "capabilities" if expected_tag?("P", 8)
     end
 
-    if changes.empty?
+    if @unknown_tag
       changes << "other_rpm_changes"
     end
 
-    if rpm_changes.include?("?")
+    if @rpm_changes.include?("?")
       message = "Could not perform all tests on rpm changes for file '#{path}'."
       Machinery.logger.warn(message)
       Machinery::Ui.warn("Warning: #{message}")

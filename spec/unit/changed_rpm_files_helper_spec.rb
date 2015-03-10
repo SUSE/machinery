@@ -48,11 +48,20 @@ describe "parse_rpm_changes_line" do
     expect(flag).to eq("c")
   end
 
-  it "shows a warning when an rpm test could not be performed" do
-    line = "..?......  c /etc/pulse/client.conf"
+  it "it adds other_rpm_changes in case of an unknown rpm change tag" do
+    line = "S.......X  c /etc/pulse/client.conf"
+    file, changes, flag = parse_rpm_changes_line(line)
+    expect(file).to eq("/etc/pulse/client.conf")
+    expect(changes).to match_array(["size", "other_rpm_changes"])
+    expect(flag).to eq("c")
+  end
+
+  it "shows a warning when an rpm test could not be performed but still adds known tags" do
+    line = "S.?......  c /etc/pulse/client.conf"
     expect(Machinery::Ui).to receive(:warn).with("Warning: Could not perform all tests on "\
       "rpm changes for file '/etc/pulse/client.conf'.")
-    _, _, _ = parse_rpm_changes_line(line)
+    _, changes, _ = parse_rpm_changes_line(line)
+    expect(changes).to match_array(["size"])
   end
 
   it "logs the warning when an rpm test could not be performed" do
