@@ -29,6 +29,8 @@ module ChangedRpmFilesHelper
     # rpm provides lines per config file where first 9 characters indicate which
     # properties of the file are modified
     @rpm_changes, *fields = line.split(" ")
+    # nine rpm changes are known
+    @unknown_tag = @rpm_changes.size > 9
 
     # For config or documentation files there's an additional field which
     # contains "c" or "d"
