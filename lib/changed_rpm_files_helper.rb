@@ -52,7 +52,7 @@ module ChangedRpmFilesHelper
       changes << "user" if expected_tag?("U", 5)
       changes << "group" if expected_tag?("G", 6)
       changes << "time" if expected_tag?("T", 7)
-      changes << "capabilities" if expected_tag?("P", 8)
+      changes << "capabilities" if @rpm_changes.size > 8 && expected_tag?("P", 8)
     end
 
     if @unknown_tag
