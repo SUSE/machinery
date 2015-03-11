@@ -28,6 +28,10 @@ module Machinery
         default:     true,
         description: "Show hints about usage of Machinery in the context of the commands ran by the user"
       )
+      entry("experimental-features",
+        default:     false,
+        description: "Enable experimental features. Use at your own risk."
+      )
     end
   end
 end
