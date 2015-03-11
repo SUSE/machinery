@@ -40,6 +40,16 @@ describe "parse_rpm_changes_line" do
     expect(flag).to eq("c")
   end
 
+  it "parses all changes for sles11sp3" do
+    line = "SM5DLUGT  c /etc/pulse/client.conf"
+    file, changes, flag = parse_rpm_changes_line(line)
+    expect(file).to eq("/etc/pulse/client.conf")
+    expect(changes).to match_array(
+      ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time"]
+    )
+    expect(flag).to eq("c")
+  end
+
   it "parses an unknown change" do
     line = "........S  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
@@ -56,8 +66,8 @@ describe "parse_rpm_changes_line" do
     expect(flag).to eq("c")
   end
 
-  it "it adds other_rpm_changes in case of an additional unknown rpm change tag" do
-    line = "S........X  c /etc/pulse/client.conf"
+  it "it adds other_rpm_changes in case of an unexpected new/additional rpm tag" do
+    line = "S........N  c /etc/pulse/client.conf"
     file, changes, flag = parse_rpm_changes_line(line)
     expect(file).to eq("/etc/pulse/client.conf")
     expect(changes).to match_array(["size", "other_rpm_changes"])
