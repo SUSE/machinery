@@ -21,6 +21,18 @@ describe Machinery::Config do
   include FakeFS::SpecHelpers
   subject { Machinery::Config.new }
 
+  it "works with keys with dashes in the name" do
+    subject.entry("config-key", default: "configvalue", description: "configtext")
+
+    subject.set("config-key", "newconfigvalue")
+    expect(subject.get("config-key")).to eq("newconfigvalue")
+    expect(subject.config_key).to eq("newconfigvalue")
+
+    keys = []
+    subject.each { |key, _value| keys << key }
+    expect(keys).to include("config-key")
+  end
+
   describe "#get" do
     it "returns the default value" do
       subject.entry("configkey", default: "configvalue", description: "configtext")
