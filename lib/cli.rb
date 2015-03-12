@@ -664,7 +664,7 @@ class Cli
               "The filter file '#{filename}' does not exist."
             )
           end
-          File.read(filename).lines.map(&:chomp)
+          File.read(filename).lines.map(&:strip)
         else
           file
         end
