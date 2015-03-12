@@ -512,10 +512,7 @@ Backtrace:
         FileUtils.mkdir_p("/tmp")
         exclude_file = Tempfile.new("exclude_file")
         begin
-          File.write(exclude_file.path, <<EOF)
-/foo/bar
-/baz
-EOF
+          File.write(exclude_file.path, "/foo/bar\n/baz \n")
           filter = Cli.prepare_filter("inspect", "skip-files" => "/foo,@#{exclude_file.path}")
           expect(filter.to_array).to match_array([
             "/unmanaged_files/files/name=/foo",
