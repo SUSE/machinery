@@ -104,5 +104,23 @@ describe ElementFilter do
         expect(@filter.matches?("/home/alfred/*")).to be(true)
       end
     end
+
+    context "matching arrays" do
+      before(:each) do
+        @filter = ElementFilter.new("path", [["a", "b"]])
+      end
+
+      it "finds matches" do
+        expect(@filter.matches?(Machinery::Array.new(["a", "b"]))).to be(true)
+      end
+
+      it "does not match on extra elements" do
+        expect(@filter.matches?(Machinery::Array.new(["a", "b", "c"]))).to be(false)
+      end
+
+      it "does not match on missing elements" do
+        expect(@filter.matches?(Machinery::Array.new(["a"]))).to be(false)
+      end
+    end
   end
 end
