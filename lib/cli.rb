@@ -672,6 +672,8 @@ class Cli
 
       files.reject!(&:empty?) # Ignore empty filters
       files.map! { |file| file.gsub("\\@", "@") } # Unescape escaped @s
+      files.map! { |file| file.chomp("/") } # List directories without the trailing /, in order to
+                                            # not confuse the unmanaged files inspector
       files.each do |file|
         filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")
       end
