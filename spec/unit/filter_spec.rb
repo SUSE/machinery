@@ -124,55 +124,61 @@ describe Filter do
   end
 
   describe "#apply!" do
-    it "filters simple elements" do
-      description = create_test_description(scopes: ["unmanaged_files"])
+    let(:description) {
+      create_test_description(scopes: ["unmanaged_files", "changed_managed_files"])
+    }
 
-      expect(description.unmanaged_files.files.map(&:name)).to match_array([
-        "/etc/unmanaged-file",
-        "/etc/another-unmanaged-file"
-      ])
+    def expect_file_scope_filter_change(scope, filter, before, after)
+      expect(description[scope].files.map(&:name)).to match_array(before)
 
-      filter = Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file")
       filter.apply!(description)
 
-      expect(description.unmanaged_files.files.map(&:name)).to match_array([
-        "/etc/another-unmanaged-file"
-      ])
+      expect(description[scope].files.map(&:name)).to match_array(after)
+    end
+
+    it "filters simple elements" do
+      expect_file_scope_filter_change(
+        "unmanaged_files",
+        Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file"),
+        [
+          "/etc/unmanaged-file",
+          "/etc/another-unmanaged-file"
+        ],
+        [
+          "/etc/another-unmanaged-file"
+        ]
+      )
     end
 
     it "filters by array matches" do
-      description = create_test_description(scopes: ["changed_managed_files"])
-
-      expect(description.changed_managed_files.files.map(&:name)).to match_array([
-        "/etc/deleted changed managed",
-        "/etc/cron.daily/cleanup",
-        "/etc/cron.daily/logrotate"
-      ])
-
-      filter = Filter.new("/changed_managed_files/files/changes=md5,size")
-      filter.apply!(description)
-
-      expect(description.changed_managed_files.files.map(&:name)).to match_array([
-        "/etc/deleted changed managed",
-        "/etc/cron.daily/cleanup"
-      ])
+      expect_file_scope_filter_change(
+        "changed_managed_files",
+        Filter.new("/changed_managed_files/files/changes=md5,size"),
+        [
+          "/etc/deleted changed managed",
+          "/etc/cron.daily/cleanup",
+          "/etc/cron.daily/logrotate" # has changed 'md5' and 'size' and should be filtered
+        ],
+        [
+          "/etc/deleted changed managed",
+          "/etc/cron.daily/cleanup"
+        ]
+      )
     end
 
     it "removes multiple items when a wildcard is used" do
-      description = create_test_description(scopes: ["changed_managed_files"])
-
-      expect(description.changed_managed_files.files.map(&:name)).to match_array([
-        "/etc/deleted changed managed",
-        "/etc/cron.daily/cleanup",
-        "/etc/cron.daily/logrotate"
-      ])
-
-      filter = Filter.new("/changed_managed_files/files/name=/etc/c*")
-      filter.apply!(description)
-
-      expect(description.changed_managed_files.files.map(&:name)).to match_array([
-        "/etc/deleted changed managed"
-      ])
+      expect_file_scope_filter_change(
+        "changed_managed_files",
+        Filter.new("/changed_managed_files/files/name=/etc/c*"),
+        [
+          "/etc/deleted changed managed",
+          "/etc/cron.daily/cleanup",
+          "/etc/cron.daily/logrotate"
+        ],
+        [
+          "/etc/deleted changed managed"
+        ]
+      )
     end
   end
 end
