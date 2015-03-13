@@ -322,14 +322,14 @@ describe UnmanagedFilesInspector do
       system = double
       expect_inspect_unmanaged(system, false, false)
 
-      summary = subject.inspect(system, description, default_filter)
+      subject.inspect(system, description, default_filter)
 
       expected = UnmanagedFilesScope.new(
         extracted: false,
         files: UnmanagedFileList.new
       )
       expect(description["unmanaged_files"]).to eq(expected)
-      expect(summary).to include("Found 0 unmanaged files and trees")
+      expect(subject.summary(description)).to include("Found 0 unmanaged files and trees")
     end
 
     it "returns data about unmanaged files when requirements are fulfilled" do
@@ -337,10 +337,11 @@ describe UnmanagedFilesInspector do
 
       expect_inspect_unmanaged(system, true, false)
 
-      summary = subject.inspect(system, description, default_filter)
+      subject.inspect(system, description, default_filter)
 
       expect(description["unmanaged_files"]).to eq(expected_data)
-      expect(summary).to include("Found #{expected_data.files.size} unmanaged files and trees")
+      expect(subject.summary(description)).
+        to include("Found #{expected_data.files.size} unmanaged files and trees")
     end
 
     it "returns sorted data" do
@@ -394,13 +395,14 @@ describe UnmanagedFilesInspector do
       system = double
       expect_inspect_unmanaged(system, true, true)
 
-      summary = subject.inspect(
+      subject.inspect(
         system, description, default_filter,
         :extract_unmanaged_files => true
       )
 
       expect(description["unmanaged_files"]).to eq(expected_data_meta)
-      expect(summary).to include("Extracted #{expected_data.files.size} unmanaged files and trees")
+      expect(subject.summary(description)).
+        to include("Extracted #{expected_data.files.size} unmanaged files and trees")
       cfdir = description.scope_file_store("unmanaged_files").path
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end

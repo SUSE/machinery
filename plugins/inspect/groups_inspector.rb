@@ -22,7 +22,10 @@ class GroupsInspector < Inspector
     groups = group_content ? parse_groups(group_content) : []
 
     description.groups = GroupsScope.new(groups.sort_by(&:name))
-    "Found #{groups.size} groups."
+  end
+
+  def summary(description)
+    "Found #{description.groups.size} groups."
   end
 
   private

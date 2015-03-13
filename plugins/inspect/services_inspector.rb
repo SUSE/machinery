@@ -30,7 +30,10 @@ class ServicesInspector < Inspector
     end
 
     description.services = result
-    @summary
+  end
+
+  def summary(description)
+    "Found #{description.services.services.length} services."
   end
 
   private
@@ -53,7 +56,6 @@ class ServicesInspector < Inspector
       Service.new(name: name, state: state)
     end
 
-    @summary = "Found #{services.size} services."
     ServiceList.new(services.sort_by(&:name))
   end
 
@@ -70,7 +72,6 @@ class ServicesInspector < Inspector
       services = parse_suse_chkconfig(system)
     end
 
-    @summary = "Found #{services.size} services."
     ServiceList.new(services.sort_by(&:name))
   end
 

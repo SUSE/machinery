@@ -63,7 +63,7 @@ describe PatternsInspector do
       expect(system).to receive(:run_command).
         with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
         and_return(zypper_output)
-      summary = patterns_inspector.inspect(system, description, filter)
+      patterns_inspector.inspect(system, description, filter)
 
       expect(description.patterns.size).to eql(2)
       expect(description.patterns.first).to eq(
@@ -74,7 +74,7 @@ describe PatternsInspector do
         )
       )
 
-      expect(summary).to include("Found 2 patterns")
+      expect(patterns_inspector.summary(description)).to include("Found 2 patterns")
     end
 
     it "returns an empty array when there are no patterns installed" do

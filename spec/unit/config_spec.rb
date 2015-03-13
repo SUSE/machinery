@@ -21,7 +21,7 @@ describe Machinery::Config do
   include FakeFS::SpecHelpers
   subject { Machinery::Config.new }
 
-  it "works with keys with dashes in the name" do
+  it "works with keys with '-'s" do
     subject.entry("config-key", default: "configvalue", description: "configtext")
 
     subject.set("config-key", "newconfigvalue")

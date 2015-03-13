@@ -41,6 +41,9 @@ class PackagesInspector < Inspector
     end
 
     description.packages = PackagesScope.new(packages.sort_by(&:name))
-    "Found #{packages.count} packages."
+  end
+
+  def summary(description)
+    "Found #{description.packages.size} packages."
   end
 end

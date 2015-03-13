@@ -33,6 +33,7 @@
 # The description object can also be used to store files in the description.
 class Inspector
   abstract_method :inspect
+  abstract_method :summary
 
   @inspectors = []
 

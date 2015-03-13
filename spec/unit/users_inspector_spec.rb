@@ -40,9 +40,9 @@ EOF
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(nil)
       expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
-      summary = subject.inspect(system, description, filter)
+      subject.inspect(system, description, filter)
       expect(description.users).to be_empty
-      expect(summary).to eq("Found 0 users.")
+      expect(subject.summary(description)).to eq("Found 0 users.")
     end
 
     it "returns all attributes when /etc/shadow is present" do
@@ -79,10 +79,10 @@ EOF
         )
       ])
 
-      summary = subject.inspect(system, description, filter)
+      subject.inspect(system, description, filter)
 
       expect(description.users).to eq(expected)
-      expect(summary).to eq("Found 2 users.")
+      expect(subject.summary(description)).to eq("Found 2 users.")
     end
 
     it "it can deal with the NIS placeholder in /etc/passwd" do
@@ -105,7 +105,7 @@ EOF
         )
       ])
 
-      summary = subject.inspect(system, description, filter)
+      subject.inspect(system, description, filter)
 
       expect(description.users).to eq(expected)
     end
@@ -135,10 +135,10 @@ EOF
         )
       ])
 
-      summary = subject.inspect(system, description, filter)
+      subject.inspect(system, description, filter)
 
       expect(description.users).to eq(expected)
-      expect(summary).to eq("Found 2 users.")
+      expect(subject.summary(description)).to eq("Found 2 users.")
     end
 
     it "returns sorted data" do
