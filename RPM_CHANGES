@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.5.0 - Fri Mar 13 13:03:47 CET 2015 - thardeck@suse.de
+
+* update to version 1.5.0
 * tracking bug (bnc#914712)
 
 ## Version 1.4.0 - Wed Feb 18 16:51:43 CET 2015 - thardeck@suse.de

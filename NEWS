@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.5.0 - Fri Mar 13 13:03:47 CET 2015 - thardeck@suse.de
+
 * Fix issue with changes of managed files on RHEL (gh#SUSE/machinery#636)
 * Add `--short` option to list command for showing a short list of all descriptions
 * Improve error output for system descriptions which have outdated formats
