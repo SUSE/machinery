@@ -200,6 +200,25 @@ describe Cli do
         run_command(["inspect", "--skip-files=/foo/bar,/baz", example_host])
       end
 
+      it "forwards the global --exclude option to the InspectTask" do
+        # Manually create the global exclude option. It depends on the experimental_features option,
+        # but that is evaluated when the class is loaded, not when the test is run, so it can't be
+        # stubbed.
+        if !Cli.flags[:exclude]
+          Cli.flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
+        end
+        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
+          _host, _name, _user, _scopes, filter, _options|
+          expect(filter.element_filter_for("/unmanaged_files/files/name").matchers).
+            to include("/foo/bar", "/baz")
+        end.and_return(description)
+
+        run_command([
+          "--exclude=/unmanaged_files/files/name=/foo/bar,/unmanaged_files/files/name=/baz",
+          "inspect", example_host
+        ])
+      end
+
       describe "file extraction" do
         it "doesn't extract files when --extract-files is not specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
@@ -498,90 +517,6 @@ Backtrace:
         raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
       rescue => e
         expect{ Cli.handle_error(e) }.to raise_error(SystemExit)
-      end
-    end
-  end
-
-  describe ".prepare_filter" do
-    context "with the --skip-files option" do
-      before(:each) do
-        allow(Filter).to receive(:from_default_definition).and_return(Filter.new)
-      end
-
-      it "it reads a list of excluded files from a file" do
-        FileUtils.mkdir_p("/tmp")
-        exclude_file = Tempfile.new("exclude_file")
-        begin
-          File.write(exclude_file.path, "/foo/bar\n/baz \n")
-          filter = Cli.prepare_filter("inspect", "skip-files" => "/foo,@#{exclude_file.path}")
-          expect(filter.to_array).to match_array([
-            "/unmanaged_files/files/name=/foo",
-            "/unmanaged_files/files/name=/foo/bar",
-            "/unmanaged_files/files/name=/baz"
-          ])
-        ensure
-          exclude_file.close
-          exclude_file.unlink
-        end
-      end
-
-      it "handles simple excludes" do
-        filter = Cli.prepare_filter("inspect", "skip-files" => "/foo")
-
-        expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
-      end
-
-      it "handles lists of excludes" do
-        filter = Cli.prepare_filter("inspect", "skip-files" => "/foo,/bar")
-
-        expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/bar"
-        ])
-      end
-
-      it "handles escaped commas" do
-        filter = Cli.prepare_filter("inspect", "skip-files" => "/foo,/bar,/file\\,with_comma")
-
-        expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/bar",
-          "/unmanaged_files/files/name=/file,with_comma"
-        ])
-      end
-
-      it "handles escaped @s" do
-        filter = Cli.prepare_filter("inspect", "skip-files" => "\\@file_with_at,/foo")
-
-        expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=@file_with_at",
-          "/unmanaged_files/files/name=/foo"
-        ])
-      end
-
-      it "fails gracefully when a filter file does not exist" do
-        expect {
-          Cli.prepare_filter("inspect", "skip-files" => "@does_not_exist")
-        }.to raise_error(Machinery::Errors::MachineryError, /does not exist/)
-      end
-
-      it "expands filter file paths" do
-        FileUtils.mkdir_p("/tmp")
-        File.write("/tmp/filter_file", "/foo")
-
-        filter = Cli.prepare_filter("inspect", "skip-files" => "@/tmp/foo/../filter_file")
-        expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
-      end
-
-      it "ignores empty filters" do
-        FileUtils.mkdir_p("/tmp")
-        File.write("/tmp/filter_file", "/foo\n\n/bar\n")
-        filter = Cli.prepare_filter("inspect", "skip-files" => "@/tmp/filter_file")
-
-        expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/bar"
-        ])
       end
     end
   end

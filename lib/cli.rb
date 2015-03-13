@@ -25,6 +25,9 @@ class Cli
   switch :version, negatable: false, desc: "Show version"
   switch :debug, negatable: false, desc: "Enable debug mode"
   switch [:help, :h], negatable: false, desc: "Show help"
+  if Machinery::Config.new.experimental_features
+    flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
+  end
 
   sort_help :manually
   pre do |global_options,command,options,args|
@@ -460,7 +463,7 @@ class Cli
           "\"unmanaged-files\" scope")
       end
 
-      filter = prepare_filter("inspect", options)
+      filter = FilterOptionParser.to_filter("inspect", options, global_options)
 
       inspector_task.inspect_system(
         system_description_store,
@@ -651,39 +654,5 @@ class Cli
     else
       SystemDescriptionStore.new
     end
-  end
-
-
-  def self.prepare_filter(command, options)
-    filter = Filter.from_default_definition(command)
-
-    skip_files = options.delete("skip-files")
-    if skip_files
-      files = skip_files.split(/(?<!\\),/) # Do not split on escaped commas
-      files = files.flat_map do |file|
-        if file.start_with?("@")
-          filename = File.expand_path(file[1..-1])
-
-          if !File.exists?(filename)
-            raise Machinery::Errors::MachineryError.new(
-              "The filter file '#{filename}' does not exist."
-            )
-          end
-          File.read(filename).lines.map(&:strip)
-        else
-          file
-        end
-      end
-
-      files.reject!(&:empty?) # Ignore empty filters
-      files.map! { |file| file.gsub("\\@", "@") } # Unescape escaped @s
-      files.map! { |file| file.chomp("/") } # List directories without the trailing /, in order to
-                                            # not confuse the unmanaged files inspector
-      files.each do |file|
-        filter.add_element_filter_from_definition("/unmanaged_files/files/name=#{file}")
-      end
-    end
-
-    filter
   end
 end
