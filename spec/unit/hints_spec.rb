@@ -18,15 +18,19 @@
 require_relative "spec_helper"
 
 describe Hint do
+  def enable_hints(enabled)
+    expect(Machinery::Config).to receive(:new).and_return(double(hints: enabled))
+  end
+
   describe "#get_started" do
     it "prints a hint how to get started if hints are enabled" do
-      expect_any_instance_of(Machinery::Config).to receive(:get).with("hints").and_return(true)
+      enable_hints(true)
       expect_any_instance_of(IO).to receive(:puts).with(/Hint:.*\n.*inspect HOSTNAME/)
       Hint.get_started
     end
 
     it "doesn't print a hint how to get started if hints are disabled" do
-      expect_any_instance_of(Machinery::Config).to receive(:get).with("hints").and_return(false)
+      enable_hints(false)
       expect_any_instance_of(IO).to_not receive(:puts).with(/Hint:.*\n.*inspect HOSTNAME/)
       Hint.get_started
     end
@@ -34,13 +38,13 @@ describe Hint do
 
   describe "#show_data" do
     it "prints a hint how to show data if hints are enabled" do
-      expect_any_instance_of(Machinery::Config).to receive(:get).with("hints").and_return(true)
+      enable_hints(true)
       expect_any_instance_of(IO).to receive(:puts).with(/Hint:.*\n.*show/)
       Hint.show_data(:name => "foo")
     end
 
     it "doesn't print a hint how to show data if hints are disabled" do
-      expect_any_instance_of(Machinery::Config).to receive(:get).with("hints").and_return(false)
+      enable_hints(false)
       expect_any_instance_of(IO).to_not receive(:puts).with(/Hint:.*\n.*show/)
       Hint.show_data(:name => "foo")
     end
@@ -48,13 +52,13 @@ describe Hint do
 
   describe "#do_complete_inspection" do
     it "prints a hint how to do a complete inspection if hints are enabled" do
-      expect_any_instance_of(Machinery::Config).to receive(:get).with("hints").and_return(true)
+      enable_hints(true)
       expect_any_instance_of(IO).to receive(:puts).with(/Hint:.*\n.*inspect foo --name bar --extract-files/)
       Hint.do_complete_inspection(:name => "bar", :host => "foo")
     end
 
     it "doesn't print a hint how to do a complete inspection if hints are disabled" do
-      expect_any_instance_of(Machinery::Config).to receive(:get).with("hints").and_return(false)
+      enable_hints(false)
       expect_any_instance_of(IO).to_not receive(:puts).with(/Hint:.*\n.*inspect foo --name bar --extract-files/)
       Hint.do_complete_inspection(:name => "bar", :host => "foo")
     end
