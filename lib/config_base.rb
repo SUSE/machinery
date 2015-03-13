@@ -32,6 +32,8 @@ class ConfigBase
   end
 
   def entry(key, parameters = {})
+    key = normalize_key(key)
+
     @entries[key] = { value: parameters[:default], description: parameters[:description] }
      create_method(key.to_sym) { get(key) }
      create_method("#{key}=".to_sym) { |value| set(key, value) }
@@ -42,15 +44,18 @@ class ConfigBase
   end
 
   def each(&block)
-    @entries.each(&block)
+    @entries.map { |key, value| [unnormalize_key(key), value] }.each(&block)
   end
 
   def get(key)
+    key = normalize_key(key)
+
     ensure_config_exists(key)
     @entries[key][:value]
   end
 
   def set(key, value, options = {auto_save: true} )
+    key = normalize_key(key)
     ensure_config_exists(key)
 
     # Check if data type is correct. true and false are not of the same type which makes the check complex
@@ -113,5 +118,13 @@ class ConfigBase
 
   def create_method(name, &block)
     self.class.send(:define_method, name, &block)
+  end
+
+  def normalize_key(key)
+    key.gsub("-", "_")
+  end
+
+  def unnormalize_key(key)
+    key.gsub("_", "-")
   end
 end
