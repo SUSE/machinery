@@ -485,7 +485,7 @@ describe SystemDescription do
   end
 
   describe "#set_filter" do
-    subject { create_test_description }
+    subject { create_test_description(scopes: ["unmanaged_files"]) }
 
     it "sets the inspection filters" do
       expect(subject.to_hash["meta"]["filters"]).to be(nil)
@@ -500,6 +500,20 @@ describe SystemDescription do
       expect {
         subject.set_filter("show", Filter.new(["/foo=bar", "/scope=filter"]))
       }.to raise_error(/not supported/)
+    end
+
+    it "applies the filter" do
+      expect(subject.unmanaged_files.files.map(&:name)).to match_array([
+        "/etc/unmanaged-file",
+        "/etc/another-unmanaged-file"
+      ])
+
+      filter = Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file")
+      subject.set_filter("inspect", filter)
+
+      expect(subject.unmanaged_files.files.map(&:name)).to match_array([
+        "/etc/another-unmanaged-file"
+      ])
     end
   end
 end
