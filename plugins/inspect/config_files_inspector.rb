@@ -86,10 +86,6 @@ class ConfigFilesInspector < Inspector
     do_extract = options[:extract_changed_config_files]
     check_requirements(system, do_extract)
 
-    if options[:filter]
-      Machinery::Ui.warn("Warning: Filtering is not yet supported for the \"config-files\" scope")
-    end
-
     result = packages_with_config_files(system).flat_map do |package|
       config_file_changes(system, package)
     end
