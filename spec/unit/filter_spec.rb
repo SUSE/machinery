@@ -122,4 +122,40 @@ describe Filter do
       expect(filter.matches?("/changed_managed_files/files/name", "/var/cache")).to be(false)
     end
   end
+
+  describe "#apply!" do
+    it "filters simple elements" do
+      description = create_test_description(scopes: ["unmanaged_files"])
+
+      expect(description.unmanaged_files.files.map(&:name)).to match_array([
+        "/etc/unmanaged-file",
+        "/etc/another-unmanaged-file"
+      ])
+
+      filter = Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file")
+      filter.apply!(description)
+
+      expect(description.unmanaged_files.files.map(&:name)).to match_array([
+        "/etc/another-unmanaged-file"
+      ])
+    end
+
+    it "filters by array matches" do
+      description = create_test_description(scopes: ["changed_managed_files"])
+
+      expect(description.changed_managed_files.files.map(&:name)).to match_array([
+        "/etc/deleted changed managed",
+        "/etc/cron.daily/cleanup",
+        "/etc/cron.daily/logrotate"
+      ])
+
+      filter = Filter.new("/changed_managed_files/files/changes=md5,size")
+      filter.apply!(description)
+
+      expect(description.changed_managed_files.files.map(&:name)).to match_array([
+        "/etc/deleted changed managed",
+        "/etc/cron.daily/cleanup"
+      ])
+    end
+  end
 end
