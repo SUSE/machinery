@@ -16,10 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class ShowTask
-  def show(description, scopes, options = {})
+  def show(description, scopes, filter, options = {})
     if options[:show_html]
       show_html(description)
     else
+      filter.apply!(description)
       show_console(description, scopes, options )
     end
   end
