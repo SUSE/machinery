@@ -157,5 +157,22 @@ describe Filter do
         "/etc/cron.daily/cleanup"
       ])
     end
+
+    it "removes multiple items when a wildcard is used" do
+      description = create_test_description(scopes: ["changed_managed_files"])
+
+      expect(description.changed_managed_files.files.map(&:name)).to match_array([
+        "/etc/deleted changed managed",
+        "/etc/cron.daily/cleanup",
+        "/etc/cron.daily/logrotate"
+      ])
+
+      filter = Filter.new("/changed_managed_files/files/name=/etc/c*")
+      filter.apply!(description)
+
+      expect(description.changed_managed_files.files.map(&:name)).to match_array([
+        "/etc/deleted changed managed"
+      ])
+    end
   end
 end

@@ -131,10 +131,8 @@ class Filter
         container ||= pointer if pointer.is_a?(Machinery::Array)
       end
 
-      pointer.each do |element|
-        if element_filter.matches?(element[target])
-          container.delete(element)
-        end
+      pointer.delete_if do |element|
+        element_filter.matches?(element[target])
       end
     end
   end
