@@ -118,4 +118,22 @@ class Filter
   def element_filter_for(path)
     element_filters[path]
   end
+
+  def apply!(system_description)
+    element_filters.each do |path, element_filter|
+      steps = path.split("/").reject(&:empty?)
+      target = steps.pop
+
+      pointer = system_description
+      container = nil
+      steps.each do |step|
+        pointer = pointer[step]
+        container ||= pointer if pointer.is_a?(Machinery::Array)
+      end
+
+      pointer.delete_if do |element|
+        element_filter.matches?(element[target])
+      end
+    end
+  end
 end

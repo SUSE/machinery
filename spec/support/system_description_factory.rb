@@ -182,6 +182,16 @@ module SystemDescriptionFactory
           "user": "user",
           "group": "group",
           "mode": "644"
+        },
+        {
+          "name": "/etc/cron.daily/logrotate",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["md5", "size"],
+          "user": "user",
+          "group": "group",
+          "mode": "644"
         }
       ]
     }
@@ -486,6 +496,14 @@ module SystemDescriptionFactory
       "files": [
         {
           "name": "/etc/unmanaged-file",
+          "type": "file",
+          "user": "root",
+          "group": "root",
+          "size": 8,
+          "mode": "644"
+        },
+        {
+          "name": "/etc/another-unmanaged-file",
           "type": "file",
           "user": "root",
           "group": "root",
