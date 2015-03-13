@@ -455,6 +455,11 @@ class Cli
         inspect_options[:extract_unmanaged_files] = true
       end
 
+      if options["skip-files"] && !(scope_list & ["config_files", "changed_managed_files"]).empty?
+        Machinery::Ui.warn("Warning: The --skip-files option is currently only supported for the " \
+          "\"unmanaged-files\" scope")
+      end
+
       filter = prepare_filter("inspect", options)
 
       inspector_task.inspect_system(
