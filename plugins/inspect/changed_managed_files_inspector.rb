@@ -39,13 +39,15 @@ class ChangedManagedFilesInspector < Inspector
       system.retrieve_files(existing_files.map(&:name), file_store.path)
     end
 
-    summary = "#{options[:extract_changed_managed_files] ? "Extracted" : "Found"} #{result.count} changed files."
-
     description["changed_managed_files"] = ChangedManagedFilesScope.new(
       extracted: !!options[:extract_changed_managed_files],
       files: ChangedManagedFileList.new(result.sort_by(&:name))
     )
-    summary
+  end
+
+  def summary(description)
+    "#{description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
+      "#{description.changed_managed_files.files.count} changed files."
   end
 
   private

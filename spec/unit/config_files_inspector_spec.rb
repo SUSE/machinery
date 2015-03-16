@@ -222,10 +222,10 @@ EOF
       expect_inspect_configfiles(system, false)
 
       inspector = ConfigFilesInspector.new
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description["config_files"]).to eq(expected_data)
-      expect(summary).to include("6 changed configuration files")
+      expect(inspector.summary(description)).to include("6 changed configuration files")
     end
 
     it "returns empty when no modified config files are there" do
@@ -263,8 +263,8 @@ EOF
       expect_inspect_configfiles(system, true)
 
       inspector = ConfigFilesInspector.new
-      summary = inspector.inspect(system, description, filter, :extract_changed_config_files => true )
-      expect(summary).to include("Extracted 6 changed configuration files")
+      inspector.inspect(system, description, filter, extract_changed_config_files: true)
+      expect(inspector.summary(description)).to include("Extracted 6 changed configuration files")
       cfdir = File.join(store.description_path(name), "config_files")
       expect(File.stat(cfdir).mode & 0777).to eq(0700)
     end
@@ -278,8 +278,8 @@ EOF
       expect_inspect_configfiles(system, true)
 
       inspector = ConfigFilesInspector.new
-      summary = inspector.inspect(system, description, filter, :extract_changed_config_files => true)
-      expect(summary).to include("Extracted 6 changed configuration files")
+      inspector.inspect(system, description, filter, extract_changed_config_files: true)
+      expect(inspector.summary(description)).to include("Extracted 6 changed configuration files")
       expect(File.stat(cfdir).mode & 0777).to eq(0750)
     end
 

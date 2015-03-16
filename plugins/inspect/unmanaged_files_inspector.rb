@@ -368,12 +368,15 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    summary = "#{do_extract ? "Extracted" : "Found"} #{osl.size} unmanaged files and trees."
     description["unmanaged_files"] = UnmanagedFilesScope.new(
       extracted: !!do_extract,
       files: UnmanagedFileList.new(osl.sort_by(&:name))
     )
-    summary
+  end
+
+  def summary(description)
+    "#{description.unmanaged_files.extracted ? "Extracted" : "Found"} " +
+      "#{description.unmanaged_files.files.count} unmanaged files and trees."
   end
 
   private

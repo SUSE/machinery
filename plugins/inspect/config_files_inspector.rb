@@ -107,12 +107,14 @@ class ConfigFilesInspector < Inspector
       system.retrieve_files(paths, file_store.path)
     end
 
-    summary = "#{do_extract ? "Extracted" : "Found"} #{result.count} changed configuration files."
-
     description["config_files"] = ConfigFilesScope.new(
       extracted: !!do_extract,
       files: ConfigFileList.new(result.sort_by(&:name))
     )
-    summary
+  end
+
+  def summary(description)
+    "#{description.config_files.extracted ? "Extracted" : "Found"} " +
+      "#{description.config_files.files.count} changed configuration files."
   end
 end

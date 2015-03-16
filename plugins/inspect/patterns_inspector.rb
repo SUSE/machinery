@@ -18,9 +18,19 @@
 class PatternsInspector < Inspector
   def inspect(system, description, _filter, _options = {})
     if system.has_command?("zypper")
+      @patterns_supported = true
       inspect_with_zypper(system, description)
     else
+      @patterns_supported = false
       description.patterns = PatternsScope.new
+      "Patterns are not supported on this system."
+    end
+  end
+
+  def summary(description)
+    if @patterns_supported
+      "Found #{description.patterns.count} patterns."
+    else
       "Patterns are not supported on this system."
     end
   end
@@ -45,7 +55,7 @@ class PatternsInspector < Inspector
 
     if pattern_list.count == 0
       description.patterns = PatternsScope.new
-      return "Found 0 patterns."
+      return
     end
 
     patterns = pattern_list.map do |pattern|
@@ -57,6 +67,5 @@ class PatternsInspector < Inspector
     end.uniq.sort_by(&:name)
 
     description.patterns = PatternsScope.new(patterns)
-    "Found #{patterns.count} patterns."
   end
 end

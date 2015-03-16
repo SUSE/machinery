@@ -51,7 +51,7 @@ EOF
         ).
         and_return(systemctl_list_unit_files_output)
 
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "systemd",
@@ -61,7 +61,7 @@ EOF
           Service.new(name: "syslog.socket",     state: "enabled")
         ])
       ))
-      expect(summary).to eq("Found 3 services.")
+      expect(inspector.summary(description)).to eq("Found 3 services.")
     end
 
     it "returns data about SysVinit services on a suse system when no systemd is present" do
@@ -78,7 +78,7 @@ EOF
           Service.new(name: "autofs",      state: "off"),
           Service.new(name: "boot.isapnp", state: "on")])
 
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",
@@ -88,7 +88,7 @@ EOF
           Service.new(name: "boot.isapnp", state: "on"),
         ])
       ))
-      expect(summary).to eq("Found 3 services.")
+      expect(inspector.summary(description)).to eq("Found 3 services.")
     end
 
     it "raises an exception when requirements are not fulfilled" do
@@ -118,7 +118,7 @@ EOF
           Service.new(name: "crond", state: "on"),
           Service.new(name: "dnsmasq", state: "off")])
 
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",
@@ -127,7 +127,7 @@ EOF
           Service.new(name: "dnsmasq", state: "off"),
         ])
       ))
-      expect(summary).to eq("Found 2 services.")
+      expect(inspector.summary(description)).to eq("Found 2 services.")
     end
   end
 

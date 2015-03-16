@@ -87,8 +87,8 @@ EOF
     expect(system).to receive(:check_requirement) { true }
     expect(system).to receive(:run_command) { package_example }
 
-    summary = packages_inspector.inspect(system, description, filter)
-    expect(summary).to include("Found 2 packages")
+    packages_inspector.inspect(system, description, filter)
+    expect(packages_inspector.summary(description)).to include("Found 2 packages")
   end
 
   it "returns sorted data" do

@@ -60,18 +60,18 @@ describe GroupsInspector do
     it "return an empty list when /etc/group is missing" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(nil)
 
-      summary = subject.inspect(system, description, filter)
+      subject.inspect(system, description, filter)
 
       expect(description.groups).to be_empty
-      expect(summary).to eq("Found 0 groups.")
+      expect(subject.summary(description)).to eq("Found 0 groups.")
     end
 
     it "returns the groups" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
-      summary = subject.inspect(system, description, filter)
+      subject.inspect(system, description, filter)
       expect(description.groups).to eq(expected_groups)
-      expect(summary).to eq("Found 3 groups.")
+      expect(subject.summary(description)).to eq("Found 3 groups.")
     end
 
     it "can handle a missing newline at the end in /etc/group" do

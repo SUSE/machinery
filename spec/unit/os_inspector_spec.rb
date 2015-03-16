@@ -102,7 +102,7 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description.os).to eq(
         OsOpenSuse13_1.new(
@@ -111,7 +111,7 @@ describe OsInspector do
           architecture: "x86_64"
         )
       )
-      expect(summary).to include("openSUSE")
+      expect(inspector.summary(description)).to include("openSUSE")
     end
 
     it "returns data about the operation system on a system with redhat-release" do
@@ -120,12 +120,12 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description.os.name).to eq "Red Hat Enterprise Linux Server"
       expect(description.os.version).to eq "6.5 (Santiago)"
       expect(description.os.architecture).to eq "x86_64"
-      expect(summary).to include("Red Hat Enterprise Linux Server")
+      expect(inspector.summary(description)).to include("Red Hat Enterprise Linux Server")
     end
 
     it "returns data about the operation system on a system with suse-release" do
@@ -134,12 +134,12 @@ describe OsInspector do
 
       expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
 
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
 
       expect(description.os.name).to eq "SUSE Linux Enterprise Server 11"
       expect(description.os.version).to eq "11 SP3"
       expect(description.os.architecture).to eq "x86_64"
-      expect(summary).to include("SUSE Linux Enterprise Server")
+      expect(inspector.summary(description)).to include("SUSE Linux Enterprise Server")
     end
 
     it "returns data containing additional version information if available" do

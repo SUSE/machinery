@@ -89,6 +89,7 @@ require_relative "json_validation_error_cleaner"
 require_relative "file_validator"
 require_relative "element_filter"
 require_relative "filter"
+require_relative "filter_option_parser"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

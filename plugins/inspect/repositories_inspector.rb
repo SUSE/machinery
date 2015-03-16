@@ -18,16 +18,18 @@
 class RepositoriesInspector < Inspector
   def inspect(system, description, _filter, _options = {})
     if system.has_command?("zypper")
-      description.repositories, summary = inspect_zypp_repositories(system)
+      description.repositories = inspect_zypp_repositories(system)
     elsif system.has_command?("yum")
-      description.repositories, summary = inspect_yum_repositories(system)
+      description.repositories = inspect_yum_repositories(system)
     else
       raise Machinery::Errors::MissingRequirement.new(
         "Need either the binary 'zypper' or 'yum' to be available on the inspected system."
       )
     end
+  end
 
-    summary
+  def summary(description)
+    "Found #{description.repositories.size} repositories."
   end
 
   private
@@ -52,15 +54,13 @@ class RepositoriesInspector < Inspector
 
     if details.empty?
       result = []
-      summary = "Found 0 repositories."
     else
       priorities = parse_priorities_from_details(details)
       credentials = get_credentials_from_system(system)
       result = parse_repositories_from_xml(xml, priorities, credentials)
-      summary = "Found #{result.count} repositories."
     end
 
-    [RepositoriesScope.new(result), summary]
+    RepositoriesScope.new(result)
   end
 
   def inspect_yum_repositories(system)
@@ -80,8 +80,7 @@ class RepositoriesInspector < Inspector
       raise Machinery::Errors::InspectionFailed.new("Extraction of YUM repositories failed.")
     end
 
-    summary = "Found #{repositories.count} repositories"
-    [RepositoriesScope.new(repositories), summary]
+    RepositoriesScope.new(repositories)
   end
 
   def parse_priorities_from_details(details)

@@ -45,13 +45,15 @@ class OsInspector < Inspector
     if os
       os.architecture = get_arch(system)
       os.version += get_additional_version(system)
-      summary = "Found operating system '#{os.name}' version '#{os.version}'."
     else
       raise Machinery::Errors::UnknownOs
     end
 
     description.os = os
-    summary
+  end
+
+  def summary(description)
+    "Found operating system '#{description.os.name}' version '#{description.os.version}'."
   end
 
   private

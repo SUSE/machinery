@@ -189,9 +189,9 @@ password=2fdcb7499fd46842
       ).and_return(scc_credentials)
 
       inspector = RepositoriesInspector.new
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
       expect(description.repositories).to match_array(expected_repo_list)
-      expect(summary).to include("Found 4 repositories")
+      expect(inspector.summary(description)).to include("Found 4 repositories")
     end
 
     it "returns an empty array if there are no repositories" do
@@ -209,9 +209,9 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
       inspector = RepositoriesInspector.new
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
       expect(description.repositories).to eq(RepositoriesScope.new([]))
-      expect(summary).to include("Found 0 repositories")
+      expect(inspector.summary(description)).to include("Found 0 repositories")
     end
 
     it "returns an empty array if zypper exits with ZYPPER_EXIT_NO_REPOS" do
@@ -227,9 +227,9 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details_exit_6(system)
 
       inspector = RepositoriesInspector.new
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
       expect(description.repositories).to eq(RepositoriesScope.new([]))
-      expect(summary).to include("Found 0 repositories")
+      expect(inspector.summary(description)).to include("Found 0 repositories")
     end
 
     it "raise an error when requirements are not fulfilled" do
@@ -310,9 +310,9 @@ EOF
       expect(system).to receive(:run_command).and_return(expected_yum_extractor_output)
 
       inspector = RepositoriesInspector.new
-      summary = inspector.inspect(system, description, filter)
+      inspector.inspect(system, description, filter)
       expect(description.repositories).to match_array(expected_yum_repo_list)
-      expect(summary).to include("Found 2 repositories")
+      expect(inspector.summary(description)).to include("Found 2 repositories")
     end
 
     it "throws an error if the python output is not parseable by json" do

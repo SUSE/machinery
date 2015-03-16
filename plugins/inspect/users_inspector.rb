@@ -23,7 +23,10 @@ class UsersInspector < Inspector
     users = passwd ? parse_users(passwd, shadow) : []
 
     description.users = UsersScope.new(users.sort_by(&:name))
-    "Found #{users.size} users."
+  end
+
+  def summary(description)
+    "Found #{description.users.size} users."
   end
 
   private

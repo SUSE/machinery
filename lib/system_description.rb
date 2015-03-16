@@ -206,6 +206,7 @@ class SystemDescription < Machinery::Object
       )
     end
 
+    filter.apply!(self)
     @filters[command] = filter
   end
 

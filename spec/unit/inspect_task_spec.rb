@@ -22,16 +22,30 @@ describe InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
   silence_machinery_output
 
+  class SimpleInspectTaskList < Machinery::Array
+    has_elements class: Machinery::Object
+  end
+
   class SimpleInspectTaskScope < Machinery::Object
     include Machinery::ScopeMixin
+    has_property :files, class: SimpleInspectTaskList
   end
 
   class FooInspector < Inspector
     def inspect(_system, description, _filter, _options = nil)
-      result = SimpleInspectTaskScope.new("bar" => "baz")
+      result = SimpleInspectTaskScope.new(
+        files: SimpleInspectTaskList.new([
+          Machinery::Object.new(name: "foo"),
+          Machinery::Object.new(name: "bar"),
+          Machinery::Object.new(name: "baz"),
+        ])
+      )
 
       description.foo = result
-      "summary"
+    end
+
+    def summary(description)
+      "Found #{description.foo.files.length} elements."
     end
   end
 
@@ -40,6 +54,9 @@ describe InspectTask, "#inspect_system" do
       result = SimpleInspectTaskScope.new("bar" => "baz")
 
       description.bar = result
+    end
+
+    def summary(_description)
       "summary"
     end
   end
@@ -94,7 +111,14 @@ describe InspectTask, "#inspect_system" do
       Filter.new
     )
 
-    expect(description.foo).to eql(SimpleInspectTaskScope.new("bar" => "baz"))
+    expected = SimpleInspectTaskScope.new(
+      files: SimpleInspectTaskList.new([
+        Machinery::Object.new(name: "foo"),
+        Machinery::Object.new(name: "bar"),
+        Machinery::Object.new(name: "baz"),
+      ])
+    )
+    expect(description.foo).to eql(expected)
   end
 
   describe "in case of inspection errors" do
@@ -168,6 +192,8 @@ Inspecting foo...
   end
 
   context "with filters" do
+    capture_machinery_output
+
     it "passes the filters to the inspectors" do
       inspector = FooInspector.new
       expect(Inspector).to receive(:for).and_return(inspector)
@@ -177,8 +203,7 @@ Inspecting foo...
         expect(filter.element_filters["/foo"].matchers).
           to eq([["bar", "baz"]])
 
-        description.foo = SimpleInspectTaskScope.new
-        ""
+        description.foo = SimpleInspectTaskScope.new(files: SimpleInspectTaskList.new)
       end
 
       inspect_task.inspect_system(
@@ -225,6 +250,19 @@ Inspecting foo...
         "/baz=qux"
       ]
       expect(description.filters["inspect"].to_array).to match_array(expected)
+    end
+
+    it "asks for the summary only after filtering" do
+      inspect_task.inspect_system(
+        store,
+        host,
+        name,
+        current_user_non_root,
+        ["foo"],
+        Filter.new(["/foo/files/name=baz", "/baz=somethingelse"])
+      )
+
+      expect(captured_machinery_output).to include("Found 2 elements.")
     end
   end
 end
