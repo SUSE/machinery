@@ -22,10 +22,11 @@ class Cli
   preserve_argv(true)
   @version = Machinery::VERSION + " (system description format version " +
     "#{SystemDescription::CURRENT_FORMAT_VERSION})"
+  @config = Machinery::Config.new
   switch :version, negatable: false, desc: "Show version"
   switch :debug, negatable: false, desc: "Enable debug mode"
   switch [:help, :h], negatable: false, desc: "Show help"
-  if Machinery::Config.new.experimental_features
+  if @config.experimental_features
     flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
   end
 
@@ -42,7 +43,7 @@ class Cli
     if command.is_a?(GLI::Commands::Help) && !global_options[:version]
 
       Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
-      if Machinery::Config.new.hints
+      if @config.hints
         Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints off'."
       else
         Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints on'."
@@ -637,7 +638,7 @@ class Cli
       task = ConfigTask.new
       task.config(key, value)
 
-      if key == "hints" && !Machinery::Config.new.hints
+      if key == "hints" && !@config.hints
         Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints on'."
       end
     end
