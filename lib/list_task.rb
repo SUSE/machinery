@@ -18,6 +18,7 @@
 class ListTask
   def list(store, options = {})
     descriptions = store.list.sort
+    has_incompatible_version = false
 
     descriptions.each do |name|
       begin
@@ -28,6 +29,7 @@ class ListTask
         elsif e.format_version < SystemDescription::CURRENT_FORMAT_VERSION
           show_error("#{name}: format version #{e.format_version}, " \
             "needs to be upgraded.\n", options)
+          has_incompatible_version = true
         else
           show_error("#{name}: format version #{e.format_version}. " \
             "Please upgrade Machinery to the latest version.\n", options)
@@ -77,6 +79,8 @@ class ListTask
         Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
       end
     end
+
+    Hint.upgrade_system_description if has_incompatible_version
   end
 
   private
