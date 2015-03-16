@@ -148,6 +148,9 @@ suseImportBuildKey
 suseConfig
 EOF
     case @system_description.os
+      when OsOpenSuse13_2
+        boot = "vmxboot/suse-13.2"
+        bootloader = "grub2"
       when OsOpenSuse13_1
         boot = "vmxboot/suse-13.1"
         bootloader = "grub2"
