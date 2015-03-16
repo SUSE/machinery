@@ -125,10 +125,13 @@ popd
 # Here we do a surgery on the binary to actually load the bundled gems. This is
 # a hack, but it can't be done anywhere else because the binary is generated
 # during gem install.
-sed -i '/gem/i \
-Gem.path.unshift("%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/bundle/ruby/%{rb_ver}")
+for i in $(/usr/bin/ruby-find-versioned ruby)  ; do
+  rubysuffix="${i#/usr/bin/ruby}"
+  sed -i '/gem/i \
+  Gem.path.unshift("%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/bundle/ruby/%{rb_ver}")
 
-' %{buildroot}%{_bindir}/%{binary_name}
+  ' %{buildroot}%{_bindir}/%{binary_name}$rubysuffix
+done
 
 # Man page & additional files
 
@@ -143,7 +146,7 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/%{binary_name}
+%{_bindir}/%{binary_name}*
 %{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_full_name}.gem
 %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_full_name}.gemspec
