@@ -19,7 +19,7 @@
 # actual Filter objects.
 class FilterOptionParser
   class <<self
-    def to_filter(command, options, global_options)
+    def parse(command, options, global_options)
       filter = Filter.from_default_definition(command)
 
       definitions = skip_files_definitions(options.delete("skip-files"))

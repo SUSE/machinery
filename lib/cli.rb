@@ -458,7 +458,7 @@ class Cli
         inspect_options[:extract_unmanaged_files] = true
       end
 
-      filter = FilterOptionParser.to_filter("inspect", options, global_options)
+      filter = FilterOptionParser.parse("inspect", options, global_options)
 
       inspector_task.inspect_system(
         system_description_store,
