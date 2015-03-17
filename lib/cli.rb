@@ -554,6 +554,8 @@ class Cli
       desc: "Show diffs of configuration files changes."
     c.switch "html", required: false, negatable: false,
       desc: "Open system description in HTML format in your web browser."
+    c.switch "verbose", required: false, negatable: false,
+      desc: "Show the list of filters that is applied before showing the description."
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -564,6 +566,11 @@ class Cli
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
 
       filter = FilterOptionParser.parse("show", options, global_options)
+
+      if options["verbose"]
+        Machinery::Ui.puts "\nThe following filters were applied before showing the description:"
+        Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+      end
 
       task = ShowTask.new
       opts = {

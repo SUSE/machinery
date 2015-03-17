@@ -44,6 +44,8 @@ in local time are shown in the title of each scope section.
   * `--html` (optional):
     Open the system description in HTML format in your web browser using the `xdg-open` command.
 
+  * `--verbose` (optional):
+    Display the filters which were applied before showing the system description.
 
 ### EXAMPLES
 

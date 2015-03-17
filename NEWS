@@ -6,6 +6,8 @@
   This feature is available when the experimental-features option is on.
 * Add `--verbose` option to `inspect` command to display the filters which
   were used during inspection
+* Add `--verbose` option to `show` command to display the filters which were
+  applied before showing the system description
 
 ## Version 1.5.0 - Fri Mar 13 13:03:47 CET 2015 - thardeck@suse.de
 

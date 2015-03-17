@@ -332,6 +332,34 @@ describe Cli do
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
       end
+
+      describe "--verbose" do
+        capture_machinery_output
+
+        before(:each) do
+          expect_any_instance_of(ShowTask).to receive(:show)
+        end
+
+        it "shows no filter message by default" do
+          run_command([
+            "show", "description1",
+          ])
+
+          expect(captured_machinery_output).
+            not_to match(/.*The following filters were applied before showing the description:.*/)
+        end
+
+        it "shows the filters when `--verbose` is provided" do
+          run_command([
+            "--exclude=/unmanaged_files/files/name=/foo", "show", "description1", "--verbose",
+          ])
+
+          expect(captured_machinery_output).
+            to match(/.*The following filters were applied before showing the description:.*/)
+          expect(captured_machinery_output).
+            to match(/^\/unmanaged_files\/files\/name=.*$/)
+        end
+      end
     end
 
     describe "#validate" do
