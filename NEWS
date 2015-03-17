@@ -8,6 +8,7 @@
   were used during inspection
 * Add `--verbose` option to `show` command to display the filters which were
   applied before showing the system description
+* Show progress on upgrading the system description format
 
 ## Version 1.5.0 - Fri Mar 13 13:03:47 CET 2015 - thardeck@suse.de
 
