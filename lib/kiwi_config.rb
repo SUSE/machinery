@@ -148,23 +148,23 @@ suseImportBuildKey
 suseConfig
 EOF
     case @system_description.os
-      when OsOpenSuse13_2
-        boot = "vmxboot/suse-13.2"
-        bootloader = "grub2"
-      when OsOpenSuse13_1
-        boot = "vmxboot/suse-13.1"
-        bootloader = "grub2"
-      when OsSles12
-        boot = "vmxboot/suse-SLES12"
-        bootloader = "grub2"
-      when OsSles11
-        boot = "vmxboot/suse-SLES11"
-        bootloader = "grub"
-      else
-        raise Machinery::Errors::ExportFailed.new(
-          "Export is not possible because the operating system " \
-          "'#{@system_description.os.display_name}' is not supported."
-        )
+    when OsOpenSuse13_2
+      boot = "vmxboot/suse-13.2"
+      bootloader = "grub2"
+    when OsOpenSuse13_1
+      boot = "vmxboot/suse-13.1"
+      bootloader = "grub2"
+    when OsSles12
+      boot = "vmxboot/suse-SLES12"
+      bootloader = "grub2"
+    when OsSles11
+      boot = "vmxboot/suse-SLES11"
+      bootloader = "grub"
+    else
+      raise Machinery::Errors::ExportFailed.new(
+        "Export is not possible because the operating system " \
+        "'#{@system_description.os.display_name}' is not supported."
+      )
     end
 
     builder = Nokogiri::XML::Builder.new do |xml|
