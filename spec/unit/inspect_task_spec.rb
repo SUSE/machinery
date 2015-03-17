@@ -272,5 +272,18 @@ Inspecting foo...
 
       expect(captured_machinery_output).to include("Found 2 elements.")
     end
+
+    it "applies the filter to the generated system description" do
+      expect_any_instance_of(Filter).to receive(:apply!).with(an_instance_of(SystemDescription))
+
+      inspect_task.inspect_system(
+        store,
+        host,
+        name,
+        current_user_non_root,
+        ["foo"],
+        Filter.new(["/foo/files/name=baz"])
+      )
+    end
   end
 end

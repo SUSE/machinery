@@ -104,6 +104,7 @@ class InspectTask
       adapt_filter_in_metadata(filter_in_metadata, inspector.scope, filter)
 
       if !description.attributes.empty?
+        filter_in_metadata.apply!(description)
         description.set_filter("inspect", filter_in_metadata)
         description.save
       end
