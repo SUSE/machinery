@@ -180,5 +180,12 @@ describe Filter do
         ]
       )
     end
+
+    it "does not choke on non-existing elements" do
+      filter = Filter.new("/does/not/exist=/foo")
+      expect {
+        filter.apply!(description)
+      }.to_not raise_error
+    end
   end
 end

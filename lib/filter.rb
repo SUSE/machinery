@@ -127,9 +127,12 @@ class Filter
       pointer = system_description
       container = nil
       steps.each do |step|
+        break if !pointer
         pointer = pointer[step]
         container ||= pointer if pointer.is_a?(Machinery::Array)
       end
+
+      break if !pointer
 
       pointer.delete_if do |element|
         element_filter.matches?(element[target])
