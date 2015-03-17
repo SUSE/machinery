@@ -103,12 +103,7 @@ class SystemDescription < Machinery::Object
       description.format_version = json_format_version
 
       if hash["meta"] && hash["meta"]["filters"]
-        hash["meta"]["filters"].each do |command, filter_definitions|
-          description.filters[command] = Filter.new
-          filter_definitions.each do |definition|
-            description.filters[command].add_element_filter_from_definition(definition)
-          end
-        end
+        description.filters = hash["meta"]["filters"]
       end
 
       description
@@ -178,7 +173,7 @@ class SystemDescription < Machinery::Object
     end
     @filters.each do |command, filter|
       meta["filters"] ||= {}
-      meta["filters"][command] = filter.to_array
+      meta["filters"][command] = filter
     end
 
     hash = as_json
@@ -199,7 +194,7 @@ class SystemDescription < Machinery::Object
     File.chmod(0600, path) if created
   end
 
-  def set_filter(command, filter)
+  def set_filter_metadata(command, filter)
     if !["inspect"].include?(command)
       raise Machinery::Errors::MachineryError.new(
         "Storing the filter for command '#{command}' is not supported."

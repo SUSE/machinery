@@ -84,7 +84,7 @@ class InspectTask
     failed_inspections = {}
 
     if description.filters["inspect"]
-      filter_in_metadata = description.filters["inspect"]
+      filter_in_metadata = Filter.new(description.filters["inspect"])
     else
       filter_in_metadata = Filter.new
     end
@@ -105,7 +105,7 @@ class InspectTask
 
       if !description.attributes.empty?
         filter_in_metadata.apply!(description)
-        description.set_filter("inspect", filter_in_metadata)
+        description.set_filter_metadata("inspect", filter_in_metadata.to_array)
         description.save
       end
 

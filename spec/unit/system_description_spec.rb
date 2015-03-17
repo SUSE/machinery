@@ -477,9 +477,12 @@ describe SystemDescription do
 
       it "reads the filter information" do
         description = SystemDescription.load("description1", store)
-        expect(description.filters["inspect"]).to be_a(Filter)
-        expect(description.filters["inspect"].
-          element_filter_for("/unmanaged_files/files/name").matchers).to eq(["/opt*"])
+
+        expected = [
+          "/unmanaged_files/files/name=/opt*"
+        ]
+
+        expect(description.filters["inspect"]).to eq(expected)
       end
     end
   end
@@ -491,14 +494,15 @@ describe SystemDescription do
       expect(subject.to_hash["meta"]["filters"]).to be(nil)
       expected = ["/foo=bar", "/foo=baz", "/scope=filter"]
 
-      subject.set_filter("inspect", Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]))
+      subject.set_filter_metadata("inspect",
+        Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]).to_array)
       filters = subject.to_hash["meta"]["filters"]["inspect"]
       expect(filters).to eq(expected)
     end
 
     it "only supports inspection filters" do
       expect {
-        subject.set_filter("show", Filter.new(["/foo=bar", "/scope=filter"]))
+        subject.set_filter_metadata("show", Filter.new(["/foo=bar", "/scope=filter"]).to_array)
       }.to raise_error(/not supported/)
     end
   end

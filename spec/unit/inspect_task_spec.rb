@@ -235,14 +235,14 @@ Inspecting foo...
       )
 
       expected = ["/foo=bar,baz"]
-      expect(description.filters["inspect"].to_array).to eq(expected)
+      expect(description.filters["inspect"]).to eq(expected)
     end
 
     it "only sets filters for scopes that were inspected" do
       description = SystemDescription.new(name, store)
       expect(SystemDescription).to receive(:load).and_return(description)
 
-      description.set_filter("inspect", Filter.new(["/foo=bar", "/baz=qux"]))
+      description.set_filter_metadata("inspect", Filter.new(["/foo=bar", "/baz=qux"]).to_array)
 
       description = inspect_task.inspect_system(
         store,
@@ -257,7 +257,7 @@ Inspecting foo...
         "/foo=baz",
         "/baz=qux"
       ]
-      expect(description.filters["inspect"].to_array).to match_array(expected)
+      expect(description.filters["inspect"]).to match_array(expected)
     end
 
     it "asks for the summary only after filtering" do
