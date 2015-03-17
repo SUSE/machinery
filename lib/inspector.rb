@@ -45,22 +45,28 @@ class Inspector
     def for(scope)
       class_name = "#{scope.split("_").map(&:capitalize).join}Inspector"
 
-      Object.const_get(class_name).new if Object.const_defined?(class_name)
+      Object.const_get(class_name) if Object.const_defined?(class_name)
     end
 
     def all
-      @inspectors.map(&:new)
+      @inspectors
     end
 
     def all_scopes
       all.map(&:scope)
     end
+
+    def scope
+      # Return the un-camelcased name of the inspector,
+      # e.g. "foo_bar" for "FooBarInspector"
+      scope = self.name.match(/^(.*)Inspector$/)[1]
+      scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+    end
   end
 
+  attr_accessor :system, :description
+
   def scope
-    # Return the un-camelcased name of the inspector,
-    # e.g. "foo_bar" for "FooBarInspector"
-    scope = self.class.name.match(/^(.*)Inspector$/)[1]
-    scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+    self.class.scope
   end
 end

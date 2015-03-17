@@ -33,17 +33,18 @@ describe Inspector do
 
   describe ".for" do
     it "returns the requested Inspector" do
-      expect(Inspector.for("foo")).to be_a(FooInspector)
-      expect(Inspector.for("bar_baz")).to be_a(BarBazInspector)
+      expect(Inspector.for("foo")).to eq(FooInspector)
+      expect(Inspector.for("bar_baz")).to eq(BarBazInspector)
     end
   end
 
   describe ".all" do
     it "returns all loaded Inspectors" do
       inspectors = Inspector.all
-      expect(inspectors.find{|i| i.is_a?(FooInspector)}).to_not be_nil
-      expect(inspectors.find{|i| i.is_a?(BarracudaInspector)}).to_not be_nil
-      expect(inspectors.find{|i| i.is_a?(BarBazInspector)}).to_not be_nil
+
+      expect(inspectors).to include(FooInspector)
+      expect(inspectors).to include(BarracudaInspector)
+      expect(inspectors).to include(BarBazInspector)
     end
   end
 
