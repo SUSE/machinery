@@ -511,7 +511,7 @@ This is STDOUT
 Backtrace:
       EOT
 
-      expect(Machinery::Ui).to receive(:error).with(/Machinery experienced an unexpected error. Please file a bug report at https:\/\/github.com\/SUSE\/machinery\/issues\/new.\n/)
+      expect(Machinery::Ui).to receive(:error).with(/Machinery experienced an unexpected error. Please file a bug report at: https:\/\/github.com\/SUSE\/machinery\/issues\/new\n/)
       expect(Machinery::Ui).to receive(:error).with(/#{expected_cheetah_out}/)
       begin
         # Actually raise the exception, so we have a backtrace

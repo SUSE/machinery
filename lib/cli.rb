@@ -74,7 +74,7 @@ class Cli
       exit 1
     else
       Machinery::Ui.error "Machinery experienced an unexpected error. Please file a " \
-        "bug report at https://github.com/SUSE/machinery/issues/new.\n"
+        "bug report at: https://github.com/SUSE/machinery/issues/new\n"
       if e.is_a?(Cheetah::ExecutionFailed)
         result = ""
         result << "#{e.message}\n"
