@@ -89,10 +89,11 @@ class InspectTask
       filter_in_metadata = Filter.new
     end
 
-    scopes.map { |s| Inspector.for(s) }.each do |inspector|
+    scopes.map { |s| Inspector.for(s) }.each do |inspector_class|
+      inspector = inspector_class.new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
       begin
-        inspector.inspect(system, description, filter, options)
+        inspector.inspect(filter, options)
       rescue Machinery::Errors::MachineryError => e
         Machinery::Ui.puts " -> Inspection failed!"
         failed_inspections[inspector.scope] = e
@@ -107,7 +108,7 @@ class InspectTask
         description.save
       end
 
-      Machinery::Ui.puts " -> " + inspector.summary(description)
+      Machinery::Ui.puts " -> " + inspector.summary
     end
 
     return description, failed_inspections

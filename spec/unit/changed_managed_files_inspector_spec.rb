@@ -26,7 +26,7 @@ describe ChangedManagedFilesInspector do
   }
   let(:filter) { nil }
   subject {
-    inspector = ChangedManagedFilesInspector.new
+    inspector = ChangedManagedFilesInspector.new(system, description)
 
     allow(system).to receive(:run_script).with("changed_managed_files.sh", anything()).and_return(rpm_result)
     allow(system).to receive(:run_command).with("stat", "--printf",
@@ -39,7 +39,7 @@ describe ChangedManagedFilesInspector do
 
   describe "#inspect" do
     before(:each) do
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
     end
 
     it "returns a list of all changed files" do

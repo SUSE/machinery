@@ -16,11 +16,16 @@
 # you may find current contact information at www.suse.com
 
 class PackagesInspector < Inspector
-  def inspect(system, description, _filter, _options = {})
-    system.check_requirement("rpm", "--version")
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(_filter, _options = {})
+    @system.check_requirement("rpm", "--version")
 
     packages = Array.new
-    rpm_data = system.run_command(
+    rpm_data = @system.run_command(
       "rpm","-qa","--qf",
       "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{SIGMD5}$",
       :stdout=>:capture
@@ -40,10 +45,10 @@ class PackagesInspector < Inspector
       )
     end
 
-    description.packages = PackagesScope.new(packages.sort_by(&:name))
+    @description.packages = PackagesScope.new(packages.sort_by(&:name))
   end
 
-  def summary(description)
-    "Found #{description.packages.size} packages."
+  def summary
+    "Found #{@description.packages.size} packages."
   end
 end

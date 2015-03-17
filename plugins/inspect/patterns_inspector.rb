@@ -16,20 +16,25 @@
 # you may find current contact information at www.suse.com
 
 class PatternsInspector < Inspector
-  def inspect(system, description, _filter, _options = {})
-    if system.has_command?("zypper")
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(_filter, _options = {})
+    if @system.has_command?("zypper")
       @patterns_supported = true
-      inspect_with_zypper(system, description)
+      inspect_with_zypper
     else
       @patterns_supported = false
-      description.patterns = PatternsScope.new
+      @description.patterns = PatternsScope.new
       "Patterns are not supported on this system."
     end
   end
 
-  def summary(description)
+  def summary
     if @patterns_supported
-      "Found #{description.patterns.count} patterns."
+      "Found #{@description.patterns.count} patterns."
     else
       "Patterns are not supported on this system."
     end
@@ -37,9 +42,9 @@ class PatternsInspector < Inspector
 
   private
 
-  def inspect_with_zypper(system, description)
+  def inspect_with_zypper
     begin
-      xml = system.run_command("zypper", "-xq", "--no-refresh", "patterns",
+      xml = @system.run_command("zypper", "-xq", "--no-refresh", "patterns",
         "-i", stdout: :capture)
     rescue Cheetah::ExecutionFailed => e
       if e.stdout.include?("locked")
@@ -54,7 +59,7 @@ class PatternsInspector < Inspector
     pattern_list = Nokogiri::XML(xml).xpath("/stream/pattern-list/pattern")
 
     if pattern_list.count == 0
-      description.patterns = PatternsScope.new
+      @description.patterns = PatternsScope.new
       return
     end
 
@@ -66,6 +71,6 @@ class PatternsInspector < Inspector
       )
     end.uniq.sort_by(&:name)
 
-    description.patterns = PatternsScope.new(patterns)
+    @description.patterns = PatternsScope.new(patterns)
   end
 end

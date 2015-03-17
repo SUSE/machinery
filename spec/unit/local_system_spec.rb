@@ -25,7 +25,7 @@ describe LocalSystem do
 
   describe ".os" do
     before(:each) do
-      expect_any_instance_of(OsInspector).to receive(:inspect) do |instance, system, description|
+      expect_any_instance_of(OsInspector).to receive(:inspect) do |instance|
         system_description = create_test_description(json: <<-EOF)
         {
           "os": {
@@ -33,7 +33,7 @@ describe LocalSystem do
           }
         }
         EOF
-        description.os = system_description.os
+        instance.description.os = system_description.os
       end
     end
 

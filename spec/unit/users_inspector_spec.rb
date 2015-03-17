@@ -33,16 +33,16 @@ EOF
   }
   let(:system) { double }
   let(:filter) { nil }
-  subject { UsersInspector.new }
+  subject { UsersInspector.new(system, description) }
 
   describe "#inspect" do
     it "return an empty list when /etc/passwd is missing" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(nil)
       expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
       expect(description.users).to be_empty
-      expect(subject.summary(description)).to eq("Found 0 users.")
+      expect(subject.summary).to eq("Found 0 users.")
     end
 
     it "returns all attributes when /etc/shadow is present" do
@@ -79,10 +79,10 @@ EOF
         )
       ])
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
 
       expect(description.users).to eq(expected)
-      expect(subject.summary(description)).to eq("Found 2 users.")
+      expect(subject.summary).to eq("Found 2 users.")
     end
 
     it "it can deal with the NIS placeholder in /etc/passwd" do
@@ -105,7 +105,7 @@ EOF
         )
       ])
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
 
       expect(description.users).to eq(expected)
     end
@@ -135,17 +135,17 @@ EOF
         )
       ])
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
 
       expect(description.users).to eq(expected)
-      expect(subject.summary(description)).to eq("Found 2 users.")
+      expect(subject.summary).to eq("Found 2 users.")
     end
 
     it "returns sorted data" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
       expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
       names = description.users.map(&:name)
       expect(names).to eq(names.sort)
     end

@@ -18,11 +18,16 @@
 class ChangedManagedFilesInspector < Inspector
   include ChangedRpmFilesHelper
 
-  def inspect(system, description, _filter, options = {})
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(_filter, options = {})
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     @system = system
-    file_store = description.scope_file_store("changed_managed_files")
+    file_store = @description.scope_file_store("changed_managed_files")
 
     result = changed_files
 
@@ -39,15 +44,15 @@ class ChangedManagedFilesInspector < Inspector
       system.retrieve_files(existing_files.map(&:name), file_store.path)
     end
 
-    description["changed_managed_files"] = ChangedManagedFilesScope.new(
+    @description["changed_managed_files"] = ChangedManagedFilesScope.new(
       extracted: !!options[:extract_changed_managed_files],
       files: ChangedManagedFileList.new(result.sort_by(&:name))
     )
   end
 
-  def summary(description)
-    "#{description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
-      "#{description.changed_managed_files.files.count} changed files."
+  def summary
+    "#{@description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
+      "#{@description.changed_managed_files.files.count} changed files."
   end
 
   private

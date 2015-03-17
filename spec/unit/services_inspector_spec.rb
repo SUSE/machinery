@@ -18,14 +18,14 @@
 require_relative "spec_helper"
 
 describe ServicesInspector do
+  let(:system) { double }
+  let(:description) {
+    SystemDescription.new("systemname", SystemDescriptionStore.new)
+  }
+  let(:filter) { nil }
+  subject(:inspector) { ServicesInspector.new(system, description) }
+
   describe "#inspect" do
-    subject(:inspector) { ServicesInspector.new }
-
-    let(:description) {
-      SystemDescription.new("systemname", SystemDescriptionStore.new)
-    }
-    let(:filter) { nil }
-
     let(:systemctl_list_unit_files_output) {
       <<-EOF
 UNIT FILE         STATE
@@ -39,7 +39,6 @@ EOF
     }
 
     it "returns data about systemd services when systemd is present" do
-      system = double
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(true)
       expect(system).to receive(:run_command).
@@ -51,7 +50,7 @@ EOF
         ).
         and_return(systemctl_list_unit_files_output)
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "systemd",
@@ -61,11 +60,10 @@ EOF
           Service.new(name: "syslog.socket",     state: "enabled")
         ])
       ))
-      expect(inspector.summary(description)).to eq("Found 3 services.")
+      expect(inspector.summary).to eq("Found 3 services.")
     end
 
     it "returns data about SysVinit services on a suse system when no systemd is present" do
-      system = double
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
@@ -78,7 +76,7 @@ EOF
           Service.new(name: "autofs",      state: "off"),
           Service.new(name: "boot.isapnp", state: "on")])
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",
@@ -88,11 +86,10 @@ EOF
           Service.new(name: "boot.isapnp", state: "on"),
         ])
       ))
-      expect(inspector.summary(description)).to eq("Found 3 services.")
+      expect(inspector.summary).to eq("Found 3 services.")
     end
 
     it "raises an exception when requirements are not fulfilled" do
-      system = double
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
@@ -103,12 +100,11 @@ EOF
         and_raise(Machinery::Errors::MissingRequirement)
 
       expect {
-        inspector.inspect(system, description, filter)
+        inspector.inspect(filter)
       }.to raise_error(Machinery::Errors::MissingRequirement)
     end
 
     it "returns data about SysVinit services on a redhat system" do
-      system = double
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
@@ -118,7 +114,7 @@ EOF
           Service.new(name: "crond", state: "on"),
           Service.new(name: "dnsmasq", state: "off")])
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
         init_system: "sysvinit",
@@ -127,7 +123,7 @@ EOF
           Service.new(name: "dnsmasq", state: "off"),
         ])
       ))
-      expect(inspector.summary(description)).to eq("Found 2 services.")
+      expect(inspector.summary).to eq("Found 2 services.")
     end
   end
 
@@ -139,8 +135,6 @@ boot.isapnp               on
 alsasound                 on
 autofs                    off
 EOF
-      system = double
-      inspector = ServicesInspector.new
 
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
@@ -153,7 +147,7 @@ EOF
       expect(system).to receive(:run_command).
         with("chkconfig", "--allservices", stdout: :capture).
       and_return(chkconfig_suse_output)
-      services = inspector.send(:parse_suse_chkconfig, system)
+      services = inspector.send(:parse_suse_chkconfig)
 
       expect(services).to match_array([
         Service.new(name: "alsasound",   state: "on"),
@@ -170,8 +164,6 @@ EOF
 crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
 dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
 EOF
-      system = double
-      inspector = ServicesInspector.new
 
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
@@ -188,7 +180,7 @@ EOF
       expect(system).to receive(:run_command).
         with("chkconfig", "--list", stdout: :capture).
       and_return(chkconfig_redhat_output)
-      services = inspector.send(:parse_redhat_chkconfig, system)
+      services = inspector.send(:parse_redhat_chkconfig)
 
       expect(services).to eq([
         Service.new(name: "crond", state: "on"),
