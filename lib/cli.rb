@@ -555,7 +555,7 @@ class Cli
     c.switch "html", required: false, negatable: false,
       desc: "Open system description in HTML format in your web browser."
     c.switch "verbose", required: false, negatable: false,
-      desc: "Show the list of filters that is applied before showing the description."
+      desc: "Show the filters that were applied before showing the description."
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
