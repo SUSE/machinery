@@ -125,6 +125,10 @@ popd
 # Here we do a surgery on the binary to actually load the bundled gems. This is
 # a hack, but it can't be done anywhere else because the binary is generated
 # during gem install.
+# work around issue with machinery2.0 binary naming (related to /etc/gemrc)
+%if 0%{?suse_version} == 1310
+  mv "%{buildroot}%{_bindir}/%{binary_name}"* "%{buildroot}%{_bindir}/%{binary_name}"
+%endif
 sed -i '/gem/i \
 Gem.path.unshift("%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/bundle/ruby/%{rb_ver}")
 
