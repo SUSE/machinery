@@ -68,6 +68,10 @@ trigger errors.
 
       $ `machinery` inspect --skip-files=/file\\,with_comma myhost
 
+  * `--verbose` (optional):
+    Display the filters which are used during inspection.
+
+
 ### PREREQUISITES
 
   * Inspecting a local system requires running `machinery` as root.

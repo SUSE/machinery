@@ -219,6 +219,30 @@ describe Cli do
         ])
       end
 
+      describe "--verbose" do
+        capture_machinery_output
+
+        it "shows no filter message by default" do
+          run_command([
+            "inspect", example_host,
+          ])
+
+          expect(captured_machinery_output).
+            not_to match(/.*The following filters are applied during inspection:.*/)
+        end
+
+        it "shows the filters when `--verbose` is provided" do
+          run_command([
+            "inspect", "--verbose", example_host,
+          ])
+
+          expect(captured_machinery_output).
+            to match(/.*The following filters are applied during inspection:.*/)
+          expect(captured_machinery_output).
+            to match(/^\/unmanaged_files\/files\/name=.*$/)
+        end
+      end
+
       describe "file extraction" do
         it "doesn't extract files when --extract-files is not specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).

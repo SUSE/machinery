@@ -435,6 +435,8 @@ class Cli
       desc: "Extract changed managed files from inspected system"
     c.switch :show, required: false, negatable: false,
       desc: "Print inspection result"
+    c.switch :verbose, required: false, negatable: false,
+      desc: "Display the filters which are used during inspection"
 
     c.action do |global_options,options,args|
       host = shift_arg(args, "HOSTNAME")
@@ -463,6 +465,11 @@ class Cli
       end
 
       filter = FilterOptionParser.parse("inspect", options, global_options)
+
+      if options["verbose"]
+        Machinery::Ui.puts "\nThe following filters are applied during inspection:"
+        Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+      end
 
       inspector_task.inspect_system(
         system_description_store,
