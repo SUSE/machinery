@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe UpgradeFormatTask do
+  capture_machinery_output
   initialize_system_description_factory_store
 
   let(:outdated_json) {<<-EOF
@@ -86,6 +87,25 @@ describe UpgradeFormatTask do
           system_description_factory_store)
         expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
       end
+    end
+
+    it "lists each upgraded system description" do
+      expect {
+        SystemDescription.load("descriptions2", system_description_factory_store)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError)
+
+      actual_output = <<-EOF
+Upgrading description "description1"
+Upgrading description "description2"
+EOF
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
+
+      ["description1", "description2"].each do |description|
+        migrated_description = SystemDescription.load(description,
+          system_description_factory_store)
+        expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      end
+      expect(captured_machinery_output).to include(actual_output)
     end
 
     it "handles failed upgrades and continues" do

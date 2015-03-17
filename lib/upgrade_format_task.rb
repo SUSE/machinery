@@ -35,6 +35,7 @@ class UpgradeFormatTask
     descriptions.each do |description|
       begin
         Machinery.logger.info "Upgrading description \"#{description}\""
+        Machinery::Ui.puts "Upgrading description \"#{description}\""
         migrated = Migration.migrate_description(store, description, force: options[:force])
         migrations_done += 1 if migrated
       rescue StandardError => e
