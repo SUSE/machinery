@@ -21,11 +21,11 @@ describe RepositoriesInspector do
   let(:system) {
     double
   }
-
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
   let(:filter) { nil }
+  let(:inspector) { RepositoriesInspector.new(system, description) }
 
   describe "zypper repositories" do
     let(:zypper_output_xml) {
@@ -188,10 +188,9 @@ password=2fdcb7499fd46842
         stdout: :capture
       ).and_return(scc_credentials)
 
-      inspector = RepositoriesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
       expect(description.repositories).to match_array(expected_repo_list)
-      expect(inspector.summary(description)).to include("Found 4 repositories")
+      expect(inspector.summary).to include("Found 4 repositories")
     end
 
     it "returns an empty array if there are no repositories" do
@@ -208,10 +207,9 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_xml(system, zypper_empty_output_xml)
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
-      inspector = RepositoriesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
       expect(description.repositories).to eq(RepositoriesScope.new([]))
-      expect(inspector.summary(description)).to include("Found 0 repositories")
+      expect(inspector.summary).to include("Found 0 repositories")
     end
 
     it "returns an empty array if zypper exits with ZYPPER_EXIT_NO_REPOS" do
@@ -226,18 +224,16 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_xml(system, zypper_empty_output_xml)
       setup_expectation_zypper_details_exit_6(system)
 
-      inspector = RepositoriesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
       expect(description.repositories).to eq(RepositoriesScope.new([]))
-      expect(inspector.summary(description)).to include("Found 0 repositories")
+      expect(inspector.summary).to include("Found 0 repositories")
     end
 
     it "raise an error when requirements are not fulfilled" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
       allow(system).to receive(:has_command?).with("yum").and_return(false)
 
-      inspector = RepositoriesInspector.new
-      expect { inspector.inspect(system, description, filter) }.to raise_error(
+      expect { inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::MissingRequirement, /Need either the binary 'zypper' or 'yum'/
       )
     end
@@ -249,9 +245,7 @@ password=2fdcb7499fd46842
       expect(system).to receive(:run_command) { ncc_credentials }
       expect(system).to receive(:run_command) { scc_credentials }
 
-      inspector = RepositoriesInspector.new
-
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
       names = description.repositories.map(&:name)
 
       expect(names).to eq(names.sort)
@@ -309,17 +303,15 @@ EOF
     it "inspects repos" do
       expect(system).to receive(:run_command).and_return(expected_yum_extractor_output)
 
-      inspector = RepositoriesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
       expect(description.repositories).to match_array(expected_yum_repo_list)
-      expect(inspector.summary(description)).to include("Found 2 repositories")
+      expect(inspector.summary).to include("Found 2 repositories")
     end
 
     it "throws an error if the python output is not parseable by json" do
       expect(system).to receive(:run_command).and_return(faulty_yum_extractor_output)
 
-      inspector = RepositoriesInspector.new
-      expect { inspector.inspect(system, description, filter) }.to raise_error(
+      expect { inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed./
       )
     end
@@ -328,8 +320,7 @@ EOF
     it "throws an Machinery AnalysisFailed error when the url is empty" do
       expect(system).to receive(:run_command).and_return(unsupported_metalink_repo)
 
-      inspector = RepositoriesInspector.new
-      expect { inspector.inspect(system, description, filter) }.to raise_error(
+      expect { inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::InspectionFailed, /Yum repository baseurl is missing/
       )
     end

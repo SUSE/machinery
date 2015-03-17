@@ -18,8 +18,8 @@
 #  Inspect name, version, and other attributes of the operating system
 class OsInspector < Inspector
   # determines the architecture
-  def get_arch(system)
-    system.run_command("uname", "-m", :stdout => :capture).chomp
+  def get_arch
+    @system.run_command("uname", "-m", :stdout => :capture).chomp
   end
 
   def strip_arch_from_name(name)
@@ -31,53 +31,58 @@ class OsInspector < Inspector
   end
 
   # checks for additional version information like Beta or RC
-  def get_additional_version(system)
-    issue = system.read_file("/etc/issue")
+  def get_additional_version
+    issue = @system.read_file("/etc/issue")
     special_version = issue.scan(/Beta\d+|RC\d|GMC\d*/).first if issue
 
     special_version ? " #{special_version.gsub(/[0-9]{1,2}/," \\0")}" : ""
   end
 
-  def inspect(system, description, _filter, _options = {})
-    system.check_requirement("cat", "--version") if system.is_a?(RemoteSystem)
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
 
-    os = get_os(system)
+  def inspect(_filter, _options = {})
+    @system.check_requirement("cat", "--version") if @system.is_a?(RemoteSystem)
+
+    os = get_os
     if os
-      os.architecture = get_arch(system)
-      os.version += get_additional_version(system)
+      os.architecture = get_arch
+      os.version += get_additional_version
     else
       raise Machinery::Errors::UnknownOs
     end
 
-    description.os = os
+    @description.os = os
   end
 
-  def summary(description)
-    "Found operating system '#{description.os.name}' version '#{description.os.version}'."
+  def summary
+    "Found operating system '#{@description.os.name}' version '#{@description.os.version}'."
   end
 
   private
 
-  def get_os(system)
+  def get_os
     # Use os-release file by default
-    os = get_os_from_os_release(system)
+    os = get_os_from_os_release
 
     # Fall back to SuSE-release file
     if !os
-      os = get_os_from_suse_release(system)
+      os = get_os_from_suse_release
     end
 
     # Fall back to redhat-release file
     if !os
-      os = get_os_from_redhat_release(system)
+      os = get_os_from_redhat_release
     end
 
     os
   end
 
   # check for freedesktop standard: /etc/os-release
-  def get_os_from_os_release(system)
-    os_release = system.read_file("/etc/os-release")
+  def get_os_from_os_release
+    os_release = @system.read_file("/etc/os-release")
     return if !os_release
 
     result = Hash.new
@@ -96,8 +101,8 @@ class OsInspector < Inspector
   end
 
   # checks for old suse standard: /etc/SuSE-release
-  def get_os_from_suse_release(system)
-    suse_release = system.read_file("/etc/SuSE-release")
+  def get_os_from_suse_release
+    suse_release = @system.read_file("/etc/SuSE-release")
     return if !suse_release
 
     result = Hash.new
@@ -122,8 +127,8 @@ class OsInspector < Inspector
   end
 
   # checks for redhat standard: /etc/redhat-release
-  def get_os_from_redhat_release(system)
-    redhat_release = system.read_file("/etc/redhat-release")
+  def get_os_from_redhat_release
+    redhat_release = @system.read_file("/etc/redhat-release")
     return if !redhat_release
 
     result = Hash.new

@@ -18,10 +18,15 @@
 require_relative "spec_helper"
 
 describe UnmanagedFilesInspector do
+  let(:system) { double }
+  let(:description) {
+    SystemDescription.new("systemname", SystemDescriptionStore.new)
+  }
+  subject { UnmanagedFilesInspector.new(system, description) }
+
   describe ".inspect" do
     include FakeFS::SpecHelpers
 
-    subject { UnmanagedFilesInspector.new }
     let(:test_file_path) { "spec/data/unmanaged_files" }
     let(:default_filter) {
       Filter.from_default_definition("inspect")
@@ -90,10 +95,6 @@ describe UnmanagedFilesInspector do
         extracted: true,
         files: UnmanagedFileList.new(files)
       )
-    }
-
-    let(:description) {
-      SystemDescription.new("systemname", SystemDescriptionStore.new)
     }
 
     before(:each) do
@@ -319,98 +320,83 @@ describe UnmanagedFilesInspector do
     end
 
     it "returns empty when no unmanaged files are there" do
-      system = double
       expect_inspect_unmanaged(system, false, false)
 
-      subject.inspect(system, description, default_filter)
+      subject.inspect(default_filter)
 
       expected = UnmanagedFilesScope.new(
         extracted: false,
         files: UnmanagedFileList.new
       )
       expect(description["unmanaged_files"]).to eq(expected)
-      expect(subject.summary(description)).to include("Found 0 unmanaged files and trees")
+      expect(subject.summary).to include("Found 0 unmanaged files and trees")
     end
 
     it "returns data about unmanaged files when requirements are fulfilled" do
-      system = double
-
       expect_inspect_unmanaged(system, true, false)
 
-      subject.inspect(system, description, default_filter)
+      subject.inspect(default_filter)
 
       expect(description["unmanaged_files"]).to eq(expected_data)
-      expect(subject.summary(description)).
+      expect(subject.summary).
         to include("Found #{expected_data.files.size} unmanaged files and trees")
     end
 
     it "returns sorted data" do
-      system = double
-
       expect_inspect_unmanaged(system, true, false)
 
-      subject.inspect(system, description, default_filter)
+      subject.inspect(default_filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
     end
 
     it "adheres to simple filters" do
-      system = double
-
       expect_inspect_unmanaged(system, true, false, ["/usr/local"])
 
       default_filter.add_element_filter_from_definition("/unmanaged_files/files/name=/usr/local/*")
-      subject.inspect(system, description, default_filter)
+      subject.inspect(default_filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
     end
 
     it "adheres to more complex filters" do
-      system = double
-
       expect_inspect_unmanaged(system, true, false, ["/usr/local", "/etc/skel/.config"])
 
       default_filter.add_element_filter_from_definition("/unmanaged_files/files/name=/usr/local/")
       default_filter.add_element_filter_from_definition(
         "/unmanaged_files/files/name=/etc/skel/.config")
-      subject.inspect(system, description, default_filter)
+      subject.inspect(default_filter)
       names = description["unmanaged_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)
     end
 
     it "raise an error when requirements are not fulfilled" do
-      system = double
       expect(system).to receive(:check_requirement).with(
         "rpm", "--version"
       ).and_raise(Machinery::Errors::MissingRequirement)
 
-      expect { subject.inspect(system, description, default_filter) }.to raise_error(
+      expect { subject.inspect(default_filter) }.to raise_error(
         Machinery::Errors::MissingRequirement)
     end
 
     it "extracts unmanaged files" do
-      system = double
       expect_inspect_unmanaged(system, true, true)
 
-      subject.inspect(
-        system, description, default_filter,
-        :extract_unmanaged_files => true
-      )
+      subject.inspect(default_filter, :extract_unmanaged_files => true)
 
       expect(description["unmanaged_files"]).to eq(expected_data_meta)
-      expect(subject.summary(description)).
+      expect(subject.summary).
         to include("Extracted #{expected_data.files.size} unmanaged files and trees")
       cfdir = description.scope_file_store("unmanaged_files").path
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end
 
     it "returns schema compliant data" do
-      system = double
       expect_inspect_unmanaged(system, true, true)
-      subject.inspect(system, description, default_filter, extract_unmanaged_files: true)
+      subject.inspect(default_filter, extract_unmanaged_files: true)
 
       json_hash = JSON.parse(description.to_json)
       expect {
@@ -421,7 +407,6 @@ describe UnmanagedFilesInspector do
 
   describe "#get_find_data" do
     it "does not choke on filenames with invalid UTF-8 characters and filters them" do
-      system = double
       expect(system).to receive(:run_command).and_return(
         "f\0good_filename\0\0" \
         "f\0broken\255filename\0\0"
@@ -430,7 +415,7 @@ describe UnmanagedFilesInspector do
 
       result = nil
       expect {
-        result = subject.get_find_data(system, "/etc", 1)
+        result = subject.get_find_data("/etc", 1)
       }.to_not raise_error
 
       expect(result).to eq([{"good_filename" => ""}, {},
@@ -438,13 +423,12 @@ describe UnmanagedFilesInspector do
     end
 
     it "reports both link and target if both is broken" do
-      system = double
       expect(system).to receive(:run_command).and_return(
         "f\0broken\255Link\0broken\255target\0"
       )
       expect(Machinery::Ui).to receive(:warn).with(/broken\uFFFDLink.*broken\uFFFDtarget/)
 
-      result = subject.get_find_data(system, "/etc", 1)
+      result = subject.get_find_data("/etc", 1)
       expect(result).to eq([
         {},
         {},

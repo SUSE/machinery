@@ -22,7 +22,14 @@ describe PackagesInspector, ".inspect" do
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
   let(:filter) { nil }
-  let(:packages_inspector) { PackagesInspector.new }
+  let(:system) {
+    double(
+      :requires_root?    => false,
+      :host              => "example.com",
+      :check_requirement => nil
+    )
+  }
+  let(:packages_inspector) { PackagesInspector.new(system, description) }
 
   let(:package_example) { <<EOF
 zypper|1.9.16|22.2|x86_64|openSUSE|4a87f6b9ceae5d40a411fe52d0f17050$
@@ -56,16 +63,9 @@ EOF
   }
 
   def inspect_data(host = "myhost", data = package_example)
-    inspector = PackagesInspector.new
-    system = double(
-      :requires_root?    => false,
-      :host              => "example.com",
-      :check_requirement => nil
-    )
-
     expect(system).to receive(:run_command) { data }
 
-    inspector.inspect(system, description, filter)
+    packages_inspector.inspect(filter)
     description.packages
   end
 
@@ -83,12 +83,11 @@ EOF
   end
 
   it "returns a summary" do
-    system = double
     expect(system).to receive(:check_requirement) { true }
     expect(system).to receive(:run_command) { package_example }
 
-    packages_inspector.inspect(system, description, filter)
-    expect(packages_inspector.summary(description)).to include("Found 2 packages")
+    packages_inspector.inspect(filter)
+    expect(packages_inspector.summary).to include("Found 2 packages")
   end
 
   it "returns sorted data" do

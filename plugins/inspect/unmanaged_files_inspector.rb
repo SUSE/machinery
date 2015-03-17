@@ -17,18 +17,18 @@
 
 class UnmanagedFilesInspector < Inspector
   # checks if all required binaries are present
-  def check_requirements(system, check_tar)
-    system.check_requirement("rpm", "--version")
-    system.check_requirement("sed", "--version")
-    system.check_requirement("cat", "--version")
-    system.check_requirement("find", "--version")
-    system.check_requirement("tar", "--version") if check_tar
-    system.check_requirement("gzip", "--version") if check_tar
+  def check_requirements(check_tar)
+    @system.check_requirement("rpm", "--version")
+    @system.check_requirement("sed", "--version")
+    @system.check_requirement("cat", "--version")
+    @system.check_requirement("find", "--version")
+    @system.check_requirement("tar", "--version") if check_tar
+    @system.check_requirement("gzip", "--version") if check_tar
   end
 
   # extract pathes from rpm database into ruby hashes
-  def extract_rpm_database(system)
-    out = system.run_command(
+  def extract_rpm_database
+    out = @system.run_command(
       ["rpm", "-qlav"],
       ["sed", "s/^\\(.\\)[^/]* /\\1 /"],
       :stdout => :capture
@@ -79,14 +79,14 @@ class UnmanagedFilesInspector < Inspector
     p "should not happen non-abs dirs:#{list}" unless list.empty?
   end
 
-  def extract_unmanaged_files(system, description, files, trees, excluded, store_name)
-    file_store = description.scope_file_store(store_name)
+  def extract_unmanaged_files(files, trees, excluded, store_name)
+    file_store = @description.scope_file_store(store_name)
     file_store.remove
     file_store.create
     store_path = file_store.path
 
     archive_path = File.join(store_path, "files.tgz")
-    system.create_archive(files.join("\0"), archive_path, excluded)
+    @system.create_archive(files.join("\0"), archive_path, excluded)
 
     trees.each do |tree|
       tree_name = File.basename(tree)
@@ -95,7 +95,7 @@ class UnmanagedFilesInspector < Inspector
 
       file_store.create_sub_directory(sub_dir)
       archive_path = File.join(store_path, sub_dir, "#{tree_name}.tgz")
-      system.create_archive(tree, archive_path, excluded)
+      @system.create_archive(tree, archive_path, excluded)
     end
   end
 
@@ -136,7 +136,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   # find paths below dir until a certain depth is reached
-  def get_find_data( system, dir, depth )
+  def get_find_data(dir, depth )
     dep = depth - 1
     files = {}
     dirs = {}
@@ -157,7 +157,7 @@ class UnmanagedFilesInspector < Inspector
     # string which can be safely used.
     out = ""
     begin
-      out = system.run_command(
+      out = @system.run_command(
         "/bin/bash",
         stdin:           cmd,
         stdout:          :capture,
@@ -218,20 +218,25 @@ class UnmanagedFilesInspector < Inspector
     3
   end
 
-  def inspect(system, description, filter, options = {})
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(filter, options = {})
     do_extract = options && options[:extract_unmanaged_files]
-    check_requirements(system, do_extract)
+    check_requirements(do_extract)
 
-    file_store_tmp = description.scope_file_store("unmanaged_files.tmp")
-    file_store_final = description.scope_file_store("unmanaged_files")
+    file_store_tmp = @description.scope_file_store("unmanaged_files.tmp")
+    file_store_final = @description.scope_file_store("unmanaged_files")
 
-    mount_points = MountPoints.new(system)
+    mount_points = MountPoints.new(@system)
 
-    rpm_files, rpm_dirs = extract_rpm_database(system)
+    rpm_files, rpm_dirs = extract_rpm_database
 
     # Btrfs subvolumes and local mounts need to be inspected separately because
     # they are not part of the `get_find_data` return data
-    local_filesystems = mount_points.local + btrfs_subvolumes(system)
+    local_filesystems = mount_points.local + btrfs_subvolumes
 
     unmanaged_files = []
     unmanaged_trees = []
@@ -242,7 +247,7 @@ class UnmanagedFilesInspector < Inspector
 
     file_filter = filter.element_filter_for("/unmanaged_files/files/name") if filter
     file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
-    file_filter.add_matchers(description.store.base_path)
+    file_filter.add_matchers(@description.store.base_path)
 
     # Add a recursive pendant to each ignored element
     file_filter.add_matchers(file_filter.matchers.map { |entry| File.join(entry, "/*") })
@@ -276,7 +281,7 @@ class UnmanagedFilesInspector < Inspector
 
       # determine files and directories below find_dir until a certain depth
       depth = local_filesystems.include?(find_dir) ? start : max
-      files, dirs, excluded = get_find_data( system, find_dir, depth )
+      files, dirs, excluded = get_find_data(find_dir, depth )
       excluded_files += excluded
       find_count += 1
       find_dir += "/" if find_dir.size > 1
@@ -341,8 +346,7 @@ class UnmanagedFilesInspector < Inspector
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin
       if do_extract
-        extract_unmanaged_files(system, description, unmanaged_files,
-          unmanaged_trees, excluded_files, file_store_tmp.store_name)
+        extract_unmanaged_files(unmanaged_files, unmanaged_trees, excluded_files, file_store_tmp.store_name)
       else
         file_store_final.remove
       end
@@ -360,7 +364,7 @@ class UnmanagedFilesInspector < Inspector
       # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
       if [1, 2, 15].include?(e.signo)
         Machinery::Ui.warn "Interrupted by user. The partly extracted unmanaged-files are available" \
-          " under '#{description.file_store(tmp_file_store)}'"
+          " under '#{@description.file_store(tmp_file_store)}'"
       end
       raise
     end
@@ -368,15 +372,15 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    description["unmanaged_files"] = UnmanagedFilesScope.new(
+    @description["unmanaged_files"] = UnmanagedFilesScope.new(
       extracted: !!do_extract,
       files: UnmanagedFileList.new(osl.sort_by(&:name))
     )
   end
 
-  def summary(description)
-    "#{description.unmanaged_files.extracted ? "Extracted" : "Found"} " +
-      "#{description.unmanaged_files.files.count} unmanaged files and trees."
+  def summary
+    "#{@description.unmanaged_files.extracted ? "Extracted" : "Found"} " +
+      "#{@description.unmanaged_files.files.count} unmanaged files and trees."
   end
 
   private
@@ -393,8 +397,8 @@ class UnmanagedFilesInspector < Inspector
     s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
   end
 
-  def btrfs_subvolumes(system)
-    system.run_command(
+  def btrfs_subvolumes
+    @system.run_command(
       ["btrfs", "subvolume", "list", "/"],
       ["awk", "{print $NF}"],
       stdout: :capture

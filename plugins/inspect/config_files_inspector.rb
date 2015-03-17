@@ -19,14 +19,14 @@ class ConfigFilesInspector < Inspector
   include ChangedRpmFilesHelper
 
   # checks if all required binaries are present
-  def check_requirements(system, check_rsync)
-    system.check_requirement("rpm", "--version")
-    system.check_requirement("stat", "--version")
-    system.check_requirement("rsync", "--version") if check_rsync
+  def check_requirements(check_rsync)
+    @system.check_requirement("rpm", "--version")
+    @system.check_requirement("stat", "--version")
+    @system.check_requirement("rsync", "--version") if check_rsync
   end
 
   # returns list of packages containing configfiles
-  def packages_with_config_files(system)
+  def packages_with_config_files
     # first determine packages that have config files at all
     # rpm command provides lines with package names and subsequent
     # lines with pathes of config files for that package
@@ -35,7 +35,7 @@ class ConfigFilesInspector < Inspector
     # /etc/apache2/charset.conv
     # /etc/apache2/default-server.conf
     #
-    output = system.run_command(
+    output = @system.run_command(
       "rpm", "-qa", "--configfiles", "--queryformat",
       "%{NAME}-%{VERSION}\n",
       :stdout => :capture
@@ -47,9 +47,9 @@ class ConfigFilesInspector < Inspector
   end
 
   # returns a hash with entries for changed config files
-  def config_file_changes(system, pkg)
+  def config_file_changes(pkg)
     begin
-      out = system.run_command(
+      out = @system.run_command(
         "rpm", "-V",
         "--nodeps", "--nodigest", "--nosignature", "--nomtime", "--nolinkto",
         pkg,
@@ -82,16 +82,21 @@ class ConfigFilesInspector < Inspector
     end
   end
 
-  def inspect(system, description, _filter, options = {})
-    do_extract = options[:extract_changed_config_files]
-    check_requirements(system, do_extract)
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
 
-    result = packages_with_config_files(system).flat_map do |package|
-      config_file_changes(system, package)
+  def inspect(_filter, options = {})
+    do_extract = options[:extract_changed_config_files]
+    check_requirements(do_extract)
+
+    result = packages_with_config_files.flat_map do |package|
+      config_file_changes(package)
     end
 
     paths = result.reject { |f| f.changes == ["deleted"] }.map(&:name)
-    path_data = get_path_data(system, paths)
+    path_data = get_path_data(@system, paths)
     key_list = [ :user, :group, :mode ]
     result.each do |pkg|
       pname = pkg.name
@@ -100,21 +105,21 @@ class ConfigFilesInspector < Inspector
       end
     end
 
-    file_store = description.scope_file_store("config_files")
+    file_store = @description.scope_file_store("config_files")
     file_store.remove
     if do_extract
       file_store.create
-      system.retrieve_files(paths, file_store.path)
+      @system.retrieve_files(paths, file_store.path)
     end
 
-    description["config_files"] = ConfigFilesScope.new(
+    @description["config_files"] = ConfigFilesScope.new(
       extracted: !!do_extract,
       files: ConfigFileList.new(result.sort_by(&:name))
     )
   end
 
-  def summary(description)
-    "#{description.config_files.extracted ? "Extracted" : "Found"} " +
-      "#{description.config_files.files.count} changed configuration files."
+  def summary
+    "#{@description.config_files.extracted ? "Extracted" : "Found"} " +
+      "#{@description.config_files.files.count} changed configuration files."
   end
 end

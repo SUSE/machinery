@@ -16,16 +16,21 @@
 # you may find current contact information at www.suse.com
 
 class GroupsInspector < Inspector
-  def inspect(system, description, _filter, _options = {})
-    group_content = system.read_file("/etc/group")
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(_filter, _options = {})
+    group_content = @system.read_file("/etc/group")
 
     groups = group_content ? parse_groups(group_content) : []
 
-    description.groups = GroupsScope.new(groups.sort_by(&:name))
+    @description.groups = GroupsScope.new(groups.sort_by(&:name))
   end
 
-  def summary(description)
-    "Found #{description.groups.size} groups."
+  def summary
+    "Found #{@description.groups.size} groups."
   end
 
   private

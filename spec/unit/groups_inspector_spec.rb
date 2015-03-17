@@ -54,37 +54,37 @@ describe GroupsInspector do
   }
 
   let(:system) { double }
-  subject { GroupsInspector.new }
+  subject { GroupsInspector.new(system, description) }
 
   describe "#inspect" do
     it "return an empty list when /etc/group is missing" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(nil)
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
 
       expect(description.groups).to be_empty
-      expect(subject.summary(description)).to eq("Found 0 groups.")
+      expect(subject.summary).to eq("Found 0 groups.")
     end
 
     it "returns the groups" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
       expect(description.groups).to eq(expected_groups)
-      expect(subject.summary(description)).to eq("Found 3 groups.")
+      expect(subject.summary).to eq("Found 3 groups.")
     end
 
     it "can handle a missing newline at the end in /etc/group" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content.chomp)
 
-      summary = subject.inspect(system, description, filter)
+      summary = subject.inspect(filter)
       expect(description.groups).to eq(expected_groups)
     end
 
     it "returns sorted data" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content)
 
-      subject.inspect(system, description, filter)
+      subject.inspect(filter)
       names = description.groups.map(&:name)
       expect(names).to eq(names.sort)
     end

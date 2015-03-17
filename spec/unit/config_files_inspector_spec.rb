@@ -221,11 +221,11 @@ EOF
 
       expect_inspect_configfiles(system, false)
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter)
 
       expect(description["config_files"]).to eq(expected_data)
-      expect(inspector.summary(description)).to include("6 changed configuration files")
+      expect(inspector.summary).to include("6 changed configuration files")
     end
 
     it "returns empty when no modified config files are there" do
@@ -237,8 +237,8 @@ EOF
         :stdout => :capture
       ).and_return("")
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter)
 
       expected = ConfigFilesScope.new(
         extracted: false,
@@ -253,8 +253,8 @@ EOF
         "rpm", "--version"
       ).and_raise(Machinery::Errors::MissingRequirement)
 
-      inspector = ConfigFilesInspector.new
-      expect{inspector.inspect(system, description, filter)}.to raise_error(
+      inspector = ConfigFilesInspector.new(system, description)
+      expect{inspector.inspect(filter)}.to raise_error(
         Machinery::Errors::MissingRequirement)
     end
 
@@ -262,9 +262,9 @@ EOF
       system = double
       expect_inspect_configfiles(system, true)
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter, extract_changed_config_files: true)
-      expect(inspector.summary(description)).to include("Extracted 6 changed configuration files")
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter, extract_changed_config_files: true)
+      expect(inspector.summary).to include("Extracted 6 changed configuration files")
       cfdir = File.join(store.description_path(name), "config_files")
       expect(File.stat(cfdir).mode & 0777).to eq(0700)
     end
@@ -277,9 +277,9 @@ EOF
       File.chmod(0750, store.description_path(name))
       expect_inspect_configfiles(system, true)
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter, extract_changed_config_files: true)
-      expect(inspector.summary(description)).to include("Extracted 6 changed configuration files")
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter, extract_changed_config_files: true)
+      expect(inspector.summary).to include("Extracted 6 changed configuration files")
       expect(File.stat(cfdir).mode & 0777).to eq(0750)
     end
 
@@ -294,8 +294,8 @@ EOF
 
       expect(File.exists?(cfdir_file)).to be true
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter)
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter)
 
       expect(File.exists?(cfdir_file)).to be false
     end
@@ -304,8 +304,8 @@ EOF
       system = double
       expect_inspect_configfiles(system, true)
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter, extract_changed_config_files: true )
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter, extract_changed_config_files: true )
 
       expect {
         JsonValidator.new(description.to_hash).validate
@@ -316,8 +316,8 @@ EOF
       system = double
       expect_inspect_configfiles(system, true)
 
-      inspector = ConfigFilesInspector.new
-      inspector.inspect(system, description, filter, :extract_changed_config_files => true)
+      inspector = ConfigFilesInspector.new(system, description)
+      inspector.inspect(filter, :extract_changed_config_files => true)
       names = description["config_files"].files.map(&:name)
 
       expect(names).to eq(names.sort)

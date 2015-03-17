@@ -16,17 +16,22 @@
 # you may find current contact information at www.suse.com
 
 class UsersInspector < Inspector
-  def inspect(system, description, _filter, _options = {})
-    passwd = system.read_file("/etc/passwd")
-    shadow = system.read_file("/etc/shadow")
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(_filter, _options = {})
+    passwd = @system.read_file("/etc/passwd")
+    shadow = @system.read_file("/etc/shadow")
 
     users = passwd ? parse_users(passwd, shadow) : []
 
-    description.users = UsersScope.new(users.sort_by(&:name))
+    @description.users = UsersScope.new(users.sort_by(&:name))
   end
 
-  def summary(description)
-    "Found #{description.users.size} users."
+  def summary
+    "Found #{@description.users.size} users."
   end
 
   private

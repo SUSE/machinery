@@ -32,7 +32,11 @@ describe InspectTask, "#inspect_system" do
   end
 
   class FooInspector < Inspector
-    def inspect(_system, description, _filter, _options = nil)
+    def initialize(_system, description)
+      @description = description
+    end
+
+    def inspect(_filter, _options = nil)
       result = SimpleInspectTaskScope.new(
         files: SimpleInspectTaskList.new([
           Machinery::Object.new(name: "foo"),
@@ -41,22 +45,26 @@ describe InspectTask, "#inspect_system" do
         ])
       )
 
-      description.foo = result
+      @description.foo = result
     end
 
-    def summary(description)
-      "Found #{description.foo.files.length} elements."
+    def summary
+      "Found #{@description.foo.files.length} elements."
     end
   end
 
   class BarInspector < Inspector
-    def inspect(_system, description, _filter, _options = nil)
-      result = SimpleInspectTaskScope.new("bar" => "baz")
-
-      description.bar = result
+    def initialize(_system, description)
+      @description = description
     end
 
-    def summary(_description)
+    def inspect(_filter, _options = nil)
+      result = SimpleInspectTaskScope.new("bar" => "baz")
+
+      @description.bar = result
+    end
+
+    def summary
       "summary"
     end
   end
@@ -67,6 +75,7 @@ describe InspectTask, "#inspect_system" do
 
   let(:inspect_task) { InspectTask.new }
   let(:store) { SystemDescriptionStore.new }
+  let(:description) { SystemDescription.new(name, store) }
   let(:name) { "name" }
   let(:host) { "example.com" }
   let(:system) {
@@ -89,7 +98,7 @@ describe InspectTask, "#inspect_system" do
   }
 
   it "runs the proper inspector when a scope is given" do
-    expect(Inspector).to receive(:for).with("foo").and_return(FooInspector.new)
+    expect(Inspector).to receive(:for).with("foo").and_return(FooInspector)
 
     inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
   end
@@ -195,15 +204,14 @@ Inspecting foo...
     capture_machinery_output
 
     it "passes the filters to the inspectors" do
-      inspector = FooInspector.new
-      expect(Inspector).to receive(:for).and_return(inspector)
+      expect(Inspector).to receive(:for).and_return(FooInspector)
 
-      expect(inspector).to receive(:inspect) do |_system, description, filter, _options|
+      expect_any_instance_of(FooInspector).to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)
         expect(filter.element_filters["/foo"].matchers).
           to eq([["bar", "baz"]])
 
-        description.foo = SimpleInspectTaskScope.new(files: SimpleInspectTaskList.new)
+        inspector.description.foo = SimpleInspectTaskScope.new(files: SimpleInspectTaskList.new)
       end
 
       inspect_task.inspect_system(

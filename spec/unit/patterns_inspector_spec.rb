@@ -45,7 +45,7 @@ describe PatternsInspector do
     EOF
   }
 
-  let(:patterns_inspector) { PatternsInspector.new }
+  let(:patterns_inspector) { PatternsInspector.new(system, description) }
   let(:system) {
     double(
       :requires_root?    => false,
@@ -63,7 +63,7 @@ describe PatternsInspector do
       expect(system).to receive(:run_command).
         with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
         and_return(zypper_output)
-      patterns_inspector.inspect(system, description, filter)
+      patterns_inspector.inspect(filter)
 
       expect(description.patterns.size).to eql(2)
       expect(description.patterns.first).to eq(
@@ -74,20 +74,20 @@ describe PatternsInspector do
         )
       )
 
-      expect(patterns_inspector.summary(description)).to include("Found 2 patterns")
+      expect(patterns_inspector.summary).to include("Found 2 patterns")
     end
 
     it "returns an empty array when there are no patterns installed" do
       expect(system).to receive(:run_command).and_return("")
 
-      patterns_inspector.inspect(system, description, filter)
+      patterns_inspector.inspect(filter)
       expect(description.patterns).to eql(PatternsScope.new)
     end
 
     it "returns sorted data" do
       expect(system).to receive(:run_command).and_return(zypper_output)
 
-      patterns_inspector.inspect(system, description, filter)
+      patterns_inspector.inspect(filter)
       names = description.patterns.map(&:name)
       expect(names).to eq(names.sort)
     end
@@ -99,14 +99,14 @@ describe PatternsInspector do
         and_raise(Cheetah::ExecutionFailed.new(
           nil, nil, "System management is locked by the application with pid 5480 (zypper).", nil)
         )
-      expect { patterns_inspector.inspect(system, description, filter) }.to raise_error(
+      expect { patterns_inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::ZypperFailed, /Zypper is locked./)
     end
 
     it "returns an empty array when no zypper is installed and shows an unsupported message" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
 
-      summary = patterns_inspector.inspect(system, description, filter)
+      summary = patterns_inspector.inspect(filter)
       expect(summary).to eq("Patterns are not supported on this system.")
       expect(description.patterns).to eql(PatternsScope.new)
     end

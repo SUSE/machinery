@@ -25,7 +25,7 @@ describe OsInspector do
   }
   let(:system) { LocalSystem.new }
   let(:filter) { nil }
-  subject(:inspector) { OsInspector.new }
+  subject(:inspector) { OsInspector.new(system, description) }
 
   before(:each) do
     Dir.mkdir("/etc")
@@ -37,7 +37,7 @@ describe OsInspector do
 
       expect(system).to receive(:run_command).with(
         "uname", "-m", stdout: :capture).and_return(result)
-      expect(inspector.get_arch(system)).to eq(result)
+      expect(inspector.get_arch).to eq(result)
     end
   end
 
@@ -46,7 +46,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/os-release",
         "/etc/os-release")
 
-      os = inspector.send(:get_os_from_os_release, system)
+      os = inspector.send(:get_os_from_os_release)
 
       expect(os).to eq(
         OsOpenSuse13_1.new(
@@ -60,7 +60,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/rhel7/etc/os-release",
         "/etc/os-release")
 
-      os = inspector.send(:get_os_from_os_release, system)
+      os = inspector.send(:get_os_from_os_release)
 
       expect(os).to eq(
         OsUnknown.new(
@@ -75,7 +75,7 @@ describe OsInspector do
     it "gets os info from SuSE-release file" do
       FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
         "/etc/SuSE-release")
-      os = inspector.send(:get_os_from_suse_release, system)
+      os = inspector.send(:get_os_from_suse_release)
 
       expect(os.name).to eq "SUSE Linux Enterprise Server 11"
       expect(os.version).to eq "11 SP3"
@@ -86,7 +86,7 @@ describe OsInspector do
     it "gets os info from redhat release file" do
       FakeFS::FileSystem.clone("spec/data/os/rhel6/etc/redhat-release",
         "/etc/redhat-release")
-      os = inspector.send(:get_os_from_redhat_release, system)
+      os = inspector.send(:get_os_from_redhat_release)
 
       expect(os.name).to eq "Red Hat Enterprise Linux Server"
       expect(os.version).to eq "6.5 (Santiago)"
@@ -100,9 +100,9 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
+      expect(inspector).to receive(:get_arch).and_return("x86_64")
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.os).to eq(
         OsOpenSuse13_1.new(
@@ -111,35 +111,35 @@ describe OsInspector do
           architecture: "x86_64"
         )
       )
-      expect(inspector.summary(description)).to include("openSUSE")
+      expect(inspector.summary).to include("openSUSE")
     end
 
     it "returns data about the operation system on a system with redhat-release" do
       FakeFS::FileSystem.clone("spec/data/os/rhel6/etc/redhat-release",
         "/etc/redhat-release")
 
-      expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
+      expect(inspector).to receive(:get_arch).and_return("x86_64")
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.os.name).to eq "Red Hat Enterprise Linux Server"
       expect(description.os.version).to eq "6.5 (Santiago)"
       expect(description.os.architecture).to eq "x86_64"
-      expect(inspector.summary(description)).to include("Red Hat Enterprise Linux Server")
+      expect(inspector.summary).to include("Red Hat Enterprise Linux Server")
     end
 
     it "returns data about the operation system on a system with suse-release" do
       FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
         "/etc/SuSE-release")
 
-      expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
+      expect(inspector).to receive(:get_arch).and_return("x86_64")
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.os.name).to eq "SUSE Linux Enterprise Server 11"
       expect(description.os.version).to eq "11 SP3"
       expect(description.os.architecture).to eq "x86_64"
-      expect(inspector.summary(description)).to include("SUSE Linux Enterprise Server")
+      expect(inspector.summary).to include("SUSE Linux Enterprise Server")
     end
 
     it "returns data containing additional version information if available" do
@@ -148,9 +148,9 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
+      expect(inspector).to receive(:get_arch).and_return("x86_64")
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.os.version).to eq("12 Beta 1")
     end
@@ -161,9 +161,9 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).with(system).and_return("x86_64")
+      expect(inspector).to receive(:get_arch).and_return("x86_64")
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.os.version).to eq("11 SP3 Beta 10")
     end
@@ -174,9 +174,9 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE11.2/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).with(system).and_return("i586")
+      expect(inspector).to receive(:get_arch).and_return("i586")
 
-      inspector.inspect(system, description, filter)
+      inspector.inspect(filter)
 
       expect(description.os.version).to eq("11.2")
       expect(description.os.name).to eq("openSUSE 11.2")
@@ -184,7 +184,7 @@ describe OsInspector do
 
     it "throws exception when the operation system cannot be determined" do
       expect {
-        inspector.inspect(system, description, filter)
+        inspector.inspect(filter)
       }.to raise_error(Machinery::Errors::UnknownOs)
     end
   end

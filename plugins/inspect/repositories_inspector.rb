@@ -16,11 +16,16 @@
 # you may find current contact information at www.suse.com
 
 class RepositoriesInspector < Inspector
-  def inspect(system, description, _filter, _options = {})
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect(_filter, _options = {})
     if system.has_command?("zypper")
-      description.repositories = inspect_zypp_repositories(system)
+      @description.repositories = inspect_zypp_repositories
     elsif system.has_command?("yum")
-      description.repositories = inspect_yum_repositories(system)
+      @description.repositories = inspect_yum_repositories
     else
       raise Machinery::Errors::MissingRequirement.new(
         "Need either the binary 'zypper' or 'yum' to be available on the inspected system."
@@ -28,13 +33,13 @@ class RepositoriesInspector < Inspector
     end
   end
 
-  def summary(description)
-    "Found #{description.repositories.size} repositories."
+  def summary
+    "Found #{@description.repositories.size} repositories."
   end
 
   private
 
-  def inspect_zypp_repositories(system)
+  def inspect_zypp_repositories
     begin
       xml = system.run_command(
         "zypper", "--non-interactive", "--xmlout", "repos", "--details",
@@ -56,14 +61,14 @@ class RepositoriesInspector < Inspector
       result = []
     else
       priorities = parse_priorities_from_details(details)
-      credentials = get_credentials_from_system(system)
+      credentials = get_credentials_from_system
       result = parse_repositories_from_xml(xml, priorities, credentials)
     end
 
     RepositoriesScope.new(result)
   end
 
-  def inspect_yum_repositories(system)
+  def inspect_yum_repositories
     script = File.read(File.join(Machinery::ROOT, "helpers", "yum_repositories.py"))
     begin
       repositories = JSON.parse(system.run_command(
@@ -97,16 +102,16 @@ class RepositoriesInspector < Inspector
     prio
   end
 
-  def get_credentials_from_system(system)
+  def get_credentials_from_system
     credentials = {}
     credential_dir = "/etc/zypp/credentials.d/"
-    credential_files = system.run_command(
+    credential_files = @system.run_command(
       "bash", "-c",
       "test -d '#{credential_dir}' && ls -1 '#{credential_dir}' || echo ''",
       stdout: :capture
     )
     credential_files.split("\n").each do |f|
-      content = system.run_command(
+      content = @system.run_command(
         "cat", "/etc/zypp/credentials.d/#{f}", stdout: :capture
       )
       content.match(/username=(\w*)\npassword=(\w*)/)
