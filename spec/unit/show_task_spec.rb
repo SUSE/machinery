@@ -38,7 +38,7 @@ describe ShowTask, "#show" do
     expect(renderer).to receive(:render).and_return("bar")
     expect(Renderer).to receive(:for).with("foo").and_return(renderer)
 
-    show_task.show(system_description, ["foo"], :no_pager => true)
+    show_task.show(system_description, ["foo"], Filter.new, no_pager: true)
   end
 
   it "prints scopes missing from the system description" do
@@ -47,7 +47,7 @@ describe ShowTask, "#show" do
       expect(s).to include("requested scopes were not inspected")
       expect(s).to include("packages")
     }
-    show_task.show(system_description, [scope], :no_pager => true)
+    show_task.show(system_description, [scope], Filter.new, no_pager: true)
   end
 
   it "does not show a message about missing scopes if there are none" do
@@ -56,7 +56,7 @@ describe ShowTask, "#show" do
       expect(s).not_to include("requested scopes were not inspected")
       expect(s).not_to include("packages")
     }
-    show_task.show(description_with_packages, [scope], :no_pager => true)
+    show_task.show(description_with_packages, [scope], Filter.new, no_pager: true)
   end
 
   it "opens the system description in the web browser" do
@@ -65,7 +65,7 @@ describe ShowTask, "#show" do
     html_path = SystemDescriptionStore.new.html_path(system_description.name)
     expect(Cheetah).to receive(:run).with("xdg-open", html_path)
 
-    show_task.show(system_description, ["foo"], :show_html => true)
+    show_task.show(system_description, ["foo"], Filter.new, show_html: true)
   end
 
 end
