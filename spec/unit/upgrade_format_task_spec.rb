@@ -80,7 +80,7 @@ describe UpgradeFormatTask do
 
       allow(Machinery::Ui).to receive(:puts)
       expect(Machinery::Ui).to receive(:puts).with("Upgraded 2 system descriptions successfully.")
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
 
       ["description1", "description2"].each do |description|
         migrated_description = SystemDescription.load(description,
@@ -98,7 +98,7 @@ describe UpgradeFormatTask do
 Upgrading description "description1"
 Upgrading description "description2"
 EOF
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, :all => true)
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
 
       ["description1", "description2"].each do |description|
         migrated_description = SystemDescription.load(description,
