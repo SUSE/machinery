@@ -182,9 +182,19 @@ describe Filter do
     end
 
     it "does not choke on non-existing elements" do
-      filter = Filter.new("/does/not/exist=/foo")
       expect {
-        filter.apply!(description)
+        expect_file_scope_filter_change(
+          "changed_managed_files",
+          Filter.new(["/does/not/exist=/foo", "/changed_managed_files/files/name=/etc/c*"]),
+          [
+            "/etc/deleted changed managed",
+            "/etc/cron.daily/cleanup",
+            "/etc/cron.daily/logrotate"
+          ],
+          [
+            "/etc/deleted changed managed"
+          ]
+        )
       }.to_not raise_error
     end
   end

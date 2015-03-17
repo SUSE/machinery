@@ -132,7 +132,7 @@ class Filter
         container ||= pointer if pointer.is_a?(Machinery::Array)
       end
 
-      break if !pointer
+      next if !pointer
 
       pointer.delete_if do |element|
         element_filter.matches?(element[target])
