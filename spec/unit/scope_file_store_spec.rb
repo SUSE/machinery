@@ -144,14 +144,17 @@ describe ScopeFileStore do
     it "returns a list of files and dirs in the file store" do
       @store.create
       @store.create_sub_directory("foo/bar")
+      @store.create_sub_directory("foo/.qux")
       FileUtils.touch(File.join(@file_store_path, "foo", "baz"))
       FileUtils.touch(File.join(@file_store_path, "foo", ".baz"))
+      FileUtils.touch(File.join(@file_store_path, "foo", ".qux", "quux"))
 
       expect(@store.list_content).to match_array(
         [
           File.join(@file_store_path, "foo", "bar"),
           File.join(@file_store_path, "foo", "baz"),
-          File.join(@file_store_path, "foo", ".baz")
+          File.join(@file_store_path, "foo", ".baz"),
+          File.join(@file_store_path, "foo", ".qux", "quux")
         ]
       )
     end
