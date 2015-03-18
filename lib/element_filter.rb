@@ -39,6 +39,12 @@ class ElementFilter
 
         return true if (value_array - Array(matcher)).empty? && (Array(matcher) - value_array).empty?
       when String
+        if matcher.is_a?(Array)
+          exception = Machinery::Errors::ElementFilterTypeMismatch.new
+          exception.failed_matcher = "#{path}=#{matcher.join(",")}"
+          raise exception
+        end
+
         if matcher.end_with?("*")
           return true if value.start_with?(matcher[0..-2])
         else

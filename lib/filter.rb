@@ -134,8 +134,13 @@ class Filter
 
       next if !pointer
 
-      pointer.delete_if do |element|
-        element_filter.matches?(element[target])
+      begin
+        pointer.delete_if do |element|
+          element_filter.matches?(element[target])
+        end
+      rescue Machinery::Errors::ElementFilterTypeMismatch => e
+        Machinery::Ui.warn("WARNING: Filter '#{e.failed_matcher}' tries to match an array, " \
+          "but the according element is not an array.")
       end
     end
   end

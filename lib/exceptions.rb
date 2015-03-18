@@ -100,6 +100,9 @@ module Machinery
     end
 
     class MigrationError < MachineryError; end
+    class ElementFilterTypeMismatch < MachineryError
+      attr_accessor :failed_matcher
+    end
 
     class BuildFailed < MachineryError; end
     class DeployFailed < MachineryError; end

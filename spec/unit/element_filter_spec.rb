@@ -83,6 +83,13 @@ describe ElementFilter do
         to be(false)
     end
 
+    it "raises ElementFilterTypeMismatch when a String is matched against an Array" do
+      filter = ElementFilter.new(@path, [["array_element_a", "array_element_b"]])
+      expect {
+        filter.matches?("a string")
+      }.to raise_error(Machinery::Errors::ElementFilterTypeMismatch)
+    end
+
     describe "matches beginning of a value" do
       before(:each) do
         @filter = ElementFilter.new("path", "/home/alfred/*")

@@ -197,5 +197,25 @@ describe Filter do
         )
       }.to_not raise_error
     end
+
+    it "handles type mismatches" do
+      expect(Machinery::Ui).to receive(:warn).with(/WARNING.*not an array/)
+      expect {
+        expect_file_scope_filter_change(
+          "changed_managed_files",
+          Filter.new(["/changed_managed_files/files/name=element_a,element_b"]),
+          [
+            "/etc/deleted changed managed",
+            "/etc/cron.daily/cleanup",
+            "/etc/cron.daily/logrotate"
+          ],
+          [
+            "/etc/deleted changed managed",
+            "/etc/cron.daily/cleanup",
+            "/etc/cron.daily/logrotate"
+          ]
+        )
+      }.to_not raise_error
+    end
   end
 end
