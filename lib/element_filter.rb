@@ -33,10 +33,11 @@ class ElementFilter
 
   def matches?(value)
     @matchers.each do |matcher|
-      case matcher
-      when Array
+      case value
+      when Machinery::Array
         value_array = value.elements
-        return true if (value_array - matcher).empty? && (matcher - value_array).empty?
+
+        return true if (value_array - Array(matcher)).empty? && (Array(matcher) - value_array).empty?
       when String
         if matcher.end_with?("*")
           return true if value.start_with?(matcher[0..-2])

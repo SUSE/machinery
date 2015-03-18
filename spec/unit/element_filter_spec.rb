@@ -121,6 +121,12 @@ describe ElementFilter do
       it "does not match on missing elements" do
         expect(@filter.matches?(Machinery::Array.new(["a"]))).to be(false)
       end
+
+      it "allows for filtering arrays with one element using a string filter" do
+        filter = ElementFilter.new("path", ["a"])
+        expect(filter.matches?(Machinery::Array.new(["a"]))).to be(true)
+        expect(filter.matches?(Machinery::Array.new(["a", "b"]))).to be(false)
+      end
     end
   end
 end
