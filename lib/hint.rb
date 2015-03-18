@@ -34,6 +34,11 @@ class Hint
      "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
   end
 
+  def self.upgrade_system_description
+    output "To upgrade all system descriptions run:\n" \
+     "#{$0} upgrade-format --all"
+  end
+
   private
 
   def self.output(text)

@@ -18,13 +18,14 @@
 require_relative "spec_helper"
 
 describe ListTask do
+  capture_machinery_output
   include FakeFS::SpecHelpers
   let(:list_task) { ListTask.new }
   let(:store) { SystemDescriptionStore.new }
   let(:name) { "foo" }
   let(:date) { "2014-02-07T14:04:45Z" }
   let(:hostname) { "example.com" }
-  let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
+  let(:date_human) { "2014-02-07 15:04:45" }
   let(:system_description) {
     create_test_description(
       scopes: ["packages", "repositories"], modified: date, hostname: hostname,
@@ -63,88 +64,87 @@ describe ListTask do
 
     it "lists the system descriptions with scopes" do
       system_description.save
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s).to include(name)
-        expect(s).to include("packages")
-        expect(s).to include("repositories")
-        expect(s).not_to include(date_human)
-        expect(s).not_to include(hostname)
-      }
+      expected_output = <<-EOF
+
+ foo:
+   * packages
+   * repositories
+
+EOF
       list_task.list(store)
+      expect(captured_machinery_output).to eq(expected_output)
     end
 
     it "if short is true it lists only the description names" do
       system_description.save
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s).to include(name)
-        expect(s).not_to include("packages")
-        expect(s).not_to include("repositories")
-      }
+      expected_output = <<-EOF.chomp
+
+foo
+EOF
       list_task.list(store, short: true)
+      expect(captured_machinery_output).to eq(expected_output)
     end
 
     it "shows also the date and hostname of the descriptions if verbose is true" do
       system_description.save
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s).to include(name)
-        expect(s).to include(date_human)
-        expect(s).to include(hostname)
-      }
+      expected_output = <<-EOF
+ foo:
+   * packages
+      Host: [#{hostname}]
+      Date: (#{date_human})
+EOF
       list_task.list(store, verbose: true)
+      expect(captured_machinery_output).to include(expected_output)
     end
 
     it "verbose shows the date/hostname as unknown if there is no meta data for it" do
       system_description_without_scope_meta.save
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s).to include(name)
-        expect(s).to include("unknown")
-        expect(s).to include("Unknown hostname")
-      }
+      expected_output = <<-EOF
+ foo:
+   * packages
+      Host: [Unknown hostname]
+      Date: (unknown)
+EOF
       list_task.list(store, verbose: true)
+      expect(captured_machinery_output).to include(expected_output)
     end
 
     it "show the extracted state of extractable scopes" do
       allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s).to include(name)
-        expect(s).to include("config-files (extracted)")
-        expect(s).to include("changed-managed-files (not extracted)")
-      }
 
       system_description_with_extracted_files.save
+      expected_output = <<-EOF
+ foo:
+   * changed-managed-files (not extracted)
+   * config-files (extracted)
+   * unmanaged-files (extracted)
+EOF
       list_task.list(store)
+      expect(captured_machinery_output).to include(expected_output)
     end
 
     it "marks descriptions with old data format" do
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s.to_s).to include("needs to be upgraded.")
-      }
       system_description_with_old_data_format.save
       list_task.list(store)
+      expect(captured_machinery_output).to include("needs to be upgraded.")
     end
 
     it "marks descriptions with old data format despite using the short option" do
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s.to_s).to include("needs to be upgraded.")
-      }
       system_description_with_old_data_format.save
       list_task.list(store, short: true)
+      expect(captured_machinery_output).to include("needs to be upgraded.")
     end
 
     it "marks descriptions with incompatible data format" do
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s.to_s).to include("Can not be upgraded.")
-      }
       system_description_with_incompatible_data_format.save
       list_task.list(store)
+      expect(captured_machinery_output).to include("Can not be upgraded.")
     end
 
     it "marks descriptions with newer data format" do
-      expect(Machinery::Ui).to receive(:puts) { |s|
-        expect(s.to_s).to include("upgrade Machinery")
-      }
       system_description_with_newer_data_format.save
       list_task.list(store)
+      expect(captured_machinery_output).to include("upgrade Machinery")
     end
   end
 end
