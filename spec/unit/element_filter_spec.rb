@@ -83,6 +83,13 @@ describe ElementFilter do
         to be(false)
     end
 
+    it "raises ElementFilterTypeMismatch when a String is matched against an Array" do
+      filter = ElementFilter.new(@path, [["array_element_a", "array_element_b"]])
+      expect {
+        filter.matches?("a string")
+      }.to raise_error(Machinery::Errors::ElementFilterTypeMismatch)
+    end
+
     describe "matches beginning of a value" do
       before(:each) do
         @filter = ElementFilter.new("path", "/home/alfred/*")
@@ -120,6 +127,12 @@ describe ElementFilter do
 
       it "does not match on missing elements" do
         expect(@filter.matches?(Machinery::Array.new(["a"]))).to be(false)
+      end
+
+      it "allows for filtering arrays with one element using a string filter" do
+        filter = ElementFilter.new("path", ["a"])
+        expect(filter.matches?(Machinery::Array.new(["a"]))).to be(true)
+        expect(filter.matches?(Machinery::Array.new(["a", "b"]))).to be(false)
       end
     end
   end
