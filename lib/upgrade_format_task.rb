@@ -32,7 +32,7 @@ class UpgradeFormatTask
     errors = []
     migrations_done = 0
 
-    descriptions.each do |description|
+    descriptions.sort.each do |description|
       begin
         Machinery.logger.info "Upgrading description \"#{description}\""
         Machinery::Ui.puts "Upgrading description \"#{description}\""
