@@ -466,7 +466,7 @@ class Cli
 
       filter = FilterOptionParser.parse("inspect", options, global_options)
 
-      if options["verbose"]
+      if options["verbose"] && !filter.empty?
         Machinery::Ui.puts "\nThe following filters are applied during inspection:"
         Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
       end
@@ -567,7 +567,7 @@ class Cli
 
       filter = FilterOptionParser.parse("show", options, global_options)
 
-      if options["verbose"]
+      if options["verbose"] && !filter.empty?
         Machinery::Ui.puts "\nThe following filters were applied before showing the description:"
         Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
       end
