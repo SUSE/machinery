@@ -22,7 +22,7 @@ describe Hint do
     expect(Machinery::Config).to receive(:new).and_return(double(hints: enabled))
   end
 
-  describe "#get_started" do
+  describe ".get_started" do
     it "prints a hint how to get started if hints are enabled" do
       enable_hints(true)
       expect(Machinery::Ui).to receive(:puts).with(/Hint:.*\n.*inspect HOSTNAME/)
@@ -36,7 +36,7 @@ describe Hint do
     end
   end
 
-  describe "#show_data" do
+  describe ".show_data" do
     it "prints a hint how to show data if hints are enabled" do
       enable_hints(true)
       expect(Machinery::Ui).to receive(:puts).with(/Hint:.*\n.*show/)
@@ -50,7 +50,7 @@ describe Hint do
     end
   end
 
-  describe "#do_complete_inspection" do
+  describe ".do_complete_inspection" do
     it "prints a hint how to do a complete inspection if hints are enabled" do
       enable_hints(true)
       expect(Machinery::Ui).to receive(:puts).with(
