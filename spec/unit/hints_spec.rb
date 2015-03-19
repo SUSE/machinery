@@ -19,52 +19,57 @@ require_relative "spec_helper"
 
 describe Hint do
   def enable_hints(enabled)
-    expect(Machinery::Config).to receive(:new).and_return(double(hints: enabled))
+    allow(Machinery::Config).to receive(:new).and_return(double(hints: enabled))
   end
 
-  describe ".get_started" do
-    it "prints a hint how to get started if hints are enabled" do
+  describe ".print" do
+    capture_machinery_output
+
+    it "shows the hint when hints are enabled" do
       enable_hints(true)
-      expect(Machinery::Ui).to receive(:puts).with(/Hint:.*\n.*inspect HOSTNAME/)
-      Hint.get_started
-    end
-
-    it "doesn't print a hint how to get started if hints are disabled" do
-      enable_hints(false)
-      expect(Machinery::Ui).to_not receive(:puts).with(/Hint:.*\n.*inspect HOSTNAME/)
-      Hint.get_started
-    end
-  end
-
-  describe ".show_data" do
-    it "prints a hint how to show data if hints are enabled" do
-      enable_hints(true)
-      expect(Machinery::Ui).to receive(:puts).with(/Hint:.*\n.*show/)
-      Hint.show_data(:name => "foo")
-    end
-
-    it "doesn't print a hint how to show data if hints are disabled" do
-      enable_hints(false)
-      expect(Machinery::Ui).to_not receive(:puts).with(/Hint:.*\n.*show/)
-      Hint.show_data(:name => "foo")
-    end
-  end
-
-  describe ".do_complete_inspection" do
-    it "prints a hint how to do a complete inspection if hints are enabled" do
-      enable_hints(true)
-      expect(Machinery::Ui).to receive(:puts).with(
-        /Hint:.*\n.*inspect foo --name bar --extract-files/
+      Hint.print(:get_started)
+      expect(captured_machinery_output).to include(
+        "Hint: You can get started by inspecting a system. Run:"
       )
-      Hint.do_complete_inspection(:name => "bar", :host => "foo")
     end
 
-    it "doesn't print a hint how to do a complete inspection if hints are disabled" do
+    it "does not show the hint when hints are disabled" do
       enable_hints(false)
-      expect(Machinery::Ui).to_not receive(:puts).with(
-        /Hint:.*\n.*inspect foo --name bar --extract-files/
+      Hint.print(:get_started)
+      expect(captured_machinery_output).not_to include(
+        "Hint: You can get started by inspecting a system. Run:"
       )
-      Hint.do_complete_inspection(:name => "bar", :host => "foo")
+    end
+
+    it "shows expanded hint" do
+      enable_hints(true)
+      Hint.print(:do_complete_inspection, name: "bar", host: "foo")
+      expect(captured_machinery_output).to match(
+        "Hint: To do a full inspection containing all scopes and to extract files run:\n" \
+        ".* inspect foo --name bar --extract-files"
+      )
+    end
+  end
+
+  describe ".to_string" do
+    it "returns hint as string if hints are enabled" do
+      enable_hints(true)
+      expect(Hint.to_string(:get_started)).to include(
+        "Hint: You can get started by inspecting a system. Run:"
+      )
+    end
+
+    it "returns hint as string if hints are disabled" do
+      enable_hints(false)
+      expect(Hint.to_string(:get_started)).to eq("")
+    end
+
+    it "returns expanded hint" do
+      enable_hints(true)
+      expect(Hint.to_string(:do_complete_inspection, name: "bar", host: "foo")).to match(
+        "Hint: To do a full inspection containing all scopes and to extract files run:\n" \
+        ".* inspect foo --name bar --extract-files"
+      )
     end
   end
 end

@@ -16,34 +16,40 @@
 # you may find current contact information at www.suse.com
 
 class Hint
-  def self.get_started
-    output "You can get started by inspecting a system. Run:\n#{$0} inspect HOSTNAME"
-  end
+  class << self
+    def print(method, options = {})
+      if Machinery::Config.new.hints
+        Machinery::Ui.puts to_string(method, options)
+      end
+    end
 
-  def self.show_data(options)
-    output "To show the data of the system you just inspected run:\n#{$0} show #{options[:name]}"
-  end
+    def to_string(method, options = {})
+      Machinery::Config.new.hints ? "\nHint: #{send(method, options)}\n" : ""
+    end
 
-  def self.show_analyze_data(options)
-    output "To show the config file diffs you just created run:\n" \
-      "#{$0} show --scope config-files --show-diffs #{options[:name]}"
-  end
+    private
 
-  def self.do_complete_inspection(options)
-    output "To do a full inspection containing all scopes and to extract files run:\n" \
-     "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
-  end
+    def get_started(_options)
+      "You can get started by inspecting a system. Run:\n#{$0} inspect HOSTNAME"
+    end
 
-  def self.upgrade_system_description
-    output "To upgrade all system descriptions run:\n" \
-     "#{$0} upgrade-format --all"
-  end
+    def show_data(options)
+      "To show the data of the system you just inspected run:\n#{$0} show #{options[:name]}"
+    end
 
-  private
+    def show_analyze_data(options)
+      "To show the config file diffs you just created run:\n" \
+        "#{$0} show --scope config-files --show-diffs #{options[:name]}"
+    end
 
-  def self.output(text)
-    if Machinery::Config.new.hints
-      Machinery::Ui.puts "\nHint: #{text}\n"
+    def do_complete_inspection(options)
+      "To do a full inspection containing all scopes and to extract files run:\n" \
+       "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
+    end
+
+    def upgrade_system_description(_options)
+      "To upgrade all system descriptions run:\n" \
+       "#{$0} upgrade-format --all"
     end
   end
 end

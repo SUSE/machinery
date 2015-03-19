@@ -80,7 +80,7 @@ class ListTask
       end
     end
 
-    Hint.upgrade_system_description if has_incompatible_version
+    Hint.print(:upgrade_system_description) if has_incompatible_version
   end
 
   private

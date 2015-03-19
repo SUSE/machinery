@@ -49,7 +49,7 @@ class Cli
         Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints on'."
       end
 
-      Hint.get_started
+      Hint.print(:get_started)
     end
   end
 
@@ -215,7 +215,7 @@ class Cli
         when "config-file-diffs"
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
-          Hint.show_analyze_data(name: name)
+          Hint.print(:show_analyze_data, name: name)
         else
           raise Machinery::Errors::InvalidCommandLine.new(
             "The operation '#{options[:operation]}' is not supported. " \
@@ -481,10 +481,10 @@ class Cli
         inspect_options
       )
 
-      Hint.show_data(name: name)
+      Hint.print(:show_data, name: name)
 
       if !options["extract-files"] || Inspector.all_scopes.count != scope_list.count
-        Hint.do_complete_inspection(name: name, host: host)
+        Hint.print(:do_complete_inspection, name: name, host: host)
       end
     end
   end
