@@ -94,7 +94,7 @@ describe UpgradeFormatTask do
         SystemDescription.load("descriptions2", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
-      actual_output = <<-EOF
+      expected_output = <<-EOF
 Upgrading description "description1"
 Upgrading description "description2"
 EOF
@@ -105,7 +105,7 @@ EOF
           system_description_factory_store)
         expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
       end
-      expect(captured_machinery_output).to include(actual_output)
+      expect(captured_machinery_output).to include(expected_output)
     end
 
     it "handles failed upgrades and continues" do
@@ -119,6 +119,26 @@ EOF
         Machinery::Errors::UpgradeFailed,
         /Upgrading description ".*" failed:\n.*\nUpgrading description ".*" failed:\n.*/i
       )
+    end
+
+    it "shows hint if migration fails" do
+      stub_const("Migrate1To2", Class.new do
+        def migrate; raise StandardError.new; end
+      end)
+      expect(Hint).to receive(:to_string).with(:upgrade_format_force, name: "description1")
+      expect {
+        UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      }.to raise_error
+    end
+
+    it "shows hint if upgrade-format --all fails" do
+      stub_const("Migrate1To2", Class.new do
+        def migrate; raise StandardError.new; end
+      end)
+      expect(Hint).to receive(:to_string).with(:upgrade_format_force, name: "--all")
+      expect {
+        UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      }.to raise_error
     end
   end
 end

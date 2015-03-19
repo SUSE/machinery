@@ -45,7 +45,9 @@ class UpgradeFormatTask
 
     if !errors.empty?
       Machinery.logger.error errors.join("\n")
-      raise Machinery::Errors::UpgradeFailed.new(errors.join("\n"))
+      exception = Machinery::Errors::UpgradeFailed.new(errors.join("\n") +
+        Hint.to_string(:upgrade_format_force, name: name || "--all"))
+      raise exception
     end
 
     if options[:all]

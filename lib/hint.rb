@@ -18,19 +18,26 @@
 class Hint
   class << self
     def print(method, options = {})
-      if Machinery::Config.new.hints
-        Machinery::Ui.puts to_string(method, options)
-      end
+      return if !Machinery::Config.new.hints
+
+      Machinery::Ui.puts to_string(method, options)
     end
 
     def to_string(method, options = {})
-      Machinery::Config.new.hints ? "\nHint: #{send(method, options)}\n" : ""
+      return "" if !Machinery::Config.new.hints
+
+      "\nHint: #{send(method, options)}\n"
     end
 
     private
 
     def get_started(_options)
       "You can get started by inspecting a system. Run:\n#{$0} inspect HOSTNAME"
+    end
+
+    def upgrade_format_force(options)
+      "To force an upgrade of system descriptions run:\n" \
+      "#{$0} upgrade-format --force #{options[:name]}"
     end
 
     def show_data(options)

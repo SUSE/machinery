@@ -33,7 +33,7 @@ describe Hint do
       )
     end
 
-    it "does not show the hint when hints are disabled" do
+    it "returns an empty string if hints are disabled" do
       enable_hints(false)
       Hint.print(:get_started)
       expect(captured_machinery_output).not_to include(
