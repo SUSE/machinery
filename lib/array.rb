@@ -27,12 +27,12 @@ module Machinery
           element.is_a?(@element_class) ? element : @element_class.from_json(element)
         else
           case element
-            when ::Array
-              Machinery::Array.from_json(element)
-            when Hash
-              Machinery::Object.from_json(element)
-            else
-              element
+          when ::Array
+            Machinery::Array.from_json(element)
+          when Hash
+            Machinery::Object.from_json(element)
+          else
+            element
           end
         end
       end

@@ -140,7 +140,7 @@ describe Machinery::Array do
 
       expect(array).to be_a(ArrayExampleArray)
       expect(array.size).to eq(4)
-      expect(array.all? { |element| element.is_a?(ArrayExampleObject)}).to be(true)
+      expect(array.all? { |element| element.is_a?(ArrayExampleObject) }).to be(true)
     end
   end
 

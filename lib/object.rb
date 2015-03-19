@@ -29,12 +29,12 @@ module Machinery
           value.is_a?(property_class) ? value : property_class.from_json(value)
         else
           case value
-            when ::Array
-              Machinery::Array.from_json(value)
-            when Hash
-              Machinery::Object.from_json(value)
-            else
-              value
+          when ::Array
+            Machinery::Array.from_json(value)
+          when Hash
+            Machinery::Object.from_json(value)
+          else
+            value
           end
         end
       end

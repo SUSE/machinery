@@ -66,9 +66,9 @@ describe Machinery::Object do
     it "convert the payload to the data model" do
       object = ObjectWithProperty.new
 
-      object.foo = {a: 1}
-      object.bar = {b: 2}
-      object.baz = {b: 2}
+      object.foo = { a: 1 }
+      object.bar = { b: 2 }
+      object.baz = { b: 2 }
 
       expect(object.foo).to be_a(FooObject)
       expect(object.bar).to be_a(FooObject)
