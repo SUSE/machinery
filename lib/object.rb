@@ -27,8 +27,9 @@ module Machinery
         return nil unless json
 
         entries = json.map do |key, value|
-          value_converted = if @property_classes && @property_classes[key.to_s]
-            @property_classes[key.to_s].from_json(value)
+          property_class = @property_classes[key.to_s] if @property_classes
+          value_converted = if property_class
+            value.is_a?(property_class) ? value : property_class.from_json(value)
           else
             case value
               when ::Array
@@ -46,8 +47,8 @@ module Machinery
         Hash[entries]
       end
 
-      def from_json(json)
-        new(object_hash_from_json(json))
+      def from_json(json_object)
+        new(json_object)
       end
     end
 
@@ -58,6 +59,7 @@ module Machinery
     end
 
     def set_attributes(attrs)
+      attrs = self.class.object_hash_from_json(attrs) if attrs.is_a?(Hash)
       @attributes = attrs.inject({}) do |attributes, (key, value)|
         key = key.to_s if key.is_a?(Symbol)
 

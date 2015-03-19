@@ -22,10 +22,10 @@ module Machinery
         @element_class = options[:class]
       end
 
-      def from_json(json)
-        elements = json.map do |element|
+      def object_array_from_json_object(elements)
+        elements.map do |element|
           if @element_class
-            @element_class.from_json(element)
+            element.is_a?(@element_class) ? element : @element_class.from_json(element)
           else
             case element
               when ::Array
@@ -37,15 +37,17 @@ module Machinery
             end
           end
         end
+      end
 
-        new(elements)
+      def from_json(json_object)
+        new(json_object)
       end
     end
 
     attr_reader :elements
 
     def initialize(elements = [])
-      @elements = elements
+      @elements = self.class.object_array_from_json_object(elements)
     end
 
     def ==(other)

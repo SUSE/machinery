@@ -50,7 +50,6 @@ describe ServicesScope do
         )
 
         comparison = data_a.compare_with(data_b)
-
         expect(comparison).to eq([nil, nil, data_a])
       end
 
