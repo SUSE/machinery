@@ -34,7 +34,11 @@ module Machinery
 
     def self.print_output(output, options = {})
       if options[:no_pager] || !$stdout.tty?
-        Machinery::Ui.puts output
+        begin
+          Machinery::Ui.puts output
+        rescue Errno::EPIPE
+          # We just ignore broken pipes.
+        end
       else
         if !ENV['PAGER'] || ENV['PAGER'] == ''
           ENV['PAGER'] = 'less'
