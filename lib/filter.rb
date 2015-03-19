@@ -144,4 +144,8 @@ class Filter
       end
     end
   end
+
+  def empty?
+    element_filters.empty?
+  end
 end
