@@ -129,6 +129,21 @@ describe Machinery::Array do
     end
   end
 
+  describe "setter methods" do
+    it "convert the payload to the data model" do
+      array = ArrayExampleArray.new
+
+      array << json_element_a
+      array.push(json_element_b)
+      array += [json_element_c]
+      array.insert(0, json_element_a)
+
+      expect(array).to be_a(ArrayExampleArray)
+      expect(array.size).to eq(4)
+      expect(array.all? { |element| element.is_a?(ArrayExampleObject)}).to be(true)
+    end
+  end
+
   describe "#compare_with" do
     it "returns correct result when compared arrays are equal" do
       a = Machinery::Array.new(["a", "b", "c"])

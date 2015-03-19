@@ -22,20 +22,24 @@ module Machinery
         @element_class = options[:class]
       end
 
+      def convert_element(element)
+        if @element_class
+          element.is_a?(@element_class) ? element : @element_class.from_json(element)
+        else
+          case element
+            when ::Array
+              Machinery::Array.from_json(element)
+            when Hash
+              Machinery::Object.from_json(element)
+            else
+              element
+          end
+        end
+      end
+
       def object_array_from_json_object(elements)
         elements.map do |element|
-          if @element_class
-            element.is_a?(@element_class) ? element : @element_class.from_json(element)
-          else
-            case element
-              when ::Array
-                Machinery::Array.from_json(element)
-              when Hash
-                Machinery::Object.from_json(element)
-              else
-                element
-            end
-          end
+          convert_element(element)
         end
       end
 
@@ -69,6 +73,22 @@ module Machinery
 
     def &(other)
       self.class.new(@elements & other.elements)
+    end
+
+    def push(element)
+      @elements.push(self.class.convert_element(element))
+    end
+
+    def <<(element)
+      @elements << self.class.convert_element(element)
+    end
+
+    def +(array)
+      self.class.new(@elements + self.class.new(array).elements)
+    end
+
+    def insert(index, *elements)
+      @elements.insert(index, *self.class.new(elements).elements)
     end
 
     def as_json
