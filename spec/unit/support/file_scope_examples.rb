@@ -16,15 +16,31 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "FileScope" do
+  let(:file_a) {
+    {
+      name: "foo"
+    }
+  }
+  let(:file_b) {
+    {
+      name: "bar"
+    }
+  }
+  let(:file_c) {
+    {
+      name: "baz"
+    }
+  }
+
   describe "#compare_with" do
     it "compares for equal objects" do
       a = scope.class.new(
         extracted: true,
-        files: Machinery::Array.new([1, 2])
+        files: [file_a, file_b]
       )
       b = scope.class.new(
         extracted: true,
-        files: Machinery::Array.new([1, 2])
+        files: [file_a, file_b]
       )
 
       comparison = a.compare_with(b)
@@ -34,18 +50,18 @@ shared_examples "FileScope" do
     it "works for differing objects" do
       a = scope.class.new(
         extracted: true,
-        files: Machinery::Array.new([1, 2])
+        files: [file_a, file_b]
       )
       b = scope.class.new(
         extracted: false,
-        files: Machinery::Array.new([3, 2])
+        files: [file_c, file_b]
       )
 
       comparison = a.compare_with(b)
       expect(comparison).to eq([
-        scope.class.new(extracted: true, files: Machinery::Array.new([1])),
-        scope.class.new(extracted: false, files: Machinery::Array.new([3])),
-        scope.class.new(files: Machinery::Array.new([2]))
+        scope.class.new(extracted: true, files: [file_a]),
+        scope.class.new(extracted: false, files: [file_c]),
+        scope.class.new(files: [file_b])
       ])
     end
 

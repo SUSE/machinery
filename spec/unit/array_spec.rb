@@ -18,22 +18,32 @@
 require_relative "spec_helper"
 
 describe Machinery::Array do
-  class ArrayExampleObject; end
+  class ArrayExampleObject < Machinery::Object; end
   class ArrayExampleArray < Machinery::Array
     has_elements class: ArrayExampleObject
   end
 
+  let(:json_element_a) { { a: 1 } }
+  let(:json_element_b) { { b: 2 } }
+  let(:json_element_c) { { c: 3 } }
+  let(:json_object) {
+    [
+      json_element_a,
+      json_element_b,
+      json_element_c
+    ]
+  }
+
   describe "#from_json" do
     it "delegates to specialized class when the element class is set" do
-      json_object = [1, 2]
+      json_object = [
+        { a: 1 },
+        { b: 2 }
+      ]
 
-      element1 = double
-      element2 = double
-      expect(ArrayExampleObject).to receive(:from_json).with(1).and_return(element1)
-      expect(ArrayExampleObject).to receive(:from_json).with(2).and_return(element2)
-
-      expected = ArrayExampleArray.new([element1, element2])
-      expect(ArrayExampleArray.from_json(json_object)).to eq(expected)
+      array = ArrayExampleArray.from_json(json_object)
+      expect(array[0]).to eq(ArrayExampleObject.new(a: 1))
+      expect(array[1]).to eq(ArrayExampleObject.new(b: 2))
     end
 
     it "uses generic classes when no element class is set" do
@@ -64,7 +74,7 @@ describe Machinery::Array do
     end
 
     it "returns false when class differs equal" do
-      equal = Machinery::Array.new(["a", "b", "c"]) == ArrayExampleArray.new(["a", "b", "c"])
+      equal = Machinery::Array.new(json_object) == ArrayExampleArray.new(json_object)
 
       expect(equal).to be(false)
     end
@@ -88,34 +98,49 @@ describe Machinery::Array do
 
   describe "#-" do
     it "subtracts the elements" do
-      a = ArrayExampleArray.new(["a", "b", "c"])
-      b = ArrayExampleArray.new(["b"])
+      a = ArrayExampleArray.new(json_object)
+      b = ArrayExampleArray.new([json_element_b])
       result = a - b
 
-      expect(result).to eq(ArrayExampleArray.new(["a", "c"]))
+      expect(result).to eq(ArrayExampleArray.new([json_element_a, json_element_c]))
       expect(result).to be_a(ArrayExampleArray)
     end
   end
 
   describe "#&" do
     it "builds the intersection" do
-      a = ArrayExampleArray.new(["a", "b"])
-      b = ArrayExampleArray.new(["a", "c"])
+      a = ArrayExampleArray.new([json_element_a, json_element_b])
+      b = ArrayExampleArray.new([json_element_a, json_element_c])
       result = a & b
 
-      expect(result).to eq(ArrayExampleArray.new(["a"]))
+      expect(result).to eq(ArrayExampleArray.new([json_element_a]))
       expect(result).to be_a(ArrayExampleArray)
     end
   end
 
   describe "#as_json" do
     it "serializes all objects to native ruby objects" do
-      embedded_array = ArrayExampleArray.new(["a"])
-      embedded_object = Machinery::Object.new(b: "b")
-      array = ArrayExampleArray.new([1, embedded_array, embedded_object])
+      embedded_array = ArrayExampleArray.new([json_element_a])
+      embedded_object = Machinery::Object.new(json_element_b)
+      array = Machinery::Array.new([1, embedded_array, embedded_object])
 
       result = array.as_json
-      expect(result).to eq([1, ["a"], { "b" => "b" }])
+      expect(result).to eq([1, ["a" => 1], { "b" => 2 }])
+    end
+  end
+
+  describe "setter methods" do
+    it "convert the payload to the data model" do
+      array = ArrayExampleArray.new
+
+      array << json_element_a
+      array.push(json_element_b)
+      array += [json_element_c]
+      array.insert(0, json_element_a)
+
+      expect(array).to be_a(ArrayExampleArray)
+      expect(array.size).to eq(4)
+      expect(array.all? { |element| element.is_a?(ArrayExampleObject) }).to be(true)
     end
   end
 

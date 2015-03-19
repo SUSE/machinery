@@ -22,30 +22,36 @@ module Machinery
         @element_class = options[:class]
       end
 
-      def from_json(json)
-        elements = json.map do |element|
-          if @element_class
-            @element_class.from_json(element)
+      def convert_element(element)
+        if @element_class
+          element.is_a?(@element_class) ? element : @element_class.from_json(element)
+        else
+          case element
+          when ::Array
+            Machinery::Array.from_json(element)
+          when Hash
+            Machinery::Object.from_json(element)
           else
-            case element
-              when ::Array
-                Machinery::Array.from_json(element)
-              when Hash
-                Machinery::Object.from_json(element)
-              else
-                element
-            end
+            element
           end
         end
+      end
 
-        new(elements)
+      def object_array_from_json_object(elements)
+        elements.map do |element|
+          convert_element(element)
+        end
+      end
+
+      def from_json(json_object)
+        new(json_object)
       end
     end
 
     attr_reader :elements
 
     def initialize(elements = [])
-      @elements = elements
+      @elements = self.class.object_array_from_json_object(elements)
     end
 
     def ==(other)
@@ -67,6 +73,22 @@ module Machinery
 
     def &(other)
       self.class.new(@elements & other.elements)
+    end
+
+    def push(element)
+      @elements.push(self.class.convert_element(element))
+    end
+
+    def <<(element)
+      @elements << self.class.convert_element(element)
+    end
+
+    def +(array)
+      self.class.new(@elements + self.class.new(array).elements)
+    end
+
+    def insert(index, *elements)
+      @elements.insert(index, *self.class.new(elements).elements)
     end
 
     def as_json

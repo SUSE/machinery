@@ -95,7 +95,7 @@ class ConfigFilesInspector < Inspector
       config_file_changes(package)
     end
 
-    paths = result.reject { |f| f.changes == ["deleted"] }.map(&:name)
+    paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
     path_data = get_path_data(@system, paths)
     key_list = [ :user, :group, :mode ]
     result.each do |pkg|
