@@ -218,4 +218,9 @@ describe Filter do
       }.to_not raise_error
     end
   end
+
+  describe "#filter" do
+    specify { expect(Filter.new).to be_empty }
+    specify { expect(Filter.new("/foo=bar")).to_not be_empty }
+  end
 end
