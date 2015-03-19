@@ -67,7 +67,7 @@ describe Machinery::Object do
       object = ObjectWithProperty.new
 
       object.foo = { a: 1 }
-      object.bar = { b: 2 }
+      object[:bar] = { b: 2 }
       object.baz = { b: 2 }
 
       expect(object.foo).to be_a(FooObject)

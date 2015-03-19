@@ -88,7 +88,7 @@ module Machinery
     end
 
     def []=(key, value)
-      @attributes[key.to_s] = value
+      @attributes[key.to_s] = self.class.convert_element(key, value)
     end
 
     def empty?
