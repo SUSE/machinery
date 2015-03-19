@@ -23,25 +23,27 @@ module Machinery
         @property_classes[name.to_s] = options[:class]
       end
 
+      def convert_element(key, value)
+        property_class = @property_classes[key.to_s] if @property_classes
+        if property_class
+          value.is_a?(property_class) ? value : property_class.from_json(value)
+        else
+          case value
+            when ::Array
+              Machinery::Array.from_json(value)
+            when Hash
+              Machinery::Object.from_json(value)
+            else
+              value
+          end
+        end
+      end
+
       def object_hash_from_json(json)
         return nil unless json
 
         entries = json.map do |key, value|
-          property_class = @property_classes[key.to_s] if @property_classes
-          value_converted = if property_class
-            value.is_a?(property_class) ? value : property_class.from_json(value)
-          else
-            case value
-              when ::Array
-                Machinery::Array.from_json(value)
-              when Hash
-                Machinery::Object.from_json(value)
-              else
-                value
-            end
-          end
-
-          [key, value_converted]
+          [key, convert_element(key, value)]
         end
 
         Hash[entries]
@@ -98,7 +100,8 @@ module Machinery
         if args.size != 1
           raise ArgumentError, "wrong number of arguments (#{args.size} for 1)"
         end
-        @attributes[name.to_s[0..-2].to_s] = args.first
+        key = name.to_s[0..-2]
+        @attributes[key] = self.class.convert_element(key, args.first)
       else
         if @attributes.has_key?(name.to_s)
           if !args.empty?

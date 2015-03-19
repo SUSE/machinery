@@ -19,6 +19,15 @@ require_relative "spec_helper"
 
 describe Machinery::Object do
   class ObjectExampleObject < Machinery::Object; end
+  before(:each) do
+    stub_const("FooObject", Class.new(Machinery::Object))
+    stub_const("ObjectWithProperty",
+      Class.new(Machinery::Object) do
+        has_property "foo", class: FooObject
+        has_property "bar", class: FooObject
+      end
+    )
+  end
 
   it "assigns new values" do
     expect(subject.respond_to?(:foo)).to eq(false)
@@ -53,15 +62,21 @@ describe Machinery::Object do
     end
   end
 
-  describe "#from_json" do
-    before(:all) do
-      class FooObject < Machinery::Object; end
-      class ObjectWithProperty < Machinery::Object
-        has_property "foo", class: FooObject
-        has_property "bar", class: FooObject
-      end
-    end
+  describe "setter methods" do
+    it "convert the payload to the data model" do
+      object = ObjectWithProperty.new
 
+      object.foo = {a: 1}
+      object.bar = {b: 2}
+      object.baz = {b: 2}
+
+      expect(object.foo).to be_a(FooObject)
+      expect(object.bar).to be_a(FooObject)
+      expect(object.baz).to_not be_a(FooObject)
+    end
+  end
+
+  describe "#from_json" do
     it "delegates to specialized class when the element class is set" do
       json_object = {foo: {bar: "bar"}, baz: "baz"}
 
