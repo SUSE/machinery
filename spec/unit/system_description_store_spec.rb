@@ -116,7 +116,7 @@ describe SystemDescriptionStore do
       create_machinery_dir
       FileUtils.mkdir_p("/home/tux/.machinery")
 
-      FileUtils.mkdir_p(File.join("/home/tux/.machinery", "description2"), :mode => 0700)
+      FileUtils.mkdir_p(File.join("/home/tux/.machinery", "description2"), mode: 0700)
       FileUtils.touch(File.join("/home/tux/.machinery/description2", "manifest.json"))
 
       store = SystemDescriptionStore.new(test_base_path)
@@ -127,7 +127,7 @@ describe SystemDescriptionStore do
       create_machinery_dir
       FileUtils.mkdir_p("/home/tux/.machinery")
 
-      FileUtils.mkdir_p(File.join("/home/tux/.machinery", "description2"), :mode => 0700)
+      FileUtils.mkdir_p(File.join("/home/tux/.machinery", "description2"), mode: 0700)
       FileUtils.touch(File.join("/home/tux/.machinery/description2", "manifest.json"))
 
       store = SystemDescriptionStore.new(test_base_path)
