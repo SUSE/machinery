@@ -1,6 +1,6 @@
 # Filtering system descriptions
 
-This draft describes a filtering mechanism for Machinery, which could be used
+This draft describes the filtering mechanism for Machinery, which is used
 to filter out elements from scopes when running commands.
 
 
@@ -17,7 +17,7 @@ showing a description, it could be useful to hide parts of a scope to make the
 output more easy to read, e.g. hide not-running services to see only the running
 services.
 
-Machinery should provide a mechanism to allow the user to do this filtering. The
+Machinery provides a mechanism to allow the user to do this filtering. The
 goal of the design described in this document is to provide such a mechanism in
 a way which is generally usable across scopes and commands.
 
@@ -37,6 +37,10 @@ operating on a list of scopes. The general idea is to make it possible to
 define a set of filters, which is applied, when executing a command, and filters
 out all elements of the scopes, which match the filter criteria.
 
+The filters as defined by this concept are only valid for scopes which contain
+a list of elements. The list of elements is filtered and all elements are
+removed which match the filters.
+
 Filters are defined in a generic way, which is independent of scope and command,
 so that the same way of defining filters can be used everywhere, and filters can
 be reused and shared between scopes and commands.
@@ -44,20 +48,25 @@ be reused and shared between scopes and commands.
 
 ### Filter definitions
 
-Each filter defines a matcher for elements of a system description. The element
-is specified by its path within the JSON manifest, and the matching condition
-is specified by a condition attached to the element specification.
+Each filter has a definition which specifies which elements it matches under
+which conditions. The definition consists of a path, which defines the element
+to match and a matcher, which defines the condition under which a value of the
+element contained in the system description matches the filter.
+
+The element used for matching is specified by its path within the JSON manifest,
+and the matcher is specified by a condition attached to the element
+specification.
 
 The generic format for a filter definition is
 
-    /scope/element=condition
+    path=matcher
 
-where `scope` is the name of the scope, which should be filtered, `element` is
-the path to the element, which is used to check the matching condition, and `=`
-and `condition` are the operator and value used to match.
+where `path` is a path to the element in the JSON manifest and `matcher` is the
+condition a value has to fullfill to match the filter. `=` is the operator used
+to match.
 
-When applied on a scope this filter results in a list of all elements excluding
-the ones matching the filter.
+When applied on a system description this filter results in a list of all
+elements excluding the ones matching the filter.
 
 When the matched element is a string it is used literally without the quotes to
 match against the condiditon, e.g. a JSON such as `"name": "apache"` matches
@@ -85,11 +94,20 @@ Filters can be inverted by prefixing them with a `!`:
     !/scope/element=condition
 
 When applied on a scope this filter results in a list of only the elements
-which match the condition.
+which match the condition. *Inverted filters are not implemented yet*
 
 The first step is basic filtering, which only supports simple matches for
 equalness and don't allow for wild cards or any other more complex regular
 expressions.
+
+Filter definitions are only valid, if in the path there is an element, which is
+a list. The most top-level list is the one which is filtered. So for example
+
+    /unmanaged_files/files/name=/etc/ssh/ssh_host_key.pub
+
+filters all elements where the `name` attribute in the `files` array is equal to
+`/etc/ssh/ssh_host_key.pub`. The `files` attribute contains the most top-level
+array of elements (i.e. files in this case).
 
 #### Examples
 
@@ -133,7 +151,7 @@ description.
 
 #### General filter storage format
 
-Filters are stored as JSON. Filter criteria are specified per command. An
+Filters are stored as JSON. Filter definitions are specified per command. An
 example would be:
 
 ```json
@@ -186,6 +204,8 @@ directory of a system description.
 When executing a command the filters defined for the command are applied and the
 results are filtered excluding all objects matching any filter conditions.
 
+*Persistent filters are not implemented yet*
+
 #### Cascading filters
 
 Filters can be defined on a system-wide level, per user, or per description.
@@ -204,6 +224,8 @@ description.
 
 When executing a command the filters of all levels are concatenated and applied
 to the command as a whole.
+
+*Cascading filters are not implemented yet*
 
 #### Disabling filters
 
@@ -235,6 +257,8 @@ would result in the effective filter:
   "/unmanaged_files/files/name=/var/cache/"
 ]
 ```
+
+*Disabling filters is not implemented yet*
 
 
 ## User interface
@@ -290,6 +314,8 @@ description is not modified.
 Persistent filters which are stored in `exclude.json` files can either be edited
 in the JSON file or managed with the following commands:
 
+*The filter management commands are not implemented yet*
+
 #### List filters
 
 The command
@@ -330,7 +356,7 @@ previously.
 
 The generic filter option is powerful and covers all use cases which the
 implementation is capable to handle. But it is not the most convenient way to
-use Machinery. For this reason we add more convenient alternative ways of
+use Machinery. For this reason there are more convenient alternative ways of
 specifying filters for specific common use cases.
 
 #### Skip files during inspection
@@ -353,15 +379,18 @@ filtered:
 
 ## Implementation
 
-At the moment (2014-12-22) the design is a proposal, and nothing of it is
-implemented yet. This is a possible plan how to do it:
+The design has been discussed and agreed on. Here is the plan how to implement
+it:
 
 * Step 1: Implement core filtering classes and move current filtering to them.
   This includes storing filters used during inspection in the meta data of the
-  system description.
-* Step 2: Implement generic `--exclude` option to let users add additional
-  filters on demand. This option can also be used in our integration tests.
-* Step 3: Implement `--skip-files` option for the `inspect` command to make it
+  system description. (done)
+* Step 2: Implement `--skip-files` option for the `inspect` command to make it
   easier for users to add filters.
+* Step 3: Implement generic `--exclude` option to let users add additional
+  filters on demand. This option can also be used in our integration tests.
+  (done as experimental option)
 * Step 4: Implement `filter` command and persistent per-description filters.
 * Step 5: Implement user-level persistent filters.
+* Step 6: Implement disabling of filters
+* Step 7: Implement inveretd filters
