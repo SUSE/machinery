@@ -112,6 +112,28 @@ describe SystemDescriptionStore do
       expect(store.list).to eq([test_name])
     end
 
+    it "returns sorted list of existing system descriptions" do
+      create_machinery_dir
+      FileUtils.mkdir_p("/home/tux/.machinery")
+
+      FileUtils.mkdir_p(File.join("/home/tux/.machinery", "description2"), :mode => 0700)
+      FileUtils.touch(File.join("/home/tux/.machinery/description2", "manifest.json"))
+
+      store = SystemDescriptionStore.new(test_base_path)
+      expect(store.list).to eq([test_name, "description2"])
+    end
+
+    it "does not return unsorted list of existing system descriptions" do
+      create_machinery_dir
+      FileUtils.mkdir_p("/home/tux/.machinery")
+
+      FileUtils.mkdir_p(File.join("/home/tux/.machinery", "description2"), :mode => 0700)
+      FileUtils.touch(File.join("/home/tux/.machinery/description2", "manifest.json"))
+
+      store = SystemDescriptionStore.new(test_base_path)
+      expect(store.list).not_to eq(["description2", test_name])
+    end
+
     it "returns empty list if no system descriptions are available" do
       store = SystemDescriptionStore.new
       expect(store.list).to eq([])
