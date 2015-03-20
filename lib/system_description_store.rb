@@ -52,7 +52,7 @@ class SystemDescriptionStore
   def list
     Dir["#{@base_path}/*"].
       select { |item| File.exists?(manifest_path(File.basename(item)))}.
-      map { |item| File.basename(item) }
+      map { |item| File.basename(item) }.sort
   end
 
   def remove(name)
