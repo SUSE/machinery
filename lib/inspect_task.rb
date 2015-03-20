@@ -58,14 +58,17 @@ class InspectTask
     end
   end
 
-  def adapt_filter_in_metadata(filter_in_metadata, scope, filter)
-    filter_in_metadata.element_filters.
-      reject! { |path, _filter| path.start_with?("/#{scope}") }
-    filter.element_filters.
-      select { |path, _filter| path.start_with?("/#{scope}") }.
-      each do |_path, element_filter|
-      filter_in_metadata.add_element_filter(element_filter)
+  def calculate_effective_filter(filter, scopes, effective_filter)
+    scopes.each do |scope|
+      effective_filter.element_filters.
+        reject! { |path, _filter| path.start_with?("/#{scope}") }
+      filter.element_filters.
+        select { |path, _filter| path.start_with?("/#{scope}") }.
+        each do |_path, element_filter|
+        effective_filter.add_element_filter(element_filter)
+      end
     end
+    effective_filter
   end
 
   def build_description(store, name, system, scopes, filter, options)
@@ -84,16 +87,18 @@ class InspectTask
     failed_inspections = {}
 
     if description.filters["inspect"]
-      filter_in_metadata = Filter.new(description.filters["inspect"])
+      effective_filter = Filter.new(description.filters["inspect"])
     else
-      filter_in_metadata = Filter.new
+      effective_filter = Filter.new
     end
+    effective_filter = calculate_effective_filter(filter, scopes, effective_filter)
+
 
     scopes.map { |s| Inspector.for(s) }.each do |inspector_class|
       inspector = inspector_class.new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
       begin
-        inspector.inspect(filter, options)
+        inspector.inspect(effective_filter, options)
       rescue Machinery::Errors::MachineryError => e
         Machinery::Ui.puts " -> Inspection failed!"
         failed_inspections[inspector.scope] = e
@@ -101,11 +106,9 @@ class InspectTask
       end
       description[inspector.scope].set_metadata(timestring, host)
 
-      adapt_filter_in_metadata(filter_in_metadata, inspector.scope, filter)
-
       if !description.attributes.empty?
-        filter_in_metadata.apply!(description)
-        description.set_filter_metadata("inspect", filter_in_metadata.to_array)
+        effective_filter.apply!(description)
+        description.set_filter_metadata("inspect", effective_filter.to_array)
         description.save
       end
 
