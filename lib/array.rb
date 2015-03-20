@@ -37,8 +37,8 @@ module Machinery
         end
       end
 
-      def object_array_from_json_object(elements)
-        elements.map do |element|
+      def convert_raw_array(array)
+        array.map do |element|
           convert_element(element)
         end
       end
@@ -51,7 +51,7 @@ module Machinery
     attr_reader :elements
 
     def initialize(elements = [])
-      @elements = self.class.object_array_from_json_object(elements)
+      @elements = self.class.convert_raw_array(elements)
     end
 
     def ==(other)
