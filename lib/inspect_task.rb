@@ -58,16 +58,6 @@ class InspectTask
     end
   end
 
-  def adapt_filter_in_metadata(filter_in_metadata, scope, filter)
-    filter_in_metadata.element_filters.
-      reject! { |path, _filter| path.start_with?("/#{scope}") }
-    filter.element_filters.
-      select { |path, _filter| path.start_with?("/#{scope}") }.
-      each do |_path, element_filter|
-      filter_in_metadata.add_element_filter(element_filter)
-    end
-  end
-
   def build_description(store, name, system, scopes, filter, options)
     begin
       description = SystemDescription.load(name, store)
@@ -83,17 +73,17 @@ class InspectTask
 
     failed_inspections = {}
 
-    if description.filters["inspect"]
-      filter_in_metadata = description.filters["inspect"]
-    else
-      filter_in_metadata = Filter.new
-    end
+    effective_filter = Filter.new(description.filter_definitions("inspect"))
 
-    scopes.map { |s| Inspector.for(s) }.each do |inspector_class|
-      inspector = inspector_class.new(system, description)
+    scopes.each do |scope|
+      inspector = Inspector.for(scope).new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
+
+      element_filters = filter.element_filters_for_scope(scope)
+      effective_filter.set_element_filters_for_scope(scope, element_filters)
+
       begin
-        inspector.inspect(filter, options)
+        inspector.inspect(effective_filter, options)
       rescue Machinery::Errors::MachineryError => e
         Machinery::Ui.puts " -> Inspection failed!"
         failed_inspections[inspector.scope] = e
@@ -101,10 +91,9 @@ class InspectTask
       end
       description[inspector.scope].set_metadata(timestring, host)
 
-      adapt_filter_in_metadata(filter_in_metadata, inspector.scope, filter)
-
       if !description.attributes.empty?
-        description.set_filter("inspect", filter_in_metadata)
+        effective_filter.apply!(description)
+        description.set_filter_definitions("inspect", effective_filter.to_array)
         description.save
       end
 

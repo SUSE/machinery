@@ -235,14 +235,14 @@ Inspecting foo...
       )
 
       expected = ["/foo=bar,baz"]
-      expect(description.filters["inspect"].to_array).to eq(expected)
+      expect(description.filter_definitions("inspect")).to eq(expected)
     end
 
     it "only sets filters for scopes that were inspected" do
       description = SystemDescription.new(name, store)
       expect(SystemDescription).to receive(:load).and_return(description)
 
-      description.set_filter("inspect", Filter.new(["/foo=bar", "/baz=qux"]))
+      description.set_filter_definitions("inspect", Filter.new(["/foo=bar", "/baz=qux"]).to_array)
 
       description = inspect_task.inspect_system(
         store,
@@ -257,7 +257,7 @@ Inspecting foo...
         "/foo=baz",
         "/baz=qux"
       ]
-      expect(description.filters["inspect"].to_array).to match_array(expected)
+      expect(description.filter_definitions("inspect")).to match_array(expected)
     end
 
     it "asks for the summary only after filtering" do
@@ -271,6 +271,19 @@ Inspecting foo...
       )
 
       expect(captured_machinery_output).to include("Found 2 elements.")
+    end
+
+    it "applies the filter to the generated system description" do
+      expect_any_instance_of(Filter).to receive(:apply!).with(an_instance_of(SystemDescription))
+
+      inspect_task.inspect_system(
+        store,
+        host,
+        name,
+        current_user_non_root,
+        ["foo"],
+        Filter.new(["/foo/files/name=baz"])
+      )
     end
   end
 end

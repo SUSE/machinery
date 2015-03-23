@@ -136,4 +136,32 @@ describe ElementFilter do
       end
     end
   end
+
+  describe "filters_scope?" do
+    specify { expect(ElementFilter.new("/foo", "bar").filters_scope?("foo")).to be(true) }
+    specify { expect(ElementFilter.new("/foo", "bar").filters_scope?("foo_bar")).to be(false) }
+  end
+
+  describe "==" do
+    it "works for equal objects" do
+      expect(
+        ElementFilter.new("/foo", "bar") == ElementFilter.new("/foo", "bar")
+      ).to be(true)
+      expect(
+        ElementFilter.new("/foo", ["bar", "baz"]) == ElementFilter.new("/foo", ["bar", "baz"])
+      ).to be(true)
+    end
+
+    it "works for different objects" do
+      expect(
+        ElementFilter.new("/foo", "bar") == ElementFilter.new("/foo", "baz")
+      ).to be(false)
+      expect(
+        ElementFilter.new("/foo", ["bar", "baz"]) == ElementFilter.new("/foo", ["bar", "qux"])
+      ).to be(false)
+      expect(
+        ElementFilter.new("/foo", "bar") == ElementFilter.new("/baz", "bar")
+      ).to be(false)
+    end
+  end
 end

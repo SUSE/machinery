@@ -426,7 +426,7 @@ describe SystemDescription do
       create_test_description(
         name: "description1",
         store_on_disk: true,
-        filters: {
+        filter_definitions: {
           "inspect" => [
             "/unmanaged_files/files/name=/opt*"
           ]
@@ -477,43 +477,48 @@ describe SystemDescription do
 
       it "reads the filter information" do
         description = SystemDescription.load("description1", store)
-        expect(description.filters["inspect"]).to be_a(Filter)
-        expect(description.filters["inspect"].
-          element_filter_for("/unmanaged_files/files/name").matchers).to eq(["/opt*"])
+
+        expected = [
+          "/unmanaged_files/files/name=/opt*"
+        ]
+
+        expect(description.filter_definitions("inspect")).to eq(expected)
       end
     end
   end
 
-  describe "#set_filter" do
+  describe "#set_filter_definitions" do
     subject { create_test_description(scopes: ["unmanaged_files"]) }
 
     it "sets the inspection filters" do
       expect(subject.to_hash["meta"]["filters"]).to be(nil)
       expected = ["/foo=bar", "/foo=baz", "/scope=filter"]
 
-      subject.set_filter("inspect", Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]))
+      subject.set_filter_definitions("inspect",
+        Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]).to_array)
       filters = subject.to_hash["meta"]["filters"]["inspect"]
       expect(filters).to eq(expected)
     end
 
     it "only supports inspection filters" do
       expect {
-        subject.set_filter("show", Filter.new(["/foo=bar", "/scope=filter"]))
+        subject.set_filter_definitions("show", Filter.new(["/foo=bar", "/scope=filter"]).to_array)
       }.to raise_error(/not supported/)
     end
+  end
 
-    it "applies the filter" do
-      expect(subject.unmanaged_files.files.map(&:name)).to match_array([
-        "/etc/unmanaged-file",
-        "/etc/another-unmanaged-file"
-      ])
+  describe "#filter_definitions" do
+    subject { create_test_description(scopes: ["unmanaged_files"]) }
 
-      filter = Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file")
-      subject.set_filter("inspect", filter)
+    it "returns an empty array for commands that don't have filter definitions set" do
+      expect(subject.filter_definitions("empty_command")).to eq([])
+    end
 
-      expect(subject.unmanaged_files.files.map(&:name)).to match_array([
-        "/etc/another-unmanaged-file"
-      ])
+    it "returns the filter definitions" do
+      definitions = ["/foo=bar", "/foo=baz", "/scope=filter"]
+
+      subject.set_filter_definitions("inspect", definitions)
+      expect(subject.filter_definitions("inspect")).to eq(definitions)
     end
   end
 end
