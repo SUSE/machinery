@@ -58,19 +58,6 @@ class InspectTask
     end
   end
 
-  def calculate_effective_filter(filter, scopes, effective_filter)
-    scopes.each do |scope|
-      effective_filter.element_filters.
-        reject! { |path, _filter| path.start_with?("/#{scope}") }
-      filter.element_filters.
-        select { |path, _filter| path.start_with?("/#{scope}") }.
-        each do |_path, element_filter|
-        effective_filter.add_element_filter(element_filter)
-      end
-    end
-    effective_filter
-  end
-
   def build_description(store, name, system, scopes, filter, options)
     begin
       description = SystemDescription.load(name, store)
@@ -87,11 +74,14 @@ class InspectTask
     failed_inspections = {}
 
     effective_filter = Filter.new(description.filter_definitions("inspect"))
-    effective_filter = calculate_effective_filter(filter, scopes, effective_filter)
 
-    scopes.map { |s| Inspector.for(s) }.each do |inspector_class|
-      inspector = inspector_class.new(system, description)
+    scopes.each do |scope|
+      inspector = Inspector.for(scope).new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
+
+      element_filters = filter.element_filters_for_scope(scope)
+      effective_filter.set_element_filters_for_scope(scope, element_filters)
+
       begin
         inspector.inspect(effective_filter, options)
       rescue Machinery::Errors::MachineryError => e
