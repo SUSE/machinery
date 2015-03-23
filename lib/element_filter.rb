@@ -48,4 +48,9 @@ class ElementFilter
 
     false
   end
+
+  def ==(other)
+    path == other.path &&
+      matchers == other.matchers
+  end
 end
