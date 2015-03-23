@@ -124,6 +124,11 @@ describe ElementFilter do
     end
   end
 
+  describe "filters_scope?" do
+    specify { expect(ElementFilter.new("/foo", "bar").filters_scope?("foo")).to be(true) }
+    specify { expect(ElementFilter.new("/foo", "bar").filters_scope?("foo_bar")).to be(false) }
+  end
+
   describe "==" do
     it "works for equal objects" do
       expect(

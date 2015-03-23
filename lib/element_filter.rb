@@ -49,6 +49,10 @@ class ElementFilter
     false
   end
 
+  def filters_scope?(scope)
+    (path =~ /\/#{scope}(\/|$)/) ? true : false
+  end
+
   def ==(other)
     path == other.path &&
       matchers == other.matchers
