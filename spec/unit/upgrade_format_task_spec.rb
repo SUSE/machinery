@@ -46,9 +46,10 @@ describe UpgradeFormatTask do
         SystemDescription.load("description1", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
-      allow(Machinery::Ui).to receive(:puts)
-      expect(Machinery::Ui).to receive(:puts).with(/upgraded/)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      allow(captured_machinery_output)
+      expect(captured_machinery_output).to match(/upgraded/)
+
 
       migrated_description = SystemDescription.load(
         "description1", system_description_factory_store
@@ -63,14 +64,11 @@ describe UpgradeFormatTask do
     end
 
     it "doesn't upgrade an up to date system description" do
-      allow(Machinery::Ui).to receive(:puts)
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      allow(captured_machinery_output)
 
-      expect(Machinery::Ui).to receive(:puts).with(/up to date/)
-      expect(Machinery::Ui).not_to receive(:puts).with(
-        /System description .+ successfully upgraded/
-      )
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      expect(captured_machinery_output).to match(/up to date/)
     end
 
     it "upgrades all system descriptions when the --all switch is given" do
@@ -78,9 +76,9 @@ describe UpgradeFormatTask do
         SystemDescription.load("descriptions2", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
-      allow(Machinery::Ui).to receive(:puts)
-      expect(Machinery::Ui).to receive(:puts).with("Upgraded 2 system descriptions successfully.")
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      allow(captured_machinery_output)
+      expect(captured_machinery_output).to match("Upgraded 2 system descriptions successfully.")
 
       ["description1", "description2"].each do |description|
         migrated_description = SystemDescription.load(description,
