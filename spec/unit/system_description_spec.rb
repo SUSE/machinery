@@ -482,12 +482,12 @@ describe SystemDescription do
           "/unmanaged_files/files/name=/opt*"
         ]
 
-        expect(description.filter_definitions["inspect"]).to eq(expected)
+        expect(description.filter_definitions("inspect")).to eq(expected)
       end
     end
   end
 
-  describe "#set_filter" do
+  describe "#set_filter_definitions" do
     subject { create_test_description(scopes: ["unmanaged_files"]) }
 
     it "sets the inspection filters" do
@@ -504,6 +504,21 @@ describe SystemDescription do
       expect {
         subject.set_filter_definitions("show", Filter.new(["/foo=bar", "/scope=filter"]).to_array)
       }.to raise_error(/not supported/)
+    end
+  end
+
+  describe "#filter_definitions" do
+    subject { create_test_description(scopes: ["unmanaged_files"]) }
+
+    it "returns an empty array for commands that don't have filter definitions set" do
+      expect(subject.filter_definitions("empty_command")).to eq([])
+    end
+
+    it "returns the filter definitions" do
+      definitions = ["/foo=bar", "/foo=baz", "/scope=filter"]
+
+      subject.set_filter_definitions("inspect", definitions)
+      expect(subject.filter_definitions("inspect")).to eq(definitions)
     end
   end
 end

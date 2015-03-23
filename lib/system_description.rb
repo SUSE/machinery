@@ -194,6 +194,10 @@ class SystemDescription < Machinery::Object
     File.chmod(0600, path) if created
   end
 
+  def filter_definitions(command)
+    @filter_definitions[command] || []
+  end
+
   def set_filter_definitions(command, filter)
     if !["inspect"].include?(command)
       raise Machinery::Errors::MachineryError.new(
