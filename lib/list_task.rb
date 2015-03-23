@@ -17,7 +17,7 @@
 
 class ListTask
   def list(store, options = {})
-    descriptions = store.list.sort
+    descriptions = store.list
     has_incompatible_version = false
 
     descriptions.each do |name|
