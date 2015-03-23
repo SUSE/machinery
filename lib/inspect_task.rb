@@ -86,13 +86,8 @@ class InspectTask
 
     failed_inspections = {}
 
-    if description.filter_definitions["inspect"]
-      effective_filter = Filter.new(description.filter_definitions["inspect"])
-    else
-      effective_filter = Filter.new
-    end
+    effective_filter = Filter.new(description.filter_definitions("inspect"))
     effective_filter = calculate_effective_filter(filter, scopes, effective_filter)
-
 
     scopes.map { |s| Inspector.for(s) }.each do |inspector_class|
       inspector = inspector_class.new(system, description)

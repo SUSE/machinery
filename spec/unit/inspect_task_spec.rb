@@ -235,7 +235,7 @@ Inspecting foo...
       )
 
       expected = ["/foo=bar,baz"]
-      expect(description.filter_definitions["inspect"]).to eq(expected)
+      expect(description.filter_definitions("inspect")).to eq(expected)
     end
 
     it "only sets filters for scopes that were inspected" do
@@ -257,7 +257,7 @@ Inspecting foo...
         "/foo=baz",
         "/baz=qux"
       ]
-      expect(description.filter_definitions["inspect"]).to match_array(expected)
+      expect(description.filter_definitions("inspect")).to match_array(expected)
     end
 
     it "asks for the summary only after filtering" do
