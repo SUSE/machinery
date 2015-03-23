@@ -39,10 +39,10 @@ module Machinery
         end
       end
 
-      def object_hash_from_json(json)
-        return nil unless json
+      def convert_raw_hash(hash)
+        return nil unless hash
 
-        entries = json.map do |key, value|
+        entries = hash.map do |key, value|
           [key, convert_element(key, value)]
         end
 
@@ -61,7 +61,7 @@ module Machinery
     end
 
     def set_attributes(attrs)
-      attrs = self.class.object_hash_from_json(attrs) if attrs.is_a?(Hash)
+      attrs = self.class.convert_raw_hash(attrs) if attrs.is_a?(Hash)
       @attributes = attrs.inject({}) do |attributes, (key, value)|
         key = key.to_s if key.is_a?(Symbol)
 

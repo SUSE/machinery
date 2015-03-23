@@ -39,7 +39,7 @@ class Os < Machinery::Object
 
   def self.from_json(json)
     scope_object = self.for(json["name"])
-    scope_object.set_attributes(object_hash_from_json(json))
+    scope_object.set_attributes(json)
     scope_object
   end
 
