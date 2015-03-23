@@ -20,6 +20,8 @@ source "https://rubygems.org"
 gemspec
 
 group :test do
+  gem "guard"
+  gem "guard-rspec"
   gem "rspec", "~> 3.1.0"
   gem "fakefs", ">= 0.6.7"
   gem "given_filesystem", ">= 0.1.1"
