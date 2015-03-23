@@ -426,7 +426,7 @@ describe SystemDescription do
       create_test_description(
         name: "description1",
         store_on_disk: true,
-        filters: {
+        filter_definitions: {
           "inspect" => [
             "/unmanaged_files/files/name=/opt*"
           ]
@@ -482,7 +482,7 @@ describe SystemDescription do
           "/unmanaged_files/files/name=/opt*"
         ]
 
-        expect(description.filters["inspect"]).to eq(expected)
+        expect(description.filter_definitions["inspect"]).to eq(expected)
       end
     end
   end
@@ -494,7 +494,7 @@ describe SystemDescription do
       expect(subject.to_hash["meta"]["filters"]).to be(nil)
       expected = ["/foo=bar", "/foo=baz", "/scope=filter"]
 
-      subject.set_filter_metadata("inspect",
+      subject.set_filter_definitions("inspect",
         Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]).to_array)
       filters = subject.to_hash["meta"]["filters"]["inspect"]
       expect(filters).to eq(expected)
@@ -502,7 +502,7 @@ describe SystemDescription do
 
     it "only supports inspection filters" do
       expect {
-        subject.set_filter_metadata("show", Filter.new(["/foo=bar", "/scope=filter"]).to_array)
+        subject.set_filter_definitions("show", Filter.new(["/foo=bar", "/scope=filter"]).to_array)
       }.to raise_error(/not supported/)
     end
   end

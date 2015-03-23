@@ -36,7 +36,7 @@ class SystemDescription < Machinery::Object
   attr_accessor :name
   attr_accessor :store
   attr_accessor :format_version
-  attr_accessor :filters
+  attr_accessor :filter_definitions
 
   class << self
     # Load the system description with the given name
@@ -103,7 +103,7 @@ class SystemDescription < Machinery::Object
       description.format_version = json_format_version
 
       if hash["meta"] && hash["meta"]["filters"]
-        description.filters = hash["meta"]["filters"]
+        description.filter_definitions = hash["meta"]["filters"]
       end
 
       description
@@ -134,7 +134,7 @@ class SystemDescription < Machinery::Object
     @name = name
     @store = store
     @format_version = CURRENT_FORMAT_VERSION
-    @filters = {}
+    @filter_definitions = {}
 
     super(hash)
   end
@@ -171,7 +171,7 @@ class SystemDescription < Machinery::Object
     attributes.keys.each do |key|
       meta[key] = self[key].meta.as_json if self[key].meta
     end
-    @filters.each do |command, filter|
+    @filter_definitions.each do |command, filter|
       meta["filters"] ||= {}
       meta["filters"][command] = filter
     end
@@ -194,14 +194,14 @@ class SystemDescription < Machinery::Object
     File.chmod(0600, path) if created
   end
 
-  def set_filter_metadata(command, filter)
+  def set_filter_definitions(command, filter)
     if !["inspect"].include?(command)
       raise Machinery::Errors::MachineryError.new(
         "Storing the filter for command '#{command}' is not supported."
       )
     end
 
-    @filters[command] = filter
+    @filter_definitions[command] = filter
   end
 
   def scopes

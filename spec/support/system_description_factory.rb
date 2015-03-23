@@ -107,7 +107,7 @@ module SystemDescriptionFactory
     meta = {
       format_version: 3
     }
-    meta[:filters] = options[:filters] if options[:filters]
+    meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
     (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
       json_objects << EXAMPLE_SCOPES[scope]

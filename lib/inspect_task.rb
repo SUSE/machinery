@@ -86,8 +86,8 @@ class InspectTask
 
     failed_inspections = {}
 
-    if description.filters["inspect"]
-      effective_filter = Filter.new(description.filters["inspect"])
+    if description.filter_definitions["inspect"]
+      effective_filter = Filter.new(description.filter_definitions["inspect"])
     else
       effective_filter = Filter.new
     end
@@ -108,7 +108,7 @@ class InspectTask
 
       if !description.attributes.empty?
         effective_filter.apply!(description)
-        description.set_filter_metadata("inspect", effective_filter.to_array)
+        description.set_filter_definitions("inspect", effective_filter.to_array)
         description.save
       end
 
