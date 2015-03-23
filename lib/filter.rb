@@ -94,10 +94,30 @@ class Filter
     end
   end
 
-  def add_element_filter(element_filter)
-    path = element_filter.path
-    @element_filters[path] ||= ElementFilter.new(path)
-    @element_filters[path].add_matchers(element_filter.matchers)
+  def add_element_filters(element_filters)
+    Array(element_filters).each do |element_filter|
+      path = element_filter.path
+      @element_filters[path] ||= ElementFilter.new(path)
+      @element_filters[path].add_matchers(element_filter.matchers)
+    end
+  end
+
+  def element_filter_for(path)
+    element_filters[path]
+  end
+
+  def element_filters_for_scope(scope)
+    @element_filters.values.select do |element_filter|
+      element_filter.filters_scope?(scope)
+    end
+  end
+
+  def set_element_filters_for_scope(scope, element_filters)
+    @element_filters.reject! do |_path, element_filter|
+      element_filter.filters_scope?(scope)
+    end
+
+    add_element_filters(element_filters)
   end
 
   def to_array
@@ -113,10 +133,6 @@ class Filter
     return false if !filter
 
     filter.matches?(value)
-  end
-
-  def element_filter_for(path)
-    element_filters[path]
   end
 
   def apply!(system_description)

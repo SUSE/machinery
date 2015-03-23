@@ -104,6 +104,44 @@ describe Filter do
     end
   end
 
+  describe "#element_filters_for_scope" do
+    it "returns the relevant element filters" do
+      filter = Filter.new([
+        "/groups/name=root",
+        "/unmanaged_files/files/name=/home/alfred",
+        "/unmanaged_files/files/name=/var/cache",
+        "/unmanaged_files/files/changes=md5,size",
+        "/changed_managed_files/files/changes=md5,size"
+      ])
+
+      expected = [
+        ElementFilter.new("/unmanaged_files/files/name", ["/home/alfred", "/var/cache"]),
+        ElementFilter.new("/unmanaged_files/files/changes", [["md5", "size"]])
+      ]
+      expect(filter.element_filters_for_scope("unmanaged_files")).to eq(expected)
+    end
+  end
+
+  describe "#set_element_filters_for_scope" do
+    it "replaces existing element filters" do
+      filter = Filter.new([
+        "/groups/name=root",
+        "/unmanaged_files/files/name=/foo",
+        "/unmanaged_files/files/name=/bar",
+        "/unmanaged_files/files/changes=foo",
+        "/changed_managed_files/files/changes=md5,size"
+      ])
+
+      expected = [
+        ElementFilter.new("/unmanaged_files/files/name", ["/home/alfred", "/var/cache"]),
+        ElementFilter.new("/unmanaged_files/files/changes", [["md5", "size"]])
+      ]
+      filter.set_element_filters_for_scope("unmanaged_files", expected)
+
+      expect(filter.element_filters_for_scope("unmanaged_files")).to eq(expected)
+    end
+  end
+
   describe "#matches?" do
     let(:filter) {
       Filter.new([
