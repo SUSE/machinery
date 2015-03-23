@@ -44,7 +44,7 @@ class Html
       }
       EOT
     )
-    return target
+    target
   end
 
   # Template helpers
