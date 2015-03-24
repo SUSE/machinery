@@ -146,7 +146,9 @@ This defines the filter, which is currently hard-coded in the export code.
 
 By moving the filters to the scope definitions, the context why they are needed is preserved. The code which needs them, can simply iterate over the scope definitions and add all the filters defined there to the list of filters effectively to be applied.
 
-Filters can gradually be moved from hard-coded central locations to the scopes. The scope-specific inspection filters should be removed.
+Filters can gradually be moved from hard-coded central locations to the scopes. The scope-specific inspection filters should be removed, as we deal with duplicated data at a later point in time, not during inspection.
+
+Scope definitions should not include inspection filters.
 
 #### Name
 
