@@ -237,7 +237,7 @@ describe Filter do
     end
 
     it "handles type mismatches" do
-      expect(Machinery::Ui).to receive(:warn).with(/WARNING.*not an array/)
+      expect(Machinery::Ui).to receive(:warn).with(/Warning.*not an array/)
       expect {
         expect_file_scope_filter_change(
           "changed_managed_files",

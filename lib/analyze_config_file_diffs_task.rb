@@ -124,7 +124,7 @@ class AnalyzeConfigFileDiffsTask
           # available from the other repositories.
           # If they aren't an error message will then be generated for each of
           # the actually missing files instead.
-          Machinery.logger.error(e.message)
+          Machinery.logger.error("Error: " + e.message)
           Machinery.logger.debug(e.backtrace.join("\n"))
           Machinery.logger.debug("Standard output:\n #{e.stdout}")
           Machinery.logger.debug("Error output:\n #{e.stderr}")
