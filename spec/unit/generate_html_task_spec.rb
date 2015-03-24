@@ -39,5 +39,14 @@ describe GenerateHtmlTask do
         "The generated HTML file is stored in: \n"
       )
     end
+
+    it "returns the path where the html file is stored" do
+      subject.generate(description)
+
+      expect(captured_machinery_output).to match(
+        "The generated HTML file is stored in: \n" \
+        "#{description.store.description_path(description.name)}"
+      )
+    end
   end
 end
