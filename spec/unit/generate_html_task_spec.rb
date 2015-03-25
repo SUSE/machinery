@@ -19,16 +19,27 @@ require_relative "spec_helper"
 
 
 describe GenerateHtmlTask do
-  silence_machinery_output
+  initialize_system_description_factory_store
+  capture_machinery_output
+
 
   subject { GenerateHtmlTask.new }
-  let(:description) { create_test_description }
+  let(:description) { create_test_description(store_on_disk: true) }
 
   describe "#generate" do
     it "triggers a html generation" do
       expect(Html).to receive(:generate).with(description)
 
       subject.generate(description)
+    end
+
+    it "returns the path where the html file is stored" do
+      subject.generate(description)
+
+      expect(captured_machinery_output).to match(
+        "The generated HTML file is stored in: \n" \
+        "#{description.store.description_path(description.name)}"
+      )
     end
   end
 end

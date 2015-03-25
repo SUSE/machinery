@@ -17,6 +17,8 @@
 
 class GenerateHtmlTask
   def generate(description)
-    Html.generate(description)
+    output = Html.generate(description)
+    Machinery::Ui.puts "The generated HTML file is stored in: \n" +
+      "#{output}"
   end
 end
