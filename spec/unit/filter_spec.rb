@@ -115,8 +115,8 @@ describe Filter do
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/files/name", ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/files/changes", [["md5", "size"]])
+        ElementFilter.new("/unmanaged_files/files/name", "=", ["/home/alfred", "/var/cache"]),
+        ElementFilter.new("/unmanaged_files/files/changes", "=", [["md5", "size"]])
       ]
       expect(filter.element_filters_for_scope("unmanaged_files")).to eq(expected)
     end
@@ -133,8 +133,8 @@ describe Filter do
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/files/name", ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/files/changes", [["md5", "size"]])
+        ElementFilter.new("/unmanaged_files/files/name", "=", ["/home/alfred", "/var/cache"]),
+        ElementFilter.new("/unmanaged_files/files/changes", "=", [["md5", "size"]])
       ]
       filter.set_element_filters_for_scope("unmanaged_files", expected)
 

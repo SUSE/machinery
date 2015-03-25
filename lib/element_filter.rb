@@ -16,13 +16,15 @@
 # you may find current contact information at www.suse.com
 
 class ElementFilter
-  attr_accessor :path, :matchers
+  attr_accessor :path, :operator, :matchers
 
-  def initialize(path, matchers = nil)
+  def initialize(path, operator, matchers = nil)
     @path = path
+    @operator = operator
     @matchers = []
 
-    raise("Wrong type") if ![NilClass, String, Array].include?(matchers.class)
+    raise("Wrong filter type") if ![NilClass, String, Array].include?(matchers.class)
+    raise("Wrong filter operator '#{@operator}'") if ![:==].include?(@operator)
 
     add_matchers(matchers) if matchers
   end

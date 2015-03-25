@@ -26,38 +26,38 @@ describe ElementFilter do
 
   describe "#initialize" do
     it "creates filter object" do
-      filter = ElementFilter.new(@path)
+      filter = ElementFilter.new(@path, :==)
       expect(filter).to be_a(ElementFilter)
     end
 
     it "creates filter object with one definition" do
-      filter = ElementFilter.new(@path, @matcher1)
+      filter = ElementFilter.new(@path, :==, @matcher1)
       expect(filter.matchers).to eq([@matcher1])
     end
 
     it "creates filter object with an array of definitions" do
       matcher = [@matcher1, @matcher2]
-      filter = ElementFilter.new(@path, matcher)
+      filter = ElementFilter.new(@path, :==, matcher)
       expect(filter.matchers).to eq(matcher)
     end
   end
 
   describe "#add_matcher" do
     it "adds one matcher definition" do
-      filter = ElementFilter.new(@path)
+      filter = ElementFilter.new(@path, :==)
       filter.add_matchers(@matcher1)
       expect(filter.matchers).to eq([@matcher1])
     end
 
     it "adds two matcher definition" do
-      filter = ElementFilter.new(@path)
+      filter = ElementFilter.new(@path, :==)
       filter.add_matchers(@matcher1)
       filter.add_matchers(@matcher2)
       expect(filter.matchers).to eq([@matcher1, @matcher2])
     end
 
     it "adds an array matcher definition" do
-      filter = ElementFilter.new(@path)
+      filter = ElementFilter.new(@path, :==)
       filter.add_matchers([["md5", "size"]])
       expect(filter.matchers).to eq([["md5", "size"]])
     end
@@ -65,26 +65,26 @@ describe ElementFilter do
 
   describe "#matchers" do
     it "returns all matchers" do
-      filter = ElementFilter.new(@path, [@matcher1, @matcher2])
+      filter = ElementFilter.new(@path, :==, [@matcher1, @matcher2])
       expect(filter.matchers).to eq(["/home/alfred", "/var/cache"])
     end
   end
 
   describe "#matches?" do
     it "returns true on matching value" do
-      filter = ElementFilter.new(@path, @matcher1)
+      filter = ElementFilter.new(@path, :==, @matcher1)
       expect(filter.matches?("/home/alfred")).
         to be(true)
     end
 
     it "returns false on non-matching value" do
-      filter = ElementFilter.new(@path, @matcher1)
+      filter = ElementFilter.new(@path, :==, @matcher1)
       expect(filter.matches?("/home/berta")).
         to be(false)
     end
 
     it "raises ElementFilterTypeMismatch when a String is matched against an Array" do
-      filter = ElementFilter.new(@path, [["array_element_a", "array_element_b"]])
+      filter = ElementFilter.new(@path, :==, [["array_element_a", "array_element_b"]])
       expect {
         filter.matches?("a string")
       }.to raise_error(Machinery::Errors::ElementFilterTypeMismatch)
@@ -92,7 +92,7 @@ describe ElementFilter do
 
     describe "matches beginning of a value" do
       before(:each) do
-        @filter = ElementFilter.new("path", "/home/alfred/*")
+        @filter = ElementFilter.new("path", :==, "/home/alfred/*")
       end
 
       it "returns false on shorter value" do
@@ -114,7 +114,7 @@ describe ElementFilter do
 
     context "matching arrays" do
       before(:each) do
-        @filter = ElementFilter.new("path", [["a", "b"]])
+        @filter = ElementFilter.new("path", :==, [["a", "b"]])
       end
 
       it "finds matches" do
@@ -130,7 +130,7 @@ describe ElementFilter do
       end
 
       it "allows for filtering arrays with one element using a string filter" do
-        filter = ElementFilter.new("path", ["a"])
+        filter = ElementFilter.new("path", :==,  ["a"])
         expect(filter.matches?(Machinery::Array.new(["a"]))).to be(true)
         expect(filter.matches?(Machinery::Array.new(["a", "b"]))).to be(false)
       end
@@ -138,29 +138,29 @@ describe ElementFilter do
   end
 
   describe "filters_scope?" do
-    specify { expect(ElementFilter.new("/foo", "bar").filters_scope?("foo")).to be(true) }
-    specify { expect(ElementFilter.new("/foo", "bar").filters_scope?("foo_bar")).to be(false) }
+    specify { expect(ElementFilter.new("/foo", :==, "bar").filters_scope?("foo")).to be(true) }
+    specify { expect(ElementFilter.new("/foo", :==, "bar").filters_scope?("foo_bar")).to be(false) }
   end
 
   describe "==" do
     it "works for equal objects" do
       expect(
-        ElementFilter.new("/foo", "bar") == ElementFilter.new("/foo", "bar")
+        ElementFilter.new("/foo", :==, "bar") == ElementFilter.new("/foo", :==, "bar")
       ).to be(true)
       expect(
-        ElementFilter.new("/foo", ["bar", "baz"]) == ElementFilter.new("/foo", ["bar", "baz"])
+        ElementFilter.new("/foo", :==, ["bar", "baz"]) == ElementFilter.new("/foo", :==, ["bar", "baz"])
       ).to be(true)
     end
 
     it "works for different objects" do
       expect(
-        ElementFilter.new("/foo", "bar") == ElementFilter.new("/foo", "baz")
+        ElementFilter.new("/foo", :==, "bar") == ElementFilter.new("/foo", :==, "baz")
       ).to be(false)
       expect(
-        ElementFilter.new("/foo", ["bar", "baz"]) == ElementFilter.new("/foo", ["bar", "qux"])
+        ElementFilter.new("/foo", :==, ["bar", "baz"]) == ElementFilter.new("/foo", :==, ["bar", "qux"])
       ).to be(false)
       expect(
-        ElementFilter.new("/foo", "bar") == ElementFilter.new("/baz", "bar")
+        ElementFilter.new("/foo", :==, "bar") == ElementFilter.new("/baz", :==, "bar")
       ).to be(false)
     end
   end

@@ -46,12 +46,13 @@
 class Filter
   attr_accessor :element_filters
 
+
   def self.parse_filter_definitions(filter_definitions)
     element_filters = {}
     Array(filter_definitions).each do |definition|
-      path, matcher_definition = definition.split("=", 2)
+      path, operator, matcher_definition = definition.scan(/(.*?)(=|!=)(.*)/)[0]
 
-      element_filters[path] ||= ElementFilter.new(path)
+      element_filters[path] ||= ElementFilter.new(path, operator)
       if matcher_definition.index(",")
         matchers = matcher_definition.split(/(?<!\\),/)
         matchers.map! { |matcher| matcher.gsub("\\,", ",") } # Unescape escaped commas
@@ -89,7 +90,7 @@ class Filter
     new_element_filters = Filter.parse_filter_definitions(filter_definition)
 
     new_element_filters.each do |path, element_filter|
-      @element_filters[path] ||= ElementFilter.new(path)
+      @element_filters[path] ||= ElementFilter.new(path, element_filter.operator)
       @element_filters[path].add_matchers(element_filter.matchers)
     end
   end
@@ -97,7 +98,8 @@ class Filter
   def add_element_filters(element_filters)
     Array(element_filters).each do |element_filter|
       path = element_filter.path
-      @element_filters[path] ||= ElementFilter.new(path)
+      operator = element_filter.operator
+      @element_filters[path] ||= ElementFilter.new(path, operator)
       @element_filters[path].add_matchers(element_filter.matchers)
     end
   end
