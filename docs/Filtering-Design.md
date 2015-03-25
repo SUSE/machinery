@@ -278,13 +278,8 @@ these use cases, but are simpler to use.
 Using filters in their generic form is possible with the global
 `--exclude=filter_definition` option which is available in all commands.
 
-Multiple filters can be provided as comma-separated list or can be read from
-a file by using a `@`-prefixed file name as argument: `--exclude=@FILENAME`.
-
-If filters contain commas the filter has to be quoted in double quotes, when it
-is part of a comma-separated list of filters. For example:
-
-    --exclude="/changed_managed_files/files/changes=mode,user",/changed_managed_files/files/changes=md5
+Multiple filters can be read from a file by using a `@`-prefixed file name as
+argument: `--exclude=@FILENAME`.
 
 #### Example: inspection
 
