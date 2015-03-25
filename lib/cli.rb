@@ -73,7 +73,7 @@ class Cli
       Machinery.logger.info "Machinery was aborted with signal #{e.signo}."
       exit 1
     when Errno::ENOSPC
-      Machinery::Ui.error(e.message)
+      Machinery::Ui.error("Error: " + e.message)
       exit 1
     else
       Machinery::Ui.error "Machinery experienced an unexpected error. Please file a " \

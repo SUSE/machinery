@@ -155,7 +155,7 @@ class Filter
           element_filter.matches?(element[target])
         end
       rescue Machinery::Errors::ElementFilterTypeMismatch => e
-        Machinery::Ui.warn("WARNING: Filter '#{e.failed_matcher}' tries to match an array, " \
+        Machinery::Ui.warn("Warning: Filter '#{e.failed_matcher}' tries to match an array, " \
           "but the according element is not an array.")
       end
     end
