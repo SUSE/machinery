@@ -51,7 +51,9 @@ class ScopeFileStore
   end
 
   def list_content
-    files = Dir.glob(File.join(path, "**/{*,.*}"))
+    files = Dir.
+      glob(File.join(path, "**/*"), File::FNM_DOTMATCH).
+      reject { |path| [".", ".."].include?(File.basename(path)) }
     # filter parent directories because they should not be listed separately
     files.reject { |f| files.index { |e| e =~ /^#{f}\/.+/ } }
   end
