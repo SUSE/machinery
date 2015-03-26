@@ -34,7 +34,11 @@ describe Machinery::Ui do
     end
   end
 
-  describe ".print_output" do
+  describe ".puts" do
+    before(:each) do ||
+      expect(Machinery::Ui).to receive(:use_pager).and_return(true)
+    end
+
     let(:output) { "foo bar" }
     it "pipes the output to a pager" do
       ENV['PAGER'] = 'less'
@@ -42,9 +46,9 @@ describe Machinery::Ui do
       allow($stdout).to receive(:tty?).and_return(true)
       allow(IO).to receive(:popen)
       allow($?).to receive(:success?).and_return(true)
-      expect(IO).to receive(:popen).with("$PAGER", "w")
+      expect(IO).to receive(:popen).with("$PAGER", "w").and_return(double(puts: nil))
 
-      Machinery::Ui.print_output(output)
+      Machinery::Ui.puts(output)
     end
 
     it "prints the output to stdout if no pager is available" do
@@ -53,9 +57,9 @@ describe Machinery::Ui do
       allow($stdout).to receive(:tty?).and_return(true)
       allow(LocalSystem).to receive(:validate_existence_of_package).
         and_raise(Machinery::Errors::MissingRequirement)
-      expect(Machinery::Ui).to receive(:puts).with(output)
+      expect($stdout).to receive(:puts).with(output)
 
-      Machinery::Ui.print_output(output)
+      Machinery::Ui.puts(output)
     end
 
     it "raises an error if ENV['PAGER'] is not a valid command" do
@@ -63,7 +67,7 @@ describe Machinery::Ui do
 
       allow($stdout).to receive(:tty?).and_return(true)
 
-      expect { Machinery::Ui.print_output(output) }.
+      expect { Machinery::Ui.puts(output) }.
         to raise_error(Machinery::Errors::InvalidPager, /not_a_pager/)
     end
   end

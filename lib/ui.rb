@@ -17,62 +17,66 @@
 
 module Machinery
   class Ui
-    def self.internal_scope_list_to_string(scopes)
-      list = Array(scopes)
-      list.map { |e| e.tr("_", "-") }.join(", ")
-    end
+    class <<self
+      attr_accessor :use_pager
 
-    def self.write_output_to_pager(output)
-      IO.popen("$PAGER", "w") do |f|
+      def internal_scope_list_to_string(scopes)
+        list = Array(scopes)
+        list.map { |e| e.tr("_", "-") }.join(", ")
+      end
+
+      def write_output_to_pager(output)
+        @pager ||= IO.popen("$PAGER", "w")
+
         begin
-          f.puts output
+          @pager.puts output
         rescue Errno::EPIPE
           # We just ignore broken pipes.
         end
       end
-    end
 
-    def self.print_output(output, options = {})
-      if options[:no_pager] || !$stdout.tty?
-        begin
-          Machinery::Ui.puts output
-        rescue Errno::EPIPE
-          # We just ignore broken pipes.
-        end
-      else
-        if !ENV['PAGER'] || ENV['PAGER'] == ''
-          ENV['PAGER'] = 'less'
-          ENV['LESS'] = 'FSRX'
+      def close_pager
+        @pager.close if @pager
+      end
+
+      def puts(output)
+        if !use_pager || !$stdout.tty?
           begin
-            LocalSystem.validate_existence_of_package("less")
-            write_output_to_pager(output)
-          rescue Machinery::Errors::MissingRequirement
-            Machinery::Ui.puts output
+            STDOUT.puts output
+          rescue Errno::EPIPE
+            # We just ignore broken pipes.
           end
         else
-          IO.popen("$PAGER &>/dev/null", "w") { |f| f.close }
-          if $?.success?
-            write_output_to_pager(output)
+          if !ENV['PAGER'] || ENV['PAGER'] == ''
+            ENV['PAGER'] = 'less'
+            ENV['LESS'] = 'FSRX'
+            begin
+              LocalSystem.validate_existence_of_package("less")
+              write_output_to_pager(output)
+            rescue Machinery::Errors::MissingRequirement
+              STDOUT.puts output
+            end
           else
-            raise(Machinery::Errors::InvalidPager.new("'#{ENV['PAGER']}' could not " \
-              "be executed. Use the --no-pager option or modify your $PAGER " \
-              "bash environment variable to display output.")
-            )
+            IO.popen("$PAGER &>/dev/null", "w") { |f| f.close }
+            if $?.success?
+              write_output_to_pager(output)
+            else
+              raise(Machinery::Errors::InvalidPager.new("'#{ENV['PAGER']}' could not " \
+                "be executed. Use the --no-pager option or modify your $PAGER " \
+                "bash environment variable to display output.")
+              )
+            end
           end
         end
       end
-    end
 
-    def self.puts(s)
-      STDOUT.puts s
-    end
+      def warn(s)
+        STDERR.puts s
+      end
 
-    def self.warn(s)
-      STDERR.puts s
-    end
-
-    def self.error(s)
-      STDERR.puts s
+      def error(s)
+        STDERR.puts s
+      end
     end
   end
 end

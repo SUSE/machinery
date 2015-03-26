@@ -43,24 +43,21 @@ class ShowTask
 
   def show_console(description, scopes, options)
     missing_scopes = []
-    output = ""
 
     scopes.map { |s| Renderer.for(s) }.each do |renderer|
       section = renderer.render(description, options)
       unless section.empty?
-        output += section
+        Machinery::Ui.puts section
       else
         missing_scopes << renderer.scope
       end
     end
 
     if missing_scopes.length > 0
-      output += "# The following requested scopes were not inspected\n\n"
+      Machinery::Ui.puts "# The following requested scopes were not inspected\n\n"
       missing_scopes.each do |scope|
-        output += "  * #{Machinery::Ui.internal_scope_list_to_string(scope)}\n"
+        Machinery::Ui.puts "  * #{Machinery::Ui.internal_scope_list_to_string(scope)}\n"
       end
     end
-
-    Machinery::Ui.print_output(output, :no_pager => options[:no_pager])
   end
 end
