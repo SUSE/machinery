@@ -31,8 +31,16 @@ describe Filter do
     it "parses definition with multiple matcher" do
       element_filter = Filter.parse_filter_definitions("/foo=bar,baz")
       expect(element_filter.keys.length).to eq(1)
+      expect(element_filter["/foo"].operator).to eq("=")
       expect(element_filter["/foo"].matchers).
         to eq([["bar", "baz"]])
+    end
+
+    it "parses definition with 'equals not' operator" do
+      element_filter = Filter.parse_filter_definitions("/foo!=bar,baz")
+      expect(element_filter.keys.length).to eq(1)
+      expect(element_filter["/foo"].operator).to eq("!=")
+      expect(element_filter["/foo"].matchers).to eq([["bar", "baz"]])
     end
 
     it "handles escaped commas" do
