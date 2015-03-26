@@ -83,9 +83,9 @@ describe Filter do
 
   describe "#to_array" do
     it "returns the element filter definitions as a string array" do
-      filter = Filter.new(["foo=bar,baz", "foo=qux", "scope=matcher"])
+      filter = Filter.new(["foo=bar,baz", "foo=qux", "scope=matcher", "equals!=not"])
       expect(filter.to_array).to eq([
-        "foo=bar,baz", "foo=qux", "scope=matcher"
+        "foo=bar,baz", "foo=qux", "scope=matcher", "equals!=not"
       ])
     end
   end

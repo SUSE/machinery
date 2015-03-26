@@ -125,7 +125,7 @@ class Filter
   def to_array
     @element_filters.flat_map do |path, element_filter|
       element_filter.matchers.map do |matcher|
-        "#{path}=#{Array(matcher).join(",")}"
+        "#{path}#{element_filter.operator}#{Array(matcher).join(",")}"
       end
     end
   end
