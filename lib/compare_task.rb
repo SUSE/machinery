@@ -19,7 +19,7 @@ class CompareTask
   def compare(description1, description2, scopes, options = {})
     output = render_comparison(description1, description2, scopes, options)
 
-    Machinery::Ui.print_output(output, :no_pager => options[:no_pager])
+    Machinery::Ui.puts output
   end
 
   def render_comparison(description1, description2, scopes, options = {})

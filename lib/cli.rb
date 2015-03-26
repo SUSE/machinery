@@ -51,6 +51,7 @@ class Cli
 
       Hint.print(:get_started)
     end
+    Machinery::Ui.close_pager
   end
 
   GLI::Commands::Help.skips_post = false
@@ -277,6 +278,8 @@ class Cli
       desc: "Pipe output into a pager"
 
     c.action do |global_options,options,args|
+      Machinery::Ui.use_pager = options[:pager]
+
       name1 = shift_arg(args, "NAME1")
       name2 = shift_arg(args, "NAME2")
       store = system_description_store
@@ -286,8 +289,7 @@ class Cli
 
       task = CompareTask.new
       opts = {
-          show_all: options["show-all"],
-          no_pager: !options["pager"]
+        show_all: options["show-all"]
       }
       task.compare(description1, description2, scope_list, opts)
     end
@@ -558,6 +560,8 @@ class Cli
       desc: "Show the filters that were applied before showing the description."
 
     c.action do |global_options,options,args|
+      Machinery::Ui.use_pager = options["pager"]
+
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
         Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
@@ -574,7 +578,6 @@ class Cli
 
       task = ShowTask.new
       opts = {
-          no_pager:   !options["pager"],
           show_diffs: options["show-diffs"],
           show_html:  options["html"]
       }

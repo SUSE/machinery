@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 
 describe ShowTask, "#show" do
-  silence_machinery_output
+  capture_machinery_output
 
   let(:show_task) { ShowTask.new }
   let(:system_description) {
@@ -43,20 +43,18 @@ describe ShowTask, "#show" do
 
   it "prints scopes missing from the system description" do
     scope = "packages"
-    expect(Machinery::Ui).to receive(:print_output) { |s|
-      expect(s).to include("requested scopes were not inspected")
-      expect(s).to include("packages")
-    }
     show_task.show(system_description, [scope], Filter.new, no_pager: true)
+
+    expect(captured_machinery_output).to include("requested scopes were not inspected")
+    expect(captured_machinery_output).to include("packages")
   end
 
   it "does not show a message about missing scopes if there are none" do
     scope = "packages"
-    expect(Machinery::Ui).to receive(:print_output) { |s|
-      expect(s).not_to include("requested scopes were not inspected")
-      expect(s).not_to include("packages")
-    }
     show_task.show(description_with_packages, [scope], Filter.new, no_pager: true)
+
+    expect(captured_machinery_output).to_not include("requested scopes were not inspected")
+    expect(captured_machinery_output).to_not include("packages")
   end
 
   it "opens the system description in the web browser" do

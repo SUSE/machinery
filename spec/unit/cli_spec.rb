@@ -327,7 +327,7 @@ describe Cli do
       it "triggers the show task for packages when scope packages is specified" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(ShowTask).to receive(:show).with(
-          description, ["packages"], an_instance_of(Filter), no_pager: true, show_diffs: false,
+          description, ["packages"], an_instance_of(Filter), show_diffs: false,
             show_html: false)
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])

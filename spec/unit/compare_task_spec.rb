@@ -18,6 +18,8 @@ require_relative "spec_helper"
 
 describe CompareTask do
   describe "#compare" do
+    capture_machinery_output
+
     class CompareTaskFooScope < Machinery::Array
       include Machinery::ScopeMixin
     end
@@ -216,70 +218,63 @@ Compared descriptions are identical.
     describe "when the descriptions are different" do
       it "produces correct output" do
         setup_renderers
-
-        allow($stdout).to receive(:tty?).and_return(false)
-
-        expect(Machinery::Ui).to receive(:print_output).with(output_different, anything)
-
         subject.compare(
           description1,
           description2,
           ["compare_task_foo", "compare_task_bar", "compare_task_baz"]
         )
+
+        expect(captured_machinery_output.strip).to eq(output_different.strip)
       end
 
       it "prints a message when a description is incomplete" do
         setup_renderers
-
-        allow($stdout).to receive(:tty?).and_return(false)
-
-        expect(Machinery::Ui).to receive(:print_output).with(output_missing, anything)
 
         subject.compare(
           description3,
           description4,
           ["compare_task_foo", "compare_task_bar", "compare_task_baz", "compare_task_foobar"]
         )
+
+        expect(captured_machinery_output.strip).to eq(output_missing.strip)
       end
     end
 
     describe "when the descriptions are the same" do
       before :each do
         setup_renderers
-
-        allow($stdout).to receive(:tty?).and_return(false)
       end
 
       it "produces correct output when :show_all is set to false" do
-        expect(Machinery::Ui).to receive(:print_output).with(output_same_show_all_false, anything)
-
         subject.compare(
           description1,
           description1,
           ["compare_task_foo", "compare_task_bar", "compare_task_baz"],
           show_all: false
         )
+
+        expect(captured_machinery_output.strip).to eq(output_same_show_all_false.strip)
       end
 
       it "produces correct output when :show_all is set to true" do
-        expect(Machinery::Ui).to receive(:print_output).with(output_same_show_all_true, anything)
-
         subject.compare(
           description1,
           description1,
           ["compare_task_foo", "compare_task_bar", "compare_task_baz"],
           show_all: true
         )
+
+        expect(captured_machinery_output.strip).to eq(output_same_show_all_true.strip)
       end
 
       it "produces correct output when scopes are missing" do
-        expect(Machinery::Ui).to receive(:print_output).with(output_missing_same, anything)
-
         subject.compare(
           description3,
           description3,
           ["compare_task_foo", "compare_task_bar", "compare_task_baz"]
         )
+
+        expect(captured_machinery_output.strip).to eq(output_missing_same.strip)
       end
     end
   end
