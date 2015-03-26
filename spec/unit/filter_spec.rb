@@ -45,6 +45,16 @@ describe Filter do
       expect(element_filter.keys.length).to eq(1)
       expect(element_filter["/foo"].matchers).to eq([["bar", "baz,qux"]])
     end
+
+    it "fails on unknown operators" do
+      expect {
+        Filter.parse_filter_definitions("/foo<=bar")
+      }.to raise_error(Machinery::Errors::InvalidFilter)
+
+      expect {
+        Filter.parse_filter_definitions("/foo<!=bar")
+      }.to raise_error(Machinery::Errors::InvalidFilter)
+    end
   end
 
   describe "#initialize" do

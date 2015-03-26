@@ -49,7 +49,7 @@ class Filter
   def self.parse_filter_definitions(filter_definitions)
     element_filters = {}
     Array(filter_definitions).each do |definition|
-      path, operator, matcher_definition = definition.scan(/(.*?)(=|!=)(.*)/)[0]
+      path, operator, matcher_definition = definition.scan(/([a-zA-Z_\/]+)(.*=)(.*)/)[0]
 
       element_filters[path] ||= ElementFilter.new(path, operator)
       if matcher_definition.index(",")

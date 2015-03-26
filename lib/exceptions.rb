@@ -100,6 +100,8 @@ module Machinery
     end
 
     class MigrationError < MachineryError; end
+
+    class InvalidFilter < MachineryError; end
     class ElementFilterTypeMismatch < MachineryError
       attr_accessor :failed_matcher
     end
