@@ -46,7 +46,6 @@
 class Filter
   attr_accessor :element_filters
 
-
   def self.parse_filter_definitions(filter_definitions)
     element_filters = {}
     Array(filter_definitions).each do |definition|

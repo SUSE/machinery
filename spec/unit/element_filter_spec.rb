@@ -137,7 +137,7 @@ describe ElementFilter do
         end
 
         it "allows for filtering arrays with one element using a string filter" do
-          filter = ElementFilter.new("path", "=",  ["a"])
+          filter = ElementFilter.new("path", "=", ["a"])
           expect(filter.matches?(Machinery::Array.new(["a"]))).to be(true)
           expect(filter.matches?(Machinery::Array.new(["a", "b"]))).to be(false)
         end
@@ -203,7 +203,7 @@ describe ElementFilter do
         end
 
         it "allows for filtering arrays with one element using a string filter" do
-          filter = ElementFilter.new("path", "!=",  ["a"])
+          filter = ElementFilter.new("path", "!=", ["a"])
           expect(filter.matches?(Machinery::Array.new(["a"]))).to be(false)
           expect(filter.matches?(Machinery::Array.new(["a", "b"]))).to be(true)
         end
@@ -222,7 +222,8 @@ describe ElementFilter do
         ElementFilter.new("/foo", "=", "bar") == ElementFilter.new("/foo", "=", "bar")
       ).to be(true)
       expect(
-        ElementFilter.new("/foo", "=", ["bar", "baz"]) == ElementFilter.new("/foo", "=", ["bar", "baz"])
+        ElementFilter.new("/foo", "=", ["bar", "baz"]) ==
+          ElementFilter.new("/foo", "=", ["bar", "baz"])
       ).to be(true)
     end
 
@@ -231,7 +232,8 @@ describe ElementFilter do
         ElementFilter.new("/foo", "=", "bar") == ElementFilter.new("/foo", "=", "baz")
       ).to be(false)
       expect(
-        ElementFilter.new("/foo", "=", ["bar", "baz"]) == ElementFilter.new("/foo", "=", ["bar", "qux"])
+        ElementFilter.new("/foo", "=", ["bar", "baz"]) ==
+          ElementFilter.new("/foo", "=", ["bar", "qux"])
       ).to be(false)
       expect(
         ElementFilter.new("/foo", "=", "bar") == ElementFilter.new("/baz", "=", "bar")
