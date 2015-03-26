@@ -20,6 +20,8 @@ class LoggedCheetah
     command = args.select{|e| e.is_a?(String)}.join(" ")
     Machinery.logger.info("Running '#{command}'")
 
-    Cheetah.run(*args)
+    with_c_locale do
+      Cheetah.run(*args)
+    end
   end
 end
