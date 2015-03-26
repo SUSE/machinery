@@ -24,7 +24,7 @@ class ElementFilter
     @matchers = []
 
     raise("Wrong filter type") if ![NilClass, String, Array].include?(matchers.class)
-    raise("Wrong filter operator '#{@operator}'") if ![:==].include?(@operator)
+    raise("Wrong filter operator '#{@operator}'") if !["!=", "="].include?(@operator)
 
     add_matchers(matchers) if matchers
   end
@@ -35,23 +35,28 @@ class ElementFilter
 
   def matches?(value)
     @matchers.each do |matcher|
-      case value
+      values_equal = case value
       when Machinery::Array
         value_array = value.elements
 
-        return true if (value_array - Array(matcher)).empty? && (Array(matcher) - value_array).empty?
+        (value_array - Array(matcher)).empty? && (Array(matcher) - value_array).empty?
       when String
         if matcher.is_a?(Array)
           exception = Machinery::Errors::ElementFilterTypeMismatch.new
-          exception.failed_matcher = "#{path}=#{matcher.join(",")}"
+          exception.failed_matcher = "#{path}#{operator}#{matcher.join(",")}"
           raise exception
         end
 
         if matcher.end_with?("*")
-          return true if value.start_with?(matcher[0..-2])
+          value.start_with?(matcher[0..-2])
         else
-          return true if value == matcher
+          value == matcher
         end
+      end
+      if operator == "="
+        return true if values_equal
+      elsif operator == "!="
+        return true if !values_equal
       end
     end
 
