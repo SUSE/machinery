@@ -89,12 +89,12 @@ As a first step only exact matches are supported, where the
 array has to have exactly the elements specified in the condition. Matches of
 sub arrays will be defined later.
 
-Filters can be inverted by prefixing them with a `!`:
+Filters can be inverted by using the `!=` operator:
 
-    !/scope/element=condition
+    /scope/element!=condition
 
 When applied on a scope this filter results in a list of only the elements
-which match the condition. *Inverted filters are not implemented yet*
+which match the condition.
 
 The first step is basic filtering, which only supports simple matches for
 equalness and don't allow for wild cards or any other more complex regular
@@ -117,7 +117,7 @@ Match the apache package:
 
 Match all services which are not enabled:
 
-    !/services/services/state=enabled
+    /services/services/state!=enabled
 
 Match the home directory of user alfred in unmanaged files:
 
@@ -296,7 +296,7 @@ of the resulting description.
 
 Show all enabled services in description NAME:
 
-    machinery --exclude=!/services/services/state=enabled show NAME
+    machinery --exclude='/services/services/state!=enabled' show NAME
 
 The filter removes all services which match the filter criterion from the
 output. In this case it is all services which are not enabled. So the result is
@@ -385,7 +385,7 @@ it:
 * Step 3: Implement generic `--exclude` option to let users add additional
   filters on demand. This option can also be used in our integration tests.
   (done as experimental option)
-* Step 4: Implement `filter` command and persistent per-description filters.
-* Step 5: Implement user-level persistent filters.
-* Step 6: Implement disabling of filters
-* Step 7: Implement inveretd filters
+* Step 4: Implement inverted filters
+* Step 5: Implement `filter` command and persistent per-description filters.
+* Step 6: Implement user-level persistent filters.
+* Step 7: Implement disabling of filters
