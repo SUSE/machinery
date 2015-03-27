@@ -571,9 +571,18 @@ class Cli
 
       filter = FilterOptionParser.parse("show", options, global_options)
 
-      if options["verbose"] && !filter.empty?
-        Machinery::Ui.puts "\nThe following filters were applied before showing the description:"
-        Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+      inspected_filters = description.filter_definitions("inspect")
+
+      if options["verbose"]
+        if !inspected_filters.empty?
+          Machinery::Ui.puts "\nThe following filters were applied during inspection:"
+          Machinery::Ui.puts inspected_filters.join("\n") + "\n\n"
+        end
+
+        if !filter.empty?
+          Machinery::Ui.puts "\nThe following filters were applied before showing the description:"
+          Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+        end
       end
 
       task = ShowTask.new

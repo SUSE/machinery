@@ -13,6 +13,7 @@
 * Fix piping output of Machinery to less (gh#SUSE/machinery#521)
 * If machinery upgrade-format fails because of validation issues, show the
   user a hint that the option --force can be used.
+* Add option to show command to display filters used during inspection
 
 ## Version 1.5.0 - Fri Mar 13 13:03:47 CET 2015 - thardeck@suse.de
 
