@@ -247,10 +247,12 @@ class UnmanagedFilesInspector < Inspector
 
     file_filter = filter.element_filter_for("/unmanaged_files/files/name") if filter
     file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
-    file_filter.add_matchers(@description.store.base_path)
+    file_filter.add_matchers("=", @description.store.base_path)
 
     # Add a recursive pendant to each ignored element
-    file_filter.add_matchers(file_filter.matchers.map { |entry| File.join(entry, "/*") })
+    file_filter.matchers.each do |operator, matchers|
+      file_filter.add_matchers(operator, matchers.map { |entry| File.join(entry, "/*") })
+    end
 
     remote_dirs.delete_if { |e| file_filter.matches?(e) }
 

@@ -209,7 +209,7 @@ Inspecting foo...
       expect_any_instance_of(FooInspector).to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)
         expect(filter.element_filters["/foo"].matchers).
-          to eq([["bar", "baz"]])
+          to eq("=" => [["bar", "baz"]])
 
         inspector.description.foo = SimpleInspectTaskScope.new(files: SimpleInspectTaskList.new)
       end
