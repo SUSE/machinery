@@ -109,7 +109,8 @@ describe ElementFilter do
       end
 
       it "raises ElementFilterTypeMismatch when a String is matched against an Array" do
-        filter = ElementFilter.new(@path, Filter::OPERATOR_EQUALS, [["array_element_a", "array_element_b"]])
+        filter = ElementFilter.new(@path, Filter::OPERATOR_EQUALS,
+          [["array_element_a", "array_element_b"]])
         expect {
           filter.matches?("a string")
         }.to raise_error(Machinery::Errors::ElementFilterTypeMismatch)
@@ -230,15 +231,21 @@ describe ElementFilter do
   end
 
   describe "filters_scope?" do
-    specify { expect(ElementFilter.new("/foo", Filter::OPERATOR_EQUALS_NOT, "bar").filters_scope?("foo")).to be(true) }
-    specify { expect(ElementFilter.new("/foo", Filter::OPERATOR_EQUALS_NOT, "bar").filters_scope?("foo_bar")).
-      to be(false) }
+    specify {
+      expect(ElementFilter.new("/foo", Filter::OPERATOR_EQUALS_NOT, "bar").
+        filters_scope?("foo")).to be(true)
+    }
+    specify {
+      expect(ElementFilter.new("/foo", Filter::OPERATOR_EQUALS_NOT, "bar").
+        filters_scope?("foo_bar")).to be(false)
+    }
   end
 
   describe "=" do
     it "works for equal objects" do
       expect(
-        ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar") == ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar")
+        ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar") ==
+          ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar")
       ).to be(true)
       expect(
         ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, ["bar", "baz"]) ==
@@ -248,14 +255,16 @@ describe ElementFilter do
 
     it "works for different objects" do
       expect(
-        ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar") == ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "baz")
+        ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar") ==
+          ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "baz")
       ).to be(false)
       expect(
         ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, ["bar", "baz"]) ==
           ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, ["bar", "qux"])
       ).to be(false)
       expect(
-        ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar") == ElementFilter.new("/baz", Filter::OPERATOR_EQUALS, "bar")
+        ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar") ==
+          ElementFilter.new("/baz", Filter::OPERATOR_EQUALS, "bar")
       ).to be(false)
     end
   end

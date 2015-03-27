@@ -66,7 +66,8 @@ describe Filter do
 
       expect(filters.keys.length).to eq(1)
       expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
-      expect(filters["/unmanaged_files/files/name"].matchers).to eq(Filter::OPERATOR_EQUALS => ["/home/alfred"])
+      expect(filters["/unmanaged_files/files/name"].matchers).
+        to eq(Filter::OPERATOR_EQUALS => ["/home/alfred"])
     end
   end
 
@@ -85,7 +86,8 @@ describe Filter do
       filter.add_element_filter_from_definition("foo=qux")
 
       element_filters = filter.element_filters
-      expect(element_filters["foo"].matchers).to eq(Filter::OPERATOR_EQUALS => [["bar", "baz"], "qux"])
+      expect(element_filters["foo"].matchers).
+        to eq(Filter::OPERATOR_EQUALS => [["bar", "baz"], "qux"])
     end
   end
 
@@ -108,7 +110,8 @@ describe Filter do
 
       element_filter = filter.element_filter_for("/unmanaged_files/files/name")
       expect(element_filter.path).to eq("/unmanaged_files/files/name")
-      expect(element_filter.matchers).to eq(Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
+      expect(element_filter.matchers).
+        to eq(Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
 
       element_filter = filter.element_filter_for("/changed_managed_files/files/changes")
       expect(element_filter.path).to eq("/changed_managed_files/files/changes")
@@ -127,8 +130,10 @@ describe Filter do
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/files/name", Filter::OPERATOR_EQUALS, ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/files/changes", Filter::OPERATOR_EQUALS, [["md5", "size"]])
+        ElementFilter.new("/unmanaged_files/files/name", Filter::OPERATOR_EQUALS,
+          ["/home/alfred", "/var/cache"]),
+        ElementFilter.new("/unmanaged_files/files/changes", Filter::OPERATOR_EQUALS,
+          [["md5", "size"]])
       ]
       expect(filter.element_filters_for_scope("unmanaged_files")).to eq(expected)
     end
@@ -145,8 +150,10 @@ describe Filter do
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/files/name", Filter::OPERATOR_EQUALS, ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/files/changes", Filter::OPERATOR_EQUALS, [["md5", "size"]])
+        ElementFilter.new("/unmanaged_files/files/name", Filter::OPERATOR_EQUALS,
+          ["/home/alfred", "/var/cache"]),
+        ElementFilter.new("/unmanaged_files/files/changes", Filter::OPERATOR_EQUALS,
+          [["md5", "size"]])
       ]
       filter.set_element_filters_for_scope("unmanaged_files", expected)
 
