@@ -360,7 +360,7 @@ describe Cli do
             to match(/^\/unmanaged_files\/files\/name=.*$/)
         end
 
-        it "shows the filters which are applied during inspectation" do
+        it "shows the filters which are applied during inspection" do
           description = SystemDescription.load("description1", SystemDescriptionStore.new)
           description.set_filter_definitions("inspect", ["/foo=bar"])
           description.save
@@ -370,7 +370,7 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            to match(/.*\nThe following filters were applied during inspectation:.*/)
+            to match(/.*\nThe following filters were applied during inspection:.*/)
           expect(captured_machinery_output).
             to match(/^\/foo=bar/)
         end

@@ -575,7 +575,7 @@ class Cli
 
       if options["verbose"]
         if !inspected_filters.empty?
-          Machinery::Ui.puts "\nThe following filters were applied during inspectation:"
+          Machinery::Ui.puts "\nThe following filters were applied during inspection:"
           Machinery::Ui.puts inspected_filters.join("\n") + "\n\n"
         end
 
