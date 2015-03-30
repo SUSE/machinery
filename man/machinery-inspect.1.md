@@ -68,6 +68,9 @@ trigger errors.
 
       $ `machinery` inspect --skip-files=/file\\,with_comma myhost
 
+    **Note**: File or directory names are not expanded, e.g. '../path' is taken
+      literally and not expanded.
+
   * `--verbose` (optional):
     Display the filters which are used during inspection.
 
