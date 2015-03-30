@@ -30,6 +30,7 @@ $(document).ready(function () {
   $.each(scopes, function(index, scope) {
     templates[scope] = Hogan.compile($("#scope_" + scope).html());
   });
+  templates["inspection_details_template"] = Hogan.compile($('#inspection_details_template').html());
   template = Hogan.compile($('#content').html());
   $("#content_container").html(
     template.render(description, templates)
@@ -119,10 +120,13 @@ $(document).ready(function () {
     $("#collapse-all").show();
   });
 
+  // Set up scope icon popovers
   $("img").popover({
     trigger: "hover",
     html: true
   });
+
+  // Set up config file diffs popovers
   var counter;
   $(".diff-toggle").popover({
     trigger: "mouseenter",
@@ -154,6 +158,36 @@ $(document).ready(function () {
     }, 500);
   });
 
+  // Set up inspection details popover
+  $('a.inspection_details').popover({
+    trigger: "mouseenter",
+    placement: "bottom",
+    html: true,
+    template: '<div class="popover inspection-details-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+    content: function() {
+      return $('#inspection_details').html();
+    },
+    title: function() {
+      return "Inspection details";
+    }
+  }).on("mouseenter",function () {
+    clearTimeout(counter);
+    var _this = this;
+
+    counter = setTimeout(function(){
+      $(_this).popover("show");
+      $(".inspection-details-popover").on("mouseleave", function () {
+          $('.inspection_details').popover('hide');
+      });
+    }, 100);
+  }).on("mouseleave", function () {
+    counter = setTimeout(function(){
+      if (!$(".inspection-details-popover:hover").length) {
+        $('.inspection_details').popover('hide');
+      }
+    }, 500);
+  });
+
   // Tooltips for service states
   $("td.systemd_enabled, td.systemd_enabled-runtime").attr("title", 'Enabled through a symlink in .wants directory (permanently or just in /run).')
   $("td.systemd_linked, td.systemd_linked-runtime").attr("title", 'Made available through a symlink to the unit file (permanently or just in /run).')
@@ -163,5 +197,4 @@ $(document).ready(function () {
   $("td.systemd_disabled").attr("title", 'Unit file is not enabled.')
   $("td.sysvinit_on").attr("title", 'Service is enabled')
   $("td.sysvinit_off").attr("title", 'Service is disabled')
-
 });

@@ -15,6 +15,7 @@
   user a hint that the option --force can be used.
 * Add option to show command to display filters used during inspection
 * Support negated filter expressions in --exclude option
+* Show filters used during inspection in HTML view
 
 ## Version 1.5.0 - Fri Mar 13 13:03:47 CET 2015 - thardeck@suse.de
 

@@ -32,10 +32,12 @@ a.scope_anchor {
 }
 
 .scope-navigation {
-  font-size: 60%;
   margin-left: 30px;
 }
 
+.inspection_details {
+  margin-left: 30px;
+}
 
 .filter-input {
   margin-bottom: 10px;
@@ -124,8 +126,21 @@ table.diff td.linenumber {
   border-right: solid 1px #cccccc;
 }
 
+.inspection-details-popover .popover-content,
 .diff-popover .popover-content {
   max-height: 500px;
   overflow-y: auto;
   font-family: monospace;
  }
+
+.inspection-details-popover {
+  min-width: 800px;
+}
+
+li.filter {
+  font-family: monospace;
+}
+
+h1 {
+  display: inline-block;
+}
