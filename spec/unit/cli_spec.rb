@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 describe Cli do
-  silence_machinery_output
+  capture_machinery_output
 
   describe "#initialize" do
     before :each do
@@ -220,7 +220,6 @@ describe Cli do
       end
 
       describe "--verbose" do
-        capture_machinery_output
 
         it "shows no filter message by default" do
           run_command([
@@ -228,7 +227,7 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            not_to match(/.*The following filters are applied during inspection:.*/)
+            not_to include("The following filters are applied during inspection:")
         end
 
         it "shows the filters when `--verbose` is provided" do
@@ -237,7 +236,7 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            to match(/.*The following filters are applied during inspection:.*/)
+            to include("The following filters are applied during inspection:")
           expect(captured_machinery_output).
             to match(/^\/unmanaged_files\/files\/name=.*$/)
         end
@@ -334,8 +333,6 @@ describe Cli do
       end
 
       describe "--verbose" do
-        capture_machinery_output
-
         before(:each) do
           expect_any_instance_of(ShowTask).to receive(:show)
         end
@@ -346,7 +343,7 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            not_to match(/.*The following filters were applied before showing the description:.*/)
+            not_to include("The following filters were applied before showing the description:")
         end
 
         it "shows the filters when `--verbose` is provided" do
@@ -355,7 +352,7 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            to match(/.*The following filters were applied before showing the description:.*/)
+            to include("The following filters were applied before showing the description:")
           expect(captured_machinery_output).
             to match(/^\/unmanaged_files\/files\/name=.*$/)
         end
@@ -370,7 +367,7 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            to match(/.*\nThe following filters were applied during inspection:.*/)
+            to include("The following filters were applied during inspection:")
           expect(captured_machinery_output).
             to match(/^\/foo=bar/)
         end
@@ -434,8 +431,8 @@ describe Cli do
       it "fails when an unsupported operation is called" do
         create_test_description(json: test_manifest)
 
-        expect(Machinery::Ui).to receive(:error).with(/.*The operation 'foo' is not supported.*/)
         run_command(["analyze", "description1", "--operation=foo"])
+        expect(captured_machinery_stderr).to include("The operation 'foo' is not supported")
       end
 
       it "triggers the analyze task" do
@@ -568,6 +565,8 @@ describe Cli do
   describe "#error_handling" do
     it "shows stderr, stdout and the backtrace for unexpected errors" do
       expected_cheetah_out = <<-EOT
+Machinery experienced an unexpected error. Please file a bug report at: https://github.com/SUSE/machinery/issues/new
+
 Cheetah::ExecutionFailed
 
 Error output:
@@ -578,14 +577,13 @@ This is STDOUT
 Backtrace:
       EOT
 
-      expect(Machinery::Ui).to receive(:error).with(/Machinery experienced an unexpected error. Please file a bug report at: https:\/\/github.com\/SUSE\/machinery\/issues\/new\n/)
-      expect(Machinery::Ui).to receive(:error).with(/#{expected_cheetah_out}/)
       begin
         # Actually raise the exception, so we have a backtrace
         raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
       rescue => e
         expect{ Cli.handle_error(e) }.to raise_error(SystemExit)
       end
+      expect(captured_machinery_stderr).to include(expected_cheetah_out)
     end
   end
 

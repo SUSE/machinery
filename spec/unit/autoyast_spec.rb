@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe Autoyast do
+  capture_machinery_output
   initialize_system_description_factory_store
 
   let(:expected_profile) {
@@ -65,9 +66,13 @@ describe Autoyast do
 
   describe "#write" do
     before(:each) do
-      expect(Machinery::Ui).to receive(:puts).with(/^Note/)
       @output_dir = given_directory
       Autoyast.new(description).write(@output_dir)
+      expect(captured_machinery_output).to include(
+        "Note: The permssions of the AutoYaST directory are restricted to be only" \
+          " accessible by the current user. Further instructions are provided by the " \
+          "README.md in the exported directory."
+      )
     end
 
     it "copies over the system description" do

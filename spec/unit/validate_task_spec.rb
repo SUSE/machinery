@@ -19,6 +19,7 @@ require_relative "spec_helper"
 
 
 describe ValidateTask, "#validate" do
+  capture_machinery_output
   let(:validate_task) { ValidateTask.new }
   let(:store) { SystemDescriptionStore.new("spec/data/schema/") }
 
@@ -34,16 +35,16 @@ EOF
   end
 
   it "prints a message in case of successful validation" do
-    expect(Machinery::Ui).to receive(:puts).with(/Validation succeeded/)
-
     validate_task.validate(store, "valid_description")
+
+    expect(captured_machinery_output).to include("Validation succeeded")
   end
 
   it "prints a message in case of failed validation" do
-    expect(Machinery::Ui).to receive(:puts).with(/Validation failed/)
-
     expect {
       validate_task.validate(store, "faulty_description")
     }.to raise_error(Machinery::Errors::SystemDescriptionError)
+
+    expect(captured_machinery_output).to include("Validation failed")
   end
 end

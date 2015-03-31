@@ -71,6 +71,7 @@ describe Migration do
   end
 
   describe ".migrate_system_description" do
+    capture_machinery_output
     before(:each) do
       allow(Migration).to receive(:load_migrations)
     end
@@ -96,11 +97,11 @@ describe Migration do
     it "doesn't run migrations when there's nothing to do" do
       expect_any_instance_of(Migrate1To2).to_not receive(:migrate)
       expect_any_instance_of(Migrate2To3).to_not receive(:migrate)
-      expect(Machinery::Ui).to receive(:puts).with(/no upgrade necessary/)
 
       Migration.migrate_description(store, "v3_description")
       description = SystemDescription.load("v3_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      expect(captured_machinery_output).to include("is up to date, no upgrade necessary")
     end
 
     it "makes the hash and path available as instance variables in the migrations" do
@@ -135,10 +136,11 @@ describe Migration do
 
     it "keeps the backup if --force option is enabled" do
       expect(Dir.entries(store.base_path)).to_not include("v1_description.backup")
-      expect(Machinery::Ui).to receive(:puts).with(/Saved backup to .*\/v1_description.backup/)
+
 
       Migration.migrate_description(store, "v1_description", force: :true)
       expect(Dir.entries(store.base_path)).to include("v1_description.backup")
+      expect(captured_machinery_output).to match(/Saved backup to .*\/v1_description.backup/)
     end
 
     it "keeps the orginal description if the migration failed without --force option" do
@@ -155,7 +157,6 @@ describe Migration do
     end
 
     context "validation" do
-      silence_machinery_output
 
       it "raises an error if validation fails when --force is not set" do
         expect_any_instance_of(JsonValidator).to receive(:validate).
@@ -168,16 +169,20 @@ describe Migration do
       end
 
       it "only reports validation warnings when --force is set" do
+        expected_output = <<-EOF.chomp
+Warning: System Description validation errors:
+json error, file error
+Saved backup to /tmp/given_filesystem/
+EOF
         expect_any_instance_of(JsonValidator).to receive(:validate).
           and_return(["json error"])
         expect_any_instance_of(FileValidator).to receive(:validate).
           and_return(["file error"])
-
-        expect(Machinery::Ui).to receive(:warn).with(/validation errors/)
-        expect(Machinery::Ui).to receive(:warn).with(["json error", "file error"])
         expect {
           Migration.migrate_description(store, "v1_description", force: true)
         }.to_not raise_error
+
+        expect(captured_machinery_output).to include(expected_output)
       end
     end
   end

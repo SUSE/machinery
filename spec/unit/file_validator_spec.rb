@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe FileValidator do
+  capture_machinery_output
   describe "#validate" do
     before(:each) do
       @store = SystemDescriptionStore.new("spec/data/descriptions/validation")
@@ -109,19 +110,17 @@ EOT
       end
 
       it "throws a warning on invalid description" do
-        expect(Machinery::Ui).to receive(:warn).with("Warning: File validation errors:")
-        expect(Machinery::Ui).to receive(:warn).with(
-          "Error validating description 'changed-managed-files-bad'\n\n"
-        )
-        expect(Machinery::Ui).to receive(:warn).with(
-          [
-            "Scope 'changed_managed_files':\n" \
-            "  * File 'spec/data/descriptions/validation/changed-managed-files-bad/" \
-            "changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist"
-          ]
-        )
+        expected_output = <<-EOF.chomp
 
+Warning: File validation errors:
+Error validating description 'changed-managed-files-bad'
+
+
+Scope 'changed_managed_files':
+  * File 'spec/data/descriptions/validation/changed-managed-files-bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
+EOF
         SystemDescription.load("changed-managed-files-bad", @store)
+        expect(captured_machinery_output).to eq(expected_output)
       end
     end
 

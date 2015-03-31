@@ -69,6 +69,7 @@ EOF
   end
 
   describe "#validate" do
+    capture_machinery_output
     it "validates compatible descriptions" do
       manifest = Manifest.new("name", <<-EOT)
         {
@@ -92,17 +93,12 @@ EOF
           }
         }
       EOT
-
-      expect(Machinery::Ui).to receive(:warn).with(
-        "Warning: System Description validation errors:"
-      )
-      expect(Machinery::Ui).to receive(:warn).with(
-        [
-          /The property '#\/meta\/os' of type String did not match the following type:/
-        ]
-      )
-
       manifest.validate
+      expected_output = <<-EOF.chomp
+Warning: System Description validation errors:
+The property '#/meta/os' of type String did not match the following type:
+EOF
+      expect(captured_machinery_output).to include(expected_output)
     end
 
     it "doesn't validate incompatible descriptions" do

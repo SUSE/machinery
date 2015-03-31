@@ -18,6 +18,8 @@
 require_relative "spec_helper"
 
 describe UnmanagedFilesInspector do
+  capture_machinery_output
+
   let(:system) { double }
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
@@ -99,7 +101,6 @@ describe UnmanagedFilesInspector do
 
     before(:each) do
       allow(JsonValidator).to receive(:new).and_return(double(validate: []))
-      allow(Machinery::Ui).to receive(:warn)
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
       FakeFS::FileSystem.clone("helpers/")
       description.save
@@ -426,8 +427,6 @@ describe UnmanagedFilesInspector do
       expect(system).to receive(:run_command).and_return(
         "f\0broken\255Link\0broken\255target\0"
       )
-      expect(Machinery::Ui).to receive(:warn).with(/broken\uFFFDLink.*broken\uFFFDtarget/)
-
       result = subject.get_find_data("/etc", 1)
       expect(result).to eq([
         {},
@@ -437,6 +436,7 @@ describe UnmanagedFilesInspector do
           "broken\255target".force_encoding("binary")
         ]
       ])
+      expect(captured_machinery_output).to match(/broken\uFFFDLink.*broken\uFFFDtarget/)
     end
   end
 end
