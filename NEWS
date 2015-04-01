@@ -11,8 +11,7 @@
 * Show progress on upgrading the system description format
 * Improve help for users when upgrading system descriptions
 * Fix piping output of Machinery to less (gh#SUSE/machinery#521)
-* If machinery upgrade-format fails because of validation issues, show the
-  user a hint that the option --force can be used.
+* Better help for users when upgrading format of system descriptions
 * Add option to show command to display filters used during inspection
 * Support negated filter expressions in --exclude option
 * Show filters used during inspection in HTML view
