@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.6.0 - Wed Apr 01 15:43:17 CEST 2015 - thardeck@suse.de
+
 * Add experimental `--exclude` option to exclude elements from inspection.
   Run `machinery config experimental-features on` to enable the option
 * Support global `--exclude` option for `show` command.
