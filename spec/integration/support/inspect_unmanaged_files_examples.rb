@@ -186,8 +186,8 @@ shared_examples "inspect unmanaged files" do |base|
       @subject_system.inject_file(
         File.join(Machinery::ROOT, "spec/data/unmanaged_files/SUSE-test-quote-char-1.0-1.noarch.rpm"),
         "/tmp/SUSE-test-quote-char-1.0-1.noarch.rpm",
-        :owner => "root",
-        :mode => "644"
+        owner: "root",
+        mode: "644"
       )
 
       @subject_system.inject_file(
