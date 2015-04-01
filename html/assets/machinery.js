@@ -161,33 +161,26 @@ $(document).ready(function () {
 
   // Set up inspection details popover
   $("a.inspection_details").popover({
-    trigger: "mouseenter",
+    template: "<div class='popover inspection-details-popover' role='tooltip'>\
+      <div class='arrow'></div>\
+      <div class='popover-header'>\
+      <button type='button' class='close' onclick='$(\".inspection_details\").popover(\"hide\")'\
+        aria-hidden='true'>&times;</button>\
+      <h3 class='popover-title'></h3>\
+      </div>\
+      <div class='popover-content'></div>\
+      </div>",
+    trigger: "click",
     placement: "bottom",
     html: true,
-    template: "<div class='popover inspection-details-popover' role='tooltip'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div></div>",
     content: function() {
       return $("#inspection_details").html();
     },
     title: function() {
       return "Inspection details";
     }
-  }).on("mouseenter",function () {
-    clearTimeout(counter);
-    var _this = this;
-
-    counter = setTimeout(function(){
-      $(_this).popover("show");
-      $(".inspection-details-popover").on("mouseleave", function () {
-          $(".inspection_details").popover("hide");
-      });
-    }, 100);
-  }).on("mouseleave", function () {
-    counter = setTimeout(function(){
-      if (!$(".inspection-details-popover:hover").length) {
-        $(".inspection_details").popover("hide");
-      }
-    }, 500);
   });
+  $('.inspection-details-popover .close').click(function() { $(".inspection_details").popover("hide") });
 
   // Tooltips for service states
   $("td.systemd_enabled, td.systemd_enabled-runtime").attr("title", "Enabled through a symlink in .wants directory (permanently or just in /run).");

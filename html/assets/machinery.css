@@ -68,6 +68,10 @@ span.toggle.collapsed {
   max-width: 800px;
 }
 
+.popover button.close {
+  padding: 6px;
+}
+
 h1 {
   color: #3D3A38;
 }
