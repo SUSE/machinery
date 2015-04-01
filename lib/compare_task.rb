@@ -17,9 +17,31 @@
 
 class CompareTask
   def compare(description1, description2, scopes, options = {})
-    output = render_comparison(description1, description2, scopes, options)
+    if options[:show_html]
+      render_html_comparison(description1, description2, scopes, options)
+    else
+      output = render_comparison(description1, description2, scopes, options)
 
-    Machinery::Ui.puts output
+      Machinery::Ui.puts output
+    end
+  end
+
+  def render_html_comparison(description1, description2, scopes, options)
+    diff = {}
+
+    scopes.each do |scope|
+      if description1[scope] && description2[scope]
+        comparison = description1[scope].compare_with(description2[scope])
+        diff[scope] = comparison.map { |scope| scope.as_json if scope }
+      end
+    end
+
+    target = "/tmp/machinery-html-comparison"
+    FileUtils.rm_r(target) if Dir.exists?(target)
+    FileUtils.mkdir_p(target)
+
+    Html.generate_comparison(diff, target)
+    LoggedCheetah.run("xdg-open", File.join(target, "index.html"))
   end
 
   def render_comparison(description1, description2, scopes, options = {})

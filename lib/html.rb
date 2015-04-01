@@ -47,6 +47,24 @@ class Html
     target
   end
 
+  def self.generate_comparison(diff, target)
+    FileUtils.mkdir_p(File.join(target, "assets"))
+    template = Haml::Engine.new(
+      File.read(File.join(Machinery::ROOT, "html", "comparison_index.html.haml"))
+    )
+
+    FileUtils.cp_r(File.join(Machinery::ROOT, "html", "assets"), target)
+    File.write(File.join(target, "index.html"), template.render(binding))
+    json = diff.to_json.gsub("'", "\\\\'").gsub("\"", "\\\\\"")
+    File.write(File.join(target, "assets/diff.js"),<<-EOT
+      function getDiff() {
+        return JSON.parse('#{json}'
+        )
+      }
+      EOT
+    )
+  end
+
   # Template helpers
 
   def self.scope_help(scope)

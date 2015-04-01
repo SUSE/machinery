@@ -39,6 +39,28 @@ a.scope_anchor {
   margin-left: 30px;
 }
 
+.scope .table_container {
+  display: table;
+}
+
+.scope table {
+  table-layout: fixed;
+}
+
+.scope td {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scope th.tiny {
+  width: 5%;
+}
+
+.scope th.small {
+  width: 12%;
+}
+
 .filter-input {
   margin-bottom: 10px;
 }

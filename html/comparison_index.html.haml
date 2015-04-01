@@ -1,0 +1,849 @@
+!!!
+%html
+  %head
+    %title
+      = #description.name + " - Machinery System Description"
+    %meta{:charset => 'utf-8'}/
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
+    %link{:href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "assets/jquery-2.1.1.min.js"}
+    %script{:src => "assets/hogan-3.0.2.min.mustache.js"}
+    %script{:src => "assets/transition.js"}
+    %script{:src => "assets/collapse.js"}
+
+    %script#content{:type => "text/html"}
+      {{>os}}
+      {{>packages}}
+      {{>patterns}}
+      {{>users}}
+      {{>groups}}
+      {{>repositories}}
+      {{>unmanaged_files}}
+      {{>config_files}}
+      {{>changed_managed_files}}
+      {{>services}}
+
+    %script#scope_os_partial{:type => "text/html"}
+      %table.table.table-striped.table-condensed
+        %tr
+          %th Name
+          %td {{name}}
+        %tr
+          %th Version
+          %td {{version}}
+        %tr
+          %th Architecture
+          %td {{architecture}}
+
+    %script#scope_os.partial{:type => "text/html"}
+      {{#os.length}}
+      %a.scope_anchor{:id => "os"}
+      #os_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#os"}
+              %img.scope_logo_big{:src => "assets/logo-os.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Operating System", :"data-content"=>"#{scope_help('os')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Operating System
+              .scope-summary
+                {{meta_info.os}}
+          .row
+            {{#os.0}}
+            .col-xs-1
+            .col-xs-5
+              {{>os_partial}}
+            {{/os.0}}
+            {{#os.1}}
+            .col-xs-1
+            .col-xs-5
+              {{>os_partial}}
+            {{/os.1}}
+          .row
+            {{#os.2}}
+            .col-xs-1
+            .col-xs-11
+              {{>os_partial}}
+            {{/os.2}}
+      {{/os.length}}
+
+    %script#scope_packages_partial{:type => "text/html"}
+      %tr
+        %td {{name}}
+        %td {{version}}
+        %td.visible-md.visible-lg {{release}}
+        %td.visible-md.visible-lg {{arch}}
+        %td.visible-lg {{vendor}}
+        %td.visible-lg {{checksum}}
+        %td.hidden-lg{:title => "Name: {{name}}\nVersion: {{version}}\nRelease: {{release}}\n" |
+           "Architecture: {{arch}}\nVendor: {{vendor}}\nChecksum: {{checksum}}"} ... |
+
+    %script#scope_packages.partial{:type => "text/html"}
+      {{#packages.length}}
+      %a.scope_anchor{:id => "packages"}
+      #packages_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#packages"}
+              %img.scope_logo_big{:src => "assets/logo-packages.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Packages", :"data-content"=>"#{scope_help('packages')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Packages
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5.table_container
+              {{#packages.0.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th.small Version
+                    %th.small.visible-md.visible-lg Release
+                    %th.small.visible-md.visible-lg Arch
+                    %th.visible-lg Vendor
+                    %th.visible-lg Checksum
+                    %th.tiny.hidden-lg
+                %tbody
+                  {{#packages.0}}
+                  {{>packages_partial}}
+                  {{/packages.0}}
+              {{/packages.0.length}}
+            .col-xs-1
+            .col-xs-5.table_container
+              {{#packages.1.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th.small Version
+                    %th.visible-md.visible-lg Release
+                    %th.visible-md.visible-lg Arch
+                    %th.visible-lg Vendor
+                    %th.visible-lg Checksum
+                    %th.tiny.hidden-lg
+                %tbody
+                  {{#packages.1}}
+                  {{>packages_partial}}
+                  {{/packages.1}}
+              {{/packages.1.length}}
+          .row
+            {{#packages.2.length}}
+            .col-xs-1
+            .col-xs-11.table_container
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th.small Version
+                    %th.visible-md.visible-lg Release
+                    %th.visible-md.visible-lg Arch
+                    %th.visible-lg Vendor
+                    %th.visible-lg Checksum
+                    %th.tiny.hidden-lg
+                %tbody
+                  {{#packages.2}}
+                  {{>packages_partial}}
+                  {{/packages.2}}
+            {{/packages.2.length}}
+      {{/packages.length}}
+
+    %script#scope_patterns.partial{:type => "text/html"}
+      {{#patterns.length}}
+      %a.scope_anchor{:id => "patterns"}
+      #patterns_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#patterns"}
+              %img.scope_logo_big{:src => "assets/logo-patterns.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Patterns", :"data-content"=>"#{scope_help('patterns')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Patterns
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#patterns.0.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Version
+                    %th Release
+                %tbody
+                  {{#patterns.0}}
+                  %tr
+                    %td {{name}}
+                    %td {{version}}
+                    %td {{release}}
+                  {{/patterns.0}}
+              {{/patterns.0.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#patterns.1.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Version
+                    %th Release
+                %tbody
+                  {{#patterns.1}}
+                  %tr
+                    %td {{name}}
+                    %td {{version}}
+                    %td {{release}}
+                  {{/patterns.1}}
+              {{/patterns.1.length}}
+          .row
+            {{#patterns.2.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Version
+                    %th Release
+                %tbody
+                  {{#patterns.2}}
+                  %tr
+                    %td {{name}}
+                    %td {{version}}
+                    %td {{release}}
+                  {{/patterns.2}}
+            {{/patterns.2.length}}
+      {{/patterns.length}}
+
+    %script#scope_users{:type => "text/html"}
+      {{#users.length}}
+      %a.scope_anchor{:id => "users"}
+      #users_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#users"}
+              %img.scope_logo_big{:src => "assets/logo-users.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Users", :"data-content"=>"#{scope_help('users')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Users
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#users.0.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th UID
+                    %th GID
+                    %th Comment
+                    %th Home
+                    %th Shell
+                %tbody
+                  {{#users.0}}
+                  %tr
+                    %td {{name}}
+                    %td {{uid}}
+                    %td {{gid}}
+                    %td {{comment}}
+                    %td {{home}}
+                    %td {{shell}}
+                  {{/users.0}}
+              {{/users.0.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#users.1.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th UID
+                    %th GID
+                    %th Comment
+                    %th Home
+                    %th Shell
+                %tbody
+                  {{#users.1}}
+                  %tr
+                    %td {{name}}
+                    %td {{uid}}
+                    %td {{gid}}
+                    %td {{comment}}
+                    %td {{home}}
+                    %td {{shell}}
+                  {{/users.1}}
+              {{/users.1.length}}
+          .row
+            {{#users.2.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th UID
+                    %th GID
+                    %th Comment
+                    %th Home
+                    %th Shell
+                %tbody
+                  {{#users.2}}
+                  %tr
+                    %td {{name}}
+                    %td {{uid}}
+                    %td {{gid}}
+                    %td {{comment}}
+                    %td {{home}}
+                    %td {{shell}}
+                  {{/users.2}}
+            {{/users.2.length}}
+      {{/users.length}}
+
+    %script#scope_unmanaged_files.partial{:type => "text/html"}
+      {{#unmanaged_files.length}}
+      %a.scope_anchor{:id => "unmanaged_files"}
+      #unmanaged_files_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#unmanaged_files"}
+              %img.scope_logo_big{:src => "assets/logo-unmanaged-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Unmanaged Files", :"data-content"=>"#{scope_help('unmanaged_files')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Unmanaged Files
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#unmanaged_files.0}}
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Type
+                %tbody
+                  {{#unmanaged_files.0.files}}
+                  %tr
+                    %td {{name}}
+                    %td {{type}}
+                  {{/unmanaged_files.0.files}}
+              {{/unmanaged_files.0}}
+            .col-xs-1
+            .col-xs-5
+              {{#unmanaged_files.1}}
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Type
+                %tbody
+                  {{#unmanaged_files.1.files}}
+                  %tr
+                    %td {{name}}
+                    %td {{type}}
+                  {{/unmanaged_files.1.files}}
+              {{/unmanaged_files.1}}
+          .row
+            {{#unmanaged_files.2}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Type
+                %tbody
+                  {{#unmanaged_files.2.files}}
+                  %tr
+                    %td {{name}}
+                    %td {{type}}
+                  {{/unmanaged_files.2.files}}
+            {{/unmanaged_files.2}}
+      {{/unmanaged_files.length}}
+
+    %script#scope_groups{:type => "text/html"}
+      {{#groups.length}}
+      %a.scope_anchor{:id => "groups"}
+      #groups_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#groups"}
+              %img.scope_logo_big{:src => "assets/logo-groups.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Groups", :"data-content"=>"#{scope_help('groups')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Groups
+              .scope-summary
+                {{groups.length}} groups
+                {{meta_info.groups}}
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#groups.0.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th GID
+                    %th Password
+                    %th Users
+                %tbody
+                  {{#groups.0}}
+                  %tr
+                    %td {{name}}
+                    %td {{gid}}
+                    %td {{password}}
+                    %td {{users}}
+                  {{/groups.0}}
+              {{/groups.0.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#groups.1.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th GID
+                    %th Password
+                    %th Users
+                %tbody
+                  {{#groups.1}}
+                  %tr
+                    %td {{name}}
+                    %td {{gid}}
+                    %td {{password}}
+                    %td {{users}}
+                  {{/groups.1}}
+              {{/groups.1.length}}
+          .row
+            {{#groups.2.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th GID
+                    %th Password
+                    %th Users
+                %tbody
+                  {{#groups.2}}
+                  %tr
+                    %td {{name}}
+                    %td {{gid}}
+                    %td {{password}}
+                    %td {{users}}
+                  {{/groups.2}}
+            {{/groups.2.length}}
+      {{/groups.length}}
+
+    %script#scope_repositories_partial{:type => "text/html"}
+      %tr
+        %td {{name}}
+        %td {{alias}}
+        %td {{type}}
+        %td
+          %a{:href => "{{url}}" } {{url}}
+        %td {{enabled}}
+        %td {{autorefresh}}
+        %td {{gpgcheck}}
+        %td {{priority}}
+
+    %script#scope_repositories.partial{:type => "text/html"}
+      {{#repositories.length}}
+      %a.scope_anchor{:id => "repositories"}
+      #repositories_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#repositories"}
+              %img.scope_logo_big{:src => "assets/logo-repositories.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Repositories", :"data-content"=>"#{scope_help('repositories')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Repositories
+              .scope-summary
+                {{repositories.length}} repositories
+                {{meta_info.repositories}}
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#repositories.0.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Alias
+                    %th Type
+                    %th URL
+                    %th Enabled
+                    %th Autorefresh
+                    %th GPG Check
+                    %th Priority
+                %tbody
+                  {{#repositories.0}}
+                  {{>repositories_partial}}
+                  {{/repositories.0}}
+              {{/repositories.0.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#repositories.1.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Alias
+                    %th Type
+                    %th URL
+                    %th Enabled
+                    %th Autorefresh
+                    %th GPG Check
+                    %th Priority
+                %tbody
+                  {{#repositories.1}}
+                  {{>repositories_partial}}
+                  {{/repositories.1}}
+              {{/repositories.1.length}}
+          .row
+            {{#repositories.2.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Alias
+                    %th Type
+                    %th URL
+                    %th Enabled
+                    %th Autorefresh
+                    %th GPG Check
+                    %th Priority
+                %tbody
+                  {{#repositories.2}}
+                  {{>repositories_partial}}
+                  {{/repositories.2}}
+            {{/repositories.2.length}}
+      {{/repositories.length}}
+
+    %script#scope_changed_managed_files_partial{:type => "text/html"}
+      %tr
+        %td {{name}}
+        %td {{package_name}}
+        %td {{package_version}}
+        {{#changes.length}}
+        %td {{changes}}
+        {{/changes.length}}
+        {{#error_message}}
+        %td{:title => "{{error_message}}"} Error
+        {{/error_message}}
+        %td {{mode}}
+        %td {{user}}
+        %td {{group}}
+    %script#scope_changed_managed_files.partial{:type => "text/html"}
+      {{#changed_managed_files.length}}
+      %a.scope_anchor{:id => "changed_managed_files"}
+      #changed_managed_files_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#changed_managed_files"}
+              %img.scope_logo_big{:src => "assets/logo-changed-managed-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Changed Managed Files", :"data-content"=>"#{scope_help('changed_managed_files')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Changed Managed Files
+              .scope-summary
+                {{changed_managed_files.files.length}} files
+                {{meta_info.changed_managed_files}}
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#changed_managed_files.0.files.length}}
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  {{#changed_managed_files.0.files}}
+                  {{>changed_managed_files_partial}}
+                  {{/changed_managed_files.0.files}}
+              {{/changed_managed_files.0.files.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#changed_managed_files.1.files.length}}
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  {{#changed_managed_files.1.files}}
+                  {{>changed_managed_files_partial}}
+                  {{/changed_managed_files.1.files}}
+              {{/changed_managed_files.1.files.length}}
+          .row
+            {{#changed_managed_files.2.files.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  {{#changed_managed_files.2.files}}
+                  {{>changed_managed_files_partial}}
+                  {{/changed_managed_files.2.files}}
+            {{/changed_managed_files.2.files.length}}
+        {{/changed_managed_files.length}}
+
+    %script#scope_config_files_partial{:type => "text/html"}
+      {{#diff}}
+      .diff{:style => "display: none", :"data-config-file-diff" => "{{file}}"}
+        %span.diff-summary
+          {{additions}} additions & {{deletions}} deletions
+        %table.diff
+          {{#lines}}
+          %tr{:class => "{{type}}"}
+            %td.active.linenumber {{original_line_number}}
+            %td.linenumber {{new_line_number}}
+            %td {{{content}}}
+          {{/lines}}
+      {{/diff}}
+      %tr
+        {{#diff}}
+        %td
+          {{name}}
+          %a.diff-toggle{:"data-config-file" => "{{name}}", :"data-toggle" => "popover"}
+            Show diff
+        {{/diff}}
+        {{^diff}}
+        %td {{name}}
+        {{/diff}}
+        %td {{package_name}}
+        %td {{package_version}}
+        {{#changes.length}}
+        %td {{changes}}
+        {{/changes.length}}
+        {{#error_message}}
+        %td{:title => "{{error_message}}"} Error
+        {{/error_message}}
+        %td {{mode}}
+        %td {{user}}
+        %td {{group}}
+
+    %script#scope_config_files.partial{:type => "text/html"}
+      {{#config_files.length}}
+      %a.scope_anchor{:id => "config_files"}
+      #config_files_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#config_files"}
+              %img.scope_logo_big{:src => "assets/logo-config-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Config Files", :"data-content"=>"#{scope_help('config_files')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Config Files
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#config_files.0.files.length}}
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  {{#config_files.0.files}}
+                  {{>config_files_partial}}
+                  {{/config_files.0.files}}
+              {{/config_files.0.files.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#config_files.1.files.length}}
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  {{#config_files.1.files}}
+                  {{>config_files_partial}}
+                  {{/config_files.1.files}}
+              {{/config_files.1.files.length}}
+          .row
+            {{#config_files.2.files.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  {{#config_files.2.files}}
+                  {{>config_files_partial}}
+                  {{/config_files.2.files}}
+            {{/config_files.2.files.length}}
+      {{/config_files.length}}
+
+    %script#scope_services.partial{:type => "text/html"}
+      {{#services.length}}
+      %a.scope_anchor{:id => "services"}
+      #services_container.scope
+        .row
+          .col-xs-1
+            %a{:href => "#services"}
+              %img.scope_logo_big{:src => "assets/logo-services.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Services", :"data-content"=>"#{scope_help('services')}"}/
+            %span.toggle{:title => "Collapse/Expand"}
+          .col-xs-11
+            %h2
+              Services
+              .scope-summary
+                Init System: {{services.init_system}},
+                {{services.services.length}} services
+                {{meta_info.services}}
+        .row.scope_content.collapse.in
+          .row
+            .col-xs-1
+            .col-xs-5
+              {{#services.0.services.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th State
+                %tbody
+                  {{#services.0.services}}
+                  %tr
+                    %td {{name}}
+                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                      {{state}}
+                  {{/services.0.services}}
+              {{/services.0.services.length}}
+            .col-xs-1
+            .col-xs-5
+              {{#services.1.services.length}}
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th State
+                %tbody
+                  {{#services.1.services}}
+                  %tr
+                    %td {{name}}
+                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                      {{state}}
+                  {{/services.1.services}}
+              {{/services.1.services.length}}
+          .row
+            {{#services.2.services.length}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th State
+                %tbody
+                  {{#services.2.services}}
+                  %tr
+                    %td {{name}}
+                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                      {{state}}
+                  {{/services.2.services}}
+            {{/services.2.services.length}}
+      {{/services.length}}
+
+    %script{:src => "assets/diff.js"}
+    %script{:src => "assets/compare/machinery.js"}
+    %script{:src => "assets/bootstrap-tooltip.js"}
+    %script{:src => "assets/bootstrap-popover.js"}
+
+  %body
+    .container-fluid
+      #nav-bar
+        .row
+          .col-xs-1
+          .col-xs-10
+            %h1
+              = #System '#{description.name}'
+              %span.scope-navigation
+                Scopes:
+                %a{:href => "#os", :title => "Operating System"}
+                  %img{:src => "assets/logo-os-small.png"}/
+                %a{:href => "#packages", :title => "Packages"}
+                  %img{:src => "assets/logo-packages-small.png"}/
+                %a{:href => "#patterns", :title => "Patterns"}
+                  %img{:src => "assets/logo-patterns-small.png"}/
+                %a{:href => "#users", :title => "Users"}
+                  %img{:src => "assets/logo-users-small.png"}/
+                %a{:href => "#groups", :title => "Groups"}
+                  %img{:src => "assets/logo-groups-small.png"}/
+                %a{:href => "#repositories", :title => "Repositories"}
+                  %img{:src => "assets/logo-repositories-small.png"}/
+                %a{:href => "#unmanaged_files", :title => "Unmanaged Files"}
+                  %img{:src => "assets/logo-unmanaged-files-small.png"}/
+                %a{:href => "#changed_managed_files", :title => "Changed Managed Files"}
+                  %img{:src => "assets/logo-changed-managed-files-small.png"}/
+                %a{:href => "#config_files", :title => "Config Files"}
+                  %img{:src => "assets/logo-config-files-small.png"}/
+                %a{:href => "#services", :title => "Services"}
+                  %img{:src => "assets/logo-services-small.png"}/
+        .row
+          .col-xs-1
+            %a#expand-all{:style => "display: none"}
+              Expand all
+            %a#collapse-all
+              Collapse all
+          .col-xs-10
+            %small.pull-right.pad-top
+              created by
+              %a{:href => "http://machinery-project.org", :target => "_blank"}
+                Machinery
+            .filter-input
+              %input#filter{:placeholder => "Type To Filter"}/
+              %img{:src => "assets/reset.png", :titel => "Reset Filter", :onclick=>"clearFilter()" }
+
+      #content_container

@@ -274,6 +274,8 @@ class Cli
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
+    c.switch "html", required: false, negatable: false,
+      desc: "Open comparison in HTML format in your web browser."
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
 
@@ -289,6 +291,7 @@ class Cli
 
       task = CompareTask.new
       opts = {
+        show_html: options["html"],
         show_all: options["show-all"]
       }
       task.compare(description1, description2, scope_list, opts)
