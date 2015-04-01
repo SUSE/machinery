@@ -184,14 +184,21 @@ shared_examples "inspect unmanaged files" do |base|
 
     it "can deal with spaces and quotes in file names" do
       @subject_system.inject_file(
-        File.join(Machinery::ROOT, "spec/data/unmanaged_files/test-quote-char-1.0-1.noarch.rpm"),
-        "/tmp/test-quote-char-1.0-1.noarch.rpm",
+        File.join(Machinery::ROOT, "spec/data/unmanaged_files/SUSE-test-quote-char-1.0-1.noarch.rpm"),
+        "/tmp/SUSE-test-quote-char-1.0-1.noarch.rpm",
+        owner: "root",
+        mode: "644"
+      )
+
+      @subject_system.inject_file(
+        File.join(Machinery::ROOT, "spec/data/unmanaged_files/RedHat-test-quote-char-1.0-1.noarch.rpm"),
+        "/tmp/RedHat-test-quote-char-1.0-1.noarch.rpm",
         :owner => "root",
         :mode => "644"
       )
 
       @subject_system.run_command(
-        "rpm -i /tmp/test-quote-char-1.0-1.noarch.rpm",
+        "rpm -i /tmp/SUSE-test-quote-char-1.0-1.noarch.rpm || rpm -i /tmp/RedHat-test-quote-char-1.0-1.noarch.rpm ",
         as: "root"
       )
 
