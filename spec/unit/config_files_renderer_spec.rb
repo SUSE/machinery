@@ -122,7 +122,9 @@ describe ConfigFilesRenderer do
         it "shows a message when a diff file was not found" do
           File.delete File.join(@diffs_dir, "/etc/postfix/main.cf.diff")
           subject.render(system_description, show_diffs: true)
-          expect(captured_machinery_output).to include("Diff for /etc/postfix/main.cf was not found")
+          expect(captured_machinery_output).to include(
+            "Diff for /etc/postfix/main.cf was not found"
+          )
         end
 
         it "does not try to show a diff when the md5 did not change" do

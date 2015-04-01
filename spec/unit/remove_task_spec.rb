@@ -41,7 +41,7 @@ describe RemoveTask do
 
     it "shows also a success message if verbose is true" do
       create_machinery_dir
-      remove_task.remove(store, test_name, { :verbose => true })
+      remove_task.remove(store, test_name, verbose: true)
       expect(captured_machinery_output).to include(
         "System description \"#{test_name}\" successfully removed."
       )
