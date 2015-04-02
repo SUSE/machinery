@@ -24,6 +24,15 @@ $(document).ready(function () {
   $.each(scopes, function(index, scope) {
     templates[scope] = Hogan.compile($("#scope_" + scope).html());
   });
+
+  other_templates = [
+    "description_a",
+    "description_b",
+    "both_descriptions"
+  ];
+  $.each(other_templates, function(index, template) {
+    templates[template] = Hogan.compile($("#" + template + "_partial").html());
+  });
   template = Hogan.compile($('#content').html());
   $("#content_container").html(
     template.render(diff, templates)

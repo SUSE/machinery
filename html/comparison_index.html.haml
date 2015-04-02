@@ -2,7 +2,7 @@
 %html
   %head
     %title
-      = #description.name + " - Machinery System Description"
+      Machinery System Description Comparison
     %meta{:charset => 'utf-8'}/
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
     %link{:href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css"}/
@@ -23,6 +23,19 @@
       {{>config_files}}
       {{>changed_managed_files}}
       {{>services}}
+
+
+
+    %script#description_a_partial{:type => "text/html"}
+      %h3
+        Only in '{{meta.description_a}}':
+    %script#description_b_partial{:type => "text/html"}
+      %h3
+        Only in '{{meta.description_b}}':
+    %script#both_descriptions_partial{:type => "text/html"}
+      %h3
+        In both descriptions:
+
 
     %script#scope_os_partial{:type => "text/html"}
       %table.table.table-striped.table-condensed
@@ -54,11 +67,13 @@
             {{#os.0}}
             .col-xs-1
             .col-xs-5
+              {{>description_a}}
               {{>os_partial}}
             {{/os.0}}
             {{#os.1}}
             .col-xs-1
             .col-xs-5
+              {{>description_b}}
               {{>os_partial}}
             {{/os.1}}
           .row
@@ -97,6 +112,7 @@
             .col-xs-1
             .col-xs-5.table_container
               {{#packages.0.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -115,6 +131,7 @@
             .col-xs-1
             .col-xs-5.table_container
               {{#packages.1.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -134,6 +151,7 @@
             {{#packages.2.length}}
             .col-xs-1
             .col-xs-11.table_container
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -168,6 +186,7 @@
             .col-xs-1
             .col-xs-5
               {{#patterns.0.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -185,6 +204,7 @@
             .col-xs-1
             .col-xs-5
               {{#patterns.1.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -203,6 +223,7 @@
             {{#patterns.2.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -236,6 +257,7 @@
             .col-xs-1
             .col-xs-5
               {{#users.0.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -259,6 +281,7 @@
             .col-xs-1
             .col-xs-5
               {{#users.1.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -283,6 +306,7 @@
             {{#users.2.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -322,6 +346,7 @@
             .col-xs-1
             .col-xs-5
               {{#unmanaged_files.0}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -337,6 +362,7 @@
             .col-xs-1
             .col-xs-5
               {{#unmanaged_files.1}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -353,6 +379,7 @@
             {{#unmanaged_files.2}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -387,6 +414,7 @@
             .col-xs-1
             .col-xs-5
               {{#groups.0.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -406,6 +434,7 @@
             .col-xs-1
             .col-xs-5
               {{#groups.1.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -426,6 +455,7 @@
             {{#groups.2.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -479,6 +509,7 @@
             .col-xs-1
             .col-xs-5
               {{#repositories.0.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -499,6 +530,7 @@
             .col-xs-1
             .col-xs-5
               {{#repositories.1.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -520,6 +552,7 @@
             {{#repositories.2.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -573,6 +606,7 @@
             .col-xs-1
             .col-xs-5
               {{#changed_managed_files.0.files.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -591,6 +625,7 @@
             .col-xs-1
             .col-xs-5
               {{#changed_managed_files.1.files.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -610,6 +645,7 @@
             {{#changed_managed_files.2.files.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -679,6 +715,7 @@
             .col-xs-1
             .col-xs-5
               {{#config_files.0.files.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -697,6 +734,7 @@
             .col-xs-1
             .col-xs-5
               {{#config_files.1.files.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -716,6 +754,7 @@
             {{#config_files.2.files.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
@@ -754,6 +793,7 @@
             .col-xs-1
             .col-xs-5
               {{#services.0.services.length}}
+              {{>description_a}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -770,6 +810,7 @@
             .col-xs-1
             .col-xs-5
               {{#services.1.services.length}}
+              {{>description_b}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -787,6 +828,7 @@
             {{#services.2.services.length}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
@@ -814,7 +856,7 @@
           .col-xs-1
           .col-xs-10
             %h1
-              = #System '#{description.name}'
+              Comparing '#{diff[:meta][:description_a]}' with '#{diff[:meta][:description_b]}'
               %span.scope-navigation
                 Scopes:
                 %a{:href => "#os", :title => "Operating System"}

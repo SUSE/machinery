@@ -27,7 +27,12 @@ class CompareTask
   end
 
   def render_html_comparison(description1, description2, scopes, options)
-    diff = {}
+    diff = {
+      meta: {
+        description_a: description1.name,
+        description_b: description2.name,
+      }
+    }
 
     scopes.each do |scope|
       if description1[scope] && description2[scope]
