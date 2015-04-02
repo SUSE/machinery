@@ -50,7 +50,7 @@ class Html
   def self.generate_comparison(diff, target)
     FileUtils.mkdir_p(File.join(target, "assets"))
     template = Haml::Engine.new(
-      File.read(File.join(Machinery::ROOT, "html", "comparison_index.html.haml"))
+      File.read(File.join(Machinery::ROOT, "html", "comparison.html.haml"))
     )
 
     FileUtils.cp_r(File.join(Machinery::ROOT, "html", "assets"), target)
