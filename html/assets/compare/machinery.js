@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  // Render the system description
+  // Render the diff
   var diff = getDiff();
 
   templates = {};
