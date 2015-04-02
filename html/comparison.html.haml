@@ -64,22 +64,23 @@
             %h2
               Operating System
           .row
-            {{#os.0}}
             .col-xs-1
             .col-xs-5
+              {{#os.0}}
               {{>description_a}}
               {{>os_partial}}
-            {{/os.0}}
-            {{#os.1}}
+              {{/os.0}}
             .col-xs-1
             .col-xs-5
+              {{#os.1}}
               {{>description_b}}
               {{>os_partial}}
-            {{/os.1}}
+              {{/os.1}}
           .row
             {{#os.2}}
             .col-xs-1
             .col-xs-11
+              {{>both_descriptions}}
               {{>os_partial}}
             {{/os.2}}
       {{/os.length}}
