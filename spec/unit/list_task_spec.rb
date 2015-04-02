@@ -65,10 +65,10 @@ describe ListTask do
     it "lists the system descriptions with scopes" do
       system_description.save
       expected_output = <<-EOF
-
  foo:
    * packages
    * repositories
+
 
 EOF
       list_task.list(store)
@@ -78,8 +78,8 @@ EOF
     it "if short is true it lists only the description names" do
       system_description.save
       expected_output = <<-EOF.chomp
-
 foo
+
 EOF
       list_task.list(store, short: true)
       expect(captured_machinery_output).to eq(expected_output)
@@ -123,16 +123,29 @@ EOF
       expect(captured_machinery_output).to include(expected_output)
     end
 
-    it "marks descriptions with old data format" do
-      system_description_with_old_data_format.save
-      list_task.list(store)
-      expect(captured_machinery_output).to include("needs to be upgraded.")
-    end
+    context "with old data format" do
+      let(:expected_output) {
+<<-EOF
+needs to be upgraded.
 
-    it "marks descriptions with old data format despite using the short option" do
-      system_description_with_old_data_format.save
-      list_task.list(store, short: true)
-      expect(captured_machinery_output).to include("needs to be upgraded.")
+EOF
+      }
+
+      context "using the long option" do
+        it "marks descriptions" do
+          system_description_with_old_data_format.save
+          list_task.list(store)
+          expect(captured_machinery_output).to include(expected_output)
+        end
+      end
+
+      context "using the short option" do
+        it "marks descriptions" do
+          system_description_with_old_data_format.save
+          list_task.list(store, short: true)
+          expect(captured_machinery_output).to include(expected_output)
+        end
+      end
     end
 
     it "marks descriptions with incompatible data format" do

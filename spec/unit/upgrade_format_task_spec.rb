@@ -65,10 +65,8 @@ describe UpgradeFormatTask do
 
     it "doesn't upgrade an up to date system description" do
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-      allow(captured_machinery_output)
-
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-      expect(captured_machinery_output).to match(/up to date/)
+      expect(captured_machinery_output).to include("no upgrade necessary")
     end
 
     it "upgrades all system descriptions when the --all switch is given" do
@@ -78,7 +76,7 @@ describe UpgradeFormatTask do
 
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       allow(captured_machinery_output)
-      expect(captured_machinery_output).to match("Upgraded 2 system descriptions successfully.")
+      expect(captured_machinery_output).to match("Upgraded 2 system descriptions.")
 
       ["description1", "description2"].each do |description|
         migrated_description = SystemDescription.load(description,
@@ -87,22 +85,28 @@ describe UpgradeFormatTask do
       end
     end
 
+    it "lists each system description and its status during upgrade" do
+      expected_output = <<-EOF
+Reading "description1" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading "description2" ... no upgrade necessary.
+Upgraded 1 system descriptions.
+EOF
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description2")
+      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      expect(captured_machinery_output).to include(expected_output)
+    end
+
     it "lists each upgraded system description" do
       expect {
         SystemDescription.load("descriptions2", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
       expected_output = <<-EOF
-Upgrading description "description1"
-Upgrading description "description2"
+Reading "description1" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading "description2" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Upgraded 2 system descriptions.
 EOF
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
-
-      ["description1", "description2"].each do |description|
-        migrated_description = SystemDescription.load(description,
-          system_description_factory_store)
-        expect(migrated_description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
-      end
       expect(captured_machinery_output).to include(expected_output)
     end
 

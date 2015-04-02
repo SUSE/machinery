@@ -35,15 +35,15 @@ module MachineryOutput
           def self.puts(s)
             @output ||= ""
             @stdout ||= ""
-            @output += "\n" + s
-            @stdout += "\n" + s
+            @output += s + "\n"
+            @stdout += s + "\n"
           end
 
           def self.warn(s)
             @output ||= ""
             @stderr ||= ""
-            @output += "\n" + s
-            @stderr += "\n" + s
+            @output += s + "\n"
+            @stderr += s + "\n"
           end
 
           def self.error(s)

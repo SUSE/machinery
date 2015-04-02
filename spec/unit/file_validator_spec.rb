@@ -111,13 +111,13 @@ EOT
 
       it "throws a warning on invalid description" do
         expected_output = <<-EOF.chomp
-
 Warning: File validation errors:
 Error validating description 'changed-managed-files-bad'
 
 
 Scope 'changed_managed_files':
   * File 'spec/data/descriptions/validation/changed-managed-files-bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
+
 EOF
         SystemDescription.load("changed-managed-files-bad", @store)
         expect(captured_machinery_output).to eq(expected_output)

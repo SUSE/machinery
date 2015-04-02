@@ -101,7 +101,7 @@ describe Migration do
       Migration.migrate_description(store, "v3_description")
       description = SystemDescription.load("v3_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
-      expect(captured_machinery_output).to include("is up to date, no upgrade necessary")
+      expect(captured_machinery_output).to include("no upgrade necessary")
     end
 
     it "makes the hash and path available as instance variables in the migrations" do
