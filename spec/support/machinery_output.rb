@@ -39,6 +39,13 @@ module MachineryOutput
             @stdout += s + "\n"
           end
 
+          def self.print(s)
+            @output ||= ""
+            @stdout ||= ""
+            @output += s
+            @stdout += s
+          end
+
           def self.warn(s)
             @output ||= ""
             @stderr ||= ""

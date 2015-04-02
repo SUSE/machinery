@@ -35,8 +35,17 @@ describe Machinery::Ui do
   end
 
   describe ".puts" do
+    capture_machinery_output
+    it "shows output with linebreak at the end" do
+      output = "test output"
+      Machinery::Ui.puts(output)
+      expect(captured_machinery_output).to eq(output + "\n")
+    end
+  end
+
+  describe ".print" do
     before(:each) do ||
-      expect(Machinery::Ui).to receive(:use_pager).and_return(true)
+      allow(Machinery::Ui).to receive(:use_pager).and_return(true)
     end
 
     let(:output) { "foo bar" }
@@ -51,17 +60,6 @@ describe Machinery::Ui do
       Machinery::Ui.puts(output)
     end
 
-    it "prints the output to stdout if no pager is available" do
-      ENV['PAGER'] = nil
-
-      allow($stdout).to receive(:tty?).and_return(true)
-      allow(LocalSystem).to receive(:validate_existence_of_package).
-        and_raise(Machinery::Errors::MissingRequirement)
-      expect($stdout).to receive(:puts).with(output)
-
-      Machinery::Ui.puts(output)
-    end
-
     it "raises an error if ENV['PAGER'] is not a valid command" do
       ENV['PAGER'] = 'not_a_pager'
 
@@ -69,6 +67,19 @@ describe Machinery::Ui do
 
       expect { Machinery::Ui.puts(output) }.
         to raise_error(Machinery::Errors::InvalidPager, /not_a_pager/)
+    end
+
+    describe "prints the output to stdout if no pager is available" do
+      capture_machinery_output
+
+      it "concatenates the output without adding \n" do
+        allow($stdout).to receive(:tty?).and_return(true)
+        allow(LocalSystem).to receive(:validate_existence_of_package).and_raise(Machinery::Errors::MissingRequirement)
+        Machinery::Ui.print("Hello")
+        Machinery::Ui.print(" ")
+        Machinery::Ui.print("World")
+        expect(captured_machinery_output).to eq("Hello World")
+      end
     end
   end
 

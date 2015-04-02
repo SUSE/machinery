@@ -89,7 +89,7 @@ describe UpgradeFormatTask do
       expected_output = <<-EOF
 Reading "description1" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
 Reading "description2" ... no upgrade necessary.
-Upgraded 1 system descriptions.
+Upgraded 1 system description.
 EOF
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description2")
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
