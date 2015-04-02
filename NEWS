@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Add experimental option to show comparison of two system descriptions as
+  HTML view
 
 ## Version 1.6.0 - Wed Apr 01 15:43:17 CEST 2015 - thardeck@suse.de
 
