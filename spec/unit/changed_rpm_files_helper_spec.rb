@@ -20,7 +20,7 @@ require_relative "spec_helper"
 include ChangedRpmFilesHelper
 
 describe "parse_rpm_changes_line" do
-  silence_machinery_output
+  capture_machinery_output
 
   it "parses an md5 change" do
     line = "..5......  c /etc/pulse/client.conf"
@@ -76,10 +76,10 @@ describe "parse_rpm_changes_line" do
 
   it "shows a warning when an rpm test could not be performed but still adds known tags" do
     line = "S.?......  c /etc/pulse/client.conf"
-    expect(Machinery::Ui).to receive(:warn).with("Warning: Could not perform all tests on "\
-      "rpm changes for file '/etc/pulse/client.conf'.")
     _, changes, _ = parse_rpm_changes_line(line)
     expect(changes).to match_array(["size"])
+    expect(captured_machinery_output).to include("Warning: Could not perform all tests on "\
+      "rpm changes for file '/etc/pulse/client.conf'.")
   end
 
   it "logs the warning when an rpm test could not be performed" do

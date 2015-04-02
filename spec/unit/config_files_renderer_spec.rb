@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe ConfigFilesRenderer do
+  capture_machinery_output
   initialize_system_description_factory_store
 
   let(:system_description) {
@@ -120,11 +121,10 @@ describe ConfigFilesRenderer do
 
         it "shows a message when a diff file was not found" do
           File.delete File.join(@diffs_dir, "/etc/postfix/main.cf.diff")
-          expect(Machinery::Ui).to receive(:warn) do |s|
-            s.include?("Diff for /etc/postfix/main.cf was not found")
-          end
-
           subject.render(system_description, show_diffs: true)
+          expect(captured_machinery_output).to include(
+            "Diff for /etc/postfix/main.cf was not found"
+          )
         end
 
         it "does not try to show a diff when the md5 did not change" do

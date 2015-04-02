@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe Filter do
+  capture_machinery_output
   describe ".parse_filter_definitions" do
     it "parses array of definitions" do
       element_filter = Filter.parse_filter_definitions(["/foo=bar", "/baz=qux"])
@@ -256,7 +257,6 @@ describe Filter do
     end
 
     it "handles type mismatches" do
-      expect(Machinery::Ui).to receive(:warn).with(/Warning.*not an array/)
       expect {
         expect_file_scope_filter_change(
           "changed_managed_files",
@@ -273,6 +273,10 @@ describe Filter do
           ]
         )
       }.to_not raise_error
+      expected_output = <<-EOF .chomp
+Warning: Filter '/changed_managed_files/files/name=element_a,element_b' tries to match an array, but the according element is not an array.
+EOF
+      expect(captured_machinery_output).to include(expected_output)
     end
   end
 

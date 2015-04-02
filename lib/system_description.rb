@@ -248,7 +248,7 @@ class SystemDescription < Machinery::Object
     if !errors.empty?
       Machinery::Ui.warn("Warning: File validation errors:")
       Machinery::Ui.warn("Error validating description '#{@name}'\n\n")
-      Machinery::Ui.warn(errors)
+      Machinery::Ui.warn(errors.join("\n"))
     end
   end
 

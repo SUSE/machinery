@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe ExportTask do
+  capture_machinery_output
   include FakeFS::SpecHelpers
 
   let(:exporter) {
@@ -32,25 +33,23 @@ describe ExportTask do
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
     allow(JsonValidator).to receive(:new).and_return(double(validate: []))
-    allow(Machinery::Ui).to receive(:puts)
   end
 
   describe "#export" do
     it "writes the export" do
       expect(exporter).to receive(:write).with("/bar/name-type")
-      expect(Machinery::Ui).to receive(:puts).with("Exported to '/bar/name-type'.")
-
       subject.export("/bar", {})
+      expect(captured_machinery_output).to include("Exported to '/bar/name-type'.")
     end
 
     it "shows the unmanaged file filters at the beginning" do
       allow(exporter).to receive(:write)
-      expect(Machinery::Ui).to receive(:puts) { |output|
-        expect(output).to include("Unmanaged files following these patterns are not exported:")
-        expect(output).to include("var/lib/rpm/")
-      }
-
+      expected_output = <<-EOF
+Unmanaged files following these patterns are not exported:
+var/lib/rpm/*
+EOF
       subject.export("/bar", {})
+      expect(captured_machinery_output).to include(expected_output)
     end
 
     describe "when the output directory already exists" do
@@ -71,12 +70,12 @@ describe ExportTask do
 
       it "overwrites existing directory when --force is given" do
         expect(exporter).to receive(:write).with(export_dir)
-        expect(Machinery::Ui).to receive(:puts).with("Exported to '#{export_dir}'.")
         expect {
           subject.export(output_dir, force: true)
         }.to_not raise_error
 
         expect(File.exists?(content)).to be(false)
+        expect(captured_machinery_output).to include("Exported to '#{export_dir}'.")
       end
     end
   end

@@ -73,7 +73,7 @@ class Migration
       if !errors.empty?
         if options[:force]
           Machinery::Ui.warn("Warning: System Description validation errors:")
-          Machinery::Ui.warn(errors)
+          Machinery::Ui.warn(errors.join(", "))
         else
           raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
         end

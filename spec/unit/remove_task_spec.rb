@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe RemoveTask do
+  capture_machinery_output
   include_context "machinery test directory"
 
   let(:remove_task) { RemoveTask.new }
@@ -40,11 +41,10 @@ describe RemoveTask do
 
     it "shows also a success message if verbose is true" do
       create_machinery_dir
-      expect(Machinery::Ui).to receive(:puts).with(
+      remove_task.remove(store, test_name, verbose: true)
+      expect(captured_machinery_output).to include(
         "System description \"#{test_name}\" successfully removed."
       )
-
-      remove_task.remove(store, test_name, { :verbose => true })
     end
 
     it "throws an error when SystemDescription does not exist" do
