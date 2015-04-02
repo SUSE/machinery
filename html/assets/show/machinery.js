@@ -191,4 +191,13 @@ $(document).ready(function () {
   $("td.systemd_disabled").attr("title", "Unit file is not enabled.");
   $("td.sysvinit_on").attr("title", "Service is enabled");
   $("td.sysvinit_off").attr("title", "Service is disabled");
+
+  // Show title on cut-off table elements
+  $('.scope td').bind('mouseenter', function(){
+    var $this = $(this);
+
+    if(this.offsetWidth < this.scrollWidth && !$this.attr('title')){
+      $this.attr('title', $this.text());
+    }
+  });
 });
