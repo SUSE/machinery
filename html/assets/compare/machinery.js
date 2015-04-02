@@ -66,4 +66,24 @@ $(document).ready(function () {
         $this.attr('title', $this.text());
     }
   });
+
+  // Hook up the toggle links
+  $(".toggle").click(function(){
+    $(this).closest(".scope").find(".scope_content").collapse("toggle");
+    $(this).toggleClass("collapsed");
+  });
+
+  $("#collapse-all").click(function(){
+    $(".scope_content").collapse("hide");
+    $(".toggle").addClass("collapsed");
+    $(this).hide();
+    $("#expand-all").show();
+  });
+
+  $("#expand-all").click(function(){
+    $(".scope_content").collapse("show");
+    $(".toggle").removeClass("collapsed");
+    $(this).hide();
+    $("#collapse-all").show();
+  });
 });
