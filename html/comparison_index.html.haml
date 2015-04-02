@@ -1,4 +1,6 @@
 !!!
+- description_a = diff[:meta][:description_a]
+- description_b = diff[:meta][:description_b]
 %html
   %head
     %title
@@ -61,8 +63,6 @@
           .col-xs-11
             %h2
               Operating System
-              .scope-summary
-                {{meta_info.os}}
           .row
             {{#os.0}}
             .col-xs-1
@@ -107,6 +107,19 @@
           .col-xs-11
             %h2
               Packages
+              .scope-summary
+                {{#packages.0.length}}
+                %span.summary-part {{meta.description_a}}: {{packages.0.length}} packages
+                {{/packages.0.length}}
+                {{#packages.1.length}}
+                %span.summary-part {{meta.description_b}}: {{packages.1.length}} packages
+                {{/packages.1.length}}
+                {{#packages.2.length}}
+                %span.summary-part
+                  %a{href: "#packages_both"}
+                    both
+                  = ": {{packages.2.length}} patterns"
+                {{/packages.2.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -147,6 +160,7 @@
                   {{>packages_partial}}
                   {{/packages.1}}
               {{/packages.1.length}}
+          %a.both_anchor{id: "packages_both"}
           .row
             {{#packages.2.length}}
             .col-xs-1
@@ -181,6 +195,19 @@
           .col-xs-11
             %h2
               Patterns
+              .scope-summary
+                {{#patterns.0.length}}
+                %span.summary-part {{meta.description_a}}: {{patterns.0.length}} patterns
+                {{/patterns.0.length}}
+                {{#patterns.1.length}}
+                %span.summary-part {{meta.description_b}}: {{patterns.1.length}} patterns
+                {{/patterns.1.length}}
+                {{#patterns.2.length}}
+                %span.summary-part
+                  %a{href: "#patterns_both"}
+                    both
+                  = ": {{patterns.2.length}} patterns"
+                {{/patterns.2.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -219,6 +246,7 @@
                     %td {{release}}
                   {{/patterns.1}}
               {{/patterns.1.length}}
+          %a.both_anchor{id: "patterns_both"}
           .row
             {{#patterns.2.length}}
             .col-xs-1
@@ -252,6 +280,19 @@
           .col-xs-11
             %h2
               Users
+              .scope-summary
+                {{#users.0.length}}
+                %span.summary-part {{meta.description_a}}: {{users.0.length}} users
+                {{/users.0.length}}
+                {{#users.1.length}}
+                %span.summary-part {{meta.description_b}}: {{users.1.length}} users
+                {{/users.1.length}}
+                {{#users.2.length}}
+                %span.summary-part
+                  %a{href: "#users_both"}
+                    both
+                  = ": {{users.2.length}} users"
+                {{/users.2.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -302,6 +343,7 @@
                     %td {{shell}}
                   {{/users.1}}
               {{/users.1.length}}
+          %a.both_anchor{id: "users_both"}
           .row
             {{#users.2.length}}
             .col-xs-1
@@ -341,6 +383,19 @@
           .col-xs-11
             %h2
               Unmanaged Files
+              .scope-summary
+                {{#unmanaged_files.0.files.length}}
+                %span.summary-part {{meta.description_a}}: {{unmanaged_files.0.files.length}} files
+                {{/unmanaged_files.0.files.length}}
+                {{#unmanaged_files.1.files.length}}
+                %span.summary-part {{meta.description_b}}: {{unmanaged_files.1.files.length}} files
+                {{/unmanaged_files.1.files.length}}
+                {{#unmanaged_files.2.files.length}}
+                %span.summary-part
+                  %a{href: "#unmanaged_files_both"}
+                    both
+                  = ": {{unmanaged_files.2.files.length}} files"
+                {{/unmanaged_files.2.files.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -375,6 +430,7 @@
                     %td {{type}}
                   {{/unmanaged_files.1.files}}
               {{/unmanaged_files.1}}
+          %a.both_anchor{id: "unmanaged_files_both"}
           .row
             {{#unmanaged_files.2}}
             .col-xs-1
@@ -407,8 +463,18 @@
             %h2
               Groups
               .scope-summary
-                {{groups.length}} groups
-                {{meta_info.groups}}
+                {{#groups.0.length}}
+                %span.summary-part {{meta.description_a}}: {{groups.0.length}} groups
+                {{/groups.0.length}}
+                {{#groups.1.length}}
+                %span.summary-part {{meta.description_b}}: {{groups.1.length}} groups
+                {{/groups.1.length}}
+                {{#groups.2.length}}
+                %span.summary-part
+                  %a{href: "#groups_both"}
+                    both
+                  = ": {{groups.2.length}} groups"
+                {{/groups.2.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -451,6 +517,7 @@
                     %td {{users}}
                   {{/groups.1}}
               {{/groups.1.length}}
+          %a.both_anchor{id: "groups_both"}
           .row
             {{#groups.2.length}}
             .col-xs-1
@@ -502,8 +569,18 @@
             %h2
               Repositories
               .scope-summary
-                {{repositories.length}} repositories
-                {{meta_info.repositories}}
+                {{#repositories.0.length}}
+                %span.summary-part {{meta.description_a}}: {{repositories.0.length}} repos
+                {{/repositories.0.length}}
+                {{#repositories.1.length}}
+                %span.summary-part {{meta.description_b}}: {{repositories.1.length}} repos
+                {{/repositories.1.length}}
+                {{#repositories.2.length}}
+                %span.summary-part
+                  %a{href: "#repositories_both"}
+                    both
+                  = ": {{repositories.2.length}} repos"
+                {{/repositories.2.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -548,6 +625,7 @@
                   {{>repositories_partial}}
                   {{/repositories.1}}
               {{/repositories.1.length}}
+          %a.both_anchor{id: "repositories_both"}
           .row
             {{#repositories.2.length}}
             .col-xs-1
@@ -599,8 +677,18 @@
             %h2
               Changed Managed Files
               .scope-summary
-                {{changed_managed_files.files.length}} files
-                {{meta_info.changed_managed_files}}
+                {{#changed_managed_files.0.files.length}}
+                %span.summary-part {{meta.description_a}}: {{changed_managed_files.0.files.length}} files
+                {{/changed_managed_files.0.files.length}}
+                {{#changed_managed_files.1.files.length}}
+                %span.summary-part {{meta.description_b}}: {{changed_managed_files.1.files.length}} files
+                {{/changed_managed_files.1.files.length}}
+                {{#changed_managed_files.2.files.length}}
+                %span.summary-part
+                  %a{href: "#changed_managed_files_both"}
+                    both
+                  = ": {{changed_managed_files.2.files.length}} files"
+                {{/changed_managed_files.2.files.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -641,6 +729,7 @@
                   {{>changed_managed_files_partial}}
                   {{/changed_managed_files.1.files}}
               {{/changed_managed_files.1.files.length}}
+          %a.both_anchor{id: "changed_managed_files_both"}
           .row
             {{#changed_managed_files.2.files.length}}
             .col-xs-1
@@ -710,6 +799,19 @@
           .col-xs-11
             %h2
               Config Files
+              .scope-summary
+                {{#config_files.0.files.length}}
+                %span.summary-part {{meta.description_a}}: {{config_files.0.files.length}} files
+                {{/config_files.0.files.length}}
+                {{#config_files.1.files.length}}
+                %span.summary-part {{meta.description_b}}: {{config_files.1.files.length}} files
+                {{/config_files.1.files.length}}
+                {{#config_files.2.files.length}}
+                %span.summary-part
+                  %a{href: "#config_files_both"}
+                    both
+                  = ": {{config_files.2.files.length}} files"
+                {{/config_files.2.files.length}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -750,6 +852,7 @@
                   {{>config_files_partial}}
                   {{/config_files.1.files}}
               {{/config_files.1.files.length}}
+          %a.both_anchor{id: "config_files_both"}
           .row
             {{#config_files.2.files.length}}
             .col-xs-1
@@ -785,9 +888,18 @@
             %h2
               Services
               .scope-summary
-                Init System: {{services.init_system}},
-                {{services.services.length}} services
-                {{meta_info.services}}
+                {{#services.0}}
+                %span.summary-part {{meta.description_a}}: {{services.length}} services ({{init_system}})
+                {{/services.0}}
+                {{#services.1}}
+                %span.summary-part {{meta.description_b}}: {{services.length}} services ({{init_system}})
+                {{/services.1}}
+                {{#services.2}}
+                %span.summary-part
+                  %a{href: "#services_both"}
+                    both
+                  = ": {{services.length}} services ({{init_system}})"
+                {{/services.2}}
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -824,6 +936,7 @@
                       {{state}}
                   {{/services.1.services}}
               {{/services.1.services.length}}
+          %a.both_anchor{id: "services_both"}
           .row
             {{#services.2.services.length}}
             .col-xs-1
@@ -856,7 +969,7 @@
           .col-xs-1
           .col-xs-10
             %h1
-              Comparing '#{diff[:meta][:description_a]}' with '#{diff[:meta][:description_b]}'
+              Comparing '#{description_a}' with '#{description_b}'
               %span.scope-navigation
                 Scopes:
                 %a{:href => "#os", :title => "Operating System"}

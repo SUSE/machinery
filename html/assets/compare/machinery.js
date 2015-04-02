@@ -41,8 +41,8 @@ $(document).ready(function () {
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
   $("#content_container").css("margin-top", header_height);
-  $("a.scope_anchor").css("height", header_height);
-  $("a.scope_anchor").css("margin-top", -header_height);
+  $("a.scope_anchor, a.both_anchor").css("height", header_height);
+  $("a.scope_anchor, a.both_anchor").css("margin-top", -header_height);
 
   $('.scope_logo_big').each(function(){
     var icon = $(this);

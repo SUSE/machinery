@@ -18,7 +18,8 @@ body {
   text-decoration: none;
 }
 
-a.scope_anchor {
+a.scope_anchor,
+a.both_anchor {
   display: block;
   visibility: hidden;
 }
@@ -59,6 +60,10 @@ a.scope_anchor {
 
 .scope th.small {
   width: 12%;
+}
+
+.scope-summary .summary-part {
+  padding-left: 20px;
 }
 
 .filter-input {
