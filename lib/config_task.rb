@@ -45,7 +45,10 @@ class ConfigTask
       elsif value_string == "false" || value_string == "off"
         return false
       else
-        raise Machinery::Errors::MachineryError.new("The value '#{value_string}' is not valid for key '#{key}'.")
+        raise Machinery::Errors::MachineryError.new(
+          "The value '#{value_string}' is not valid for key '#{key}'." \
+            " Please enter a valid variable of type boolean."
+        )
       end
     elsif current_value.kind_of?(Integer)
       return value_string.to_i

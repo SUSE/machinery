@@ -93,6 +93,12 @@ describe ConfigTask do
       it "parses 'off'" do
         expect(@config_task.parse_value_string("configkey", "off")).to be(false)
       end
+
+      it "raises an error if wrong type of input is given" do
+        expect {
+          @config_task.parse_value_string("configkey", 42)
+        }.to raise_error(Machinery::Errors::MachineryError, /valid variable of type boolean/)
+      end
     end
 
     context "for default false" do
@@ -116,6 +122,12 @@ describe ConfigTask do
 
       it "parses 'off'" do
         expect(@config_task.parse_value_string("configkey", "off")).to be(false)
+      end
+
+      it "raises an error if wrong type of input is given" do
+        expect {
+          @config_task.parse_value_string("configkey", 42)
+        }.to raise_error(Machinery::Errors::MachineryError, /valid variable of type boolean/)
       end
     end
 
