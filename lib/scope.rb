@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 module Machinery
-  module ScopeMixin
+  module Scope
     def self.included(mod)
       @scopes ||= []
       @scopes.push(mod)

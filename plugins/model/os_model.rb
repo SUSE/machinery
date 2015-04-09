@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class Os < Machinery::Object
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 
   def self.descendants
     @descendants ||= ObjectSpace.each_object(::Class).select do |klass|

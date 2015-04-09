@@ -20,7 +20,7 @@ class Package < Machinery::Object
 end
 
 class PackagesScope < Machinery::Array
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 
   has_elements class: Package
 end

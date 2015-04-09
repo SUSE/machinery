@@ -25,6 +25,6 @@ class ChangedManagedFileList < Machinery::Array
 end
 
 class ChangedManagedFilesScope < FileScope
-  include Machinery::ScopeMixin
+  include Machinery::Scope
   has_property :files, class: ChangedManagedFileList
 end

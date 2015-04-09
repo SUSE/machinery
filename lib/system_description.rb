@@ -115,7 +115,7 @@ class SystemDescription < Machinery::Object
       scopes = hash.map do |scope_name, scope_json|
         next if scope_name == "meta"
 
-        scope_class = Machinery::ScopeMixin.class_for(scope_name)
+        scope_class = Machinery::Scope.class_for(scope_name)
         scope_object = scope_class.from_json(scope_json)
 
         # Set metadata

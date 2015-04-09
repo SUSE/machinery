@@ -21,16 +21,16 @@ describe CompareTask do
     capture_machinery_output
 
     class CompareTaskFooScope < Machinery::Array
-      include Machinery::ScopeMixin
+      include Machinery::Scope
     end
     class CompareTaskBarScope < Machinery::Array
-      include Machinery::ScopeMixin
+      include Machinery::Scope
     end
     class CompareTaskBazScope < Machinery::Array
-      include Machinery::ScopeMixin
+      include Machinery::Scope
     end
     class CompareTaskFoobarScope < Machinery::Array
-      include Machinery::ScopeMixin
+      include Machinery::Scope
     end
 
     class CompareTaskFooRenderer < Renderer

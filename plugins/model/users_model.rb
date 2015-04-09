@@ -20,7 +20,7 @@ class User < Machinery::Object
 end
 
 class UsersScope < Machinery::Array
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 
   has_elements class: User
 end

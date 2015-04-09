@@ -20,7 +20,7 @@ class Pattern < Machinery::Object
 end
 
 class PatternsScope < Machinery::Array
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 
   has_elements class: Pattern
 end
