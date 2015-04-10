@@ -41,7 +41,7 @@ class UpgradeFormatTask
 
         if migrated
           migrations_done += 1
-          Machinery::Ui.puts "successfully upgraded from version" \
+          Machinery::Ui.puts "Successfully upgraded from version" \
             " #{hash["meta"]["format_version"]} to #{SystemDescription::CURRENT_FORMAT_VERSION}."
         end
       rescue StandardError => e
@@ -57,9 +57,10 @@ class UpgradeFormatTask
     end
 
     if options[:all]
-      migrations_done == 1 ? frequency = "description" : frequency = "descriptions"
-      if migrations_done > 0
-        Machinery::Ui.puts "Upgraded #{migrations_done} system #{frequency}."
+      if migrations_done == 1
+        Machinery::Ui.puts "Upgraded 1 system description."
+      elsif migrations_done > 1
+        Machinery::Ui.puts "Upgraded #{migrations_done} system descriptions."
       else
         Machinery::Ui.puts "No system descriptions were upgraded."
       end

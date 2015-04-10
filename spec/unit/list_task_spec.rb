@@ -69,7 +69,6 @@ describe ListTask do
    * packages
    * repositories
 
-
 EOF
       list_task.list(store)
       expect(captured_machinery_output).to eq(expected_output)

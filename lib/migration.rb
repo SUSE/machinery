@@ -88,7 +88,7 @@ class Migration
       end
 
       if current_version == SystemDescription::CURRENT_FORMAT_VERSION
-        Machinery::Ui.puts "no upgrade necessary."
+        Machinery::Ui.puts "No upgrade necessary."
         return false
       end
 

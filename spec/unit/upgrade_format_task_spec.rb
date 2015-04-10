@@ -66,7 +66,7 @@ describe UpgradeFormatTask do
     it "doesn't upgrade an up to date system description" do
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-      expect(captured_machinery_output).to include("no upgrade necessary")
+      expect(captured_machinery_output).to include("No upgrade necessary")
     end
 
     it "upgrades all system descriptions when the --all switch is given" do
@@ -87,8 +87,8 @@ describe UpgradeFormatTask do
 
     it "lists each system description and its status during upgrade" do
       expected_output = <<-EOF
-Reading "description1" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
-Reading "description2" ... no upgrade necessary.
+Reading "description1" ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading "description2" ... No upgrade necessary.
 Upgraded 1 system description.
 EOF
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description2")
@@ -102,8 +102,8 @@ EOF
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
       expected_output = <<-EOF
-Reading "description1" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
-Reading "description2" ... successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading "description1" ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading "description2" ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
 Upgraded 2 system descriptions.
 EOF
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)

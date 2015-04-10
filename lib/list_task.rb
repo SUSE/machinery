@@ -76,7 +76,7 @@ class ListTask
           scopes << entry
         end
 
-        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
+        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n"
       end
     end
 
