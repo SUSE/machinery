@@ -85,7 +85,7 @@
                     %th Vendor
                     %th Checksum
                 %tbody
-                  %tr{"ng-repeat" => "package in description.packages"}
+                  %tr{"ng-repeat" => "package in description.packages | filter:query"}
                     %td {{package.name}}
                     %td {{package.version}}
                     %td {{package.release}}
@@ -117,7 +117,7 @@
                     %th Version
                     %th Release
                 %tbody
-                  %tr{"ng-repeat" => "pattern in description.patterns"}
+                  %tr{"ng-repeat" => "pattern in description.patterns | filter:query"}
                     %td {{pattern.name}}
                     %td {{pattern.version}}
                     %td {{pattern.release}}
@@ -149,7 +149,7 @@
                     %th Home
                     %th Shell
                 %tbody
-                  %tr{"ng-repeat" => "user in description.users"}
+                  %tr{"ng-repeat" => "user in description.users | filter:query"}
                     %td {{user.name}}
                     %td {{user.uid}}
                     %td {{user.gid}}
@@ -180,7 +180,7 @@
                     %th Name
                     %th Type
                 %tbody
-                  %tr{"ng-repeat" => "file in description.unmanaged_files.files"}
+                  %tr{"ng-repeat" => "file in description.unmanaged_files.files | filter:query"}
                     %td {{file.name}}
                     %td {{file.type}}
 
@@ -209,7 +209,7 @@
                     %th Password
                     %th Users
                 %tbody
-                  %tr{"ng-repeat" => "group in description.groups"}
+                  %tr{"ng-repeat" => "group in description.groups | filter:query"}
                     %td {{group.name}}
                     %td {{group.gid}}
                     %td {{group.password}}
@@ -244,7 +244,7 @@
                     %th GPG Check
                     %th Priority
                 %tbody
-                  %tr{"ng-repeat" => "repo in description.repositories"}
+                  %tr{"ng-repeat" => "repo in description.repositories | filter:query"}
                     %td {{repo.name}}
                     %td {{repo.alias}}
                     %td {{repo.type}}
@@ -283,7 +283,7 @@
                     %th User
                     %th Group
                 %tbody
-                  %tr{"ng-repeat" => "file in description.changed_managed_files.files"}
+                  %tr{"ng-repeat" => "file in description.changed_managed_files.files | filter:query"}
                     %td {{file.name}}
                     %td {{file.package_name}}
                     %td {{file.package_version}}
@@ -331,7 +331,7 @@
                     %th User
                     %th Group
                 %tbody
-                  %tr{"ng-repeat" => "file in description.config_files.files"}
+                  %tr{"ng-repeat" => "file in description.config_files.files | filter:query"}
                     %td
                       {{file.name}}
                       %a.diff-toggle{"ng-show" => "file.diff", "data-config-file" => "{{file.name}}", "data-toggle" => "popover"}
@@ -369,7 +369,7 @@
                     %th Name
                     %th State
                 %tbody
-                  %tr{"ng-repeat" => "service in description.services.services"}
+                  %tr{"ng-repeat" => "service in description.services.services | filter:query"}
                     %td {{service.name}}
                     %td{:class=>"{{services.init_system}}_{{state}}"}
                       {{service.state}}
@@ -401,9 +401,9 @@
               %a{:href => "http://machinery-project.org", :target => "_blank"}
                 Machinery
             .filter-input.col-md-3
-              %input#filter{:placeholder => "Type To Filter"}/
+              %input#filter{"ng-model" => "query", :placeholder => "Type To Filter"}/
               %a{:href => "#"}
-                %img{:src => "assets/reset.png", :titel => "Reset Filter", :onclick=>"clearFilter()" }
+                %img{:src => "assets/reset.png", :titel => "Reset Filter", "ng-click" => "query = ''" }
 
             %span.scope-navigation
               Scopes:

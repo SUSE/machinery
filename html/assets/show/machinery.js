@@ -1,39 +1,4 @@
 $(document).ready(function () {
-  var filterdocument = function() {
-    window.scrollTo(0, 0);
-    var rows = $("body").find("tr");
-    if($("#filter").val() == "") {
-      rows.show();
-      return;
-    }
-
-    var filters = $("#filter").val().split(" ");
-
-    rows
-      .hide()
-      .filter(function() {
-        var $t = $(this);
-        for(var i = 0; i < filters.length; ++i) {
-          if($t.is(":contains('" + filters[i] + "')")) {
-            return true;
-          }
-        }
-        return false;
-      })
-      .show();
-  };
-
-  $("#filter").keyup(function() {
-    run_when_done_typing(function() {
-      filterdocument();
-    }, 500);
-  });
-
-  clearFilter = function() {
-    $("#filter").val("");
-    filterdocument();
-  };
-
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
   $("#content_container, #angular-content").css("margin-top", header_height);
