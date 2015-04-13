@@ -1,33 +1,20 @@
 !!!
-%html
+%html{"ng-app" => "machinery-show"}
   %head
     %title
       = description.name + " - Machinery System Description"
     %meta{:charset => 'utf-8'}/
     %link{:href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "assets/angular.min.js"}
+    %script{:src => "assets/angular-sanitize.min.js"}
+    %script{:src => "assets/show/machinery-show.js"}
     %script{:src => "assets/jquery-2.1.1.min.js"}
-    %script{:src => "assets/hogan-3.0.2.min.mustache.js"}
     %script{:src => "assets/transition.js"}
     %script{:src => "assets/collapse.js"}
 
-    %script#content{:type => "text/html"}
-      .hidden
-        {{>inspection_details_template}}
-
-      {{>os}}
-      {{>packages}}
-      {{>patterns}}
-      {{>users}}
-      {{>groups}}
-      {{>repositories}}
-      {{>unmanaged_files}}
-      {{>changed_managed_files}}
-      {{>config_files}}
-      {{>services}}
-
-    %script#inspection_details_template{:type => "text/html"}
-      #inspection_details
+    %script#inspection_details_template{:type => "text/ng-template"}
+      #inspection_details.hidden
         #filters
           .row
             .col-xs-1
@@ -37,406 +24,355 @@
           .row
             .col-xs-1
             .col-xs-11
-              {{#meta.filters.inspect.length}}
-              %ul
-                {{#meta.filters.inspect}}
-                %li.filter
-                  {{.}}
-                {{/meta.filters.inspect}}
-              {{/meta.filters.inspect.length}}
+              %ul{"ng-show" => "description.meta.filters.inspect.length"}
+                %li.filter{{"ng-repeat" => "filter in description.meta.filters.inspect"}}
+                  {{filter}}
 
-              {{^meta.filters.inspect.length}}
-              %p
+              %p{"ng-hide" => "description.meta.filters.inspect.length"}
                 No filters were used.
-              {{/meta.filters.inspect.length}}
 
 
-    %script#scope_os.partial{:type => "text/html"}
-      {{#os}}
-      %a.scope_anchor{:id => "os"}
-      #os_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-os.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Operating System", :"data-content"=>"#{scope_help('os')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Operating System
-              .scope-summary
-                {{meta_info.os}}
-          .col-xs-1
-          .col-xs-3.scope_content.collapse.in
-            %table.table.table-striped.table-condensed
-              %tr
-                %th Name
-                %td {{os.name}}
-              %tr
-                %th Version
-                %td {{os.version}}
-              %tr
-                %th Architecture
-                %td {{os.architecture}}
-      {{/os}}
-
-    %script#scope_packages.partial{:type => "text/html"}
-      {{#packages.length}}
-      %a.scope_anchor{:id => "packages"}
-      #packages_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-packages.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Packages", :"data-content"=>"#{scope_help('packages')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Packages
-              .scope-summary
-                {{packages.length}} packages
-                {{meta_info.packages}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed
-              %thead
+    %script#scope_os.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.os"}
+        %a.scope_anchor{:id => "os"}
+        #os_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-os.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Operating System", :"data-content"=>"#{scope_help('os')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Operating System
+                .scope-summary
+                  {{meta_info.os}}
+            .col-xs-1
+            .col-xs-3.scope_content.collapse.in
+              %table.table.table-striped.table-condensed
                 %tr
                   %th Name
+                  %td {{description.os.name}}
+                %tr
                   %th Version
-                  %th Release
-                  %th Arch
-                  %th Vendor
-                  %th Checksum
-              %tbody
-                {{#packages}}
+                  %td {{description.os.version}}
                 %tr
-                  %td {{name}}
-                  %td {{version}}
-                  %td {{release}}
-                  %td {{arch}}
-                  %td {{vendor}}
-                  %td {{checksum}}
-                {{/packages}}
-      {{/packages.length}}
+                  %th Architecture
+                  %td {{description.os.architecture}}
 
-    %script#scope_patterns.partial{:type => "text/html"}
-      {{#patterns.length}}
-      %a.scope_anchor{:id => "patterns"}
-      #patterns_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-patterns.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Patterns", :"data-content"=>"#{scope_help('patterns')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Patterns
-              .scope-summary
-                {{patterns.length}} patterns
-                {{meta_info.patterns}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed
-              %thead
-                %tr
-                  %th Name
-                  %th Version
-                  %th Release
-              %tbody
-                {{#patterns}}
-                %tr
-                  %td {{name}}
-                  %td {{version}}
-                  %td {{release}}
-                {{/patterns}}
-      {{/patterns.length}}
+    %script#scope_packages.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.packages"}
+        %a.scope_anchor{:id => "packages"}
+        #packages_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-packages.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Packages", :"data-content"=>"#{scope_help('packages')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Packages
+                .scope-summary
+                  %ng-pluralize{count: "description.packages.length", when:"{'1': '1 package', 'other': '{} packages'}"}
+                  %meta-info{data: "description.meta.packages"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Version
+                    %th Release
+                    %th Arch
+                    %th Vendor
+                    %th Checksum
+                %tbody
+                  %tr{"ng-repeat" => "package in description.packages"}
+                    %td {{package.name}}
+                    %td {{package.version}}
+                    %td {{package.release}}
+                    %td {{package.arch}}
+                    %td {{package.vendor}}
+                    %td {{package.checksum}}
 
-    %script#scope_users{:type => "text/html"}
-      {{#users.length}}
-      %a.scope_anchor{:id => "users"}
-      #users_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-users.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Users", :"data-content"=>"#{scope_help('users')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Users
-              .scope-summary
-                {{users.length}} users
-                {{meta_info.users}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed
-              %thead
-                %tr
-                  %th Name
-                  %th UID
-                  %th GID
-                  %th Comment
-                  %th Home
-                  %th Shell
-              %tbody
-                {{#users}}
-                %tr
-                  %td {{name}}
-                  %td {{uid}}
-                  %td {{gid}}
-                  %td {{comment}}
-                  %td {{home}}
-                  %td {{shell}}
-                {{/users}}
-      {{/users.length}}
+    %script#scope_patterns.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.patterns"}
+        %a.scope_anchor{:id => "patterns"}
+        #patterns_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-patterns.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Patterns", :"data-content"=>"#{scope_help('patterns')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Patterns
+                .scope-summary
+                  %ng-pluralize{count: "description.patterns.length", when:"{'1': '1 pattern', 'other': '{} patterns'}"}
+                  %meta-info{data: "description.meta.patterns"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Version
+                    %th Release
+                %tbody
+                  %tr{"ng-repeat" => "pattern in description.patterns"}
+                    %td {{pattern.name}}
+                    %td {{pattern.version}}
+                    %td {{pattern.release}}
 
-    %script#scope_unmanaged_files.partial{:type => "text/html"}
-      {{#unmanaged_files.files.length}}
-      %a.scope_anchor{:id => "unmanaged_files"}
-      #unmanaged_files_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-unmanaged-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Unmanaged Files", :"data-content"=>"#{scope_help('unmanaged_files')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Unmanaged Files
-              .scope-summary
-                {{unmanaged_files.files.length}} files
-                {{meta_info.unmanaged_files}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed.files-table
-              %thead
-                %tr
-                  %th Name
-                  %th Type
-              %tbody
-                {{#unmanaged_files.files}}
-                %tr
-                  %td {{name}}
-                  %td {{type}}
-                {{/unmanaged_files.files}}
-      {{/unmanaged_files.files.length}}
+    %script#scope_users{:type => "text/ng-template"}
+      %div{"ng-show" => "description.users"}
+        %a.scope_anchor{:id => "users"}
+        #users_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-users.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Users", :"data-content"=>"#{scope_help('users')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Users
+                .scope-summary
+                  %ng-pluralize{count: "description.users.length", when:"{'1': '1 user', 'other': '{} users'}"}
+                  %meta-info{data: "description.meta.users"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th UID
+                    %th GID
+                    %th Comment
+                    %th Home
+                    %th Shell
+                %tbody
+                  %tr{"ng-repeat" => "user in description.users"}
+                    %td {{user.name}}
+                    %td {{user.uid}}
+                    %td {{user.gid}}
+                    %td {{user.comment}}
+                    %td {{user.home}}
+                    %td {{user.shell}}
 
-    %script#scope_groups{:type => "text/html"}
-      {{#groups.length}}
-      %a.scope_anchor{:id => "groups"}
-      #groups_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-groups.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Groups", :"data-content"=>"#{scope_help('groups')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Groups
-              .scope-summary
-                {{groups.length}} groups
-                {{meta_info.groups}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed
-              %thead
-                %tr
-                  %th Name
-                  %th GID
-                  %th Password
-                  %th Users
-              %tbody
-                {{#groups}}
-                %tr
-                  %td {{name}}
-                  %td {{gid}}
-                  %td {{password}}
-                  %td {{users}}
-                {{/groups}}
-      {{/groups.length}}
+    %script#scope_unmanaged_files.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.unmanaged_files.files"}
+        %a.scope_anchor{:id => "unmanaged_files"}
+        #unmanaged_files_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-unmanaged-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Unmanaged Files", :"data-content"=>"#{scope_help('unmanaged_files')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Unmanaged Files
+                .scope-summary
+                  %ng-pluralize{count: "description.unmanaged_files.files.length", when:"{'1': '1 file', 'other': '{} files'}"}
+                  %meta-info{data: "description.meta.unmanaged_files"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Type
+                %tbody
+                  %tr{"ng-repeat" => "file in description.unmanaged_files.files"}
+                    %td {{file.name}}
+                    %td {{file.type}}
 
-    %script#scope_repositories.partial{:type => "text/html"}
-      {{#repositories.length}}
-      %a.scope_anchor{:id => "repositories"}
-      #repositories_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-repositories.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Repositories", :"data-content"=>"#{scope_help('repositories')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Repositories
-              .scope-summary
-                {{repositories.length}} repositories
-                {{meta_info.repositories}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed
-              %thead
-                %tr
-                  %th Name
-                  %th Alias
-                  %th Type
-                  %th URL
-                  %th Enabled
-                  %th Autorefresh
-                  %th GPG Check
-                  %th Priority
-              %tbody
-                {{#repositories}}
-                %tr
-                  %td {{name}}
-                  %td {{alias}}
-                  %td {{type}}
-                  %td
-                    %a{:href => "{{url}}" } {{url}}
-                  %td {{enabled}}
-                  %td {{autorefresh}}
-                  %td {{gpgcheck}}
-                  %td {{priority}}
-                {{/repositories}}
-      {{/repositories.length}}
+    %script#scope_groups{:type => "text/ng-template"}
+      %div{"ng-show" => "description.groups"}
+        %a.scope_anchor{:id => "groups"}
+        #groups_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-groups.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Groups", :"data-content"=>"#{scope_help('groups')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Groups
+                .scope-summary
+                  %ng-pluralize{count: "description.groups.length", when:"{'1': '1 group', 'other': '{} groups'}"}
+                  %meta-info{data: "description.meta.groups"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th GID
+                    %th Password
+                    %th Users
+                %tbody
+                  %tr{"ng-repeat" => "group in description.groups"}
+                    %td {{group.name}}
+                    %td {{group.gid}}
+                    %td {{group.password}}
+                    %td {{group.users.join(",")}}
 
-    %script#scope_changed_managed_files.partial{:type => "text/html"}
-      {{#changed_managed_files.files.length}}
-      %a.scope_anchor{:id => "changed_managed_files"}
-      #changed_managed_files_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-changed-managed-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Changed Managed Files", :"data-content"=>"#{scope_help('changed_managed_files')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Changed Managed Files
-              .scope-summary
-                {{changed_managed_files.files.length}} files
-                {{meta_info.changed_managed_files}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed.files-table
-              %thead
-                %tr
-                  %th Name
-                  %th Package Name
-                  %th Package Version
-                  %th Changes
-                  %th Mode
-                  %th User
-                  %th Group
-              %tbody
-                {{#changed_managed_files.files}}
-                %tr
-                  %td {{name}}
-                  %td {{package_name}}
-                  %td {{package_version}}
-                  {{#changes.length}}
-                  %td {{changes}}
-                  {{/changes.length}}
-                  {{#error_message}}
-                  %td{:title => "{{error_message}}"} Error
-                  {{/error_message}}
-                  %td {{mode}}
-                  %td {{user}}
-                  %td {{group}}
-                {{/changed_managed_files.files}}
-        {{/changed_managed_files.files.length}}
+    %script#scope_repositories.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.repositories"}
+        %a.scope_anchor{:id => "repositories"}
+        #repositories_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-repositories.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Repositories", :"data-content"=>"#{scope_help('repositories')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Repositories
+                .scope-summary
+                  %ng-pluralize{count: "description.repositories.length", when:"{'1': '1 repository', 'other': '{} repositories'}"}
+                  %meta-info{data: "description.meta.repositories"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Alias
+                    %th Type
+                    %th URL
+                    %th Enabled
+                    %th Autorefresh
+                    %th GPG Check
+                    %th Priority
+                %tbody
+                  %tr{"ng-repeat" => "repo in description.repositories"}
+                    %td {{repo.name}}
+                    %td {{repo.alias}}
+                    %td {{repo.type}}
+                    %td
+                      %a{:href => "{{url}}" } {{repo.url}}
+                    %td {{repo.enabled}}
+                    %td {{repo.autorefresh}}
+                    %td {{repo.gpgcheck}}
+                    %td {{repo.priority}}
 
-    %script#scope_config_files.partial{:type => "text/html"}
-      {{#config_files.files.length}}
-      %a.scope_anchor{:id => "config_files"}
-      #config_files_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-config-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Config Files", :"data-content"=>"#{scope_help('config_files')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Config Files
-              .scope-summary
-                {{config_files.files.length}} files
-                {{meta_info.config_files}}
-        .row.scope_content.collapse.in
+    %script#scope_changed_managed_files.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.changed_managed_files.files"}
+        %a.scope_anchor{:id => "changed_managed_files"}
+        #changed_managed_files_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-changed-managed-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Changed Managed Files", :"data-content"=>"#{scope_help('changed_managed_files')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Changed Managed Files
+                .scope-summary
+                  %ng-pluralize{count: "description.changed_managed_files.files.length", when:"{'1': '1 file', 'other': '{} files'}"}
+                  %meta-info{data: "description.meta.changed_managed_files"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  %tr{"ng-repeat" => "file in description.changed_managed_files.files"}
+                    %td {{file.name}}
+                    %td {{file.package_name}}
+                    %td {{file.package_version}}
+                    %td
+                      {{file.changes.join(",")}}
+                      %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
+                    %td {{file.mode}}
+                    %td {{file.user}}
+                    %td {{file.group}}
 
-          {{#config_files.files}}
-          {{#diff}}
-          .diff{:style => "display: none", :"data-config-file-diff" => "{{file}}"}
-            %span.diff-summary
-              {{additions}} additions & {{deletions}} deletions
-            %table.diff
-              {{#lines}}
-              %tr{:class => "{{type}}"}
-                %td.active.linenumber {{original_line_number}}
-                %td.linenumber {{new_line_number}}
-                %td {{{content}}}
-              {{/lines}}
-          {{/diff}}
-          {{/config_files.files}}
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed.files-table
-              %thead
-                %tr
-                  %th Name
-                  %th Package Name
-                  %th Package Version
-                  %th Changes
-                  %th Mode
-                  %th User
-                  %th Group
-              %tbody
-                {{#config_files.files}}
-                %tr
-                  {{#diff}}
-                  %td
-                    {{name}}
-                    %a.diff-toggle{:"data-config-file" => "{{name}}", :"data-toggle" => "popover"}
-                      Show diff
-                  {{/diff}}
-                  {{^diff}}
-                  %td {{name}}
-                  {{/diff}}
-                  %td {{package_name}}
-                  %td {{package_version}}
-                  {{#changes.length}}
-                  %td {{changes}}
-                  {{/changes.length}}
-                  {{#error_message}}
-                  %td{:title => "{{error_message}}"} Error
-                  {{/error_message}}
-                  %td {{mode}}
-                  %td {{user}}
-                  %td {{group}}
-                {{/config_files.files}}
-        {{/config_files.files.length}}
+    %script#scope_config_files.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.config_files.files"}
+        %a.scope_anchor{:id => "config_files"}
+        #config_files_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-config-files.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Config Files", :"data-content"=>"#{scope_help('config_files')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Config Files
+                .scope-summary
+                  %ng-pluralize{count: "description.config_files.files.length", when:"{'1': '1 file', 'other': '{} files'}"}
+                  %meta-info{data: "description.meta.config_files"}
+          .row.scope_content.collapse.in
+            .diff{"ng-repeat" => "file in description.config_files.files", :style => "display: none", "data-config-file-diff" => "{{file.diff.file}}"}
+              %span.diff-summary
+                {{file.diff.additions}} additions & {{file.diff.deletions}} deletions
+              %table.diff
+                %tr{"ng-repeat" => "line in file.diff.lines", "ng-class" => "{'addition': line.type == 'addition', 'deletion': line.type == 'deletion', 'header': line.type == 'header', 'common': line.type == 'common'}"}
+                  %td.active.linenumber {{line.original_line_number}}
+                  %td.linenumber {{line.new_line_number}}
+                  %td{"ng-bind-html" => "line.content"}
+                    {{line.content}}
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
+                %tbody
+                  %tr{"ng-repeat" => "file in description.config_files.files"}
+                    %td
+                      {{file.name}}
+                      %a.diff-toggle{"ng-show" => "file.diff", "data-config-file" => "{{file.name}}", "data-toggle" => "popover"}
+                        Show diff
+                    %td {{file.package_name}}
+                    %td {{file.package_version}}
+                    %td
+                      {{file.changes.join(",")}}
+                      %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
+                    %td {{file.mode}}
+                    %td {{file.user}}
+                    %td {{file.group}}
 
-    %script#scope_services.partial{:type => "text/html"}
-      {{#services.services.length}}
-      %a.scope_anchor{:id => "services"}
-      #services_container.scope
-        .row
-          .col-xs-1
-            %img.scope_logo_big{:src => "assets/logo-services.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Services", :"data-content"=>"#{scope_help('services')}"}/
-            %span.toggle{:title => "Collapse/Expand"}
-          .col-xs-11
-            %h2
-              Services
-              .scope-summary
-                Init System: {{services.init_system}},
-                {{services.services.length}} services
-                {{meta_info.services}}
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
-            %table.table.table-striped.table-hover.table-condensed
-              %thead
-                %tr
-                  %th Name
-                  %th State
-              %tbody
-                {{#services.services}}
-                %tr
-                  %td {{name}}
-                  %td{:class=>"{{services.init_system}}_{{state}}"}
-                    {{state}}
-                {{/services.services}}
-      {{/services.services.length}}
+    %script#scope_services.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.services.services"}
+        %a.scope_anchor{:id => "services"}
+        #services_container.scope
+          .row
+            .col-xs-1
+              %img.scope_logo_big{:src => "assets/logo-services.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Services", :"data-content"=>"#{scope_help('services')}"}/
+              %span.toggle{:title => "Collapse/Expand"}
+            .col-xs-11
+              %h2
+                Services
+                .scope-summary
+                  Init System: {{description.services.init_system}},
+                  %ng-pluralize{count: "description.services.services.length", when:"{'1': '1 service', 'other': '{} services'}"}
+                  %meta-info{data: "description.meta.services"}
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th State
+                %tbody
+                  %tr{"ng-repeat" => "service in description.services.services"}
+                    %td {{service.name}}
+                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                      {{service.state}}
 
     %script{:src => "assets/description.js"}
     %script{:src => "assets/show/machinery.js"}
@@ -493,4 +429,17 @@
                 %img{:src => "assets/logo-services-small.png"}/
 
 
-      #content_container
+      #content_container{"ng-controller" => "showController"}
+        %div{"src" => "'scope_os'", "ng-include" => true}
+        %div{"src" => "'scope_packages'", "ng-include" => true}
+        %div{"src" => "'scope_patterns'", "ng-include" => true}
+        %div{"src" => "'scope_users'", "ng-include" => true}
+        %div{"src" => "'scope_groups'", "ng-include" => true}
+        %div{"src" => "'scope_unmanaged_files'", "ng-include" => true}
+        %div{"src" => "'scope_repositories'", "ng-include" => true}
+        %div{"src" => "'scope_changed_managed_files'", "ng-include" => true}
+        %div{"src" => "'scope_config_files'", "ng-include" => true}
+        %div{"src" => "'scope_services'", "ng-include" => true}
+
+
+        %div{"src" => "'inspection_details_template'", "ng-include" => true}
