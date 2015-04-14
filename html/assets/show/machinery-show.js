@@ -14,6 +14,41 @@ angular.module("machinery-show")
       }
     });
   })
+  .directive("scopeHeader", function(){
+    return {
+      restrict: "E",
+      scope: {
+        summary: "=summary",
+        logo: "=logo",
+        singular: "=singular",
+        plural: "=plural",
+        title: "=title",
+        meta: "=meta",
+        count: "=count",
+        additionalSummary: "=additionalSummary"
+      },
+      template:
+      "<div class='row'>" +
+        "<div class='col-xs-1'>" +
+          "<img class='over scope_logo_big' data-content='<p>{{summary}}</p>' data-toggle='popover' src='{{logo}}' title='' data-original-title='{{title}}' style='top: 125px;'>" +
+          "<span class='toggle' title='Collapse/Expand'></span>" +
+        "</div>" +
+        "<div class='col-xs-11'>" +
+          "<h2>" +
+            "{{title}}" +
+            "&nbsp;<div class='scope-summary'>" +
+              "{{additionalSummary}}" +
+              "<ng-pluralize count='count' when=\"{'1': '1 {{singular}}', 'other': '{} {{plural}}'}\"></ng-pluralize>" +
+              " (" +
+              "inspected host: '{{meta.hostname}}', " +
+              "at: {{meta.modified | date:'medium'}}" +
+              ")" +
+            "</div>" +
+          "</h2>" +
+        "</div>" +
+      "</div>"
+    }
+  })
   .directive("metaInfo", function(){
     return {
       restrict: "E",
