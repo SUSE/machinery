@@ -1,6 +1,9 @@
 angular.module("machinery-show", ["ngSanitize"]);
 
 angular.module("machinery-show")
+  .config(function($locationProvider) {
+    $locationProvider.html5Mode({enabled: true, requireBase: false});
+  })
   .controller("showController", function($scope) {
     $scope.description = getDescription();
 
