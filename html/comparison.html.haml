@@ -1,7 +1,7 @@
 !!!
 - description_a = diff[:meta][:description_a]
 - description_b = diff[:meta][:description_b]
-%html
+%html{"ng-app" => "machinery-compare"}
   %head
     %title
       Machinery System Description Comparison
@@ -9,50 +9,25 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
     %link{:href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "assets/angular.min.js"}
+    %script{:src => "assets/compare/machinery-compare.js"}
     %script{:src => "assets/jquery-2.1.1.min.js"}
-    %script{:src => "assets/hogan-3.0.2.min.mustache.js"}
     %script{:src => "assets/transition.js"}
     %script{:src => "assets/collapse.js"}
 
-    %script#content{:type => "text/html"}
-      {{>os}}
-      {{>packages}}
-      {{>patterns}}
-      {{>users}}
-      {{>groups}}
-      {{>repositories}}
-      {{>unmanaged_files}}
-      {{>config_files}}
-      {{>changed_managed_files}}
-      {{>services}}
-
-
-
-    %script#description_a_partial{:type => "text/html"}
-      %h3
-        Only in '{{meta.description_a}}':
-    %script#description_b_partial{:type => "text/html"}
-      %h3
-        Only in '{{meta.description_b}}':
-    %script#both_descriptions_partial{:type => "text/html"}
-      %h3
-        In both descriptions:
-
-
-    %script#scope_os_partial{:type => "text/html"}
+    %script#scope_os_partial{:type => "text/ng-template"}
       %table.table.table-striped.table-condensed
         %tr
           %th Name
-          %td {{name}}
+          %td {{object.name}}
         %tr
           %th Version
-          %td {{version}}
+          %td {{object.version}}
         %tr
           %th Architecture
-          %td {{architecture}}
+          %td {{object.architecture}}
 
-    %script#scope_os.partial{:type => "text/html"}
-      {{#os.length}}
+    %script#scope_os.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "os"}
       #os_container.scope
         .row
@@ -66,39 +41,42 @@
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#os.0}}
-              {{>description_a}}
-              {{>os_partial}}
-              {{/os.0}}
+            .col-xs-5{"ng-show" => "diff.os[0]"}
+              %only-in-a
+              %render-template{:template => "scope_os_partial", :object => "diff.os[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#os.1}}
-              {{>description_b}}
-              {{>os_partial}}
-              {{/os.1}}
+            .col-xs-5{"ng-show" => "diff.os[1]"}
+              %only-in-b
+              %render-template{:template => "scope_os_partial", :object => "diff.os[1]"}
           .row
-            {{#os.2}}
             .col-xs-1
-            .col-xs-11
-              {{>both_descriptions}}
-              {{>os_partial}}
-            {{/os.2}}
-      {{/os.length}}
+            .col-xs-11{"ng-show" => "diff.os[2]"}
+              %in-both
+              %render-template{:template => "scope_os_partial", :object => "diff.os[2]"}
 
-    %script#scope_packages_partial{:type => "text/html"}
-      %tr
-        %td {{name}}
-        %td {{version}}
-        %td.visible-md.visible-lg {{release}}
-        %td.visible-md.visible-lg {{arch}}
-        %td.visible-lg {{vendor}}
-        %td.visible-lg {{checksum}}
-        %td.hidden-lg{:title => "Name: {{name}}\nVersion: {{version}}\nRelease: {{release}}\n" |
-           "Architecture: {{arch}}\nVendor: {{vendor}}\nChecksum: {{checksum}}"} ... |
+    %script#scope_packages_partial{:type => "text/ng-template"}
+      %table.table.table-striped.table-hover.table-condensed
+        %thead
+          %tr
+            %th Name
+            %th.small Version
+            %th.small.visible-md.visible-lg Release
+            %th.small.visible-md.visible-lg Arch
+            %th.visible-lg Vendor
+            %th.visible-lg Checksum
+            %th.tiny.hidden-lg
+        %tbody
+          %tr{"ng-repeat" => "package in object"}
+            %td {{package.name}}
+            %td {{package.version}}
+            %td.visible-md.visible-lg {{package.release}}
+            %td.visible-md.visible-lg {{package.arch}}
+            %td.visible-lg {{package.vendor}}
+            %td.visible-lg {{package.checksum}}
+            %td.hidden-lg{:title => "Name: {{package.name}}\nVersion: {{package.version}}\nRelease: {{package.release}}\n" |
+               "Architecture: {{package.arch}}\nVendor: {{package.vendor}}\nChecksum: {{package.checksum}}"} ... |
 
-    %script#scope_packages.partial{:type => "text/html"}
-      {{#packages.length}}
+    %script#scope_packages.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "packages"}
       #packages_container.scope
         .row
@@ -110,83 +88,45 @@
             %h2
               Packages
               .scope-summary
-                {{#packages.0.length}}
-                %span.summary-part {{meta.description_a}}: {{packages.0.length}} packages
-                {{/packages.0.length}}
-                {{#packages.1.length}}
-                %span.summary-part {{meta.description_b}}: {{packages.1.length}} packages
-                {{/packages.1.length}}
-                {{#packages.2.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.packages[0]"}
+                  {{diff.meta.description_a}}: {{diff.packages[0].length}} packages
+                %span.summary-part{"ng-show" => "diff.packages[1]"}
+                  {{diff.meta.description_b}}: {{diff.packages[1].length}} packages
+                %span.summary-part{"ng-show" => "diff.packages[2]"}
                   %a{href: "#packages_both"}
                     both
-                  = ": {{packages.2.length}} packages"
-                {{/packages.2.length}}
+                  = ": {{diff.packages[2].length}} packages"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5.table_container
-              {{#packages.0.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th.small Version
-                    %th.small.visible-md.visible-lg Release
-                    %th.small.visible-md.visible-lg Arch
-                    %th.visible-lg Vendor
-                    %th.visible-lg Checksum
-                    %th.tiny.hidden-lg
-                %tbody
-                  {{#packages.0}}
-                  {{>packages_partial}}
-                  {{/packages.0}}
-              {{/packages.0.length}}
+            .col-xs-5.table_container{"ng-show" => "diff.packages[0]"}
+              %only-in-a
+              %render-template{:template => "scope_packages_partial", :object => "diff.packages[0]"}
             .col-xs-1
-            .col-xs-5.table_container
-              {{#packages.1.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th.small Version
-                    %th.visible-md.visible-lg Release
-                    %th.visible-md.visible-lg Arch
-                    %th.visible-lg Vendor
-                    %th.visible-lg Checksum
-                    %th.tiny.hidden-lg
-                %tbody
-                  {{#packages.1}}
-                  {{>packages_partial}}
-                  {{/packages.1}}
-              {{/packages.1.length}}
+            .col-xs-5.table_container{"ng-show" => "diff.packages[1]"}
+              %only-in-b
+              %render-template{:template => "scope_packages_partial", :object => "diff.packages[1]"}
           %a.both_anchor{id: "packages_both"}
-          .row
-            {{#packages.2.length}}
+          .row{"ng-show" => "diff.packages[2]"}
             .col-xs-1
             .col-xs-11.table_container
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th.small Version
-                    %th.visible-md.visible-lg Release
-                    %th.visible-md.visible-lg Arch
-                    %th.visible-lg Vendor
-                    %th.visible-lg Checksum
-                    %th.tiny.hidden-lg
-                %tbody
-                  {{#packages.2}}
-                  {{>packages_partial}}
-                  {{/packages.2}}
-            {{/packages.2.length}}
-      {{/packages.length}}
+              %in-both
+              %render-template{:template => "scope_packages_partial", :object => "diff.packages[2]"}
 
-    %script#scope_patterns.partial{:type => "text/html"}
-      {{#patterns.length}}
+    %script#scope_patterns_partial{:type => "text/ng-template"}
+      %table.table.table-striped.table-hover.table-condensed
+        %thead
+          %tr
+            %th Name
+            %th Version
+            %th Release
+        %tbody
+          %tr{"ng-repeat" => "pattern in object"}
+            %td {{pattern.name}}
+            %td {{pattern.version}}
+            %td {{pattern.release}}
+
+    %script#scope_patterns.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "patterns"}
       #patterns_container.scope
         .row
@@ -198,80 +138,51 @@
             %h2
               Patterns
               .scope-summary
-                {{#patterns.0.length}}
-                %span.summary-part {{meta.description_a}}: {{patterns.0.length}} patterns
-                {{/patterns.0.length}}
-                {{#patterns.1.length}}
-                %span.summary-part {{meta.description_b}}: {{patterns.1.length}} patterns
-                {{/patterns.1.length}}
-                {{#patterns.2.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.patterns[0]"}
+                  {{diff.meta.description_a}}: {{diff.patterns[0].length}} patterns
+                %span.summary-part{"ng-show" => "diff.patterns[1]"}
+                  {{diff.meta.description_b}}: {{diff.patterns[1].length}} patterns
+                %span.summary-part{"ng-show" => "diff.patterns[2]"}
                   %a{href: "#patterns_both"}
                     both
-                  = ": {{patterns.2.length}} patterns"
-                {{/patterns.2.length}}
+                  = ": {{diff.patterns[2].length}} patterns"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#patterns.0.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Version
-                    %th Release
-                %tbody
-                  {{#patterns.0}}
-                  %tr
-                    %td {{name}}
-                    %td {{version}}
-                    %td {{release}}
-                  {{/patterns.0}}
-              {{/patterns.0.length}}
-            .col-xs-1
-            .col-xs-5
-              {{#patterns.1.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Version
-                    %th Release
-                %tbody
-                  {{#patterns.1}}
-                  %tr
-                    %td {{name}}
-                    %td {{version}}
-                    %td {{release}}
-                  {{/patterns.1}}
-              {{/patterns.1.length}}
+            .col-xs-5{"ng-show" => "diff.patterns[0]"}
+              %only-in-a
+              %render-template{:template => "scope_patterns_partial", :object => "diff.patterns[0]"}
+            .col-xs-5{"ng-show" => "diff.patterns[1]"}
+              %only-in-b
+              %render-template{:template => "scope_patterns_partial", :object => "diff.patterns[1]"}
           %a.both_anchor{id: "patterns_both"}
-          .row
-            {{#patterns.2.length}}
+          .row{"ng-show" => "diff.patterns[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Version
-                    %th Release
-                %tbody
-                  {{#patterns.2}}
-                  %tr
-                    %td {{name}}
-                    %td {{version}}
-                    %td {{release}}
-                  {{/patterns.2}}
-            {{/patterns.2.length}}
-      {{/patterns.length}}
+              %in-both
+              %render-template{:template => "scope_patterns_partial", :object => "diff.patterns[2]"}
 
-    %script#scope_users{:type => "text/html"}
-      {{#users.length}}
+
+
+    %script#scope_users_partial{:type => "text/ng-template"}
+      %table.table.table-striped.table-hover.table-condensed
+        %thead
+          %tr
+            %th Name
+            %th.small UID
+            %th.small GID
+            %th Comment
+            %th Home
+            %th.small Shell
+        %tbody
+          %tr{"ng-repeat" => "user in object"}
+            %td {{user.name}}
+            %td {{user.uid}}
+            %td {{user.gid}}
+            %td {{user.comment}}
+            %td {{user.home}}
+            %td {{user.shell}}
+    %script#scope_users{:type => "text/ng-template"}
       %a.scope_anchor{:id => "users"}
       #users_container.scope
         .row
@@ -283,98 +194,44 @@
             %h2
               Users
               .scope-summary
-                {{#users.0.length}}
-                %span.summary-part {{meta.description_a}}: {{users.0.length}} users
-                {{/users.0.length}}
-                {{#users.1.length}}
-                %span.summary-part {{meta.description_b}}: {{users.1.length}} users
-                {{/users.1.length}}
-                {{#users.2.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.users[0]"}
+                  {{diff.meta.description_a}}: {{diff.users[0].length}} users
+                %span.summary-part{"ng-show" => "diff.users[1]"}
+                  {{diff.meta.description_b}}: {{diff.users[1].length}} users
+                %span.summary-part{"ng-show" => "diff.users[2]"}
                   %a{href: "#users_both"}
                     both
-                  = ": {{users.2.length}} users"
-                {{/users.2.length}}
+                  = ": {{diff.users[2].length}} users"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#users.0.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th.small UID
-                    %th.small GID
-                    %th Comment
-                    %th Home
-                    %th.small Shell
-                %tbody
-                  {{#users.0}}
-                  %tr
-                    %td {{name}}
-                    %td {{uid}}
-                    %td {{gid}}
-                    %td {{comment}}
-                    %td {{home}}
-                    %td {{shell}}
-                  {{/users.0}}
-              {{/users.0.length}}
+            .col-xs-5{"ng-show" => "diff.users[0]"}
+              %only-in-a
+              %render-template{:template => "scope_users_partial", :object => "diff.users[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#users.1.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th.small UID
-                    %th.small GID
-                    %th Comment
-                    %th Home
-                    %th.small Shell
-                %tbody
-                  {{#users.1}}
-                  %tr
-                    %td {{name}}
-                    %td {{uid}}
-                    %td {{gid}}
-                    %td {{comment}}
-                    %td {{home}}
-                    %td {{shell}}
-                  {{/users.1}}
-              {{/users.1.length}}
+            .col-xs-5{"ng-show" => "diff.users[1]"}
+              %only-in-b
+              %render-template{:template => "scope_users_partial", :object => "diff.users[1]"}
           %a.both_anchor{id: "users_both"}
-          .row
-            {{#users.2.length}}
+          .row{"ng-show" => "diff.users[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th.small UID
-                    %th.small GID
-                    %th Comment
-                    %th Home
-                    %th.small Shell
-                %tbody
-                  {{#users.2}}
-                  %tr
-                    %td {{name}}
-                    %td {{uid}}
-                    %td {{gid}}
-                    %td {{comment}}
-                    %td {{home}}
-                    %td {{shell}}
-                  {{/users.2}}
-            {{/users.2.length}}
-      {{/users.length}}
+              %in-both
+              %render-template{:template => "scope_users_partial", :object => "diff.users[2]"}
 
-    %script#scope_unmanaged_files.partial{:type => "text/html"}
-      {{#unmanaged_files.length}}
+    %script#scope_unmanaged_files_partial{:type => "text/ng-template"}
+      %p
+        <strong>Files extracted:</strong> {{object.extracted}}
+      %table.table.table-striped.table-hover.table-condensed.files-table{{"ng-show" => "object.files"}}
+        %thead
+          %tr
+            %th Name
+            %th Type
+        %tbody
+          %tr{"ng-repeat" => "file in object.files"}
+            %td {{file.name}}
+            %td {{file.type}}
+    %script#scope_unmanaged_files.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "unmanaged_files"}
       #unmanaged_files_container.scope
         .row
@@ -386,74 +243,46 @@
             %h2
               Unmanaged Files
               .scope-summary
-                {{#unmanaged_files.0.files.length}}
-                %span.summary-part {{meta.description_a}}: {{unmanaged_files.0.files.length}} files
-                {{/unmanaged_files.0.files.length}}
-                {{#unmanaged_files.1.files.length}}
-                %span.summary-part {{meta.description_b}}: {{unmanaged_files.1.files.length}} files
-                {{/unmanaged_files.1.files.length}}
-                {{#unmanaged_files.2.files.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.unmanaged_files[0]"}
+                  {{diff.meta.description_a}}: {{diff.unmanaged_files[0].files.length || 0}} files
+                %span.summary-part{"ng-show" => "diff.unmanaged_files[1]"}
+                  {{diff.meta.description_b}}: {{diff.unmanaged_files[1].files.length || 0}} files
+                %span.summary-part{"ng-show" => "diff.unmanaged_files[2]"}
                   %a{href: "#unmanaged_files_both"}
                     both
-                  = ": {{unmanaged_files.2.files.length}} files"
-                {{/unmanaged_files.2.files.length}}
+                  = ": {{diff.unmanaged_files[2].files.length}} files"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
             .col-xs-5
-              {{#unmanaged_files.0}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Type
-                %tbody
-                  {{#unmanaged_files.0.files}}
-                  %tr
-                    %td {{name}}
-                    %td {{type}}
-                  {{/unmanaged_files.0.files}}
-              {{/unmanaged_files.0}}
+              %only-in-a
+              %render-template{:template => "scope_unmanaged_files_partial", :object => "diff.unmanaged_files[0]"}
             .col-xs-1
             .col-xs-5
-              {{#unmanaged_files.1}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Type
-                %tbody
-                  {{#unmanaged_files.1.files}}
-                  %tr
-                    %td {{name}}
-                    %td {{type}}
-                  {{/unmanaged_files.1.files}}
-              {{/unmanaged_files.1}}
+              %only-in-b
+              %render-template{:template => "scope_unmanaged_files_partial", :object => "diff.unmanaged_files[1]"}
           %a.both_anchor{id: "unmanaged_files_both"}
           .row
-            {{#unmanaged_files.2}}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Type
-                %tbody
-                  {{#unmanaged_files.2.files}}
-                  %tr
-                    %td {{name}}
-                    %td {{type}}
-                  {{/unmanaged_files.2.files}}
-            {{/unmanaged_files.2}}
-      {{/unmanaged_files.length}}
+              %in-both
+              %render-template{:template => "scope_unmanaged_files_partial", :object => "diff.unmanaged_files[2]"}
 
-    %script#scope_groups{:type => "text/html"}
-      {{#groups.length}}
+    %script#scope_groups_partial{:type => "text/ng-template"}
+      %table.table.table-striped.table-hover.table-condensed
+        %thead
+          %tr
+            %th Name
+            %th GID
+            %th Password
+            %th Users
+        %tbody
+          %tr{"ng-repeat" => "group in object"}
+            %td {{group.name}}
+            %td {{group.gid}}
+            %td {{group.password}}
+            %td {{group.users.join(",")}}
+    %script#scope_groups{:type => "text/ng-template"}
       %a.scope_anchor{:id => "groups"}
       #groups_container.scope
         .row
@@ -465,101 +294,59 @@
             %h2
               Groups
               .scope-summary
-                {{#groups.0.length}}
-                %span.summary-part {{meta.description_a}}: {{groups.0.length}} groups
-                {{/groups.0.length}}
-                {{#groups.1.length}}
-                %span.summary-part {{meta.description_b}}: {{groups.1.length}} groups
-                {{/groups.1.length}}
-                {{#groups.2.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.groups[0]"}
+                  {{diff.meta.description_a}}: {{diff.groups[0].length}} groups
+                %span.summary-part{"ng-show" => "diff.groups[1]"}
+                  {{diff.meta.description_b}}: {{diff.groups[1].length}} groups
+                %span.summary-part{"ng-show" => "diff.groups[2]"}
                   %a{href: "#groups_both"}
                     both
-                  = ": {{groups.2.length}} groups"
-                {{/groups.2.length}}
+                  = ": {{diff.groups[2].length}} groups"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#groups.0.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th GID
-                    %th Password
-                    %th Users
-                %tbody
-                  {{#groups.0}}
-                  %tr
-                    %td {{name}}
-                    %td {{gid}}
-                    %td {{password}}
-                    %td {{users}}
-                  {{/groups.0}}
-              {{/groups.0.length}}
+            .col-xs-5{"ng-show" => "diff.groups[0]"}
+              %only-in-a
+              %render-template{:template => "scope_groups_partial", :object => "diff.groups[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#groups.1.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th GID
-                    %th Password
-                    %th Users
-                %tbody
-                  {{#groups.1}}
-                  %tr
-                    %td {{name}}
-                    %td {{gid}}
-                    %td {{password}}
-                    %td {{users}}
-                  {{/groups.1}}
-              {{/groups.1.length}}
+            .col-xs-5{"ng-show" => "diff.groups[1]"}
+              %only-in-b
+              %render-template{:template => "scope_groups_partial", :object => "diff.groups[1]"}
           %a.both_anchor{id: "groups_both"}
-          .row
-            {{#groups.2.length}}
+          .row{"ng-show" => "diff.groups[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th GID
-                    %th Password
-                    %th Users
-                %tbody
-                  {{#groups.2}}
-                  %tr
-                    %td {{name}}
-                    %td {{gid}}
-                    %td {{password}}
-                    %td {{users}}
-                  {{/groups.2}}
-            {{/groups.2.length}}
-      {{/groups.length}}
+              %in-both
+              %render-template{:template => "scope_groups_partial", :object => "diff.groups[2]"}
 
-    %script#scope_repositories_partial{:type => "text/html"}
-      %tr
-        %td {{name}}
-        %td {{alias}}
-        %td
-          %a{:href => "{{url}}" } {{url}}
-        %td {{type}}
-        %td {{enabled}}
-        %td.visible-lg {{autorefresh}}
-        %td.visible-lg {{gpgcheck}}
-        %td.visible-lg {{priority}}
-        %td.hidden-lg{:title => "Name: {{name}}\nAlias: {{alias}}\nUrl: {{url}}\n" |
-           "Type: {{type}}\nEnabled: {{enabled}}\nAutorefresh: {{autorefresh}}\n" |
-           "GPG Check: {{gpgcheck}}\nPriority: {{priority}}"} ... |
-
-    %script#scope_repositories.partial{:type => "text/html"}
-      {{#repositories.length}}
+    %script#scope_repositories_partial{:type => "text/ng-template"}
+      %table.table.table-striped.table-hover.table-condensed
+        %thead
+          %tr
+            %th Name
+            %th Alias
+            %th URL
+            %th.small Type
+            %th.small Enabled
+            %th.small.visible-lg Autorefresh
+            %th.small.visible-lg GPG Check
+            %th.small.visible-lg Priority
+            %th.tiny.hidden-lg
+        %tbody
+          %tr{"ng-repeat" => "repo in object"}
+            %td {{repo.name}}
+            %td {{repo.alias}}
+            %td
+              %a{:href => "{{repo.url}}" } {{repo.url}}
+            %td {{repo.type}}
+            %td {{repo.enabled}}
+            %td.visible-lg {{repo.autorefresh}}
+            %td.visible-lg {{repo.gpgcheck}}
+            %td.visible-lg {{repo.priority}}
+            %td.hidden-lg{:title => "Name: {{repo.name}}\nAlias: {{repo.alias}}\nUrl: {{repo.url}}\n" |
+               "Type: {{repo.type}}\nEnabled: {{repo.enabled}}\nAutorefresh: {{repo.autorefresh}}\n" |
+               "GPG Check: {{repo.gpgcheck}}\nPriority: {{repo.priority}}"} ... |
+    %script#scope_repositories.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "repositories"}
       #repositories_container.scope
         .row
@@ -571,103 +358,55 @@
             %h2
               Repositories
               .scope-summary
-                {{#repositories.0.length}}
-                %span.summary-part {{meta.description_a}}: {{repositories.0.length}} repos
-                {{/repositories.0.length}}
-                {{#repositories.1.length}}
-                %span.summary-part {{meta.description_b}}: {{repositories.1.length}} repos
-                {{/repositories.1.length}}
-                {{#repositories.2.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.repositories[0]"}
+                  {{diff.meta.description_a}}: {{diff.repositories[0].length}} repos
+                %span.summary-part{"ng-show" => "diff.repositories[1]"}
+                  {{diff.meta.description_b}}: {{diff.repositories[1].length}} repos
+                %span.summary-part{"ng-show" => "diff.repositories[2]"}
                   %a{href: "#repositories_both"}
                     both
-                  = ": {{repositories.2.length}} repos"
-                {{/repositories.2.length}}
+                  = ": {{diff.repositories[2].length}} repos"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#repositories.0.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Alias
-                    %th URL
-                    %th.small Type
-                    %th.small Enabled
-                    %th.small.visible-lg Autorefresh
-                    %th.small.visible-lg GPG Check
-                    %th.small.visible-lg Priority
-                    %th.tiny.hidden-lg
-                %tbody
-                  {{#repositories.0}}
-                  {{>repositories_partial}}
-                  {{/repositories.0}}
-              {{/repositories.0.length}}
+            .col-xs-5{"ng-show" => "diff.repositories[0]"}
+              %only-in-a
+              %render-template{:template => "scope_repositories_partial", :object => "diff.repositories[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#repositories.1.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Alias
-                    %th URL
-                    %th.small Type
-                    %th.small Enabled
-                    %th.small.visible-lg Autorefresh
-                    %th.small.visible-lg GPG Check
-                    %th.small.visible-lg Priority
-                    %th.tiny.hidden-lg
-                %tbody
-                  {{#repositories.1}}
-                  {{>repositories_partial}}
-                  {{/repositories.1}}
-              {{/repositories.1.length}}
+            .col-xs-5{"ng-show" => "diff.repositories[1]"}
+              %only-in-b
+              %render-template{:template => "scope_repositories_partial", :object => "diff.repositories[1]"}
           %a.both_anchor{id: "repositories_both"}
-          .row
-            {{#repositories.2.length}}
+          .row{"ng-show" => "diff.repositories[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Alias
-                    %th URL
-                    %th.small Type
-                    %th.small Enabled
-                    %th.small.visible-lg Autorefresh
-                    %th.small.visible-lg GPG Check
-                    %th.small.visible-lg Priority
-                    %th.tiny.hidden-lg
-                %tbody
-                  {{#repositories.2}}
-                  {{>repositories_partial}}
-                  {{/repositories.2}}
-            {{/repositories.2.length}}
-      {{/repositories.length}}
+              %in-both
+              %render-template{:template => "scope_repositories_partial", :object => "diff.repositories[2]"}
 
-    %script#scope_changed_managed_files_partial{:type => "text/html"}
-      %tr
-        %td {{name}}
-        %td {{package_name}}
-        %td {{package_version}}
-        {{#changes.length}}
-        %td {{changes}}
-        {{/changes.length}}
-        {{#error_message}}
-        %td{:title => "{{error_message}}"} Error
-        {{/error_message}}
-        %td {{mode}}
-        %td {{user}}
-        %td {{group}}
-    %script#scope_changed_managed_files.partial{:type => "text/html"}
-      {{#changed_managed_files.length}}
+    %script#scope_changed_managed_files_partial{:type => "text/ng-template"}
+      %p
+        <strong>Files extracted:</strong> {{object.extracted}}
+      %table.table.table-striped.table-hover.table-condensed.files-table{{"ng-show" => "object.files"}}
+        %thead
+          %tr
+            %th Name
+            %th Package Name
+            %th Package Version
+            %th.small Changes
+            %th.small Mode
+            %th.small User
+            %th.small Group
+        %tbody
+          %tr{"ng-repeat" => "file in object.files"}
+            %td {{file.name}}
+            %td {{file.package_name}}
+            %td {{file.package_version}}
+            %td {{file.changes.join(",")}}
+            %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
+            %td {{file.mode}}
+            %td {{file.user}}
+            %td {{file.group}}
+    %script#scope_changed_managed_files.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "changed_managed_files"}
       #changed_managed_files_container.scope
         .row
@@ -679,118 +418,57 @@
             %h2
               Changed Managed Files
               .scope-summary
-                {{#changed_managed_files.0.files.length}}
-                %span.summary-part {{meta.description_a}}: {{changed_managed_files.0.files.length}} files
-                {{/changed_managed_files.0.files.length}}
-                {{#changed_managed_files.1.files.length}}
-                %span.summary-part {{meta.description_b}}: {{changed_managed_files.1.files.length}} files
-                {{/changed_managed_files.1.files.length}}
-                {{#changed_managed_files.2.files.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.changed_managed_files[0]"}
+                  {{diff.meta.description_a}}: {{diff.changed_managed_files[0].files.length || 0}} files
+                %span.summary-part{"ng-show" => "diff.changed_managed_files[1]"}
+                  {{diff.meta.description_b}}: {{diff.changed_managed_files[1].files.length || 0}} files
+                %span.summary-part{"ng-show" => "diff.changed_managed_files[2]"}
                   %a{href: "#changed_managed_files_both"}
                     both
-                  = ": {{changed_managed_files.2.files.length}} files"
-                {{/changed_managed_files.2.files.length}}
+                  = ": {{diff.changed_managed_files[2].files.length}} files"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#changed_managed_files.0.files.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th.small Changes
-                    %th.small Mode
-                    %th.small User
-                    %th.small Group
-                %tbody
-                  {{#changed_managed_files.0.files}}
-                  {{>changed_managed_files_partial}}
-                  {{/changed_managed_files.0.files}}
-              {{/changed_managed_files.0.files.length}}
+            .col-xs-5{"ng-show" => "diff.changed_managed_files[0]"}
+              %only-in-a
+              %render-template{:template => "scope_changed_managed_files_partial", :object => "diff.changed_managed_files[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#changed_managed_files.1.files.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th.small Changes
-                    %th.small Mode
-                    %th.small User
-                    %th.small Group
-                %tbody
-                  {{#changed_managed_files.1.files}}
-                  {{>changed_managed_files_partial}}
-                  {{/changed_managed_files.1.files}}
-              {{/changed_managed_files.1.files.length}}
+            .col-xs-5{"ng-show" => "diff.changed_managed_files[1]"}
+              %only-in-b
+              %render-template{:template => "scope_changed_managed_files_partial", :object => "diff.changed_managed_files[1]"}
           %a.both_anchor{id: "changed_managed_files_both"}
-          .row
-            {{#changed_managed_files.2.files.length}}
+          .row{"ng-show" => "diff.changed_managed_files[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th.small Changes
-                    %th.small Mode
-                    %th.small User
-                    %th.small Group
-                %tbody
-                  {{#changed_managed_files.2.files}}
-                  {{>changed_managed_files_partial}}
-                  {{/changed_managed_files.2.files}}
-            {{/changed_managed_files.2.files.length}}
-        {{/changed_managed_files.length}}
+              %in-both
+              %render-template{:template => "scope_changed_managed_files_partial", :object => "diff.changed_managed_files[2]"}
 
-    %script#scope_config_files_partial{:type => "text/html"}
-      {{#diff}}
-      .diff{:style => "display: none", :"data-config-file-diff" => "{{file}}"}
-        %span.diff-summary
-          {{additions}} additions & {{deletions}} deletions
-        %table.diff
-          {{#lines}}
-          %tr{:class => "{{type}}"}
-            %td.active.linenumber {{original_line_number}}
-            %td.linenumber {{new_line_number}}
-            %td {{{content}}}
-          {{/lines}}
-      {{/diff}}
-      %tr
-        {{#diff}}
-        %td
-          {{name}}
-          %a.diff-toggle{:"data-config-file" => "{{name}}", :"data-toggle" => "popover"}
-            Show diff
-        {{/diff}}
-        {{^diff}}
-        %td {{name}}
-        {{/diff}}
-        %td {{package_name}}
-        %td {{package_version}}
-        {{#changes.length}}
-        %td {{changes}}
-        {{/changes.length}}
-        {{#error_message}}
-        %td{:title => "{{error_message}}"} Error
-        {{/error_message}}
-        %td {{mode}}
-        %td {{user}}
-        %td {{group}}
+    %script#scope_config_files_partial{:type => "text/ng-template"}
+      %p
+        <strong>Files extracted:</strong> {{object.extracted}}
+      %table.table.table-striped.table-hover.table-condensed.files-table{{"ng-show" => "object.files"}}
+        %thead
+          %tr
+            %th Name
+            %th Package Name
+            %th Package Version
+            %th Changes
+            %th Mode
+            %th User
+            %th Group
+        %tbody
+          %tr{"ng-repeat" => "file in object.files"}
+            %td {{file.name}}
+            %td {{file.package_name}}
+            %td {{file.package_version}}
+            %td
+              {{file.changes.join(",")}}
+              %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
+            %td {{file.mode}}
+            %td {{file.user}}
+            %td {{file.group}}
 
-    %script#scope_config_files.partial{:type => "text/html"}
-      {{#config_files.length}}
+    %script#scope_config_files.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "config_files"}
       #config_files_container.scope
         .row
@@ -802,83 +480,43 @@
             %h2
               Config Files
               .scope-summary
-                {{#config_files.0.files.length}}
-                %span.summary-part {{meta.description_a}}: {{config_files.0.files.length}} files
-                {{/config_files.0.files.length}}
-                {{#config_files.1.files.length}}
-                %span.summary-part {{meta.description_b}}: {{config_files.1.files.length}} files
-                {{/config_files.1.files.length}}
-                {{#config_files.2.files.length}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.config_files[0]"}
+                  {{diff.meta.description_a}}: {{diff.config_files[0].files.length || 0}} files
+                %span.summary-part{"ng-show" => "diff.config_files[1]"}
+                  {{diff.meta.description_b}}: {{diff.config_files[1].files.length || 0}} files
+                %span.summary-part{"ng-show" => "diff.config_files[2]"}
                   %a{href: "#config_files_both"}
                     both
-                  = ": {{config_files.2.files.length}} files"
-                {{/config_files.2.files.length}}
+                  = ": {{diff.config_files[2].files.length}} files"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#config_files.0.files.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th Changes
-                    %th Mode
-                    %th User
-                    %th Group
-                %tbody
-                  {{#config_files.0.files}}
-                  {{>config_files_partial}}
-                  {{/config_files.0.files}}
-              {{/config_files.0.files.length}}
+            .col-xs-5{"ng-show" => "diff.config_files[0]"}
+              %only-in-a
+              %render-template{:template => "scope_config_files_partial", :object => "diff.config_files[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#config_files.1.files.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th Changes
-                    %th Mode
-                    %th User
-                    %th Group
-                %tbody
-                  {{#config_files.1.files}}
-                  {{>config_files_partial}}
-                  {{/config_files.1.files}}
-              {{/config_files.1.files.length}}
+            .col-xs-5{"ng-show" => "diff.config_files[1]"}
+              %only-in-b
+              %render-template{:template => "scope_config_files_partial", :object => "diff.config_files[1]"}
           %a.both_anchor{id: "config_files_both"}
-          .row
-            {{#config_files.2.files.length}}
+          .row{"ng-show" => "diff.config_files[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th Changes
-                    %th Mode
-                    %th User
-                    %th Group
-                %tbody
-                  {{#config_files.2.files}}
-                  {{>config_files_partial}}
-                  {{/config_files.2.files}}
-            {{/config_files.2.files.length}}
-      {{/config_files.length}}
+              %in-both
+                %render-template{:template => "scope_config_files_partial", :object => "diff.config_files[2]"}
 
-    %script#scope_services.partial{:type => "text/html"}
-      {{#services.length}}
+    %script#scope_services_partial{:type => "text/ng-template"}
+      %table.table.table-striped.table-hover.table-condensed
+        %thead
+          %tr
+            %th Name
+            %th State
+        %tbody
+          %tr{"ng-repeat" => "service in object.services"}
+            %td {{service.name}}
+            %td{:class=>"{{object.init_system}}_{{service.state}}"}
+              {{service.state}}
+    %script#scope_services.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "services"}
       #services_container.scope
         .row
@@ -890,74 +528,30 @@
             %h2
               Services
               .scope-summary
-                {{#services.0}}
-                %span.summary-part {{meta.description_a}}: {{services.length}} services ({{init_system}})
-                {{/services.0}}
-                {{#services.1}}
-                %span.summary-part {{meta.description_b}}: {{services.length}} services ({{init_system}})
-                {{/services.1}}
-                {{#services.2}}
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diff.services[0]"}
+                  {{diff.meta.description_a}}: {{diff.services[0].services.length || 0}} services ({{diff.services[0].init_system}})
+                %span.summary-part{"ng-show" => "diff.services[1]"}
+                  {{diff.meta.description_b}}: {{diff.services[1].services.length || 0}} services ({{diff.services[1].init_system}})
+                %span.summary-part{"ng-show" => "diff.services[2]"}
                   %a{href: "#services_both"}
                     both
-                  = ": {{services.length}} services ({{init_system}})"
-                {{/services.2}}
+                  = ": {{diff.services[2].services.length}} services ({{diff.services[2].init_system}})"
         .row.scope_content.collapse.in
           .row
             .col-xs-1
-            .col-xs-5
-              {{#services.0.services.length}}
-              {{>description_a}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th State
-                %tbody
-                  {{#services.0.services}}
-                  %tr
-                    %td {{name}}
-                    %td{:class=>"{{services.init_system}}_{{state}}"}
-                      {{state}}
-                  {{/services.0.services}}
-              {{/services.0.services.length}}
+            .col-xs-5{"ng-show" => "diff.services[0]"}
+              %only-in-a
+              %render-template{:template => "scope_services_partial", :object => "diff.services[0]"}
             .col-xs-1
-            .col-xs-5
-              {{#services.1.services.length}}
-              {{>description_b}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th State
-                %tbody
-                  {{#services.1.services}}
-                  %tr
-                    %td {{name}}
-                    %td{:class=>"{{services.init_system}}_{{state}}"}
-                      {{state}}
-                  {{/services.1.services}}
-              {{/services.1.services.length}}
+            .col-xs-5{"ng-show" => "diff.services[1]"}
+              %only-in-b
+              %render-template{:template => "scope_services_partial", :object => "diff.services[1]"}
           %a.both_anchor{id: "services_both"}
-          .row
-            {{#services.2.services.length}}
+          .row{"ng-show" => "diff.services[2]"}
             .col-xs-1
             .col-xs-11
-              {{>both_descriptions}}
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th State
-                %tbody
-                  {{#services.2.services}}
-                  %tr
-                    %td {{name}}
-                    %td{:class=>"{{services.init_system}}_{{state}}"}
-                      {{state}}
-                  {{/services.2.services}}
-            {{/services.2.services.length}}
-      {{/services.length}}
+              %in-both
+              %render-template{:template => "scope_services_partial", :object => "diff.services[2]"}
 
     %script{:src => "assets/diff.js"}
     %script{:src => "assets/compare/machinery.js"}
@@ -1006,4 +600,14 @@
               %a{:href => "http://machinery-project.org", :target => "_blank"}
                 Machinery
 
-      #content_container
+      #content_container{"ng-controller" => "compareController"}
+        %div{"src" => "'scope_os'", "ng-include" => true}
+        %div{"src" => "'scope_packages'", "ng-include" => true}
+        %div{"src" => "'scope_patterns'", "ng-include" => true}
+        %div{"src" => "'scope_users'", "ng-include" => true}
+        %div{"src" => "'scope_groups'", "ng-include" => true}
+        %div{"src" => "'scope_repositories'", "ng-include" => true}
+        %div{"src" => "'scope_unmanaged_files'", "ng-include" => true}
+        %div{"src" => "'scope_changed_managed_files'", "ng-include" => true}
+        %div{"src" => "'scope_config_files'", "ng-include" => true}
+        %div{"src" => "'scope_services'", "ng-include" => true}
