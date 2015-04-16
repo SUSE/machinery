@@ -114,7 +114,7 @@ EOF
 -utf8\255
 +utf8
 EOF
-      expect{
+      expect {
         Html.send(:diff_to_object, utf8_diff)
       }.to_not raise_error
     end
