@@ -61,22 +61,23 @@ class JsonValidator
     JSON.parse(File.read(File.join(
       Machinery::ROOT,
       "schema",
-      "v#{format_version}",
-      "system-description-global.schema.json"
+      "system-description-global.schema-v#{format_version}.json"
     )))
   end
 
   def scope_schemas(format_version = SystemDescription::CURRENT_FORMAT_VERSION)
-    schema_dir = File.join(
+    schema_path = File.join(
       Machinery::ROOT,
       "plugins",
+      "**",
       "schema",
-      "v#{format_version}",
+      "*.schema-v#{format_version}.json"
     )
 
     Hash[
-      Dir["#{schema_dir}/*.schema.json"].map do |file|
-        scope = file.match(/system-description-(.*)\.schema\.json$/)[1].tr("-", "_")
+      Dir[schema_path].map do |file|
+        scope = file.match(/system-description-(.*)\.schema-v#{format_version}\.json$/)[1].
+          tr("-", "_")
         schema = JSON.parse(File.read(file))
 
         [scope, schema]
