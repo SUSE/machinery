@@ -38,13 +38,10 @@ class FilterOptionParser
     def exclude_definitions(exclude)
       return [] if !exclude
 
-      filters = exclude.scan(/(@[^,]+)|\"([^,]+?=[^\"]+)\"|([^,]+=[^=]+)$|([^,]+=[^,]+)/).
-        map(&:compact).flat_map do |filter_definition|
-        if filter_definition[0].start_with?("@")
-          expand_filter_file(filter_definition[0])
-        else
-          filter_definition
-        end
+      filters = if exclude.start_with?("@")
+        expand_filter_file(exclude)
+      else
+        [exclude]
       end
 
       filters.reject!(&:empty?) # Ignore empty filters

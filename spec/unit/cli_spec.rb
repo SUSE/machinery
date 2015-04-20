@@ -210,11 +210,11 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
           _host, _name, _user, _scopes, filter, _options|
           expect(filter.element_filter_for("/unmanaged_files/files/name").matchers["="]).
-            to include("/foo/bar", "/baz")
+            to include("/foo/bar")
         end.and_return(description)
 
         run_command([
-          "--exclude=/unmanaged_files/files/name=/foo/bar,/unmanaged_files/files/name=/baz",
+          "--exclude=/unmanaged_files/files/name=/foo/bar",
           "inspect", example_host
         ])
       end
