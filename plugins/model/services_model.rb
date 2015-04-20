@@ -33,7 +33,7 @@ class ServiceList < Machinery::Array
 end
 
 class ServicesScope < Machinery::Object
-  include Machinery::ScopeMixin
+  include Machinery::Scope
   has_property :services, class: ServiceList
 
   def compare_with(other)

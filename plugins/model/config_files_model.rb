@@ -25,6 +25,6 @@ class ConfigFileList < Machinery::Array
 end
 
 class ConfigFilesScope < FileScope
-  include Machinery::ScopeMixin
+  include Machinery::Scope
   has_property :files, class: ConfigFileList
 end

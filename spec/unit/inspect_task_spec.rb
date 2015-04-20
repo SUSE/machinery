@@ -27,7 +27,7 @@ describe InspectTask, "#inspect_system" do
   end
 
   class SimpleInspectTaskScope < Machinery::Object
-    include Machinery::ScopeMixin
+    include Machinery::Scope
     has_property :files, class: SimpleInspectTaskList
   end
 

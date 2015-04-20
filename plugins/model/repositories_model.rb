@@ -23,7 +23,7 @@ class Repository < Machinery::Object
 end
 
 class RepositoriesScope < Machinery::Array
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 
   has_elements class: Repository
 end

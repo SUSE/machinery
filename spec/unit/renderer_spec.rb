@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 class FooScope < Machinery::Object
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 end
 
 class FooRenderer < Renderer
@@ -32,7 +32,7 @@ class FooRenderer < Renderer
 end
 
 class BarBazScope < Machinery::Object
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 end
 
 class BarBazRenderer < Renderer

@@ -20,7 +20,7 @@ class Group < Machinery::Object
 end
 
 class GroupsScope < Machinery::Array
-  include Machinery::ScopeMixin
+  include Machinery::Scope
 
   has_elements class: Group
 end

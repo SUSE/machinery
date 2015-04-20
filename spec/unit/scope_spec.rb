@@ -17,12 +17,12 @@
 
 require_relative "spec_helper"
 
-describe Machinery::ScopeMixin do
+describe Machinery::Scope do
   class SimpleScope < Machinery::Object
-    include Machinery::ScopeMixin
+    include Machinery::Scope
   end
   class MoreComplexScope < Machinery::Object
-    include Machinery::ScopeMixin
+    include Machinery::Scope
   end
 
   subject { SimpleScope.new }
@@ -47,13 +47,13 @@ describe Machinery::ScopeMixin do
   end
 
   it "lists all scopes" do
-    expect(Machinery::ScopeMixin.all_scopes).to include(SimpleScope)
-    expect(Machinery::ScopeMixin.all_scopes).to include(MoreComplexScope)
+    expect(Machinery::Scope.all_scopes).to include(SimpleScope)
+    expect(Machinery::Scope.all_scopes).to include(MoreComplexScope)
   end
 
   it "lists only scopes" do
-    Machinery::ScopeMixin.all_scopes.each do |scope|
-      expect(scope.included_modules).to include(Machinery::ScopeMixin)
+    Machinery::Scope.all_scopes.each do |scope|
+      expect(scope.included_modules).to include(Machinery::Scope)
     end
   end
 
@@ -68,11 +68,11 @@ describe Machinery::ScopeMixin do
 
   describe "#class_for" do
     it "returns simple scope" do
-      expect(Machinery::ScopeMixin.class_for("simple")).to be(SimpleScope)
+      expect(Machinery::Scope.class_for("simple")).to be(SimpleScope)
     end
 
     it "returns complex scope" do
-      expect(Machinery::ScopeMixin.class_for("more_complex")).to be(MoreComplexScope)
+      expect(Machinery::Scope.class_for("more_complex")).to be(MoreComplexScope)
     end
   end
 end

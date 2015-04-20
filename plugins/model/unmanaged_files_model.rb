@@ -52,7 +52,7 @@ class UnmanagedFileList < Machinery::Array
 end
 
 class UnmanagedFilesScope < FileScope
-  include Machinery::ScopeMixin
+  include Machinery::Scope
   has_property :files, class: UnmanagedFileList
 
   def compare_with(other)
