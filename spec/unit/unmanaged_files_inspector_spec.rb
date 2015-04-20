@@ -404,6 +404,15 @@ describe UnmanagedFilesInspector do
         JsonValidator.new(json_hash).validate
       }.to_not raise_error
     end
+
+    it "handles interrupts when extracting files" do
+      expect_inspect_unmanaged(system, true, true)
+      expect_any_instance_of(ScopeFileStore).to receive(:rename).
+        and_raise(SignalException.new("SIGTERM"))
+      expect {
+        subject.inspect(default_filter, extract_unmanaged_files: true)
+      }.to raise_error(SignalException)
+    end
   end
 
   describe "#get_find_data" do
