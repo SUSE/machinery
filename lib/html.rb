@@ -68,7 +68,7 @@ class Html
   # Template helpers
 
   def self.scope_help(scope)
-    text = File.read(File.join(Machinery::ROOT, "plugins", "docs", "#{scope}.md"))
+    text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
     Kramdown::Document.new(text).to_html
   end
 
