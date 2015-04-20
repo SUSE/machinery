@@ -36,7 +36,11 @@ class ExportTask
       end
     end
 
-    FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
+    begin
+      FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
+    rescue Errno::EACCES
+      raise(Machinery::Errors::ExportFailed, "Permission denied. Directory '#{output_dir}' is not writable")
+    end
 
     if @exporter.system_description["unmanaged_files"]
       filters = File.read(
