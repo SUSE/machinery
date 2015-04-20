@@ -56,7 +56,7 @@ EOF
       allow(FileUtils).to receive(:mkdir_p).and_raise(Errno::EACCES)
       output_dir = "/foo"
       expect {
-          subject.export(File.join(output_dir, "name"), force: false)
+        subject.export(File.join(output_dir, "name"), force: false)
       }.to raise_error(Machinery::Errors::ExportFailed, /Permission denied/)
     end
 
