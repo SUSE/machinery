@@ -133,62 +133,52 @@ EOF
     subject { ConfigFilesInspector.new(system, description) }
 
     def stub_stat_commands(system, files, stats_output)
-      expect(system).to receive(:run_command).with(
+      allow(system).to receive(:run_command).with(
         "stat", "--printf", "%a:%U:%G:%u:%g:%n\\n", *files,
         :stdout => :capture
       ).and_return(stats_output)
     end
 
     describe "check requirements" do
-      it "returns true if requirements are fulfilled" do
+      before(:each) do
         expect(system).to receive(:check_requirement).with("rpm", "--version")
         expect(system).to receive(:check_requirement).with("stat", "--version")
+      end
 
+      it "returns true if requirements are fulfilled" do
         requirements_fulfilled = subject.check_requirements(false)
         expect(requirements_fulfilled).equal?(true)
       end
 
       it "returns true if requirements are fulfilled for extraction" do
-        expect(system).to receive(:check_requirement).with("rpm", "--version")
-        expect(system).to receive(:check_requirement).with("stat", "--version")
         expect(system).to receive(:check_requirement).with("rsync", "--version")
-
         requirements_fulfilled = subject.check_requirements(true)
         expect(requirements_fulfilled).equal?(true)
       end
     end
 
     describe "#packages_with_config_files" do
-      it "returns a list of packages with config files" do
+      let(:package_list) { subject.packages_with_config_files }
+
+      def stub_rpm_output(system, rpm_qa_output_test)
         expect(system).to receive(:run_command).with(
           "rpm", "-qa", "--configfiles", "--queryformat",
           "%{NAME}-%{VERSION}\n", stdout: :capture
-        ).and_return(rpm_qa_output_test1)
+        ).and_return(rpm_qa_output_test)
+      end
 
-        package_list = subject.packages_with_config_files
-
+      it "returns a list of packages with config files" do
+        stub_rpm_output(system, rpm_qa_output_test1)
         expect(package_list).to match_array expected_package_list
       end
 
       it "returns a unique list of packages with config files" do
-        expect(system).to receive(:run_command).with(
-          "rpm", "-qa", "--configfiles", "--queryformat",
-          "%{NAME}-%{VERSION}\n", stdout: :capture
-        ).and_return(rpm_qa_output_test3)
-
-        package_list = subject.packages_with_config_files
-
+        stub_rpm_output(system, rpm_qa_output_test3)
         expect(package_list).to match_array expected_package_list
       end
 
       it "returns a empty list when no packages contain config files" do
-        expect(system).to receive(:run_command).with(
-          "rpm", "-qa", "--configfiles", "--queryformat",
-          "%{NAME}-%{VERSION}\n", stdout: :capture
-        ).and_return("")
-
-        package_list = subject.packages_with_config_files
-
+        stub_rpm_output(system, "")
         expect(package_list).to match_array []
       end
     end
@@ -252,8 +242,9 @@ EOF
       end
     end
 
-
     describe "#inspect" do
+      let(:inspector) { ConfigFilesInspector.new(system, description) }
+
       before(:each) do
         apache_config_1 = ConfigFile.new(
           name: "/etc/apache2/default-server.conf",
@@ -328,15 +319,10 @@ EOF
           "open-iscsi-2.0.873"
         ).and_return(iscsi_config_1)
         allow_any_instance_of(ConfigFilesInspector).to receive(:check_requirements)
+        stub_stat_commands(system, config_paths, stat_output)
       end
 
       it "returns data about modified config files when requirements are fulfilled" do
-        stub_stat_commands(
-          system,
-          config_paths, stat_output
-        )
-
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter)
 
         expect(description["config_files"]).to eq(@expected_data)
@@ -348,7 +334,6 @@ EOF
           :packages_with_config_files
         ).and_return([])
 
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter)
         expected = ConfigFilesScope.new(
           extracted: false,
@@ -362,7 +347,6 @@ EOF
           :check_requirements
         ).and_raise(Machinery::Errors::MissingRequirement)
 
-        inspector = ConfigFilesInspector.new(system, description)
         expect { inspector.inspect(filter) }.to raise_error(
           Machinery::Errors::MissingRequirement
         )
@@ -374,11 +358,6 @@ EOF
           config_paths,
           config_file_directory
         )
-        stub_stat_commands(
-          system,
-          config_paths, stat_output
-        )
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter, extract_changed_config_files: true)
 
         expect(inspector.summary).to include("Extracted 6 changed configuration files")
@@ -388,10 +367,6 @@ EOF
 
       it "keep permissions on extracted config files dir" do
         config_file_directory = File.join(store.description_path(name), "config_files")
-        stub_stat_commands(
-          system,
-          config_paths, stat_output
-        )
         expect(system).to receive(:retrieve_files).with(
           config_paths,
           config_file_directory
@@ -400,18 +375,12 @@ EOF
         File.chmod(0750, config_file_directory)
         File.chmod(0750, store.description_path(name))
 
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter, extract_changed_config_files: true)
         expect(inspector.summary).to include("Extracted 6 changed configuration files")
         expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
       end
 
       it "removes config files on inspect without extraction" do
-        stub_stat_commands(
-          system,
-          config_paths, stat_output
-        )
-
         config_file_directory = File.join(store.description_path(name), "config_files")
         config_file_directory_file = File.join(config_file_directory, "config_file")
         FileUtils.mkdir_p(config_file_directory)
@@ -419,24 +388,18 @@ EOF
 
         expect(File.exists?(config_file_directory_file)).to be true
 
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter)
 
         expect(File.exists?(config_file_directory_file)).to be false
       end
 
       it "returns schema compliant data" do
-        stub_stat_commands(
-          system,
-          config_paths, stat_output
-        )
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
           config_paths,
           config_file_directory
         )
 
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter, extract_changed_config_files: true)
 
         expect {
@@ -445,17 +408,12 @@ EOF
       end
 
       it "returns sorted data" do
-        stub_stat_commands(
-          system,
-          config_paths, stat_output
-        )
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
           config_paths,
           config_file_directory
         )
 
-        inspector = ConfigFilesInspector.new(system, description)
         inspector.inspect(filter, extract_changed_config_files: true)
         names = description["config_files"].files.map(&:name)
 
