@@ -366,7 +366,7 @@ class UnmanagedFilesInspector < Inspector
       # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
       if [1, 2, 15].include?(e.signo)
         Machinery::Ui.warn "Interrupted by user. The partly extracted unmanaged-files are available" \
-          " under '#{@description.file_store(tmp_file_store)}'"
+          " under '#{@description.file_store(file_store_tmp)}'"
       end
       raise
     end
