@@ -121,6 +121,8 @@ a, a:hover {
 
 table.diff {
   background: #e6e6e6;
+  table-layout: auto;
+  width: 100%;
 }
 
 table.diff td {

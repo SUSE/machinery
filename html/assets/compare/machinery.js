@@ -2,42 +2,6 @@ $(document).ready(function () {
   // Render the diff
   var diff = getDiff();
 
-  templates = {};
-  scopes = [
-    "os",
-    "os_partial",
-    "changed_managed_files",
-    "changed_managed_files_partial",
-    "config_files",
-    "config_files_partial",
-    "unmanaged_files",
-    "groups",
-    "users",
-    "packages",
-    "packages_partial",
-    "patterns",
-    "repositories",
-    "repositories_partial",
-    "services"
-  ];
-
-  $.each(scopes, function(index, scope) {
-    templates[scope] = Hogan.compile($("#scope_" + scope).html());
-  });
-
-  other_templates = [
-    "description_a",
-    "description_b",
-    "both_descriptions"
-  ];
-  $.each(other_templates, function(index, template) {
-    templates[template] = Hogan.compile($("#" + template + "_partial").html());
-  });
-  template = Hogan.compile($('#content').html());
-  $("#content_container").html(
-    template.render(diff, templates)
-  );
-
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
   $("#content_container").css("margin-top", header_height);
