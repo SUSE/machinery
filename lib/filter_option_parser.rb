@@ -39,10 +39,10 @@ class FilterOptionParser
       return [] if !exclude
 
       filters = if exclude.start_with?("@")
-        expand_filter_file(exclude)
-      else
-        [exclude]
-      end
+                  expand_filter_file(exclude)
+                else
+                  [exclude]
+                end
 
       filters.reject!(&:empty?) # Ignore empty filters
       filters
