@@ -117,7 +117,7 @@ class ChangedManagedFilesInspector < Inspector
         # Since errors are also recognized for config-files we have
         # to filter them
       end.compact.select { |item| item.changes }
-    end
+    end.uniq
     amend_file_attributes(changed_files)
   end
 

@@ -43,7 +43,7 @@ class ConfigFilesInspector < Inspector
     # use leading slash to decide between lines containing package names
     # and lines containing config files
     chunks = output.split("\n").slice_before { |l| !l.start_with?("/") }
-    chunks.reject { |pkg, *cfiles| cfiles.empty? }.map(&:first)
+    chunks.reject { |_pkg, *cfiles| cfiles.empty? }.map(&:first).uniq
   end
 
   # returns a hash with entries for changed config files
@@ -79,7 +79,7 @@ class ConfigFilesInspector < Inspector
         status:          "changed",
         changes:         changes
       )
-    end
+    end.uniq
   end
 
   def initialize(system, description)
