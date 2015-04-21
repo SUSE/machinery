@@ -52,6 +52,14 @@ EOF
       expect(captured_machinery_output).to include(expected_output)
     end
 
+    it "raises a known error when a non-writable directory is given" do
+      allow(FileUtils).to receive(:mkdir_p).and_raise(Errno::EACCES)
+      output_dir = "/foo"
+      expect {
+        subject.export(File.join(output_dir, "name"), force: false)
+      }.to raise_error(Machinery::Errors::ExportFailed, /Permission denied/)
+    end
+
     describe "when the output directory already exists" do
       let(:output_dir) { "/foo" }
       let(:export_dir) { "/foo/name-type" }
