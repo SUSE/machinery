@@ -29,6 +29,10 @@ module Machinery
         description: "Show hints about usage of Machinery in the context of the commands ran by" \
           " the user"
       )
+      entry("remote-user",
+        default: "root",
+        description: "Uses the following remote user to inspect systems." \
+      )
       entry("experimental-features",
         default: false,
         description: "Enable experimental features. See " \
