@@ -118,7 +118,7 @@ describe LocalSystem do
       }.to raise_error(Machinery::Errors::IncompatibleHost) do |error|
         expect(error.to_s).to end_with(
           ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
-            " openSUSE 13.2 (Harlequin)"
+            " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
         )
       end
     end

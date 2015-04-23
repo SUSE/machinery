@@ -92,6 +92,11 @@ class OsInspector < Inspector
     end
     if result["pretty_name"]
       result["pretty_name"] = strip_arch_from_name(result["pretty_name"])
+
+      # remove always changing Tumbleweed version from pretty name
+      if result["pretty_name"] =~ /^openSUSE.*\(Tumbleweed\)/
+        result["pretty_name"] = "openSUSE Tumbleweed"
+      end
     end
     # return pretty_name as name as it contains the actual full length
     # name instead of an abbreviation

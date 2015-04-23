@@ -174,6 +174,20 @@ class OsOpenSuse13_2 < OsOpenSuse
   end
 end
 
+class OsOpenSuseTumbleweed < Os
+  def display_name
+    "#{name} (#{architecture})"
+  end
+
+  def self.canonical_name
+    "openSUSE Tumbleweed"
+  end
+
+  def self.buildable_systems
+    [OsOpenSuse13_2]
+  end
+end
+
 class Rhel < Os
   def self.canonical_name
     "Red Hat Enterprise Linux Server"

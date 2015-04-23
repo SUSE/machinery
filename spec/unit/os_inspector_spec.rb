@@ -142,6 +142,21 @@ describe OsInspector do
       expect(inspector.summary).to include("SUSE Linux Enterprise Server")
     end
 
+    it "is able to recognize the rolling openSUSE release Tumbleweed" do
+      FakeFS::FileSystem.clone("spec/data/os/openSUSETumbleweed/etc/os-release",
+        "/etc/os-release")
+
+      expect(inspector).to receive(:get_arch).and_return("x86_64")
+
+      inspector.inspect(filter)
+
+      expect(description.os.name).to eq "openSUSE Tumbleweed"
+      expect(description.os.version).to eq("20150421 (Tumbleweed)")
+      expect(description.os.architecture).to eq "x86_64"
+      expect(inspector.summary).to include("openSUSE Tumbleweed")
+      expect(description.os).to be_a(OsOpenSuseTumbleweed)
+    end
+
     it "returns data containing additional version information if available" do
       FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/os-release",
         "/etc/os-release")
