@@ -42,6 +42,20 @@ describe Machinery do
       expect(out).to eq("a\uFFFDb")
     end
   end
+
+  describe "regular word" do
+    it "returns correct form for a count of 0" do
+      expect(Machinery::pluralize("text", 0)).to eq("texts")
+    end
+
+    it "returns correct form for a count of 1" do
+      expect(Machinery::pluralize("text", 1)).to eq("text")
+    end
+
+    it "returns correct form for a count of 2" do
+      expect(Machinery::pluralize("text", 2)).to eq("texts")
+    end
+  end
 end
 
 describe "#with_env" do

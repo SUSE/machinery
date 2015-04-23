@@ -74,7 +74,8 @@ describe Machinery::Ui do
 
       it "concatenates the output without adding \n" do
         allow($stdout).to receive(:tty?).and_return(true)
-        allow(LocalSystem).to receive(:validate_existence_of_package).and_raise(Machinery::Errors::MissingRequirement)
+        allow(LocalSystem).to receive(:validate_existence_of_package).
+          and_raise(Machinery::Errors::MissingRequirement)
         Machinery::Ui.print("Hello")
         Machinery::Ui.print(" ")
         Machinery::Ui.print("World")

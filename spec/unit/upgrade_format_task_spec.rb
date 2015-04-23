@@ -76,7 +76,7 @@ describe UpgradeFormatTask do
 
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       allow(captured_machinery_output)
-      expect(captured_machinery_output).to match("Upgraded 2 system descriptions.")
+      expect(captured_machinery_output).to include("Upgraded 2 system descriptions.")
 
       ["description1", "description2"].each do |description|
         migrated_description = SystemDescription.load(description,

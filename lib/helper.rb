@@ -31,6 +31,14 @@ module Machinery
     # See also: http://stackoverflow.com/a/21315619
     s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
   end
+
+  def self.pluralize(text, number)
+    if number > 1 || number == 0
+      text + "s"
+    else
+      text
+    end
+  end
 end
 
 def with_c_locale(&block)
