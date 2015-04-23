@@ -41,32 +41,6 @@ describe FilterOptionParser do
         ])
       end
 
-      it "handles multiple filter definitions" do
-        filter = subject.parse(
-          "inspect",
-          {},
-          "exclude" => "/unmanaged_files/files/name=/foo,/config_files/files/name=/bar"
-        )
-
-        expect(filter.to_array).to match_array([
-          "/unmanaged_files/files/name=/foo",
-          "/config_files/files/name=/bar"
-        ])
-      end
-
-      it "handles multiple filter definitions with array matchers" do
-        filter = subject.parse(
-          "inspect",
-          {},
-          "exclude" => "\"/config_files/files/change=md5,size\",/config_files/files/name=/bar"
-        )
-
-        expect(filter.to_array).to match_array([
-          "/config_files/files/change=md5,size",
-          "/config_files/files/name=/bar"
-        ])
-      end
-
       it "reads filter from a filter definition file" do
         exclude_file = given_dummy_file("exclude_file")
         File.write(exclude_file, <<EOF)
@@ -75,12 +49,11 @@ describe FilterOptionParser do
 EOF
 
         filter = subject.parse("inspect", {},
-          "exclude" => "@#{exclude_file},\"/changed_managed_files/files/name=/baz\"")
+          "exclude" => "@#{exclude_file}")
 
         expect(filter.to_array).to match_array([
           "/changed_managed_files/files/change=md5,size",
-          "/changed_managed_files/files/name=/bar",
-          "/changed_managed_files/files/name=/baz"
+          "/changed_managed_files/files/name=/bar"
         ])
       end
     end

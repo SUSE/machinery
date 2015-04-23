@@ -54,6 +54,7 @@ class Filter
     Array(filter_definitions).each do |definition|
       path, operator, matcher_definition = definition.scan(/([a-zA-Z_\/]+)(.*=)(.*)/)[0]
 
+      raise Machinery::Errors::InvalidFilter.new("Invalid filter: '#{definition}'") if !operator
       element_filters[path] ||= ElementFilter.new(path)
       if matcher_definition.index(",")
         matchers = matcher_definition.split(/(?<!\\),/)
