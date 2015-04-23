@@ -144,7 +144,7 @@ class Cli
     if scope_list.empty?
       raise Machinery::Errors::InvalidCommandLine.new( "No scopes to process. Nothing to do.")
     end
-    scope_list
+    Inspector.sort_scopes(scope_list)
   end
 
   def self.parse_scopes(scope_string)

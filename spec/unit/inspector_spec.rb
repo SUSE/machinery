@@ -68,6 +68,26 @@ describe Inspector do
     end
   end
 
+  describe ".sort_scopes" do
+    it "sorts the three given scopes" do
+      expect(Cli.sort_scopes(["users", "os", "patterns"])).to eq(["os", "patterns", "users"])
+    end
+
+    it "sorts all scopes" do
+      unsorted_list = [
+        "services", "packages", "changed_managed_files", "os", "groups", "unmanaged_files",
+        "config_files", "patterns", "users", "repositories"
+      ]
+
+      expected_result = [
+        "os", "packages", "patterns", "repositories", "users", "groups",
+        "services", "config_files", "changed_managed_files", "unmanaged_files"
+      ]
+
+      expect(Cli.sort_scopes(unsorted_list)).to eq(expected_result)
+    end
+  end
+
   describe "#scope" do
     it "returns the un-camelcased name" do
       expect(BarBazInspector.new.scope).to eql("bar_baz")
