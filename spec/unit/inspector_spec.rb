@@ -21,12 +21,15 @@ require_relative "spec_helper"
 describe Inspector do
   before :each do
     class FooInspector < Inspector
+      has_priority 2000
     end
 
     class BarBazInspector < Inspector
+      has_priority 1500
     end
 
     class BarracudaInspector < Inspector
+      has_priority 1700
     end
   end
 
@@ -66,11 +69,18 @@ describe Inspector do
       expect(all_scopes).to include("foo")
       expect(all_scopes).to include("bar_baz")
     end
+
+    it "returns all scopes sorted by priority" do
+      all_scopes = Inspector.all_scopes
+      expect(all_scopes[-1]).to eq("foo")
+      expect(all_scopes[-2]).to eq("barracuda")
+      expect(all_scopes[-3]).to eq("bar_baz")
+    end
   end
 
   describe ".sort_scopes" do
     it "sorts the three given scopes" do
-      expect(Cli.sort_scopes(["users", "os", "patterns"])).to eq(["os", "patterns", "users"])
+      expect(Inspector.sort_scopes(["users", "os", "patterns"])).to eq(["os", "patterns", "users"])
     end
 
     it "sorts all scopes" do
@@ -84,7 +94,7 @@ describe Inspector do
         "services", "config_files", "changed_managed_files", "unmanaged_files"
       ]
 
-      expect(Cli.sort_scopes(unsorted_list)).to eq(expected_result)
+      expect(Inspector.sort_scopes(unsorted_list)).to eq(expected_result)
     end
   end
 
