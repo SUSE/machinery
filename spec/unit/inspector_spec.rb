@@ -28,7 +28,19 @@ describe Inspector do
 
     class BarracudaInspector < Inspector
     end
+  end
 
+  describe ".priority" do
+    it "returns priority (default 1000)" do
+      expect(Inspector.priority).to eq(1000)
+    end
+  end
+
+  describe ".has_priority" do
+    it "sets a priority" do
+      Inspector.has_priority(10)
+      expect(Inspector.priority).to eq(10)
+    end
   end
 
   describe ".for" do

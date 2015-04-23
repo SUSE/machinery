@@ -16,6 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class RepositoriesInspector < Inspector
+  has_priority 40
   def initialize(system, description)
     @system = system
     @description = description

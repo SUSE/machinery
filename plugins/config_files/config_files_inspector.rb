@@ -18,6 +18,7 @@
 class ConfigFilesInspector < Inspector
   include ChangedRpmFilesHelper
 
+  has_priority 80
   # checks if all required binaries are present
   def check_requirements(check_rsync)
     @system.check_requirement("rpm", "--version")

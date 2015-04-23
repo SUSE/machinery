@@ -16,6 +16,8 @@
 # you may find current contact information at www.suse.com
 
 class ServicesInspector < Inspector
+  has_priority 70
+
   def initialize(system, description)
     @system = system
     @description = description

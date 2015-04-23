@@ -16,6 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class PackagesInspector < Inspector
+  has_priority 20
   def initialize(system, description)
     @system = system
     @description = description

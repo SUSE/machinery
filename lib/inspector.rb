@@ -38,6 +38,14 @@ class Inspector
   @inspectors = []
 
   class << self
+    def priority
+      @priority || 1000
+    end
+
+    def has_priority(value)
+      @priority = value
+    end
+
     def inherited(klass)
       @inspectors << klass
     end
