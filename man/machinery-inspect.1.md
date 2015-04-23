@@ -119,4 +119,6 @@ trigger errors.
 
     $ `machinery` inspect --scope=changed-managed-files --extract-files myhost
 
+  * To inspect the remote system `myhost` with the user `machinery`:
 
+    $ `machinery` inspect --remote-user machinery myhost
