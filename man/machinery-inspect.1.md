@@ -42,6 +42,9 @@ trigger errors.
     Inspect system for all scopes except the specified scope.
     See the [Scope section](#Scopes) for more information.
 
+  * `-u USER`, `--remote-user=USER` (optional):
+    Uses the following remote user to inspect system.
+
   * `-x`, `--extract-files` (optional):
     Extract changed configuration and unmanaged files from the inspected system.
     Shortcut for the combination of `--extract-changed-config-files`,
