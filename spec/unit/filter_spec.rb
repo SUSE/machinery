@@ -36,13 +36,13 @@ describe Filter do
     it "raises error if filter is invalid" do
       expect {
         Filter.parse_filter_definitions("abc")
-      }.to raise_error(Machinery::Errors::InvalidFilter)
+      }.to raise_error(Machinery::Errors::InvalidFilter, /abc/)
     end
 
     it "raises error if filter is invalid and has whitespaces" do
       expect {
         Filter.parse_filter_definitions("/ abc")
-      }.to raise_error(Machinery::Errors::InvalidFilter)
+      }.to raise_error(Machinery::Errors::InvalidFilter, /\/ abc/)
     end
 
     it "parses definition with 'equals not' operator" do
