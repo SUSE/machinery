@@ -434,7 +434,7 @@ class Cli
         "Either provide one file or directory name or a list of names separated by commas."
     c.flag ["remote-user", :u], type: String, required: false, default_value: @config.remote_user,
       desc: "Uses the remote user to inspect system."\
-      "This user needs sudo access on the remote machine or be root.", arg_name: "USER"
+        "This user needs sudo access on the remote machine or be root.", arg_name: "USER"
     c.switch ["extract-files", :x], required: false, negatable: false,
       desc: "Extract changed configuration files and unmanaged files from inspected system"
     c.switch "extract-changed-config-files", required: false, negatable: false,
