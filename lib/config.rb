@@ -31,12 +31,12 @@ module Machinery
       )
       entry("remote-user",
         default: "root",
-        description: "Uses the following remote user to inspect systems." \
+        description: "Uses the following remote user to inspect systems" \
       )
       entry("experimental-features",
         default: false,
         description: "Enable experimental features. See " \
-          "https://github.com/SUSE/machinery/wiki/Experimental-Features for more details."
+          "https://github.com/SUSE/machinery/wiki/Experimental-Features for more details"
       )
     end
   end
