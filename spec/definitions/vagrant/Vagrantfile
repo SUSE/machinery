@@ -70,6 +70,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       :package => "openSUSE_13.2"
   end
 
+  config.vm.define :opensuse_tumbleweed do |opensuse_tumbleweed|
+    opensuse_tumbleweed.vm.box = "base_opensuse_tumbleweed_kvm"
+
+    opensuse_tumbleweed.vm.provider :libvirt do |domain|
+      domain.memory = 1024
+      domain.cpus = 1
+      domain.nested = false
+      domain.volume_cache = 'none'
+    end
+
+    inject_test_data(opensuse_tumbleweed)
+  end
+
+  config.vm.define :machinery_tumbleweed do |machinery_tumbleweed|
+    machinery_tumbleweed.vm.box = "machinery_opensuse_tumbleweed_kvm"
+    machinery_tumbleweed.vm.network :private_network, :network_name => "default"
+
+    machinery_tumbleweed.vm.provider :libvirt do |domain|
+      domain.memory = 1024
+      domain.cpus = 1
+      domain.nested = false
+      domain.volume_cache = 'none'
+    end
+
+    machinery_tumbleweed.vm.provision "machinery_rpm",
+      :api     => "https://api.opensuse.org",
+      :project => "systemsmanagement:machinery",
+      :package => "openSUSE_Tumbleweed"
+  end
+
+
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "http://domain.com/path/to/above.box"
