@@ -42,7 +42,7 @@ trigger errors.
     Inspect system for all scopes except the specified scope.
     See the [Scope section](#Scopes) for more information.
 
-  * `-u USER`, `--remote-user=USER` (optional):
+  * `-r USER`, `--remote-user=USER` (optional):
     Uses the following remote user to inspect system.
     This user needs to be allowed to run certain commands using sudo.
     See /usr/share/doc/packages/machinery/sudoers.machinery for more information.
