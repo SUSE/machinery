@@ -105,5 +105,18 @@ EOF
       expect(@diff_object[:deletions]).to eq(expected[:deletions])
       expect(@diff_object[:lines]).to eq(expected[:lines])
     end
+
+    it "does not raise an error if the diff contains invalid UTF-8 characters" do
+      utf8_diff = <<-EOF
+--- a/file
++++ b/file
+@@ -1,15 +1,14 @@
+-utf8\255
++utf8
+EOF
+      expect {
+        Html.send(:diff_to_object, utf8_diff)
+      }.to_not raise_error
+    end
   end
 end
