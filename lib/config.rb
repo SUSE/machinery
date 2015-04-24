@@ -31,7 +31,7 @@ module Machinery
       )
       entry("remote-user",
         default: "root",
-        description: "Uses the following remote user to inspect systems" \
+        description: "Defines the user which is used to access the inspected system via SSH"
       )
       entry("experimental-features",
         default: false,

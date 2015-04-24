@@ -43,10 +43,10 @@ trigger errors.
     See the [Scope section](#Scopes) for more information.
 
   * `-r USER`, `--remote-user=USER` (optional):
-    Uses the following remote user to inspect system.
+    Defines the user which is used to access the inspected system via SSH.
     This user needs to be allowed to run certain commands using sudo.
     See /usr/share/doc/packages/machinery/sudoers.machinery for more information.
-    To change the default use `machinery config remote-user USER`
+    To change the default-user use `machinery config remote-user USER`
 
   * `-x`, `--extract-files` (optional):
     Extract changed configuration and unmanaged files from the inspected system.

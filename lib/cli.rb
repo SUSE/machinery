@@ -433,7 +433,7 @@ class Cli
       desc: "Do not consider given files or directories during inspection. " \
         "Either provide one file or directory name or a list of names separated by commas."
     c.flag ["remote-user", :r], type: String, required: false, default_value: @config.remote_user,
-      desc: "Uses the remote user to inspect system."\
+      desc: "Defines the user which is used to access the inspected system via SSH."\
         "This user needs sudo access on the remote machine or be root.", arg_name: "USER"
     c.switch ["extract-files", :x], required: false, negatable: false,
       desc: "Extract changed configuration files and unmanaged files from inspected system"
