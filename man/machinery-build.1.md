@@ -63,6 +63,14 @@ The following combinations of build hosts and targets are supported:
 
     Can build SUSE Linux Enterprise 11 and openSUSE 13.1
 
+  * openSUSE 13.2
+
+    Can build SUSE Linux Enterprise 11, openSUSE 13.1 and openSUSE 13.2
+
+  * openSUSE Tumbleweed
+
+    Can build openSUSE 13.2
+
 ### EXAMPLES
 
  * To build an image from the system description named "tux" and to save the
