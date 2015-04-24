@@ -24,6 +24,8 @@ require_relative "tools/upgrade_test_descriptions"
 require "rspec/core/rake_task"
 require "cheetah"
 require "packaging"
+Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
+
 
 desc "Run RSpec code examples in spec/unit"
 RSpec::Core::RakeTask.new("spec:unit") do |t|
@@ -57,14 +59,15 @@ namespace :man_pages do
   desc 'Build man page(s)'
   task :build do
     puts "  Building man pages"
-    system <<-EOF
-      for scope in plugins/docs/*.md ; do
-        echo -n '\n* '
-        basename $scope .md | sed -e 's/_/-/g'
-        echo ""
-        cat $scope
-      done > man/generated/machinery_main_scopes.1.md
-    EOF
+    manpage = ""
+    Inspector.all_scopes.each do |scope|
+      manpage += "* #{scope}\n\n"
+      manpage += File.read("plugins/docs/#{scope}.md")
+      manpage += "\n"
+    end
+    manpage += "\n"
+    File.write("man/generated/machinery_main_scopes.1.md", manpage)
+
     system <<-EOF
       cat man/machinery_main_general.1.md man/generated/machinery_main_scopes.1.md \
         man/machinery_main_usecases.1.md man/machinery-*.1.md \
