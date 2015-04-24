@@ -98,13 +98,13 @@ describe InspectTask, "#inspect_system" do
   }
 
   it "runs the proper inspector when a scope is given" do
-    expect(Inspector).to receive(:for).with("foo").and_return(FooInspector)
+    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
     inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
-    expect_any_instance_of(SystemDescription).to receive(:save).twice
+    expect_any_instance_of(SystemDescription).to receive(:save).at_least(:once).times
 
     inspect_task.inspect_system(store, host, name, current_user_non_root,
       ["foo", "bar"], Filter.new)
@@ -204,7 +204,7 @@ Inspecting foo...
     capture_machinery_output
 
     it "passes the filters to the inspectors" do
-      expect(Inspector).to receive(:for).and_return(FooInspector)
+      expect(Inspector).to receive(:for).at_least(:once).times.and_return(FooInspector)
 
       expect_any_instance_of(FooInspector).to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)

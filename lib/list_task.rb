@@ -49,7 +49,7 @@ class ListTask
       else
         scopes = []
 
-        description.scopes.each do |scope|
+        Inspector.sort_scopes(description.scopes).each do |scope|
           entry = Machinery::Ui.internal_scope_list_to_string(scope)
           if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
             if description.scope_extracted?(scope)
