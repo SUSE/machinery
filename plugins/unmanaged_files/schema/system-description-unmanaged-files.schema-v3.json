@@ -17,7 +17,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "oneOf": [
+            "anyOf": [
               { "$ref": "#/definitions/file_extracted" },
               { "$ref": "#/definitions/file_remote_dir" }
             ]
@@ -27,7 +27,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "oneOf": [
+            "anyOf": [
               { "$ref": "#/definitions/file_not_extracted" },
               { "$ref": "#/definitions/file_remote_dir" }
             ]
