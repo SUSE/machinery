@@ -36,7 +36,7 @@ class Html
 
     # Generate JSON and escape the 's and "s in order to not break the JSON
     # string in javascript.
-    json = description.to_hash.to_json.gsub("'", "\\\\'").gsub("\"", "\\\\\"")
+    json = description.to_hash.to_json.gsub("\\", '\\\\\\').gsub("'", "\\\\'").gsub("\"", "\\\\\"")
     File.write(File.join(target, "assets/description.js"),<<-EOT
       function getDescription() {
         return JSON.parse('#{json}'
