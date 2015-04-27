@@ -24,8 +24,7 @@ require_relative "tools/upgrade_test_descriptions"
 require "rspec/core/rake_task"
 require "cheetah"
 require "packaging"
-Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
-
+require lib/machinery
 
 desc "Run RSpec code examples in spec/unit"
 RSpec::Core::RakeTask.new("spec:unit") do |t|
