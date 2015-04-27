@@ -20,15 +20,33 @@ require_relative "spec_helper"
 
 describe Inspector do
   before :each do
-    class FooInspector < Inspector
-    end
+    stub_const("FooInspector", Class.new(Inspector) do
+      def self.name; "FooInspector"; end
+      has_priority 2000
+    end)
 
-    class BarBazInspector < Inspector
-    end
+    stub_const("BarBazInspector", Class.new(Inspector) do
+      def self.name; "BarBazInspector"; end
+      has_priority 1500
+    end)
 
-    class BarracudaInspector < Inspector
-    end
+    stub_const("BarracudaInspector", Class.new(Inspector) do
+      def self.name; "BarracudaInspector"; end
+      has_priority 1700
+    end)
+  end
 
+  describe ".priority" do
+    it "returns priority (default 1000)" do
+      expect(Inspector.priority).to eq(1000)
+    end
+  end
+
+  describe ".has_priority" do
+    it "sets a priority" do
+      Inspector.has_priority(10)
+      expect(Inspector.priority).to eq(10)
+    end
   end
 
   describe ".for" do
@@ -53,6 +71,33 @@ describe Inspector do
       all_scopes = Inspector.all_scopes
       expect(all_scopes).to include("foo")
       expect(all_scopes).to include("bar_baz")
+    end
+
+    it "returns all scopes sorted by priority" do
+      all_scopes = Inspector.all_scopes
+      expect(all_scopes[-1]).to eq("foo")
+      expect(all_scopes[-2]).to eq("barracuda")
+      expect(all_scopes[-3]).to eq("bar_baz")
+    end
+  end
+
+  describe ".sort_scopes" do
+    it "sorts the three given scopes" do
+      expect(Inspector.sort_scopes(["users", "os", "patterns"])).to eq(["os", "patterns", "users"])
+    end
+
+    it "sorts all scopes" do
+      unsorted_list = [
+        "services", "packages", "changed_managed_files", "os", "groups", "unmanaged_files",
+        "config_files", "patterns", "users", "repositories"
+      ]
+
+      expected_result = [
+        "os", "packages", "patterns", "repositories", "users", "groups",
+        "services", "config_files", "changed_managed_files", "unmanaged_files"
+      ]
+
+      expect(Inspector.sort_scopes(unsorted_list)).to eq(expected_result)
     end
   end
 

@@ -17,6 +17,7 @@
 
 #  Inspect name, version, and other attributes of the operating system
 class OsInspector < Inspector
+  has_priority 10
   # determines the architecture
   def get_arch
     @system.run_command("uname", "-m", :stdout => :capture).chomp

@@ -16,6 +16,8 @@
 # you may find current contact information at www.suse.com
 
 class GroupsInspector < Inspector
+  has_priority 60
+
   def initialize(system, description)
     @system = system
     @description = description

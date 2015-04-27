@@ -16,6 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class PatternsInspector < Inspector
+  has_priority 30
   def initialize(system, description)
     @system = system
     @description = description

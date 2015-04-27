@@ -16,6 +16,8 @@
 # you may find current contact information at www.suse.com
 
 class UnmanagedFilesInspector < Inspector
+  has_priority 100
+
   # checks if all required binaries are present
   def check_requirements(check_tar)
     @system.check_requirement("rpm", "--version")

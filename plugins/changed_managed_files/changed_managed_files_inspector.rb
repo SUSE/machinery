@@ -17,6 +17,7 @@
 
 class ChangedManagedFilesInspector < Inspector
   include ChangedRpmFilesHelper
+  has_priority 90
 
   def initialize(system, description)
     @system = system

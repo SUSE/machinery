@@ -38,6 +38,14 @@ class Inspector
   @inspectors = []
 
   class << self
+    def priority
+      @priority || 1000
+    end
+
+    def has_priority(value)
+      @priority = value
+    end
+
     def inherited(klass)
       @inspectors << klass
     end
@@ -53,7 +61,19 @@ class Inspector
     end
 
     def all_scopes
-      all.map(&:scope)
+      sort_scopes(all.map(&:scope))
+    end
+
+    def sort_scopes(scope_list)
+      scope_priority = {}
+
+      scope_list.each do |scope|
+        scope_priority[self.for(scope).priority] = scope
+      end
+
+      scope_priority.sort.map do |key, value|
+        scope_priority[key] = value
+      end
     end
 
     def scope

@@ -120,96 +120,6 @@
                     %td {{pattern.version}}
                     %td {{pattern.release}}
 
-    %script#scope_users{:type => "text/ng-template"}
-      %div{"ng-show" => "description.users"}
-        %a.scope_anchor{:id => "users"}
-        #users_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('users')}'", |
-            :logo => "'assets/logo-users.png'", |
-            :title => "'Users'", |
-            :meta => "description.meta.users", |
-            :singular => "'user'", |
-            :plural => "'users'", |
-            :count => "description.users.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th UID
-                    %th GID
-                    %th Comment
-                    %th Home
-                    %th Shell
-                %tbody
-                  %tr{"ng-repeat" => "user in description.users | filter:query"}
-                    %td {{user.name}}
-                    %td {{user.uid}}
-                    %td {{user.gid}}
-                    %td {{user.comment}}
-                    %td {{user.home}}
-                    %td {{user.shell}}
-
-    %script#scope_unmanaged_files.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.unmanaged_files.files"}
-        %a.scope_anchor{:id => "unmanaged_files"}
-        #unmanaged_files_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('unmanaged_files')}'", |
-            :logo => "'assets/logo-unmanaged-files.png'", |
-            :title => "'Unmanaged Files'", |
-            :meta => "description.meta.unmanaged_files", |
-            :singular => "'file'", |
-            :plural => "'files'", |
-            :count => "description.unmanaged_files.files.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Type
-                %tbody
-                  %tr{"ng-repeat" => "file in description.unmanaged_files.files | filter:query"}
-                    %td {{file.name}}
-                    %td {{file.type}}
-
-    %script#scope_groups{:type => "text/ng-template"}
-      %div{"ng-show" => "description.groups"}
-        %a.scope_anchor{:id => "groups"}
-        #groups_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('groups')}'", |
-            :logo => "'assets/logo-groups.png'", |
-            :title => "'Groups'", |
-            :meta => "description.meta.groups", |
-            :singular => "'group'", |
-            :plural => "'groups'", |
-            :count => "description.groups.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th GID
-                    %th Password
-                    %th Users
-                %tbody
-                  %tr{"ng-repeat" => "group in description.groups | filter:query"}
-                    %td {{group.name}}
-                    %td {{group.gid}}
-                    %td {{group.password}}
-                    %td {{group.users.join(",")}}
-
     %script#scope_repositories.partial{:type => "text/ng-template"}
       %div{"ng-show" => "description.repositories"}
         %a.scope_anchor{:id => "repositories"}
@@ -249,43 +159,97 @@
                     %td {{repo.gpgcheck}}
                     %td {{repo.priority}}
 
-    %script#scope_changed_managed_files.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.changed_managed_files.files"}
-        %a.scope_anchor{:id => "changed_managed_files"}
-        #changed_managed_files_container.scope
+    %script#scope_users{:type => "text/ng-template"}
+      %div{"ng-show" => "description.users"}
+        %a.scope_anchor{:id => "users"}
+        #users_container.scope
           %scope-header{ |
-            :summary => "'#{scope_help('changed_managed_files')}'", |
-            :logo => "'assets/logo-changed-managed-files.png'", |
-            :title => "'Changed Managed Files'", |
-            :meta => "description.meta.changed_managed_files", |
-            :singular => "'file'", |
-            :plural => "'files'", |
-            :count => "description.changed_managed_files.files.length" |
+            :summary => "'#{scope_help('users')}'", |
+            :logo => "'assets/logo-users.png'", |
+            :title => "'Users'", |
+            :meta => "description.meta.users", |
+            :singular => "'user'", |
+            :plural => "'users'", |
+            :count => "description.users.length" |
           } |
           .row.scope_content.collapse.in
             .col-xs-1
             .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed.files-table
+              %table.table.table-striped.table-hover.table-condensed
                 %thead
                   %tr
                     %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th Changes
-                    %th Mode
-                    %th User
-                    %th Group
+                    %th UID
+                    %th GID
+                    %th Comment
+                    %th Home
+                    %th Shell
                 %tbody
-                  %tr{"ng-repeat" => "file in description.changed_managed_files.files | filter:query"}
-                    %td {{file.name}}
-                    %td {{file.package_name}}
-                    %td {{file.package_version}}
-                    %td
-                      {{file.changes.join(",")}}
-                      %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
-                    %td {{file.mode}}
-                    %td {{file.user}}
-                    %td {{file.group}}
+                  %tr{"ng-repeat" => "user in description.users | filter:query"}
+                    %td {{user.name}}
+                    %td {{user.uid}}
+                    %td {{user.gid}}
+                    %td {{user.comment}}
+                    %td {{user.home}}
+                    %td {{user.shell}}
+
+    %script#scope_groups{:type => "text/ng-template"}
+      %div{"ng-show" => "description.groups"}
+        %a.scope_anchor{:id => "groups"}
+        #groups_container.scope
+          %scope-header{ |
+            :summary => "'#{scope_help('groups')}'", |
+            :logo => "'assets/logo-groups.png'", |
+            :title => "'Groups'", |
+            :meta => "description.meta.groups", |
+            :singular => "'group'", |
+            :plural => "'groups'", |
+            :count => "description.groups.length" |
+          } |
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th GID
+                    %th Password
+                    %th Users
+                %tbody
+                  %tr{"ng-repeat" => "group in description.groups | filter:query"}
+                    %td {{group.name}}
+                    %td {{group.gid}}
+                    %td {{group.password}}
+                    %td {{group.users.join(",")}}
+
+    %script#scope_services.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.services.services"}
+        %a.scope_anchor{:id => "services"}
+        #services_container.scope
+          %scope-header{ |
+            :summary => "'#{scope_help('services')}'", |
+            :logo => "'assets/logo-services.png'", |
+            :title => "'Services'", |
+            :meta => "description.meta.services", |
+            :singular => "'service'", |
+            :plural => "'services'", |
+            :count => "description.services.services.length", |
+            "additional-summary" => "'Init System: '+description.services.init_system+', '" |
+          } |
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th State
+                %tbody
+                  %tr{"ng-repeat" => "service in description.services.services | filter:query"}
+                    %td {{service.name}}
+                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                      {{service.state}}
 
     %script#scope_config_files.partial{:type => "text/ng-template"}
       %div{"ng-show" => "description.config_files.files"}
@@ -337,33 +301,69 @@
                     %td {{file.user}}
                     %td {{file.group}}
 
-    %script#scope_services.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.services.services"}
-        %a.scope_anchor{:id => "services"}
-        #services_container.scope
+    %script#scope_changed_managed_files.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.changed_managed_files.files"}
+        %a.scope_anchor{:id => "changed_managed_files"}
+        #changed_managed_files_container.scope
           %scope-header{ |
-            :summary => "'#{scope_help('services')}'", |
-            :logo => "'assets/logo-services.png'", |
-            :title => "'Services'", |
-            :meta => "description.meta.services", |
-            :singular => "'service'", |
-            :plural => "'services'", |
-            :count => "description.services.services.length", |
-            "additional-summary" => "'Init System: '+description.services.init_system+', '" |
+            :summary => "'#{scope_help('changed_managed_files')}'", |
+            :logo => "'assets/logo-changed-managed-files.png'", |
+            :title => "'Changed Managed Files'", |
+            :meta => "description.meta.changed_managed_files", |
+            :singular => "'file'", |
+            :plural => "'files'", |
+            :count => "description.changed_managed_files.files.length" |
           } |
           .row.scope_content.collapse.in
             .col-xs-1
             .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
+              %table.table.table-striped.table-hover.table-condensed.files-table
                 %thead
                   %tr
                     %th Name
-                    %th State
+                    %th Package Name
+                    %th Package Version
+                    %th Changes
+                    %th Mode
+                    %th User
+                    %th Group
                 %tbody
-                  %tr{"ng-repeat" => "service in description.services.services | filter:query"}
-                    %td {{service.name}}
-                    %td{:class=>"{{services.init_system}}_{{state}}"}
-                      {{service.state}}
+                  %tr{"ng-repeat" => "file in description.changed_managed_files.files | filter:query"}
+                    %td {{file.name}}
+                    %td {{file.package_name}}
+                    %td {{file.package_version}}
+                    %td
+                      {{file.changes.join(",")}}
+                      %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
+                    %td {{file.mode}}
+                    %td {{file.user}}
+                    %td {{file.group}}
+
+    %script#scope_unmanaged_files.partial{:type => "text/ng-template"}
+      %div{"ng-show" => "description.unmanaged_files.files"}
+        %a.scope_anchor{:id => "unmanaged_files"}
+        #unmanaged_files_container.scope
+          %scope-header{ |
+            :summary => "'#{scope_help('unmanaged_files')}'", |
+            :logo => "'assets/logo-unmanaged-files.png'", |
+            :title => "'Unmanaged Files'", |
+            :meta => "description.meta.unmanaged_files", |
+            :singular => "'file'", |
+            :plural => "'files'", |
+            :count => "description.unmanaged_files.files.length" |
+          } |
+          .row.scope_content.collapse.in
+            .col-xs-1
+            .col-xs-11
+              %table.table.table-striped.table-hover.table-condensed.files-table
+                %thead
+                  %tr
+                    %th Name
+                    %th Type
+                %tbody
+                  %tr{"ng-repeat" => "file in description.unmanaged_files.files | filter:query"}
+                    %td {{file.name}}
+                    %td {{file.type}}
 
     %script{:src => "assets/description.js"}
     %script{:src => "assets/show/machinery.js"}
@@ -404,33 +404,32 @@
                 %img{:src => "assets/logo-packages-small.png"}/
               %a{:href => "#patterns", :title => "Patterns"}
                 %img{:src => "assets/logo-patterns-small.png"}/
+              %a{:href => "#repositories", :title => "Repositories"}
+                %img{:src => "assets/logo-repositories-small.png"}/
               %a{:href => "#users", :title => "Users"}
                 %img{:src => "assets/logo-users-small.png"}/
               %a{:href => "#groups", :title => "Groups"}
                 %img{:src => "assets/logo-groups-small.png"}/
-              %a{:href => "#repositories", :title => "Repositories"}
-                %img{:src => "assets/logo-repositories-small.png"}/
-              %a{:href => "#unmanaged_files", :title => "Unmanaged Files"}
-                %img{:src => "assets/logo-unmanaged-files-small.png"}/
-              %a{:href => "#changed_managed_files", :title => "Changed Managed Files"}
-                %img{:src => "assets/logo-changed-managed-files-small.png"}/
-              %a{:href => "#config_files", :title => "Config Files"}
-                %img{:src => "assets/logo-config-files-small.png"}/
               %a{:href => "#services", :title => "Services"}
                 %img{:src => "assets/logo-services-small.png"}/
+              %a{:href => "#config_files", :title => "Config Files"}
+                %img{:src => "assets/logo-config-files-small.png"}/
+              %a{:href => "#changed_managed_files", :title => "Changed Managed Files"}
+                %img{:src => "assets/logo-changed-managed-files-small.png"}/
+              %a{:href => "#unmanaged_files", :title => "Unmanaged Files"}
+                %img{:src => "assets/logo-unmanaged-files-small.png"}/
 
 
       #content_container{"ng-controller" => "showController"}
         %div{"src" => "'scope_os'", "ng-include" => true}
         %div{"src" => "'scope_packages'", "ng-include" => true}
         %div{"src" => "'scope_patterns'", "ng-include" => true}
+        %div{"src" => "'scope_repositories'", "ng-include" => true}
         %div{"src" => "'scope_users'", "ng-include" => true}
         %div{"src" => "'scope_groups'", "ng-include" => true}
-        %div{"src" => "'scope_unmanaged_files'", "ng-include" => true}
-        %div{"src" => "'scope_repositories'", "ng-include" => true}
-        %div{"src" => "'scope_changed_managed_files'", "ng-include" => true}
-        %div{"src" => "'scope_config_files'", "ng-include" => true}
         %div{"src" => "'scope_services'", "ng-include" => true}
-
+        %div{"src" => "'scope_config_files'", "ng-include" => true}
+        %div{"src" => "'scope_changed_managed_files'", "ng-include" => true}
+        %div{"src" => "'scope_unmanaged_files'", "ng-include" => true}
 
         %div{"src" => "'inspection_details_template'", "ng-include" => true}

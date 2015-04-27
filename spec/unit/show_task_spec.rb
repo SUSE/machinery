@@ -36,9 +36,9 @@ describe ShowTask, "#show" do
   it "runs the proper renderer when a scope is given" do
     renderer = double
     expect(renderer).to receive(:render).and_return("bar")
-    expect(Renderer).to receive(:for).with("foo").and_return(renderer)
+    expect(Renderer).to receive(:for).with("packages").and_return(renderer)
 
-    show_task.show(system_description, ["foo"], Filter.new, no_pager: true)
+    show_task.show(system_description, ["packages"], Filter.new, no_pager: true)
   end
 
   it "prints scopes missing from the system description" do
@@ -63,7 +63,13 @@ describe ShowTask, "#show" do
     html_path = SystemDescriptionStore.new.html_path(system_description.name)
     expect(Cheetah).to receive(:run).with("xdg-open", html_path)
 
-    show_task.show(system_description, ["foo"], Filter.new, show_html: true)
+    show_task.show(system_description, ["packages"], Filter.new, show_html: true)
   end
 
+  it "passes along a sorted scope list" do
+    expected_scope_list = ["os", "packages", "users"]
+
+    expect(show_task).to receive(:show_console).with(system_description, expected_scope_list, {})
+    show_task.show(system_description, ["packages", "users", "os"], Filter.new)
+  end
 end
