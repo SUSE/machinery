@@ -21,8 +21,8 @@ require_relative "spec_helper"
 describe Inspector do
   before :each do
     stub_const("FooInspector", Class.new(Inspector) do
-     def self.name; "FooInspector"; end 
-     has_priority 2000
+      def self.name; "FooInspector"; end
+      has_priority 2000
     end)
 
     stub_const("BarBazInspector", Class.new(Inspector) do

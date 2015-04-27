@@ -17,7 +17,6 @@
 
 class InspectTask
   def inspect_system(store, host, name, current_user, scopes, filter, options = {})
-    scopes = Inspector.sort_scopes(scopes)
     system = System.for(host)
     check_root(system, current_user)
 

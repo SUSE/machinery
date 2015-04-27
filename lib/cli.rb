@@ -187,7 +187,7 @@ class Cli
       )
     end
 
-    scopes.uniq
+    Inspector.sort_scopes(scopes.uniq)
   end
 
   AVAILABLE_SCOPE_LIST = Machinery::Ui.internal_scope_list_to_string(

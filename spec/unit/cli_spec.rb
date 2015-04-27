@@ -513,6 +513,12 @@ describe Cli do
       expect(Cli.process_scope_option("os,packages", nil)).to eq(["os", "packages"])
     end
 
+    it "returns sorted scope list" do
+      expect(Cli.process_scope_option("packages,users,os", nil)).to eq(
+        ["os", "packages", "users"]
+      )
+    end
+
     it "returns all scopes if no scopes are provided" do
       expect(Cli.process_scope_option(nil,nil)).to eq(Inspector.all_scopes)
     end
