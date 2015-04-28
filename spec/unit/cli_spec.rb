@@ -82,7 +82,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
           ).
           and_return(description)
 
@@ -99,7 +99,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
            ).
            and_return(description)
 
@@ -115,7 +115,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
            ).
           and_return(description)
 
@@ -131,7 +131,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             ["packages", "repositories"],
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
           ).
           and_return(description)
 
@@ -147,7 +147,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             ["packages"],
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
           ).
           and_return(description)
 
@@ -163,7 +163,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
           ).
           and_return(description)
 
@@ -183,7 +183,7 @@ describe Cli do
             an_instance_of(CurrentUser),
             scope_list,
             an_instance_of(Filter),
-            {}
+            remote_user: "root"
           ).
           and_return(description)
 
@@ -216,6 +216,19 @@ describe Cli do
         run_command([
           "--exclude=/unmanaged_files/files/name=/foo/bar",
           "inspect", example_host
+        ])
+      end
+
+      it "forwards the --remote-user option to the InspectTask" do
+        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
+          _host, _name, _user, _scopes, _filter, options|
+          expect(options[:remote_user]).to eq("foo")
+        end.and_return(description)
+
+        run_command([
+          "inspect",
+          "--remote-user=foo",
+          example_host
         ])
       end
 
@@ -252,7 +265,7 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              {}
+              remote_user: "root"
             ).
             and_return(description)
 
@@ -268,7 +281,10 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              :extract_changed_config_files=>true, :extract_unmanaged_files=>true, :extract_changed_managed_files=>true
+              remote_user: "root",
+              extract_changed_config_files: true,
+              extract_unmanaged_files: true,
+              extract_changed_managed_files: true
             ).
             and_return(description)
 
@@ -284,7 +300,8 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              :extract_changed_config_files=>true
+              remote_user: "root",
+              extract_changed_config_files: true
             ).
             and_return(description)
 
@@ -300,7 +317,8 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              :extract_unmanaged_files=>true
+              remote_user: "root",
+              extract_unmanaged_files: true
             ).
             and_return(description)
 

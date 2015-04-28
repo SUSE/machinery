@@ -473,6 +473,7 @@ class Cli
       if options["extract-files"] || options["extract-unmanaged-files"]
         inspect_options[:extract_unmanaged_files] = true
       end
+      inspect_options[:remote_user] = options["remote-user"]
 
       filter = FilterOptionParser.parse("inspect", options, global_options)
 

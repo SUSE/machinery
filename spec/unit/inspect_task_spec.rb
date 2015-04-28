@@ -79,10 +79,12 @@ describe InspectTask, "#inspect_system" do
   let(:name) { "name" }
   let(:host) { "example.com" }
   let(:system) {
-    double(
+    system = double(
       :requires_root? => false,
       :host           => "example.com"
     )
+    allow(system).to receive(:remote_user=)
+    system
   }
 
   let(:current_user_root) {
@@ -108,6 +110,14 @@ describe InspectTask, "#inspect_system" do
 
     inspect_task.inspect_system(store, host, name, current_user_non_root,
       ["foo", "bar"], Filter.new)
+  end
+
+  it "uses the specified remote user to access the system" do
+    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+    expect(System).to receive(:for).with(anything, "machinery")
+
+    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new,
+      remote_user: "machinery")
   end
 
   it "creates a proper system description" do

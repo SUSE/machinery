@@ -17,9 +17,11 @@
 
 class RemoteSystem < System
   attr_accessor :host
+  attr_accessor :remote_user
 
-  def initialize(host)
+  def initialize(host, remote_user = "root")
     @host = host
+    @remote_user = remote_user
 
     connect
   end
@@ -70,19 +72,23 @@ class RemoteSystem < System
       cheetah_class = LoggedCheetah
     end
 
-    cheetah_class.run("ssh", "root@#{host}", "LC_ALL=C", *piped_args, options)
+    if use_sudo?
+      cheetah_class.run("ssh", "#{remote_user}@#{host}", "sudo", "LC_ALL=C", *piped_args, options)
+    else
+      cheetah_class.run("ssh", "root@#{host}", "LC_ALL=C", *piped_args, options)
+    end
   end
 
   # Tries to connect to the remote system as root (without a password or passphrase)
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def connect
-    LoggedCheetah.run "ssh", "-q", "-o", "BatchMode=yes", "root@#{host}"
+    LoggedCheetah.run "ssh", "-q", "-o", "BatchMode=yes", "#{remote_user}@#{host}"
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
       "Could not establish SSH connection to host '#{host}'. Please make sure that " \
-      "you can connect non-interactively as root, e.g. using ssh-agent.\n\n" \
+      "you can connect non-interactively as #{remote_user}, e.g. using ssh-agent.\n\n" \
       "To copy your default ssh key to the machine run:\n" \
-      "ssh-copy-id root@#{host}"
+      "ssh-copy-id #{remote_user}@#{host}"
     )
   end
 
@@ -91,9 +97,21 @@ class RemoteSystem < System
   # Machinery::Errors::RsyncFailed exception when it's not successful. Destination is
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
-    source="root@#{host}:/"
+    source = "#{remote_user}@#{host}:/"
+    rsync_path = use_sudo? ? "sudo rsync" : "rsync"
+    cmd = [
+      "rsync",
+      "-e", "ssh",
+      "--chmod=go-rwx",
+      "--files-from=-",
+      "--rsync-path=#{rsync_path}",
+      source,
+      destination,
+      stdout: :capture,
+      stdin: filelist.join("\n")
+    ]
     begin
-      LoggedCheetah.run("rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", source, destination, :stdout => :capture, :stdin => filelist.join("\n") )
+      LoggedCheetah.run(*cmd)
     rescue Cheetah::ExecutionFailed  => e
       raise Machinery::Errors::RsyncFailed.new(
       "Could not rsync files from host '#{host}'.\n" \
@@ -112,5 +130,9 @@ class RemoteSystem < System
     else
       raise
     end
+  end
+
+  def use_sudo?
+    remote_user != "root"
   end
 end
