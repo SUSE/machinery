@@ -33,6 +33,15 @@ describe Machinery do
       expect(Machinery::is_int?("")).to be(false)
     end
   end
+
+  describe ".scrub" do
+    it "replaces all invalid UTF-8 characters to \uFFFD (invalid UTF-8 character)" do
+      input = "a\255b"
+
+      out = Machinery.scrub(input)
+      expect(out).to eq("a\uFFFDb")
+    end
+  end
 end
 
 describe "#with_env" do
