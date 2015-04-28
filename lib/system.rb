@@ -28,7 +28,7 @@ class System
   abstract_method :retrieve_files
   abstract_method :read_file
 
-  def self.for(host, remote_user = nil)
+  def self.for(host, remote_user = "root")
     if host && host != "localhost"
       RemoteSystem.new(host, remote_user)
     else

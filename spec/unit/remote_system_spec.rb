@@ -39,7 +39,10 @@ describe RemoteSystem do
 
     describe "#use_sudo?" do
       specify { expect(remote_system.use_sudo?).to eq(false) }
-      specify { remote_system.remote_user = "machinery"; expect(remote_system.use_sudo?).to eq(true) }
+      specify {
+        remote_system.remote_user = "machinery"
+        expect(remote_system.use_sudo?).to eq(true)
+      }
     end
 
     describe "#requires_root?" do
@@ -75,7 +78,9 @@ describe RemoteSystem do
       end
 
       it "adheres to the remote_user option" do
-        expect(Cheetah).to receive(:run).with("ssh", "machinery@remotehost", "sudo", "LC_ALL=C", "ls", "/tmp", {})
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "machinery@remotehost", "sudo", "LC_ALL=C", "ls", "/tmp", {}
+        )
 
         remote_system.remote_user = "machinery"
         remote_system.run_command("ls", "/tmp")
@@ -84,7 +89,12 @@ describe RemoteSystem do
 
     describe "#retrieve_files" do
       it "retrieves files via rsync from a remote host" do
-        expect(Cheetah).to receive(:run).with("rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", "--rsync-path=rsync", "root@remotehost:/", "/tmp",  :stdout => :capture, :stdin => "/foo\n/bar" )
+        expect(Cheetah).to receive(:run).with(
+          "rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", "--rsync-path=rsync",
+          "root@remotehost:/", "/tmp",
+          stdout: :capture,
+          stdin: "/foo\n/bar"
+        )
 
         remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
       end
