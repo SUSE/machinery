@@ -73,6 +73,22 @@ describe Cli do
         allow(SystemDescription).to receive(:delete)
       end
 
+      it "shows a note if there are filters for the selected scopes" do
+        run_command([
+          "--exclude=/os/name=bar", "inspect", "description1", "--scope=os",
+        ])
+
+        expect(captured_machinery_output).to include("Filters are applied during inspection.")
+      end
+
+      it "does not show a note unless any filters for the selected scopes are set" do
+        run_command([
+          "--exclude=/foo=bar", "inspect", "description1", "--scope=os",
+        ])
+
+        expect(captured_machinery_output).not_to include("Filters are applied during inspection.")
+      end
+
       it "uses the provided host name if specified at the end" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
@@ -233,7 +249,6 @@ describe Cli do
       end
 
       describe "--verbose" do
-
         it "shows no filter message by default" do
           run_command([
             "inspect", example_host,
@@ -252,6 +267,17 @@ describe Cli do
             to include("The following filters are applied during inspection:")
           expect(captured_machinery_output).
             to match(/^\/unmanaged_files\/files\/name=.*$/)
+        end
+
+        it "shows skip-files filters during inspection" do
+          run_command([
+            "inspect", "--skip-files=/baz ", "--verbose", example_host,
+          ])
+
+          expect(captured_machinery_output).
+            to include("The following filters are applied during inspection:")
+          expect(captured_machinery_output).
+            to match(/\/baz/)
         end
       end
 

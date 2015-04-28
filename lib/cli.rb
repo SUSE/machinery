@@ -126,6 +126,12 @@ class Cli
     Cli.handle_error(e)
   end
 
+  def self.show_filter_note(scopes, filter)
+    if scopes.any? { |scope| !filter.element_filters_for_scope(scope).empty? }
+      Machinery::Ui.puts "\nFilters are applied during inspection.\n\n"
+    end
+  end
+
   def self.shift_arg(args, name)
     if !res = args.shift
       raise GLI::BadCommandLine.new("You need to provide the required argument #{name}.")
@@ -494,6 +500,8 @@ class Cli
       if options["verbose"] && !filter.empty?
         Machinery::Ui.puts "\nThe following filters are applied during inspection:"
         Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+      else
+        show_filter_note(scope_list, filter)
       end
 
       inspector_task.inspect_system(
