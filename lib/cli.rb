@@ -484,6 +484,9 @@ class Cli
       if options["show"]
         inspect_options[:show] = true
       end
+      if options["verbose"]
+        inspect_options[:verbose] = true
+      end
       if options["extract-files"] || options["extract-changed-config-files"]
         inspect_options[:extract_changed_config_files] = true
       end
@@ -604,7 +607,7 @@ class Cli
 
       inspected_filters = description.filter_definitions("inspect")
 
-      if options["verbose"]
+      if options[:verbose]
         if !inspected_filters.empty?
           Machinery::Ui.puts "\nThe following filters were applied during inspection:"
           Machinery::Ui.puts inspected_filters.join("\n") + "\n\n"
