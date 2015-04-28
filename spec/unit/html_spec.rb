@@ -20,6 +20,16 @@ require_relative "spec_helper"
 describe Html do
   initialize_system_description_factory_store
 
+  describe ".escape_javascript" do
+    it "escapes the given signs for javascript" do
+      input = "a\\b'c\"d"
+
+      output = Html.escape_javascript(input)
+      expect(output).to eq("a\\\\b\\'c\\\"d")
+    end
+  end
+
+
   describe ".generate" do
     it "generates a web page" do
       description = create_test_description(store_on_disk: true)

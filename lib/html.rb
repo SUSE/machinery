@@ -16,6 +16,10 @@
 # you may find current contact information at www.suse.com
 
 class Html
+  def self.escape_javascript(object)
+    object.gsub(/([\\'"])/, "\\\\\\1")
+  end
+
   def self.generate(description)
     template = Haml::Engine.new(
       File.read(File.join(Machinery::ROOT, "html", "index.html.haml"))
@@ -36,7 +40,7 @@ class Html
 
     # Generate JSON and escape the 's and "s in order to not break the JSON
     # string in javascript.
-    json = description.to_hash.to_json.gsub("\\", '\\\\\\').gsub("'", "\\\\'").gsub("\"", "\\\\\"")
+    json = escape_javascript(description.to_hash.to_json)
     File.write(File.join(target, "assets/description.js"),<<-EOT
       function getDescription() {
         return JSON.parse('#{json}'
