@@ -21,10 +21,10 @@ require_relative "lib/constants"
 require_relative "lib/version"
 require_relative "tools/release"
 require_relative "tools/upgrade_test_descriptions"
+require_relative "lib/machinery"
 require "rspec/core/rake_task"
 require "cheetah"
 require "packaging"
-require lib/machinery
 
 desc "Run RSpec code examples in spec/unit"
 RSpec::Core::RakeTask.new("spec:unit") do |t|
