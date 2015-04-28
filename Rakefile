@@ -61,7 +61,7 @@ namespace :man_pages do
     manpage = ""
     Inspector.all_scopes.each do |scope|
       manpage += "* #{scope}\n\n"
-      manpage += File.read("plugins/docs/#{scope}.md")
+      manpage += File.read("plugins/#{scope}/#{scope}.md")
       manpage += "\n"
     end
     manpage += "\n"
