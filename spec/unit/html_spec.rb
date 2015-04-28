@@ -29,7 +29,6 @@ describe Html do
     end
   end
 
-
   describe ".generate" do
     it "generates a web page" do
       description = create_test_description(store_on_disk: true)
