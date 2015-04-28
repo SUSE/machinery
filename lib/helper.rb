@@ -19,6 +19,18 @@ module Machinery
   def self.is_int?(string)
     (string =~ /^\d+$/) != nil
   end
+
+  # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
+  # UTF-8.
+  def self.scrub(s)
+    # We have a string in UTF-8 with possible invalid byte sequences. It turns
+    # out that String#encode can remove these sequences when given appropriate
+    # options, but just converting into UTF-8 would be a no-op. So let's convert
+    # into UTF-16 (which has the same character set as UTF-8) and back.
+    #
+    # See also: http://stackoverflow.com/a/21315619
+    s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
+  end
 end
 
 def with_c_locale(&block)

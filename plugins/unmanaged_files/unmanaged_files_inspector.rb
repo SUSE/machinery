@@ -178,8 +178,8 @@ class UnmanagedFilesInspector < Inspector
     out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
       next unless raw_path && !raw_path.empty?
 
-      path = scrub(raw_path)
-      link = scrub(raw_link)
+      path = Machinery.scrub(raw_path)
+      link = Machinery.scrub(raw_link)
 
       if [path, link].any? { |f| f.include?("\uFFFD") }
         broken_names = []
@@ -388,18 +388,6 @@ class UnmanagedFilesInspector < Inspector
   end
 
   private
-
-  # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
-  # UTF-8.
-  def scrub(s)
-    # We have a string in UTF-8 with possible invalid byte sequences. It turns
-    # out that String#encode can remove these sequences when given appropriate
-    # options, but just converting into UTF-8 would be a no-op. So let's convert
-    # into UTF-16 (which has the same character set as UTF-8) and back.
-    #
-    # See also: http://stackoverflow.com/a/21315619
-    s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
-  end
 
   def btrfs_subvolumes
     @system.run_command(

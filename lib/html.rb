@@ -77,7 +77,7 @@ class Html
   end
 
   def self.diff_to_object(diff)
-    diff.encode!("UTF-8", invalid: :replace, undef: :replace)
+    diff = Machinery.scrub(diff)
     lines = diff.lines[2..-1]
     diff_object = {
       file: diff[/--- a(.*)/, 1],
