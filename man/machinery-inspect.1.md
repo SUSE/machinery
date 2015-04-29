@@ -44,8 +44,8 @@ trigger errors.
 
   * `-r USER`, `--remote-user=USER` (optional):
     Defines the user which is used to access the inspected system via SSH.
-    This user needs to be allowed to run certain commands using sudo.
-    See /usr/share/doc/packages/machinery/sudoers.machinery for more information.
+    This user needs to be allowed to run certain commands using sudo (see
+    PREREQUISITES for more information).
     To change the default-user use `machinery config remote-user USER`
 
   * `-x`, `--extract-files` (optional):
@@ -101,6 +101,10 @@ trigger errors.
     * `find`
     * `tar`
 
+  * When inspecting as non-root the user has to have the following command
+    whitelist given in the sudoers file:
+
+    machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/usr/bin/rsync,/bin/rpm -V *,/bin/tar --create *
 
 ### EXAMPLES
 
