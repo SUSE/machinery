@@ -145,25 +145,16 @@ class UnmanagedFilesInspector < Inspector
     excluded_files = []
 
     # compute command line
-    cmd = "find #{dir.shellescape} -xdev -maxdepth 1 -maxdepth #{depth} "
-    cmd += '-printf "%y\0%P\0%l\0"'
+    cmd = ["find", dir, "-xdev", "-maxdepth", "1", "-maxdepth", depth]
+    cmd += ["-printf", '%y\0%P\0%l\0']
 
-    # Cheetah seems to be unable to handle binary zeroes "\0" in parameters
-    # misuse stdin for command
-    #
-    # Filenames can contain invalid UTF-8 characters, so we treat the data as
-    # binary information first while splitting the raw output and then convert
-    # the separate strings to UTF-8, replacing invalid characters with the
-    # "REPLACEMENT CHARACTER" (U+FFFD). That way we have both the raw data
-    # (which is needed in order to be able to access the files) and the cleaned
-    # string which can be safely used.
     out = ""
     begin
       out = @system.run_command(
-        "/bin/bash",
-        stdin:           cmd,
+        *cmd,
         stdout:          :capture,
-        disable_logging: true
+        disable_logging: true,
+        privileged:      true
       ).force_encoding("binary")
     rescue Cheetah::ExecutionFailed => e
       out = e.stdout
@@ -178,6 +169,12 @@ class UnmanagedFilesInspector < Inspector
     out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
       next unless raw_path && !raw_path.empty?
 
+      # Filenames can contain invalid UTF-8 characters, so we treat the data as
+      # binary information first while splitting the raw output and then convert
+      # the separate strings to UTF-8, replacing invalid characters with the
+      # "REPLACEMENT CHARACTER" (U+FFFD). That way we have both the raw data
+      # (which is needed in order to be able to access the files) and the cleaned
+      # string which can be safely used.
       path = Machinery.scrub(raw_path)
       link = Machinery.scrub(raw_link)
 

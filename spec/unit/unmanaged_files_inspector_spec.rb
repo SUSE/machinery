@@ -244,8 +244,6 @@ describe UnmanagedFilesInspector do
         "/usr/share/info"                => "sinfo"
       }
       dirs.each do |d|
-        cmd = "find #{d.shellescape} -xdev -maxdepth 1 -maxdepth 3 -printf \"%y\\0%P\\0%l\\0\""
-
         # non_empty_dirs maps dirs to extension names where content of dir is stored
         # files with test content is saved in find_#{ext}
         ext = non_empty_dirs[d]
@@ -259,8 +257,8 @@ describe UnmanagedFilesInspector do
           end
         end
         expect(system).to receive(:run_command).with(
-          "/bin/bash",
-          { :stdin => cmd, :stdout => :capture, :disable_logging => true }
+          "find", d.shellescape, "-xdev", "-maxdepth", "1", "-maxdepth", 3, "-printf", "%y\\0%P\\0%l\\0",
+          { stdout: :capture, disable_logging: true, privileged: true }
         ).and_return(ret)
       end
     end
