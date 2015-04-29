@@ -37,14 +37,6 @@ describe RemoteSystem do
       allow_any_instance_of(RemoteSystem).to receive(:connect)
     end
 
-    describe "#use_sudo?" do
-      specify { expect(remote_system.use_sudo?).to eq(false) }
-      specify {
-        remote_system.remote_user = "machinery"
-        expect(remote_system.use_sudo?).to eq(true)
-      }
-    end
-
     describe "#requires_root?" do
       it "returns false" do
         expect(remote_system.requires_root?).to be(false)
@@ -79,11 +71,20 @@ describe RemoteSystem do
 
       it "adheres to the remote_user option" do
         expect(Cheetah).to receive(:run).with(
-          "ssh", "machinery@remotehost", "sudo", "LC_ALL=C", "ls", "/tmp", {}
+          "ssh", "machinery@remotehost", "LC_ALL=C", "ls", "/tmp", {}
         )
 
         remote_system.remote_user = "machinery"
         remote_system.run_command("ls", "/tmp")
+      end
+
+      it "uses sudo when necessary" do
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "machinery@remotehost", "sudo", "LC_ALL=C", "ls", "/tmp"
+        )
+
+        remote_system.remote_user = "machinery"
+        remote_system.run_command("ls", "/tmp", privileged: true)
       end
     end
 

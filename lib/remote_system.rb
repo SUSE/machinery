@@ -72,11 +72,9 @@ class RemoteSystem < System
       cheetah_class = LoggedCheetah
     end
 
-    if use_sudo?
-      cheetah_class.run("ssh", "#{remote_user}@#{host}", "sudo", "LC_ALL=C", *piped_args, options)
-    else
-      cheetah_class.run("ssh", "root@#{host}", "LC_ALL=C", *piped_args, options)
-    end
+    sudo = "sudo" if options[:privileged] && remote_user != "root"
+    cmds = ["ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=C", *piped_args, options].compact
+    cheetah_class.run(*cmds)
   end
 
   # Tries to connect to the remote system as root (without a password or passphrase)
@@ -98,7 +96,12 @@ class RemoteSystem < System
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     source = "#{remote_user}@#{host}:/"
-    rsync_path = use_sudo? ? "sudo rsync" : "rsync"
+    if remote_user != "root"
+      rsync_path = "sudo rsync"
+    else
+      rsync_path = "rsync"
+    end
+
     cmd = [
       "rsync",
       "-e", "ssh",
@@ -122,7 +125,7 @@ class RemoteSystem < System
 
   # Reads a file from the System. Returns nil if it does not exist.
   def read_file(file)
-    run_command("cat", file, stdout: :capture)
+    run_command("cat", file, stdout: :capture, privileged: true)
   rescue Cheetah::ExecutionFailed => e
     if e.status.exitstatus == 1
       # File not found, return nil
@@ -130,9 +133,5 @@ class RemoteSystem < System
     else
       raise
     end
-  end
-
-  def use_sudo?
-    remote_user != "root"
   end
 end

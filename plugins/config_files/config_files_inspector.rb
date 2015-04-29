@@ -54,7 +54,8 @@ class ConfigFilesInspector < Inspector
         "rpm", "-V",
         "--nodeps", "--nodigest", "--nosignature", "--nomtime", "--nolinkto",
         pkg,
-        :stdout => :capture
+        stdout: :capture,
+        privileged: true
       )
     # rpm returns 1 as exit code when modified config files are detected
     # currently cheetah cannot be told to ignore this and throws ExecutionFailed

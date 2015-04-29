@@ -24,8 +24,13 @@
 #   S.5......  c /etc/pulse/client.conf
 #   ntp-4.2.6p5:
 #   S.5......  c /etc/ntp.conf
+
+if [ $UID -ne "0" ]; then
+   SUDOPREFIX="sudo"
+fi
+
 for package in `rpm -qa --queryformat "%{NAME}-%{VERSION}\\n"`; do
-  CHANGES=`rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $package`;
+  CHANGES=`$SUDOPREFIX rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $package`;
   if [ -n "$CHANGES" ]; then
     echo -e "$package:\\n$CHANGES";
   fi;

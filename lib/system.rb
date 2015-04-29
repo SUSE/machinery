@@ -57,8 +57,9 @@ class System
       run_command(
         "tar", "--create", "--gzip", "--null", "--files-from=-",
         *exclude.flat_map { |f| ["--exclude", f]},
-        :stdout => out,
-        :stdin => filelist
+        stdout: out,
+        stdin: filelist,
+        privileged: true
       )
     rescue Cheetah::ExecutionFailed => e
       if e.status.exitstatus == 1
