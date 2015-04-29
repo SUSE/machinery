@@ -109,11 +109,21 @@ class ServicesInspector < Inspector
       stdout: :capture
     )
 
-    services = output.lines.map do |line|
+    # Run chkconfig output through regular expressions to parse
+    # seperatly for systemv and xinetd services.
+    services = output.lines.select do |line|
+      line =~ /^\S+(\s+\d:(on|off))+.*$/
+    end.map do |line|
       state = []
       name, state[0], state[1], state[2], state[3], state[4], state[5], state[6] = line.split(/\s+/)
       Service.new(name: name, state: state[runlevel.to_i].split(":")[1])
     end
+
+    services += output.lines.select { |line| line =~ /^\s+\S+:\s+(on|off).*$/ }.map do |line|
+      name, state = line.split(/:/)
+      Service.new(name: name.strip, state: state.strip)
+    end
+
     services
   end
 end

@@ -163,6 +163,11 @@ EOF
         <<-EOF
 crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
 dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
+
+xinetd based services:
+        chargen-dgram:  off
+        chargen-stream: on
+        eklogin:        off
 EOF
 
       allow(system).to receive(:has_command?).
@@ -184,7 +189,10 @@ EOF
 
       expect(services).to eq([
         Service.new(name: "crond", state: "on"),
-        Service.new(name: "dnsmasq", state: "off")
+        Service.new(name: "dnsmasq", state: "off"),
+        Service.new(name: "chargen-dgram", state: "off"),
+        Service.new(name: "chargen-stream", state: "on"),
+        Service.new(name: "eklogin", state: "off")
       ])
     end
   end
