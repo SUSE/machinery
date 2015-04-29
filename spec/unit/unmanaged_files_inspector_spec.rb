@@ -257,7 +257,7 @@ describe UnmanagedFilesInspector do
           end
         end
         expect(system).to receive(:run_command).with(
-          "find", d.shellescape, "-xdev", "-maxdepth", "1", "-maxdepth", 3, "-printf", "%y\\0%P\\0%l\\0",
+          "find", d, "-xdev", "-maxdepth", "1", "-maxdepth", 3, "-printf", "%y\\0%P\\0%l\\0",
           { stdout: :capture, disable_logging: true, privileged: true }
         ).and_return(ret)
       end

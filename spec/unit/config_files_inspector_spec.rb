@@ -233,7 +233,8 @@ EOF
           "--nodeps", "--nodigest", "--nosignature",
           "--nomtime", "--nolinkto",
           "apache2-2.4.6",
-          stdout: :capture
+          stdout: :capture,
+          privileged: true
         ).and_return(rpm_v_apache_output)
 
         config_file_list = subject.config_file_changes("apache2-2.4.6")

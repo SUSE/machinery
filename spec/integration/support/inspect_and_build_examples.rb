@@ -20,7 +20,7 @@ shared_examples "inspect and build" do |bases|
     describe "rebuild inspected system", :slow => true do
       before(:all) do
         @subject_system = start_system(box: base)
-        prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
+        prepare_machinery_for_host(@machinery, @subject_system.ip, username: "root", password: "vagrant")
       end
 
       it "inspects" do

@@ -36,13 +36,9 @@ def prepare_local_machinery_for_host(system, ip)
 end
 
 def prepare_remote_machinery_for_host(system, ip, opts)
-  opts = {
-    user:     "vagrant"
-  }.merge(opts)
-
   if opts[:password]
     SshKeysImporter.import(
-      ip, opts[:password], File.join(Machinery::ROOT, "spec/keys/machinery_rsa.pub")
+      ip, opts[:username], opts[:password], File.join(Machinery::ROOT, "spec/keys/machinery_rsa.pub")
     )
   end
 
@@ -55,7 +51,7 @@ def prepare_remote_machinery_for_host(system, ip, opts)
 
   system.run_command(
     "echo -e \"Host #{ip}\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null\" >> ~/.ssh/config",
-    as: opts[:user]
+    as: "vagrant"
   )
 end
 
