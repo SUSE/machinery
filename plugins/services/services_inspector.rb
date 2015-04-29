@@ -109,7 +109,7 @@ class ServicesInspector < Inspector
       stdout: :capture
     )
 
-    # Run chkconfig output through regular expressions to parse 
+    # Run chkconfig output through regular expressions to parse
     # seperatly for systemv and xinetd services.
     services = output.lines.select do |line|
       line =~ /^\S+(\s+\d:(on|off))+.*$/
