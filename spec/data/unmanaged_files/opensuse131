@@ -659,3 +659,13 @@
     Mode: 660
     Size: 0 B
 
+  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-dir-with-' quote '/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 1
+
+  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-file-with-' quote ' (file)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B

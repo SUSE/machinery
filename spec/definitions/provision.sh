@@ -6,6 +6,9 @@ touch /usr/local/magicapp/data/two
 touch /etc/magicapp.conf
 mkdir /var/lib/chroot_proc
 mount --bind /proc /var/lib/chroot_proc
+rpm -i /vagrant/SUSE-test-quote-char-1.0-1.noarch.rpm || rpm -i /vagrant/RedHat-test-quote-char-1.0-1.noarch.rpm
+echo 42 > /opt/test-quote-char/test-dir-name-with-\'\ quote-char\ \'/unmanaged-file-with-\'\ quote\ \'
+mkdir /opt/test-quote-char/test-dir-name-with-\'\ quote-char\ \'/unmanaged-dir-with-\'\ quote\ \'
 # fix issues of alternating names
 rm -rf "/var/lib/yum/history/"*
 

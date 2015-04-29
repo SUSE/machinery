@@ -262,17 +262,11 @@
     Mode: 600
     Size: 0 B
 
-  * /root/.local/ (dir)
-    User/Group: root:root
+  * /home/machinery/ (dir)
+    User/Group: machinery:users
     Mode: 755
     Size: 0 B
     Files: 4
-
-  * /root/.ssh/ (dir)
-    User/Group: root:root
-    Mode: 700
-    Size: 808 B
-    Files: 2
 
   * /srv/test/ (dir)
     User/Group: root:root
@@ -488,3 +482,18 @@
     Mode: 660
     Size: 0 B
 
+  * /var/spool/mail/machinery (file)
+    User/Group: machinery:mail
+    Mode: 660
+    Size: 0 B
+
+  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-dir-with-' quote '/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 1
+
+  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-file-with-' quote ' (file)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
