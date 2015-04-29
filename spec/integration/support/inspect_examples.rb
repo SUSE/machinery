@@ -15,24 +15,34 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "inspect" do |bases|
-  bases.each do |base|
-    describe "inspect #{base} system" do
-      before(:all) do
-        @subject_system = start_system(box: base)
-        prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
-      end
-
-      include_examples "inspect packages", base
-      include_examples "inspect patterns", base
-      include_examples "inspect repositories", base
-      include_examples "inspect os", base
-      include_examples "inspect services", base
-      include_examples "inspect users", base
-      include_examples "inspect groups", base
-      include_examples "inspect config files", base
-      include_examples "inspect changed managed files", base
-      include_examples "inspect unmanaged files", base
+shared_examples "inspect" do |base, username, password|
+  describe "inspect #{base} system" do
+    let(:inspect_options) {
+      "--remote-user=#{username}" if username != "root"
+    }
+    before(:all) do
+      @subject_system = start_system(
+        box: base,
+        username: username,
+        password: password
+      )
+      prepare_machinery_for_host(
+        @machinery,
+        @subject_system.ip,
+        username: username,
+        password: password
+      )
     end
+
+    include_examples "inspect packages", base
+    include_examples "inspect patterns", base
+    include_examples "inspect repositories", base
+    include_examples "inspect os", base
+    include_examples "inspect services", base
+    include_examples "inspect users", base
+    include_examples "inspect groups", base
+    include_examples "inspect config files", base
+    include_examples "inspect changed managed files", base
+    include_examples "inspect unmanaged files", base
   end
 end

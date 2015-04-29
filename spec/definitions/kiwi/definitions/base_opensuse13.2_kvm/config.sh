@@ -46,13 +46,14 @@ suseConfig
 date > /etc/vagrant_box_build_time
 # set vagrant sudo
 printf "%b" "
-# added by veewee/postinstall.sh
+# added by kiwi/config.sh
 vagrant ALL=(ALL) NOPASSWD: ALL
+machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/usr/bin/rsync,/bin/rpm -V *,/bin/tar --create *
 " >> /etc/sudoers
 
 # speed-up remote logins
 printf "%b" "
-# added by veewee/postinstall.sh
+# added by kiwi/config.sh
 UseDNS no
 " >> /etc/ssh/sshd_config
 

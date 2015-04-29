@@ -20,7 +20,7 @@ shared_examples "inspect changed managed files" do |base|
     it "extracts list of managed files" do
       measure("Inspect system") do
         @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} --scope=changed-managed-files --extract-files",
+          "#{machinery_command} inspect #{@subject_system.ip} #{inspect_options} --scope=changed-managed-files --extract-files",
           as: machinery_config[:owner]
         )
       end

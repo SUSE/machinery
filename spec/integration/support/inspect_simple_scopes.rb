@@ -20,7 +20,8 @@ shared_examples "inspect simple scope" do |scope, base|
     it "inspects #{scope}" do
       measure("Inspect #{scope}") do
         @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} --scope=#{scope} --name=test",
+          "#{machinery_command} inspect #{@subject_system.ip} #{inspect_options} " \
+            "--scope=#{scope} --name=test",
           :as => "vagrant",
           :stdout => :capture
         )

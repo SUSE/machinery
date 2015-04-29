@@ -26,6 +26,9 @@
     <users group="vagrant">
         <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant"/>
     </users>
+    <users group="users">
+        <user name="machinery" password="linux" pwdformat="plain" home="/home/machinery"/>
+    </users>
     <repository type="yast2">
         <source path="obs://13.2/repo/oss"/>
     </repository>
