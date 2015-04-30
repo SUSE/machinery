@@ -145,11 +145,15 @@ class Release
           mail    = $3
           changes[version] ||= "\n" + create_rpm_header(version, time, mail)
           news[version]    ||= ""
-        elsif line =~ /^\* /
+        elsif line =~ /^\* / || line =~ /^  \w/
           if file.include?("RPM_CHANGES")
             changes[version] += line.gsub(/^\* /, "- ")
           else
-            news[version] += line.gsub(/^\* /, "  * ")
+            if line =~ /^  \w/
+              news[version] += line.gsub(/^\  /, "    ")
+            else
+              news[version] += line.gsub(/^\* /, "  * ")
+            end
           end
         end
       end
