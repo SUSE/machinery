@@ -32,7 +32,8 @@ shared_examples "inspect unmanaged files" do |base|
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
         @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} #{inspect_options} " \
+          "#{machinery_command} inspect #{@subject_system.ip} " \
+            "#{inspect_options if defined?(inspect_options)} " \
             "--scope=unmanaged-files --skip-files=/etc/ssh --extract-files",
           as: "vagrant"
         )
