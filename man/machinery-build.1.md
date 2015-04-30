@@ -53,23 +53,8 @@ built image. The list of filters is shown at the beginning of the build.
 
 Machinery only supports building x86_64 images on x86_64 systems.
 
-The following combinations of build hosts and targets are supported:
-
-  * SUSE Linux Enterprise 12
-
-    Can build SUSE Linux Enterprise 12
-
-  * openSUSE 13.1
-
-    Can build SUSE Linux Enterprise 11 and openSUSE 13.1
-
-  * openSUSE 13.2
-
-    Can build SUSE Linux Enterprise 11, openSUSE 13.1 and openSUSE 13.2
-
-  * openSUSE Tumbleweed
-
-    Can build openSUSE 13.2
+To see the list of supported combinations of build hosts and targets run
+`machinery build --help`.
 
 ### EXAMPLES
 

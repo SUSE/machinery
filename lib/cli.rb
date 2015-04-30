@@ -56,6 +56,16 @@ class Cli
 
   GLI::Commands::Help.skips_post = false
 
+  def self.buildable_distributions
+    distribution_string = ""
+    Os.supported_host_systems.each do |distribution|
+      distribution_string += "* #{distribution.canonical_name}\n\n"
+      distribution_string += distribution.buildable_systems.map(&:canonical_name).join(", ")
+      distribution_string += "\n\n"
+    end
+    distribution_string
+  end
+
   def self.handle_error(e)
     case e
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
@@ -232,6 +242,10 @@ class Cli
   long_desc <<-LONGDESC
     Build image from a given system description and store it to the given
     location.
+
+    The following combinations of build hosts and targets are supported:
+
+    #{buildable_distributions}
   LONGDESC
   arg "NAME"
   command :build do |c|
