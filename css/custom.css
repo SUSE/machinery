@@ -42,7 +42,7 @@ ol.man-decor li.tc {text-align:center;letter-spacing:4px}
 ol.man-decor li.tr {text-align:right;float:right}
 
 
-body { 
+body {
   background: #bcb7a5;
 }
 
@@ -56,10 +56,10 @@ body {
 }
 
 .scrollToTop{
-  width:80px; 
+  width:80px;
   height:60px;
-  padding:10px; 
-  text-align:center; 
+  padding:10px;
+  text-align:center;
   font-weight: bold;
   color: #444;
   text-decoration: none;
@@ -130,7 +130,7 @@ body {
 
 .schema {
   margin-top: 10px;
-  padding-left:22%;  
+  padding-left:22%;
   z-index: 8000;
   width:100%;
   height:100%;
@@ -259,7 +259,7 @@ font-size: 16px;
   font-family: 'Special Elite', cursive;
   font-size: 18px;
   margin: 40px 0px 20px 0px;
-  text-align: center; 
+  text-align: center;
   color: #695641;
   font-size: 16px;
   margin-top: 20px;
@@ -271,7 +271,7 @@ font-size: 16px;
   font-size: 18px;
   margin-top: 20px;
   text-align: center;
-  float: left;
+  display: inline-block;
 }
 
 .install {
@@ -280,7 +280,7 @@ font-size: 16px;
   font-size: 18px;
   margin-top: 20px;
   text-align: center;
-  float: left;
+  display: inline-block;
 }
 
 .gem {
@@ -289,7 +289,7 @@ font-size: 16px;
   font-size: 18px;
   margin-top: 20px;
   text-align: center;
-  float: left;
+  display: inline-block;
   text-decoration: none;
 }
 
@@ -315,7 +315,7 @@ font-size: 16px;
 
 @media (min-width: 600px) {
   .wrap-typewriter {
-   
+
     margin: auto;
     margin-bottom: 10%;
     font-family: 'Special Elite', cursive;
@@ -339,14 +339,14 @@ font-size: 16px;
     display: inline-block;
   }
 }
-  
+
     .headline-philosophy {
     font-family: 'Special Elite', cursive;
     font-size: 4.2em;
     margin: 50px 0px 0px 0px;
     color: #3c3935;
   }
-  
+
    .headline {
     font-family: 'Special Elite', cursive;
     font-size: 125px;
