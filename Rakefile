@@ -22,6 +22,7 @@ require_relative "lib/version"
 require_relative "tools/release"
 require_relative "tools/upgrade_test_descriptions"
 require_relative "lib/machinery"
+require_relative "helpers/inspector_files"
 require "rspec/core/rake_task"
 require "cheetah"
 require "packaging"
@@ -138,6 +139,19 @@ task :release, [:type] do |task, args|
   release.check
 
   release.publish
+end
+
+desc "Build files in destination directory with scope information for integration tests"
+
+# This command creates reference data for integration tests
+# by inspecting existing machines.
+# Therefor it generates files with information of each scope.
+
+task :inspector_files, [:ip_adress, :destination] do |task, args|
+  ip_adress = args[:ip_adress]
+  distri = args[:destination]
+  CreateScopeInfoTestData.inspect_system(ip_adress)
+  CreateScopeInfoTestData.write_inspector_file(distri)
 end
 
 desc "Upgrade machinery unit/integration test descriptions"
