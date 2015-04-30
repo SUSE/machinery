@@ -74,6 +74,13 @@ describe Cli do
       end
 
       it "shows a note if there are filters for the selected scopes" do
+        # Manually create the global exclude option. It depends on the experimental_features option,
+        # but that is evaluated when the class is loaded, not when the test is run, so it can't be
+        # stubbed.
+        if !Cli.flags[:exclude]
+          Cli.flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
+        end
+
         run_command([
           "--exclude=/os/name=bar", "inspect", "description1", "--scope=os",
         ])
