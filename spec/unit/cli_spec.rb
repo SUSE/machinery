@@ -85,7 +85,8 @@ describe Cli do
           "--exclude=/os/name=bar", "inspect", "description1", "--scope=os",
         ])
 
-        expect(captured_machinery_output).to include("Filters are applied during inspection.")
+        expect(captured_machinery_output).
+          to include("Note: There are filters being applied during inspection.")
       end
 
       it "does not show a note unless any filters for the selected scopes are set" do
