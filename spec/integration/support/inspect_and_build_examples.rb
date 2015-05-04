@@ -17,7 +17,7 @@
 
 shared_examples "inspect and build" do |bases|
   bases.each do |base|
-    describe "rebuild inspected system", :slow => true do
+    describe "rebuild inspected system", slow: true do
       before(:all) do
         @subject_system = start_system(box: base)
         prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
@@ -29,9 +29,10 @@ shared_examples "inspect and build" do |bases|
       it "inspects" do
         measure("Inspect") do
           @machinery.run_command(
-              "machinery --exclude=/packages/name=test-quote-char inspect #{@subject_system.ip} -x --name=build_test",
-              :as => "vagrant",
-              :stdout => :capture
+            "machinery --exclude=/packages/name=test-quote-char inspect #{@subject_system.ip} " \
+            " -x --name=build_test",
+            as: "vagrant",
+            stdout: :capture
           )
         end
       end
@@ -39,9 +40,10 @@ shared_examples "inspect and build" do |bases|
       it "builds" do
         measure("Build") do
           @machinery.run_command(
-              "machinery build -i /home/vagrant/build_image -d -s > /tmp/#{base}-build.log build_test",
-              :as => "vagrant",
-              :stdout => :capture
+            "machinery build -i /home/vagrant/build_image -d -s " \
+            "> /tmp/#{base}-build.log build_test",
+            as: "vagrant",
+            stdout: :capture
           )
         end
       end
@@ -49,7 +51,7 @@ shared_examples "inspect and build" do |bases|
       it "extracts and boots" do
         measure("Extract and boot") do
           images = @machinery.run_command(
-            "find", "/home/vagrant/build_image", "-name", "*qcow2", :stdout => :capture
+            "find", "/home/vagrant/build_image", "-name", "*qcow2", stdout: :capture
           )
           expect(images).not_to be_empty
 
@@ -62,7 +64,7 @@ shared_examples "inspect and build" do |bases|
 
           # Run 'ls' via ssh in the built system to verify its booted and accessible.
           @machinery.run_command(
-              "ls", "/tmp", :stdout => :capture
+            "ls", "/tmp", stdout: :capture
           )
         end
       end
