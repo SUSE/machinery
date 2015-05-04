@@ -21,12 +21,15 @@ shared_examples "inspect and build" do |bases|
       before(:all) do
         @subject_system = start_system(box: base)
         prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
+
+        # Enabled experimental features so that the --exclude option can be used
+        @machinery.run_command("machinery config experimental-features on", as: "vagrant")
       end
 
       it "inspects" do
         measure("Inspect") do
           @machinery.run_command(
-              "machinery inspect #{@subject_system.ip} -x --name=build_test",
+              "machinery --exclude=/packages/name=test-quote-char inspect #{@subject_system.ip} -x --name=build_test",
               :as => "vagrant",
               :stdout => :capture
           )
