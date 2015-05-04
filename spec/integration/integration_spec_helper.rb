@@ -39,7 +39,7 @@ def prepare_remote_machinery_for_host(system, ip, opts)
   if opts[:password]
     SshKeysImporter.import(
       ip,
-      opts[:username],
+      opts[:username] || "root",
       opts[:password],
       File.join(Machinery::ROOT, "spec/keys/machinery_rsa.pub")
     )
