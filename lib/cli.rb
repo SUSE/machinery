@@ -40,7 +40,7 @@ class Cli
   end
 
   post do |global_options,command,options,args|
-    if command.is_a?(GLI::Commands::Help) && !global_options[:version]
+    if command.is_a?(GLI::Commands::Help) && !global_options[:version] && ARGV == ["help"]
 
       Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
       if @config.hints
