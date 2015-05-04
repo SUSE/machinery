@@ -24,10 +24,10 @@
         <user name="root" password="vagrant" pwdformat="plain" home="/root"/>
     </users>
     <users group="vagrant">
-        <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant"/>
+        <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant" id="1000"/>
     </users>
     <users group="users">
-        <user name="machinery" password="linux" pwdformat="plain" home="/home/machinery"/>
+        <user name="machinery" password="linux" pwdformat="plain" home="/home/machinery" id="1001"/>
     </users>
     <repository type="yast2">
         <source path="obs://13.2/repo/oss"/>
