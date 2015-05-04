@@ -61,7 +61,7 @@ shared_examples "build" do |distribution|
 
         # Boot built image and extract system description
         @test_system = start_system(image: local_image)
-        prepare_machinery_for_host(@machinery, @test_system.ip, username: "root", password: "linux")
+        prepare_machinery_for_host(@machinery, @test_system.ip, password: "linux")
 
         measure("inspect image") do
           @machinery.run_command(
