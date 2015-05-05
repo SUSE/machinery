@@ -36,7 +36,10 @@ module Machinery
       end
 
       def close_pager
-        @pager.close if @pager
+        return if !@pager
+
+        Process.kill("TERM", @pager.pid)
+        @pager.close
       end
 
       def puts(output)
