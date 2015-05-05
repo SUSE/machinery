@@ -128,7 +128,7 @@ class Cli
 
   def self.show_filter_note(scopes, filter)
     if scopes.any? { |scope| !filter.element_filters_for_scope(scope).empty? }
-      Machinery::Ui.puts "\nFilters are applied during inspection.\n\n"
+      Machinery::Ui.puts "\nNote: There are filters being applied during inspection.\n\n"
     end
   end
 
