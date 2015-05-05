@@ -67,6 +67,8 @@ class Cli
   end
 
   def self.handle_error(e)
+    Machinery::Ui.close_pager
+
     case e
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
         GLI::UnknownCommand, GLI::BadCommandLine, OptionParser::MissingArgument
