@@ -86,7 +86,8 @@ describe Cli do
         ])
 
         expect(captured_machinery_output).
-          to include("Note: There are filters being applied during inspection.")
+          to include("Note: There are filters being applied during inspection. " \
+            "(Use `--verbose` option to show the filters)")
       end
 
       it "does not show a note unless any filters for the selected scopes are set" do
