@@ -48,7 +48,6 @@ date > /etc/vagrant_box_build_time
 printf "%b" "
 # added by kiwi/config.sh
 vagrant ALL=(ALL) NOPASSWD: ALL
-machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/usr/bin/rsync,/bin/rpm -V *,/bin/tar --create *
 " >> /etc/sudoers
 
 # speed-up remote logins
