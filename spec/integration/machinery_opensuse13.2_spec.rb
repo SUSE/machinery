@@ -39,6 +39,6 @@ describe "machinery@openSUSE 13.2" do
   include_examples "generate html"
   include_examples "analyze", "opensuse131"
   include_examples "inspect", ["opensuse132", "machinery", "linux"]
-  include_examples "inspect", ["opensuse131", "root", "vagrant"]
+  include_examples "inspect", ["opensuse131", "machinery", "linux"]
   include_examples "build", "opensuse131"
 end
