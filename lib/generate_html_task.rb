@@ -20,5 +20,6 @@ class GenerateHtmlTask
     output = Html.generate(description)
     Machinery::Ui.puts "The generated HTML file is stored in: \n" +
       "#{output}"
+    Hint.print(:share_html_contents, directory: output)
   end
 end

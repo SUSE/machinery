@@ -17,11 +17,13 @@
 
 require_relative "spec_helper"
 
-
 describe GenerateHtmlTask do
+  def enable_hints(enabled)
+    allow(Machinery::Config).to receive(:new).and_return(double(hints: enabled))
+  end
+
   initialize_system_description_factory_store
   capture_machinery_output
-
 
   subject { GenerateHtmlTask.new }
   let(:description) { create_test_description(store_on_disk: true) }
@@ -40,6 +42,12 @@ describe GenerateHtmlTask do
         "The generated HTML file is stored in: \n" \
         "#{description.store.description_path(description.name)}"
       )
+    end
+
+    it "shows hint when enabled" do
+      enable_hints(true)
+      expect(Hint).to receive(:to_string).with(:share_html_contents, anything).and_call_original
+      subject.generate(description)
     end
   end
 end
