@@ -12,6 +12,14 @@ def inject_test_data(base)
     inline: "cd /; tar xf /vagrant/unmanaged_files.tgz"
 end
 
+def add_test_user(base)
+  add_machinery_user = File.read(
+    File.expand_path("../../add_machinery_user.sh", __FILE__)
+  )
+
+  base.vm.provision "shell", inline: add_machinery_user
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :opensuse131 do |opensuse131|
     opensuse131.vm.box = "base_opensuse13.1_kvm"
@@ -24,6 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     inject_test_data(opensuse131)
+    add_test_user(opensuse131)
   end
 
   config.vm.define :machinery_131 do |machinery_131|
@@ -51,6 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     inject_test_data(opensuse132)
+    add_test_user(opensuse132)
   end
 
   config.vm.define :machinery_132 do |machinery_132|
@@ -81,6 +91,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     inject_test_data(opensuse_tumbleweed)
+    add_test_user(opensuse_tumbleweed)
   end
 
   config.vm.define :machinery_tumbleweed do |machinery_tumbleweed|
