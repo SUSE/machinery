@@ -67,7 +67,7 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
-        with("chkconfig", "--version").
+        with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect(inspector).to receive(:parse_suse_chkconfig).
@@ -93,7 +93,7 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
-        with("chkconfig", "--version").
+        with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
       expect(system).to receive(:check_requirement).
         with("chkconfig", "--help").
@@ -108,7 +108,7 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
-        with("chkconfig", "--version")
+        with("/sbin/chkconfig", "--version")
       expect(inspector).to receive(:parse_redhat_chkconfig).
         and_return([
           Service.new(name: "crond", state: "on"),
@@ -173,17 +173,17 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
-        with("chkconfig", "--version").and_return(true)
+        with("/sbin/chkconfig", "--version").and_return(true)
 
       expect(system).to receive(:check_requirement).
-        with("chkconfig", "--version")
+        with("/sbin/chkconfig", "--version")
       expect(system).to receive(:check_requirement).
-        with("runlevel")
+        with("/sbin/runlevel")
       expect(system).to receive(:run_command).
-        with("runlevel", stdout: :capture).
+        with("/sbin/runlevel", stdout: :capture).
         and_return("N 5")
       expect(system).to receive(:run_command).
-        with("chkconfig", "--list", stdout: :capture).
+        with("/sbin/chkconfig", "--list", stdout: :capture).
       and_return(chkconfig_redhat_output)
       services = inspector.send(:parse_redhat_chkconfig)
 

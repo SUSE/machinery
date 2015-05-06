@@ -73,7 +73,7 @@ class ServicesInspector < Inspector
     # an error, on Red Hat it doesn't.
     #
     begin
-      @system.run_command("chkconfig", "--version")
+      @system.run_command("/sbin/chkconfig", "--version")
       services = parse_redhat_chkconfig
     rescue
       services = parse_suse_chkconfig
@@ -97,15 +97,15 @@ class ServicesInspector < Inspector
   end
 
   def parse_redhat_chkconfig
-    @system.check_requirement("chkconfig", "--version")
-    @system.check_requirement("runlevel")
+    @system.check_requirement("/sbin/chkconfig", "--version")
+    @system.check_requirement("/sbin/runlevel")
     _, runlevel = @system.run_command(
-      "runlevel",
+      "/sbin/runlevel",
       stdout: :capture
     ).split(" ")
 
     output = @system.run_command(
-      "chkconfig", "--list",
+      "/sbin/chkconfig", "--list",
       stdout: :capture
     )
 
