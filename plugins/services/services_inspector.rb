@@ -83,9 +83,11 @@ class ServicesInspector < Inspector
   end
 
   def parse_suse_chkconfig
-    @system.check_requirement("chkconfig", "--help")
+    # check if chkconfig is available otherwise use /sbin/chkconfig
+    # this fixes issue on sles11sp3 where chkconfig isn't in /usr/bin
+    chkconfig = @system.check_requirement(["chkconfig", "/sbin/chkconfig"], "--help")
     output = @system.run_command(
-      "chkconfig",
+      chkconfig,
       "--allservices",
       :stdout => :capture
     )
