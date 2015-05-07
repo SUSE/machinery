@@ -199,8 +199,6 @@ EOF
         with("/sbin/chkconfig", "--version").and_return(true)
 
       expect(system).to receive(:check_requirement).
-        with("/sbin/chkconfig", "--version")
-      expect(system).to receive(:check_requirement).
         with("/sbin/runlevel")
       expect(system).to receive(:run_command).
         with("/sbin/runlevel", stdout: :capture).

@@ -99,7 +99,6 @@ class ServicesInspector < Inspector
   end
 
   def parse_redhat_chkconfig
-    @system.check_requirement("/sbin/chkconfig", "--version")
     @system.check_requirement("/sbin/runlevel")
     _, runlevel = @system.run_command(
       "/sbin/runlevel",
