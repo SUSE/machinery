@@ -58,5 +58,11 @@ class Hint
       "To upgrade all system descriptions run:\n" \
        "#{$0} upgrade-format --all"
     end
+
+    def share_html_contents(options)
+      index_file = File.join(options[:directory], "index.html")
+      assets_dir = File.join(options[:directory], "assets/")
+      "Share the file: '#{index_file}' and the directory: '#{assets_dir}' as needed."
+    end
   end
 end
