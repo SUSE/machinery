@@ -46,7 +46,7 @@ describe Machinery::Ui do
       allow($stdout).to receive(:tty?).and_return(true)
       allow(IO).to receive(:popen)
       allow($?).to receive(:success?).and_return(true)
-      expect(IO).to receive(:popen).with("$PAGER", "w").and_return(double(puts: nil))
+      expect(IO).to receive(:popen).with("$PAGER", "w").and_return(double(puts: nil, pid: 100))
 
       Machinery::Ui.puts(output)
     end

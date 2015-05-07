@@ -28,6 +28,11 @@ module Machinery
       def write_output_to_pager(output)
         @pager ||= IO.popen("$PAGER", "w")
 
+        # cache the pid because it can no longer be retrieved when the
+        # stream is closed (and we sometimes have to kill the process after
+        # it was closed)
+        @pager_pid = @pager.pid
+
         begin
           @pager.puts output
         rescue Errno::EPIPE
@@ -36,10 +41,11 @@ module Machinery
       end
 
       def close_pager
-        return if !@pager
+        @pager.close if @pager
+      end
 
-        Process.kill("TERM", @pager.pid)
-        @pager.close
+      def kill_pager
+        Process.kill("TERM", @pager_pid) if @pager_pid
       end
 
       def puts(output)
