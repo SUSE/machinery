@@ -80,11 +80,23 @@ describe RemoteSystem do
 
       it "uses sudo when necessary" do
         expect(Cheetah).to receive(:run).with(
-          "ssh", "machinery@remotehost", "sudo", "LC_ALL=C", "ls", "/tmp", privileged: true
+          "ssh", "machinery@remotehost", "sudo", "-n", "LC_ALL=C", "ls", "/tmp", privileged: true
         )
 
         remote_system.remote_user = "machinery"
         remote_system.run_command("ls", "/tmp", privileged: true)
+      end
+
+      it "raises an exception if the user is not allowed to run sudo" do
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "machinery@remotehost", "sudo", "-n", "LC_ALL=C", "ls", "/tmp", privileged: true
+        ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
+
+        remote_system.remote_user = "machinery"
+        expect {
+          remote_system.run_command("ls", "/tmp", privileged: true)
+        }.to raise_error(Machinery::Errors::InsufficientPrivileges)
+
       end
     end
 
@@ -102,7 +114,7 @@ describe RemoteSystem do
 
       it "retrieves files via sudo rsync from a remote host when non-root access is used" do
         expect(Cheetah).to receive(:run) do |*args|
-          expect(args).to include("--rsync-path=sudo rsync")
+          expect(args).to include("--rsync-path=sudo -n rsync")
         end
 
         remote_system.remote_user = "machinery"

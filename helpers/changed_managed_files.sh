@@ -15,7 +15,7 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-
+set -e
 
 # Print a list of each package with changed managed files followed by a list of
 # the changed files, e.g.
@@ -26,12 +26,18 @@
 #   S.5......  c /etc/ntp.conf
 
 if [ $UID -ne "0" ]; then
-   SUDOPREFIX="sudo"
+   SUDOPREFIX="sudo -n"
 fi
 
 for package in `rpm -qa --queryformat "%{NAME}-%{VERSION}\\n"`; do
-  CHANGES=`$SUDOPREFIX rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $package`;
-  if [ -n "$CHANGES" ]; then
-    echo -e "$package:\\n$CHANGES";
+  # rpm returns 1 as exit code when modified config files are detected
+  # that's why we explicitly detect if sudo failed
+  OUTPUT=`$SUDOPREFIX rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $package 2>&1 || true`;
+  if [ -n "$OUTPUT" ]; then
+    if [[ "$OUTPUT" ==  *"password is required"* ]]; then
+      echo "$OUTPUT" >&2
+      exit 1
+    fi
+    echo -e "$package:\\n$OUTPUT";
   fi;
 done

@@ -99,6 +99,17 @@ module Machinery
       end
     end
 
+    class InsufficientPrivileges < MachineryError
+      def initialize(remote_user, host)
+        @remote_user = remote_user
+        @host = host
+      end
+
+      def to_s
+        "The remote user '#{@remote_user}' is not allowed to run 'sudo' on host '#{@host}'."
+      end
+    end
+
     class MigrationError < MachineryError; end
 
     class InvalidFilter < MachineryError; end
