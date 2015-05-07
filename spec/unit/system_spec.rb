@@ -132,4 +132,24 @@ describe System do
       expect(system.has_command?("not_existing_command")).to be(false)
     end
   end
+
+  describe "#check_requirement" do
+    let(:system) { System.new }
+    let(:command) { "cat" }
+
+    it "raises an error if the command fails/doesn't exists" do
+      expect(system).to receive(:run_command).with(command).and_raise(
+        Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+      )
+      expect { system.check_requirement(command) }.to raise_error(
+        Machinery::Errors::MissingRequirement,
+        /Need binary '#{command}' to be available on the inspected system/
+      )
+    end
+
+    it "does not raise an error if the command returns exit code 0" do
+      expect(system).to receive(:run_command).with(command)
+      expect { system.check_requirement(command) }.not_to raise_error
+    end
+  end
 end
