@@ -20,7 +20,8 @@ shared_examples "inspect unmanaged files" do |base|
     [
       "var/lib/logrotate.status",
       "var/spool/cron/lastrun/cron.daily",
-      "var/log/sa"
+      "var/log/sa",
+      "root/.local"
     ]
   }
   describe "--scope=unmanaged-files" do
