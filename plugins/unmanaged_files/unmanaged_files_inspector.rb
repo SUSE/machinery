@@ -85,10 +85,20 @@ class UnmanagedFilesInspector < Inspector
     file_store = @description.scope_file_store(store_name)
     file_store.remove
     file_store.create
+    store_path = file_store.path
 
-    extractor = FileExtractor.new(@system, file_store)
-    extractor.extract_files(files, excluded)
-    extractor.extract_trees(trees, excluded)
+    archive_path = File.join(store_path, "files.tgz")
+    @system.create_archive(files.join("\0"), archive_path, excluded)
+
+    trees.each do |tree|
+      tree_name = File.basename(tree)
+      parent_dir = File.dirname(tree)
+      sub_dir = File.join("trees", parent_dir)
+
+      file_store.create_sub_directory(sub_dir)
+      archive_path = File.join(store_path, sub_dir, "#{tree_name}.tgz")
+      @system.create_archive(tree, archive_path, excluded)
+    end
   end
 
   # extract metadata from extracted tar archives and put data into Object
