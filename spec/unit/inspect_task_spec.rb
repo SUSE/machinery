@@ -156,7 +156,6 @@ describe InspectTask, "#inspect_system" do
       )
       expect(captured_machinery_output).to include(
         <<-EOF
-
 Inspecting foo...
  -> Inspection failed!
         EOF

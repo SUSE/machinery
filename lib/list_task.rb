@@ -28,19 +28,19 @@ class ListTask
           show_error("#{name}: incompatible format version. Can not be upgraded.\n", options)
         elsif e.format_version < SystemDescription::CURRENT_FORMAT_VERSION
           show_error("#{name}: format version #{e.format_version}, " \
-            "needs to be upgraded.\n", options)
+            "needs to be upgraded.", options)
           has_incompatible_version = true
         else
           show_error("#{name}: format version #{e.format_version}. " \
-            "Please upgrade Machinery to the latest version.\n", options)
+            "Please upgrade Machinery to the latest version.", options)
         end
         next
       rescue Machinery::Errors::SystemDescriptionValidationFailed
         show_error("#{name}: This description is broken. Use " \
-          "`#{$0} validate #{name}` to see the error message.\n", options)
+          "`#{$0} validate #{name}` to see the error message.", options)
         next
       rescue Machinery::Errors::SystemDescriptionError
-        show_error("#{name}: This description is broken.\n", options)
+        show_error("#{name}: This description is broken.", options)
         next
       end
 
@@ -76,7 +76,7 @@ class ListTask
           scopes << entry
         end
 
-        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n\n"
+        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n"
       end
     end
 

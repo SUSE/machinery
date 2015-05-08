@@ -34,10 +34,16 @@ class UpgradeFormatTask
 
     descriptions.each do |description|
       begin
+        hash = Manifest.load(description, store.manifest_path(description)).to_hash
         Machinery.logger.info "Upgrading description \"#{description}\""
-        Machinery::Ui.puts "Upgrading description \"#{description}\""
+        Machinery::Ui.print "Reading \"#{description}\" ... "
         migrated = Migration.migrate_description(store, description, force: options[:force])
-        migrations_done += 1 if migrated
+
+        if migrated
+          migrations_done += 1
+          Machinery::Ui.puts "Successfully upgraded from version" \
+            " #{hash["meta"]["format_version"]} to #{SystemDescription::CURRENT_FORMAT_VERSION}."
+        end
       rescue StandardError => e
         errors.push("Upgrading description \"#{description}\" failed:\n#{e}")
       end
@@ -52,12 +58,13 @@ class UpgradeFormatTask
 
     if options[:all]
       if migrations_done > 0
-        Machinery::Ui.puts "Upgraded #{migrations_done} system descriptions successfully."
+        Machinery::Ui.puts(
+          "Upgraded #{migrations_done} " \
+            "#{Machinery::pluralize("system description", migrations_done)}."
+        )
       else
         Machinery::Ui.puts "No system descriptions were upgraded."
       end
-    elsif migrations_done > 0
-      Machinery::Ui.puts "System description \"#{name}\" successfully upgraded."
     end
   end
 end
