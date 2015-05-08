@@ -26,7 +26,7 @@ class FileExtractor
 
   def extract_files(file_list, excluded_paths)
     archive_path = File.join(@scope_file_store.path, "files.tgz")
-    @system.create_archive(file_list.join("\0"), archive_path, excluded_paths)
+    @system.create_archive(file_list, archive_path, excluded_paths)
   end
 
   def extract_trees(trees, excluded_paths)

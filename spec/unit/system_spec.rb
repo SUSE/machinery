@@ -43,7 +43,7 @@ describe System do
 
       FileUtils.cp_r("spec/data/system/archive_test", test_dir)
 
-      filelist = Dir.glob(test_dir + "/*").join("\0")
+      filelist = Dir.glob(test_dir + "/*")
 
       local_system = LocalSystem.new()
       md5sum = local_system.run_command(
