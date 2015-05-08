@@ -37,14 +37,18 @@ class System
   end
 
   # checks if the required command can be executed on the target system
-  def check_requirement(command, *args)
-    begin
-      run_command(command, *args)
-    rescue Cheetah::ExecutionFailed
-      raise Machinery::Errors::MissingRequirement.new(
-        "Need binary '#{command}' to be available on the inspected system."
-      )
+  def check_requirement(commands, *args)
+    commands = Array(commands)
+    commands.each do |command|
+      begin
+        run_command(command, *args)
+        return command
+      rescue Cheetah::ExecutionFailed
+      end
     end
+    raise Machinery::Errors::MissingRequirement.new(
+      "Need binary '#{commands.join("' or '")}' to be available on the inspected system."
+    )
   end
 
   # Retrieves files specified in filelist from the remote system and create an archive.

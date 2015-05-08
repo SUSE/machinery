@@ -147,9 +147,48 @@ describe System do
       )
     end
 
-    it "does not raise an error if the command returns exit code 0" do
+    it "returns the command if the exit code is 0" do
       expect(system).to receive(:run_command).with(command)
-      expect { system.check_requirement(command) }.not_to raise_error
+      expect(system.check_requirement(command)).to eq(command)
+    end
+
+    describe "it accepts an array of commands" do
+      let(:command1) { "/bin/cat" }
+      let(:command2) { "/usr/bin/cat" }
+      let(:commands) { [command1, command2] }
+
+      it "and raises if no one is executable" do
+        expect(system).to receive(:run_command).with(command1).and_raise(
+          Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+        )
+        expect(system).to receive(:run_command).with(command2).and_raise(
+          Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+        )
+
+        expect { system.check_requirement(commands) }.to raise_error(
+          Machinery::Errors::MissingRequirement,
+          /Need binary '#{command1}' or '#{command2}' to be available on the inspected system/
+        )
+      end
+
+      it "does not raise if one is executable and returns it" do
+        expect(system).to receive(:run_command).with(command1).and_raise(
+          Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+        )
+        expect(system).to receive(:run_command).with(command2)
+
+        expect(system.check_requirement(commands)).to eq(command2)
+      end
+
+      it "also does not return the parameters if one executable is executable" do
+        parameters = ["--verbose", "--debug=true"]
+        expect(system).to receive(:run_command).with(command1, *parameters).and_raise(
+          Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+        )
+        expect(system).to receive(:run_command).with(command2, *parameters)
+
+        expect(system.check_requirement(commands, *parameters)).to eq(command2)
+      end
     end
   end
 end
