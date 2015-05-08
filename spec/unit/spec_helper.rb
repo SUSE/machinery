@@ -38,7 +38,8 @@ RSpec.configure do |config|
   config.include(MachineryOutput)
 
   config.before(:each) do
-    allow_any_instance_of(System).to receive(:check_requirement)
+    allow_any_instance_of(LocalSystem).to receive(:check_requirement)
+    allow_any_instance_of(RemoteSystem).to receive(:check_requirement)
   end
 end
 

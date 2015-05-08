@@ -67,7 +67,7 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
-        with("chkconfig", "--version").
+        with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect(inspector).to receive(:parse_suse_chkconfig).
@@ -93,10 +93,10 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
-        with("chkconfig", "--version").
+        with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
       expect(system).to receive(:check_requirement).
-        with("chkconfig", "--help").
+        with(["chkconfig", "/sbin/chkconfig"], "--help").
         and_raise(Machinery::Errors::MissingRequirement)
 
       expect {
@@ -108,7 +108,7 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:run_command).
-        with("chkconfig", "--version")
+        with("/sbin/chkconfig", "--version")
       expect(inspector).to receive(:parse_redhat_chkconfig).
         and_return([
           Service.new(name: "crond", state: "on"),
@@ -128,6 +128,13 @@ EOF
   end
 
   describe "parse_suse_chkconfig" do
+    before(:each) do
+      allow(system).to receive(:has_command?).
+        with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("chkconfig", "--version").and_return(false)
+    end
+
     it "returns data about SysVinit services on a suse system" do
       chkconfig_suse_output =
         <<-EOF
@@ -135,20 +142,36 @@ boot.isapnp               on
 alsasound                 on
 autofs                    off
 EOF
-
-      allow(system).to receive(:has_command?).
-        with("systemctl").and_return(false)
-      allow(system).to receive(:has_command?).
-        with("chkconfig", "--version").and_return(false)
-
       expect(system).to receive(:check_requirement).
-        with("chkconfig", "--help")
-
+        with(["chkconfig", "/sbin/chkconfig"], "--help").and_return("chkconfig")
       expect(system).to receive(:run_command).
-        with("chkconfig", "--allservices", stdout: :capture).
-      and_return(chkconfig_suse_output)
-      services = inspector.send(:parse_suse_chkconfig)
+        with("chkconfig", "--allservices", stdout: :capture).and_return(
+          chkconfig_suse_output
+        )
 
+      services = inspector.send(:parse_suse_chkconfig)
+      expect(services).to match_array([
+        Service.new(name: "alsasound",   state: "on"),
+        Service.new(name: "boot.isapnp", state: "on"),
+        Service.new(name: "autofs",      state: "off")
+      ])
+    end
+
+    it "returns data about SysVinit services on sles11sp3 system with a remote user" do
+      chkconfig_suse_output =
+        <<-EOF
+boot.isapnp               on
+alsasound                 on
+autofs                    off
+EOF
+      expect(system).to receive(:check_requirement).
+        with(["chkconfig", "/sbin/chkconfig"], "--help").and_return("/sbin/chkconfig")
+      expect(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--allservices", stdout: :capture).and_return(
+          chkconfig_suse_output
+        )
+
+      services = inspector.send(:parse_suse_chkconfig)
       expect(services).to match_array([
         Service.new(name: "alsasound",   state: "on"),
         Service.new(name: "boot.isapnp", state: "on"),
@@ -173,17 +196,15 @@ EOF
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
-        with("chkconfig", "--version").and_return(true)
+        with("/sbin/chkconfig", "--version").and_return(true)
 
       expect(system).to receive(:check_requirement).
-        with("chkconfig", "--version")
-      expect(system).to receive(:check_requirement).
-        with("runlevel")
+        with("/sbin/runlevel")
       expect(system).to receive(:run_command).
-        with("runlevel", stdout: :capture).
+        with("/sbin/runlevel", stdout: :capture).
         and_return("N 5")
       expect(system).to receive(:run_command).
-        with("chkconfig", "--list", stdout: :capture).
+        with("/sbin/chkconfig", "--list", stdout: :capture).
       and_return(chkconfig_redhat_output)
       services = inspector.send(:parse_redhat_chkconfig)
 

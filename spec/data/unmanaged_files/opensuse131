@@ -278,6 +278,12 @@
     Mode: 644
     Size: 155 B
 
+  * /home/machinery/ (dir)
+    User/Group: machinery:users
+    Mode: 755
+    Size: 2.6 KiB
+    Files: 13
+
   * /home/vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
@@ -468,18 +474,6 @@
     Mode: 600
     Size: 0 B
 
-  * /root/.local/ (dir)
-    User/Group: root:root
-    Mode: 755
-    Size: 0 B
-    Files: 4
-
-  * /root/.ssh/ (dir)
-    User/Group: root:root
-    Mode: 700
-    Size: 808 B
-    Files: 2
-
   * /srv/test/ (dir)
     User/Group: root:root
     Mode: 755
@@ -653,6 +647,11 @@
     User/Group: root:root
     Mode: 644
     Size: 48.6 KiB
+
+  * /var/spool/mail/machinery (file)
+    User/Group: machinery:mail
+    Mode: 660
+    Size: 0 B
 
   * /var/spool/mail/vagrant (file)
     User/Group: vagrant:mail

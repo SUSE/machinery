@@ -6,6 +6,7 @@
   * ftp (FTP account, uid: 40, gid: 49, shell: /bin/bash)
   * games (Games account, uid: 12, gid: 100, shell: /bin/bash)
   * lp (Printing daemon, uid: 4, gid: 7, shell: /bin/bash)
+  * machinery (N/A, uid: 1001, gid: 100, shell: /bin/bash)
   * mail (Mailer daemon, uid: 8, gid: 12, shell: /bin/false)
   * man (Manual pages viewer, uid: 13, gid: 62, shell: /bin/bash)
   * messagebus (User for D-Bus, uid: 499, gid: 499, shell: /bin/false)

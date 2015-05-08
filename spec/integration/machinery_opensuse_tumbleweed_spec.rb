@@ -104,8 +104,12 @@ describe "machinery@openSUSE Tumbleweed" do
 
   describe "inspect openSUSE Tumbleweed system" do
     before(:all) do
-      @subject_system = start_system(box: "opensuse_tumbleweed")
-      prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
+      @subject_system = start_system(
+        box: "opensuse_tumbleweed", username: "machinery", password: "linux"
+      )
+      prepare_machinery_for_host(
+        @machinery, @subject_system.ip, username: "machinery", password: "linux"
+      )
     end
 
     Inspector.all_scopes.map { |i| i.gsub("_", "-") }.each do |scope|
@@ -113,8 +117,8 @@ describe "machinery@openSUSE Tumbleweed" do
         it "inspects #{scope}" do
           measure("Inspect #{scope}") do
             @machinery.run_command(
-              "#{machinery_command} inspect #{@subject_system.ip} --extract-files" \
-                " --scope=#{scope} --name=test",
+              "#{machinery_command} inspect #{@subject_system.ip} --remote-user machinery" \
+                " --extract-files --scope=#{scope} --name=test",
               as: "vagrant",
               stdout: :capture
             )
