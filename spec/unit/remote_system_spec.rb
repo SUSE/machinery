@@ -96,7 +96,6 @@ describe RemoteSystem do
         expect {
           remote_system.run_command("ls", "/tmp", privileged: true)
         }.to raise_error(Machinery::Errors::InsufficientPrivileges)
-
       end
     end
 
