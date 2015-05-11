@@ -22,7 +22,7 @@ describe Machinery::FileUtils do
   use_given_filesystem
 
   let(:file) {
-    Machinery::File.new(
+    Machinery::SystemFile.new(
       name: "/etc/ImageVersion",
       type: "file",
       user: "root",
@@ -32,7 +32,7 @@ describe Machinery::FileUtils do
     )
   }
   let(:link) {
-    Machinery::File.new(
+    Machinery::SystemFile.new(
       name: "/etc/alternatives/awk",
       type: "link",
       user: "root",
@@ -40,7 +40,7 @@ describe Machinery::FileUtils do
     )
   }
   let(:dir) {
-    Machinery::File.new(
+    Machinery::SystemFile.new(
       name: "/etc/YaST2/licenses/",
       type: "dir",
       user: "root",

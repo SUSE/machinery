@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 module Machinery
-  class File < Machinery::Object
+  class SystemFile < Machinery::Object
     def file?
       self.type == "file"
     end
