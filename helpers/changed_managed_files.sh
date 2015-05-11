@@ -15,6 +15,8 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
+
+# Exit immediately if a command exits with a non-zero status.
 set -e
 
 # Print a list of each package with changed managed files followed by a list of
