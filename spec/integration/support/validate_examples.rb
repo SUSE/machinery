@@ -36,7 +36,7 @@ EOF
         "machinery validate validation-error",
         as: "vagrant",
         stdout: :capture
-      ) }.to raise_error(ExecutionFailed, /#{Regexp.quote(expected)}/)
+      ) }.to raise_error(Pennyworth::ExecutionFailed, /#{Regexp.quote(expected)}/)
     end
 
     it "checks a system description for valid JSON syntax" do
@@ -59,7 +59,7 @@ EOF
         "machinery validate invalid-json",
         as: "vagrant",
         stdout: :capture
-      ) }.to raise_error(ExecutionFailed, /#{Regexp.quote(expected)}/)
+      ) }.to raise_error(Pennyworth::ExecutionFailed, /#{Regexp.quote(expected)}/)
     end
   end
 end

@@ -22,7 +22,7 @@ shared_examples "CLI" do
         "#{machinery_command} invalid_command",
         :as => "vagrant",
         :stdout => :capture
-      ) }.to raise_error(ExecutionFailed)
+      ) }.to raise_error(Pennyworth::ExecutionFailed)
     end
 
     it "processes help option" do
@@ -72,7 +72,7 @@ shared_examples "CLI" do
           "sudo #{machinery_command} inspect localhost --scope=foobar --name=test",
           :as => "vagrant",
           :stdout => :capture
-        ) }.to raise_error(ExecutionFailed, /The following scope is not supported: foobar/)
+        ) }.to raise_error(Pennyworth::ExecutionFailed, /The following scope is not supported: foobar/)
       end
     end
 
@@ -82,7 +82,7 @@ shared_examples "CLI" do
           "#{machinery_command} build test",
           :as => "vagrant",
           :stdout => :capture
-        ) }.to raise_error(ExecutionFailed, /image-dir is required/)
+        ) }.to raise_error(Pennyworth::ExecutionFailed, /image-dir is required/)
       end
 
       it "fails without a name" do
@@ -90,7 +90,7 @@ shared_examples "CLI" do
           "#{machinery_command} build --image-dir=/tmp/",
           :as => "vagrant",
           :stdout => :capture
-        ) }.to raise_error(ExecutionFailed, /You need to provide the required argument/)
+        ) }.to raise_error(Pennyworth::ExecutionFailed, /You need to provide the required argument/)
       end
     end
   end

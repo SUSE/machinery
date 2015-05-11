@@ -18,12 +18,12 @@
 require "etc"
 
 require_relative "../../lib/machinery"
-require_relative "../../../pennyworth/lib/spec"
-require_relative "../../../pennyworth/lib/ssh_keys_importer"
+require_relative "../../../pennyworth/lib/pennyworth/spec"
+require_relative "../../../pennyworth/lib/pennyworth/ssh_keys_importer"
 require_relative "../support/system_description_factory"
 
 def prepare_machinery_for_host(system, ip, opts = {})
-  if system.runner.is_a?(LocalRunner)
+  if system.runner.is_a?(Pennyworth::LocalRunner)
     prepare_local_machinery_for_host(system, ip)
   else
     prepare_remote_machinery_for_host(system, ip, opts)
@@ -37,7 +37,7 @@ end
 
 def prepare_remote_machinery_for_host(system, ip, opts)
   if opts[:password]
-    SshKeysImporter.import(
+    Pennyworth::SshKeysImporter.import(
       ip,
       opts[:username] || "root",
       opts[:password],
