@@ -26,9 +26,12 @@ module Machinery
       @scopes
     end
 
-    def self.class_for(scope_name)
+    def self.initialize_scope(scope_name, json, scope_file_store)
       all_scopes.each do |scope|
         if scope.new.scope_name == scope_name
+          scope = scope.from_json(json)
+          scope.scope_file_store = scope_file_store
+
           return scope
         end
       end
@@ -36,6 +39,7 @@ module Machinery
     end
 
     attr_accessor :meta
+    attr_accessor :scope_file_store
 
     def set_metadata(timestring, host)
       self.meta = Machinery::Object.new(

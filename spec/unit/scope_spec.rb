@@ -66,13 +66,19 @@ describe Machinery::Scope do
     example { expect(MoreComplexScope.new.is_extractable?).to be(false) }
   end
 
-  describe "#class_for" do
+  describe "#initialize_scope" do
+    let(:scope_file_store) { double }
+
     it "returns simple scope" do
-      expect(Machinery::Scope.class_for("simple")).to be(SimpleScope)
+      scope = Machinery::Scope.initialize_scope("simple", {}, scope_file_store)
+      expect(scope).to be_a(SimpleScope)
+      expect(scope.scope_file_store).to eq(scope_file_store)
     end
 
     it "returns complex scope" do
-      expect(Machinery::Scope.class_for("more_complex")).to be(MoreComplexScope)
+      scope = Machinery::Scope.initialize_scope("more_complex", {}, scope_file_store)
+      expect(scope).to be_a(MoreComplexScope)
+      expect(scope.scope_file_store).to eq(scope_file_store)
     end
   end
 end
