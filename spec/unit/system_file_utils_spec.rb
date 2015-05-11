@@ -18,11 +18,20 @@
 require_relative "spec_helper"
 
 describe Machinery::SystemFileUtils do
-  include GivenFilesystemSpecHelpers
-  use_given_filesystem
+  initialize_system_description_factory_store
 
+  class SimpleScope < Machinery::Object
+    include Machinery::Scope
+  end
+
+  let(:scope_file_store) {
+    ScopeFileStore.new(given_directory, "unmanaged_files")
+  }
+  let(:scope) {
+    Machinery::Scope.initialize_scope("simple", {}, scope_file_store)
+  }
   let(:file) {
-    Machinery::SystemFile.new(
+    file = Machinery::SystemFile.new(
       name: "/etc/ImageVersion",
       type: "file",
       user: "root",
@@ -30,17 +39,21 @@ describe Machinery::SystemFileUtils do
       size: 25,
       mode: "644"
     )
+    file.set_scope(scope)
+    file
   }
   let(:link) {
-    Machinery::SystemFile.new(
+    link = Machinery::SystemFile.new(
       name: "/etc/alternatives/awk",
       type: "link",
       user: "root",
       group: "root"
     )
+    link.set_scope(scope)
+    link
   }
   let(:dir) {
-    Machinery::SystemFile.new(
+    dir = Machinery::SystemFile.new(
       name: "/etc/YaST2/licenses/",
       type: "dir",
       user: "root",
@@ -49,10 +62,25 @@ describe Machinery::SystemFileUtils do
       mode: "755",
       files: 17
     )
+    dir.set_scope(scope)
+    dir
   }
   subject(:file_utils) { Machinery::SystemFileUtils.new(file) }
   subject(:link_utils) { Machinery::SystemFileUtils.new(link) }
   subject(:dir_utils) { Machinery::SystemFileUtils.new(dir) }
+
+  describe "#tarball_path" do
+    it "returns the path to the tarball for directories" do
+      expected = File.join(scope_file_store.base_path, "/etc/YaST2/licenses.tgz")
+      expect(dir_utils.tarball_path).to eq(expected)
+    end
+
+    it "returns the file.tgz for files and links" do
+      expected = File.join(scope_file_store.base_path, "files.tgz")
+      expect(file_utils.tarball_path).to eq(expected)
+      expect(link_utils.tarball_path).to eq(expected)
+    end
+  end
 
   describe "#write_tarball" do
     context "when handling files" do

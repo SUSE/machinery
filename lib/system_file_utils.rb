@@ -23,6 +23,18 @@ module Machinery
       @file = file
     end
 
+    def tarball_path
+      if @file.directory?
+        File.join(
+          @file.scope.scope_file_store.base_path,
+          File.dirname(@file.name),
+          File.basename(@file.name) + ".tgz"
+        )
+      else
+        File.join(@file.scope.scope_file_store.base_path, "files.tgz")
+      end
+    end
+
     def write_tarball(target)
       raise Machinery::Errors::FileUtilsError if !file.directory?
 
