@@ -16,21 +16,11 @@
 # you may find current contact information at www.suse.com
 
 module Machinery
-  class File < Machinery::Object
-    def file?
-      self.type == "file"
-    end
+  class FileUtils
+    attr_accessor :file
 
-    def link?
-      self.type == "link"
-    end
-
-    def directory?
-      self.type == "dir"
-    end
-
-    def utils
-      Machinery::FileUtils.new(self)
+    def initialize(file)
+      @file = file
     end
   end
 end

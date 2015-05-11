@@ -15,22 +15,8 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-module Machinery
-  class File < Machinery::Object
-    def file?
-      self.type == "file"
-    end
+require_relative "spec_helper"
 
-    def link?
-      self.type == "link"
-    end
+describe Machinery::FileUtils do
 
-    def directory?
-      self.type == "dir"
-    end
-
-    def utils
-      Machinery::FileUtils.new(self)
-    end
-  end
 end

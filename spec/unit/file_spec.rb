@@ -89,4 +89,12 @@ describe Machinery::File do
       expect(file.directory?).to be(false)
     end
   end
+
+  describe "#utils" do
+    specify { expect(file.utils).to be_a(Machinery::FileUtils) }
+
+    it "initializes the Utils class properly" do
+      expect(file.utils.file).to eq(file)
+    end
+  end
 end
