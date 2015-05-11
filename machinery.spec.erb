@@ -113,10 +113,13 @@ bundle install --standalone --local
 
 rm -rf vendor .bundle Gemfile Gemfile.lock
 
-# remove Nokogiri build logs to prevent the following RPMLint error:
+# Remove references to the build directory to prevent the following RPMLint error:
 # E: file-contains-buildroot (Badness: 10000)
 rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/mkmf.log
 rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/gem_make.out
+# The nokogiri gem is mentioned twice in the setup.rb in Tumbleweed (once with
+# a relative and once with an absolute path) so we remove the absolute one
+sed -i '\|%{buildroot}|d' bundle/bundler/setup.rb
 
 popd
 
