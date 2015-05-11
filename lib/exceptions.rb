@@ -118,6 +118,7 @@ module Machinery
     class ElementFilterTypeMismatch < MachineryError
       attr_accessor :failed_matcher
     end
+    class FileUtilsError < MachineryError; end
 
     class BuildFailed < MachineryError; end
     class DeployFailed < MachineryError; end

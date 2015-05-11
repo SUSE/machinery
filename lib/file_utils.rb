@@ -22,5 +22,14 @@ module Machinery
     def initialize(file)
       @file = file
     end
+
+    def write_tarball(target)
+      raise Machinery::Errors::FileUtilsError if !file.directory?
+
+      tarball_target = File.join(target, File.dirname(@file.name))
+
+      FileUtils.mkdir_p(tarball_target)
+      FileUtils.cp(tarball_path, tarball_target)
+    end
   end
 end
