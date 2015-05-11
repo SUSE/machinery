@@ -92,6 +92,7 @@ require_relative "filter"
 require_relative "filter_option_parser"
 require_relative "file_scope"
 require_relative "file_extractor"
+require_relative "file"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 
