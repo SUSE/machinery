@@ -34,7 +34,7 @@ class Release
   def initialize(opts = {})
     @options = {
       version:      generate_development_version,
-      skip_cleanup: false
+      skip_rpm_cleanup: false
     }.merge(opts)
     @release_version = @options[:version]
     @tag             = "v#{@release_version}"
@@ -44,7 +44,7 @@ class Release
   end
 
   def prepare
-    remove_old_releases if !@options[:skip_cleanup]
+    remove_old_releases(skip_rpm_cleanup: @options[:skip_rpm_cleanup])
     set_version
     generate_specfile
     copy_rpmlintrc
@@ -101,8 +101,12 @@ class Release
 
   private
 
-  def remove_old_releases
-    FileUtils.rm Dir.glob(File.join(Machinery::ROOT, "package/*"))
+  def remove_old_releases(skip_rpm_cleanup: false)
+    if skip_rpm_cleanup
+      FileUtils.rm Dir.glob(File.join(Machinery::ROOT, "package/*.gem"))
+    else
+      FileUtils.rm Dir.glob(File.join(Machinery::ROOT, "package/*"))
+    end
     output_dir = File.join("/var/tmp", obs_project, build_dist)
     FileUtils.rm Dir.glob("#{output_dir}/*.rpm")
   end
