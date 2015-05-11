@@ -20,5 +20,13 @@ module Machinery
     def file?
       self.type == "file"
     end
+
+    def link?
+      self.type == "link"
+    end
+
+    def directory?
+      self.type == "dir"
+    end
   end
 end

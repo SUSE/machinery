@@ -61,4 +61,32 @@ describe Machinery::File do
       expect(dir.file?).to be(false)
     end
   end
+
+  describe "#link?" do
+    it "returns true when its a link" do
+      expect(link.link?).to be(true)
+    end
+
+    it "returns false when it is a file" do
+      expect(file.link?).to be(false)
+    end
+
+    it "returns false when its a directory" do
+      expect(dir.link?).to be(false)
+    end
+  end
+
+  describe "#directory?" do
+    it "returns true when its a directory" do
+      expect(dir.directory?).to be(true)
+    end
+
+    it "returns false when its a link" do
+      expect(link.directory?).to be(false)
+    end
+
+    it "returns false when it is a file" do
+      expect(file.directory?).to be(false)
+    end
+  end
 end
