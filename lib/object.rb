@@ -55,9 +55,17 @@ module Machinery
     end
 
     attr_reader :attributes
+    attr_accessor :scope
 
     def initialize(attrs = {})
       set_attributes(attrs)
+    end
+
+    def set_scope(scope)
+      @scope = scope
+      @attributes.values.each do |child|
+        child.set_scope(@scope) if child.respond_to?(:set_scope)
+      end
     end
 
     def set_attributes(attrs)

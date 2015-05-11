@@ -49,9 +49,17 @@ module Machinery
     end
 
     attr_reader :elements
+    attr_accessor :scope
 
     def initialize(elements = [])
       @elements = self.class.convert_raw_array(elements)
+    end
+
+    def set_scope(scope)
+      @scope = scope
+      @elements.each do |child|
+        child.set_scope(@scope) if child.respond_to?(:set_scope)
+      end
     end
 
     def ==(other)
