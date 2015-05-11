@@ -30,7 +30,7 @@ module Machinery
     end
 
     def utils
-      Machinery::FileUtils.new(self)
+      Machinery::SystemFileUtils.new(self)
     end
   end
 end

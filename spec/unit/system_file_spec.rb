@@ -91,7 +91,7 @@ describe Machinery::SystemFile do
   end
 
   describe "#utils" do
-    specify { expect(file.utils).to be_a(Machinery::FileUtils) }
+    specify { expect(file.utils).to be_a(Machinery::SystemFileUtils) }
 
     it "initializes the Utils class properly" do
       expect(file.utils.file).to eq(file)

@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 module Machinery
-  class FileUtils
+  class SystemFileUtils
     attr_accessor :file
 
     def initialize(file)

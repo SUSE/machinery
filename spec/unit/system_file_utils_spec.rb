@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe Machinery::FileUtils do
+describe Machinery::SystemFileUtils do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
@@ -50,9 +50,9 @@ describe Machinery::FileUtils do
       files: 17
     )
   }
-  subject(:file_utils) { Machinery::FileUtils.new(file) }
-  subject(:link_utils) { Machinery::FileUtils.new(link) }
-  subject(:dir_utils) { Machinery::FileUtils.new(dir) }
+  subject(:file_utils) { Machinery::SystemFileUtils.new(file) }
+  subject(:link_utils) { Machinery::SystemFileUtils.new(link) }
+  subject(:dir_utils) { Machinery::SystemFileUtils.new(dir) }
 
   describe "#write_tarball" do
     context "when handling files" do
