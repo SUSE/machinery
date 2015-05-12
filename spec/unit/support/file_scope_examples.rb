@@ -16,6 +16,8 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "FileScope" do
+  initialize_system_description_factory_store
+
   let(:file_a) {
     {
       name: "foo"
@@ -31,6 +33,20 @@ shared_examples "FileScope" do
       name: "baz"
     }
   }
+
+  describe "#write_files_tarball" do
+    it "should copy the files.tgz to the destination" do
+      description = create_test_description(
+        store_on_disk: true,
+        extracted_scopes: ["unmanaged_files"]
+      )
+
+      target = given_directory
+      description.unmanaged_files.write_files_tarball(target)
+
+      expect(File.exists?(File.join(target, "files.tgz"))).to be(true)
+    end
+  end
 
   describe "#compare_with" do
     it "compares for equal objects" do

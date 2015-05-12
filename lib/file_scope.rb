@@ -16,6 +16,13 @@
 # you may find current contact information at www.suse.com
 
 class FileScope < Machinery::Object
+  def write_files_tarball(destination)
+    FileUtils.cp(
+      File.join(scope_file_store.path, "files.tgz"),
+      destination
+    )
+  end
+
   def compare_with(other)
     validate_attributes(other)
 
