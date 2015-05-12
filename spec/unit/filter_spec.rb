@@ -212,9 +212,11 @@ describe Filter do
         Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file"),
         [
           "/etc/unmanaged-file",
+          "/etc/tarball with spaces/",
           "/etc/another-unmanaged-file"
         ],
         [
+          "/etc/tarball with spaces/",
           "/etc/another-unmanaged-file"
         ]
       )

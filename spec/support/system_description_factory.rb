@@ -136,11 +136,13 @@ module SystemDescriptionFactory
       if options[:store_on_disk]
         file_store = description.scope_file_store(extracted_scope)
         file_store.create
+        description[extracted_scope].scope_file_store = file_store
+
         if extracted_scope == "unmanaged_files"
           FileUtils.touch(File.join(file_store.path, "files.tgz"))
-          FileUtils.mkdir_p(File.join(file_store.path, "etc"))
+          FileUtils.mkdir_p(File.join(file_store.path, "trees", "etc"))
           FileUtils.touch(
-            File.join(file_store.path, "etc", "tarball with spaces.tgz")
+            File.join(file_store.path, "trees", "etc", "tarball with spaces.tgz")
           )
         else
           description[extracted_scope].files.each do |file|
@@ -509,6 +511,15 @@ module SystemDescriptionFactory
           "group": "root",
           "size": 8,
           "mode": "644"
+        },
+        {
+          "name": "/etc/tarball with spaces/",
+          "type": "dir",
+          "user": "root",
+          "group": "root",
+          "size": 12345,
+          "mode": "755",
+          "files": 16
         }
       ]
     }

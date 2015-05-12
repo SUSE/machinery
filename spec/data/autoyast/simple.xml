@@ -140,12 +140,12 @@ chmod 644 '/mnt/etc/cron.daily/cleanup'
 chown user:group '/mnt/etc/cron.daily/logrotate'
 chmod 644 '/mnt/etc/cron.daily/logrotate'
 curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
-curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
-tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
-rm '/mnt/tmp/tarball with spaces.tgz'
 curl -o '/mnt/tmp/files.tgz' "`cat /tmp/description_url`/unmanaged_files/files.tgz"
 tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'
-rm '/mnt/tmp/files.tgz']]></source>
+rm '/mnt/tmp/files.tgz'
+curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/trees/etc/tarball%20with%20spaces.tgz"
+tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
+rm '/mnt/tmp/tarball with spaces.tgz']]></source>
       </script>
     </chroot-scripts>
   </scripts>
