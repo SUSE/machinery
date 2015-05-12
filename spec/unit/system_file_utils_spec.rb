@@ -30,7 +30,7 @@ describe Machinery::SystemFileUtils do
     store
   }
   let(:scope) {
-    Machinery::Scope.initialize_scope("simple", {}, scope_file_store)
+    Machinery::Scope.for("simple", {}, scope_file_store)
   }
   let(:file) {
     file = Machinery::SystemFile.new(

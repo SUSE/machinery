@@ -128,7 +128,7 @@ class SystemDescription < Machinery::Object
       end
 
       if json.is_a?(Hash) || json.is_a?(Array)
-        scope_object = Machinery::Scope.initialize_scope(scope_name, json, scope_file_store)
+        scope_object = Machinery::Scope.for(scope_name, json, scope_file_store)
 
         # Set metadata
         if hash["meta"] && hash["meta"][scope_name]

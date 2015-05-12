@@ -26,7 +26,7 @@ module Machinery
       @scopes
     end
 
-    def self.initialize_scope(scope_name, json, scope_file_store)
+    def self.for(scope_name, json, scope_file_store)
       all_scopes.each do |scope|
         if scope.new.scope_name == scope_name
           scope = scope.from_json(json)
