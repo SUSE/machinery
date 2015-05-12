@@ -104,16 +104,21 @@ class KiwiConfig < Exporter
       end
     end
 
-    unmanaged_files_path = @system_description.
-      scope_file_store("unmanaged_files").path
-    if unmanaged_files_path
-      filter = "unmanaged_files_#{@name}_excludes"
-      destination = File.join(output_location, "root", "tmp")
+    if @system_description.scope_extracted?("unmanaged_files")
+      destination = File.join(output_location, "root", "tmp", "unmanaged_files")
       FileUtils.mkdir_p(destination, mode: 01777)
-      FileUtils.cp_r(unmanaged_files_path, destination)
+      filter = "unmanaged_files_#{@name}_excludes"
+
+      @system_description.unmanaged_files.write_files_tarball(destination)
+      @system_description.unmanaged_files.files.each do |file|
+        next if !file.directory?
+
+        file.utils.write_tarball(destination)
+      end
+
       FileUtils.cp(
         File.join(Machinery::ROOT, "export_helpers/#{filter}"),
-        destination
+        File.join(output_location, "root", "tmp")
       )
 
       @sh << "# Apply the extracted unmanaged files\n"
