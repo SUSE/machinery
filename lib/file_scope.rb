@@ -23,6 +23,17 @@ class FileScope < Machinery::Object
     )
   end
 
+  def write_directory_tarballs(destination)
+    files.select(&:directory?).each do |directory|
+      directory.utils.write_tarball(File.join(destination, "trees"))
+    end
+  end
+
+  def export_files_as_tarballs(destination)
+    write_files_tarball(destination)
+    write_directory_tarballs(destination)
+  end
+
   def compare_with(other)
     validate_attributes(other)
 

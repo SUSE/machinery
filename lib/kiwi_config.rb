@@ -109,12 +109,7 @@ class KiwiConfig < Exporter
       FileUtils.mkdir_p(destination, mode: 01777)
       filter = "unmanaged_files_#{@name}_excludes"
 
-      @system_description.unmanaged_files.write_files_tarball(destination)
-      @system_description.unmanaged_files.files.each do |file|
-        next if !file.directory?
-
-        file.utils.write_tarball(File.join(destination, "trees"))
-      end
+      @system_description.unmanaged_files.export_files_as_tarballs(destination)
 
       FileUtils.cp(
         File.join(Machinery::ROOT, "export_helpers/#{filter}"),
