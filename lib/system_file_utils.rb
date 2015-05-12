@@ -17,32 +17,41 @@
 
 module Machinery
   class SystemFileUtils
-    attr_accessor :file
-
-    def initialize(file)
-      @file = file
-    end
-
-    def tarball_path
-      if @file.directory?
-        File.join(
-          @file.scope.scope_file_store.path,
-          "trees",
-          File.dirname(@file.name),
-          File.basename(@file.name) + ".tgz"
-        )
-      else
-        File.join(@file.scope.scope_file_store.path, "files.tgz")
+    class <<self
+      def tarball_path(system_file)
+        if system_file.directory?
+          File.join(
+            system_file.scope.scope_file_store.path,
+            "trees",
+            File.dirname(system_file.name),
+            File.basename(system_file.name) + ".tgz"
+          )
+        else
+          File.join(system_file.scope.scope_file_store.path, "files.tgz")
+        end
       end
-    end
 
-    def write_tarball(target)
-      raise Machinery::Errors::FileUtilsError if !file.directory?
+      def write_tarball(system_file, target)
+        raise Machinery::Errors::FileUtilsError if !system_file.directory?
 
-      tarball_target = File.join(target, File.dirname(@file.name))
+        tarball_target = File.join(target, File.dirname(system_file.name))
 
-      FileUtils.mkdir_p(tarball_target)
-      FileUtils.cp(tarball_path, tarball_target)
+        FileUtils.mkdir_p(tarball_target)
+        FileUtils.cp(tarball_path(system_file), tarball_target)
+      end
+
+      def write_files_tarball(file_scope, destination)
+        FileUtils.cp(
+          File.join(file_scope.scope_file_store.path, "files.tgz"),
+          destination
+        )
+      end
+
+      def write_directory_tarballs(file_scope, destination)
+        file_scope.files.select(&:directory?).each do |directory|
+          write_tarball(directory, File.join(destination, "trees"))
+        end
+      end
     end
   end
 end

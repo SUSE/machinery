@@ -67,28 +67,26 @@ describe Machinery::SystemFileUtils do
     dir.scope = scope
     dir
   }
-  subject(:file_utils) { Machinery::SystemFileUtils.new(file) }
-  subject(:link_utils) { Machinery::SystemFileUtils.new(link) }
-  subject(:dir_utils) { Machinery::SystemFileUtils.new(dir) }
+  subject { Machinery::SystemFileUtils }
 
-  describe "#tarball_path" do
+  describe ".tarball_path" do
     it "returns the path to the tarball for directories" do
       expected = File.join(scope_file_store.path, "trees/etc/YaST2/licenses.tgz")
-      expect(dir_utils.tarball_path).to eq(expected)
+      expect(subject.tarball_path(dir)).to eq(expected)
     end
 
     it "returns the file.tgz for files and links" do
       expected = File.join(scope_file_store.path, "files.tgz")
-      expect(file_utils.tarball_path).to eq(expected)
-      expect(link_utils.tarball_path).to eq(expected)
+      expect(subject.tarball_path(file)).to eq(expected)
+      expect(subject.tarball_path(link)).to eq(expected)
     end
   end
 
-  describe "#write_tarball" do
+  describe ".write_tarball" do
     context "when handling files" do
       it "fails" do
         expect {
-          file_utils.write_tarball("/tmp")
+          subject.write_tarball(file, "/tmp")
         }.to raise_error(Machinery::Errors::FileUtilsError)
       end
     end
@@ -96,7 +94,7 @@ describe Machinery::SystemFileUtils do
     context "when handling links" do
       it "fails" do
         expect {
-          link_utils.write_tarball("/tmp")
+          subject.write_tarball(link, "/tmp")
         }.to raise_error(Machinery::Errors::FileUtilsError)
       end
     end
@@ -109,7 +107,7 @@ describe Machinery::SystemFileUtils do
         target = given_directory
         expected_tarball = File.join(target, "etc", "YaST2", "licenses.tgz")
 
-        dir_utils.write_tarball(target)
+        subject.write_tarball(dir, target)
         expect(File.exists?(expected_tarball)).to be(true)
       end
     end

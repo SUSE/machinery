@@ -81,12 +81,4 @@ describe Machinery::SystemFile do
     specify { expect(remote_dir.link?).to be(false) }
     specify { expect(remote_dir.directory?).to be(false) }
   end
-
-  describe "#utils" do
-    specify { expect(file.utils).to be_a(Machinery::SystemFileUtils) }
-
-    it "initializes the Utils class properly" do
-      expect(file.utils.file).to eq(file)
-    end
-  end
 end

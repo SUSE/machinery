@@ -32,9 +32,5 @@ module Machinery
     def remote_directory?
       type == "remote_dir"
     end
-
-    def utils
-      Machinery::SystemFileUtils.new(self)
-    end
   end
 end
