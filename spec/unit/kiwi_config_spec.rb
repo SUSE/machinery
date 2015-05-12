@@ -417,7 +417,7 @@ describe KiwiConfig do
         ).to be(true)
         expect(
           File.exists?(
-            File.join(export_dir, "/root/tmp/unmanaged_files/etc/tarball with spaces.tgz")
+            File.join(export_dir, "/root/tmp/unmanaged_files/trees/etc/tarball with spaces.tgz")
           )
         ).to be(true)
 

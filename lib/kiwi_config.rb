@@ -113,7 +113,7 @@ class KiwiConfig < Exporter
       @system_description.unmanaged_files.files.each do |file|
         next if !file.directory?
 
-        file.utils.write_tarball(destination)
+        file.utils.write_tarball(File.join(destination, "trees"))
       end
 
       FileUtils.cp(
