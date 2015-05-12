@@ -72,9 +72,15 @@ class RemoteSystem < System
       cheetah_class = LoggedCheetah
     end
 
-    sudo = "sudo" if options[:privileged] && remote_user != "root"
-    cmds = ["ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=C", *piped_args, options].compact
+    sudo = ["sudo", "-n"] if options[:privileged] && remote_user != "root"
+    cmds = ["ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=C", *piped_args, options].compact.flatten
     cheetah_class.run(*cmds)
+  rescue Cheetah::ExecutionFailed => e
+    if e.stderr.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    else
+      raise e
+    end
   end
 
   # Tries to connect to the remote system as root (without a password or passphrase)
@@ -97,7 +103,7 @@ class RemoteSystem < System
   def retrieve_files(filelist, destination)
     source = "#{remote_user}@#{host}:/"
     if remote_user != "root"
-      rsync_path = "sudo rsync"
+      rsync_path = "sudo -n rsync"
     else
       rsync_path = "rsync"
     end

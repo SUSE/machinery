@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Improve error handling when user lacks sudo privileges
 
 ## Version 1.7.0 - Mon May 04 15:36:50 CEST 2015 - aduffeck@suse.de
 
