@@ -18,6 +18,8 @@
 require_relative "spec_helper"
 
 describe SystemDescription do
+  initialize_system_description_factory_store
+
   subject { SystemDescription.new("foo", SystemDescriptionMemoryStore.new) }
 
   before(:all) do
@@ -57,6 +59,20 @@ describe SystemDescription do
     data.software.packages = Hash.new
     data.software.packages["foo"] = "bar"
     expect(data.to_json.delete(' ')).to eq(@mix_struct_hash_descr.delete(' '))
+  end
+
+  describe "#initialize" do
+    it "creates a proper data model" do
+      create_test_description(
+        name: "extracted_description",
+        store_on_disk: true,
+        extracted_scopes: ["unmanaged_files"]
+      )
+
+      description = SystemDescription.load("extracted_description",
+        system_description_factory_store)
+      expect(description.unmanaged_files.scope_file_store.path).to_not be(nil)
+    end
   end
 
   describe ".from_hash" do
@@ -344,8 +360,6 @@ describe SystemDescription do
   end
 
   describe "#scope_file_store" do
-    initialize_system_description_factory_store
-
     it "returns scope file store" do
       description = create_test_description(store_on_disk: true)
       file_store = description.scope_file_store("my_scope")
@@ -419,7 +433,6 @@ describe SystemDescription do
   end
 
   describe "load methods" do
-    initialize_system_description_factory_store
     let(:store) { system_description_factory_store }
 
     before(:each) do

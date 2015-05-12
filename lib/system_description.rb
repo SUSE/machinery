@@ -120,12 +120,12 @@ class SystemDescription < Machinery::Object
   end
 
   def create_scopes(hash)
-    if store.persistent?
-      scope_file_store = scope_file_store(name)
-    end
-
     scopes = hash.map do |scope_name, json|
       next if scope_name == "meta"
+
+      if store.persistent?
+        scope_file_store = scope_file_store(scope_name)
+      end
 
       if json.is_a?(Hash) || json.is_a?(Array)
         scope_object = Machinery::Scope.initialize_scope(scope_name, json, scope_file_store)
