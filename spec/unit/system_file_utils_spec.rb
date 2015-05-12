@@ -25,7 +25,9 @@ describe Machinery::SystemFileUtils do
   end
 
   let(:scope_file_store) {
-    ScopeFileStore.new(given_directory, "unmanaged_files")
+    store = ScopeFileStore.new(given_directory, "unmanaged_files")
+    store.create
+    store
   }
   let(:scope) {
     Machinery::Scope.initialize_scope("simple", {}, scope_file_store)
@@ -71,12 +73,12 @@ describe Machinery::SystemFileUtils do
 
   describe "#tarball_path" do
     it "returns the path to the tarball for directories" do
-      expected = File.join(scope_file_store.base_path, "/etc/YaST2/licenses.tgz")
+      expected = File.join(scope_file_store.path, "trees/etc/YaST2/licenses.tgz")
       expect(dir_utils.tarball_path).to eq(expected)
     end
 
     it "returns the file.tgz for files and links" do
-      expected = File.join(scope_file_store.base_path, "files.tgz")
+      expected = File.join(scope_file_store.path, "files.tgz")
       expect(file_utils.tarball_path).to eq(expected)
       expect(link_utils.tarball_path).to eq(expected)
     end
@@ -101,8 +103,8 @@ describe Machinery::SystemFileUtils do
 
     context "when handling directories" do
       it "copies the directory tarball to the target location" do
-        FileUtils.mkdir_p(File.join(scope_file_store.base_path, "etc", "YaST2"))
-        FileUtils.touch(File.join(scope_file_store.base_path, "etc", "YaST2", "licenses.tgz"))
+        FileUtils.mkdir_p(File.join(scope_file_store.path, "trees", "etc", "YaST2"))
+        FileUtils.touch(File.join(scope_file_store.path, "trees", "etc", "YaST2", "licenses.tgz"))
 
         target = given_directory
         expected_tarball = File.join(target, "etc", "YaST2", "licenses.tgz")

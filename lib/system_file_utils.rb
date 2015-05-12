@@ -26,12 +26,13 @@ module Machinery
     def tarball_path
       if @file.directory?
         File.join(
-          @file.scope.scope_file_store.base_path,
+          @file.scope.scope_file_store.path,
+          "trees",
           File.dirname(@file.name),
           File.basename(@file.name) + ".tgz"
         )
       else
-        File.join(@file.scope.scope_file_store.base_path, "files.tgz")
+        File.join(@file.scope.scope_file_store.path, "files.tgz")
       end
     end
 

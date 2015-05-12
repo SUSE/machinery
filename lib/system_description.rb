@@ -91,7 +91,7 @@ class SystemDescription < Machinery::Object
     def from_hash(name, store, hash)
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
-        description = SystemDescription.new(name, store, create_scopes(store, hash))
+        description = SystemDescription.new(name, store, create_scopes(store, name, hash))
       rescue NameError, TypeError
         if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
@@ -111,19 +111,19 @@ class SystemDescription < Machinery::Object
 
     private
 
-    def create_scopes(store, hash)
-      scopes = hash.map do |name, json|
-        next if name == "meta"
+    def create_scopes(store, name, hash)
+      scopes = hash.map do |scope, json|
+        next if scope == "meta"
 
-        scope_file_store = ScopeFileStore.new(store.base_path, name) if store.persistent?
-        scope_object = Machinery::Scope.initialize_scope(name, json, scope_file_store)
+        scope_file_store = ScopeFileStore.new(store.description_path(name), scope) if store.persistent?
+        scope_object = Machinery::Scope.initialize_scope(scope, json, scope_file_store)
 
         # Set metadata
-        if hash["meta"] && hash["meta"][name]
-          scope_object.meta = Machinery::Object.from_json(hash["meta"][name])
+        if hash["meta"] && hash["meta"][scope]
+          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope])
         end
 
-        [name, scope_object]
+        [scope, scope_object]
       end.compact
 
       Hash[scopes]
