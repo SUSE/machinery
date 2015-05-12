@@ -166,7 +166,7 @@ describe Machinery::Object do
   describe "#set_scope" do
     it "propagates the scope to its children" do
       scope = double
-      json_object = {"foo" => {key: "value"}, "bar" => {key: "value"}}
+      json_object = { "foo" => { key: "value" }, "bar" => { key: "value" } }
       object = ObjectWithProperty.from_json(json_object)
 
       expect(object.scope).to be(nil)

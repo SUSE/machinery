@@ -18,19 +18,19 @@
 module Machinery
   class SystemFile < Machinery::Object
     def file?
-      self.type == "file"
+      type == "file"
     end
 
     def link?
-      self.type == "link"
+      type == "link"
     end
 
     def directory?
-      self.type == "dir"
+      type == "dir"
     end
 
     def remote_directory?
-      self.type == "remote_dir"
+      type == "remote_dir"
     end
 
     def utils

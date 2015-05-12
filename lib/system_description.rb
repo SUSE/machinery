@@ -115,7 +115,9 @@ class SystemDescription < Machinery::Object
       scopes = hash.map do |scope, json|
         next if scope == "meta"
 
-        scope_file_store = ScopeFileStore.new(store.description_path(name), scope) if store.persistent?
+        if store.persistent?
+          scope_file_store = ScopeFileStore.new(store.description_path(name), scope)
+        end
         scope_object = Machinery::Scope.initialize_scope(scope, json, scope_file_store)
 
         # Set metadata
