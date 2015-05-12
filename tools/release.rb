@@ -44,6 +44,7 @@ class Release
   end
 
   def prepare
+    clean_up_tmp
     remove_old_releases(skip_rpm_cleanup: @options[:skip_rpm_cleanup])
     set_version
     generate_specfile
@@ -107,6 +108,9 @@ class Release
     else
       FileUtils.rm Dir.glob(File.join(Machinery::ROOT, "package/*"))
     end
+  end
+
+  def clean_up_tmp
     output_dir = File.join("/var/tmp", obs_project, build_dist)
     FileUtils.rm Dir.glob("#{output_dir}/*.rpm")
   end
