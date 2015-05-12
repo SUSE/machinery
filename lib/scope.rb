@@ -32,7 +32,7 @@ module Machinery
           scope = scope.from_json(json)
           scope.scope_file_store = scope_file_store
 
-          scope.set_scope(scope)
+          scope.scope = scope
 
           return scope
         end

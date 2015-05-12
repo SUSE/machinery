@@ -201,7 +201,7 @@ describe Machinery::Array do
     end
   end
 
-  describe "#set_scope" do
+  describe "#scope=" do
     it "propagates the scope to its children" do
       scope = double
       json_object = [
@@ -213,7 +213,7 @@ describe Machinery::Array do
       expect(array.scope).to be(nil)
       expect(array.first.scope).to be(nil)
 
-      array.set_scope(scope)
+      array.scope = scope
 
       expect(array.scope).to be(scope)
       expect(array.first.scope).to be(scope)

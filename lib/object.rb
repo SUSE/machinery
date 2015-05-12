@@ -61,10 +61,10 @@ module Machinery
       set_attributes(attrs)
     end
 
-    def set_scope(scope)
+    def scope=(scope)
       @scope = scope
       @attributes.values.each do |child|
-        child.set_scope(@scope) if child.respond_to?(:set_scope)
+        child.scope = @scope if child.respond_to?(:scope=)
       end
     end
 

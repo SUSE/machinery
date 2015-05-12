@@ -41,7 +41,7 @@ describe Machinery::SystemFileUtils do
       size: 25,
       mode: "644"
     )
-    file.set_scope(scope)
+    file.scope = scope
     file
   }
   let(:link) {
@@ -51,7 +51,7 @@ describe Machinery::SystemFileUtils do
       user: "root",
       group: "root"
     )
-    link.set_scope(scope)
+    link.scope = scope
     link
   }
   let(:dir) {
@@ -64,7 +64,7 @@ describe Machinery::SystemFileUtils do
       mode: "755",
       files: 17
     )
-    dir.set_scope(scope)
+    dir.scope = scope
     dir
   }
   subject(:file_utils) { Machinery::SystemFileUtils.new(file) }

@@ -55,10 +55,10 @@ module Machinery
       @elements = self.class.convert_raw_array(elements)
     end
 
-    def set_scope(scope)
+    def scope=(scope)
       @scope = scope
       @elements.each do |child|
-        child.set_scope(@scope) if child.respond_to?(:set_scope)
+        child.scope = @scope if child.respond_to?(:scope=)
       end
     end
 
