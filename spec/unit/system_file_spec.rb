@@ -54,76 +54,32 @@ describe Machinery::SystemFile do
     )
   }
 
-  describe "#file?" do
-    it "returns true when it is a file" do
-      expect(file.file?).to be(true)
-    end
-
-    it "returns false when its a link" do
-      expect(link.file?).to be(false)
-    end
-
-    it "returns false when its a directory" do
-      expect(dir.file?).to be(false)
-    end
-
-    it "returns false when it is a remote directory" do
-      expect(remote_dir.file?).to be(false)
-    end
+  context "files only return true for #file?" do
+    specify { expect(file.file?).to be(true) }
+    specify { expect(file.link?).to be(false) }
+    specify { expect(file.directory?).to be(false) }
+    specify { expect(file.remote_directory?).to be(false) }
   end
 
-  describe "#link?" do
-    it "returns true when its a link" do
-      expect(link.link?).to be(true)
-    end
-
-    it "returns false when it is a file" do
-      expect(file.link?).to be(false)
-    end
-
-    it "returns false when its a directory" do
-      expect(dir.link?).to be(false)
-    end
-
-    it "returns false when it is a remote directory" do
-      expect(remote_dir.link?).to be(false)
-    end
+  context "links only return true for #link?" do
+    specify { expect(link.link?).to be(true) }
+    specify { expect(link.file?).to be(false) }
+    specify { expect(link.directory?).to be(false) }
+    specify { expect(link.remote_directory?).to be(false) }
   end
 
-  describe "#directory?" do
-    it "returns true when its a directory" do
-      expect(dir.directory?).to be(true)
-    end
-
-    it "returns false when its a link" do
-      expect(link.directory?).to be(false)
-    end
-
-    it "returns false when it is a file" do
-      expect(file.directory?).to be(false)
-    end
-
-    it "returns false when it is a remote directory" do
-      expect(remote_dir.directory?).to be(false)
-    end
+  context "directories only return true for #directory?" do
+    specify { expect(dir.directory?).to be(true) }
+    specify { expect(dir.file?).to be(false) }
+    specify { expect(dir.link?).to be(false) }
+    specify { expect(dir.remote_directory?).to be(false) }
   end
 
-  describe "#remote_directory?" do
-    it "returns true when its a remote directory" do
-      expect(remote_dir.remote_directory?).to be(true)
-    end
-
-    it "returns false when its a link" do
-      expect(link.remote_directory?).to be(false)
-    end
-
-    it "returns false when it is a file" do
-      expect(file.remote_directory?).to be(false)
-    end
-
-    it "returns false when it is a directory" do
-      expect(dir.remote_directory?).to be(false)
-    end
+  context "remote_directories only return true for #remote_directory?" do
+    specify { expect(remote_dir.remote_directory?).to be(true) }
+    specify { expect(remote_dir.file?).to be(false) }
+    specify { expect(remote_dir.link?).to be(false) }
+    specify { expect(remote_dir.directory?).to be(false) }
   end
 
   describe "#utils" do
