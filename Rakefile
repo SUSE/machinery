@@ -116,8 +116,8 @@ namespace :rpm do
     # base even when the unit tests are failing.
     Rake::Task["package"].prerequisites.delete("test")
 
-    skip_cleanup = (ENV["SKIP_RPM_CLEANUP"] == "true")
-    release = Release.new(skip_cleanup: skip_cleanup)
+    skip_rpm_cleanup = (ENV["SKIP_RPM_CLEANUP"] == "true")
+    release = Release.new(skip_rpm_cleanup: skip_rpm_cleanup)
     release.build_local
   end
 end
