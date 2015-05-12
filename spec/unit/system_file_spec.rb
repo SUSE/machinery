@@ -47,6 +47,12 @@ describe Machinery::SystemFile do
       files: 17
     )
   }
+  let(:remote_dir) {
+    Machinery::SystemFile.new(
+      name: "/remote-dir/",
+      type: "remote_dir"
+    )
+  }
 
   describe "#file?" do
     it "returns true when it is a file" do
@@ -59,6 +65,10 @@ describe Machinery::SystemFile do
 
     it "returns false when its a directory" do
       expect(dir.file?).to be(false)
+    end
+
+    it "returns false when it is a remote directory" do
+      expect(remote_dir.file?).to be(false)
     end
   end
 
@@ -74,6 +84,10 @@ describe Machinery::SystemFile do
     it "returns false when its a directory" do
       expect(dir.link?).to be(false)
     end
+
+    it "returns false when it is a remote directory" do
+      expect(remote_dir.link?).to be(false)
+    end
   end
 
   describe "#directory?" do
@@ -87,6 +101,28 @@ describe Machinery::SystemFile do
 
     it "returns false when it is a file" do
       expect(file.directory?).to be(false)
+    end
+
+    it "returns false when it is a remote directory" do
+      expect(remote_dir.directory?).to be(false)
+    end
+  end
+
+  describe "#remote_directory?" do
+    it "returns true when its a remote directory" do
+      expect(remote_dir.remote_directory?).to be(true)
+    end
+
+    it "returns false when its a link" do
+      expect(link.remote_directory?).to be(false)
+    end
+
+    it "returns false when it is a file" do
+      expect(file.remote_directory?).to be(false)
+    end
+
+    it "returns false when it is a directory" do
+      expect(dir.remote_directory?).to be(false)
     end
   end
 
