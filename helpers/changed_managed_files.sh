@@ -36,7 +36,8 @@ for package in `rpm -qa --queryformat "%{NAME}-%{VERSION}\\n"`; do
   # that's why we explicitly detect if sudo failed
   OUTPUT=`$SUDOPREFIX rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $package 2>&1 || true`;
   if [ -n "$OUTPUT" ]; then
-    if [[ "$OUTPUT" ==  *"password is required"* ]]; then
+    REGEX="^sudo:.*password is required"
+    if [[ "$OUTPUT" =~ $REGEX ]]; then
       echo "$OUTPUT" >&2
       exit 1
     fi
