@@ -91,7 +91,7 @@ class SystemDescription < Machinery::Object
     def from_hash(name, store, hash)
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
-        description = SystemDescription.new(name, store, create_scopes(store, name, hash))
+        description = SystemDescription.new(name, store, hash)
       rescue NameError, TypeError
         if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
@@ -108,28 +108,6 @@ class SystemDescription < Machinery::Object
 
       description
     end
-
-    private
-
-    def create_scopes(store, name, hash)
-      scopes = hash.map do |scope, json|
-        next if scope == "meta"
-
-        if store.persistent?
-          scope_file_store = ScopeFileStore.new(store.description_path(name), scope)
-        end
-        scope_object = Machinery::Scope.initialize_scope(scope, json, scope_file_store)
-
-        # Set metadata
-        if hash["meta"] && hash["meta"][scope]
-          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope])
-        end
-
-        [scope, scope_object]
-      end.compact
-
-      Hash[scopes]
-    end
   end
 
   def initialize(name, store, hash = {})
@@ -138,7 +116,32 @@ class SystemDescription < Machinery::Object
     @format_version = CURRENT_FORMAT_VERSION
     @filter_definitions = {}
 
-    super(hash)
+    super(create_scopes(hash))
+  end
+
+  def create_scopes(hash)
+    if store.persistent?
+      scope_file_store = scope_file_store(name)
+    end
+
+    scopes = hash.map do |scope_name, json|
+      next if scope_name == "meta"
+
+      if json.is_a?(Hash) || json.is_a?(Array)
+        scope_object = Machinery::Scope.initialize_scope(scope_name, json, scope_file_store)
+
+        # Set metadata
+        if hash["meta"] && hash["meta"][scope_name]
+          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
+        end
+      else
+        scope_object = json
+      end
+
+      [scope_name, scope_object]
+    end.compact
+
+    Hash[scopes]
   end
 
   def compatible?
