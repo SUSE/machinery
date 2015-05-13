@@ -10,7 +10,7 @@
     }
   ],
   "meta": {
-    "format_version": 3,
+    "format_version": 4,
     "packages": {
       "modified": "2014-08-28T14:07:26Z",
       "hostname": "host.example.com"

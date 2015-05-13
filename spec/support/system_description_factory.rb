@@ -105,7 +105,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 3
+      format_version: 4
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -173,7 +173,8 @@ module SystemDescriptionFactory
           ],
           "user": "root",
           "group": "root",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
         },
         {
           "name": "/etc/cron.daily/cleanup",
@@ -183,7 +184,8 @@ module SystemDescriptionFactory
           "changes": ["md5"],
           "user": "user",
           "group": "group",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
         },
         {
           "name": "/etc/cron.daily/logrotate",
@@ -193,7 +195,8 @@ module SystemDescriptionFactory
           "changes": ["md5", "size"],
           "user": "user",
           "group": "group",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
         }
       ]
     }

@@ -33,7 +33,7 @@
       },
       {
         "name": "console-shell.service",
-        "state": "disabled"
+        "state": "static"
       },
       {
         "name": "cron.service",
@@ -124,10 +124,6 @@
         "state": "static"
       },
       {
-        "name": "kadmind.service",
-        "state": "disabled"
-      },
-      {
         "name": "kbd.service",
         "state": "masked"
       },
@@ -142,14 +138,6 @@
       {
         "name": "kmod-static-nodes.service",
         "state": "static"
-      },
-      {
-        "name": "kpropd.service",
-        "state": "disabled"
-      },
-      {
-        "name": "krb5kdc.service",
-        "state": "disabled"
       },
       {
         "name": "ldconfig.service",
@@ -184,8 +172,44 @@
         "state": "enabled"
       },
       {
-        "name": "postfix.service",
-        "state": "enabled"
+        "name": "plymouth-halt.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-kexec.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-poweroff.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-quit-wait.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-quit.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-read-write.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-reboot.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-start.service",
+        "state": "disabled"
+      },
+      {
+        "name": "plymouth-switch-root.service",
+        "state": "static"
+      },
+      {
+        "name": "polkit.service",
+        "state": "static"
       },
       {
         "name": "proc.service",
@@ -228,10 +252,6 @@
         "state": "disabled"
       },
       {
-        "name": "rsyslog.service",
-        "state": "enabled"
-      },
-      {
         "name": "single.service",
         "state": "masked"
       },
@@ -248,12 +268,20 @@
         "state": "masked"
       },
       {
+        "name": "suse-studio-custom.service",
+        "state": "enabled"
+      },
+      {
         "name": "swap.service",
         "state": "masked"
       },
       {
         "name": "sysctl.service",
         "state": "static"
+      },
+      {
+        "name": "syslog-ng.service",
+        "state": "enabled"
       },
       {
         "name": "syslog.service",
@@ -265,6 +293,10 @@
       },
       {
         "name": "systemd-ask-password-console.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-ask-password-plymouth.service",
         "state": "static"
       },
       {
@@ -449,14 +481,360 @@
       }
     ]
   },
+  "groups": [
+    {
+      "name": "audio",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 17
+    },
+    {
+      "name": "bin",
+      "password": "x",
+      "users": [
+        "daemon"
+      ],
+      "gid": 1
+    },
+    {
+      "name": "cdrom",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 20
+    },
+    {
+      "name": "console",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 21
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 2
+    },
+    {
+      "name": "dialout",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 16
+    },
+    {
+      "name": "disk",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 6
+    },
+    {
+      "name": "floppy",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 19
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 49
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 40
+    },
+    {
+      "name": "kmem",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 9
+    },
+    {
+      "name": "lock",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 54
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 7
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 12
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 62
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 499
+    },
+    {
+      "name": "modem",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 43
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 13
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 65533
+    },
+    {
+      "name": "nogroup",
+      "password": "x",
+      "users": [
+        "nobody"
+      ],
+      "gid": 65534
+    },
+    {
+      "name": "polkitd",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 496
+    },
+    {
+      "name": "public",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 32
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 0
+    },
+    {
+      "name": "shadow",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 15
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 495
+    },
+    {
+      "name": "sys",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 3
+    },
+    {
+      "name": "systemd-journal",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 498
+    },
+    {
+      "name": "tape",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 497
+    },
+    {
+      "name": "trusted",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 42
+    },
+    {
+      "name": "tty",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 5
+    },
+    {
+      "name": "users",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 100
+    },
+    {
+      "name": "utmp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 22
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 14
+    },
+    {
+      "name": "video",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 33
+    },
+    {
+      "name": "wheel",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 10
+    },
+    {
+      "name": "www",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 8
+    },
+    {
+      "name": "xok",
+      "password": "x",
+      "users": [
+
+      ],
+      "gid": 41
+    }
+  ],
   "packages": [
+    {
+      "name": "DirectFB",
+      "version": "1.6.3",
+      "release": "4.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f7ab84032a0b07fe079030b0abb441d3"
+    },
+    {
+      "name": "Mesa",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d3350e07a011f5731cb7a787e0ed11a8"
+    },
+    {
+      "name": "Mesa-libEGL1",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d36cf64cb1860e7130b10ab13de55285"
+    },
+    {
+      "name": "Mesa-libGL1",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ee2ea91c3be8552be55f6a28e60fc3ec"
+    },
+    {
+      "name": "Mesa-libGLESv2-2",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "0939ad04af12d3974b5b383a743889e8"
+    },
+    {
+      "name": "Mesa-libglapi0",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6659ebca0af2e8d9baf42f6b768d5273"
+    },
     {
       "name": "aaa_base",
       "version": "13.1",
-      "release": "16.17.1",
+      "release": "16.42.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "542cc67d16b48ea0c37b32dfb02d913c"
+      "checksum": "503e92b38ac00bd311ce7527e907d6d6"
     },
     {
       "name": "adjtimex",
@@ -473,6 +851,14 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "533e40ba8a5551204b528c047e45c169"
+    },
+    {
+      "name": "branding-openSUSE",
+      "version": "13.1",
+      "release": "10.4.13",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "c52a3adf23bef50cecf7d265354c78a0"
     },
     {
       "name": "bridge-utils",
@@ -493,10 +879,10 @@
     {
       "name": "coreutils",
       "version": "8.21",
-      "release": "7.1.3",
+      "release": "7.16.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "8d0080e627cc86f4ec4c8c5c6666d40b"
+      "checksum": "72ecfca8b13198813ff596769600155d"
     },
     {
       "name": "cpio",
@@ -515,12 +901,12 @@
       "checksum": "ef05b58179386b1ec5ceb75c2b28f3c7"
     },
     {
-      "name": "cracklib-dict-small",
-      "version": "2.9.0",
-      "release": "2.1.2",
+      "name": "cracklib-dict-full",
+      "version": "2.8.12",
+      "release": "62.1.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "bffba94514f8f7fd8eb6af499bd66836"
+      "checksum": "f401ce4c8686f47cf1036302dd38d203"
     },
     {
       "name": "cron",
@@ -549,10 +935,18 @@
     {
       "name": "dbus-1",
       "version": "1.7.4",
-      "release": "4.4.1",
+      "release": "4.16.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "f930f87809eb60ffd3b78d02f754a36e"
+      "checksum": "81a54ec6c964f0ab983fc5368fa3ea03"
+    },
+    {
+      "name": "dbus-1-x11",
+      "version": "1.7.4",
+      "release": "4.16.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "705313fb41bdde2b8c54f45603dcc9d9"
     },
     {
       "name": "device-mapper",
@@ -605,10 +999,10 @@
     {
       "name": "elfutils",
       "version": "0.155",
-      "release": "6.1.20",
+      "release": "6.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "1ded56b4c40f1d8d8333c804310f0e4e"
+      "checksum": "6d3e828799be2f3277013aa4e55885c4"
     },
     {
       "name": "expat",
@@ -620,19 +1014,19 @@
     },
     {
       "name": "file",
-      "version": "5.14",
-      "release": "4.1.2",
+      "version": "5.15",
+      "release": "4.20.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "f0f4d4eca640eda902696f555772b78f"
+      "checksum": "a6f7a3339d9a35f2c3fd59d7579dce20"
     },
     {
       "name": "file-magic",
-      "version": "5.14",
-      "release": "4.1.2",
+      "version": "5.15",
+      "release": "4.20.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "97b53b333cf4b2b204cf63ed56831b9a"
+      "checksum": "a4c8755a5fbff1622ccf8154bcdb0723"
     },
     {
       "name": "filesystem",
@@ -659,6 +1053,14 @@
       "checksum": "4e8bdc044364eade7a2dfc754dd7e172"
     },
     {
+      "name": "fontconfig",
+      "version": "2.11.0",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "518c8c930443a2ca35031419288dcd84"
+    },
+    {
       "name": "gawk",
       "version": "4.1.0",
       "release": "2.1.14",
@@ -667,36 +1069,60 @@
       "checksum": "84980e1ce8eeb88eb28edecfe3fb93da"
     },
     {
-      "name": "gettext-runtime-mini",
+      "name": "gettext-runtime",
       "version": "0.18.3.1",
       "release": "1.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "c256e729ca48a2306e8055e867cea15b"
+      "checksum": "5fa81a9dd0d81c18db234f79f1824959"
+    },
+    {
+      "name": "gio-branding-openSUSE",
+      "version": "13.1",
+      "release": "2.13.1",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "6f33b8040e1954545050b634b6123716"
+    },
+    {
+      "name": "glib2-tools",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a2d8a24f6f5005895da45d653bd9e74b"
     },
     {
       "name": "glibc",
       "version": "2.18",
-      "release": "4.4.1",
+      "release": "4.15.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "69cd5a3e331693f655e46f1aec2c4695"
+      "checksum": "c445d03338a18ed5df13008fcfbc42f7"
     },
     {
       "name": "glibc-32bit",
       "version": "2.18",
-      "release": "4.4.1",
+      "release": "4.15.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "92becea05a51eb464d78a0980e6b9cf4"
+      "checksum": "3aa78168eebef10365b78fc061894155"
+    },
+    {
+      "name": "gnu-unifont-bitmap-fonts",
+      "version": "20080123",
+      "release": "82.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "246ea5728ea7c96ceffcb0d88e8d9198"
     },
     {
       "name": "gpg2",
       "version": "2.0.22",
-      "release": "1.1",
+      "release": "8.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "edc458c58408bdab4bfef619278cb8a1"
+      "checksum": "6c2bfb0eb55ecd31a0c657323b1e2d80"
     },
     {
       "name": "grep",
@@ -717,18 +1143,18 @@
     {
       "name": "grub2",
       "version": "2.00",
-      "release": "39.1.3",
+      "release": "39.8.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "2f7317970fbbfa17c3ffc38e050dcdf1"
+      "checksum": "3a9bc35cf452103ed484e7dad70485be"
     },
     {
       "name": "grub2-i386-pc",
       "version": "2.00",
-      "release": "39.1.3",
+      "release": "39.8.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "351711c51f467b1252d98b08ff6da4de"
+      "checksum": "95211e0bde6dedb7a32a3bf97a39dab0"
     },
     {
       "name": "gzip",
@@ -737,6 +1163,14 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "79db5125f8b7ad6837fe453212af5cd3"
+    },
+    {
+      "name": "hwinfo",
+      "version": "20.2",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6a5d3c3fae0661286d845cc05b160ded"
     },
     {
       "name": "info",
@@ -765,10 +1199,10 @@
     {
       "name": "iputils",
       "version": "s20101006",
-      "release": "23.1.2",
+      "release": "23.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "c1639634777e1791490a501cada3fffa"
+      "checksum": "f288609e60d206fbf0b58ba17be2e91e"
     },
     {
       "name": "kbd",
@@ -780,11 +1214,11 @@
     },
     {
       "name": "kernel-default",
-      "version": "3.11.6",
-      "release": "4.1",
+      "version": "3.11.10",
+      "release": "21.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "6aa7aa6af76da1357219b65c5d32a52e"
+      "checksum": "1f02808a7737e2165b6d43dc89925b98"
     },
     {
       "name": "klogd",
@@ -805,18 +1239,26 @@
     {
       "name": "kpartx",
       "version": "0.4.9",
-      "release": "11.1.2",
+      "release": "11.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "a8b15554fb492370204a065becc7c6c0"
+      "checksum": "19518e85b4efa2f214d72f83f6509dce"
     },
     {
-      "name": "krb5-mini",
+      "name": "krb5",
       "version": "1.11.3",
-      "release": "3.1.2",
+      "release": "3.8.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "45618b68ad3415b07b12975f420adedc"
+      "checksum": "99c2b99fc2883995ac6d7260be4cf945"
+    },
+    {
+      "name": "libICE6",
+      "version": "1.0.8",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3e83dca788686f352e2fd5e274fa9924"
     },
     {
       "name": "libLLVM",
@@ -825,6 +1267,102 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "7f33572a255596090c19755445b6d5cd"
+    },
+    {
+      "name": "libSM6",
+      "version": "1.2.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "56ffc029177a9d59208a47b543b22f40"
+    },
+    {
+      "name": "libX11-6",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "55772cdf402ae64da9062c5af6ad23c6"
+    },
+    {
+      "name": "libX11-data",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "45c5eb39c862ddcfa74e1ed6a293cff9"
+    },
+    {
+      "name": "libX11-xcb1",
+      "version": "1.6.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b2bc2a4765ae26f15f78e9880d998346"
+    },
+    {
+      "name": "libXau6",
+      "version": "1.0.8",
+      "release": "2.2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "264008603b7067b1374320d913a67b50"
+    },
+    {
+      "name": "libXdamage1",
+      "version": "1.1.4",
+      "release": "6.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d720db9f2c345cfbb6d021ccc6675eaf"
+    },
+    {
+      "name": "libXext6",
+      "version": "1.3.2",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6c1045b4f2b6de12b292918d89b88d91"
+    },
+    {
+      "name": "libXfixes3",
+      "version": "5.0.1",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2dce65a71fe23c5413a406de9ae9f242"
+    },
+    {
+      "name": "libXft2",
+      "version": "2.3.1",
+      "release": "7.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "390d0a5a5e21e476b0e916fd6aa6858f"
+    },
+    {
+      "name": "libXrender1",
+      "version": "0.9.8",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9f18b64f2fe146aff06badbd5c95d8ae"
+    },
+    {
+      "name": "libXt6",
+      "version": "1.1.4",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "c3ad229d17418d328e4cb36f71e82c8f"
+    },
+    {
+      "name": "libXxf86vm1",
+      "version": "1.1.3",
+      "release": "2.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "f0bd67d4c0b7dbd4aa3190383703aad6"
     },
     {
       "name": "libacl1",
@@ -845,10 +1383,10 @@
     {
       "name": "libasm1",
       "version": "0.155",
-      "release": "6.1.20",
+      "release": "6.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "3880545ecc193536c4b1c95d7f5b521a"
+      "checksum": "c23167b5cf1585cc3190d7f5eb123b61"
     },
     {
       "name": "libassuan0",
@@ -885,10 +1423,10 @@
     {
       "name": "libblkid1",
       "version": "2.23.2",
-      "release": "3.1",
+      "release": "10.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "d20a41db27706619e59bcf7c76110218"
+      "checksum": "9c6dd5053f219a078f1401e88199dc26"
     },
     {
       "name": "libbz2-1",
@@ -899,12 +1437,20 @@
       "checksum": "2038cfa741a8ba0e6b56aac63d703f6b"
     },
     {
-      "name": "libcap-ng0",
-      "version": "0.7.3",
-      "release": "2.1.2",
+      "name": "libcairo2",
+      "version": "1.12.16",
+      "release": "3.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "dcce8cf878d043b7a61ab2a90a953e8a"
+      "checksum": "15a0a4a0db6c856979afb11197b4eeb3"
+    },
+    {
+      "name": "libcap-ng0",
+      "version": "0.7.3",
+      "release": "2.4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ff489e11773fdc71b9d406bde89e1381"
     },
     {
       "name": "libcap2",
@@ -931,6 +1477,14 @@
       "checksum": "9a4a1661e1e3e830dca5aff5b8d77f53"
     },
     {
+      "name": "libcroco-0_6-3",
+      "version": "0.6.8",
+      "release": "5.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "230c8e1b9663374894179dd7628a66a3"
+    },
+    {
       "name": "libcryptsetup4",
       "version": "1.6.2",
       "release": "2.1.2",
@@ -941,10 +1495,10 @@
     {
       "name": "libcurl4",
       "version": "7.32.0",
-      "release": "2.1.2",
+      "release": "2.23.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "aff83aa32d14a94bff9f8844eb0f1439"
+      "checksum": "bb418fe4e5cae3755720778883cc7664"
     },
     {
       "name": "libdb-4_8",
@@ -957,18 +1511,58 @@
     {
       "name": "libdbus-1-3",
       "version": "1.7.4",
-      "release": "4.4.1",
+      "release": "4.16.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "f35777871270e140e27f5f87ece19a1f"
+      "checksum": "a0da1a97770ea31c8e0bafec805ed8ee"
+    },
+    {
+      "name": "libdirectfb-1_6-0",
+      "version": "1.6.3",
+      "release": "4.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ca55121d3a2297e9d8bc10c9738325d4"
+    },
+    {
+      "name": "libdrm2",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2da207fa912f1349af8fc1d8637a0844"
+    },
+    {
+      "name": "libdrm_intel1",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "62fc0169329cf763af383b0da526e863"
+    },
+    {
+      "name": "libdrm_nouveau2",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a18e9353eb1c317bfccd1ad22abf1566"
+    },
+    {
+      "name": "libdrm_radeon1",
+      "version": "2.4.46",
+      "release": "3.2.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d91061defa2547678b2b0de5c364009f"
     },
     {
       "name": "libdw1",
       "version": "0.155",
-      "release": "6.1.20",
+      "release": "6.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "22ade06e2ceae6d60988d9b44af3af47"
+      "checksum": "73319688553c542d599fec1f47d01289"
     },
     {
       "name": "libedit0",
@@ -989,18 +1583,10 @@
     {
       "name": "libelf1",
       "version": "0.155",
-      "release": "6.1.20",
+      "release": "6.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "f8a3cd71b275b5c296a0e1d87525960c"
-    },
-    {
-      "name": "libestr0",
-      "version": "0.1.9",
-      "release": "1.1",
-      "arch": "x86_64",
-      "vendor": "openSUSE",
-      "checksum": "8c2c6ed1367bf8e1e1240a39bb5ac836"
+      "checksum": "6d10779115f7c30417a4103bd287f7be"
     },
     {
       "name": "libevtlog0",
@@ -1051,6 +1637,14 @@
       "checksum": "0f615962ec48302125f39fec4dfffea3"
     },
     {
+      "name": "libgbm1",
+      "version": "9.2.3",
+      "release": "61.9.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9eb77854360e5138934337d7d152c694"
+    },
+    {
       "name": "libgcc_s1",
       "version": "4.8.1_20130909",
       "release": "3.2.1",
@@ -1083,12 +1677,44 @@
       "checksum": "4cb8c4186dfc926b4f2873a6442ae05c"
     },
     {
+      "name": "libgio-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a00a5c8c4fbde932e3a18b3ca8e5d5c3"
+    },
+    {
+      "name": "libglib-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "99270631b20505414d09a6b6b9de0422"
+    },
+    {
+      "name": "libgmodule-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "3ce5b5de92df7f91a4565e865828bb8e"
+    },
+    {
       "name": "libgmp10",
       "version": "5.1.2",
       "release": "2.1.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "a947a448ea5e2a77d3210e1d1c9dbf37"
+    },
+    {
+      "name": "libgobject-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2f47a18777f0ed9adc321c3f9bdff2c5"
     },
     {
       "name": "libgpg-error0",
@@ -1107,12 +1733,20 @@
       "checksum": "332daef2e774e011c2266602cc01d933"
     },
     {
-      "name": "libgssglue1",
-      "version": "0.4",
-      "release": "2.1.2",
+      "name": "libgthread-2_0-0",
+      "version": "2.38.2",
+      "release": "8.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "09153a347c42235048bbad3d21211157"
+      "checksum": "cfea336fe24c959b7db5f6a1fe490514"
+    },
+    {
+      "name": "libharfbuzz0",
+      "version": "0.9.21",
+      "release": "1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "346dde85086a523fa901a43432543468"
     },
     {
       "name": "libidn11",
@@ -1129,14 +1763,6 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "8858cc6b8090c8e2381ed64e658ccc40"
-    },
-    {
-      "name": "libjson0",
-      "version": "0.10",
-      "release": "3.1.2",
-      "arch": "x86_64",
-      "vendor": "openSUSE",
-      "checksum": "d569a3b1c1b9122d34ae31fbdb9a9e33"
     },
     {
       "name": "libkeyutils1",
@@ -1189,18 +1815,18 @@
     {
       "name": "liblzo2-2",
       "version": "2.06",
-      "release": "12.1.2",
+      "release": "12.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "990d395cefd228b4768e1fe7e2cac669"
+      "checksum": "00037888ac7fecc26b1126320cb14d5b"
     },
     {
       "name": "libmagic1",
-      "version": "5.14",
-      "release": "4.1.2",
+      "version": "5.15",
+      "release": "4.20.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "e972ce8795f5c36f7725103716cf5c60"
+      "checksum": "7a87c0b1d8d90136cd6d1fdc04a23bca"
     },
     {
       "name": "libmodman1",
@@ -1213,10 +1839,18 @@
     {
       "name": "libmount1",
       "version": "2.23.2",
-      "release": "3.1",
+      "release": "10.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "30e9e59b43d5ea2d363c4d188e934770"
+      "checksum": "4da095e797ed8c1bf454c06adae31db6"
+    },
+    {
+      "name": "libmozjs-17_0",
+      "version": "17.0",
+      "release": "4.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "2b6c101161d094f53439e710e2674a45"
     },
     {
       "name": "libncurses5",
@@ -1252,11 +1886,19 @@
     },
     {
       "name": "libopenssl1_0_0",
-      "version": "1.0.1e",
-      "release": "11.2.1",
+      "version": "1.0.1h",
+      "release": "11.48.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "52a097d7f59bd80610b00a073bcb91c2"
+      "checksum": "d1cbe4dacd6500533d5d40f59cc9d912"
+    },
+    {
+      "name": "libpango-1_0-0",
+      "version": "1.36.1",
+      "release": "4.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "e12878a0e5640449f36b67070080a228"
     },
     {
       "name": "libpci3",
@@ -1285,18 +1927,58 @@
     {
       "name": "libpixman-1-0",
       "version": "0.30.2",
-      "release": "2.2.1",
+      "release": "2.5.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "072194ba4d774ef3a64b79aa5d917758"
+      "checksum": "87bf57588a4fc9d4e967f66057401d16"
+    },
+    {
+      "name": "libply-boot-client2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d9639e736c3b4026a9c8d73445860ee0"
+    },
+    {
+      "name": "libply-splash-core2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7ddb803703fe3d09446d6cf1b6dbff7b"
+    },
+    {
+      "name": "libply-splash-graphics2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "300cfe8a83fcbcea07ff48f6f759b3f6"
+    },
+    {
+      "name": "libply2",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b68bf0706b57f6655bd5dbd04d5e104b"
     },
     {
       "name": "libpng16-16",
       "version": "1.6.6",
-      "release": "1.1",
+      "release": "12.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "6d80085e8bc1c97f65a7dc0ea9b0a0b1"
+      "checksum": "78b3d50bfefda1bad94b24861e0499a3"
+    },
+    {
+      "name": "libpolkit0",
+      "version": "0.112",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "21b6a6b2e7488158ceeead9a34e1ee9d"
     },
     {
       "name": "libpopt0",
@@ -1309,10 +1991,10 @@
     {
       "name": "libprocps1",
       "version": "3.3.8",
-      "release": "5.1.2",
+      "release": "5.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "307bac471bc7b84deb77aac5a1455d73"
+      "checksum": "3491e58c99895c6c0b73a16d41765a4a"
     },
     {
       "name": "libproxy1",
@@ -1380,11 +2062,11 @@
     },
     {
       "name": "libsolv-tools",
-      "version": "0.4.0",
-      "release": "2.2",
+      "version": "0.4.2",
+      "release": "11.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "76bca286541bc118eaa96d76a6d1e772"
+      "checksum": "828ae058721f75cf8240b988af5728ab"
     },
     {
       "name": "libssh2-1",
@@ -1413,10 +2095,10 @@
     {
       "name": "libtirpc1",
       "version": "0.2.3",
-      "release": "1.1",
+      "release": "4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "3084f6d4abd244bb1879b78d08e6db4d"
+      "checksum": "00a5301be37b29094eca890d5863612d"
     },
     {
       "name": "libts-1_0-0",
@@ -1427,12 +2109,12 @@
       "checksum": "f2b6fdfece2e79ddadec0f5f8483e083"
     },
     {
-      "name": "libudev1",
+      "name": "libudev-mini1",
       "version": "208",
-      "release": "6.1",
+      "release": "23.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "d1f9b578679a6c72f6774c756131cfae"
+      "checksum": "d6429c4578dc2c099bb9ecece60bae72"
     },
     {
       "name": "libusb-0_1-4",
@@ -1469,10 +2151,34 @@
     {
       "name": "libuuid1",
       "version": "2.23.2",
-      "release": "3.1",
+      "release": "10.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "ede7d17af2a0f0a0c1f71829831f6998"
+      "checksum": "3e34463d1100a619f7ec0b8148b9848f"
+    },
+    {
+      "name": "libvdpau1",
+      "version": "0.6",
+      "release": "3.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b3ecac5402abe3a8a4935e88d6ebb968"
+    },
+    {
+      "name": "libwayland-client0",
+      "version": "1.2.1",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "7c6f0b1d0064d308131ad91bd12e144c"
+    },
+    {
+      "name": "libwayland-server0",
+      "version": "1.2.1",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d34cdcf483e6f5b260d13973275ee467"
     },
     {
       "name": "libwrap0",
@@ -1499,12 +2205,60 @@
       "checksum": "912a60a01b66c8c9d282119be497e270"
     },
     {
-      "name": "libxml2-2",
-      "version": "2.9.1",
-      "release": "2.1.2",
+      "name": "libxcb-dri2-0",
+      "version": "1.9.1",
+      "release": "3.1.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "cac138d1419154c3306504fa69a455a6"
+      "checksum": "649520326303a5d21a57768a402d4fe4"
+    },
+    {
+      "name": "libxcb-glx0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a5f1959e50b120d6b609e6bcda4c3873"
+    },
+    {
+      "name": "libxcb-render0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4f197686e4e1bf8a60c0fb360956e079"
+    },
+    {
+      "name": "libxcb-shm0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9a6e1ab0bdee52ee16b9583fadf7e8d6"
+    },
+    {
+      "name": "libxcb-xfixes0",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "6da557e15067061ee5de5f84423d1bad"
+    },
+    {
+      "name": "libxcb1",
+      "version": "1.9.1",
+      "release": "3.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "89d7a9b0a91c234d1df3a683fe9186de"
+    },
+    {
+      "name": "libxml2-2",
+      "version": "2.9.1",
+      "release": "2.12.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "453ae3a9447b84b8d64322f6911254a0"
     },
     {
       "name": "libxtables10",
@@ -1532,35 +2286,35 @@
     },
     {
       "name": "libzypp",
-      "version": "13.8.1",
-      "release": "1.1",
+      "version": "13.10.2",
+      "release": "19.6",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "4fd1ebeed26fd4c6a9864fba6320c02f"
+      "checksum": "4f176ae6996a659b459abd00b7405968"
     },
     {
       "name": "logrotate",
-      "version": "3.8.5",
-      "release": "4.1.2",
+      "version": "3.8.7",
+      "release": "4.8.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "e36289513bf714348c9925a569c96735"
+      "checksum": "bcfdc3052257777a4f6586afa50d410d"
     },
     {
       "name": "lvm2",
       "version": "2.02.98",
-      "release": "0.28.1.5",
+      "release": "0.28.18.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "b83a4ecc12a5763493c0279cf27c4b30"
+      "checksum": "6b0b4c3aedeabd583a01eff007b3ef76"
     },
     {
       "name": "mkinitrd",
       "version": "2.8.1",
-      "release": "2.1",
+      "release": "5.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "a02cb7e08c8198cbac356f8641f33236"
+      "checksum": "ab63ea6f80dbf1309878e1240c3ef692"
     },
     {
       "name": "module-init-tools",
@@ -1569,6 +2323,14 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "cf47c19d69be792c1b64d78767b213b1"
+    },
+    {
+      "name": "mozilla-nspr",
+      "version": "4.10.6",
+      "release": "12.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "d77927f3a2bc2d037c4fdb42217b4c40"
     },
     {
       "name": "ncurses-utils",
@@ -1597,10 +2359,10 @@
     {
       "name": "openSUSE-build-key",
       "version": "1.0",
-      "release": "24.1.2",
+      "release": "24.4.1",
       "arch": "noarch",
       "vendor": "openSUSE",
-      "checksum": "da40c71bab8d47e819afa6afac64c3a6"
+      "checksum": "22293922b1ec9e499c86ccc994f8e9d7"
     },
     {
       "name": "openSUSE-release",
@@ -1629,18 +2391,18 @@
     {
       "name": "openssh",
       "version": "6.2p2",
-      "release": "3.1.2",
+      "release": "3.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "5339cdea64ff596663b062e1cb7878e8"
+      "checksum": "7c9c818cd3aa7487fe215fa82c3ba79e"
     },
     {
       "name": "openssl",
-      "version": "1.0.1e",
-      "release": "11.2.1",
+      "version": "1.0.1h",
+      "release": "11.48.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "b81e0b959216f5f195049ddfd3f36ef1"
+      "checksum": "7777920545e792199d03427521040ad5"
     },
     {
       "name": "os-prober",
@@ -1653,10 +2415,10 @@
     {
       "name": "pam",
       "version": "1.1.8",
-      "release": "3.1",
+      "release": "6.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "c01156b4f5debd6228cbb0f75109410a"
+      "checksum": "20662211b201c9e816eff1ceac3ead74"
     },
     {
       "name": "pam-config",
@@ -1665,6 +2427,22 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "7b0c19ae19a63d125e4ce5034f392c21"
+    },
+    {
+      "name": "pango-tools",
+      "version": "1.36.1",
+      "release": "4.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "9055f8babdc6fb56592931a6837ae69a"
+    },
+    {
+      "name": "patterns-openSUSE-base",
+      "version": "13.1",
+      "release": "13.6.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "4b0d596406c411cc27784afb5ded1fd0"
     },
     {
       "name": "perl",
@@ -1723,20 +2501,68 @@
       "checksum": "c745e0069f89e5fc4c58b83da285ad4a"
     },
     {
-      "name": "postfix",
-      "version": "2.9.6",
-      "release": "7.4.1",
+      "name": "plymouth",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "123331c1e4de5d88559548cc1b815778"
+      "checksum": "d6398532c251b29da885a96c3a0ce038"
+    },
+    {
+      "name": "plymouth-branding-openSUSE",
+      "version": "13.1",
+      "release": "10.4.13",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "e88bcce224aa1d3439dd020b2ff32879"
+    },
+    {
+      "name": "plymouth-plugin-label",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "dd868cb02f0c79ea3d47af8c725cdef6"
+    },
+    {
+      "name": "plymouth-plugin-script",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "fd176b49f8dd666a59bffef44d9a5fc5"
+    },
+    {
+      "name": "plymouth-scripts",
+      "version": "0.8.8_git201309032142",
+      "release": "2.5.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "a5d19131bd0eb21bd021c57c7475052f"
+    },
+    {
+      "name": "polkit",
+      "version": "0.112",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "41403fe43867063f72681ae8164a3d57"
+    },
+    {
+      "name": "polkit-default-privs",
+      "version": "13.1",
+      "release": "10.2.1",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "9d9d6fa282cda6f79912d9494713c081"
     },
     {
       "name": "procps",
       "version": "3.3.8",
-      "release": "5.1.2",
+      "release": "5.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "694004f1d97aff8ee7595f048f2dcd03"
+      "checksum": "0c3f5603c5057d124e90ef7ee72d3f69"
     },
     {
       "name": "rpcbind",
@@ -1749,26 +2575,18 @@
     {
       "name": "rpm",
       "version": "4.11.1",
-      "release": "6.2.1",
+      "release": "6.5.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "e72ee325da451b1c422e6939105bba8d"
+      "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
     },
     {
       "name": "rsync",
-      "version": "3.0.9",
-      "release": "21.1.2",
+      "version": "3.1.0",
+      "release": "21.8.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "6e63408d72ab389a362ecc8ef794bd4f"
-    },
-    {
-      "name": "rsyslog",
-      "version": "7.4.4",
-      "release": "2.1.2",
-      "arch": "x86_64",
-      "vendor": "openSUSE",
-      "checksum": "2ef1f4b10743a3d7fc430536b771662c"
+      "checksum": "13635fe58b4b2c6a9f76e02a8250d8fb"
     },
     {
       "name": "sed",
@@ -1795,6 +2613,22 @@
       "checksum": "cb7e22465082019199af847b8cbe7834"
     },
     {
+      "name": "shared-mime-info",
+      "version": "1.1",
+      "release": "2.1.3",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "bf68c9e63bf5e922dfd008f049089e2b"
+    },
+    {
+      "name": "splashy",
+      "version": "0.3.13",
+      "release": "44.1.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "63a6da3457e7918998f0ff920dfb054b"
+    },
+    {
       "name": "suse-module-tools",
       "version": "12.3",
       "release": "6.1.2",
@@ -1803,28 +2637,36 @@
       "checksum": "9d9e2673781ab036c1b9a4bce6f12f37"
     },
     {
-      "name": "sysconfig",
-      "version": "0.81.5",
-      "release": "3.1",
+      "name": "suspend",
+      "version": "1.0",
+      "release": "28.1.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "d36207ef3abad948ad55da5e702accb3"
+      "checksum": "26451ace66afc822d02a05bf42b9d754"
+    },
+    {
+      "name": "sysconfig",
+      "version": "0.81.5",
+      "release": "30.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "b9b91cd68eacb46e0206fe0f0c6a5942"
     },
     {
       "name": "sysconfig-netconfig",
       "version": "0.81.5",
-      "release": "3.1",
+      "release": "30.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "6031bc4edd85dbaaacc28be8f0212f6e"
+      "checksum": "b9f3fb0bb05bd06c1fa89e7096a4afd4"
     },
     {
       "name": "sysconfig-network",
       "version": "0.81.5",
-      "release": "3.1",
+      "release": "30.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "13d457e33f9da23ef96592c981c9e878"
+      "checksum": "465047025d6fa03bab9024dd3c8f70a8"
     },
     {
       "name": "sysfsutils",
@@ -1833,6 +2675,14 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "9376708eb251f9ebfbc8cfafcdc30169"
+    },
+    {
+      "name": "syslog-ng",
+      "version": "3.4.7",
+      "release": "2.8.2",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "92e7fc363269742ad16bacbf00be38d6"
     },
     {
       "name": "syslog-service",
@@ -1845,26 +2695,26 @@
     {
       "name": "systemd",
       "version": "208",
-      "release": "6.1",
+      "release": "23.3",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "5306054eabc184e4ef36ffce86a7b84e"
+      "checksum": "2b203bd567b59d3835591a8586b8df32"
     },
     {
       "name": "systemd-presets-branding-openSUSE",
       "version": "0.3.0",
-      "release": "3.1.2",
+      "release": "3.4.1",
       "arch": "noarch",
       "vendor": "openSUSE",
-      "checksum": "d1a377cf46067659c9b9811f50a3a96f"
+      "checksum": "6ef5619371f03c12ea11ffd668067088"
     },
     {
       "name": "systemd-sysvinit",
       "version": "208",
-      "release": "6.1",
+      "release": "23.3",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "90c61c2add10a6b06b7e4ebd047a6307"
+      "checksum": "4206c307df74dde5516a1acbdeb6ee25"
     },
     {
       "name": "sysvinit-tools",
@@ -1877,10 +2727,10 @@
     {
       "name": "tar",
       "version": "1.26",
-      "release": "19.1.2",
+      "release": "19.4.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "4079acae32bb3aeabbf077aef6dabe5a"
+      "checksum": "c98f23f345f27d05108cb1482b43400a"
     },
     {
       "name": "terminfo-base",
@@ -1915,20 +2765,20 @@
       "checksum": "3570c4a86602c8f3575a345b7a6553dc"
     },
     {
-      "name": "udev",
+      "name": "udev-mini",
       "version": "208",
-      "release": "6.1",
+      "release": "23.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "516c3c5ea6f59dcafa82e0c3ccad9892"
+      "checksum": "8bfcd579f0b8f1bdd903e0947fa3be1c"
     },
     {
       "name": "udevmountd",
       "version": "0.81.5",
-      "release": "3.1",
+      "release": "30.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "9e08b637315b59a9beb6e42f6ae62273"
+      "checksum": "e2f7d6d173a65b36934925b4774cc251"
     },
     {
       "name": "update-alternatives",
@@ -1941,10 +2791,18 @@
     {
       "name": "util-linux",
       "version": "2.23.2",
-      "release": "3.1",
+      "release": "10.1",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "c4b6391977380c34303870e65249a314"
+      "checksum": "d79c422626e5fc3abc363994aace3873"
+    },
+    {
+      "name": "vim",
+      "version": "7.4.052",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "openSUSE",
+      "checksum": "ad3d655834f823280555d2aba0d43621"
     },
     {
       "name": "vlan",
@@ -1953,6 +2811,14 @@
       "arch": "x86_64",
       "vendor": "openSUSE",
       "checksum": "c3832b61a2a30a6d6a760c1513e2ca8f"
+    },
+    {
+      "name": "wallpaper-branding-openSUSE",
+      "version": "13.1",
+      "release": "10.4.13",
+      "arch": "noarch",
+      "vendor": "openSUSE",
+      "checksum": "7830ced9c0641c7853d20680e906456e"
     },
     {
       "name": "which",
@@ -1972,107 +2838,242 @@
     },
     {
       "name": "zypper",
-      "version": "1.9.3",
-      "release": "1.1",
+      "version": "1.9.16",
+      "release": "22.2",
       "arch": "x86_64",
       "vendor": "openSUSE",
-      "checksum": "ea9a594803fb3522ecc3f33bbdbdea8f"
+      "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
     }
   ],
+  "unmanaged_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/unmanaged-file",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 8,
+        "mode": "644"
+      },
+      {
+        "name": "/etc/unmanaged-tree/",
+        "type": "dir",
+        "user": "root",
+        "group": "root",
+        "size": 339,
+        "mode": "644",
+        "files": 2
+      }
+    ]
+  },
   "config_files": {
     "extracted": true,
     "files": [
       {
         "name": "/etc/crontab",
-        "package_name": "cronie",
-        "package_version": "1.4.8",
+        "package_name": "cron",
+        "package_version": "4.1",
         "status": "changed",
         "changes": [
-          "size",
           "md5"
         ],
         "user": "root",
         "group": "root",
         "mode": "644"
-      },
+      }
+    ]
+  },
+  "users": [
+    {
+      "name": "bin",
+      "password": "x",
+      "uid": 1,
+      "gid": 1,
+      "comment": "bin",
+      "home": "/bin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "uid": 2,
+      "gid": 2,
+      "comment": "Daemon",
+      "home": "/sbin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "uid": 40,
+      "gid": 49,
+      "comment": "FTP account",
+      "home": "/srv/ftp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "uid": 12,
+      "gid": 100,
+      "comment": "Games account",
+      "home": "/var/games",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "uid": 4,
+      "gid": 7,
+      "comment": "Printing daemon",
+      "home": "/var/spool/lpd",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "uid": 8,
+      "gid": 12,
+      "comment": "Mailer daemon",
+      "home": "/var/spool/clientmqueue",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "uid": 13,
+      "gid": 62,
+      "comment": "Manual pages viewer",
+      "home": "/var/cache/man",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "uid": 499,
+      "gid": 499,
+      "comment": "User for D-Bus",
+      "home": "/run/dbus",
+      "shell": "/bin/false",
+      "encrypted_password": "!",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "uid": 9,
+      "gid": 13,
+      "comment": "News system",
+      "home": "/etc/news",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "uid": 65534,
+      "gid": 65533,
+      "comment": "nobody",
+      "home": "/var/lib/nobody",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "polkitd",
+      "password": "x",
+      "uid": 498,
+      "gid": 496,
+      "comment": "User for polkitd",
+      "home": "/var/lib/polkit",
+      "shell": "/sbin/nologin",
+      "encrypted_password": "!",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "uid": 0,
+      "gid": 0,
+      "comment": "root",
+      "home": "/root",
+      "shell": "/bin/bash",
+      "encrypted_password": "$1$Juw2uHkQ$MYXs0qMLleTt8yusfKiCb0",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "uid": 497,
+      "gid": 495,
+      "comment": "SSH daemon",
+      "home": "/var/lib/sshd",
+      "shell": "/bin/false",
+      "encrypted_password": "!",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "uid": 10,
+      "gid": 14,
+      "comment": "Unix-to-Unix CoPy system",
+      "home": "/etc/uucp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    },
+    {
+      "name": "wwwrun",
+      "password": "x",
+      "uid": 30,
+      "gid": 8,
+      "comment": "WWW daemon apache",
+      "home": "/var/lib/wwwrun",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16296
+    }
+  ],
+  "changed_managed_files": {
+    "extracted": true,
+    "files": [
       {
-        "name": "/etc/postfix/LICENSE",
-        "package_name": "postfix",
-        "package_version": "2.9.6",
+        "name": "/usr/share/bash/helpfiles/cd",
+        "package_name": "bash",
+        "package_version": "3.2",
         "status": "changed",
         "changes": [
           "deleted"
         ]
       },
       {
-        "name": "/etc/postfix/TLS_LICENSE",
-        "package_name": "postfix",
-        "package_version": "2.9.6",
+        "name": "/usr/share/bash/helpfiles/read",
+        "package_name": "bash",
+        "package_version": "3.2",
         "status": "changed",
         "changes": [
-          "mode",
-          "user",
-          "group"
+          "md5"
         ],
-        "user": "bin",
-        "group": "users",
-        "mode": "666"
-      }
-    ]
-  },
-  "unmanaged_files": {
-    "extracted": true,
-    "files": [
-      {
-        "name": "/etc/magicapp.conf",
-        "type": "file",
+        "mode": "644",
         "user": "root",
-        "group": "root",
-        "size": 0,
-        "mode": "644"
-      },
-      {
-        "name": "/usr/local/magicapp/",
-        "type": "dir",
-        "user": "root",
-        "group": "root",
-        "size": 150,
-        "mode": "755",
-        "files": 8
-      }
-    ]
-  },
-  "changed_managed_files": {
-    "extracted": true,
-    "files": [
-      {
-        "name": "/usr/share/doc/packages/rsync/NEWS",
-        "package_name": "rsync",
-        "package_version": "3.0.9",
-        "status": "changed",
-        "changes": [
-          "deleted"
-        ],
-        "package_file_flag": "d",
-        "type": "file"
-      },
-      {
-        "name": "/usr/share/doc/packages/rsync/README",
-        "package_name": "rsync",
-        "package_version": "3.0.9",
-        "status": "changed",
-        "changes": [
-          "size",
-          "mode",
-          "md5",
-          "user",
-          "group"
-        ],
-        "package_file_flag": "d",
-        "mode": "664",
-        "user": "bin",
-        "group": "wheel",
-        "type": "file"
+        "group": "root"
       }
     ]
   },
@@ -2087,30 +3088,53 @@
       "gpgcheck": true,
       "priority": 99,
       "package_manager": "zypp"
+    },
+    {
+      "alias": "openSUSE_13.1_Updates",
+      "name": "openSUSE_13.1_Updates",
+      "type": "rpm-md",
+      "url": "http://download.opensuse.org/update/13.1/",
+      "enabled": true,
+      "autorefresh": true,
+      "gpgcheck": true,
+      "priority": 99,
+      "package_manager": "zypp"
     }
   ],
   "patterns": [
-
+    {
+      "name": "base",
+      "version": "13.1",
+      "release": "13.6.1"
+    }
   ],
   "meta": {
-    "format_version": 4,
+    "format_version": 3,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
     },
     "services": {
-      "modified": "2014-08-15T11:09:34Z",
-      "hostname": "192.168.122.96"
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "groups": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
     },
     "packages": {
-      "modified": "2014-08-15T11:09:34Z",
-      "hostname": "192.168.122.96"
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
+    },
+    "unmanaged_files": {
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
     },
     "config_files": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
     },
-    "unmanaged_files": {
+    "users": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
     },
@@ -2123,8 +3147,8 @@
       "hostname": "192.168.122.164"
     },
     "patterns": {
-      "modified": "2014-08-15T11:09:34Z",
-      "hostname": "192.168.122.96"
+      "modified": "2014-08-14T18:39:10Z",
+      "hostname": "192.168.122.164"
     }
   }
 }

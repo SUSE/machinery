@@ -3061,7 +3061,8 @@
         "status": "changed",
         "changes": [
           "deleted"
-        ]
+        ],
+        "type": "file"
       },
       {
         "name": "/usr/share/bash/helpfiles/read",
@@ -3073,7 +3074,8 @@
         ],
         "mode": "644",
         "user": "root",
-        "group": "root"
+        "group": "root",
+        "type": "file"
       }
     ]
   },
@@ -3109,7 +3111,7 @@
     }
   ],
   "meta": {
-    "format_version": 3,
+    "format_version": 4,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"

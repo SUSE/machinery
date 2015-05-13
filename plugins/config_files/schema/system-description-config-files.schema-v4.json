@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "required": ["extracted", "files"],
+  "properties": {
+    "extracted": {
+      "type": "boolean"
+    },
+    "files": {
+      "type": "array",
+      "items" : {
+          "type": "object",
+          "required": ["name", "package_name", "package_version"],
+          "properties": {
+              "name": {
+                  "type": "string"
+              },
+              "package_name": {
+                  "type": "string",
+                  "minLength": 1
+              },
+              "package_version": {
+                  "type": "string",
+                  "minLength": 1
+              }
+          },
+          "oneOf": [
+              { "$ref": "#/definitions/file_changed" },
+              { "$ref": "#/definitions/file_error" }
+          ]
+      }
+    }
+  },
+  "definitions": {
+    "file_changed": {
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "enum": ["changed"]
+        }
+      },
+      "oneOf": [
+        { "$ref": "#/definitions/file_changed_modified" },
+        { "$ref": "#/definitions/file_changed_deleted" }
+      ]
+    },
+    "file_changed_modified": {
+      "required": ["changes", "mode", "user", "group"],
+      "properties": {
+        "changes": {
+          "type": "array",
+          "items": {
+            "enum": ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities", "replaced", "other_rpm_changes"]
+          },
+          "minItems": 1
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-7]{3,4}$"
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "file_changed_deleted": {
+      "required": ["changes"],
+      "properties": {
+        "changes": {
+          "enum": [["deleted"]]
+        }
+      }
+    },
+    "file_error": {
+      "required": ["status", "error_message"],
+      "properties": {
+        "status": {
+          "enum": ["error"]
+        },
+        "error_message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

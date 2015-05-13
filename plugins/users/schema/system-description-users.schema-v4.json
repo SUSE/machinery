@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "password", "uid", "gid", "comment", "home", "shell"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "password": {
+        "type": "string"
+      },
+      "uid": {
+        "type": ["integer", "null"],
+        "minimum": 0
+      },
+      "gid": {
+        "type": ["integer", "null"],
+        "minimum": 0
+      },
+      "comment": {
+        "type": "string"
+      },
+      "home": {
+        "type": "string"
+      },
+      "shell": {
+        "type": "string"
+      },
+      "encrypted_password": {
+        "type": "string"
+      },
+      "last_changed_date": {
+        "type": "integer"
+      },
+      "min_days": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "max_days": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "warn_days": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "disable_days": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "disabled_date": {
+        "type": "integer"
+      }
+    }
+  }
+}
+
