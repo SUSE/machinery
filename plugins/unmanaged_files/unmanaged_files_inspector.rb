@@ -145,7 +145,7 @@ class UnmanagedFilesInspector < Inspector
     excluded_files = []
 
     # compute command line
-    cmd = ["find", dir, "-xdev", "-maxdepth", "1", "-maxdepth", depth]
+    cmd = ["find", dir, "-xdev", "-maxdepth", "1", "-maxdepth", depth.to_s]
     cmd += ["-printf", '%y\0%P\0%l\0']
 
     out = ""
