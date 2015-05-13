@@ -28,6 +28,17 @@ describe Machinery::SystemFile do
       mode: "644"
     )
   }
+  let(:deleted_file) {
+    Machinery::SystemFile.new(
+      name: "/usr/share/man/man1/sed.1.gz",
+      package_name: "sed",
+      package_version: "4.2.2",
+      status: "changed",
+      changes: [
+        "deleted"
+      ]
+    )
+  }
   let(:link) {
     Machinery::SystemFile.new(
       name: "/etc/alternatives/awk",
@@ -80,5 +91,10 @@ describe Machinery::SystemFile do
     specify { expect(remote_dir.file?).to be(false) }
     specify { expect(remote_dir.link?).to be(false) }
     specify { expect(remote_dir.directory?).to be(false) }
+  end
+
+  describe "#deleted?" do
+    specify { expect(file.deleted?).to be(false) }
+    specify { expect(deleted_file.deleted?).to be(true) }
   end
 end

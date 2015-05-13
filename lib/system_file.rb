@@ -32,5 +32,13 @@ module Machinery
     def remote_directory?
       type == "remote_dir"
     end
+
+    def deleted?
+      if changes && changes.include?("deleted")
+        true
+      else
+        false
+      end
+    end
   end
 end
