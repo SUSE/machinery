@@ -32,9 +32,21 @@ describe Machinery::SystemFileUtils do
   let(:scope) {
     Machinery::Scope.for("simple", {}, scope_file_store)
   }
-  let(:file) {
+  let(:tared_file) {
     file = Machinery::SystemFile.new(
       name: "/etc/ImageVersion",
+      type: "file",
+      user: "root",
+      group: "root",
+      size: 25,
+      mode: "644"
+    )
+    file.scope = scope
+    file
+  }
+  let(:file) {
+    file = Machinery::SystemFile.new(
+      name: "/etc/mtab",
       type: "file",
       user: "root",
       group: "root",
@@ -77,8 +89,36 @@ describe Machinery::SystemFileUtils do
 
     it "returns the file.tgz for files and links" do
       expected = File.join(scope_file_store.path, "files.tgz")
-      expect(subject.tarball_path(file)).to eq(expected)
+      expect(subject.tarball_path(tared_file)).to eq(expected)
       expect(subject.tarball_path(link)).to eq(expected)
+    end
+  end
+
+  describe ".file_path" do
+    it "raises an exception for non-files" do
+      expect { subject.file_path(dir) }.to raise_error(Machinery::Errors::FileUtilsError)
+    end
+
+    it "returns the local path to the file" do
+      expected = File.join(scope_file_store.path, "/etc/mtab")
+      expect(subject.file_path(file)).to eq(expected)
+    end
+  end
+
+  describe ".write_file" do
+    it "raises an exception for non-files" do
+      expect { subject.write_file(link, "/tmp") }.to raise_error(Machinery::Errors::FileUtilsError)
+    end
+
+    it "copies the file" do
+      source_path = subject.file_path(file)
+      FileUtils.mkdir_p(File.dirname(source_path))
+      FileUtils.touch(source_path)
+
+      target = given_directory
+      subject.write_file(file, target)
+
+      expect(File.exists?(File.join(target, "/etc/mtab"))).to be(true)
     end
   end
 
@@ -86,7 +126,7 @@ describe Machinery::SystemFileUtils do
     context "when handling files" do
       it "fails" do
         expect {
-          subject.write_tarball(file, "/tmp")
+          subject.write_tarball(tared_file, "/tmp")
         }.to raise_error(Machinery::Errors::FileUtilsError)
       end
     end
