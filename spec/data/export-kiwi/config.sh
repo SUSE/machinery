@@ -10,9 +10,6 @@ zypper -n ar --name='openSUSE_13.1_Updates' --type='rpm-md' --refresh 'http://do
 zypper -n mr --priority=99 'openSUSE_13.1_Updates'
 chmod 644 '/etc/crontab'
 chown root:root '/etc/crontab'
-chmod 644 '/usr/share/bash/helpfiles/read'
-chown root:root '/usr/share/bash/helpfiles/read'
-rm -rf '/usr/share/bash/helpfiles/cd'
 systemctl disable blk-availability.service
 systemctl mask cgroup.service
 systemctl mask clock.service
@@ -62,6 +59,9 @@ systemctl enable systemd-readahead-drop.service
 systemctl enable systemd-readahead-replay.service
 perl /tmp/merge_users_and_groups.pl /etc/passwd /etc/shadow /etc/group
 rm /tmp/merge_users_and_groups.pl
+rm -rf '/usr/share/bash/helpfiles/cd'
+chmod 644 '/usr/share/bash/helpfiles/read'
+chown root:root '/usr/share/bash/helpfiles/read'
 # Apply the extracted unmanaged files
 find /tmp/unmanaged_files -name *.tgz -exec tar -C / -X '/tmp/unmanaged_files_kiwi_excludes' -xf {} \;
 rm -rf '/tmp/unmanaged_files' '/tmp/unmanaged_files_kiwi_excludes'

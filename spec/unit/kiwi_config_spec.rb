@@ -431,6 +431,8 @@ describe KiwiConfig do
       end
 
       it "deletes deleted config and changed managed files" do
+        config.write(export_dir)
+
         expect(config.sh).to include("rm -rf '/etc/deleted config'")
         expect(config.sh).to include("rm -rf '/etc/deleted changed managed'")
       end
@@ -440,7 +442,14 @@ describe KiwiConfig do
 
         expect(config.sh).to include("rm -rf '/usr/bin/replaced_by_link'")
         expect(config.sh).to include("ln -s '/tmp/foo' '/usr/bin/replaced_by_link'")
-        expect(config.sh).to include("chown root:target '/usr/bin/replaced_by_link'")
+        expect(config.sh).to include("chown --no-dereference root:target '/usr/bin/replaced_by_link'")
+      end
+
+      it "sets up directories" do
+        config.write(export_dir)
+
+        expect(config.sh).to include("chmod 644 '/etc/cron.d'")
+        expect(config.sh).to include("chown user:group '/etc/cron.d'")
       end
     end
 

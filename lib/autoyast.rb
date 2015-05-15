@@ -83,7 +83,7 @@ class Autoyast < Exporter
         apply_services(xml)
 
         apply_extracted_files("config_files")
-        apply_extracted_files("changed_managed_files")
+        apply_changed_managed_files
         apply_unmanaged_files
         xml.scripts do
           apply_url_extraction(xml)
@@ -288,6 +288,30 @@ class Autoyast < Exporter
       end
       if file.mode && !file.link?
         @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
+      end
+    end
+  end
+
+  def apply_changed_managed_files
+    scope = "changed_managed_files"
+    return if !@system_description.scope_extracted?(scope)
+
+    @system_description[scope].files.each do |file|
+      if file.deleted?
+        @chroot_scripts << "rm -rf '#{file.name}'"
+      elsif file.directory?
+        @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+      elsif file.file?
+        url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, file.name))}"
+        @chroot_scripts << "mkdir -p '#{File.join("/mnt", File.dirname(file.name))}'"
+        @chroot_scripts << "curl -o '#{File.join("/mnt", file.name)}' \"#{url}\""
+        @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+      elsif file.link?
+        @chroot_scripts << "rm -rf '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << "ln -s '#{file.target}' '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << "chown --no-dereference #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
       end
     end
   end

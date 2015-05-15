@@ -95,20 +95,36 @@ class KiwiConfig < Exporter
   end
 
   def inject_extracted_files(output_location)
-    ["config_files", "changed_managed_files"].each do |scope|
-      next if !@system_description[scope]
+    ["changed_managed_files"].each do |scope|
+      next if !@system_description.scope_extracted?(scope)
 
+      output_root_path = File.join(output_location, "root")
+      FileUtils.mkdir_p(output_root_path)
+
+      @system_description[scope].files.each do |file|
+        if file.deleted?
+          @sh << "rm -rf '#{file.name}'\n"
+        elsif file.directory?
+          @sh << "chmod #{file.mode} '#{file.name}'\n"
+          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
+        elsif file.file?
+          Machinery::SystemFileUtils.write_file(file, output_root_path)
+          @sh << "chmod #{file.mode} '#{file.name}'\n"
+          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
+        elsif file.link?
+          @sh << "rm -rf '#{file.name}'\n"
+          @sh << "ln -s '#{file.target}' '#{file.name}'"
+          @sh << "chown --no-dereference #{file.user}:#{file.group} '#{file.name}'\n"
+        end
+      end
+    end
+
+    ["config_files"].each do |scope|
       path = @system_description.scope_file_store(scope).path
       if path
         output_root_path = File.join(output_location, "root")
         FileUtils.mkdir_p(output_root_path)
         FileUtils.cp_r(Dir.glob("#{path}/*"), output_root_path)
-      end
-
-      @system_description[scope].files.select { |file| file.link? }.each do |link|
-        @sh << "rm -rf '#{link.name}'\n"
-        @sh << "ln -s '#{link.target}' '#{link.name}'"
-        @sh << "chown --no-dereference #{link.user}:#{link.group} '#{link.name}'"
       end
     end
 
@@ -270,7 +286,7 @@ EOF
   end
 
   def apply_extracted_files_attributes
-    ["config_files", "changed_managed_files"].each do |scope|
+    ["config_files"].each do |scope|
       if @system_description[scope]
         deleted, files = @system_description[scope].files.partition do |f|
           f.changes == Machinery::Array.new(["deleted"])

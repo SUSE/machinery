@@ -210,6 +210,17 @@ module SystemDescriptionFactory
           "group": "group",
           "mode": "644",
           "type": "file"
+        },
+        {
+          "name": "/etc/cron.d",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["group"],
+          "user": "user",
+          "group": "group",
+          "mode": "644",
+          "type": "dir"
         }
       ]
     }
