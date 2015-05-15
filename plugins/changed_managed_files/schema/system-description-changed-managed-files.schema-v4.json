@@ -45,6 +45,7 @@
       },
       "oneOf": [
         { "$ref": "#/definitions/file_changed_modified" },
+        { "$ref": "#/definitions/link_changed_modified" },
         { "$ref": "#/definitions/file_changed_deleted" }
       ]
     },
@@ -69,8 +70,32 @@
         "group": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "link_changed_modified": {
+      "required": ["target"],
+      "properties": {
+        "changes": {
+          "type": "array",
+          "items": {
+            "enum": ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities", "replaced", "other_rpm_changes"]
+          },
+          "minItems": 1
         },
-        "link_target": {
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-7]{3,4}$"
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
           "type": "string"
         }
       }

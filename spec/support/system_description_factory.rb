@@ -146,6 +146,8 @@ module SystemDescriptionFactory
           )
         else
           description[extracted_scope].files.each do |file|
+            next if file.link?
+
             file_name = File.join(file_store.path, file.name)
             FileUtils.mkdir_p(File.dirname(file_name))
             File.write(file_name, "Stub data for #{file.name}.")
@@ -175,6 +177,17 @@ module SystemDescriptionFactory
           "group": "root",
           "mode": "644",
           "type": "file"
+        },
+        {
+          "name": "/usr/bin/replaced_by_link",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "type": "link",
+          "target": "/tmp/foo",
+          "user": "root",
+          "group": "target",
+          "mode": "777"
         },
         {
           "name": "/etc/cron.daily/cleanup",

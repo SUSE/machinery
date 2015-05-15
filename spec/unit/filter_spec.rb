@@ -229,11 +229,13 @@ describe Filter do
         [
           "/etc/deleted changed managed",
           "/etc/cron.daily/cleanup",
-          "/etc/cron.daily/logrotate" # has changed 'md5' and 'size' and should be filtered
+          "/etc/cron.daily/logrotate", # has changed 'md5' and 'size' and should be filtered,
+          "/usr/bin/replaced_by_link"
         ],
         [
           "/etc/deleted changed managed",
-          "/etc/cron.daily/cleanup"
+          "/etc/cron.daily/cleanup",
+          "/usr/bin/replaced_by_link"
         ]
       )
     end
@@ -245,10 +247,12 @@ describe Filter do
         [
           "/etc/deleted changed managed",
           "/etc/cron.daily/cleanup",
-          "/etc/cron.daily/logrotate"
+          "/etc/cron.daily/logrotate",
+          "/usr/bin/replaced_by_link"
         ],
         [
-          "/etc/deleted changed managed"
+          "/etc/deleted changed managed",
+          "/usr/bin/replaced_by_link"
         ]
       )
     end
@@ -261,10 +265,12 @@ describe Filter do
           [
             "/etc/deleted changed managed",
             "/etc/cron.daily/cleanup",
-            "/etc/cron.daily/logrotate"
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
           ],
           [
-            "/etc/deleted changed managed"
+            "/etc/deleted changed managed",
+            "/usr/bin/replaced_by_link"
           ]
         )
       }.to_not raise_error
@@ -278,12 +284,14 @@ describe Filter do
           [
             "/etc/deleted changed managed",
             "/etc/cron.daily/cleanup",
-            "/etc/cron.daily/logrotate"
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
           ],
           [
             "/etc/deleted changed managed",
             "/etc/cron.daily/cleanup",
-            "/etc/cron.daily/logrotate"
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
           ]
         )
       }.to_not raise_error
