@@ -434,6 +434,13 @@ describe KiwiConfig do
         expect(config.sh).to include("rm -rf '/etc/deleted config'")
         expect(config.sh).to include("rm -rf '/etc/deleted changed managed'")
       end
+
+      it "sets up links" do
+        config.write(export_dir)
+
+        expect(config.sh).to include("rm -rf '/etc/replaced_by_link'")
+        expect(config.sh).to include("ln -s '/tmp/foo' '/etc/replaced_by_link'")
+      end
     end
 
     it "generates a script for merging the users and groups" do

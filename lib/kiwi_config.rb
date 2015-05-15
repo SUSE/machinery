@@ -95,12 +95,19 @@ class KiwiConfig < Exporter
   end
 
   def inject_extracted_files(output_location)
-    ["config_files", "changed_managed_files"].each do |dir|
-      path = @system_description.scope_file_store(dir).path
+    ["config_files", "changed_managed_files"].each do |scope|
+      next if !@system_description[scope]
+
+      path = @system_description.scope_file_store(scope).path
       if path
         output_root_path = File.join(output_location, "root")
         FileUtils.mkdir_p(output_root_path)
         FileUtils.cp_r(Dir.glob("#{path}/*"), output_root_path)
+      end
+
+      @system_description[scope].files.select { |file| file.link? }.each do |link|
+        @sh << "rm -rf '#{link.name}'\n"
+        @sh << "ln -s '#{link.target}' '#{link.name}'"
       end
     end
 
