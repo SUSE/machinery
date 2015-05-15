@@ -150,6 +150,7 @@ shared_examples "inspect unmanaged files" do |base|
       end
       # Ignore some sporadically appearing files
       actual_filestgz_list.reject! { |file| ignore_list.any? { |i| file.include?(i) } }
+      actual_tarballs.reject! { |file| ignore_list.any? { |i| file.include?(i) } }
 
       expected_tarballs = []
       expected_filestgz_list = []
