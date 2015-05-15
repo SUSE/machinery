@@ -266,6 +266,12 @@ class Autoyast < Exporter
     return if !@system_description[scope] || !@system_description[scope].extracted
 
     base = Pathname(@system_description.scope_file_store(scope).path)
+
+    @system_description[scope].files.select { |file| file.link? }.each do |link|
+      @chroot_scripts << "rm -rf '#{link.name}'"
+      @chroot_scripts << "ln -s '#{link.target}' '#{link.name}'"
+    end
+
     Dir["#{base}/**/*"].sort.each do |path|
       next if File.directory?(path)
 
@@ -278,9 +284,9 @@ class Autoyast < Exporter
 
     @system_description[scope].files.map do |file|
       if file.user
-        @chroot_scripts << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << "chown --no-dereference #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
       end
-      if file.mode
+      if file.mode && !file.link?
         @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
       end
     end

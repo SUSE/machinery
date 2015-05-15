@@ -438,8 +438,9 @@ describe KiwiConfig do
       it "sets up links" do
         config.write(export_dir)
 
-        expect(config.sh).to include("rm -rf '/etc/replaced_by_link'")
-        expect(config.sh).to include("ln -s '/tmp/foo' '/etc/replaced_by_link'")
+        expect(config.sh).to include("rm -rf '/usr/bin/replaced_by_link'")
+        expect(config.sh).to include("ln -s '/tmp/foo' '/usr/bin/replaced_by_link'")
+        expect(config.sh).to include("chown root:target '/usr/bin/replaced_by_link'")
       end
     end
 

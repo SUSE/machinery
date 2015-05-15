@@ -108,6 +108,7 @@ class KiwiConfig < Exporter
       @system_description[scope].files.select { |file| file.link? }.each do |link|
         @sh << "rm -rf '#{link.name}'\n"
         @sh << "ln -s '#{link.target}' '#{link.name}'"
+        @sh << "chown --no-dereference #{link.user}:#{link.group} '#{link.name}'"
       end
     end
 
