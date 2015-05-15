@@ -2,6 +2,7 @@
 
   Files extracted: yes
   * /sys (mode)
+  * /usr/bin/crontab (link_path, group)
   * /usr/share/info/sed.info.gz (size, md5)
   * /usr/share/man/man1/sed.1.gz (deleted)
   * /var/lib/ca-certificates/openssl (mode)

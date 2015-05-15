@@ -32,7 +32,7 @@ describe ChangedManagedFilesInspector do
     allow(system).to receive(:run_command).with("stat", "--printf",
       "%a:%U:%G:%u:%g:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
-      "/usr/share/man/man1/time.1.gz", anything()).and_return(stat_result)
+      "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab", anything()).and_return(stat_result)
 
     inspector
   }
@@ -84,14 +84,24 @@ describe ChangedManagedFilesInspector do
               changes: ["deleted"]
           ),
           ChangedManagedFile.new(
-              name: "/usr/share/man/man1/time.1.gz",
-              package_name: "hwinfo",
-              package_version: "15.50",
+              name: "/usr/bin/crontab",
+              package_name: "cronie",
+              package_version: "1.4.8",
               status: "changed",
-              changes: ["replaced"],
-              user: "wwwrun",
-              group: "wwwrun",
-              mode: "400"
+              changes: ["link_path", "group"],
+              user: "root",
+              group: "root",
+              mode: "755"
+          ),
+          ChangedManagedFile.new(
+            name: "/usr/share/man/man1/time.1.gz",
+            package_name: "hwinfo",
+            package_version: "15.50",
+            status: "changed",
+            changes: ["replaced"],
+            user: "wwwrun",
+            group: "wwwrun",
+            mode: "400"
           )
         ])
       )

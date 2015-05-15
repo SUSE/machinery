@@ -57,7 +57,7 @@ shared_examples "inspect changed managed files" do |base|
 
       expected_managed_files = []
       expected_files_list.split("\n").each do |e|
-        if e.start_with?("  * ") && !e.include?("(deleted)")
+        if e.start_with?("  * ") && !e.include?("(deleted)") && !e.include?("link_path")
           expected_managed_files << ".#{e.split[1]}"
         end
       end

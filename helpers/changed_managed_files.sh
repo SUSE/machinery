@@ -34,7 +34,7 @@ fi
 for package in `rpm -qa --queryformat "%{NAME}-%{VERSION}\\n"`; do
   # rpm returns 1 as exit code when modified config files are detected
   # that's why we explicitly detect if sudo failed
-  OUTPUT=`$SUDOPREFIX rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $package 2>&1 || true`;
+  OUTPUT=`$SUDOPREFIX rpm -V --nodeps --nodigest --nosignature --nomtime $package 2>&1 || true`;
   if [ -n "$OUTPUT" ]; then
     REGEX="^sudo:.*password is required"
     if [[ "$OUTPUT" =~ $REGEX ]]; then

@@ -2,3 +2,4 @@
 644:root:root:0:0:/etc/apache2/listen.conf
 400:wwwrun:wwwrun:1001:1002:/etc/apache2/de:fault server.conf
 400:wwwrun:wwwrun:1001:1002:/usr/share/man/man1/time.1.gz
+755:root:root:1001:1002:/usr/bin/crontab
