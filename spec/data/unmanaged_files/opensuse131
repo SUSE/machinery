@@ -480,6 +480,11 @@
     Size: 73.4 KiB
     Files: 5
 
+  * /usr/bin/crontab_link_target (file)
+    User/Group: root:root
+    Mode: 755
+    Size: 150 B
+
   * /usr/local/magicapp/ (dir)
     User/Group: root:root
     Mode: 755

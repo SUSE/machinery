@@ -30,7 +30,7 @@ describe ChangedManagedFilesInspector do
 
     allow(system).to receive(:run_script).with("changed_managed_files.sh", anything()).and_return(rpm_result)
     allow(system).to receive(:run_command).with("stat", "--printf",
-      "%a:%U:%G:%u:%g:%n\\n", "/etc/iscsi/iscsid.conf",
+      "%a:%U:%G:%u:%g:%F:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
       "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab", anything()).and_return(stat_result)
 
@@ -47,51 +47,55 @@ describe ChangedManagedFilesInspector do
         extracted: false,
         files: ChangedManagedFileList.new([
           ChangedManagedFile.new(
-              name: "/etc/apache2/de:fault server.conf",
-              package_name: "hwinfo",
-              package_version: "15.50",
-              status: "changed",
-              changes: ["size", "md5", "time"],
-              user: "wwwrun",
-              group: "wwwrun",
-              mode: "400"
+            name: "/etc/apache2/de:fault server.conf",
+            package_name: "hwinfo",
+            package_version: "15.50",
+            status: "changed",
+            changes: ["size", "md5", "time"],
+            user: "wwwrun",
+            group: "wwwrun",
+            mode: "400",
+            type: "file"
           ),
           ChangedManagedFile.new(
-              name: "/etc/apache2/listen.conf",
-              package_name: "hwinfo",
-              package_version: "15.50",
-              status: "changed",
-              changes: ["md5", "time"],
-              user: "root",
-              group: "root",
-              mode: "644"
+            name: "/etc/apache2/listen.conf",
+            package_name: "hwinfo",
+            package_version: "15.50",
+            status: "changed",
+            changes: ["md5", "time"],
+            user: "root",
+            group: "root",
+            mode: "644",
+            type: "file"
           ),
           ChangedManagedFile.new(
-              name: "/etc/iscsi/iscsid.conf",
-              package_name: "zypper",
-              package_version: "1.6.311",
-              status: "changed",
-              changes: ["size", "mode", "md5", "user", "group", "time"],
-              user: "root",
-              group: "root",
-              mode: "6644",
+            name: "/etc/iscsi/iscsid.conf",
+            package_name: "zypper",
+            package_version: "1.6.311",
+            status: "changed",
+            changes: ["size", "mode", "md5", "user", "group", "time"],
+            user: "root",
+            group: "root",
+            mode: "6644",
+            type: "file"
           ),
           ChangedManagedFile.new(
-              name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
-              package_name: "kdelibs3-default-style",
-              package_version: "3.5.10",
-              status: "changed",
-              changes: ["deleted"]
+            name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
+            package_name: "kdelibs3-default-style",
+            package_version: "3.5.10",
+            status: "changed",
+            changes: ["deleted"]
           ),
           ChangedManagedFile.new(
-              name: "/usr/bin/crontab",
-              package_name: "cronie",
-              package_version: "1.4.8",
-              status: "changed",
-              changes: ["link_path", "group"],
-              user: "root",
-              group: "root",
-              mode: "755"
+            name: "/usr/bin/crontab",
+            package_name: "cronie",
+            package_version: "1.4.8",
+            status: "changed",
+            changes: ["link_path", "group"],
+            user: "root",
+            group: "root",
+            mode: "755",
+            type: "link"
           ),
           ChangedManagedFile.new(
             name: "/usr/share/man/man1/time.1.gz",
@@ -101,7 +105,8 @@ describe ChangedManagedFilesInspector do
             changes: ["replaced"],
             user: "wwwrun",
             group: "wwwrun",
-            mode: "400"
+            mode: "400",
+            type: "file"
           )
         ])
       )

@@ -69,16 +69,26 @@ module ChangedRpmFilesHelper
   end
 
   def parse_stat_line(line)
-    mode, user, group, uid, gid, *path = line.split(":")
+    mode, user, group, uid, gid, type, *path = line.split(":")
 
     user = uid if user == "UNKNOWN"
     group = gid if group == "UNKNOWN"
+
+    type = case(type)
+    when "directory"
+      "dir"
+    when "symbolic link"
+      "link"
+    when "regular file"
+      "file"
+    end
 
     [path.join(":").chomp,
       {
         mode: mode,
         user: user,
-        group: group
+        group: group,
+        type: type
       }
     ]
   end
@@ -88,7 +98,7 @@ module ChangedRpmFilesHelper
   def get_file_properties(system, cur_files)
     ret = {}
     out = system.run_command(
-        "stat", "--printf", "%a:%U:%G:%u:%g:%n\\n",
+        "stat", "--printf", "%a:%U:%G:%u:%g:%F:%n\\n",
         *cur_files,
         :stdout => :capture
     )

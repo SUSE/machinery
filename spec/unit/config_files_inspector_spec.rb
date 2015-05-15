@@ -109,11 +109,11 @@ EOF
     }
     let(:stat_output) {
       <<-EOF
-644:root:root:0:0:/etc/apache2/default-server.conf
-6644:root:root:0:0:/etc/apache2/listen.conf
-644:root:root:0:0:/etc/sysconfig/SuSEfirewall2.d/services/apache2
-4700:nobody:nobody:65534:65533:/etc/iscsi/iscsid.conf
-644:root:root:0:0:/usr/share/man/man1/time.1.gz
+644:root:root:0:0:regular file:/etc/apache2/default-server.conf
+6644:root:root:0:0:regular file:/etc/apache2/listen.conf
+644:root:root:0:0:regular file:/etc/sysconfig/SuSEfirewall2.d/services/apache2
+4700:nobody:nobody:65534:65533:regular file:/etc/iscsi/iscsid.conf
+644:root:root:0:0:regular file:/usr/share/man/man1/time.1.gz
 EOF
     }
     let(:config_paths) {
@@ -134,8 +134,8 @@ EOF
 
     def stub_stat_commands(system, files, stats_output)
       allow(system).to receive(:run_command).with(
-        "stat", "--printf", "%a:%U:%G:%u:%g:%n\\n", *files,
-        stdout: :capture
+        "stat", "--printf", "%a:%U:%G:%u:%g:%F:%n\\n", *files,
+        :stdout => :capture
       ).and_return(stats_output)
     end
 

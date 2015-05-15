@@ -89,3 +89,65 @@ describe "parse_rpm_changes_line" do
     _, _, _ = parse_rpm_changes_line(line)
   end
 end
+
+describe "#parse_stat_line" do
+  it "parses directories" do
+    line = "755:root:users:0:0:directory:/etc/named.d/"
+    expect(parse_stat_line(line)).to eq(
+      [
+        "/etc/named.d/",
+        {
+          mode: "755",
+          user: "root",
+          group: "users",
+          type: "dir"
+        }
+      ]
+    )
+  end
+
+  it "parses files" do
+    line = "640:root:shadow:0:15:regular file:/etc/shadow"
+    expect(parse_stat_line(line)).to eq(
+      [
+        "/etc/shadow",
+        {
+          mode: "640",
+          user: "root",
+          group: "shadow",
+          type: "file"
+        }
+      ]
+    )
+  end
+
+  it "uses uid and gid if user and group are unknown" do
+    line = "640:UNKNOWN:UNKNOWN:0:15:regular file:/etc/shadow"
+    expect(parse_stat_line(line)).to eq(
+      [
+        "/etc/shadow",
+        {
+          mode: "640",
+          user: "0",
+          group: "15",
+          type: "file"
+        }
+      ]
+    )
+  end
+
+  it "parses links" do
+    line = "777:root:root:0:0:symbolic link:/etc/mtab"
+    expect(parse_stat_line(line)).to eq(
+      [
+        "/etc/mtab",
+        {
+          mode: "777",
+          user: "root",
+          group: "root",
+          type: "link"
+        }
+      ]
+    )
+  end
+end
