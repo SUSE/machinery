@@ -267,11 +267,6 @@ class Autoyast < Exporter
 
     base = Pathname(@system_description.scope_file_store(scope).path)
 
-    @system_description[scope].files.select { |file| file.link? }.each do |link|
-      @chroot_scripts << "rm -rf '#{link.name}'"
-      @chroot_scripts << "ln -s '#{link.target}' '#{link.name}'"
-    end
-
     Dir["#{base}/**/*"].sort.each do |path|
       next if File.directory?(path)
 
