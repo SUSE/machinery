@@ -11,7 +11,7 @@
       "type": "array",
         "items" : {
           "type": "object",
-          "required": ["name", "package_name", "package_version", "type"],
+          "required": ["name", "package_name", "package_version"],
           "properties": {
             "name": {
               "type": "string"
@@ -23,9 +23,6 @@
             "package_version": {
               "type": "string",
               "minLength": 1
-            },
-            "type": {
-              "enum": ["file", "dir", "link"]
             }
           },
           "oneOf": [
@@ -50,7 +47,7 @@
       ]
     },
     "file_changed_modified": {
-      "required": ["changes", "mode", "user", "group"],
+      "required": ["changes", "mode", "user", "group", "type"],
       "properties": {
         "changes": {
           "type": "array",
@@ -70,11 +67,14 @@
         "group": {
           "type": "string",
           "minLength": 1
+        },
+        "type": {
+          "enum": ["file", "dir", "link"]
         }
       }
     },
     "link_changed_modified": {
-      "required": ["target"],
+      "required": ["target", "changes", "mode", "user", "group", "type"],
       "properties": {
         "changes": {
           "type": "array",
@@ -94,6 +94,9 @@
         "group": {
           "type": "string",
           "minLength": 1
+        },
+        "type": {
+          "enum": ["file", "dir", "link"]
         },
         "target": {
           "type": "string"
