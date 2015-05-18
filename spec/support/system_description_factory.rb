@@ -172,17 +172,14 @@ module SystemDescriptionFactory
           "status": "changed",
           "changes": [
             "deleted"
-          ],
-          "user": "root",
-          "group": "root",
-          "mode": "644",
-          "type": "file"
+          ]
         },
         {
           "name": "/usr/bin/replaced_by_link",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
+          "changes": ["link_path"],
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
