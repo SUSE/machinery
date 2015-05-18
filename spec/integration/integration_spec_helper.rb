@@ -58,17 +58,6 @@ def prepare_remote_machinery_for_host(system, ip, opts)
   )
 end
 
-def filter_sporadically_appearing_files(list)
-  ignore_list = [
-    "var/lib/logrotate.status",
-    "var/spool/cron/lastrun/cron.daily",
-    "var/log/sa",
-    "root/.local"
-  ]
-
-  list.reject! { |file| ignore_list.any? { |i| file.include?(i) } }
-end
-
 Dir[File.join(Machinery::ROOT, "/spec/integration/support/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|

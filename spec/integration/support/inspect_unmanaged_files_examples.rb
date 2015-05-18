@@ -17,6 +17,15 @@
 
 shared_examples "inspect unmanaged files" do |base|
   describe "--scope=unmanaged-files" do
+    let(:ignore_list) {
+      [
+        "/var/lib/logrotate.status",
+        "/var/spool/cron/lastrun/cron.daily",
+        "/var/log/sa",
+        "/root/.local"
+      ]
+    }
+
     def parse_md5sums(output)
       output.split("\n").map { |e| e.split.first }
     end
@@ -27,7 +36,8 @@ shared_examples "inspect unmanaged files" do |base|
         @machinery.run_command(
           "#{machinery_command} inspect #{@subject_system.ip} " \
             "#{inspect_options if defined?(inspect_options)} " \
-            "--scope=unmanaged-files --skip-files=/etc/ssh --extract-files",
+            "--scope=unmanaged-files --extract-files " \
+            "--skip-files=/etc/ssh,#{ignore_list.join(",")}",
           as: "vagrant"
         )
       end
@@ -40,8 +50,6 @@ shared_examples "inspect unmanaged files" do |base|
       # In the future we want to use the Machinery matcher for this, but right
       # now it doesn't generate useable diffs, so doing it manually here for now
       actual = actual_output.split("\n").select { |i| i.start_with?("  * ") }
-
-      filter_sporadically_appearing_files(actual)
 
       expected_output = File.read("spec/data/unmanaged_files/#{base}")
       expected = expected_output.split("\n").select { |i| i.start_with?("  * ") }
@@ -139,9 +147,6 @@ shared_examples "inspect unmanaged files" do |base|
           as: "vagrant", stdout: :capture
         ).split("\n")
       end
-
-      filter_sporadically_appearing_files(actual_filestgz_list)
-      filter_sporadically_appearing_files(actual_tarballs)
 
       expected_tarballs = []
       expected_filestgz_list = []
