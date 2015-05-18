@@ -69,7 +69,7 @@
           "minLength": 1
         },
         "type": {
-          "enum": ["file", "dir", "link"]
+          "enum": ["file", "dir"]
         }
       }
     },
@@ -96,7 +96,7 @@
           "minLength": 1
         },
         "type": {
-          "enum": ["file", "dir", "link"]
+          "enum": ["link"]
         },
         "target": {
           "type": "string"
