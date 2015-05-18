@@ -22,7 +22,8 @@ shared_examples "inspect unmanaged files" do |base|
         "/var/lib/logrotate.status",
         "/var/spool/cron/lastrun/cron.daily",
         "/var/log/sa",
-        "/root/.local"
+        "/root/.local",
+        "/etc/ssh"
       ]
     }
 
@@ -37,7 +38,7 @@ shared_examples "inspect unmanaged files" do |base|
           "#{machinery_command} inspect #{@subject_system.ip} " \
             "#{inspect_options if defined?(inspect_options)} " \
             "--scope=unmanaged-files --extract-files " \
-            "--skip-files=/etc/ssh,#{ignore_list.join(",")}",
+            "--skip-files=#{ignore_list.join(",")}",
           as: "vagrant"
         )
       end
