@@ -16,15 +16,17 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "inspect unmanaged files" do |base|
-  let(:ignore_list) {
-    [
-      "var/lib/logrotate.status",
-      "var/spool/cron/lastrun/cron.daily",
-      "var/log/sa",
-      "root/.local"
-    ]
-  }
   describe "--scope=unmanaged-files" do
+    let(:ignore_list) {
+      [
+        "/var/lib/logrotate.status",
+        "/var/spool/cron/lastrun/cron.daily",
+        "/var/log/sa",
+        "/root/.local",
+        "/etc/ssh"
+      ]
+    }
+
     def parse_md5sums(output)
       output.split("\n").map { |e| e.split.first }
     end
@@ -35,7 +37,8 @@ shared_examples "inspect unmanaged files" do |base|
         @machinery.run_command(
           "#{machinery_command} inspect #{@subject_system.ip} " \
             "#{inspect_options if defined?(inspect_options)} " \
-            "--scope=unmanaged-files --skip-files=/etc/ssh --extract-files",
+            "--scope=unmanaged-files --extract-files " \
+            "--skip-files=#{ignore_list.join(",")}",
           as: "vagrant"
         )
       end
@@ -48,9 +51,6 @@ shared_examples "inspect unmanaged files" do |base|
       # In the future we want to use the Machinery matcher for this, but right
       # now it doesn't generate useable diffs, so doing it manually here for now
       actual = actual_output.split("\n").select { |i| i.start_with?("  * ") }
-
-      # Ignore some sporadically appearing files
-      actual.reject! { |file| ignore_list.any? { |i| file.include?(i) } }
 
       expected_output = File.read("spec/data/unmanaged_files/#{base}")
       expected = expected_output.split("\n").select { |i| i.start_with?("  * ") }
@@ -148,8 +148,6 @@ shared_examples "inspect unmanaged files" do |base|
           as: "vagrant", stdout: :capture
         ).split("\n")
       end
-      # Ignore some sporadically appearing files
-      actual_filestgz_list.reject! { |file| ignore_list.any? { |i| file.include?(i) } }
 
       expected_tarballs = []
       expected_filestgz_list = []
@@ -165,6 +163,7 @@ shared_examples "inspect unmanaged files" do |base|
           end
         end
       end
+
       expect(actual_tarballs).to match_array(expected_tarballs)
       expect(actual_filestgz_list).to match_array(expected_filestgz_list)
 
