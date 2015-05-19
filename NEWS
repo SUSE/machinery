@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.8.0 - Tue May 19 12:33:27 CEST 2015 - mamorales@suse.de
+
 * Improve error handling when user lacks sudo privileges
 
 ## Version 1.7.0 - Mon May 04 15:36:50 CEST 2015 - aduffeck@suse.de

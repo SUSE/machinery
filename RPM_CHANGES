@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.8.0 - Tue May 19 12:33:27 CEST 2015 - mamorales@suse.de
+
+* update to version 1.8.0
 * remove absolute build path from bundler setup.rb (openSUSE Tumbleweed)
 * remove ruby version suffix from machinery executable (openSUSE Tumbleweed and 13.1)
 * tracking bug (bnc#931277)
