@@ -113,7 +113,7 @@ class KiwiConfig < Exporter
           @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
         elsif file.link?
           @sh << "rm -rf '#{file.name}'\n"
-          @sh << "ln -s '#{file.target}' '#{file.name}'"
+          @sh << "ln -s '#{file.target}' '#{file.name}'\n"
           @sh << "chown --no-dereference #{file.user}:#{file.group} '#{file.name}'\n"
         end
       end
