@@ -2,6 +2,7 @@
 
 * remove absolute build path from bundler setup.rb (openSUSE Tumbleweed)
 * remove ruby version suffix from machinery executable (openSUSE Tumbleweed and 13.1)
+* tracking bug (bnc#931277)
 
 ## Version 1.7.0 - Mon May 04 15:36:50 CEST 2015 - aduffeck@suse.de
 
