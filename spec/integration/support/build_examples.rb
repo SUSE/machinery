@@ -114,7 +114,7 @@ shared_examples "build" do |distribution|
         it "removed the deleted config file" do
           expect {
             @test_system.run_command("ls /etc/postfix/LICENSE", stdout: :capture)
-          }.to raise_error(ExecutionFailed, /No such file/)
+          }.to raise_error(Pennyworth::ExecutionFailed, /No such file/)
         end
       end
 
@@ -142,7 +142,7 @@ shared_examples "build" do |distribution|
         it "removed the deleted managed file" do
           expect {
             @test_system.run_command("ls /usr/share/doc/packages/rsync/NEWS", stdout: :capture)
-          }.to raise_error(ExecutionFailed, /No such file/)
+          }.to raise_error(Pennyworth::ExecutionFailed, /No such file/)
         end
       end
 
