@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.8.1 - Wed May 20 17:15:34 CEST 2015 - mamorales@suse.de
+
 * Improve error message when user lacks sudo privileges
 
 ## Version 1.8.0 - Tue May 19 12:33:27 CEST 2015 - mamorales@suse.de
