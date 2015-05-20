@@ -106,7 +106,9 @@ module Machinery
       end
 
       def to_s
-        "The remote user '#{@remote_user}' is not allowed to run 'sudo' on host '#{@host}'."
+        "sudo isn't configured on the inspected host '#{@host}' for user '#{@remote_user}' to " \
+        "give all required commands enough privileges. See 'PREREQUISITES' section in the " \
+        "machinery man page for a description on how to configure sudo on the inspected host."
       end
     end
 
