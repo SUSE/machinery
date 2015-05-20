@@ -95,7 +95,9 @@ describe RemoteSystem do
         remote_system.remote_user = "machinery"
         expect {
           remote_system.run_command("ls", "/tmp", privileged: true)
-        }.to raise_error(Machinery::Errors::InsufficientPrivileges, /not allowed to run 'sudo'/)
+        }.to raise_error(Machinery::Errors::InsufficientPrivileges,
+          /sudo isn't configured on the inspected host/
+        )
       end
     end
 
