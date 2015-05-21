@@ -24,7 +24,17 @@ class Migrate3To4 < Migration
   def migrate
     if @hash.has_key?("changed_managed_files")
       @hash["changed_managed_files"]["files"].each do |file|
-        file["type"] = "file"
+        file["type"] = if File.directory?(File.join(@path, "changed_managed_files", file["name"]))
+          "dir"
+        else
+          "file"
+        end
+      end
+    end
+
+    Dir.glob(File.join(@path, "/changed_managed_files/**/*")).reverse.each do |path|
+      if File.directory?(path) && Dir.glob(File.join(path, "*")).empty?
+        FileUtils.rm_r(path)
       end
     end
   end
