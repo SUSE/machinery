@@ -93,6 +93,10 @@ module ChangedRpmFilesHelper
     ]
   end
 
+  def get_link_target(system, link)
+    system.run_command("readlink", link, stdout: :capture).strip
+  end
+
   # get path data for list of files
   # cur_files is guaranteed to not exceed max command line length
   def get_file_properties(system, cur_files)
@@ -105,6 +109,7 @@ module ChangedRpmFilesHelper
     out.each_line do |l|
       path, values = parse_stat_line(l)
       ret[path] = values
+      ret[path][:target] = get_link_target(system, path) if values[:type] == "link"
     end
     ret
   end

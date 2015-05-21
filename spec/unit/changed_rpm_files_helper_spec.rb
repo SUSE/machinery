@@ -151,3 +151,12 @@ describe "#parse_stat_line" do
     )
   end
 end
+
+describe "#get_link_target" do
+  it "returns the link target" do
+    system = "double"
+    expect(system).to receive(:run_command).and_return("/etc/foo\n")
+
+    expect(get_link_target(system, "/foo")).to eq("/etc/foo")
+  end
+end

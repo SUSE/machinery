@@ -28,11 +28,14 @@ describe ChangedManagedFilesInspector do
   subject {
     inspector = ChangedManagedFilesInspector.new(system, description)
 
+    allow(system).to receive(:check_requirement).at_least(:once)
     allow(system).to receive(:run_script).with("changed_managed_files.sh", anything()).and_return(rpm_result)
     allow(system).to receive(:run_command).with("stat", "--printf",
       "%a:%U:%G:%u:%g:%F:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
       "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab", anything()).and_return(stat_result)
+    allow(system).to receive(:run_command).with("readlink", "/usr/bin/crontab", anything).
+      and_return("/etc/foo")
 
     inspector
   }
@@ -95,7 +98,8 @@ describe ChangedManagedFilesInspector do
             user: "root",
             group: "root",
             mode: "755",
-            type: "link"
+            type: "link",
+            target: "/etc/foo"
           ),
           ChangedManagedFile.new(
             name: "/usr/share/man/man1/time.1.gz",

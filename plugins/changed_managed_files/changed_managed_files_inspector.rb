@@ -25,6 +25,7 @@ class ChangedManagedFilesInspector < Inspector
   end
 
   def inspect(_filter, options = {})
+    system.check_requirement("readlink", "--version")
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     @system = system
