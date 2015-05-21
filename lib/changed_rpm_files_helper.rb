@@ -94,7 +94,11 @@ module ChangedRpmFilesHelper
   end
 
   def get_link_target(system, link)
-    system.run_command("readlink", link, stdout: :capture).strip
+    system.run_command(
+      "find", link, "-prune", "-printf", "%l",
+      stdout: :capture,
+      privileged: true
+    ).strip
   end
 
   # get path data for list of files

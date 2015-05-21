@@ -34,7 +34,7 @@ describe ChangedManagedFilesInspector do
       "%a:%U:%G:%u:%g:%F:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
       "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab", anything()).and_return(stat_result)
-    allow(system).to receive(:run_command).with("readlink", "/usr/bin/crontab", anything).
+    allow(system).to receive(:run_command).with("find", "/usr/bin/crontab", any_args).
       and_return("/etc/foo")
 
     inspector
