@@ -46,12 +46,13 @@ class UpgradeFormatTask
         end
       rescue StandardError => e
         errors.push("Upgrading description \"#{description}\" failed:\n#{e}")
+        Machinery::Ui.puts "Upgrade failed."
       end
     end
 
     if !errors.empty?
       Machinery.logger.error errors.join("\n")
-      exception = Machinery::Errors::UpgradeFailed.new(errors.join("\n") +
+      exception = Machinery::Errors::UpgradeFailed.new("\n" + errors.join("\n") +
         Hint.to_string(:upgrade_format_force, name: name || "--all"))
       raise exception
     end
