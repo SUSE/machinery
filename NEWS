@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fixed repository inspection using a non-root user
 
 ## Version 1.8.1 - Wed May 20 17:15:34 CEST 2015 - mamorales@suse.de
 
