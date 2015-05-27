@@ -19,8 +19,10 @@ shared_examples "inspect and build" do |bases|
   bases.each do |base|
     describe "rebuild inspected system", slow: true do
       before(:all) do
-        @subject_system = start_system(box: base)
-        prepare_machinery_for_host(@machinery, @subject_system.ip, password: "vagrant")
+        @subject_system = start_system(box: base, username: "machinery", password: "linux")
+        prepare_machinery_for_host(
+          @machinery, @subject_system.ip, username: "machinery", password: "linux"
+        )
 
         # Enabled experimental features so that the --exclude option can be used
         @machinery.run_command("machinery config experimental-features on", as: "vagrant")
@@ -30,7 +32,7 @@ shared_examples "inspect and build" do |bases|
         measure("Inspect") do
           @machinery.run_command(
             "machinery --exclude=/packages/name=test-quote-char inspect #{@subject_system.ip} " \
-            " -x --name=build_test",
+            " -x --name=build_test --remote-user=machinery",
             as: "vagrant",
             stdout: :capture
           )
@@ -60,7 +62,9 @@ shared_examples "inspect and build" do |bases|
           `sudo rm #{local_image}` if File.exists?(local_image)
           @machinery.extract_file image, "/tmp"
 
-          @test_system = start_system(image: local_image, skip_ssh_setup: true)
+          @test_system = start_system(
+            image: local_image, skip_ssh_setup: true, username: "machinery", password: "linux"
+          )
 
           # Run 'ls' via ssh in the built system to verify its booted and accessible.
           @machinery.run_command(
