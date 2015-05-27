@@ -179,13 +179,13 @@ password=2fdcb7499fd46842
       expect(system).to receive(:run_command).with(
         "cat",
         "/etc/zypp/credentials.d/NCCcredentials",
-        stdout: :capture
+        stdout: :capture, privileged: true
       ).and_return(ncc_credentials)
 
       expect(system).to receive(:run_command).with(
         "cat",
         "/etc/zypp/credentials.d/SCCcredentials",
-        stdout: :capture
+        stdout: :capture, privileged: true
       ).and_return(scc_credentials)
 
       inspector.inspect(filter)

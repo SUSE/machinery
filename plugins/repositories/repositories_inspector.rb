@@ -113,7 +113,7 @@ class RepositoriesInspector < Inspector
     )
     credential_files.split("\n").each do |f|
       content = @system.run_command(
-        "cat", "/etc/zypp/credentials.d/#{f}", stdout: :capture
+        "cat", "/etc/zypp/credentials.d/#{f}", stdout: :capture, privileged: true
       )
       content.match(/username=(\w*)\npassword=(\w*)/)
       credentials[f] = {
