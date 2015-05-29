@@ -143,6 +143,7 @@ EOF
       before(:each) do
         expect(system).to receive(:check_requirement).with("rpm", "--version")
         expect(system).to receive(:check_requirement).with("stat", "--version")
+        expect(system).to receive(:check_requirement).with("find", "--version")
       end
 
       it "returns true if requirements are fulfilled" do

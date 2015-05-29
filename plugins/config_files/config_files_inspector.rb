@@ -23,6 +23,7 @@ class ConfigFilesInspector < Inspector
   def check_requirements(check_rsync)
     @system.check_requirement("rpm", "--version")
     @system.check_requirement("stat", "--version")
+    @system.check_requirement("find", "--version")
     @system.check_requirement("rsync", "--version") if check_rsync
   end
 
