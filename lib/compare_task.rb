@@ -41,7 +41,7 @@ class CompareTask
       end
     end
 
-    target = "/tmp/machinery-html-comparison"
+    target = File.join(Machinery::DEFAULT_CONFIG_DIR, "html-comparison")
     FileUtils.rm_r(target) if Dir.exists?(target)
     FileUtils.mkdir_p(target)
 
