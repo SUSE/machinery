@@ -76,7 +76,9 @@ class ChangedManagedFilesInspector < Inspector
   end
 
   def changed_files
-    raw_list = @system.run_script("changed_managed_files.sh", stdout: :capture)
+    raw_list = @system.run_script(
+      "changed_files.sh", "--", "changed-managed-files", stdout: :capture
+    )
 
     # The raw list lists each package followed by the changed files, e.g.
     #
