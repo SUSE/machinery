@@ -9,27 +9,27 @@
     },
     "files": {
       "type": "array",
-      "items" : {
+        "items" : {
           "type": "object",
           "required": ["name", "package_name", "package_version"],
           "properties": {
-              "name": {
-                  "type": "string"
-              },
-              "package_name": {
-                  "type": "string",
-                  "minLength": 1
-              },
-              "package_version": {
-                  "type": "string",
-                  "minLength": 1
-              }
+            "name": {
+              "type": "string"
+            },
+            "package_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "package_version": {
+              "type": "string",
+              "minLength": 1
+            }
           },
           "oneOf": [
-              { "$ref": "#/definitions/file_changed" },
-              { "$ref": "#/definitions/file_error" }
+            { "$ref": "#/definitions/file_changed" },
+            { "$ref": "#/definitions/file_error" }
           ]
-      }
+        }
     }
   },
   "definitions": {
@@ -42,11 +42,12 @@
       },
       "oneOf": [
         { "$ref": "#/definitions/file_changed_modified" },
+        { "$ref": "#/definitions/link_changed_modified" },
         { "$ref": "#/definitions/file_changed_deleted" }
       ]
     },
     "file_changed_modified": {
-      "required": ["changes", "mode", "user", "group"],
+      "required": ["changes", "mode", "user", "group", "type"],
       "properties": {
         "changes": {
           "type": "array",
@@ -66,6 +67,39 @@
         "group": {
           "type": "string",
           "minLength": 1
+        },
+        "type": {
+          "enum": ["file", "dir"]
+        }
+      }
+    },
+    "link_changed_modified": {
+      "required": ["target", "changes", "mode", "user", "group", "type"],
+      "properties": {
+        "changes": {
+          "type": "array",
+          "items": {
+            "enum": ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities", "replaced", "other_rpm_changes"]
+          },
+          "minItems": 1
+        },
+        "mode": {
+          "type": "string",
+          "pattern": "^[0-7]{3,4}$"
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": ["link"]
+        },
+        "target": {
+          "type": "string"
         }
       }
     },
