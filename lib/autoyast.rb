@@ -82,8 +82,8 @@ class Autoyast < Exporter
         apply_groups(xml)
         apply_services(xml)
 
-        apply_extracted_files("config_files")
-        apply_changed_managed_files
+        apply_changed_files("config_files")
+        apply_changed_files("changed_managed_files")
         apply_unmanaged_files
         xml.scripts do
           apply_url_extraction(xml)
@@ -262,33 +262,7 @@ class Autoyast < Exporter
     end
   end
 
-  def apply_extracted_files(scope)
-    return if !@system_description[scope] || !@system_description[scope].extracted
-
-    base = Pathname(@system_description.scope_file_store(scope).path)
-
-    Dir["#{base}/**/*"].sort.each do |path|
-      next if File.directory?(path)
-
-      relative_path = Pathname(path).relative_path_from(base).to_s
-      url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, relative_path))}"
-
-      @chroot_scripts << "mkdir -p '#{File.join("/mnt", File.dirname(relative_path))}'"
-      @chroot_scripts << "curl -o '#{File.join("/mnt", relative_path)}' \"#{url}\""
-    end
-
-    @system_description[scope].files.map do |file|
-      if file.user
-        @chroot_scripts << "chown --no-dereference #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
-      end
-      if file.mode && !file.link?
-        @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
-      end
-    end
-  end
-
-  def apply_changed_managed_files
-    scope = "changed_managed_files"
+  def apply_changed_files(scope)
     return if !@system_description.scope_extracted?(scope)
 
     @system_description[scope].files.each do |file|
