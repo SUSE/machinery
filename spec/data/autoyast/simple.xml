@@ -119,14 +119,16 @@ zypper -n ar --name='dvd_entry' --type='yast2' 'dvd:///?devices=/dev/disk/by-id/
 zypper -n mr --priority=2 'dvd_entry_alias' --name='dvd_entry' --no-refresh
 zypper -n mr --priority=2 'NCCRepo' --name='NCC Repository' --refresh
 zypper -n mr --priority=1 'Alias With Spaces' --name='nodejs' --no-refresh
+rm -rf '/etc/deleted config'
 mkdir -p '/mnt/etc'
 curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20tab"
-mkdir -p '/mnt/etc'
-curl -o '/mnt/etc/deleted config' "`cat /tmp/description_url`/config_files/etc/deleted%20config"
-chown --no-dereference root:root '/mnt/etc/deleted config'
-chmod 644 '/mnt/etc/deleted config'
-chown --no-dereference root:root '/mnt/etc/cron tab'
 chmod 644 '/mnt/etc/cron tab'
+chown root:root '/mnt/etc/cron tab'
+rm -rf '/mnt/etc/replaced_by_link'
+ln -s '/tmp/foo' '/mnt/etc/replaced_by_link'
+chown --no-dereference root:target '/mnt/etc/replaced_by_link'
+chmod 644 '/mnt/etc/somedir'
+chown user:group '/mnt/etc/somedir'
 rm -rf '/etc/deleted changed managed'
 rm -rf '/mnt/usr/bin/replaced_by_link'
 ln -s '/tmp/foo' '/mnt/usr/bin/replaced_by_link'
