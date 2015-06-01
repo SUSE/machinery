@@ -76,9 +76,9 @@ module ChangedRpmFilesHelper
 
     [path.join(":").chomp,
       {
-        :mode  => mode,
-        :user  => user,
-        :group => group
+        mode: mode,
+        user: user,
+        group: group
       }
     ]
   end
