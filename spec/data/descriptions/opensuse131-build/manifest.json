@@ -1993,7 +1993,8 @@
         ],
         "user": "root",
         "group": "root",
-        "mode": "644"
+        "mode": "644",
+        "type": "file"
       },
       {
         "name": "/etc/postfix/LICENSE",
@@ -2002,7 +2003,8 @@
         "status": "changed",
         "changes": [
           "deleted"
-        ]
+        ],
+        "type": "file"
       },
       {
         "name": "/etc/postfix/TLS_LICENSE",
@@ -2016,7 +2018,8 @@
         ],
         "user": "bin",
         "group": "users",
-        "mode": "666"
+        "mode": "666",
+        "type": "file"
       }
     ]
   },
@@ -2053,7 +2056,8 @@
         "changes": [
           "deleted"
         ],
-        "package_file_flag": "d"
+        "package_file_flag": "d",
+        "type": "file"
       },
       {
         "name": "/usr/share/doc/packages/rsync/README",
@@ -2070,7 +2074,8 @@
         "package_file_flag": "d",
         "mode": "664",
         "user": "bin",
-        "group": "wheel"
+        "group": "wheel",
+        "type": "file"
       }
     ]
   },
@@ -2091,7 +2096,7 @@
 
   ],
   "meta": {
-    "format_version": 3,
+    "format_version": 4,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"

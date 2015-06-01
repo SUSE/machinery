@@ -13,12 +13,13 @@
         ],
         "user": "root",
         "group": "root",
-        "mode": "900"
+        "mode": "900",
+        "type": "file"
       }
     ]
   },
   "meta": {
-    "format_version": 3,
+    "format_version": 4,
     "config_files": {
       "modified": "2014-08-25T14:45:38Z",
       "hostname": "192.168.121.68"
