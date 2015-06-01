@@ -2053,8 +2053,7 @@
         "changes": [
           "deleted"
         ],
-        "package_file_flag": "d",
-        "type": "file"
+        "package_file_flag": "d"
       },
       {
         "name": "/usr/share/doc/packages/rsync/README",
@@ -2071,8 +2070,7 @@
         "package_file_flag": "d",
         "mode": "664",
         "user": "bin",
-        "group": "wheel",
-        "type": "file"
+        "group": "wheel"
       }
     ]
   },
@@ -2093,7 +2091,7 @@
 
   ],
   "meta": {
-    "format_version": 4,
+    "format_version": 3,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
