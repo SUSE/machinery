@@ -270,7 +270,7 @@ module SystemDescriptionFactory
           "changes": ["group"],
           "user": "user",
           "group": "group",
-          "mode": "644",
+          "mode": "755",
           "type": "dir"
         }
       ]
