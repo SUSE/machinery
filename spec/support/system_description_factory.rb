@@ -236,7 +236,8 @@ module SystemDescriptionFactory
           ],
           "user": "root",
           "group": "root",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
         },
         {
           "name": "/etc/cron tab",
@@ -246,7 +247,31 @@ module SystemDescriptionFactory
           "changes": ["md5"],
           "user": "root",
           "group": "root",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
+        },
+        {
+          "name": "/etc/replaced_by_link",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["link_path"],
+          "type": "link",
+          "target": "/tmp/foo",
+          "user": "root",
+          "group": "target",
+          "mode": "777"
+        },
+        {
+          "name": "/etc/somedir",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["group"],
+          "user": "user",
+          "group": "group",
+          "mode": "644",
+          "type": "dir"
         }
       ]
     }
