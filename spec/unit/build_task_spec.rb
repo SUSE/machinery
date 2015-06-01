@@ -61,6 +61,21 @@ describe BuildTask do
       build_task.build(system_description, output_path)
     end
 
+    it "handles execution errors gracefully" do
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
+      expect(Cheetah).to receive(:run) { |*cmd_array|
+        expect(cmd_array).to include("sudo")
+        expect(cmd_array.index { |s|
+          s.include?("machinery-kiwi-wrapper-script")
+        }).not_to be(nil)
+      }.and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+
+      expect { subject.build(system_description, output_path) }.to raise_error(
+        Machinery::Errors::BuildFailed, /The execution of the build script failed./
+      )
+    end
+
     it "deletes the wrapper script after usage" do
       tmp_dir = given_directory
       allow(Tempfile).to receive(:new).and_return(
