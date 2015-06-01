@@ -1,6 +1,7 @@
 # Machinery Release Notes
 
 * Support links in changed managed files scope
+* Support links in config files scope
 
 ## Version 1.8.2 - Wed May 27 16:56:44 CEST 2015 - thardeck@suse.de
 
