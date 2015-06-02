@@ -92,6 +92,7 @@ S.5....T.  c /etc/sysconfig/SuSEfirewall2.d/services/apache2
 missing    c /usr/share/info/dir
 S.5....T.    /etc/sysconfig/ignore_me_cause_im_not_a_config_file
 .........  c /usr/share/man/man1/time.1.gz (replaced)
+....L.G..  c /etc/crontab
 EOF
     }
     let(:rpm_v_openiscsi_output) {
@@ -114,6 +115,7 @@ EOF
 644:root:root:0:0:regular file:/etc/sysconfig/SuSEfirewall2.d/services/apache2
 4700:nobody:nobody:65534:65533:regular file:/etc/iscsi/iscsid.conf
 644:root:root:0:0:regular file:/usr/share/man/man1/time.1.gz
+755:root:root:1001:1002:symbolic link:/etc/crontab
 EOF
     }
     let(:config_paths) {
@@ -122,11 +124,12 @@ EOF
         "/etc/apache2/listen.conf",
         "/etc/sysconfig/SuSEfirewall2.d/services/apache2",
         "/usr/share/man/man1/time.1.gz",
+        "/etc/crontab",
         "/etc/iscsi/iscsid.conf"
       ]
     }
     let(:base_cmdline) {
-      ["rpm", "-V", "--nodeps", "--nodigest", "--nosignature", "--nomtime", "--nolinkto"]
+      ["rpm", "-V", "--nodeps", "--nodigest", "--nosignature", "--nomtime"]
     }
     let(:expected_package_list) { ["apache2-2.4.6", "open-iscsi-2.0.873"] }
 
@@ -226,14 +229,22 @@ EOF
           changes: ["replaced"]
         )
 
+        apache_config_6 = ConfigFile.new(
+          name: "/etc/crontab",
+          package_name: "apache2",
+          package_version: "2.4.6",
+          status: "changed",
+          changes: ["link_path", "group"]
+        )
+
         expected_apache_config_file_data = [
-          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5
+          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5,
+          apache_config_6
         ]
         expect(system).to receive(:run_command).with(
           "rpm", "-V",
           "--nodeps", "--nodigest", "--nosignature",
-          "--nomtime", "--nolinkto",
-          "apache2-2.4.6",
+          "--nomtime", "apache2-2.4.6",
           stdout: :capture,
           privileged: true
         ).and_return(rpm_v_apache_output)
@@ -253,6 +264,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["size", "md5", "time"]
         )
 
@@ -261,6 +273,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["md5", "time"]
         )
 
@@ -269,6 +282,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["size", "md5", "time"]
         )
 
@@ -277,6 +291,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["deleted"]
         )
 
@@ -285,7 +300,17 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["replaced"]
+        )
+
+        apache_config_6 = ConfigFile.new(
+          name: "/etc/crontab",
+          package_name: "apache2",
+          package_version: "2.4.6",
+          status: "changed",
+          type: "link",
+          changes: ["link_path", "group"]
         )
 
         iscsi_config_1 = ConfigFile.new(
@@ -295,17 +320,19 @@ EOF
           changes: ["size", "mode", "md5", "user", "group", "time"],
           user: "nobody",
           group: "nobody",
-          mode: "4700"
+          mode: "4700",
+          type: "file"
         )
 
         expected_apache_config_file_data = [
-          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5
+          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5,
+          apache_config_6
         ]
         @expected_data = ConfigFilesScope.new(
           extracted: false,
           files: ConfigFileList.new(
             [
-              apache_config_1, apache_config_2, iscsi_config_1, apache_config_3,
+              apache_config_1, apache_config_2, apache_config_6, iscsi_config_1, apache_config_3,
               apache_config_4, apache_config_5
             ]
           )
@@ -316,11 +343,13 @@ EOF
         ).and_return(["apache2-2.4.6", "open-iscsi-2.0.873"])
         allow_any_instance_of(ConfigFilesInspector).to receive(:config_file_changes).with(
           "apache2-2.4.6"
-        ).and_return(expected_apache_config_file_data)
+        ).and_return(expected_apache_config_file_data.dup)
         allow_any_instance_of(ConfigFilesInspector).to receive(:config_file_changes).with(
           "open-iscsi-2.0.873"
         ).and_return(iscsi_config_1)
         allow_any_instance_of(ConfigFilesInspector).to receive(:check_requirements)
+        allow(system).to receive(:run_command).with("find", "/etc/crontab", any_args).
+          and_return("/tmp/crontab")
         stub_stat_commands(system, config_paths, stat_output)
       end
 
@@ -328,7 +357,7 @@ EOF
         inspector.inspect(filter)
 
         expect(description["config_files"]).to eq(@expected_data)
-        expect(inspector.summary).to include("6 changed configuration files")
+        expect(inspector.summary).to include("7 changed configuration files")
       end
 
       it "returns empty when no modified config files are there" do
@@ -362,7 +391,7 @@ EOF
         )
         inspector.inspect(filter, extract_changed_config_files: true)
 
-        expect(inspector.summary).to include("Extracted 6 changed configuration files")
+        expect(inspector.summary).to include("Extracted 7 changed configuration files")
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
       end
@@ -378,7 +407,7 @@ EOF
         File.chmod(0750, store.description_path(name))
 
         inspector.inspect(filter, extract_changed_config_files: true)
-        expect(inspector.summary).to include("Extracted 6 changed configuration files")
+        expect(inspector.summary).to include("Extracted 7 changed configuration files")
         expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
       end
 

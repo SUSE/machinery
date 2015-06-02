@@ -40,21 +40,23 @@ shared_examples "inspect config files" do |base|
     end
 
     it "extracts files from system" do
+      description_json = @machinery.run_command(
+        "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
+        as: machinery_config[:owner],
+        stdout: :capture
+      )
+      description = create_test_description(json: description_json)
+
       actual_config_files = nil
       measure("Gather information about extracted files") do
         actual_config_files = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/; find -type f",
           as: "vagrant", stdout: :capture
-        ).split("\n")
+        ).split("\n").
+        map { |file_name| file_name.sub(/^\./, "") } # Remove trailing dots returned by find
       end
 
-      expected_config_files = []
-      expected_files_list = File.read("spec/data/config_files/#{base}")
-      expected_files_list.split("\n").each do |e|
-        if e.start_with?("  * ") && !e.end_with?("deleted)")
-          expected_config_files << ".#{e.split[1]}"
-        end
-      end
+      expected_config_files = description.config_files.files.select(&:file?).map(&:name)
       expect(actual_config_files).to match_array(expected_config_files)
 
       # test file content
