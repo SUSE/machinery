@@ -66,7 +66,7 @@ describe RemoteSystem do
         expect(LoggedCheetah).to_not receive(:run)
         expect(Cheetah).to receive(:run)
 
-        remote_system.run_command("ls", :disable_logging => true)
+        remote_system.run_command("ls", disable_logging: true)
       end
 
       it "adheres to the remote_user option" do

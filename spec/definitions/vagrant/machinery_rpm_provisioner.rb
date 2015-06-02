@@ -32,9 +32,9 @@ module MachineryRpm
   # This can be overriden when provisioning a VM:
   #
   #   machinery_sles.vm.provision "machinery_rpm",
-  #     :api     => "https://your.buildservice.com",
-  #     :project => "machinery_project",
-  #     :package => "machinery"
+  #     api: "https://your.buildservice.com",
+  #     project: "machinery_project",
+  #     package: "machinery"
   #
   class Plugin < Vagrant.plugin('2')
     name "machinery_rpm"

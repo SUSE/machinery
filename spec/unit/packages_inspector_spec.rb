@@ -24,9 +24,9 @@ describe PackagesInspector, ".inspect" do
   let(:filter) { nil }
   let(:system) {
     double(
-      :requires_root?    => false,
-      :host              => "example.com",
-      :check_requirement => nil
+      requires_root?: false,
+      host: "example.com",
+      check_requirement: nil
     )
   }
   let(:packages_inspector) { PackagesInspector.new(system, description) }
@@ -59,7 +59,7 @@ EOF
     )
   }
   let(:rpm_command) {
-    ["rpm", "-qa", "--qf", "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{FILEMD5S}$", :stdout=>:capture]
+    ["rpm", "-qa", "--qf", "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{FILEMD5S}$", stdout: :capture]
   }
 
   def inspect_data(host = "myhost", data = package_example)

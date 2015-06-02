@@ -48,8 +48,8 @@ def prepare_remote_machinery_for_host(system, ip, opts)
   system.inject_file(
     File.join(Machinery::ROOT, "spec/keys/machinery_rsa"),
     "/home/vagrant/.ssh/id_rsa",
-    :owner => "vagrant",
-    :mode => "600"
+    owner: "vagrant",
+    mode: "600"
   )
 
   system.run_command(
@@ -64,5 +64,5 @@ RSpec.configure do |config|
   config.include(SystemDescriptionFactory)
 
   config.vagrant_dir = File.join(Machinery::ROOT, "spec/definitions/vagrant/")
-  config.filter_run_excluding :slow => true
+  config.filter_run_excluding slow: true
 end

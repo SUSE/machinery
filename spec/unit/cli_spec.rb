@@ -369,7 +369,7 @@ describe Cli do
         description.name = "descriptionx"
 
         expect_any_instance_of(BuildTask).to receive(:build).
-          with(description, path, {:enable_dhcp=>false, :enable_ssh=>false})
+          with(description, path, {enable_dhcp: false, enable_ssh: false})
 
         run_command(["build", "description1", "--image-dir=#{path}"])
       end

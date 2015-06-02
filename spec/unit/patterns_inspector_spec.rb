@@ -48,9 +48,9 @@ describe PatternsInspector do
   let(:patterns_inspector) { PatternsInspector.new(system, description) }
   let(:system) {
     double(
-      :requires_root?    => false,
-      :host              => "example.com",
-      :check_requirement => nil
+      requires_root?: false,
+      host: "example.com",
+      check_requirement: nil
     )
   }
 

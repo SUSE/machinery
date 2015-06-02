@@ -24,8 +24,8 @@ describe PackagesScope do
 
   it "keeps values" do
     packages_scope = PackagesScope.new
-    packages_scope << Package.new(:name => "PACK1", :version => "1.0")
-    packages_scope << Package.new(:name => "PACK2", :version => "2.1")
+    packages_scope << Package.new(name: "PACK1", version: "1.0")
+    packages_scope << Package.new(name: "PACK2", version: "2.1")
 
     expect(packages_scope.size).to eq(2)
     expect(packages_scope[0].name).to eq("PACK1")
@@ -45,9 +45,9 @@ describe PackagesScope do
 
   describe "compares" do
     before(:each) do
-      @package1 = Package.new(:name => "PACK1", :version => "1.0")
-      @package2 = Package.new(:name => "PACK2", :version => "2.1")
-      @package3 = Package.new(:name => "PACK3", :version => "4.5.6")
+      @package1 = Package.new(name: "PACK1", version: "1.0")
+      @package2 = Package.new(name: "PACK2", version: "2.1")
+      @package3 = Package.new(name: "PACK3", version: "4.5.6")
 
       @packages_scope1 = PackagesScope.new
       @packages_scope1 << @package1 << @package2

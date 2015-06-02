@@ -66,13 +66,13 @@ describe LocalSystem do
     it "does not log commands when :disable_logging is set" do
       expect(LoggedCheetah).to_not receive(:run)
 
-      local_system.run_command("ls", :disable_logging => true)
+      local_system.run_command("ls", disable_logging: true)
     end
   end
 
   describe "#retrieve_files" do
     it "retrives files via rsync from localhost" do
-      expect(Cheetah).to receive(:run).with("rsync",  "--chmod=go-rwx", "--files-from=-", "/", "/tmp",  :stdout => :capture, :stdin => "/foo\n/bar" )
+      expect(Cheetah).to receive(:run).with("rsync",  "--chmod=go-rwx", "--files-from=-", "/", "/tmp",  stdout: :capture, stdin: "/foo\n/bar" )
 
       local_system.retrieve_files(["/foo", "/bar"], "/tmp")
     end

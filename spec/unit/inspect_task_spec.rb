@@ -80,8 +80,8 @@ describe InspectTask, "#inspect_system" do
   let(:host) { "example.com" }
   let(:system) {
     system = double(
-      :requires_root? => false,
-      :host           => "example.com"
+      requires_root?: false,
+      host:           "example.com"
     )
     allow(system).to receive(:remote_user=)
     system

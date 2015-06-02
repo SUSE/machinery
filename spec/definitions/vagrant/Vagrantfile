@@ -37,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :machinery_131 do |machinery_131|
     machinery_131.vm.box = "machinery_opensuse13.1_kvm"
-    machinery_131.vm.network :private_network, :network_name => "default"
+    machinery_131.vm.network :private_network, network_name: "default"
 
     machinery_131.vm.provider :libvirt do |domain|
       domain.memory = 1024
@@ -65,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :machinery_132 do |machinery_132|
     machinery_132.vm.box = "machinery_opensuse13.2_kvm"
-    machinery_132.vm.network :private_network, :network_name => "default"
+    machinery_132.vm.network :private_network, network_name: "default"
 
     machinery_132.vm.provider :libvirt do |domain|
       domain.memory = 1024
@@ -75,9 +75,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     machinery_132.vm.provision "machinery_rpm",
-      :api     => "https://api.opensuse.org",
-      :project => "systemsmanagement:machinery",
-      :package => "openSUSE_13.2"
+      api: "https://api.opensuse.org",
+      project: "systemsmanagement:machinery",
+      package: "openSUSE_13.2"
   end
 
   config.vm.define :opensuse_tumbleweed do |opensuse_tumbleweed|
@@ -96,7 +96,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define :machinery_tumbleweed do |machinery_tumbleweed|
     machinery_tumbleweed.vm.box = "machinery_opensuse_tumbleweed_kvm"
-    machinery_tumbleweed.vm.network :private_network, :network_name => "default"
+    machinery_tumbleweed.vm.network :private_network, network_name: "default"
 
     machinery_tumbleweed.vm.provider :libvirt do |domain|
       domain.memory = 1024
@@ -106,9 +106,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     machinery_tumbleweed.vm.provision "machinery_rpm",
-      :api     => "https://api.opensuse.org",
-      :project => "systemsmanagement:machinery",
-      :package => "openSUSE_Tumbleweed"
+      api: "https://api.opensuse.org",
+      project: "systemsmanagement:machinery",
+      package: "openSUSE_Tumbleweed"
   end
 
 
@@ -191,7 +191,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   chef.add_role "web"
   #
   #   # You may also specify custom JSON attributes:
-  #   chef.json = { :mysql_password => "foo" }
+  #   chef.json = { mysql_password: "foo" }
   # end
 
   # Enable provisioning with chef server, specifying the chef server URL,
