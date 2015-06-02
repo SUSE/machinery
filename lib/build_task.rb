@@ -62,6 +62,11 @@ class BuildTask
           end
         end
         raise
+      rescue Cheetah::ExecutionFailed
+        raise(
+          Machinery::Errors::BuildFailed,
+          "The execution of the build script failed."
+        )
       ensure
         tmp_script.delete
       end
