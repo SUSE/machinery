@@ -149,6 +149,16 @@ describe KiwiConfig do
         /The system description doesn't contain any enabled or network reachable repository/
       )
     end
+    it "raises an error if no repository is activated" do
+      description = system_description_with_content
+      description["repositories"].each do |repository|
+        repository.enabled = false
+      end
+      expect { KiwiConfig.new(description) }.to raise_error(
+        Machinery::Errors::MissingRequirement,
+        /The system description doesn't contain any enabled or network reachable repository/
+      )
+    end
 
     it "raises an error if no repository is reachable via network" do
       description = system_description_with_content
@@ -385,6 +395,22 @@ describe KiwiConfig do
     describe "with extracted files" do
       let(:config) { KiwiConfig.new(system_description_with_modified_files) }
       let(:manifest_path) { store.description_path(name) }
+
+      it "restores the extracted config-files" do
+        config.write(export_dir)
+
+        expect(config.sh).to include("chmod 644 '/etc/cron tab'\n")
+        expect(config.sh).to include("chown root:root '/etc/cron tab'\n")
+
+        expect(config.sh).to include("rm -rf '/etc/deleted config'\n")
+
+        expect(config.sh).to include("chmod 755 '/etc/somedir'\n")
+        expect(config.sh).to include("chown user:group '/etc/somedir'\n")
+
+        expect(config.sh).to include("rm -rf '/etc/replaced_by_link'\n")
+        expect(config.sh).to include("ln -s '/tmp/foo' '/etc/replaced_by_link'\n")
+        expect(config.sh).to include("chown --no-dereference root:target '/etc/replaced_by_link'\n")
+      end
 
       it "copies the changed config files to the template root directory" do
         config_file = "/etc/cron tab"

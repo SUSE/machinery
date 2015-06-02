@@ -95,7 +95,7 @@ class KiwiConfig < Exporter
   end
 
   def inject_extracted_files(output_location)
-    ["changed_managed_files"].each do |scope|
+    ["changed_managed_files", "config_files"].each do |scope|
       next if !@system_description.scope_extracted?(scope)
 
       output_root_path = File.join(output_location, "root")
@@ -116,15 +116,6 @@ class KiwiConfig < Exporter
           @sh << "ln -s '#{file.target}' '#{file.name}'\n"
           @sh << "chown --no-dereference #{file.user}:#{file.group} '#{file.name}'\n"
         end
-      end
-    end
-
-    ["config_files"].each do |scope|
-      path = @system_description.scope_file_store(scope).path
-      if path
-        output_root_path = File.join(output_location, "root")
-        FileUtils.mkdir_p(output_root_path)
-        FileUtils.cp_r(Dir.glob("#{path}/*"), output_root_path)
       end
     end
 
@@ -214,7 +205,6 @@ EOF
 
         apply_repositories(xml)
         apply_packages(xml)
-        apply_extracted_files_attributes
         apply_services
       end
     end
@@ -281,25 +271,6 @@ EOF
               " required packages."
           )
         )
-      end
-    end
-  end
-
-  def apply_extracted_files_attributes
-    ["config_files"].each do |scope|
-      if @system_description[scope]
-        deleted, files = @system_description[scope].files.partition do |f|
-          f.changes == Machinery::Array.new(["deleted"])
-        end
-
-        files.each do |file|
-          @sh << "chmod #{file.mode} '#{file.name}'\n"
-          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
-        end
-
-        deleted.each do |file|
-          @sh << "rm -rf '#{file.name}'\n"
-        end
       end
     end
   end
