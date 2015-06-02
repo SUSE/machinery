@@ -2003,8 +2003,7 @@
         "status": "changed",
         "changes": [
           "deleted"
-        ],
-        "type": "file"
+        ]
       },
       {
         "name": "/etc/postfix/TLS_LICENSE",
@@ -2055,9 +2054,7 @@
         "status": "changed",
         "changes": [
           "deleted"
-        ],
-        "package_file_flag": "d",
-        "type": "file"
+        ]
       },
       {
         "name": "/usr/share/doc/packages/rsync/README",
@@ -2071,7 +2068,6 @@
           "user",
           "group"
         ],
-        "package_file_flag": "d",
         "mode": "664",
         "user": "bin",
         "group": "wheel",
