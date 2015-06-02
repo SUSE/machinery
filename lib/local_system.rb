@@ -94,7 +94,15 @@ class LocalSystem < System
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     begin
-      LoggedCheetah.run("rsync",  "--chmod=go-rwx", "--files-from=-", "/", destination, stdout: :capture, stdin: filelist.join("\n") )
+      LoggedCheetah.run(
+        "rsync",
+        "--chmod=go-rwx",
+        "--files-from=-",
+        "/",
+        destination,
+        stdout: :capture,
+        stdin: filelist.join("\n")
+        )
     rescue Cheetah::ExecutionFailed => e
       raise Machinery::Errors::RsyncFailed.new(
       "Could not rsync files from localhost. \n" \
