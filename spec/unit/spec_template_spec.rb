@@ -36,9 +36,9 @@ describe SpecTemplate do
     it "returns the build requirements" do
       expect(template.build_requires).to include(
         {
-          :name => "thor",
-          :operator => ">=",
-          :version => Gem::Version.new("0.14.0")
+          name: "thor",
+          operator: ">=",
+          version: Gem::Version.new("0.14.0")
         }
       )
     end
@@ -46,16 +46,16 @@ describe SpecTemplate do
     it "returns build requirements with multiple versions" do
       expect(template.build_requires).to include(
         {
-          :name => "gli",
-          :operator => ">=",
-          :version => Gem::Version.new("2.11.0")
+          name: "gli",
+          operator: ">=",
+          version: Gem::Version.new("2.11.0")
         }
       )
       expect(template.build_requires).to include(
         {
-          :name => "gli",
-          :operator => "<=",
-          :version => Gem::Version.new("2.12.0")
+          name: "gli",
+          operator: "<=",
+          version: Gem::Version.new("2.12.0")
         }
       )
     end

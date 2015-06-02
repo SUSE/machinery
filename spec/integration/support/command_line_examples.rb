@@ -20,16 +20,16 @@ shared_examples "CLI" do
     it "throws an error on invalid command" do
       expect { @machinery.run_command(
         "#{machinery_command} invalid_command",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       ) }.to raise_error(Pennyworth::ExecutionFailed)
     end
 
     it "processes help option" do
       output = @machinery.run_command(
         "#{machinery_command} -h",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       )
       expect(output).to include("COMMANDS")
       expect(output).to include("help")
@@ -39,8 +39,8 @@ shared_examples "CLI" do
     it "processes help option for subcommands" do
       output = @machinery.run_command(
         "#{machinery_command} inspect --help",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       )
       expect(output).to include("machinery [global options] inspect [command options] HOSTNAME")
     end
@@ -48,18 +48,18 @@ shared_examples "CLI" do
     it "does not offer --no-help or unneccessary negatable options" do
       global_output = @machinery.run_command(
         "#{machinery_command} --help",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       )
       inspect_help_output = @machinery.run_command(
         "#{machinery_command} inspect --help",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       )
       show_help_output = @machinery.run_command(
         "#{machinery_command} inspect --help",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       )
       expect(global_output).to_not include("--[no-]help")
       expect(inspect_help_output).to_not include("--[no-]")
@@ -70,8 +70,8 @@ shared_examples "CLI" do
       it "fails inspect for non existing scope" do
         expect { @machinery.run_command(
           "sudo #{machinery_command} inspect localhost --scope=foobar --name=test",
-          :as => "vagrant",
-          :stdout => :capture
+          as: "vagrant",
+          stdout: :capture
         ) }.to raise_error(Pennyworth::ExecutionFailed, /The following scope is not supported: foobar/)
       end
     end
@@ -80,16 +80,16 @@ shared_examples "CLI" do
       it "fails without an output path" do
         expect { @machinery.run_command(
           "#{machinery_command} build test",
-          :as => "vagrant",
-          :stdout => :capture
+          as: "vagrant",
+          stdout: :capture
         ) }.to raise_error(Pennyworth::ExecutionFailed, /image-dir is required/)
       end
 
       it "fails without a name" do
         expect { @machinery.run_command(
           "#{machinery_command} build --image-dir=/tmp/",
-          :as => "vagrant",
-          :stdout => :capture
+          as: "vagrant",
+          stdout: :capture
         ) }.to raise_error(Pennyworth::ExecutionFailed, /You need to provide the required argument/)
       end
     end

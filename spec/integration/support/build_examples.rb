@@ -40,7 +40,7 @@ shared_examples "build" do |distribution|
 
       # Check that image was built
       images = @machinery.run_command(
-        "find", "/home/vagrant/build_image", "-name", "*qcow2", :stdout => :capture
+        "find", "/home/vagrant/build_image", "-name", "*qcow2", stdout: :capture
       )
       expect(images).not_to be_empty
     end
@@ -49,7 +49,7 @@ shared_examples "build" do |distribution|
       before(:all) do
         local_image = nil
         images = @machinery.run_command(
-          "find", "/home/vagrant/build_image", "-name", "*qcow2", :stdout => :capture
+          "find", "/home/vagrant/build_image", "-name", "*qcow2", stdout: :capture
         )
         measure("Extract image") do
           # Extract image from master VM
@@ -101,7 +101,7 @@ shared_examples "build" do |distribution|
         it "contains the changed config file" do
           actual_config_files = @machinery.run_command(
             "find", "/home/vagrant/.machinery/built_image/config_files/", "-printf", "%P\n",
-            :stdout => :capture
+            stdout: :capture
           ).split("\n")
           expect(actual_config_files).to include("etc/crontab")
         end
@@ -122,12 +122,12 @@ shared_examples "build" do |distribution|
         it "contains the changed managed file" do
           actual_files = @machinery.run_command(
             "find", "/home/vagrant/.machinery/built_image/changed_managed_files/", "-printf", "%P\n",
-            :stdout => :capture
+            stdout: :capture
           ).split("\n")
           actual_md5 = @machinery.run_command(
             "md5sum",
             "/home/vagrant/.machinery/built_image/changed_managed_files/usr/share/doc/packages/rsync/README",
-            :stdout => :capture
+            stdout: :capture
           )
 
           expect(actual_files).to include("usr/share/doc/packages/rsync/README")

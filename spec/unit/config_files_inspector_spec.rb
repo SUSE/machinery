@@ -135,7 +135,7 @@ EOF
     def stub_stat_commands(system, files, stats_output)
       allow(system).to receive(:run_command).with(
         "stat", "--printf", "%a:%U:%G:%u:%g:%n\\n", *files,
-        :stdout => :capture
+        stdout: :capture
       ).and_return(stats_output)
     end
 

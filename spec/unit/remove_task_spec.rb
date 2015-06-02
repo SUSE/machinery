@@ -35,7 +35,7 @@ describe RemoveTask do
     it "removes all system descriptions" do
       create_machinery_dir
       expect(store.list).to include(test_name)
-      remove_task.remove(store, nil, :all => true)
+      remove_task.remove(store, nil, all: true)
       expect(store.list).to be_empty
     end
 

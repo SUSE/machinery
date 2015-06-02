@@ -46,7 +46,7 @@ EOF
           "systemctl",
           "list-unit-files",
           "--type=service,socket",
-          :stdout => :capture
+          stdout: :capture
         ).
         and_return(systemctl_list_unit_files_output)
 

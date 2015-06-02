@@ -23,16 +23,16 @@ shared_examples "inspect simple scope" do |scope, base|
           "#{machinery_command} inspect #{@subject_system.ip} " \
             "#{inspect_options if defined?(inspect_options)} " \
             "--scope=#{scope} --name=test",
-          :as => "vagrant",
-          :stdout => :capture
+          as: "vagrant",
+          stdout: :capture
         )
       end
 
       expected = File.read("spec/data/#{scope}/#{base}")
       actual = @machinery.run_command(
         "#{machinery_command} show test --scope=#{scope}",
-        :as => "vagrant",
-        :stdout => :capture
+        as: "vagrant",
+        stdout: :capture
       )
       expect(actual).to match_machinery_show_scope(expected)
     end

@@ -49,12 +49,12 @@ describe System do
       md5sum = local_system.run_command(
         ["find", test_dir, "-type", "f"],
         ["xargs", "md5sum"],
-        :stdout => :capture
+        stdout: :capture
       )
       File.write(md5_file, md5sum)
       lines = local_system.run_command(
         "find", test_dir,
-        :stdout => :capture
+        stdout: :capture
       )
       lines=lines.count("\n")
 
@@ -68,12 +68,12 @@ describe System do
       )
       test_lines = local_system.run_command(
         "find", extract_dir + test_dir,
-        :stdout => :capture
+        stdout: :capture
       )
       expect(test_lines.count("\n")).to eq(lines)
 
       md5sum.gsub!(/ \/tmp\//, " " + extract_dir + "/tmp/")
-      local_system.run_command("md5sum", "-c", :stdin => md5sum)
+      local_system.run_command("md5sum", "-c", stdin: md5sum)
       FileUtils.rm_r(dir)
     end
 

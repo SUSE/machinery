@@ -141,23 +141,23 @@ describe Machinery::Object do
 
   describe "#compare_with" do
     it "returns correct result when compared objects are equal" do
-      a = Machinery::Object.new(:a => 42)
-      b = Machinery::Object.new(:a => 42)
+      a = Machinery::Object.new(a: 42)
+      b = Machinery::Object.new(a: 42)
 
       comparison = a.compare_with(b)
 
-      expect(comparison).to eq([nil, nil, Machinery::Object.new(:a => 42)])
+      expect(comparison).to eq([nil, nil, Machinery::Object.new(a: 42)])
     end
 
     it "returns correct result when compared objects aren't equal" do
-      a = Machinery::Object.new(:a => 42)
-      b = Machinery::Object.new(:b => 43)
+      a = Machinery::Object.new(a: 42)
+      b = Machinery::Object.new(b: 43)
 
       comparison = a.compare_with(b)
 
       expect(comparison).to eq([
-        Machinery::Object.new(:a => 42),
-        Machinery::Object.new(:b => 43),
+        Machinery::Object.new(a: 42),
+        Machinery::Object.new(b: 43),
         nil
       ])
     end

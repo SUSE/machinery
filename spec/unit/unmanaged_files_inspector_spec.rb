@@ -126,7 +126,7 @@ describe UnmanagedFilesInspector do
       expect(system).to receive(:run_command).with(
         [ "rpm", "-qlav" ],
 	[ "sed", "s/^\\(.\\)[^/]* /\\1 /" ],
-        :stdout => :capture
+        stdout: :capture
       ).and_return(File.read(test_file_path+"/rpm_qlav"))
     end
 
@@ -303,7 +303,7 @@ describe UnmanagedFilesInspector do
         arch = File.join(cfdir, "files.tgz")
         expect(Cheetah).to receive(:run).with(
           "tar", "tvf", arch,
-          :stdout => :capture
+          stdout: :capture
         ).and_return(File.read(test_file_path+"/tar_tvfz_FILES"))
         dlist.each do |d|
           base = File.dirname(d)
@@ -312,7 +312,7 @@ describe UnmanagedFilesInspector do
           expect(Cheetah).to receive(:run).with(
             "tar", "tvf",
             File.join(cfdir, "trees", base, File.basename(d) + ".tgz"),
-            :stdout => :capture
+            stdout: :capture
           ).and_return(File.read(test_file))
         end
       end
@@ -384,7 +384,7 @@ describe UnmanagedFilesInspector do
     it "extracts unmanaged files" do
       expect_inspect_unmanaged(system, true, true)
 
-      subject.inspect(default_filter, :extract_unmanaged_files => true)
+      subject.inspect(default_filter, extract_unmanaged_files: true)
 
       expect(description["unmanaged_files"]).to eq(expected_data_meta)
       expect(subject.summary).
