@@ -24,7 +24,7 @@ class ChangedManagedFilesInspector < Inspector
     @description = description
   end
 
-  def inspect(_filter, options = {})
+  def inspect(filter, options = {})
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     @system = system
@@ -32,11 +32,16 @@ class ChangedManagedFilesInspector < Inspector
 
     result = changed_files
 
+    if filter
+      file_filter = filter.element_filter_for("/changed_managed_files/files/name")
+      result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
+    end
+
     file_store.remove
     if options[:extract_changed_managed_files]
       file_store.create
 
-      existing_files = changed_files.reject do |f|
+      existing_files = result.reject do |f|
         f.changes.nil? ||
         f.changes.include?("deleted") ||
         f.name == "/"
