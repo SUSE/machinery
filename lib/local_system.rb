@@ -47,10 +47,12 @@ class LocalSystem < System
       if !os.can_run_machinery?
         supported_oses = Os.supported_host_systems.map { |o| o.canonical_name }.
           sort.join(", ")
-        message = "Running Machinery is not supported on this system.\n" \
-          "Supported operating systems are: #{supported_oses}"
-
-        raise(Machinery::Errors::IncompatibleHost.new(message))
+        message = "You are running Machinery on a platform we do not explicitly support and test." \
+          " It still could work very well. If you run into issues or would like to provide us feedback, " \
+          "you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new" \
+          "or write an email to machinery@lists.suse.com. \n" \
+          "Oficially supported operating systems are: #{supported_oses}"
+        Machinery::Ui.warn message
       end
     end
 

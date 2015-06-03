@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe LocalSystem do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
-
+  capture_machinery_output
   let(:local_system) { LocalSystem.new }
 
   describe ".os" do
@@ -102,33 +102,28 @@ describe LocalSystem do
       }.not_to raise_error
     end
 
-    it "raises Machinery::Errors::IncompatibleHost on hosts that can not run machinery" do
+    it "shows a warning on hosts that can not run machinery" do
       allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+      LocalSystem.validate_machinery_compatibility
 
-      expect {
-        LocalSystem.validate_machinery_compatibility
-      }.to raise_error(Machinery::Errors::IncompatibleHost)
+      expect(captured_machinery_output).to include(
+        "You are running Machinery on a platform we do not explicitly support and test." \
+        " It still could work very well. If you run into issues or would like to provide us feedback, " \
+        "you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new" \
+        "or write an email to machinery@lists.suse.com. \n" \
+        "Oficially supported operating systems are:"
+        )
+      expect(captured_machinery_output).to include("SUSE Linux Enterprise Server 12")
     end
 
     it "lists all supported operating systems if the host is not supported" do
       allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+      LocalSystem.validate_machinery_compatibility
 
-      expect {
-        LocalSystem.validate_machinery_compatibility
-      }.to raise_error(Machinery::Errors::IncompatibleHost) do |error|
-        expect(error.to_s).to end_with(
-          ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
-            " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
+      expect(captured_machinery_output).to include(
+        ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
+          " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
         )
-      end
-    end
-
-    it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
-      allow(LocalSystem).to receive(:os).and_return(OsUnknown.new)
-
-      expect {
-        LocalSystem.validate_machinery_compatibility
-      }.to raise_error(Machinery::Errors::IncompatibleHost)
     end
   end
 
