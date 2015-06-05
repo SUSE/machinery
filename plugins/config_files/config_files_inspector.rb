@@ -89,12 +89,17 @@ class ConfigFilesInspector < Inspector
     @description = description
   end
 
-  def inspect(_filter, options = {})
+  def inspect(filter, options = {})
     do_extract = options[:extract_changed_config_files]
     check_requirements(do_extract)
 
     result = packages_with_config_files.flat_map do |package|
       config_file_changes(package)
+    end
+
+    if filter
+      file_filter = filter.element_filter_for("/config_files/files/name")
+      result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
     end
 
     paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
