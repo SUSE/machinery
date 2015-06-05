@@ -340,7 +340,8 @@ class Cli
 
     The system description is copied and stored under the provided name.
   LONGDESC
-  arg_name "FROM_NAME TO_NAME"
+  arg "FROM_NAME"
+  arg "TO_NAME"
   command :copy do |c|
     c.action do |global_options,options,args|
       from = shift_arg(args, "FROM_NAME")

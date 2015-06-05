@@ -94,11 +94,14 @@ shared_examples "CLI" do
       end
 
       it "fails when more arguments than expected" do
-        expect { @machinery.run_command(
-          "#{machinery_command} list foo bar",
-          as: "vagrant",
-          stderr: :capture
-        ) }.to raise_error(Pennyworth::ExecutionFailed, /The given arguments don't match the command's specified arguments/)
+        message = /The given arguments don't match the command's specified arguments/
+        expect {
+          @machinery.run_command(
+            "#{machinery_command} list foo bar",
+            as: "vagrant",
+            stderr: :capture
+          )
+        }.to raise_error(Pennyworth::ExecutionFailed, message)
       end
     end
   end
