@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe LocalSystem do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
-
+  capture_machinery_output
   let(:local_system) { LocalSystem.new }
 
   describe ".os" do
@@ -94,41 +94,49 @@ describe LocalSystem do
   end
 
   describe ".validate_machinery_compatibility" do
-    it "returns true on hosts that can run machinery" do
-      allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+    context "on hosts that can run machinery" do
+      it "shows no warning" do
+        allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
 
-      expect {
         LocalSystem.validate_machinery_compatibility
-      }.not_to raise_error
+
+        expect(captured_machinery_output).to eq ""
+      end
     end
 
-    it "raises Machinery::Errors::IncompatibleHost on hosts that can not run machinery" do
-      allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+    context "on hosts that can not run machinery" do
+      it "shows a warning when perform_support_check is enabled in config" do
+        allow(Machinery::Config).to receive(:new).and_return(
+          double(perform_support_check: true)
+        )
+        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
 
-      expect {
         LocalSystem.validate_machinery_compatibility
-      }.to raise_error(Machinery::Errors::IncompatibleHost)
+
+        expect(captured_machinery_output).to include("platform we do not explicitly support")
+      end
+
+      it "shows no warning when perform_support_check is disabled in config" do
+        allow(Machinery::Config).to receive(:new).and_return(
+          double(perform_support_check: false)
+        )
+        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+
+        LocalSystem.validate_machinery_compatibility
+
+        expect(captured_machinery_output).to eq("")
+      end
     end
 
     it "lists all supported operating systems if the host is not supported" do
       allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
 
-      expect {
-        LocalSystem.validate_machinery_compatibility
-      }.to raise_error(Machinery::Errors::IncompatibleHost) do |error|
-        expect(error.to_s).to end_with(
-          ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
-            " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
+      LocalSystem.validate_machinery_compatibility
+
+      expect(captured_machinery_output).to include(
+        ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
+          " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
         )
-      end
-    end
-
-    it "raises Machinery::Errors::IncompatibleHost on unknown hosts" do
-      allow(LocalSystem).to receive(:os).and_return(OsUnknown.new)
-
-      expect {
-        LocalSystem.validate_machinery_compatibility
-      }.to raise_error(Machinery::Errors::IncompatibleHost)
     end
   end
 
