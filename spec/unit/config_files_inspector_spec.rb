@@ -323,102 +323,119 @@ EOF
         stub_stat_commands(system, config_paths, stat_output)
       end
 
-      it "returns data about modified config files when requirements are fulfilled" do
-        inspector.inspect(filter)
+      context "with filters" do
+        it "filters out the matching elements" do
+          stub_stat_commands(system, config_paths - ["/usr/share/man/man1/time.1.gz"], stat_output)
 
-        expect(description["config_files"]).to eq(@expected_data)
-        expect(inspector.summary).to include("6 changed configuration files")
+          filter = Filter.new("/config_files/files/name=/usr/*")
+          inspector.inspect(filter)
+          expect(description.config_files.files.map(&:name)).
+            to_not include("/usr/share/man/man1/time.1.gz")
+
+          inspector.inspect(nil)
+          expect(description.config_files.files.map(&:name)).
+            to include("/usr/share/man/man1/time.1.gz")
+        end
       end
 
-      it "returns empty when no modified config files are there" do
-        allow_any_instance_of(ConfigFilesInspector).to receive(
-          :packages_with_config_files
-        ).and_return([])
+      context "without filters" do
+        it "returns data about modified config files when requirements are fulfilled" do
+          inspector.inspect(filter)
 
-        inspector.inspect(filter)
-        expected = ConfigFilesScope.new(
-          extracted: false,
-          files: ConfigFileList.new
-        )
-        expect(description["config_files"]).to eq(expected)
-      end
+          expect(description["config_files"]).to eq(@expected_data)
+          expect(inspector.summary).to include("6 changed configuration files")
+        end
 
-      it "raises an error when requirements are not fulfilled" do
-        allow_any_instance_of(ConfigFilesInspector).to receive(
-          :check_requirements
-        ).and_raise(Machinery::Errors::MissingRequirement)
+        it "returns empty when no modified config files are there" do
+          allow_any_instance_of(ConfigFilesInspector).to receive(
+            :packages_with_config_files
+          ).and_return([])
 
-        expect { inspector.inspect(filter) }.to raise_error(
-          Machinery::Errors::MissingRequirement
-        )
-      end
+          inspector.inspect(filter)
+          expected = ConfigFilesScope.new(
+            extracted: false,
+            files: ConfigFileList.new
+          )
+          expect(description["config_files"]).to eq(expected)
+        end
 
-      it "extracts changed configuration files" do
-        config_file_directory = File.join(store.description_path(name), "config_files")
-        expect(system).to receive(:retrieve_files).with(
-          config_paths,
-          config_file_directory
-        )
-        inspector.inspect(filter, extract_changed_config_files: true)
+        it "raises an error when requirements are not fulfilled" do
+          allow_any_instance_of(ConfigFilesInspector).to receive(
+            :check_requirements
+          ).and_raise(Machinery::Errors::MissingRequirement)
 
-        expect(inspector.summary).to include("Extracted 6 changed configuration files")
-        config_file_directory = File.join(store.description_path(name), "config_files")
-        expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
-      end
+          expect { inspector.inspect(filter) }.to raise_error(
+            Machinery::Errors::MissingRequirement
+          )
+        end
 
-      it "keep permissions on extracted config files dir" do
-        config_file_directory = File.join(store.description_path(name), "config_files")
-        expect(system).to receive(:retrieve_files).with(
-          config_paths,
-          config_file_directory
-        )
-        FileUtils.mkdir_p(config_file_directory)
-        File.chmod(0750, config_file_directory)
-        File.chmod(0750, store.description_path(name))
+        it "extracts changed configuration files" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(system).to receive(:retrieve_files).with(
+            config_paths,
+            config_file_directory
+          )
+          inspector.inspect(filter, extract_changed_config_files: true)
 
-        inspector.inspect(filter, extract_changed_config_files: true)
-        expect(inspector.summary).to include("Extracted 6 changed configuration files")
-        expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
-      end
+          expect(inspector.summary).to include("Extracted 6 changed configuration files")
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
+        end
 
-      it "removes config files on inspect without extraction" do
-        config_file_directory = File.join(store.description_path(name), "config_files")
-        config_file_directory_file = File.join(config_file_directory, "config_file")
-        FileUtils.mkdir_p(config_file_directory)
-        FileUtils.touch(config_file_directory_file)
+        it "keep permissions on extracted config files dir" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(system).to receive(:retrieve_files).with(
+            config_paths,
+            config_file_directory
+          )
+          FileUtils.mkdir_p(config_file_directory)
+          File.chmod(0750, config_file_directory)
+          File.chmod(0750, store.description_path(name))
 
-        expect(File.exists?(config_file_directory_file)).to be true
+          inspector.inspect(filter, extract_changed_config_files: true)
+          expect(inspector.summary).to include("Extracted 6 changed configuration files")
+          expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
+        end
 
-        inspector.inspect(filter)
+        it "removes config files on inspect without extraction" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          config_file_directory_file = File.join(config_file_directory, "config_file")
+          FileUtils.mkdir_p(config_file_directory)
+          FileUtils.touch(config_file_directory_file)
 
-        expect(File.exists?(config_file_directory_file)).to be false
-      end
+          expect(File.exists?(config_file_directory_file)).to be true
 
-      it "returns schema compliant data" do
-        config_file_directory = File.join(store.description_path(name), "config_files")
-        expect(system).to receive(:retrieve_files).with(
-          config_paths,
-          config_file_directory
-        )
+          inspector.inspect(filter)
 
-        inspector.inspect(filter, extract_changed_config_files: true)
+          expect(File.exists?(config_file_directory_file)).to be false
+        end
 
-        expect {
-          JsonValidator.new(description.to_hash).validate
-        }.to_not raise_error
-      end
+        it "returns schema compliant data" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(system).to receive(:retrieve_files).with(
+            config_paths,
+            config_file_directory
+          )
 
-      it "returns sorted data" do
-        config_file_directory = File.join(store.description_path(name), "config_files")
-        expect(system).to receive(:retrieve_files).with(
-          config_paths,
-          config_file_directory
-        )
+          inspector.inspect(filter, extract_changed_config_files: true)
 
-        inspector.inspect(filter, extract_changed_config_files: true)
-        names = description["config_files"].files.map(&:name)
+          expect {
+            JsonValidator.new(description.to_hash).validate
+          }.to_not raise_error
+        end
 
-        expect(names).to eq(names.sort)
+        it "returns sorted data" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(system).to receive(:retrieve_files).with(
+            config_paths,
+            config_file_directory
+          )
+
+          inspector.inspect(filter, extract_changed_config_files: true)
+          names = description["config_files"].files.map(&:name)
+
+          expect(names).to eq(names.sort)
+        end
       end
     end
   end
