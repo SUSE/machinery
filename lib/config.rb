@@ -38,6 +38,10 @@ module Machinery
         description: "Enable experimental features. See " \
           "https://github.com/SUSE/machinery/wiki/Experimental-Features for more details"
       )
+      entry("perform_support_check",
+        default: true,
+        description: "Check whether the current platform is supported by Machinery"
+      )
     end
   end
 end

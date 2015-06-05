@@ -94,30 +94,43 @@ describe LocalSystem do
   end
 
   describe ".validate_machinery_compatibility" do
-    it "returns true on hosts that can run machinery" do
-      allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+    context "on hosts that can run machinery" do
+      it "shows no warning" do
+        allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
 
-      expect {
         LocalSystem.validate_machinery_compatibility
-      }.not_to raise_error
+
+        expect(captured_machinery_output).to eq ""
+      end
     end
 
-    it "shows a warning on hosts that can not run machinery" do
-      allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
-      LocalSystem.validate_machinery_compatibility
-
-      expect(captured_machinery_output).to include(
-        "You are running Machinery on a platform we do not explicitly support and test." \
-        " It still could work very well. If you run into issues or would like to provide us feedback, " \
-        "you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new" \
-        "or write an email to machinery@lists.suse.com. \n" \
-        "Oficially supported operating systems are:"
+    context "on hosts that can not run machinery" do
+      it "shows a warning when perform_support_check is enabled in config" do
+        allow(Machinery::Config).to receive(:new).and_return(
+          double(perform_support_check: true)
         )
-      expect(captured_machinery_output).to include("SUSE Linux Enterprise Server 12")
+        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+
+        LocalSystem.validate_machinery_compatibility
+
+        expect(captured_machinery_output).to include("platform we do not explicitly support")
+      end
+
+      it "shows no warning when perform_support_check is disabled in config" do
+        allow(Machinery::Config).to receive(:new).and_return(
+          double(perform_support_check: false)
+        )
+        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+
+        LocalSystem.validate_machinery_compatibility
+
+        expect(captured_machinery_output).to eq("")
+      end
     end
 
     it "lists all supported operating systems if the host is not supported" do
       allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+
       LocalSystem.validate_machinery_compatibility
 
       expect(captured_machinery_output).to include(

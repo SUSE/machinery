@@ -44,16 +44,16 @@ class LocalSystem < System
     end
 
     def validate_machinery_compatibility
-      if !os.can_run_machinery?
-        supported_oses = Os.supported_host_systems.map { |o| o.canonical_name }.
-          sort.join(", ")
-        message = "You are running Machinery on a platform we do not explicitly support and test." \
-          " It still could work very well. If you run into issues or would like to provide us feedback, " \
-          "you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new" \
-          "or write an email to machinery@lists.suse.com. \n" \
-          "Oficially supported operating systems are: #{supported_oses}"
-        Machinery::Ui.warn message
-      end
+      return if !Machinery::Config.new.perform_support_check || os.can_run_machinery?
+
+      supported_oses = Os.supported_host_systems.map { |o| o.canonical_name }.sort.join(", ")
+      message = <<EOF
+You are running Machinery on a platform we do not explicitly support and test.
+It still could work very well. If you run into issues or would like to provide us feedback, you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new or write an email to machinery@lists.suse.com.
+Oficially supported operating systems are: #{supported_oses}"
+EOF
+
+      Machinery::Ui.warn message
     end
 
     def validate_build_compatibility(system_description)
