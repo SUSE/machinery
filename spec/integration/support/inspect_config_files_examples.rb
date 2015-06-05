@@ -52,8 +52,9 @@ shared_examples "inspect config files" do |base|
         actual_config_files = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/; find -type f",
           as: "vagrant", stdout: :capture
-        ).split("\n").
-        map { |file_name| file_name.sub(/^\./, "") } # Remove trailing dots returned by find
+        ).split("\n").map { |file_name| # Remove trailing dots returned by find
+          file_name.sub(/^\./, "")
+        }
       end
 
       expected_config_files = description.config_files.files.select(&:file?).map(&:name)

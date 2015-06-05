@@ -53,6 +53,5 @@ class Migrate3To4 < Migration
         FileUtils.rm_r(path)
       end
     end
-
   end
 end
