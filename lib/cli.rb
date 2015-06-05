@@ -37,6 +37,7 @@ class Cli
     else
       Machinery.logger.level = Logger::INFO
     end
+    check_exceeding_arguments(command.arguments, args)
   end
 
   post do |global_options,command,options,args|
@@ -55,6 +56,14 @@ class Cli
   end
 
   GLI::Commands::Help.skips_post = false
+
+  def self.check_exceeding_arguments(defined, parsed)
+    if parsed.size > defined.size
+      message = "The given arguments don't match the command's specified arguments."
+      raise GLI::BadCommandLine.new(message)
+    end
+    true
+  end
 
   def self.buildable_distributions
     distribution_string = ""
