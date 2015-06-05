@@ -268,4 +268,14 @@ describe ElementFilter do
       ).to be(false)
     end
   end
+
+  describe "#dup" do
+    it "creates a deep shallow copy" do
+      element_filter = ElementFilter.new("/foo", Filter::OPERATOR_EQUALS, "bar")
+      dupped = element_filter.dup
+
+      dupped.matchers.clear
+      expect(element_filter.matchers).to_not be_empty
+    end
+  end
 end
