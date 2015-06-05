@@ -52,6 +52,7 @@ class CompareTask
   def render_comparison(description1, description2, scopes, options = {})
     output = ""
     identical = true
+    identical_scopes = []
     common_scopes = false
     store = description1.store
     scopes.each do |scope|
@@ -85,6 +86,8 @@ class CompareTask
 
         if partial_description1[scope] || partial_description2[scope]
           identical = false
+        else
+          identical_scopes << scope
         end
         common_scopes = true
       else
@@ -94,9 +97,9 @@ class CompareTask
         identical = false if description1[scope] || description2[scope]
       end
     end
-
     output = "Compared descriptions are identical.\n" + output if identical && common_scopes
-
+    output += "Following scopes are identical in both descriptions: " +
+      identical_scopes.join(",") if !identical_scopes.empty?
     output
   end
 end

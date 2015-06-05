@@ -168,7 +168,8 @@ Common to both systems:
 Common to both systems:
   baz_data1
 
-      EOT
+Following scopes are identical in both descriptions: compare_task_foo,compare_task_bar,compare_task_baz
+EOT
     }
 
     let(:output_missing) {
@@ -193,11 +194,14 @@ Only in 'name4':
     let(:output_missing_same) {
       <<-EOT
 Compared descriptions are identical.
+Following scopes are identical in both descriptions: compare_task_bar
       EOT
     }
 
     let(:output_same_show_all_false) {
-      "Compared descriptions are identical.\n"
+      "Compared descriptions are identical.\n" \
+      "Following scopes are identical in both descriptions: " \
+        "compare_task_foo,compare_task_bar,compare_task_baz\n"
     }
 
     def setup_renderers
@@ -345,7 +349,8 @@ EOT
       output = CompareTask.new.render_comparison(system_description1,
         system_description2, ["os"])
 
-      expect(output).to eq "Compared descriptions are identical.\n"
+      expect(output).to include ("Compared descriptions are identical.\n")
+      expect(output).to include ("Following scopes are identical in both descriptions: ")
     end
   end
 
