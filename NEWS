@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Apply all filters on file extraction (gh#SUSE/machinery#887)
 
 ## Version 1.8.2 - Wed May 27 16:56:44 CEST 2015 - thardeck@suse.de
 
