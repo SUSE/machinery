@@ -244,7 +244,7 @@ class UnmanagedFilesInspector < Inspector
     remote_dirs = mount_points.remote
     special_dirs = mount_points.special
 
-    file_filter = filter.element_filter_for("/unmanaged_files/files/name") if filter
+    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
     file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
     file_filter.add_matchers("=", @description.store.base_path)
 
