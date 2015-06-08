@@ -28,7 +28,8 @@ describe ChangedManagedFilesInspector do
   subject {
     inspector = ChangedManagedFilesInspector.new(system, description)
 
-    allow(system).to receive(:run_script).with("changed_managed_files.sh", anything()).and_return(rpm_result)
+    allow(system).to receive(:run_script).with("changed_files.sh", any_args).
+      and_return(rpm_result)
     allow(system).to receive(:run_command).with("stat", "--printf",
       "%a:%U:%G:%u:%g:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",

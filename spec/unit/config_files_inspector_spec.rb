@@ -126,7 +126,8 @@ EOF
       ]
     }
     let(:base_cmdline) {
-      ["rpm", "-V", "--nodeps", "--nodigest", "--nosignature", "--nomtime", "--nolinkto"]
+      ["rpm", "-V", "--nodeps", "--nodigest", "--nosignature",
+       "--nomtime", "--nolinkto", "--noscripts"]
     }
     let(:expected_package_list) { ["apache2-2.4.6", "open-iscsi-2.0.873"] }
 
@@ -228,13 +229,12 @@ EOF
         expected_apache_config_file_data = [
           apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5
         ]
-        expect(system).to receive(:run_command).with(
-          "rpm", "-V",
-          "--nodeps", "--nodigest", "--nosignature",
-          "--nomtime", "--nolinkto",
+
+        expect(system).to receive(:run_script).with(
+          "changed_files.sh", "--",
+          "config-files",
           "apache2-2.4.6",
           stdout: :capture,
-          privileged: true
         ).and_return(rpm_v_apache_output)
 
         config_file_list = subject.config_file_changes("apache2-2.4.6")

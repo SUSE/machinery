@@ -49,20 +49,7 @@ class ConfigFilesInspector < Inspector
 
   # returns a hash with entries for changed config files
   def config_file_changes(pkg)
-    begin
-      out = @system.run_command(
-        "rpm", "-V",
-        "--nodeps", "--nodigest", "--nosignature", "--nomtime", "--nolinkto",
-        pkg,
-        stdout: :capture,
-        privileged: true
-      )
-    # rpm returns 1 as exit code when modified config files are detected
-    # currently cheetah cannot be told to ignore this and throws ExecutionFailed
-    rescue Cheetah::ExecutionFailed => e
-      out = e.stdout
-    end
-
+    out = @system.run_script("changed_files.sh", "--", "config-files", pkg, stdout: :capture)
     parts = pkg.split("-")
     package_name    = parts[0..-2].join("-")
     package_version = parts.last
