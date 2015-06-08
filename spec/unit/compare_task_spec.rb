@@ -194,7 +194,7 @@ Only in 'name4':
     let(:output_missing_same) {
       <<-EOT
 Compared descriptions are identical.
-Following scopes are identical in both descriptions: compare_task_bar
+Following scope is identical in both descriptions: compare_task_bar
       EOT
     }
 
@@ -350,7 +350,7 @@ EOT
         system_description2, ["os"])
 
       expect(output).to include ("Compared descriptions are identical.\n")
-      expect(output).to include ("Following scopes are identical in both descriptions: ")
+      expect(output).to include ("Following scope is identical in both descriptions: ")
     end
   end
 

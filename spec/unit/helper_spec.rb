@@ -18,6 +18,32 @@
 require_relative "spec_helper"
 
 describe Machinery do
+  describe ".pluralize" do
+    context "when pluralform is not given" do
+      it "returns given singular text if the number is one" do
+        expect(Machinery::pluralize(1, "text")).to eq "text"
+      end
+      it "returns given plural text if the number is zero" do
+        expect(Machinery::pluralize(0, "text")).to eq "texts"
+      end
+      it "returns given plural text if the number is more than one" do
+        expect(Machinery::pluralize(5, "text")).to eq "texts"
+      end
+    end
+
+    context "when pluralform is given" do
+      it "returns given singular text if the number is one" do
+        expect(Machinery::pluralize(1, "text", "texts")).to eq "text"
+      end
+      it "returns given plural text if the number is zero" do
+        expect(Machinery::pluralize(0, "text", "texts")).to eq "texts"
+      end
+      it "returns given plural text if the number is more than one" do
+        expect(Machinery::pluralize(5, "text", "texts")).to eq "texts"
+      end
+    end
+  end
+
   describe ".is_int?" do
     it "returns true if the string only consists numbers" do
       expect(Machinery::is_int?("12345")).to be(true)
@@ -40,20 +66,6 @@ describe Machinery do
 
       out = Machinery.scrub(input)
       expect(out).to eq("a\uFFFDb")
-    end
-  end
-
-  describe "regular word" do
-    it "returns correct form for a count of 0" do
-      expect(Machinery::pluralize("text", 0)).to eq("texts")
-    end
-
-    it "returns correct form for a count of 1" do
-      expect(Machinery::pluralize("text", 1)).to eq("text")
-    end
-
-    it "returns correct form for a count of 2" do
-      expect(Machinery::pluralize("text", 2)).to eq("texts")
     end
   end
 end

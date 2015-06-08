@@ -98,8 +98,12 @@ class CompareTask
       end
     end
     output = "Compared descriptions are identical.\n" + output if identical && common_scopes
-    output += "Following scopes are identical in both descriptions: " +
-      identical_scopes.join(",") if !identical_scopes.empty?
+
+    if !identical_scopes.empty?
+      phrase = Machinery::pluralize(identical_scopes.count, "scope is", "scopes are")
+      output += "Following #{phrase} identical in both descriptions: " + identical_scopes.join(",")
+    end
+
     output
   end
 end
