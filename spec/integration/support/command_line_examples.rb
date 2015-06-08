@@ -93,5 +93,20 @@ shared_examples "CLI" do
         ) }.to raise_error(Pennyworth::ExecutionFailed, /You need to provide the required argument/)
       end
     end
+
+    describe "list" do
+      context "when more arguments than expected" do
+        it "fails with a message" do
+          message = /The given arguments don't match the command's specified arguments/
+          expect {
+            @machinery.run_command(
+              "#{machinery_command} list foo bar",
+              as: "vagrant",
+              stderr: :capture
+            )
+          }.to raise_error(Pennyworth::ExecutionFailed, message)
+        end
+      end
+    end
   end
 end
