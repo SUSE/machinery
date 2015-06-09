@@ -136,7 +136,7 @@ shared_examples "build" do |distribution|
 
         it "contains the changed managed-files from the system description" do
           expect(@new_description).to include_file_scope(@system_description,
-            "config_files")
+            "changed_managed_files")
         end
 
         it "removed the deleted managed file" do
