@@ -25,7 +25,7 @@ describe ListTask do
   let(:name) { "foo" }
   let(:date) { "2014-02-07T14:04:45Z" }
   let(:hostname) { "example.com" }
-  let(:date_human) { "2014-02-07 15:04:45" }
+  let(:date_human) { DateTime.parse(date).to_time.localtime.strftime("%Y-%m-%d %H:%M:%S") }
   let(:system_description) {
     create_test_description(
       scopes: ["packages", "repositories"], modified: date, hostname: hostname,
