@@ -128,6 +128,15 @@ EOF
         "/etc/iscsi/iscsid.conf"
       ]
     }
+    let(:extractable_paths) {
+      [
+        "/etc/apache2/default-server.conf",
+        "/etc/apache2/listen.conf",
+        "/etc/sysconfig/SuSEfirewall2.d/services/apache2",
+        "/usr/share/man/man1/time.1.gz",
+        "/etc/iscsi/iscsid.conf"
+      ]
+    }
     let(:base_cmdline) {
       ["rpm", "-V", "--nodeps", "--nodigest", "--nosignature", "--nomtime"]
     }
@@ -386,7 +395,7 @@ EOF
       it "extracts changed configuration files" do
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
-          config_paths,
+          extractable_paths,
           config_file_directory
         )
         inspector.inspect(filter, extract_changed_config_files: true)
@@ -399,7 +408,7 @@ EOF
       it "keep permissions on extracted config files dir" do
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
-          config_paths,
+          extractable_paths,
           config_file_directory
         )
         FileUtils.mkdir_p(config_file_directory)
@@ -427,7 +436,7 @@ EOF
       it "returns schema compliant data" do
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
-          config_paths,
+          extractable_paths,
           config_file_directory
         )
 
@@ -441,7 +450,7 @@ EOF
       it "returns sorted data" do
         config_file_directory = File.join(store.description_path(name), "config_files")
         expect(system).to receive(:retrieve_files).with(
-          config_paths,
+          extractable_paths,
           config_file_directory
         )
 
