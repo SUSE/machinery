@@ -114,7 +114,7 @@ class ConfigFilesInspector < Inspector
       file_store.create
       extracted_paths = result.reject do |file|
         file.changes == Machinery::Array.new(["deleted"]) ||
-        file.link?
+        file.link? || file.directory?
       end.map(&:name)
       @system.retrieve_files(extracted_paths, file_store.path)
     end
