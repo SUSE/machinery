@@ -112,7 +112,11 @@ class ConfigFilesInspector < Inspector
     file_store.remove
     if do_extract
       file_store.create
-      @system.retrieve_files(paths, file_store.path)
+      extracted_paths = result.reject do |file|
+        file.changes == Machinery::Array.new(["deleted"]) ||
+        file.link? || file.directory?
+      end.map(&:name)
+      @system.retrieve_files(extracted_paths, file_store.path)
     end
 
     @description["config_files"] = ConfigFilesScope.new(

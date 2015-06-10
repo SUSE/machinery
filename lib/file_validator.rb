@@ -77,16 +77,12 @@ class FileValidator
       expected_files = []
       expected_files << "files.tgz" if has_files_tarball
       expected_files += tree_tarballs
-    elsif scope == "changed_managed_files"
+    else
       expected_files = files.
         reject do |file|
           file["changes"].include?("deleted") ||
           (file["type"] && file["type"] != "file")
         end.map { |file| file["name"] }
-    else
-      expected_files = files.
-        reject { |file| file["changes"].include?("deleted") }.
-        map { |file| file["name"] }
     end
 
     store_base_path = ScopeFileStore.new(@base_path, scope.to_s).path
