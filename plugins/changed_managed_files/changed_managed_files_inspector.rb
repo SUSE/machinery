@@ -99,9 +99,9 @@ class ChangedManagedFilesInspector < Inspector
     #   },
     #   ...
     # ]
-    changed_files = list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *changed_files|
+    file_list = list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *files|
       package_name, package_version = package.scan(/(.*)-([^-]*):/).first
-      changed_files.map do |changed_file|
+      files.map do |changed_file|
         if changed_file =~ /\A(\/\S+) (.*)/
           ChangedManagedFile.new(
             name:              $1,
@@ -129,7 +129,7 @@ class ChangedManagedFilesInspector < Inspector
       end.compact.select { |item| item.changes }
     end.uniq
 
-    amend_file_attributes(changed_files)
+    amend_file_attributes(file_list)
   end
 
 end
