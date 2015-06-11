@@ -81,16 +81,6 @@ class UnmanagedFilesInspector < Inspector
     p "should not happen non-abs dirs:#{list}" unless list.empty?
   end
 
-  def extract_unmanaged_files(files, trees, excluded, store_name)
-    file_store = @description.scope_file_store(store_name)
-    file_store.remove
-    file_store.create
-
-    extractor = FileExtractor.new(@system, file_store)
-    extractor.extract_files(files, excluded)
-    extractor.extract_trees(trees, excluded)
-  end
-
   # extract metadata from extracted tar archives and put data into Object
   def extract_tar_metadata(osl, destdir)
     if Dir.exists?(destdir)
@@ -221,7 +211,7 @@ class UnmanagedFilesInspector < Inspector
     file_store_tmp = @description.scope_file_store("unmanaged_files.tmp")
     file_store_final = @description.scope_file_store("unmanaged_files")
 
-    scope.scope_file_store = file_store_final
+    scope.scope_file_store = file_store_tmp
 
     mount_points = MountPoints.new(@system)
 
@@ -341,7 +331,13 @@ class UnmanagedFilesInspector < Inspector
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin
       if do_extract
-        extract_unmanaged_files(unmanaged_files, unmanaged_trees, excluded_files, file_store_tmp.store_name)
+        file_store_tmp.remove
+        file_store_tmp.create
+
+        scope.file_access.retrieve_files_from_system_as_archive(@system,
+          unmanaged_files, excluded_files)
+        scope.file_access.retrieve_trees_from_system_as_archive(@system,
+          unmanaged_trees, excluded_files)
       else
         file_store_final.remove
       end
@@ -354,6 +350,7 @@ class UnmanagedFilesInspector < Inspector
         osl = extract_tar_metadata(osl, file_store_tmp.path)
         file_store_final.remove
         file_store_tmp.rename(file_store_final.store_name)
+        scope.scope_file_store = file_store_final
       end
     rescue SignalException => e
       # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
