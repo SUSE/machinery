@@ -17,13 +17,14 @@
 
 shared_examples "inspect changed managed files" do |base|
   describe "--scope=changed-managed-files" do
-    it "extracts list of managed files" do
+    it "extracts list of managed files and shows progress" do
       measure("Inspect system") do
-        @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} " \
+        @machinery_output = @machinery.run_command(
+          "SHOW_PROGRESS_OUTPUT=true #{machinery_command} inspect #{@subject_system.ip} " \
             "#{inspect_options if defined?(inspect_options)} " \
             "--scope=changed-managed-files --extract-files",
-          as: machinery_config[:owner]
+          as: machinery_config[:owner],
+          stdout: :capture
         )
       end
 
@@ -33,8 +34,14 @@ shared_examples "inspect changed managed files" do |base|
       )
 
       expected_files_list = File.read("spec/data/changed_managed_files/#{base}")
-
       expect(actual_files_list).to match_machinery_show_scope(expected_files_list)
+
+      expected = <<EOF
+Inspecting 0.0.0.0 for changed-managed-files...
+Inspecting changed-managed-files...
+ -> Found 0 changed files...\r\033\[K -> Found 0 changed files...\r\033\[K -> Extracted 0 changed files.
+EOF
+      expect(normalize_inspect_output(@machinery_output)).to start_with(expected)
     end
 
     it "extracts files from the system" do
