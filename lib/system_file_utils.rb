@@ -17,7 +17,7 @@
 
 module Machinery
   class SystemFileUtils
-    class <<self
+    class << self
       def tarball_path(system_file)
         if system_file.directory?
           File.join(
