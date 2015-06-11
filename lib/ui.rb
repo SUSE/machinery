@@ -49,6 +49,8 @@ module Machinery
       end
 
       def print(output)
+        reset_line if show_progress
+
         if !use_pager || !$stdout.tty?
           begin
             STDOUT.print output
@@ -79,6 +81,15 @@ module Machinery
         end
       end
 
+      def progress(output)
+        return if !show_progress
+
+        reset_line
+        print output
+
+        @progress_visible = true
+      end
+
       def puts(output)
         print output + "\n"
       end
@@ -89,6 +100,20 @@ module Machinery
 
       def error(s)
         STDERR.puts s
+      end
+
+      private
+
+      def show_progress
+        $stdout.tty? || ENV["SHOW_PROGRESS_OUTPUT"]
+      end
+
+      def reset_line
+        return if !@progress_visible
+
+        STDOUT.print "\r"     # Move cursor to beginning of line
+        STDOUT.print "\033[K" # Clear line content
+        @progress_visible = false
       end
     end
   end
