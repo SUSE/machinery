@@ -119,7 +119,7 @@ class ConfigFilesInspector < Inspector
         file.changes == Machinery::Array.new(["deleted"]) ||
         file.link? || file.directory?
       end.map(&:name)
-      @system.retrieve_files(extracted_paths, file_store.path)
+      scope.file_access.retrieve_files_from_system(@system, extracted_paths)
     end
 
     scope.extracted = !!do_extract

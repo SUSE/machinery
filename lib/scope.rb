@@ -58,5 +58,9 @@ module Machinery
     def is_extractable?
       SystemDescription::EXTRACTABLE_SCOPES.include?(self.scope_name)
     end
+
+    def file_access
+      ScopeFileAccess.new(scope_file_store)
+    end
   end
 end
