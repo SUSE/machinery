@@ -2,6 +2,10 @@ Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
 
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
 Style/NegatedIf:
   Enabled: false
 
@@ -15,4 +19,7 @@ Style/AlignParameters:
   Enabled: false
 
 Style/CollectionMethods:
+  Enabled: false
+
+Rails/Output:
   Enabled: false
