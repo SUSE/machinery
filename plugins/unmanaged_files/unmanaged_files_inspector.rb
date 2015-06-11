@@ -93,8 +93,10 @@ class UnmanagedFilesInspector < Inspector
     extracted_count = files.length
 
     trees.each do |tree|
-      phrase = Machinery::pluralize(extracted_count, "file or tree", "files and trees")
-      Machinery::Ui.progress(" -> Extracted #{extracted_count} #{phrase}...")
+      progress = Machinery::pluralize(
+        extracted_count, "-> Extracted %d file or tree", "-> Extracted %d files and trees",
+      )
+      Machinery::Ui.progress(progress)
       tree_name = File.basename(tree)
       parent_dir = File.dirname(tree)
       sub_dir = File.join("trees", parent_dir)
@@ -351,8 +353,10 @@ class UnmanagedFilesInspector < Inspector
       links.each { |d| unmanaged_links[find_dir + d] = "" }
 
       count = unmanaged_files.length + unmanaged_trees.length
-      phrase = Machinery::pluralize(count, "file or tree", "files and trees")
-      Machinery::Ui.progress(" -> Found #{count} #{phrase}...")
+      progress = Machinery::pluralize(
+        count, "-> Found %d file or tree", "-> Found %d files and trees",
+      )
+      Machinery::Ui.progress(progress)
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin
