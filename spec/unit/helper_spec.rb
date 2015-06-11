@@ -29,6 +29,10 @@ describe Machinery do
       it "returns given plural text if the number is more than one" do
         expect(Machinery::pluralize(5, "text")).to eq "texts"
       end
+      it "replaces %d by the count" do
+        expect(Machinery::pluralize(5, "%d book")).to eq "5 books"
+        expect(Machinery::pluralize(1, "%d book")).to eq "1 book"
+      end
     end
 
     context "when pluralform is given" do
@@ -40,6 +44,10 @@ describe Machinery do
       end
       it "returns given plural text if the number is more than one" do
         expect(Machinery::pluralize(5, "text", "texts")).to eq "texts"
+      end
+      it "replaces %d by the count" do
+        expect(Machinery::pluralize(5, "%d person", "%d people")).to eq "5 people"
+        expect(Machinery::pluralize(1, "%d person", "%d people")).to eq "1 person"
       end
     end
   end

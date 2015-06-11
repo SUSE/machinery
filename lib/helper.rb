@@ -33,7 +33,7 @@ module Machinery
   end
 
   def self.pluralize(count, singular, plural = nil)
-    if count > 1 || count == 0
+    val = if count > 1 || count == 0
       if !plural
         singular + "s"
       else
@@ -42,6 +42,8 @@ module Machinery
     else
       singular
     end
+
+    val.gsub("%d", count.to_s)
   end
 end
 
