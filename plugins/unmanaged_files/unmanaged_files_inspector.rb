@@ -354,7 +354,7 @@ class UnmanagedFilesInspector < Inspector
 
       count = unmanaged_files.length + unmanaged_trees.length
       progress = Machinery::pluralize(
-        count, "-> Found %d file or tree", "-> Found %d files and trees",
+        count, " -> Found %d file or tree...", " -> Found %d files and trees...",
       )
       Machinery::Ui.progress(progress)
     end
