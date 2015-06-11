@@ -81,11 +81,27 @@ describe Machinery::Ui do
       end
     end
 
-    it "resets the line before printing output" do
-      allow(Machinery::Ui).to receive(:use_pager).and_return(false)
-      expect(Machinery::Ui).to receive(:reset_line)
+    context "with enabled progress output" do
+      before(:each) do
+        allow($stdout).to receive(:tty?).and_return(true)
+        allow(Machinery::Ui).to receive(:use_pager).and_return(false)
+      end
 
-      Machinery::Ui.print("")
+      it "sends reset escape sequences if there is progress output that needs to be cleared" do
+        expect(STDOUT).to receive(:print).with("some_progress").ordered
+        expect(STDOUT).to receive(:print).with("\r").ordered
+        expect(STDOUT).to receive(:print).with("\033[K").ordered
+        expect(STDOUT).to receive(:print).with("output").ordered
+
+        Machinery::Ui.progress("some_progress")
+        Machinery::Ui.print("output")
+      end
+
+      it "does not send unneccessary reset escape sequences if there's nothing to reset" do
+        expect(STDOUT).to receive(:print).with("output")
+
+        Machinery::Ui.print("output")
+      end
     end
   end
 
@@ -94,29 +110,6 @@ describe Machinery::Ui do
       expect(STDERR).to receive(:puts).with("foo")
 
       Machinery::Ui.warn("foo")
-    end
-  end
-
-  describe ".reset_line" do
-    before(:each) do
-      allow($stdout).to receive(:tty?).and_return(true)
-      allow(Machinery::Ui).to receive(:use_pager).and_return(false)
-    end
-
-    it "sends reset escape sequences if there progress output that needs to be cleared" do
-      expect(STDOUT).to receive(:print).with("some_progress").ordered
-      expect(STDOUT).to receive(:print).with("\r").ordered
-      expect(STDOUT).to receive(:print).with("\033[K").ordered
-      expect(STDOUT).to receive(:print).with("output").ordered
-
-      Machinery::Ui.progress("some_progress")
-      Machinery::Ui.print("output")
-    end
-
-    it "does not send unneccessary reset escape sequences if there's nothing to reset" do
-      expect(STDOUT).to receive(:print).with("output")
-
-      Machinery::Ui.print("output")
     end
   end
 end
