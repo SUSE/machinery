@@ -3,9 +3,9 @@ class ScopeFileAccess
     @scope = scope
     @scope_file_store = scope_file_store
   end
+end
 
-  # the following methods assume flat file storage
-
+class ScopeFileAccessFlat < ScopeFileAccess
   def retrieve_files_from_system(system, paths)
     system.retrieve_files(paths, @scope_file_store.path)
   end
@@ -23,9 +23,9 @@ class ScopeFileAccess
 
     File.join(@scope_file_store.path, system_file.name)
   end
+end
 
-  # the following methods assume archive file storage
-
+class ScopeFileAccessArchive < ScopeFileAccess
   def retrieve_files_from_system_as_archive(system, files, excluded_files)
     extractor = FileExtractor.new(system, @scope_file_store)
     extractor.extract_files(files, excluded_files)

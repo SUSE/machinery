@@ -60,7 +60,11 @@ module Machinery
     end
 
     def file_access
-      ScopeFileAccess.new(self, scope_file_store)
+      if self.is_a?(UnmanagedFilesScope)
+        ScopeFileAccessArchive.new(self, scope_file_store)
+      else
+        ScopeFileAccessFlat.new(self, scope_file_store)
+      end
     end
   end
 end
