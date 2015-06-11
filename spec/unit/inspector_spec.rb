@@ -106,4 +106,23 @@ describe Inspector do
       expect(BarBazInspector.new.scope).to eql("bar_baz")
     end
   end
+
+  describe "#run_script_with_progress" do
+    it "calls the callback with the output" do
+      system = double
+      expect(system).to receive(:run_script) do |_script, options|
+        options[:stdout].puts("output1")
+        options[:stdout].puts("output2")
+      end
+      inspector = FooInspector.new
+      inspector.system = system
+
+      callback_buffer = ""
+      inspector.run_script_with_progress("script") do |chunk|
+        callback_buffer << chunk
+      end
+
+      expect(callback_buffer).to eq("output1\noutput2\n")
+    end
+  end
 end
