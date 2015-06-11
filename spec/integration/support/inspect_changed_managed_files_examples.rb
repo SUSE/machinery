@@ -20,8 +20,8 @@ shared_examples "inspect changed managed files" do |base|
     it "extracts list of managed files and shows progress" do
       measure("Inspect system") do
         @machinery_output = @machinery.run_command(
-          "SHOW_PROGRESS_OUTPUT=true #{machinery_command} inspect #{@subject_system.ip} " \
-            "#{inspect_options if defined?(inspect_options)} " \
+          "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
+            "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=changed-managed-files --extract-files",
           as: machinery_config[:owner],
           stdout: :capture

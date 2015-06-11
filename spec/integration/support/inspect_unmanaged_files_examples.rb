@@ -35,8 +35,8 @@ shared_examples "inspect unmanaged files" do |base|
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
         @machinery_output = @machinery.run_command(
-          "SHOW_PROGRESS_OUTPUT=true #{machinery_command} inspect #{@subject_system.ip} " \
-            "#{inspect_options if defined?(inspect_options)} " \
+          "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
+            "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=unmanaged-files --extract-files " \
             "--skip-files=#{ignore_list.join(",")}",
           as: "vagrant",

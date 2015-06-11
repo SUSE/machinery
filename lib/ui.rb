@@ -105,7 +105,7 @@ module Machinery
       private
 
       def show_progress
-        $stdout.tty? || ENV["SHOW_PROGRESS_OUTPUT"]
+        $stdout.tty? || ENV["FORCE_MACHINERY_PROGRESS_OUTPUT"]
       end
 
       def reset_line

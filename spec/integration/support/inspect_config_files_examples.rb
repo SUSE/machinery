@@ -22,8 +22,8 @@ shared_examples "inspect config files" do |base|
     it "extracts list of config files and shows progress" do
       measure("Inspect system") do
         @machinery_output = @machinery.run_command(
-          "SHOW_PROGRESS_OUTPUT=true #{machinery_command} inspect #{@subject_system.ip} " \
-            "#{inspect_options if defined?(inspect_options)} " \
+          "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
+            "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=config-files --extract-files",
           as: "vagrant",
           stdout: :capture
