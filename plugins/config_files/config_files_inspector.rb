@@ -108,7 +108,10 @@ class ConfigFilesInspector < Inspector
       end
     end
 
+    scope = ConfigFilesScope.new
     file_store = @description.scope_file_store("config_files")
+    scope.scope_file_store = file_store
+
     file_store.remove
     if do_extract
       file_store.create
@@ -119,11 +122,9 @@ class ConfigFilesInspector < Inspector
       @system.retrieve_files(extracted_paths, file_store.path)
     end
 
-    json = {
-      extracted: !!do_extract,
-      files: ConfigFileList.new(result.sort_by(&:name))
-    }
-    scope = Machinery::Scope.for("config_files", json, file_store)
+    scope.extracted = !!do_extract
+    scope.files = ConfigFileList.new(result.sort_by(&:name))
+
     @description["config_files"] = scope
   end
 

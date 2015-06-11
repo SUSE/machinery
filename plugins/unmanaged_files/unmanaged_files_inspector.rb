@@ -216,8 +216,12 @@ class UnmanagedFilesInspector < Inspector
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(do_extract)
 
+    scope = UnmanagedFilesScope.new
+
     file_store_tmp = @description.scope_file_store("unmanaged_files.tmp")
     file_store_final = @description.scope_file_store("unmanaged_files")
+
+    scope.scope_file_store = file_store_final
 
     mount_points = MountPoints.new(@system)
 
@@ -363,11 +367,9 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    json = {
-      extracted: !!do_extract,
-      files: UnmanagedFileList.new(osl.sort_by(&:name))
-    }
-    scope = Machinery::Scope.for("unmanaged_files", json, file_store_final)
+    scope.extracted = !!do_extract
+    scope.files = UnmanagedFileList.new(osl.sort_by(&:name))
+
     @description["unmanaged_files"] = scope
   end
 

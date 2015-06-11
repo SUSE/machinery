@@ -29,7 +29,10 @@ class ChangedManagedFilesInspector < Inspector
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     @system = system
+
+    scope = ChangedManagedFilesScope.new
     file_store = @description.scope_file_store("changed_managed_files")
+    scope.scope_file_store = file_store
 
     result = changed_files
 
@@ -48,11 +51,9 @@ class ChangedManagedFilesInspector < Inspector
       system.retrieve_files(existing_files.map(&:name), file_store.path)
     end
 
-    json = {
-      extracted: !!options[:extract_changed_managed_files],
-      files: ChangedManagedFileList.new(result.sort_by(&:name))
-    }
-    scope = Machinery::Scope.for("changed_managed_files", json, file_store)
+    scope.extracted = !!options[:extract_changed_managed_files]
+    scope.files = ChangedManagedFileList.new(result.sort_by(&:name))
+
     @description["changed_managed_files"] = scope
   end
 
