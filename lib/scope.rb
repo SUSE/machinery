@@ -60,7 +60,7 @@ module Machinery
     end
 
     def file_access
-      ScopeFileAccess.new(scope_file_store)
+      ScopeFileAccess.new(self, scope_file_store)
     end
   end
 end

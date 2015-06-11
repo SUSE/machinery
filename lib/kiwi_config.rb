@@ -124,7 +124,8 @@ class KiwiConfig < Exporter
       FileUtils.mkdir_p(destination, mode: 01777)
       filter = "unmanaged_files_#{@name}_excludes"
 
-      @system_description.unmanaged_files.export_files_as_tarballs(destination)
+      @system_description.unmanaged_files.file_access.
+        export_files_as_tarballs(destination)
 
       FileUtils.cp(
         File.join(Machinery::ROOT, "export_helpers/#{filter}"),

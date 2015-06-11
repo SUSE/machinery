@@ -16,11 +16,6 @@
 # you may find current contact information at www.suse.com
 
 class FileScope < Machinery::Object
-  def export_files_as_tarballs(destination)
-    Machinery::SystemFileUtils.write_files_tarball(self, destination)
-    Machinery::SystemFileUtils.write_directory_tarballs(self, destination)
-  end
-
   def compare_with(other)
     validate_attributes(other)
 
