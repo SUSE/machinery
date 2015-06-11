@@ -76,9 +76,11 @@ class ChangedManagedFilesInspector < Inspector
   end
 
   def changed_files
-    raw_list = @system.run_script(
-      "changed_files.sh", "--", "changed-managed-files", stdout: :capture
-    )
+    count = 0
+    list = run_script_with_progress("changed_files.sh", "--", "changed-managed-files") do |chunk|
+      count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
+      Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
+    end
 
     # The raw list lists each package followed by the changed files, e.g.
     #
@@ -97,7 +99,7 @@ class ChangedManagedFilesInspector < Inspector
     #   },
     #   ...
     # ]
-    changed_files = raw_list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *changed_files|
+    changed_files = list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *changed_files|
       package_name, package_version = package.scan(/(.*)-([^-]*):/).first
       changed_files.map do |changed_file|
         if changed_file =~ /\A(\/\S+) (.*)/
@@ -126,6 +128,7 @@ class ChangedManagedFilesInspector < Inspector
         # to filter them
       end.compact.select { |item| item.changes }
     end.uniq
+
     amend_file_attributes(changed_files)
   end
 

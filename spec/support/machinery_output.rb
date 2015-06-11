@@ -22,7 +22,7 @@ module MachineryOutput
 
   def silence_machinery_output
     before(:each) do
-      [:puts, :warn, :error].each do |method|
+      [:puts, :warn, :error, :progress].each do |method|
         allow(Machinery::Ui).to receive(method)
       end
     end

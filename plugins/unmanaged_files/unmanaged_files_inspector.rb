@@ -90,7 +90,11 @@ class UnmanagedFilesInspector < Inspector
     archive_path = File.join(store_path, "files.tgz")
     @system.create_archive(files.join("\0"), archive_path, excluded)
 
+    extracted_count = files.length
+
     trees.each do |tree|
+      phrase = Machinery::pluralize(extracted_count, "file or tree", "files and trees")
+      Machinery::Ui.progress(" -> Extracted #{extracted_count} #{phrase}...")
       tree_name = File.basename(tree)
       parent_dir = File.dirname(tree)
       sub_dir = File.join("trees", parent_dir)
@@ -98,6 +102,8 @@ class UnmanagedFilesInspector < Inspector
       file_store.create_sub_directory(sub_dir)
       archive_path = File.join(store_path, sub_dir, "#{tree_name}.tgz")
       @system.create_archive(tree, archive_path, excluded)
+
+      extracted_count += 1
     end
   end
 
@@ -343,6 +349,10 @@ class UnmanagedFilesInspector < Inspector
       unmanaged.map!{ |d| find_dir + d }
       unmanaged_files.push(*unmanaged)
       links.each { |d| unmanaged_links[find_dir + d] = "" }
+
+      count = unmanaged_files.length + unmanaged_trees.length
+      phrase = Machinery::pluralize(count, "file or tree", "files and trees")
+      Machinery::Ui.progress(" -> Found #{count} #{phrase}...")
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin

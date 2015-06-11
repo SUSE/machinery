@@ -80,8 +80,13 @@ class ConfigFilesInspector < Inspector
     do_extract = options[:extract_changed_config_files]
     check_requirements(do_extract)
 
+    count = 0
     result = packages_with_config_files.flat_map do |package|
-      config_file_changes(package)
+      files = config_file_changes(package)
+      count += files.length
+      Machinery::Ui.progress(" -> Found #{count} config #{Machinery::pluralize(count, "file")}...")
+
+      files
     end
 
     if filter
