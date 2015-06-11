@@ -49,7 +49,7 @@ module Machinery
       end
 
       def print(output)
-        reset_line if show_progress
+        reset_line if progress_enabled?
 
         if !use_pager || !$stdout.tty?
           begin
@@ -82,7 +82,7 @@ module Machinery
       end
 
       def progress(output)
-        return if !show_progress
+        return if !progress_enabled?
 
         reset_line
         print output
@@ -104,7 +104,7 @@ module Machinery
 
       private
 
-      def show_progress
+      def progress_enabled?
         $stdout.tty? || ENV["FORCE_MACHINERY_PROGRESS_OUTPUT"]
       end
 
