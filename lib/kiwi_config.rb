@@ -29,7 +29,7 @@ class KiwiConfig < Exporter
       "packages",
       "os"
     )
-    check_existance_of_extraced_files
+    check_existance_of_extracted_files
 
     generate_config
   end
@@ -138,7 +138,7 @@ class KiwiConfig < Exporter
     end
   end
 
-  def check_existance_of_extraced_files
+  def check_existance_of_extracted_files
     missing_scopes = []
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
 
