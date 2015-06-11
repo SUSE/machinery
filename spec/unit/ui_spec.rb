@@ -98,21 +98,25 @@ describe Machinery::Ui do
   end
 
   describe ".reset_line" do
-    it "sends reset escape sequences if there progress output that needs to be cleared" do
+    before(:each) do
       allow($stdout).to receive(:tty?).and_return(true)
       allow(Machinery::Ui).to receive(:use_pager).and_return(false)
-      expect(STDOUT).to receive(:print).exactly(4).times # 1 for progress, 1 for print, 2 for reset
+    end
+
+    it "sends reset escape sequences if there progress output that needs to be cleared" do
+      expect(STDOUT).to receive(:print).with("some_progress").ordered
+      expect(STDOUT).to receive(:print).with("\r").ordered
+      expect(STDOUT).to receive(:print).with("\033[K").ordered
+      expect(STDOUT).to receive(:print).with("output").ordered
 
       Machinery::Ui.progress("some_progress")
-      Machinery::Ui.print("")
+      Machinery::Ui.print("output")
     end
 
     it "does not send unneccessary reset escape sequences if there's nothing to reset" do
-      allow($stdout).to receive(:tty?).and_return(true)
-      allow(Machinery::Ui).to receive(:use_pager).and_return(false)
-      expect(STDOUT).to receive(:print).once
+      expect(STDOUT).to receive(:print).with("output")
 
-      Machinery::Ui.print("")
+      Machinery::Ui.print("output")
     end
   end
 end
