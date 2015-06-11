@@ -10,6 +10,20 @@ class ScopeFileAccess
     system.retrieve_files(paths, @scope_file_store.path)
   end
 
+  def write_file(system_file, target)
+    raise Machinery::Errors::FileUtilsError, "Not a file" if !system_file.file?
+
+    target_path = File.join(target, system_file.name)
+    FileUtils.mkdir_p(File.dirname(target_path))
+    FileUtils.cp(file_path(system_file), target_path)
+  end
+
+  def file_path(system_file)
+    raise Machinery::Errors::FileUtilsError, "Not a file" if !system_file.file?
+
+    File.join(@scope_file_store.path, system_file.name)
+  end
+
   # the following methods assume archive file storage
 
   def retrieve_files_from_system_as_archive(system, files, excluded_files)

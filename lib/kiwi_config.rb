@@ -108,7 +108,8 @@ class KiwiConfig < Exporter
           @sh << "chmod #{file.mode} '#{file.name}'\n"
           @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
         elsif file.file?
-          Machinery::SystemFileUtils.write_file(file, output_root_path)
+          file_access = @system_description[scope].file_access
+          file_access.write_file(file, output_root_path)
           @sh << "chmod #{file.mode} '#{file.name}'\n"
           @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
         elsif file.link?
