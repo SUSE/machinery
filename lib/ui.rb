@@ -113,7 +113,7 @@ module Machinery
       end
 
       def reset_line
-        STDOUT.print "\r"     # Move cursor to beginning of line
+        STDOUT.print "\r" # Move cursor to beginning of line
         STDOUT.print "\033[K" # Clear line content
         @progress_visible = false
       end
