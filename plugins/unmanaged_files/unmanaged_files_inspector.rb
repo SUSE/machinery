@@ -363,10 +363,12 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    @description["unmanaged_files"] = UnmanagedFilesScope.new(
+    json = {
       extracted: !!do_extract,
       files: UnmanagedFileList.new(osl.sort_by(&:name))
-    )
+    }
+    scope = Machinery::Scope.for("unmanaged_files", json, file_store_final)
+    @description["unmanaged_files"] = scope
   end
 
   def summary

@@ -48,10 +48,12 @@ class ChangedManagedFilesInspector < Inspector
       system.retrieve_files(existing_files.map(&:name), file_store.path)
     end
 
-    @description["changed_managed_files"] = ChangedManagedFilesScope.new(
+    json = {
       extracted: !!options[:extract_changed_managed_files],
       files: ChangedManagedFileList.new(result.sort_by(&:name))
-    )
+    }
+    scope = Machinery::Scope.for("changed_managed_files", json, file_store)
+    @description["changed_managed_files"] = scope
   end
 
   def summary
