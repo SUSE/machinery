@@ -29,8 +29,8 @@ class FileExtractor
     @system.create_archive(file_list, archive_path, excluded_paths)
   end
 
-  def extract_trees(trees, excluded_paths)
-    trees.each do |tree|
+  def extract_trees(trees, excluded_paths, callback = nil)
+    trees.each_with_index do |tree, index|
       tree_name = File.basename(tree)
       parent_dir = File.dirname(tree)
       sub_dir = File.join("trees", parent_dir)
@@ -38,6 +38,8 @@ class FileExtractor
       @scope_file_store.create_sub_directory(sub_dir)
       archive_path = File.join(@scope_file_store.path, sub_dir, "#{tree_name}.tgz")
       @system.create_archive(tree, archive_path, excluded_paths)
+
+      callback.call(index + 1) if callback
     end
   end
 end

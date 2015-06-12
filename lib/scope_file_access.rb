@@ -24,9 +24,9 @@ module ScopeFileAccessArchive
     extractor.extract_files(files, excluded_files)
   end
 
-  def retrieve_trees_from_system_as_archive(system, trees, excluded_files)
+  def retrieve_trees_from_system_as_archive(system, trees, excluded_files, &callback)
     extractor = FileExtractor.new(system, scope_file_store)
-    extractor.extract_trees(trees, excluded_files)
+    extractor.extract_trees(trees, excluded_files, callback)
   end
 
   def export_files_as_tarballs(destination)
