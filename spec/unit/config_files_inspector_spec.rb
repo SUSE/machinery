@@ -92,6 +92,7 @@ S.5....T.  c /etc/sysconfig/SuSEfirewall2.d/services/apache2
 missing    c /usr/share/info/dir
 S.5....T.    /etc/sysconfig/ignore_me_cause_im_not_a_config_file
 .........  c /usr/share/man/man1/time.1.gz (replaced)
+....L.G..  c /etc/crontab
 EOF
     }
     let(:rpm_v_openiscsi_output) {
@@ -109,14 +110,25 @@ EOF
     }
     let(:stat_output) {
       <<-EOF
-644:root:root:0:0:/etc/apache2/default-server.conf
-6644:root:root:0:0:/etc/apache2/listen.conf
-644:root:root:0:0:/etc/sysconfig/SuSEfirewall2.d/services/apache2
-4700:nobody:nobody:65534:65533:/etc/iscsi/iscsid.conf
-644:root:root:0:0:/usr/share/man/man1/time.1.gz
+644:root:root:0:0:regular file:/etc/apache2/default-server.conf
+6644:root:root:0:0:regular file:/etc/apache2/listen.conf
+644:root:root:0:0:regular file:/etc/sysconfig/SuSEfirewall2.d/services/apache2
+4700:nobody:nobody:65534:65533:regular file:/etc/iscsi/iscsid.conf
+644:root:root:0:0:regular file:/usr/share/man/man1/time.1.gz
+755:root:root:1001:1002:symbolic link:/etc/crontab
 EOF
     }
     let(:config_paths) {
+      [
+        "/etc/apache2/default-server.conf",
+        "/etc/apache2/listen.conf",
+        "/etc/sysconfig/SuSEfirewall2.d/services/apache2",
+        "/usr/share/man/man1/time.1.gz",
+        "/etc/crontab",
+        "/etc/iscsi/iscsid.conf"
+      ]
+    }
+    let(:extractable_paths) {
       [
         "/etc/apache2/default-server.conf",
         "/etc/apache2/listen.conf",
@@ -127,7 +139,7 @@ EOF
     }
     let(:base_cmdline) {
       ["rpm", "-V", "--nodeps", "--nodigest", "--nosignature",
-       "--nomtime", "--nolinkto", "--noscripts"]
+       "--nomtime", "--noscripts"]
     }
     let(:expected_package_list) { ["apache2-2.4.6", "open-iscsi-2.0.873"] }
 
@@ -135,8 +147,8 @@ EOF
 
     def stub_stat_commands(system, files, stats_output)
       allow(system).to receive(:run_command).with(
-        "stat", "--printf", "%a:%U:%G:%u:%g:%n\\n", *files,
-        stdout: :capture
+        "stat", "--printf", "%a:%U:%G:%u:%g:%F:%n\\n", *files,
+        :stdout => :capture
       ).and_return(stats_output)
     end
 
@@ -144,6 +156,7 @@ EOF
       before(:each) do
         expect(system).to receive(:check_requirement).with("rpm", "--version")
         expect(system).to receive(:check_requirement).with("stat", "--version")
+        expect(system).to receive(:check_requirement).with("find", "--version")
       end
 
       it "returns true if requirements are fulfilled" do
@@ -226,8 +239,17 @@ EOF
           changes: ["replaced"]
         )
 
+        apache_config_6 = ConfigFile.new(
+          name: "/etc/crontab",
+          package_name: "apache2",
+          package_version: "2.4.6",
+          status: "changed",
+          changes: ["link_path", "group"]
+        )
+
         expected_apache_config_file_data = [
-          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5
+          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5,
+          apache_config_6
         ]
 
         expect(system).to receive(:run_script).with(
@@ -254,6 +276,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["size", "md5", "time"]
         )
 
@@ -262,6 +285,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["md5", "time"]
         )
 
@@ -270,6 +294,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["size", "md5", "time"]
         )
 
@@ -278,6 +303,7 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["deleted"]
         )
 
@@ -286,7 +312,17 @@ EOF
           package_name: "apache2",
           package_version: "2.4.6",
           status: "changed",
+          type: "file",
           changes: ["replaced"]
+        )
+
+        apache_config_6 = ConfigFile.new(
+          name: "/etc/crontab",
+          package_name: "apache2",
+          package_version: "2.4.6",
+          status: "changed",
+          type: "link",
+          changes: ["link_path", "group"]
         )
 
         iscsi_config_1 = ConfigFile.new(
@@ -296,17 +332,19 @@ EOF
           changes: ["size", "mode", "md5", "user", "group", "time"],
           user: "nobody",
           group: "nobody",
-          mode: "4700"
+          mode: "4700",
+          type: "file"
         )
 
         expected_apache_config_file_data = [
-          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5
+          apache_config_1, apache_config_2, apache_config_3, apache_config_4, apache_config_5,
+          apache_config_6
         ]
         @expected_data = ConfigFilesScope.new(
           extracted: false,
           files: ConfigFileList.new(
             [
-              apache_config_1, apache_config_2, iscsi_config_1, apache_config_3,
+              apache_config_1, apache_config_2, apache_config_6, iscsi_config_1, apache_config_3,
               apache_config_4, apache_config_5
             ]
           )
@@ -317,11 +355,13 @@ EOF
         ).and_return(["apache2-2.4.6", "open-iscsi-2.0.873"])
         allow_any_instance_of(ConfigFilesInspector).to receive(:config_file_changes).with(
           "apache2-2.4.6"
-        ).and_return(expected_apache_config_file_data)
+        ).and_return(expected_apache_config_file_data.dup)
         allow_any_instance_of(ConfigFilesInspector).to receive(:config_file_changes).with(
           "open-iscsi-2.0.873"
         ).and_return([iscsi_config_1])
         allow_any_instance_of(ConfigFilesInspector).to receive(:check_requirements)
+        allow(system).to receive(:run_command).with("find", "/etc/crontab", any_args).
+          and_return("/tmp/crontab")
         stub_stat_commands(system, config_paths, stat_output)
       end
 
@@ -345,7 +385,7 @@ EOF
           inspector.inspect(filter)
 
           expect(description["config_files"]).to eq(@expected_data)
-          expect(inspector.summary).to include("6 changed configuration files")
+          expect(inspector.summary).to include("7 changed configuration files")
         end
 
         it "returns empty when no modified config files are there" do
@@ -361,6 +401,33 @@ EOF
           expect(description["config_files"]).to eq(expected)
         end
 
+        it "extracts changed configuration files" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(system).to receive(:retrieve_files).with(
+            extractable_paths,
+            config_file_directory
+          )
+          inspector.inspect(filter, extract_changed_config_files: true)
+
+          expect(inspector.summary).to include("Extracted 7 changed configuration files")
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
+        end
+
+        it "keep permissions on extracted config files dir" do
+          config_file_directory = File.join(store.description_path(name), "config_files")
+          expect(system).to receive(:retrieve_files).with(
+            extractable_paths,
+            config_file_directory
+          )
+          FileUtils.mkdir_p(config_file_directory)
+          File.chmod(0750, config_file_directory)
+          File.chmod(0750, store.description_path(name))
+
+          inspector.inspect(filter, extract_changed_config_files: true)
+          expect(inspector.summary).to include("Extracted 7 changed configuration files")
+          expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
+        end
         it "raises an error when requirements are not fulfilled" do
           allow_any_instance_of(ConfigFilesInspector).to receive(
             :check_requirements
@@ -369,34 +436,6 @@ EOF
           expect { inspector.inspect(filter) }.to raise_error(
             Machinery::Errors::MissingRequirement
           )
-        end
-
-        it "extracts changed configuration files" do
-          config_file_directory = File.join(store.description_path(name), "config_files")
-          expect(system).to receive(:retrieve_files).with(
-            config_paths,
-            config_file_directory
-          )
-          inspector.inspect(filter, extract_changed_config_files: true)
-
-          expect(inspector.summary).to include("Extracted 6 changed configuration files")
-          config_file_directory = File.join(store.description_path(name), "config_files")
-          expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
-        end
-
-        it "keep permissions on extracted config files dir" do
-          config_file_directory = File.join(store.description_path(name), "config_files")
-          expect(system).to receive(:retrieve_files).with(
-            config_paths,
-            config_file_directory
-          )
-          FileUtils.mkdir_p(config_file_directory)
-          File.chmod(0750, config_file_directory)
-          File.chmod(0750, store.description_path(name))
-
-          inspector.inspect(filter, extract_changed_config_files: true)
-          expect(inspector.summary).to include("Extracted 6 changed configuration files")
-          expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
         end
 
         it "removes config files on inspect without extraction" do
@@ -415,7 +454,7 @@ EOF
         it "returns schema compliant data" do
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(system).to receive(:retrieve_files).with(
-            config_paths,
+            extractable_paths,
             config_file_directory
           )
 
@@ -429,7 +468,7 @@ EOF
         it "returns sorted data" do
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(system).to receive(:retrieve_files).with(
-            config_paths,
+            extractable_paths,
             config_file_directory
           )
 

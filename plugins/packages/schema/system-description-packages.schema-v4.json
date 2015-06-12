@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "version", "release", "arch", "vendor", "checksum"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "version": {
+        "type": "string",
+        "minLength": 1
+      },
+      "release": {
+        "type": "string",
+        "minLength": 1
+      },
+      "arch": {
+        "type": "string",
+        "minLength": 1
+      },
+      "vendor": {
+        "type": "string"
+      },
+      "checksum": {
+        "type": "string",
+        "pattern": "^[a-f0-9]+$"
+      }
+    }
+  }
+}

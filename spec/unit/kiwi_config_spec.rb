@@ -149,6 +149,16 @@ describe KiwiConfig do
         /The system description doesn't contain any enabled or network reachable repository/
       )
     end
+    it "raises an error if no repository is activated" do
+      description = system_description_with_content
+      description["repositories"].each do |repository|
+        repository.enabled = false
+      end
+      expect { KiwiConfig.new(description) }.to raise_error(
+        Machinery::Errors::MissingRequirement,
+        /The system description doesn't contain any enabled or network reachable repository/
+      )
+    end
 
     it "raises an error if no repository is reachable via network" do
       description = system_description_with_content
@@ -386,6 +396,22 @@ describe KiwiConfig do
       let(:config) { KiwiConfig.new(system_description_with_modified_files) }
       let(:manifest_path) { store.description_path(name) }
 
+      it "restores the extracted config-files" do
+        config.write(export_dir)
+
+        expect(config.sh).to include("chmod 644 '/etc/cron tab'\n")
+        expect(config.sh).to include("chown root:root '/etc/cron tab'\n")
+
+        expect(config.sh).to include("rm -rf '/etc/deleted config'\n")
+
+        expect(config.sh).to include("chmod 755 '/etc/somedir'\n")
+        expect(config.sh).to include("chown user:group '/etc/somedir'\n")
+
+        expect(config.sh).to include("rm -rf '/etc/replaced_by_link'\n")
+        expect(config.sh).to include("ln -s '/tmp/foo' '/etc/replaced_by_link'\n")
+        expect(config.sh).to include("chown --no-dereference root:target '/etc/replaced_by_link'\n")
+      end
+
       it "copies the changed config files to the template root directory" do
         config_file = "/etc/cron tab"
         config.write(export_dir)
@@ -417,7 +443,7 @@ describe KiwiConfig do
         ).to be(true)
         expect(
           File.exists?(
-            File.join(export_dir, "/root/tmp/unmanaged_files/etc/tarball with spaces.tgz")
+            File.join(export_dir, "/root/tmp/unmanaged_files/trees/etc/tarball with spaces.tgz")
           )
         ).to be(true)
 
@@ -431,8 +457,25 @@ describe KiwiConfig do
       end
 
       it "deletes deleted config and changed managed files" do
+        config.write(export_dir)
+
         expect(config.sh).to include("rm -rf '/etc/deleted config'")
         expect(config.sh).to include("rm -rf '/etc/deleted changed managed'")
+      end
+
+      it "sets up links" do
+        config.write(export_dir)
+
+        expect(config.sh).to include("rm -rf '/usr/bin/replaced_by_link'")
+        expect(config.sh).to include("ln -s '/tmp/foo' '/usr/bin/replaced_by_link'")
+        expect(config.sh).to include("chown --no-dereference root:target '/usr/bin/replaced_by_link'")
+      end
+
+      it "sets up directories" do
+        config.write(export_dir)
+
+        expect(config.sh).to include("chmod 644 '/etc/cron.d'")
+        expect(config.sh).to include("chown user:group '/etc/cron.d'")
       end
     end
 

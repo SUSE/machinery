@@ -23,6 +23,7 @@ class ConfigFilesInspector < Inspector
   def check_requirements(check_rsync)
     @system.check_requirement("rpm", "--version")
     @system.check_requirement("stat", "--version")
+    @system.check_requirement("find", "--version")
     @system.check_requirement("rsync", "--version") if check_rsync
   end
 
@@ -96,25 +97,32 @@ class ConfigFilesInspector < Inspector
 
     paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
     path_data = get_path_data(@system, paths)
-    key_list = [ :user, :group, :mode ]
+    key_list = [ :user, :group, :mode, :type, :target ]
     result.each do |pkg|
       pname = pkg.name
       if path_data.has_key?(pname)
-        key_list.each { |k| pkg[k] = path_data[pname][k] }
+        key_list.each { |k| pkg[k] = path_data[pname][k] if path_data[pname][k] }
       end
     end
 
+    scope = ConfigFilesScope.new
     file_store = @description.scope_file_store("config_files")
+    scope.scope_file_store = file_store
+
     file_store.remove
     if do_extract
       file_store.create
-      @system.retrieve_files(paths, file_store.path)
+      extracted_paths = result.reject do |file|
+        file.changes == Machinery::Array.new(["deleted"]) ||
+        file.link? || file.directory?
+      end.map(&:name)
+      scope.retrieve_files_from_system(@system, extracted_paths)
     end
 
-    @description["config_files"] = ConfigFilesScope.new(
-      extracted: !!do_extract,
-      files: ConfigFileList.new(result.sort_by(&:name))
-    )
+    scope.extracted = !!do_extract
+    scope.files = ConfigFileList.new(result.sort_by(&:name))
+
+    @description["config_files"] = scope
   end
 
   def summary

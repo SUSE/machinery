@@ -45,7 +45,12 @@ EOF
     end
 
     it "extracts files from the system" do
-      expected_files_list = File.read("spec/data/changed_managed_files/#{base}")
+      description_json = @machinery.run_command(
+        "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
+        as: machinery_config[:owner],
+        stdout: :capture
+      )
+      description = create_test_description(json: description_json)
       actual_managed_files_list = nil
 
       measure("Gather information about extracted files") do
@@ -53,7 +58,9 @@ EOF
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/; find",
           as: machinery_config[:owner],
           stdout: :capture
-        ).split("\n")
+        ).
+          split("\n").
+          map { |file_name| file_name.sub(/^\./, "") } # Remove trailing dots returned by find
       end
 
       # directories are also extracted and to make sure to only list the actual
@@ -62,12 +69,7 @@ EOF
         actual_managed_files_list.grep(/^#{element}.+/).any? || element == "."
       }
 
-      expected_managed_files = []
-      expected_files_list.split("\n").each do |e|
-        if e.start_with?("  * ") && !e.include?("(deleted)")
-          expected_managed_files << ".#{e.split[1]}"
-        end
-      end
+      expected_managed_files = description.changed_managed_files.files.select(&:file?).map(&:name)
       expect(actual_managed_files).to match_array(expected_managed_files)
 
       # test file content

@@ -105,7 +105,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 3
+      format_version: 4
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -136,14 +136,18 @@ module SystemDescriptionFactory
       if options[:store_on_disk]
         file_store = description.scope_file_store(extracted_scope)
         file_store.create
+        description[extracted_scope].scope_file_store = file_store
+
         if extracted_scope == "unmanaged_files"
           FileUtils.touch(File.join(file_store.path, "files.tgz"))
-          FileUtils.mkdir_p(File.join(file_store.path, "etc"))
+          FileUtils.mkdir_p(File.join(file_store.path, "trees", "etc"))
           FileUtils.touch(
-            File.join(file_store.path, "etc", "tarball with spaces.tgz")
+            File.join(file_store.path, "trees", "etc", "tarball with spaces.tgz")
           )
         else
           description[extracted_scope].files.each do |file|
+            next if file.link?
+
             file_name = File.join(file_store.path, file.name)
             FileUtils.mkdir_p(File.dirname(file_name))
             File.write(file_name, "Stub data for #{file.name}.")
@@ -168,10 +172,19 @@ module SystemDescriptionFactory
           "status": "changed",
           "changes": [
             "deleted"
-          ],
+          ]
+        },
+        {
+          "name": "/usr/bin/replaced_by_link",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["link_path"],
+          "type": "link",
+          "target": "/tmp/foo",
           "user": "root",
-          "group": "root",
-          "mode": "644"
+          "group": "target",
+          "mode": "777"
         },
         {
           "name": "/etc/cron.daily/cleanup",
@@ -181,7 +194,8 @@ module SystemDescriptionFactory
           "changes": ["md5"],
           "user": "user",
           "group": "group",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
         },
         {
           "name": "/etc/cron.daily/logrotate",
@@ -191,7 +205,19 @@ module SystemDescriptionFactory
           "changes": ["md5", "size"],
           "user": "user",
           "group": "group",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
+        },
+        {
+          "name": "/etc/cron.d",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["group"],
+          "user": "user",
+          "group": "group",
+          "mode": "644",
+          "type": "dir"
         }
       ]
     }
@@ -207,10 +233,7 @@ module SystemDescriptionFactory
           "status": "changed",
           "changes": [
             "deleted"
-          ],
-          "user": "root",
-          "group": "root",
-          "mode": "644"
+          ]
         },
         {
           "name": "/etc/cron tab",
@@ -220,7 +243,31 @@ module SystemDescriptionFactory
           "changes": ["md5"],
           "user": "root",
           "group": "root",
-          "mode": "644"
+          "mode": "644",
+          "type": "file"
+        },
+        {
+          "name": "/etc/replaced_by_link",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["link_path"],
+          "type": "link",
+          "target": "/tmp/foo",
+          "user": "root",
+          "group": "target",
+          "mode": "777"
+        },
+        {
+          "name": "/etc/somedir",
+          "package_name": "mdadm",
+          "package_version": "3.3",
+          "status": "changed",
+          "changes": ["group"],
+          "user": "user",
+          "group": "group",
+          "mode": "755",
+          "type": "dir"
         }
       ]
     }
@@ -509,6 +556,15 @@ module SystemDescriptionFactory
           "group": "root",
           "size": 8,
           "mode": "644"
+        },
+        {
+          "name": "/etc/tarball with spaces/",
+          "type": "dir",
+          "user": "root",
+          "group": "root",
+          "size": 12345,
+          "mode": "755",
+          "files": 16
         }
       ]
     }

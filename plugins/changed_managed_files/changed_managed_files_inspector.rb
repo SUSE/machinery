@@ -25,10 +25,14 @@ class ChangedManagedFilesInspector < Inspector
   end
 
   def inspect(filter, options = {})
+    system.check_requirement("find", "--version")
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
     @system = system
+
+    scope = ChangedManagedFilesScope.new
     file_store = @description.scope_file_store("changed_managed_files")
+    scope.scope_file_store = file_store
 
     result = changed_files
 
@@ -44,16 +48,18 @@ class ChangedManagedFilesInspector < Inspector
       existing_files = result.reject do |f|
         f.changes.nil? ||
         f.changes.include?("deleted") ||
+        f.link? ||
+        f.directory? ||
         f.name == "/"
       end
 
-      system.retrieve_files(existing_files.map(&:name), file_store.path)
+      scope.retrieve_files_from_system(@system, existing_files.map(&:name))
     end
 
-    @description["changed_managed_files"] = ChangedManagedFilesScope.new(
-      extracted: !!options[:extract_changed_managed_files],
-      files: ChangedManagedFileList.new(result.sort_by(&:name))
-    )
+    scope.extracted = !!options[:extract_changed_managed_files]
+    scope.files = ChangedManagedFileList.new(result.sort_by(&:name))
+
+    @description["changed_managed_files"] = scope
   end
 
   def summary

@@ -18,6 +18,8 @@ echo '-*/15 * * * *   root  echo config_files_integration_test &> /dev/null' >> 
 # changed-managed-files
 echo '# changed managed files test entry\n' >> /usr/share/info/sed.info.gz
 rm '/usr/share/man/man1/sed.1.gz'
+mv /usr/bin/crontab /usr/bin/crontab_link_target
+ln -s /usr/bin/crontab_link_target /usr/bin/crontab
 
 # add NIS placeholder to users/groups
 echo "+::::::" >> /etc/passwd

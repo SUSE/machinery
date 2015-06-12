@@ -29,7 +29,7 @@ class KiwiConfig < Exporter
       "packages",
       "os"
     )
-    check_existance_of_extraced_files
+    check_existance_of_extracted_files
 
     generate_config
   end
@@ -95,25 +95,40 @@ class KiwiConfig < Exporter
   end
 
   def inject_extracted_files(output_location)
-    ["config_files", "changed_managed_files"].each do |dir|
-      path = @system_description.scope_file_store(dir).path
-      if path
-        output_root_path = File.join(output_location, "root")
-        FileUtils.mkdir_p(output_root_path)
-        FileUtils.cp_r(Dir.glob("#{path}/*"), output_root_path)
+    ["changed_managed_files", "config_files"].each do |scope|
+      next if !@system_description.scope_extracted?(scope)
+
+      output_root_path = File.join(output_location, "root")
+      FileUtils.mkdir_p(output_root_path)
+
+      @system_description[scope].files.each do |file|
+        if file.deleted?
+          @sh << "rm -rf '#{file.name}'\n"
+        elsif file.directory?
+          @sh << "chmod #{file.mode} '#{file.name}'\n"
+          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
+        elsif file.file?
+          @system_description[scope].write_file(file, output_root_path)
+          @sh << "chmod #{file.mode} '#{file.name}'\n"
+          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
+        elsif file.link?
+          @sh << "rm -rf '#{file.name}'\n"
+          @sh << "ln -s '#{file.target}' '#{file.name}'\n"
+          @sh << "chown --no-dereference #{file.user}:#{file.group} '#{file.name}'\n"
+        end
       end
     end
 
-    unmanaged_files_path = @system_description.
-      scope_file_store("unmanaged_files").path
-    if unmanaged_files_path
-      filter = "unmanaged_files_#{@name}_excludes"
-      destination = File.join(output_location, "root", "tmp")
+    if @system_description.scope_extracted?("unmanaged_files")
+      destination = File.join(output_location, "root", "tmp", "unmanaged_files")
       FileUtils.mkdir_p(destination, mode: 01777)
-      FileUtils.cp_r(unmanaged_files_path, destination)
+      filter = "unmanaged_files_#{@name}_excludes"
+
+      @system_description.unmanaged_files.export_files_as_tarballs(destination)
+
       FileUtils.cp(
         File.join(Machinery::ROOT, "export_helpers/#{filter}"),
-        destination
+        File.join(output_location, "root", "tmp")
       )
 
       @sh << "# Apply the extracted unmanaged files\n"
@@ -123,7 +138,7 @@ class KiwiConfig < Exporter
     end
   end
 
-  def check_existance_of_extraced_files
+  def check_existance_of_extracted_files
     missing_scopes = []
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
 
@@ -190,7 +205,6 @@ EOF
 
         apply_repositories(xml)
         apply_packages(xml)
-        apply_extracted_files_attributes
         apply_services
       end
     end
@@ -257,25 +271,6 @@ EOF
               " required packages."
           )
         )
-      end
-    end
-  end
-
-  def apply_extracted_files_attributes
-    ["config_files", "changed_managed_files"].each do |scope|
-      if @system_description[scope]
-        deleted, files = @system_description[scope].files.partition do |f|
-          f.changes == Machinery::Array.new(["deleted"])
-        end
-
-        files.each do |file|
-          @sh << "chmod #{file.mode} '#{file.name}'\n"
-          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
-        end
-
-        deleted.each do |file|
-          @sh << "rm -rf '#{file.name}'\n"
-        end
       end
     end
   end

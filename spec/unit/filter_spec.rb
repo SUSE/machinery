@@ -212,9 +212,11 @@ describe Filter do
         Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file"),
         [
           "/etc/unmanaged-file",
+          "/etc/tarball with spaces/",
           "/etc/another-unmanaged-file"
         ],
         [
+          "/etc/tarball with spaces/",
           "/etc/another-unmanaged-file"
         ]
       )
@@ -225,13 +227,17 @@ describe Filter do
         "changed_managed_files",
         Filter.new("/changed_managed_files/files/changes=md5,size"),
         [
+          "/etc/cron.d",
           "/etc/deleted changed managed",
           "/etc/cron.daily/cleanup",
-          "/etc/cron.daily/logrotate" # has changed 'md5' and 'size' and should be filtered
+          "/etc/cron.daily/logrotate", # has changed 'md5' and 'size' and should be filtered,
+          "/usr/bin/replaced_by_link"
         ],
         [
+          "/etc/cron.d",
           "/etc/deleted changed managed",
-          "/etc/cron.daily/cleanup"
+          "/etc/cron.daily/cleanup",
+          "/usr/bin/replaced_by_link"
         ]
       )
     end
@@ -241,12 +247,15 @@ describe Filter do
         "changed_managed_files",
         Filter.new("/changed_managed_files/files/name=/etc/c*"),
         [
+          "/etc/cron.d",
           "/etc/deleted changed managed",
           "/etc/cron.daily/cleanup",
-          "/etc/cron.daily/logrotate"
+          "/etc/cron.daily/logrotate",
+          "/usr/bin/replaced_by_link"
         ],
         [
-          "/etc/deleted changed managed"
+          "/etc/deleted changed managed",
+          "/usr/bin/replaced_by_link"
         ]
       )
     end
@@ -257,12 +266,15 @@ describe Filter do
           "changed_managed_files",
           Filter.new(["/does/not/exist=/foo", "/changed_managed_files/files/name=/etc/c*"]),
           [
+            "/etc/cron.d",
             "/etc/deleted changed managed",
             "/etc/cron.daily/cleanup",
-            "/etc/cron.daily/logrotate"
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
           ],
           [
-            "/etc/deleted changed managed"
+            "/etc/deleted changed managed",
+            "/usr/bin/replaced_by_link"
           ]
         )
       }.to_not raise_error
@@ -275,13 +287,17 @@ describe Filter do
           Filter.new(["/changed_managed_files/files/name=element_a,element_b"]),
           [
             "/etc/deleted changed managed",
+            "/etc/cron.d",
             "/etc/cron.daily/cleanup",
-            "/etc/cron.daily/logrotate"
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
           ],
           [
             "/etc/deleted changed managed",
+            "/etc/cron.d",
             "/etc/cron.daily/cleanup",
-            "/etc/cron.daily/logrotate"
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
           ]
         )
       }.to_not raise_error

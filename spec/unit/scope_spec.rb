@@ -23,6 +23,8 @@ describe Machinery::Scope do
   end
   class MoreComplexScope < Machinery::Object
     include Machinery::Scope
+
+    has_property :foo, class: Machinery::Object
   end
 
   subject { SimpleScope.new }
@@ -66,13 +68,30 @@ describe Machinery::Scope do
     example { expect(MoreComplexScope.new.is_extractable?).to be(false) }
   end
 
-  describe "#class_for" do
+  describe "#for" do
+    let(:scope_file_store) { double }
+
     it "returns simple scope" do
-      expect(Machinery::Scope.class_for("simple")).to be(SimpleScope)
+      scope = Machinery::Scope.for("simple", {}, scope_file_store)
+      expect(scope).to be_a(SimpleScope)
+      expect(scope.scope_file_store).to eq(scope_file_store)
     end
 
     it "returns complex scope" do
-      expect(Machinery::Scope.class_for("more_complex")).to be(MoreComplexScope)
+      scope = Machinery::Scope.for("more_complex", {}, scope_file_store)
+      expect(scope).to be_a(MoreComplexScope)
+      expect(scope.scope_file_store).to eq(scope_file_store)
+    end
+
+    it "sets the scope in the created objects" do
+      hash = {
+        foo: {
+          a: 1
+        }
+      }
+      scope = Machinery::Scope.for("more_complex", hash, scope_file_store)
+
+      expect(scope.foo.scope).to eq(scope)
     end
   end
 end

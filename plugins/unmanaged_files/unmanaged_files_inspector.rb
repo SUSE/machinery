@@ -81,34 +81,6 @@ class UnmanagedFilesInspector < Inspector
     p "should not happen non-abs dirs:#{list}" unless list.empty?
   end
 
-  def extract_unmanaged_files(files, trees, excluded, store_name)
-    file_store = @description.scope_file_store(store_name)
-    file_store.remove
-    file_store.create
-    store_path = file_store.path
-
-    archive_path = File.join(store_path, "files.tgz")
-    @system.create_archive(files.join("\0"), archive_path, excluded)
-
-    extracted_count = files.length
-
-    trees.each do |tree|
-      progress = Machinery::pluralize(
-        extracted_count, "-> Extracted %d file or tree", "-> Extracted %d files and trees",
-      )
-      Machinery::Ui.progress(progress)
-      tree_name = File.basename(tree)
-      parent_dir = File.dirname(tree)
-      sub_dir = File.join("trees", parent_dir)
-
-      file_store.create_sub_directory(sub_dir)
-      archive_path = File.join(store_path, sub_dir, "#{tree_name}.tgz")
-      @system.create_archive(tree, archive_path, excluded)
-
-      extracted_count += 1
-    end
-  end
-
   # extract metadata from extracted tar archives and put data into Object
   def extract_tar_metadata(osl, destdir)
     if Dir.exists?(destdir)
@@ -234,8 +206,12 @@ class UnmanagedFilesInspector < Inspector
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(do_extract)
 
+    scope = UnmanagedFilesScope.new
+
     file_store_tmp = @description.scope_file_store("unmanaged_files.tmp")
     file_store_final = @description.scope_file_store("unmanaged_files")
+
+    scope.scope_file_store = file_store_tmp
 
     mount_points = MountPoints.new(@system)
 
@@ -361,7 +337,17 @@ class UnmanagedFilesInspector < Inspector
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin
       if do_extract
-        extract_unmanaged_files(unmanaged_files, unmanaged_trees, excluded_files, file_store_tmp.store_name)
+        file_store_tmp.remove
+        file_store_tmp.create
+
+        scope.retrieve_files_from_system_as_archive(@system,
+          unmanaged_files, excluded_files)
+        show_extraction_progress(unmanaged_files.count)
+
+        scope.retrieve_trees_from_system_as_archive(@system,
+          unmanaged_trees, excluded_files) do |count|
+          show_extraction_progress(unmanaged_files.count + count)
+        end
       else
         file_store_final.remove
       end
@@ -374,6 +360,7 @@ class UnmanagedFilesInspector < Inspector
         osl = extract_tar_metadata(osl, file_store_tmp.path)
         file_store_final.remove
         file_store_tmp.rename(file_store_final.store_name)
+        scope.scope_file_store = file_store_final
       end
     rescue SignalException => e
       # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
@@ -387,10 +374,10 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    @description["unmanaged_files"] = UnmanagedFilesScope.new(
-      extracted: !!do_extract,
-      files: UnmanagedFileList.new(osl.sort_by(&:name))
-    )
+    scope.extracted = !!do_extract
+    scope.files = UnmanagedFileList.new(osl.sort_by(&:name))
+
+    @description["unmanaged_files"] = scope
   end
 
   def summary
@@ -399,6 +386,13 @@ class UnmanagedFilesInspector < Inspector
   end
 
   private
+
+  def show_extraction_progress(count)
+    progress = Machinery::pluralize(
+      count, "-> Extracted %d file or tree", "-> Extracted %d files and trees",
+    )
+    Machinery::Ui.progress(progress)
+  end
 
   def btrfs_subvolumes
     @system.run_command(

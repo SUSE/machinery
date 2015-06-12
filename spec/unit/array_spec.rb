@@ -200,4 +200,23 @@ describe Machinery::Array do
       expect(comparison3).to eq([nil, nil, nil])
     end
   end
+
+  describe "#scope=" do
+    it "propagates the scope to its children" do
+      scope = double
+      json_object = [
+        { a: 1 },
+        { b: 2 }
+      ]
+      array = ArrayExampleArray.from_json(json_object)
+
+      expect(array.scope).to be(nil)
+      expect(array.first.scope).to be(nil)
+
+      array.scope = scope
+
+      expect(array.scope).to be(scope)
+      expect(array.first.scope).to be(scope)
+    end
+  end
 end

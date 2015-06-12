@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ChangedManagedFile < Machinery::Object
+class ChangedManagedFile < Machinery::SystemFile
 end
 
 class ChangedManagedFileList < Machinery::Array
@@ -24,5 +24,6 @@ end
 
 class ChangedManagedFilesScope < FileScope
   include Machinery::Scope
+  include ScopeFileAccessFlat
   has_property :files, class: ChangedManagedFileList
 end

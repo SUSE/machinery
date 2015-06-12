@@ -73,14 +73,14 @@ check_output () {
 
 inspect_package () {
   package=$1
-  output=`$sudoprefix rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto $noscripts $package 2>&1 || true`
+  output=`$sudoprefix rpm -V --nodeps --nodigest --nosignature --nomtime $noscripts $package 2>&1 || true`
 
   check_output "$output"
 
   if [ -z "$noscripts" ] && ( package_contains_verify_script $package ); then
     # remove the lines printed by verify scripts, because we cannot parse these lines
     # in certain rpm versions verify scripts cannot be turned off
-    lines=`$sudoprefix rpm -V --nodeps --nodigest --nosignature --nomtime --nolinkto --nofiles $package | wc -l`
+    lines=`$sudoprefix rpm -V --nodeps --nodigest --nosignature --nomtime --nofiles $package | wc -l`
     output=`echo -e "$output" | head -n-${lines}`
   fi
 

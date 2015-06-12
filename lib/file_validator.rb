@@ -79,8 +79,10 @@ class FileValidator
       expected_files += tree_tarballs
     else
       expected_files = files.
-        reject { |file| file["changes"].include?("deleted") }.
-        map { |file| file["name"] }
+        reject do |file|
+          file["changes"].include?("deleted") ||
+          (file["type"] && file["type"] != "file")
+        end.map { |file| file["name"] }
     end
 
     store_base_path = ScopeFileStore.new(@base_path, scope.to_s).path

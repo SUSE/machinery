@@ -16,6 +16,8 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "FileScope" do
+  initialize_system_description_factory_store
+
   let(:file_a) {
     {
       name: "foo"

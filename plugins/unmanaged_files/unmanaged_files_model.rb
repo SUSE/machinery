@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class UnmanagedFile < Machinery::Object
+class UnmanagedFile < Machinery::SystemFile
 end
 
 class UnmanagedFileList < Machinery::Array
@@ -51,6 +51,7 @@ end
 
 class UnmanagedFilesScope < FileScope
   include Machinery::Scope
+  include ScopeFileAccessArchive
   has_property :files, class: UnmanagedFileList
 
   def compare_with(other)

@@ -54,7 +54,7 @@ class System
   # Retrieves files specified in filelist from the remote system and create an archive.
   # To be able to deal with arbitrary filenames we use zero-terminated
   # filelist and the --null option of tar
-  def create_archive(filelist, archive, exclude = [])
+  def create_archive(file_list, archive, exclude = [])
     created = !File.exists?(archive)
     out = File.open(archive, "w")
     begin
@@ -62,7 +62,7 @@ class System
         "tar", "--create", "--gzip", "--null", "--files-from=-",
         *exclude.flat_map { |f| ["--exclude", f]},
         stdout: out,
-        stdin: filelist,
+        stdin: Array(file_list).join("\0"),
         privileged: true
       )
     rescue Cheetah::ExecutionFailed => e

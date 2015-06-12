@@ -30,7 +30,9 @@ def upgrade_descriptions(path, descriptions = [])
   end
 
   descriptions.each do |description|
-    puts description
+    next if !File.exists?(File.join(path, description, "manifest.json"))
+
+    puts File.join(path, description)
     Migration.migrate_description(store, description, force: true)
   end
 end

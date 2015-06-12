@@ -119,33 +119,37 @@ zypper -n ar --name='dvd_entry' --type='yast2' 'dvd:///?devices=/dev/disk/by-id/
 zypper -n mr --priority=2 'dvd_entry_alias' --name='dvd_entry' --no-refresh
 zypper -n mr --priority=2 'NCCRepo' --name='NCC Repository' --refresh
 zypper -n mr --priority=1 'Alias With Spaces' --name='nodejs' --no-refresh
+rm -rf '/etc/deleted config'
 mkdir -p '/mnt/etc'
 curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20tab"
-mkdir -p '/mnt/etc'
-curl -o '/mnt/etc/deleted config' "`cat /tmp/description_url`/config_files/etc/deleted%20config"
-chown root:root '/mnt/etc/deleted config'
-chmod 644 '/mnt/etc/deleted config'
-chown root:root '/mnt/etc/cron tab'
 chmod 644 '/mnt/etc/cron tab'
+chown root:root '/mnt/etc/cron tab'
+rm -rf '/mnt/etc/replaced_by_link'
+ln -s '/tmp/foo' '/mnt/etc/replaced_by_link'
+chown --no-dereference root:target '/mnt/etc/replaced_by_link'
+chmod 755 '/mnt/etc/somedir'
+chown user:group '/mnt/etc/somedir'
+rm -rf '/etc/deleted changed managed'
+rm -rf '/mnt/usr/bin/replaced_by_link'
+ln -s '/tmp/foo' '/mnt/usr/bin/replaced_by_link'
+chown --no-dereference root:target '/mnt/usr/bin/replaced_by_link'
 mkdir -p '/mnt/etc/cron.daily'
 curl -o '/mnt/etc/cron.daily/cleanup' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/cleanup"
+chmod 644 '/mnt/etc/cron.daily/cleanup'
+chown user:group '/mnt/etc/cron.daily/cleanup'
 mkdir -p '/mnt/etc/cron.daily'
 curl -o '/mnt/etc/cron.daily/logrotate' "`cat /tmp/description_url`/changed_managed_files/etc/cron.daily/logrotate"
-mkdir -p '/mnt/etc'
-curl -o '/mnt/etc/deleted changed managed' "`cat /tmp/description_url`/changed_managed_files/etc/deleted%20changed%20managed"
-chown root:root '/mnt/etc/deleted changed managed'
-chmod 644 '/mnt/etc/deleted changed managed'
-chown user:group '/mnt/etc/cron.daily/cleanup'
-chmod 644 '/mnt/etc/cron.daily/cleanup'
-chown user:group '/mnt/etc/cron.daily/logrotate'
 chmod 644 '/mnt/etc/cron.daily/logrotate'
+chown user:group '/mnt/etc/cron.daily/logrotate'
+chmod 644 '/mnt/etc/cron.d'
+chown user:group '/mnt/etc/cron.d'
 curl -o '/mnt/tmp/filter' "`cat /tmp/description_url`/unmanaged_files_autoyast_excludes"
-curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/etc/tarball%20with%20spaces.tgz"
-tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
-rm '/mnt/tmp/tarball with spaces.tgz'
 curl -o '/mnt/tmp/files.tgz' "`cat /tmp/description_url`/unmanaged_files/files.tgz"
 tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'
-rm '/mnt/tmp/files.tgz']]></source>
+rm '/mnt/tmp/files.tgz'
+curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/trees/etc/tarball%20with%20spaces.tgz"
+tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
+rm '/mnt/tmp/tarball with spaces.tgz']]></source>
       </script>
     </chroot-scripts>
   </scripts>

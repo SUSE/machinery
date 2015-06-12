@@ -26,7 +26,7 @@
 # The sub directories storing the data for specific scopes are handled by the
 # ScopeFileStore class.
 class SystemDescription < Machinery::Object
-  CURRENT_FORMAT_VERSION = 3
+  CURRENT_FORMAT_VERSION = 4
   EXTRACTABLE_SCOPES = [
     "changed_managed_files",
     "config_files",
@@ -91,7 +91,7 @@ class SystemDescription < Machinery::Object
     def from_hash(name, store, hash)
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
-        description = SystemDescription.new(name, store, create_scopes(hash))
+        description = SystemDescription.new(name, store, hash)
       rescue NameError, TypeError
         if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
@@ -108,26 +108,6 @@ class SystemDescription < Machinery::Object
 
       description
     end
-
-    private
-
-    def create_scopes(hash)
-      scopes = hash.map do |scope_name, scope_json|
-        next if scope_name == "meta"
-
-        scope_class = Machinery::Scope.class_for(scope_name)
-        scope_object = scope_class.from_json(scope_json)
-
-        # Set metadata
-        if hash["meta"] && hash["meta"][scope_name]
-          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
-        end
-
-        [scope_name, scope_object]
-      end.compact
-
-      Hash[scopes]
-    end
   end
 
   def initialize(name, store, hash = {})
@@ -136,7 +116,32 @@ class SystemDescription < Machinery::Object
     @format_version = CURRENT_FORMAT_VERSION
     @filter_definitions = {}
 
-    super(hash)
+    super(create_scopes(hash))
+  end
+
+  def create_scopes(hash)
+    scopes = hash.map do |scope_name, json|
+      next if scope_name == "meta"
+
+      if store.persistent?
+        scope_file_store = scope_file_store(scope_name)
+      end
+
+      if json.is_a?(Hash) || json.is_a?(Array)
+        scope_object = Machinery::Scope.for(scope_name, json, scope_file_store)
+
+        # Set metadata
+        if hash["meta"] && hash["meta"][scope_name]
+          scope_object.meta = Machinery::Object.from_json(hash["meta"][scope_name])
+        end
+      else
+        scope_object = json
+      end
+
+      [scope_name, scope_object]
+    end.compact
+
+    Hash[scopes]
   end
 
   def compatible?

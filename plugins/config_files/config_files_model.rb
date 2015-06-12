@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ConfigFile < Machinery::Object
+class ConfigFile < Machinery::SystemFile
 end
 
 class ConfigFileList < Machinery::Array
@@ -24,5 +24,6 @@ end
 
 class ConfigFilesScope < FileScope
   include Machinery::Scope
+  include ScopeFileAccessFlat
   has_property :files, class: ConfigFileList
 end
