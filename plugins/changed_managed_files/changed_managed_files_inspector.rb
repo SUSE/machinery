@@ -48,8 +48,7 @@ class ChangedManagedFilesInspector < Inspector
         f.name == "/"
       end
 
-      scope.file_access.retrieve_files_from_system(@system,
-        existing_files.map(&:name))
+      scope.retrieve_files_from_system(@system, existing_files.map(&:name))
     end
 
     scope.extracted = !!options[:extract_changed_managed_files]

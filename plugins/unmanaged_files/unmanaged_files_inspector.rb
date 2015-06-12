@@ -334,9 +334,9 @@ class UnmanagedFilesInspector < Inspector
         file_store_tmp.remove
         file_store_tmp.create
 
-        scope.file_access.retrieve_files_from_system_as_archive(@system,
+        scope.retrieve_files_from_system_as_archive(@system,
           unmanaged_files, excluded_files)
-        scope.file_access.retrieve_trees_from_system_as_archive(@system,
+        scope.retrieve_trees_from_system_as_archive(@system,
           unmanaged_trees, excluded_files)
       else
         file_store_final.remove

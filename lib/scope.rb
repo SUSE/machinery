@@ -58,13 +58,5 @@ module Machinery
     def is_extractable?
       SystemDescription::EXTRACTABLE_SCOPES.include?(self.scope_name)
     end
-
-    def file_access
-      if self.is_a?(UnmanagedFilesScope)
-        ScopeFileAccessArchive.new(self, scope_file_store)
-      else
-        ScopeFileAccessFlat.new(self, scope_file_store)
-      end
-    end
   end
 end

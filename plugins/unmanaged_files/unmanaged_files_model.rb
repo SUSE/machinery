@@ -51,6 +51,7 @@ end
 
 class UnmanagedFilesScope < FileScope
   include Machinery::Scope
+  include ScopeFileAccessArchive
   has_property :files, class: UnmanagedFileList
 
   def compare_with(other)

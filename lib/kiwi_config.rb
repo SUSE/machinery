@@ -108,8 +108,7 @@ class KiwiConfig < Exporter
           @sh << "chmod #{file.mode} '#{file.name}'\n"
           @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
         elsif file.file?
-          file_access = @system_description[scope].file_access
-          file_access.write_file(file, output_root_path)
+          @system_description[scope].write_file(file, output_root_path)
           @sh << "chmod #{file.mode} '#{file.name}'\n"
           @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
         elsif file.link?
@@ -125,8 +124,7 @@ class KiwiConfig < Exporter
       FileUtils.mkdir_p(destination, mode: 01777)
       filter = "unmanaged_files_#{@name}_excludes"
 
-      @system_description.unmanaged_files.file_access.
-        export_files_as_tarballs(destination)
+      @system_description.unmanaged_files.export_files_as_tarballs(destination)
 
       FileUtils.cp(
         File.join(Machinery::ROOT, "export_helpers/#{filter}"),

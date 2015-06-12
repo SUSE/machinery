@@ -24,5 +24,6 @@ end
 
 class ConfigFilesScope < FileScope
   include Machinery::Scope
+  include ScopeFileAccessFlat
   has_property :files, class: ConfigFileList
 end
