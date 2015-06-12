@@ -37,7 +37,7 @@ class ScopeFileAccessArchive < ScopeFileAccess
   end
 
   def export_files_as_tarballs(destination)
-    FileUtils.cp( File.join(@scope_file_store.path, "files.tgz"), destination )
+    FileUtils.cp(File.join(@scope_file_store.path, "files.tgz"), destination)
 
     target = File.join(destination, "trees")
     @scope.files.select(&:directory?).each do |system_file|
