@@ -228,7 +228,7 @@ class UnmanagedFilesInspector < Inspector
     remote_dirs = mount_points.remote
     special_dirs = mount_points.special
 
-    file_filter = filter.element_filter_for("/unmanaged_files/files/name") if filter
+    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
     file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
     file_filter.add_matchers("=", @description.store.base_path)
 
@@ -327,6 +327,12 @@ class UnmanagedFilesInspector < Inspector
       unmanaged.map!{ |d| find_dir + d }
       unmanaged_files.push(*unmanaged)
       links.each { |d| unmanaged_links[find_dir + d] = "" }
+
+      count = unmanaged_files.length + unmanaged_trees.length
+      progress = Machinery::pluralize(
+        count, " -> Found %d file or tree...", " -> Found %d files and trees...",
+      )
+      Machinery::Ui.progress(progress)
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
     begin

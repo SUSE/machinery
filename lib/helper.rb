@@ -32,12 +32,18 @@ module Machinery
     s.dup.force_encoding("UTF-8").encode("UTF-16", invalid: :replace).encode("UTF-8")
   end
 
-  def self.pluralize(text, number)
-    if number > 1 || number == 0
-      text + "s"
+  def self.pluralize(count, singular, plural = nil)
+    val = if count > 1 || count == 0
+      if !plural
+        singular + "s"
+      else
+        plural
+      end
     else
-      text
+      singular
     end
+
+    val.gsub("%d", count.to_s)
   end
 end
 

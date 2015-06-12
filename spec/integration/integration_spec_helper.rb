@@ -58,6 +58,12 @@ def prepare_remote_machinery_for_host(system, ip, opts)
   )
 end
 
+def normalize_inspect_output(output)
+  output.
+    gsub!(/\d+/, "0"). # Normalize output
+    gsub!(/(\r\033\[K.*?\r\033\[K).*\r\033\[K(.*)/, "\\1\\2") # strip all progress messages but two
+end
+
 Dir[File.join(Machinery::ROOT, "/spec/integration/support/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|

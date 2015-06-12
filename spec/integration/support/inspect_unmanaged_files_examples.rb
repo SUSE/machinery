@@ -34,12 +34,13 @@ shared_examples "inspect unmanaged files" do |base|
 
     it "extracts list of unmanaged files" do
       measure("Inspect system") do
-        @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} " \
-            "#{inspect_options if defined?(inspect_options)} " \
+        @machinery_output = @machinery.run_command(
+          "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
+            "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=unmanaged-files --extract-files " \
             "--skip-files=#{ignore_list.join(",")}",
-          as: "vagrant"
+          as: "vagrant",
+          stdout: :capture
         )
       end
 
@@ -55,6 +56,12 @@ shared_examples "inspect unmanaged files" do |base|
       expected_output = File.read("spec/data/unmanaged_files/#{base}")
       expected = expected_output.split("\n").select { |i| i.start_with?("  * ") }
       expect(actual).to match_array(expected)
+
+      expected = <<EOF
+Inspecting unmanaged-files...
+ -> Found 0 files and trees...\r\033\[K -> Found 0 files and trees...\r\033\[K -> Extracted 0 unmanaged files and trees.
+EOF
+      expect(normalize_inspect_output(@machinery_output)).to include(expected)
     end
 
     it "extracts meta data of unmanaged files" do

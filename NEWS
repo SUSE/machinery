@@ -3,6 +3,12 @@
 * Support links in changed managed files scope
 * Support links in config files scope
 * Introduce system description format version 4 (see https://github.com/SUSE/machinery/wiki/System-Description-Format#version-4)
+* Show progress during inspection of scopes
+* Show message when compared scopes are identical (gh#SUSE/machinery#631)
+* Check number of parameters in all commands (gh#SUSE/machinery#898)
+* Do not abort when Machinery is run on unsupported platforms, but just show a warning
+* Apply all filters on file extraction (gh#SUSE/machinery#887)
+* Consistent output of filters with --verbose option (gh#SUSE/machinery#797)
 
 ## Version 1.8.2 - Wed May 27 16:56:44 CEST 2015 - thardeck@suse.de
 

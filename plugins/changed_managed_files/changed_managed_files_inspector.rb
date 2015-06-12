@@ -24,7 +24,7 @@ class ChangedManagedFilesInspector < Inspector
     @description = description
   end
 
-  def inspect(_filter, options = {})
+  def inspect(filter, options = {})
     system.check_requirement("find", "--version")
     system.check_requirement("rsync", "--version") if options[:extract_changed_managed_files]
 
@@ -36,11 +36,16 @@ class ChangedManagedFilesInspector < Inspector
 
     result = changed_files
 
+    if filter
+      file_filter = filter.element_filter_for("/changed_managed_files/files/name")
+      result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
+    end
+
     file_store.remove
     if options[:extract_changed_managed_files]
       file_store.create
 
-      existing_files = changed_files.reject do |f|
+      existing_files = result.reject do |f|
         f.changes.nil? ||
         f.changes.include?("deleted") ||
         f.link? ||
@@ -77,7 +82,11 @@ class ChangedManagedFilesInspector < Inspector
   end
 
   def changed_files
-    raw_list = @system.run_script("changed_managed_files.sh", stdout: :capture)
+    count = 0
+    list = run_script_with_progress("changed_files.sh", "--", "changed-managed-files") do |chunk|
+      count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
+      Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
+    end
 
     # The raw list lists each package followed by the changed files, e.g.
     #
@@ -96,9 +105,9 @@ class ChangedManagedFilesInspector < Inspector
     #   },
     #   ...
     # ]
-    changed_files = raw_list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *changed_files|
+    file_list = list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *files|
       package_name, package_version = package.scan(/(.*)-([^-]*):/).first
-      changed_files.map do |changed_file|
+      files.map do |changed_file|
         if changed_file =~ /\A(\/\S+) (.*)/
           ChangedManagedFile.new(
             name:              $1,
@@ -125,7 +134,8 @@ class ChangedManagedFilesInspector < Inspector
         # to filter them
       end.compact.select { |item| item.changes }
     end.uniq
-    amend_file_attributes(changed_files)
+
+    amend_file_attributes(file_list)
   end
 
 end

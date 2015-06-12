@@ -29,6 +29,10 @@ class ElementFilter
     add_matchers(operator, matchers) if operator && matchers
   end
 
+  def initialize_copy(other)
+    @matchers = other.matchers.dup
+  end
+
   def add_matchers(operator, matchers)
     if ![Filter::OPERATOR_EQUALS, Filter::OPERATOR_EQUALS_NOT].include?(operator)
       raise Machinery::Errors::InvalidFilter.new("Wrong filter operator '#{operator}'")

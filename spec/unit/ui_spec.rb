@@ -46,13 +46,13 @@ describe Machinery::Ui do
   describe ".print" do
     before(:each) do ||
       allow(Machinery::Ui).to receive(:use_pager).and_return(true)
+      allow($stdout).to receive(:tty?).and_return(true)
     end
 
     let(:output) { "foo bar" }
     it "pipes the output to a pager" do
       ENV['PAGER'] = 'less'
 
-      allow($stdout).to receive(:tty?).and_return(true)
       allow(IO).to receive(:popen)
       allow($?).to receive(:success?).and_return(true)
       expect(IO).to receive(:popen).with("$PAGER", "w").and_return(double(puts: nil, pid: 100))
@@ -63,7 +63,6 @@ describe Machinery::Ui do
     it "raises an error if ENV['PAGER'] is not a valid command" do
       ENV['PAGER'] = 'not_a_pager'
 
-      allow($stdout).to receive(:tty?).and_return(true)
 
       expect { Machinery::Ui.puts(output) }.
         to raise_error(Machinery::Errors::InvalidPager, /not_a_pager/)
@@ -73,13 +72,35 @@ describe Machinery::Ui do
       capture_machinery_output
 
       it "concatenates the output without adding \n" do
-        allow($stdout).to receive(:tty?).and_return(true)
         allow(LocalSystem).to receive(:validate_existence_of_package).
           and_raise(Machinery::Errors::MissingRequirement)
         Machinery::Ui.print("Hello")
         Machinery::Ui.print(" ")
         Machinery::Ui.print("World")
         expect(captured_machinery_output).to eq("Hello World")
+      end
+    end
+
+    context "with enabled progress output" do
+      before(:each) do
+        allow($stdout).to receive(:tty?).and_return(true)
+        allow(Machinery::Ui).to receive(:use_pager).and_return(false)
+      end
+
+      it "sends reset escape sequences if there is progress output that needs to be cleared" do
+        expect(STDOUT).to receive(:print).with("some_progress").ordered
+        expect(STDOUT).to receive(:print).with("\r").ordered
+        expect(STDOUT).to receive(:print).with("\033[K").ordered
+        expect(STDOUT).to receive(:print).with("output").ordered
+
+        Machinery::Ui.progress("some_progress")
+        Machinery::Ui.print("output")
+      end
+
+      it "does not send unneccessary reset escape sequences if there's nothing to reset" do
+        expect(STDOUT).to receive(:print).with("output")
+
+        Machinery::Ui.print("output")
       end
     end
   end

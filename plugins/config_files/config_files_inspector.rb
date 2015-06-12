@@ -50,20 +50,7 @@ class ConfigFilesInspector < Inspector
 
   # returns a hash with entries for changed config files
   def config_file_changes(pkg)
-    begin
-      out = @system.run_command(
-        "rpm", "-V",
-        "--nodeps", "--nodigest", "--nosignature", "--nomtime",
-        pkg,
-        stdout: :capture,
-        privileged: true
-      )
-    # rpm returns 1 as exit code when modified config files are detected
-    # currently cheetah cannot be told to ignore this and throws ExecutionFailed
-    rescue Cheetah::ExecutionFailed => e
-      out = e.stdout
-    end
-
+    out = @system.run_script("changed_files.sh", "--", "config-files", pkg, stdout: :capture)
     parts = pkg.split("-")
     package_name    = parts[0..-2].join("-")
     package_version = parts.last
@@ -90,12 +77,22 @@ class ConfigFilesInspector < Inspector
     @description = description
   end
 
-  def inspect(_filter, options = {})
+  def inspect(filter, options = {})
     do_extract = options[:extract_changed_config_files]
     check_requirements(do_extract)
 
+    count = 0
     result = packages_with_config_files.flat_map do |package|
-      config_file_changes(package)
+      files = config_file_changes(package)
+      count += files.length
+      Machinery::Ui.progress(" -> Found #{count} config #{Machinery::pluralize(count, "file")}...")
+
+      files
+    end
+
+    if filter
+      file_filter = filter.element_filter_for("/config_files/files/name")
+      result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
     end
 
     paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
