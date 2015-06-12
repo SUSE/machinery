@@ -244,6 +244,8 @@ EOF
     end
 
     describe "#inspect" do
+      silence_machinery_output
+
       let(:inspector) { ConfigFilesInspector.new(system, description) }
 
       before(:each) do
@@ -318,7 +320,7 @@ EOF
         ).and_return(expected_apache_config_file_data)
         allow_any_instance_of(ConfigFilesInspector).to receive(:config_file_changes).with(
           "open-iscsi-2.0.873"
-        ).and_return(iscsi_config_1)
+        ).and_return([iscsi_config_1])
         allow_any_instance_of(ConfigFilesInspector).to receive(:check_requirements)
         stub_stat_commands(system, config_paths, stat_output)
       end

@@ -28,8 +28,10 @@ describe ChangedManagedFilesInspector do
   subject {
     inspector = ChangedManagedFilesInspector.new(system, description)
 
-    allow(system).to receive(:run_script).with("changed_files.sh", any_args).
-      and_return(rpm_result)
+    allow(system).to receive(:run_script) do |*script, options|
+      expect(script.first).to eq("changed_files.sh")
+      options[:stdout].puts rpm_result
+    end
     allow(system).to receive(:run_command).with("stat", "--printf",
       "%a:%U:%G:%u:%g:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
@@ -39,6 +41,8 @@ describe ChangedManagedFilesInspector do
   }
 
   describe "#inspect" do
+    silence_machinery_output
+
     context "with filters" do
       it "filters out the matching elements" do
         filter = Filter.new("/changed_managed_files/files/name=/usr/*")

@@ -19,13 +19,14 @@ shared_examples "inspect config files" do |base|
   expected_content = "-*/15 * * * *   root  echo config_files_integration_test &> /dev/null\n"
 
   describe "--scope=config-files" do
-    it "extracts list of config files" do
+    it "extracts list of config files and shows progress" do
       measure("Inspect system") do
-        @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} " \
-            "#{inspect_options if defined?(inspect_options)} " \
+        @machinery_output = @machinery.run_command(
+          "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
+            "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=config-files --extract-files",
-          as: "vagrant"
+          as: "vagrant",
+          stdout: :capture
         )
       end
 
@@ -35,8 +36,14 @@ shared_examples "inspect config files" do |base|
       )
 
       expected_files_list = File.read("spec/data/config_files/#{base}")
-
       expect(actual_files_list).to match_machinery_show_scope(expected_files_list)
+
+      expected = <<EOF
+Inspecting 0.0.0.0 for config-files...
+Inspecting config-files...
+ -> Found 0 config files...\r\033\[K -> Found 0 config files...\r\033\[K -> Extracted 0 changed configuration files.
+EOF
+      expect(normalize_inspect_output(@machinery_output)).to start_with(expected)
     end
 
     it "extracts files from system" do

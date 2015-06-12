@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Show progress during inspection of scopes
 * Show message when compared scopes are identical (gh#SUSE/machinery#631)
 * Check number of parameters in all commands (gh#SUSE/machinery#898)
 * Do not abort when Machinery is run on unsupported platforms, but just show a warning
