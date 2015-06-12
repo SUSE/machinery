@@ -342,8 +342,12 @@ class UnmanagedFilesInspector < Inspector
 
         scope.retrieve_files_from_system_as_archive(@system,
           unmanaged_files, excluded_files)
+        show_extraction_progress(unmanaged_files.count)
+
         scope.retrieve_trees_from_system_as_archive(@system,
-          unmanaged_trees, excluded_files)
+          unmanaged_trees, excluded_files) do |count|
+          show_extraction_progress(unmanaged_files.count + count)
+        end
       else
         file_store_final.remove
       end
@@ -382,6 +386,13 @@ class UnmanagedFilesInspector < Inspector
   end
 
   private
+
+  def show_extraction_progress(count)
+    progress = Machinery::pluralize(
+      count, "-> Extracted %d file or tree", "-> Extracted %d files and trees",
+    )
+    Machinery::Ui.progress(progress)
+  end
 
   def btrfs_subvolumes
     @system.run_command(
