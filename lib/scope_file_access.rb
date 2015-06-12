@@ -33,7 +33,7 @@ module ScopeFileAccessArchive
     FileUtils.cp(File.join(scope_file_store.path, "files.tgz"), destination)
 
     target = File.join(destination, "trees")
-    self.files.select(&:directory?).each do |system_file|
+    files.select(&:directory?).each do |system_file|
       raise Machinery::Errors::FileUtilsError if !system_file.directory?
 
       tarball_target = File.join(target, File.dirname(system_file.name))
