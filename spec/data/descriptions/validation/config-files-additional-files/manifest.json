@@ -23,8 +23,7 @@
         "status": "changed",
         "changes": [
           "deleted"
-        ],
-        "type": "file"
+        ]
       }
     ]
   },

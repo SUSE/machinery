@@ -3062,8 +3062,7 @@
         "status": "changed",
         "changes": [
           "deleted"
-        ],
-        "type": "file"
+        ]
       },
       {
         "name": "/usr/share/bash/helpfiles/read",
