@@ -50,7 +50,7 @@ class OsInspector < Inspector
     os = get_os
     if os
       os.architecture = get_arch
-      os.version += get_additional_version
+      os.version += get_additional_version if os.version
     else
       raise Machinery::Errors::UnknownOs
     end
@@ -101,7 +101,7 @@ class OsInspector < Inspector
     end
     # return pretty_name as name as it contains the actual full length
     # name instead of an abbreviation
-    os = Os.for(result["pretty_name"])
+    os = Os.for(result["pretty_name"] || result["name"])
     os.version = result["version"]
     os
   end

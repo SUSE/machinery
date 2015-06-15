@@ -197,6 +197,25 @@ describe OsInspector do
       expect(description.os.name).to eq("openSUSE 11.2")
     end
 
+    it "returns correct data if an unsupported SLES (marked as Dummy) is inspected" do
+      FakeFS::FileSystem.clone("spec/data/os/dummy/etc/os-release",
+        "/etc/os-release")
+      FakeFS::FileSystem.clone("spec/data/os/dummy/etc/issue",
+        "/etc/issue")
+
+      expect(inspector).to receive(:get_arch).and_return("i586")
+
+      inspector.inspect(filter)
+
+      expect(description.os).to eq(
+        OsUnknown.new(
+          name: "Dummy",
+          version: nil,
+          architecture: "i586"
+        )
+      )
+    end
+
     it "throws exception when the operation system cannot be determined" do
       expect {
         inspector.inspect(filter)
