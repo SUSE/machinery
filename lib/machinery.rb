@@ -91,7 +91,6 @@ require_relative "element_filter"
 require_relative "filter"
 require_relative "filter_option_parser"
 require_relative "file_scope"
-require_relative "file_extractor"
 require_relative "system_file"
 require_relative "scope_file_access"
 

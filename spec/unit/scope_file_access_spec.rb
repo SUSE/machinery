@@ -47,13 +47,38 @@ describe "ScopeFileAccess" do
   end
 
   describe ScopeFileAccessArchive do
+    let(:description) {
+      create_test_description(
+        store_on_disk: true,
+        extracted_scopes: ["unmanaged_files"]
+      )
+    }
+    let(:system) { double }
+    subject { description.unmanaged_files }
+
+    describe "retrieve_files_from_system_as_archive" do
+      it "creates a files tarball in the scope file store" do
+        expect(system).to receive(:create_archive) do |_files, archive_path, _excluded|
+          FileUtils.touch(archive_path)
+        end
+
+        subject.retrieve_files_from_system_as_archive(system, ["/foo", "/bar"], ["/exclude"])
+        expect(File.exists?(File.join(subject.scope_file_store.path, "files.tgz"))).to be(true)
+      end
+
+      it "create tree tarballs in the scope file store" do
+        expect(system).to receive(:create_archive) do |_files, archive_path, _excluded|
+          FileUtils.touch(archive_path)
+        end.at_least(:once)
+
+        subject.retrieve_trees_from_system_as_archive(system, ["/opt", "/foo/bar"], ["/exclude"])
+        expect(File.exists?(File.join(subject.scope_file_store.path, "trees", "opt.tgz"))).to be(true)
+        expect(File.exists?(File.join(subject.scope_file_store.path, "trees", "foo/bar.tgz"))).to be(true)
+      end
+    end
+
     describe "#export_files_as_tarballs" do
       it "should copy all tarballs to the destination" do
-        description = create_test_description(
-          store_on_disk: true,
-          extracted_scopes: ["unmanaged_files"]
-        )
-
         target = given_directory
         description.unmanaged_files.export_files_as_tarballs(target)
 
