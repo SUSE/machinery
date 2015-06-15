@@ -20,13 +20,22 @@ end
 
 module ScopeFileAccessArchive
   def retrieve_files_from_system_as_archive(system, files, excluded_files)
-    extractor = FileExtractor.new(system, scope_file_store)
-    extractor.extract_files(files, excluded_files)
+    archive_path = File.join(scope_file_store.path, "files.tgz")
+    system.create_archive(files, archive_path, excluded_files)
   end
 
   def retrieve_trees_from_system_as_archive(system, trees, excluded_files, &callback)
-    extractor = FileExtractor.new(system, scope_file_store)
-    extractor.extract_trees(trees, excluded_files, callback)
+    trees.each_with_index do |tree, index|
+      tree_name = File.basename(tree)
+      parent_dir = File.dirname(tree)
+      sub_dir = File.join("trees", parent_dir)
+
+      scope_file_store.create_sub_directory(sub_dir)
+      archive_path = File.join(scope_file_store.path, sub_dir, "#{tree_name}.tgz")
+      system.create_archive(tree, archive_path, excluded_files)
+
+      callback.call(index + 1) if callback
+    end
   end
 
   def export_files_as_tarballs(destination)

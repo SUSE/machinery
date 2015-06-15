@@ -286,8 +286,7 @@ class Autoyast < Exporter
   end
 
   def apply_unmanaged_files
-    return if !@system_description.unmanaged_files ||
-      !@system_description.unmanaged_files.extracted
+    return if !@system_description.scope_extracted?("unmanaged_files")
 
     base = Pathname(@system_description.scope_file_store("unmanaged_files").path)
     @chroot_scripts << <<-EOF.chomp.gsub(/^\s+/, "")
@@ -295,8 +294,6 @@ class Autoyast < Exporter
     EOF
 
     Dir["#{base}/**/*.tgz"].sort.each do |path|
-      next if !path.end_with?(".tgz")
-
       relative_path = Pathname(path).relative_path_from(base).to_s
       tarball_name = File.basename(path)
       url = "`cat /tmp/description_url`#{URI.escape(File.join("/unmanaged_files", relative_path))}"
