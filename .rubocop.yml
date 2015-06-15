@@ -23,3 +23,6 @@ Style/CollectionMethods:
 
 Rails/Output:
   Enabled: false
+
+Lint/EndAlignment:
+  AlignWith: variable
