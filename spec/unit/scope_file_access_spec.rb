@@ -30,7 +30,9 @@ describe "ScopeFileAccess" do
 
     describe ".write_file" do
       it "raises an exception for non-files" do
-        expect { subject.write_file(link, "/tmp") }.to raise_error(Machinery::Errors::FileUtilsError)
+        expect {
+          subject.write_file(link, "/tmp")
+        }.to raise_error(Machinery::Errors::FileUtilsError)
       end
 
       it "copies the file" do
@@ -54,6 +56,7 @@ describe "ScopeFileAccess" do
       )
     }
     let(:system) { double }
+    let(:scope_file_store) { subject.scope_file_store }
     subject { description.unmanaged_files }
 
     describe "retrieve_files_from_system_as_archive" do
@@ -63,7 +66,7 @@ describe "ScopeFileAccess" do
         end
 
         subject.retrieve_files_from_system_as_archive(system, ["/foo", "/bar"], ["/exclude"])
-        expect(File.exists?(File.join(subject.scope_file_store.path, "files.tgz"))).to be(true)
+        expect(File.exists?(File.join(scope_file_store.path, "files.tgz"))).to be(true)
       end
 
       it "create tree tarballs in the scope file store" do
@@ -72,8 +75,8 @@ describe "ScopeFileAccess" do
         end.at_least(:once)
 
         subject.retrieve_trees_from_system_as_archive(system, ["/opt", "/foo/bar"], ["/exclude"])
-        expect(File.exists?(File.join(subject.scope_file_store.path, "trees", "opt.tgz"))).to be(true)
-        expect(File.exists?(File.join(subject.scope_file_store.path, "trees", "foo/bar.tgz"))).to be(true)
+        expect(File.exists?(File.join(scope_file_store.path, "trees", "opt.tgz"))).to be(true)
+        expect(File.exists?(File.join(scope_file_store.path, "trees", "foo/bar.tgz"))).to be(true)
       end
     end
 
