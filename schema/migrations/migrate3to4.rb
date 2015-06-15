@@ -22,22 +22,17 @@ class Migrate3To4 < Migration
   EOT
 
   def migrate
-    if @hash.has_key?("changed_managed_files")
-      @hash["changed_managed_files"]["files"].each do |file|
-        file["type"] = if File.directory?(File.join(@path, "changed_managed_files", file["name"]))
-          "dir"
-        else
-          "file"
-        end
-      end
-    end
+    ["changed_managed_files", "config_files"].each do |scope|
+      if @hash.has_key?(scope)
+        @hash[scope]["files"].each do |file|
+          next if file["changes"] == ["deleted"]
 
-    if @hash.has_key?("config_files")
-      @hash["config_files"]["files"].each do |file|
-        file["type"] = if File.directory?(File.join(@path, "config_files", file["name"]))
-          "dir"
-        else
-          "file"
+          path = File.join(@path, scope, file["name"])
+          file["type"] = if File.directory?(path) || path.end_with?("/")
+            "dir"
+          else
+            "file"
+          end
         end
       end
     end
