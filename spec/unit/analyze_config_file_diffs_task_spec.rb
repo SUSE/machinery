@@ -30,7 +30,7 @@ describe AnalyzeConfigFileDiffsTask do
             "name": "openSUSE-13.1-Debug",
             "type": null,
             "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
-            "enabled": false,
+            "enabled": true,
             "autorefresh": true,
             "gpgcheck": true,
             "priority": 98
@@ -101,6 +101,45 @@ describe AnalyzeConfigFileDiffsTask do
     AnalyzeConfigFileDiffsTask.new
   }
 
+  let(:no_online_repo_description) {
+    description = create_test_description(json: <<-EOF, store_on_disk: true)
+      {
+        "repositories": [
+          {
+            "alias": "repo-debug",
+            "name": "openSUSE-13.1-Debug",
+            "type": null,
+            "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
+            "enabled": false,
+            "autorefresh": true,
+            "gpgcheck": true,
+            "priority": 98
+          },
+          {
+            "alias": "dvd_entry_alias",
+            "name": "dvd_entry",
+            "type": "yast2",
+            "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+            "enabled": true,
+            "autorefresh": false,
+            "gpgcheck": true,
+            "priority": 2
+          }
+        ], "config_files": {
+          "extracted": true
+        },
+        "os": {
+          "name": "SUSE Linux Enterprise Server 11",
+          "version": "11 SP3",
+          "architecture": "x86_64"
+        }
+      }
+    EOF
+    FileUtils.mkdir_p(File.join(description.description_path, "config_files"))
+
+    description
+  }
+
   before(:each) do
     allow_any_instance_of(Zypper).to receive(:add_repo)
     allow_any_instance_of(Zypper).to receive(:remove_repo)
@@ -169,6 +208,12 @@ describe AnalyzeConfigFileDiffsTask do
       }
 
       expect(match).to be_nil
+    end
+
+    it "raises error if no online repository is available" do
+      expect { subject.analyze(no_online_repo_description) }.to raise_error(
+        Machinery::Errors::AnalysisFailed
+      )
     end
   end
 end
