@@ -21,9 +21,10 @@ describe Exporter do
   describe "#quote" do
     it "returns the quoted name" do
       expect(subject.quote("/bla/single-quote-file'-foo/")).to eq(
-        "/bla/single-quote-file\\'-foo/"
+        "/bla/single-quote-file'\\''-foo/"
       )
     end
+
     it "returns the name without escaping anything" do
       expect(subject.quote("/bla/no-single-quote-file-foo/")).to eq(
         "/bla/no-single-quote-file-foo/"

@@ -61,7 +61,7 @@ describe Autoyast do
       autoyast = Autoyast.new(description)
 
       expect(autoyast.profile).to include(
-        "ln -s '/opt/test-quote-char/target-with-quote\\\'-foo' '/mnt/opt/test-quote-char/link'"
+        "ln -s '/opt/test-quote-char/target-with-quote'\\\''-foo' '/mnt/opt/test-quote-char/link'"
       )
     end
 
