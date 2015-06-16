@@ -9,6 +9,7 @@ mount --bind /proc /var/lib/chroot_proc
 rpm -i /vagrant/SUSE-test-quote-char-1.0-1.noarch.rpm || rpm -i /vagrant/RedHat-test-quote-char-1.0-1.noarch.rpm
 echo 42 > /opt/test-quote-char/test-dir-name-with-\'\ quote-char\ \'/unmanaged-file-with-\'\ quote\ \'
 mkdir /opt/test-quote-char/test-dir-name-with-\'\ quote-char\ \'/unmanaged-dir-with-\'\ quote\ \'
+ln -sf /opt/test-quote-char/target-with-quote\'-foo /opt/test-quote-char/link
 # fix issues of alternating names
 rm -rf "/var/lib/yum/history/"*
 

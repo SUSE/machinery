@@ -103,18 +103,24 @@ class KiwiConfig < Exporter
 
       @system_description[scope].files.each do |file|
         if file.deleted?
-          @sh << "rm -rf '#{file.name}'\n"
+          @sh << "rm -rf '#{quote(file.name)}'\n"
         elsif file.directory?
-          @sh << "chmod #{file.mode} '#{file.name}'\n"
-          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
+          @sh << <<EOF
+chmod #{file.mode} '#{quote(file.name)}'
+chown #{file.user}:#{file.group} '#{quote(file.name)}'
+EOF
         elsif file.file?
           @system_description[scope].write_file(file, output_root_path)
-          @sh << "chmod #{file.mode} '#{file.name}'\n"
-          @sh << "chown #{file.user}:#{file.group} '#{file.name}'\n"
+          @sh << <<EOF
+chmod #{file.mode} '#{quote(file.name)}'
+chown #{file.user}:#{file.group} '#{quote(file.name)}'
+EOF
         elsif file.link?
-          @sh << "rm -rf '#{file.name}'\n"
-          @sh << "ln -s '#{file.target}' '#{file.name}'\n"
-          @sh << "chown --no-dereference #{file.user}:#{file.group} '#{file.name}'\n"
+          @sh << <<EOF
+rm -rf '#{quote(file.name)}'
+ln -s '#{quote(file.target)}' '#{quote(file.name)}'
+chown --no-dereference #{file.user}:#{file.group} '#{quote(file.name)}'
+EOF
         end
       end
     end

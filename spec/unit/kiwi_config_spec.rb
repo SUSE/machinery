@@ -234,6 +234,27 @@ describe KiwiConfig do
       expect(type_node["bootloader"]).to eq("grub2")
     end
 
+    it "handles quotes in changed links" do
+      system_description_with_modified_files["changed_managed_files"]["files"] <<
+        ChangedManagedFile.new(
+          name: "/opt/test-quote-char/link",
+          package_name: "test-quote-char",
+          package_version: "1.0",
+          status: "changed",
+          changes: ["link_path"],
+          mode: "777",
+          user: "root",
+          group: "root",
+          type: "link",
+          target: "/opt/test-quote-char/target-with-quote'-foo"
+        )
+      config = KiwiConfig.new(system_description_with_modified_files)
+      config.write(export_dir)
+      expect(config.sh).to include(
+        "ln -s '/opt/test-quote-char/target-with-quote\\'-foo' '/opt/test-quote-char/link'"
+      )
+    end
+
     it "sets the target distribution and bootloader for SLES12" do
       config = KiwiConfig.new(
         create_test_description(
