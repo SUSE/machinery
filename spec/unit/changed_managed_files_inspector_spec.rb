@@ -37,10 +37,10 @@ describe ChangedManagedFilesInspector do
     allow(system).to receive(:run_command).with("stat", "--printf",
       "%a:%U:%G:%u:%g:%F:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
-      "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab",
+      "/usr/share/man/man1/time.1.gz", "/usr/bin/cron'tab",
       anything).and_return(stat_result)
-    allow(system).to receive(:run_command).with("find", "/usr/bin/crontab", any_args).
-      and_return("/etc/foo")
+    allow(system).to receive(:run_command).with("find", "/usr/bin/cron'tab", any_args).
+      and_return("/etc/fo'o")
 
     inspector
   }
@@ -110,7 +110,7 @@ describe ChangedManagedFilesInspector do
               changes: ["deleted"]
             ),
             ChangedManagedFile.new(
-              name: "/usr/bin/crontab",
+              name: "/usr/bin/cron'tab",
               package_name: "cronie",
               package_version: "1.4.8",
               status: "changed",
@@ -119,7 +119,7 @@ describe ChangedManagedFilesInspector do
               group: "root",
               mode: "755",
               type: "link",
-              target: "/etc/foo"
+              target: "/etc/fo'o"
             ),
             ChangedManagedFile.new(
               name: "/usr/share/man/man1/time.1.gz",

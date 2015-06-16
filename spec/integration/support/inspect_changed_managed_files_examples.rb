@@ -79,28 +79,5 @@ EOF
       )
       expect(actual_content).to include("changed managed files test entry")
     end
-
-    it "deals with quotes in changed links" do
-      description_json = @machinery.run_command(
-        "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
-        as: machinery_config[:owner],
-        stdout: :capture
-      )
-      description = create_test_description(json: description_json)
-      expect(description["changed_managed_files"]["files"]).to include(
-        ChangedManagedFile.new(
-          name: "/opt/test-quote-char/link",
-          package_name: "test-quote-char",
-          package_version: "1.0",
-          status: "changed",
-          changes: ["link_path"],
-          mode: "777",
-          user: "root",
-          group: "root",
-          type: "link",
-          target: "/opt/test-quote-char/target-with-quote'-foo"
-        )
-      )
-    end
   end
 end
