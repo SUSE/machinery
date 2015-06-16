@@ -83,7 +83,7 @@ class Cli
         GLI::UnknownCommand, GLI::BadCommandLine, OptionParser::MissingArgument
       Machinery::Ui.error e.to_s + "\n\n"
       command = ARGV & @commands.keys.map(&:to_s)
-      run(command << "--help")
+      Machinery::Ui.error "Run '#{$0} #{command.first} --help' for more information."
       exit 1
     when Machinery::Errors::MachineryError
       Machinery.logger.error(e.message)
