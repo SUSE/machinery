@@ -78,10 +78,8 @@ class FileValidator
       expected_files << "files.tgz" if has_files_tarball
       expected_files += tree_tarballs
     else
-      expected_files = files.
-        reject do |file|
-          file["changes"].include?("deleted") ||
-          (file["type"] && file["type"] != "file")
+      expected_files = files.reject do |file|
+          file["changes"].include?("deleted") || (file["type"] && file["type"] != "file")
         end.map { |file| file["name"] }
     end
 

@@ -33,10 +33,12 @@ describe ChangedManagedFilesInspector do
       expect(script.first).to eq("changed_files.sh")
       options[:stdout].puts rpm_result
     end
+
     allow(system).to receive(:run_command).with("stat", "--printf",
       "%a:%U:%G:%u:%g:%F:%n\\n", "/etc/iscsi/iscsid.conf",
       "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
-      "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab", anything()).and_return(stat_result)
+      "/usr/share/man/man1/time.1.gz", "/usr/bin/crontab",
+      anything).and_return(stat_result)
     allow(system).to receive(:run_command).with("find", "/usr/bin/crontab", any_args).
       and_return("/etc/foo")
 
@@ -52,7 +54,6 @@ describe ChangedManagedFilesInspector do
         subject.inspect(filter)
         expect(description["changed_managed_files"].files.map(&:name)).
           to_not include("/usr/share/man/man1/time.1.gz")
-
         subject.inspect(nil)
         expect(description["changed_managed_files"].files.map(&:name)).
           to include("/usr/share/man/man1/time.1.gz")

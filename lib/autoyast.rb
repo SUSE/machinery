@@ -267,20 +267,26 @@ class Autoyast < Exporter
 
     @system_description[scope].files.each do |file|
       if file.deleted?
-        @chroot_scripts << "rm -rf '#{file.name}'"
+        @chroot_scripts << "rm -rf '#{quote(file.name)}'"
       elsif file.directory?
-        @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
-        @chroot_scripts << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << <<EOF.strip
+chmod #{file.mode} '#{File.join("/mnt", quote(file.name))}'
+chown #{file.user}:#{file.group} '#{File.join("/mnt", quote(file.name))}'
+EOF
       elsif file.file?
-        url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, file.name))}"
-        @chroot_scripts << "mkdir -p '#{File.join("/mnt", File.dirname(file.name))}'"
-        @chroot_scripts << "curl -o '#{File.join("/mnt", file.name)}' \"#{url}\""
-        @chroot_scripts << "chmod #{file.mode} '#{File.join("/mnt", file.name)}'"
-        @chroot_scripts << "chown #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+        url = "`cat /tmp/description_url`/#{URI.escape(File.join(scope, quote(file.name)))}"
+        @chroot_scripts << <<EOF.strip
+mkdir -p '#{File.join("/mnt", File.dirname(quote(file.name)))}'
+curl -o '#{File.join("/mnt", quote(file.name))}' \"#{url}\"
+chmod #{file.mode} '#{File.join("/mnt", quote(file.name))}'
+chown #{file.user}:#{file.group} '#{File.join("/mnt", quote(file.name))}'
+EOF
       elsif file.link?
-        @chroot_scripts << "rm -rf '#{File.join("/mnt", file.name)}'"
-        @chroot_scripts << "ln -s '#{file.target}' '#{File.join("/mnt", file.name)}'"
-        @chroot_scripts << "chown --no-dereference #{file.user}:#{file.group} '#{File.join("/mnt", file.name)}'"
+        @chroot_scripts << <<EOF.strip
+rm -rf '#{File.join("/mnt", quote(file.name))}'
+ln -s '#{quote(file.target)}' '#{File.join("/mnt", quote(file.name))}'
+chown --no-dereference #{file.user}:#{file.group} '#{File.join("/mnt", quote(file.name))}'
+EOF
       end
     end
   end

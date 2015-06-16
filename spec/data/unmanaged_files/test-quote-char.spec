@@ -27,6 +27,9 @@ Test package with quote character in filename
 %prep
 mkdir -p %{buildroot}"/opt/test-quote-char/test-dir-name-with-' quote-char '"
 touch %{buildroot}"/opt/test-quote-char/test-dir-name-with-' quote-char '/test-file-name-with-' quote-char '"
+touch %{buildroot}"/opt/test-quote-char/link"
+touch %{buildroot}"/opt/test-quote-char/target-with-quote'-foo"
+
 
 %files
 %defattr(-,root,root)

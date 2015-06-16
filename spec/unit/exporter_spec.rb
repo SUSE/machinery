@@ -15,14 +15,19 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-# Interface class for exporter
-class Exporter
-  attr_reader :system_description
+require_relative "spec_helper"
 
-  abstract_method :write
-  abstract_method :export_name
-
-  def quote(name)
-    name.gsub("'", "\\\\'")
+describe Exporter do
+  describe "#quote" do
+    it "returns the quoted name" do
+      expect(subject.quote("/bla/single-quote-file'-foo/")).to eq(
+        "/bla/single-quote-file\\'-foo/"
+      )
+    end
+    it "returns the name without escaping anything" do
+      expect(subject.quote("/bla/no-single-quote-file-foo/")).to eq(
+        "/bla/no-single-quote-file-foo/"
+      )
+    end
   end
 end

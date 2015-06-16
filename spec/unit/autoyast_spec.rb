@@ -44,6 +44,27 @@ describe Autoyast do
   }
 
   describe "#profile" do
+    it "handles quotes in changed links" do
+      description["changed_managed_files"]["files"] <<
+        ChangedManagedFile.new(
+          name: "/opt/test-quote-char/link",
+          package_name: "test-quote-char",
+          package_version: "1.0",
+          status: "changed",
+          changes: ["link_path"],
+          mode: "777",
+          user: "root",
+          group: "root",
+          type: "link",
+          target: "/opt/test-quote-char/target-with-quote'-foo"
+        )
+      autoyast = Autoyast.new(description)
+
+      expect(autoyast.profile).to include(
+        "ln -s '/opt/test-quote-char/target-with-quote\\\'-foo' '/mnt/opt/test-quote-char/link'"
+      )
+    end
+
     it "creates the expected profile" do
       autoyast = Autoyast.new(description)
 

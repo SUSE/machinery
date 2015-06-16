@@ -9,6 +9,7 @@
 * Do not abort when Machinery is run on unsupported platforms, but just show a warning
 * Apply all filters on file extraction (gh#SUSE/machinery#887)
 * Consistent output of filters with --verbose option (gh#SUSE/machinery#797)
+* Fix export of changed managed files with quotes in file name (gh#SUSE/machinery#913)
 
 ## Version 1.8.2 - Wed May 27 16:56:44 CEST 2015 - thardeck@suse.de
 
