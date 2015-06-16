@@ -60,7 +60,7 @@ EOF
       if !os.can_build?(system_description.os)
         message = "Building '#{system_description.os.display_name}' is " \
           "not supported on this distribution.\n" \
-          "Check the 'BUILD SUPPORT MATRIX' by running `machinery build --help` for " \
+          "Check the 'BUILD SUPPORT MATRIX' by running `#{$0} build --help` for " \
           "further information which build targets are supported."
 
         raise(Machinery::Errors::BuildFailed.new(message))
