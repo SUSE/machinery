@@ -24,7 +24,7 @@ class Manifest
   def self.load(name, path)
     unless File.exists?(path)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "A system description with the name #{name} was not found."
+        "Couldn't find a system description with the name '#{name}'."
       )
     end
 
