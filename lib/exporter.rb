@@ -23,6 +23,6 @@ class Exporter
   abstract_method :export_name
 
   def quote(name)
-    name.gsub("'", "\\\\'")
+    name.gsub("'", "'\\\\''")
   end
 end

@@ -251,7 +251,7 @@ describe KiwiConfig do
       config = KiwiConfig.new(system_description_with_modified_files)
       config.write(export_dir)
       expect(config.sh).to include(
-        "ln -s '/opt/test-quote-char/target-with-quote\\'-foo' '/opt/test-quote-char/link'"
+        "ln -s '/opt/test-quote-char/target-with-quote'\\''-foo' '/opt/test-quote-char/link'"
       )
     end
 
