@@ -97,7 +97,7 @@ shared_examples "CLI" do
     describe "list" do
       context "when more arguments than expected" do
         it "fails with a message" do
-          message = /The given arguments don't match the command's specified arguments/
+          message = /Too many arguments: got 2 arguments, expected none/
           expect {
             @machinery.run_command(
               "#{machinery_command} list foo bar",

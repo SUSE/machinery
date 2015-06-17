@@ -59,7 +59,9 @@ class Cli
 
   def self.check_exceeding_arguments(defined, parsed)
     if parsed.size > defined.size
-      message = "The given arguments don't match the command's specified arguments."
+      parsed_arguments = "#{parsed.size} #{Machinery.pluralize(parsed.size, "argument")}"
+      defined_arguments = defined.empty? ? "none" : "only: #{defined.map(&:name).join(", ")}"
+      message = "Too many arguments: got #{parsed_arguments}, expected #{defined_arguments}"
       raise GLI::BadCommandLine.new(message)
     end
     true
