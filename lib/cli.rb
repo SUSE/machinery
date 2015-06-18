@@ -37,7 +37,8 @@ class Cli
     else
       Machinery.logger.level = Logger::INFO
     end
-    check_exceeding_arguments(command.arguments, args)
+
+    validate_number_of_arguments(command.arguments, args)
   end
 
   post do |global_options,command,options,args|
@@ -57,13 +58,17 @@ class Cli
 
   GLI::Commands::Help.skips_post = false
 
-  def self.check_exceeding_arguments(defined, parsed)
-    if parsed.size > defined.size
+  def self.validate_number_of_arguments(defined, parsed)
+    if defined.any?(&:multiple?) && parsed.empty?
+      message = "No arguments given. Nothing to do."
+      raise GLI::BadCommandLine.new(message)
+    elsif !defined.any?(&:multiple?) && parsed.size > defined.size
       parsed_arguments = "#{parsed.size} #{Machinery.pluralize(parsed.size, "argument")}"
       defined_arguments = defined.empty? ? "none" : "only: #{defined.map(&:name).join(", ")}"
       message = "Too many arguments: got #{parsed_arguments}, expected #{defined_arguments}"
       raise GLI::BadCommandLine.new(message)
     end
+
     true
   end
 
@@ -569,7 +574,8 @@ class Cli
 
     The success of a removal can be shown with the verbose option.
   LONGDESC
-  arg "NAME..."
+  arg "NAME", :multiple
+
   command :remove do |c|
     c.switch :all, negatable: false,
       desc: "Remove all system descriptions"
