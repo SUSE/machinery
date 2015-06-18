@@ -133,7 +133,7 @@ fi
 # Here we do a surgery on the binary to actually load the bundled gems. This is
 # a hack, but it can't be done anywhere else because the binary is generated
 # during gem install.
-sed -i '/gem/i \
+sed -i '/gem /i \
 Gem.path.unshift("%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/bundle/ruby/%{rb_ver}")
 
 ' %{buildroot}%{_bindir}/%{binary_name}
