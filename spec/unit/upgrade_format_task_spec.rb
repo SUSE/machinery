@@ -87,8 +87,8 @@ describe UpgradeFormatTask do
 
     it "lists each system description and its status during upgrade" do
       expected_output = <<-EOF
-Reading "description1" ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
-Reading "description2" ... No upgrade necessary.
+Reading 'description1' ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading 'description2' ... No upgrade necessary.
 Upgraded 1 system description.
 EOF
       UpgradeFormatTask.new.upgrade(system_description_factory_store, "description2")
@@ -102,8 +102,8 @@ EOF
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
       expected_output = <<-EOF
-Reading "description1" ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
-Reading "description2" ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading 'description1' ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
+Reading 'description2' ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
 Upgraded 2 system descriptions.
 EOF
       UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
@@ -119,7 +119,7 @@ EOF
         UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       }.to raise_error(
         Machinery::Errors::UpgradeFailed,
-        /Upgrading description ".*" failed:\n.*\nUpgrading description ".*" failed:\n.*/i
+        /Upgrading description '.*' failed:\n.*\nUpgrading description '.*' failed:\n.*/i
       )
     end
 

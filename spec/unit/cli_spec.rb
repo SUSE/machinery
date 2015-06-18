@@ -617,7 +617,7 @@ describe Cli do
       expect{
         Cli.parse_scopes("fd df,u*n")
       }.to raise_error(Machinery::Errors::UnknownScope,
-        /The following scopes are not valid: "fd df", "u\*n"\./)
+        /The following scopes are not valid: 'fd df', 'u\*n'\./)
     end
   end
 
