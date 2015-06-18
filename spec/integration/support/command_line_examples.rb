@@ -120,6 +120,19 @@ shared_examples "CLI" do
           }.to raise_error(Pennyworth::ExecutionFailed, message)
         end
       end
+
+      context "when multiple (undefined) number of arguments are expected" do
+        it "fails with a message" do
+          message = /No arguments given. Nothing to do./
+          expect {
+            @machinery.run_command(
+              "#{machinery_command} remove",
+              as: "vagrant",
+              stderr: :capture
+            )
+          }.to raise_error(Pennyworth::ExecutionFailed, message)
+        end
+      end
     end
   end
 end
