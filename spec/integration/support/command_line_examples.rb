@@ -94,13 +94,26 @@ shared_examples "CLI" do
       end
     end
 
-    describe "list" do
-      context "when more arguments than expected" do
+    describe "validate number of given arguments" do
+      context "when no arguments are expected" do
         it "fails with a message" do
-          message = /The given arguments don't match the command's specified arguments/
+          message = /Too many arguments: got 2 arguments, expected none/
           expect {
             @machinery.run_command(
               "#{machinery_command} list foo bar",
+              as: "vagrant",
+              stderr: :capture
+            )
+          }.to raise_error(Pennyworth::ExecutionFailed, message)
+        end
+      end
+
+      context "when a specific number of arguments are expected" do
+        it "fails with a message" do
+          message = /Too many arguments: got 2 arguments, expected only: NAME/
+          expect {
+            @machinery.run_command(
+              "#{machinery_command} show foo bar",
               as: "vagrant",
               stderr: :capture
             )
