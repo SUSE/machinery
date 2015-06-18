@@ -60,8 +60,9 @@ class ConfigBase
 
     # Check if data type is correct. true and false are not of the same type which makes the check complex
     if value.class != @entries[key][:value].class &&
-      ! ( ( value == true || value == false ) && ( @entries[key][:value].class == TrueClass || @entries[key][:value].class == FalseClass ) )
-      raise Machinery::Errors::MachineryError.new("The value \"#{value}\" for configuration key \"#{key}\" is of an invalid data type.")
+      !(boolean?(value) && boolean?(@entries[key][:value]))
+      raise Machinery::Errors::MachineryError,
+        "The value '#{value}' for configuration key '#{key}' is of an invalid data type."
     end
 
     @entries[key][:value] = value
@@ -69,8 +70,11 @@ class ConfigBase
     save if options[:auto_save]
   end
 
-
   private
+
+  def boolean?(value)
+    value.is_a?(TrueClass) || value.is_a?(FalseClass)
+  end
 
   def save
     config_table_stripped = {}
@@ -82,9 +86,9 @@ class ConfigBase
 
     begin
       File.write(@file, config_table_stripped.to_yaml)
-      Machinery.logger.info("Wrote configuration file \"#{@file}\".")
+      Machinery.logger.info("Wrote configuration file '#{@file}'.")
     rescue => e
-      raise Machinery::Errors::MachineryError.new("Could not write configuration file \"#{@file}\": #{e}.")
+      raise Machinery::Errors::MachineryError.new("Could not write configuration file '#{@file}': #{e}.")
     end
   end
 
@@ -95,7 +99,7 @@ class ConfigBase
       begin
         set(key, value, :auto_save => false )
       rescue => e
-        Machinery::Ui.warn "Warning: The machinery config file \"#{file}\" contains an invalid entry \"#{key}\":\n#{e}"
+        Machinery::Ui.warn "Warning: The machinery config file '#{file}' contains an invalid entry '#{key}':\n#{e}"
       end
     end
   end
@@ -103,9 +107,9 @@ class ConfigBase
   def read_config_file(file)
     begin
       content = YAML.load_file(file)
-      Machinery.logger.info("Read configuration file \"#{file}\".")
+      Machinery.logger.info("Read configuration file '#{file}'.")
     rescue => e
-      Machinery::Ui.warn "Warning: Cannot parse machinery config file \"#{@file}\":\n#{e}"
+      Machinery::Ui.warn "Warning: Cannot parse machinery config file '#{@file}':\n#{e}"
     end
     content
   end

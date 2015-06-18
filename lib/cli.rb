@@ -207,9 +207,9 @@ class Cli
       form = invalid_scopes.length > 1 ? "scopes are" : "scope is"
       raise Machinery::Errors::UnknownScope.new(
         "The following #{form} not valid:" \
-          " \"#{invalid_scopes.join("\", \"")}\"." \
+          " '#{invalid_scopes.join("', '")}'." \
           " Scope names must start with a letter and contain only lowercase" \
-          " letters and digits separated by dashes (\"-\")."
+          " letters and digits separated by dashes ('-')."
       )
     end
 

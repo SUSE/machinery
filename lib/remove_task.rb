@@ -32,11 +32,11 @@ class RemoveTask
 
     Array(names).each do |name|
       if !store.list.include?(name)
-        errors.push("System description \"#{name}\" does not exist.")
+        errors.push("System description '#{name}' does not exist.")
       else
         store.remove(name)
         if options[:verbose]
-          Machinery::Ui.puts "System description \"#{name}\" successfully removed."
+          Machinery::Ui.puts "System description '#{name}' successfully removed."
         end
       end
     end
