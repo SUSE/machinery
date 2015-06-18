@@ -36,7 +36,7 @@ class ShowTask
       LoggedCheetah.run("xdg-open", html_path)
     rescue Cheetah::ExecutionFailed => e
       raise Machinery::Errors::OpenInBrowserFailed.new(
-        "Could not open system description \"#{description.name}\" in the web browser.\n" \
+        "Could not open system description '#{description.name}' in the web browser.\n" \
           "Error: #{e}\n"
       )
     end

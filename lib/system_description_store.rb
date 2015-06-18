@@ -134,7 +134,7 @@ class SystemDescriptionStore
   def validate_existence_of_description(description_name)
     if !list.include?(description_name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{description_name}\" does not exist."
+        "System description '#{description_name}' does not exist."
       )
     end
   end
@@ -142,7 +142,7 @@ class SystemDescriptionStore
   def validate_nonexistence_of_description(description_name)
     if list.include?(description_name)
       raise Machinery::Errors::SystemDescriptionError.new(
-        "A System description with the name \"#{description_name}\" does already exist."
+        "A System description with the name '#{description_name}' does already exist."
       )
     end
   end

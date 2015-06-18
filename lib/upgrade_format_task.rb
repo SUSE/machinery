@@ -19,7 +19,7 @@ class UpgradeFormatTask
   def upgrade(store, name, options = {})
     if !options[:all] && !store.list.include?(name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
-        "System description \"#{name}\" does not exist."
+        "System description '#{name}' does not exist."
       )
     end
 
@@ -35,8 +35,8 @@ class UpgradeFormatTask
     descriptions.each do |description|
       begin
         hash = Manifest.load(description, store.manifest_path(description)).to_hash
-        Machinery.logger.info "Upgrading description \"#{description}\""
-        Machinery::Ui.print "Reading \"#{description}\" ... "
+        Machinery.logger.info "Upgrading description '#{description}'"
+        Machinery::Ui.print "Reading '#{description}' ... "
         migrated = Migration.migrate_description(store, description, force: options[:force])
 
         if migrated
@@ -45,7 +45,7 @@ class UpgradeFormatTask
             " #{hash["meta"]["format_version"]} to #{SystemDescription::CURRENT_FORMAT_VERSION}."
         end
       rescue StandardError => e
-        errors.push("Upgrading description \"#{description}\" failed:\n#{e}")
+        errors.push("Upgrading description '#{description}' failed:\n#{e}")
         Machinery::Ui.puts "Upgrade failed."
       end
     end

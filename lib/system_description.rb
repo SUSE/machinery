@@ -75,14 +75,14 @@ class SystemDescription < Machinery::Object
     def validate_name(name)
       if ! /^[\w\.:-]*$/.match(name)
         raise Machinery::Errors::SystemDescriptionError.new(
-          "System description name \"#{name}\" is invalid. " +
-          "Only \"a-zA-Z0-9_:.-\" are valid characters."
+          "System description name '#{name}' is invalid. " +
+          "Only 'a-zA-Z0-9_:.-' are valid characters."
         )
       end
 
       if name.start_with?(".")
         raise Machinery::Errors::SystemDescriptionError.new(
-          "System description name \"#{name}\" is invalid. " +
+          "System description name '#{name}' is invalid. " +
           "A dot is not allowed as first character."
         )
       end
