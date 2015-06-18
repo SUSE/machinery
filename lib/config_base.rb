@@ -60,8 +60,9 @@ class ConfigBase
 
     # Check if data type is correct. true and false are not of the same type which makes the check complex
     if value.class != @entries[key][:value].class &&
-      ! ( ( value == true || value == false ) && ( @entries[key][:value].class == TrueClass || @entries[key][:value].class == FalseClass ) )
-      raise Machinery::Errors::MachineryError.new("The value '#{value}' for configuration key '#{key}' is of an invalid data type.")
+      !(boolean?(value) && boolean?(@entries[key][:value]))
+      raise Machinery::Errors::MachineryError,
+        "The value '#{value}' for configuration key '#{key}' is of an invalid data type."
     end
 
     @entries[key][:value] = value
@@ -69,8 +70,11 @@ class ConfigBase
     save if options[:auto_save]
   end
 
-
   private
+
+  def boolean?(value)
+    value.is_a?(TrueClass) || value.is_a?(FalseClass)
+  end
 
   def save
     config_table_stripped = {}
