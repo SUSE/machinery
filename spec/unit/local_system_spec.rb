@@ -133,7 +133,9 @@ describe LocalSystem do
         it "shows how to turn off the warning" do
           LocalSystem.validate_machinery_compatibility
 
-          expect(captured_machinery_stderr).to include("'machinery config perform-support-check false'")
+          expect(captured_machinery_stderr).to include(
+            "'machinery config perform-support-check=false'"
+          )
         end
       end
 

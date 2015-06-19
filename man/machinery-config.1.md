@@ -4,7 +4,7 @@
 ### SYNOPSIS
 
 `machinery config`
-    [KEY] [VALUE]
+    [KEY]=[VALUE]
 
 `machinery` help config
 
@@ -31,7 +31,7 @@ The configuration is stored in `~/.machinery/machinery.config`.
 
   * Turn off hints:
 
-    $ `machinery` config hints off
+    $ `machinery` config hints=off
 
   * Show current configuration of hints:
 

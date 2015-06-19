@@ -46,9 +46,9 @@ class Cli
 
       Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
       if @config.hints
-        Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints off'."
+        Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints=off'."
       else
-        Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints on'."
+        Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints=on'."
       end
 
       Hint.print(:get_started)
@@ -717,14 +717,22 @@ class Cli
   arg "VALUE", :optional
   command "config" do |c|
     c.action do |global_options,options,args|
-      key = args[0]
-      value = args[1]
+      if args[0] && args[0].include?("=")
+        if args[1]
+          raise GLI::BadCommandLine, "Too many arguments: got 2 arguments, expected only: KEY=VALUE"
+        else
+          key, value = args[0].split("=")
+        end
+      else
+        key = args[0]
+        value = args[1]
+      end
 
       task = ConfigTask.new
       task.config(key, value)
 
       if key == "hints" && !@config.hints
-        Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints on'."
+        Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints=on'."
       end
     end
   end
