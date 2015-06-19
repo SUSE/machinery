@@ -18,4 +18,4 @@
 
   * /etc/postfix/LICENSE (postfix-2.9.6, deleted)
   * /etc/postfix/TLS_LICENSE (postfix-2.9.6, mode, user, group)
-
+  * /etc/postfix/generic (postfix-2.9.6, link_path)

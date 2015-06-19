@@ -2019,6 +2019,18 @@
         "group": "users",
         "mode": "666",
         "type": "file"
+      },
+      {
+        "name": "/etc/postfix/generic",
+        "package_name": "postfix",
+        "package_version": "2.9.6",
+        "status": "changed",
+        "changes": ["link_path"],
+        "user": "root",
+        "group": "root",
+        "mode": "777",
+        "type": "link",
+	      "target": "/test-f'le"
       }
     ]
   },
@@ -2027,6 +2039,14 @@
     "files": [
       {
         "name": "/etc/magicapp.conf",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 0,
+        "mode": "644"
+      },
+      {
+        "name": "/test-f'le",
         "type": "file",
         "user": "root",
         "group": "root",
@@ -2072,6 +2092,18 @@
         "user": "bin",
         "group": "wheel",
         "type": "file"
+      },
+      {
+        "name": "/usr/share/man/man1/sendmail.1.gz",
+        "package_name": "postfix",
+        "package_version": "2.9.6",
+        "status": "changed",
+        "changes": ["link_path"],
+        "mode": "777",
+        "user": "root",
+        "group": "root",
+        "type": "link",
+        "target": "/test-f'le"
       }
     ]
   },
