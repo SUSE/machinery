@@ -100,7 +100,7 @@ describe LocalSystem do
 
         LocalSystem.validate_machinery_compatibility
 
-        expect(captured_machinery_output).to eq ""
+        expect(captured_machinery_stderr).to eq ""
       end
     end
 
@@ -116,13 +116,13 @@ describe LocalSystem do
           )
           LocalSystem.validate_machinery_compatibility
 
-          expect(captured_machinery_output).to include("platform we do not explicitly support")
+          expect(captured_machinery_stderr).to include("platform we do not explicitly support")
         end
 
         it "lists all supported operating systems if the host is not supported" do
           LocalSystem.validate_machinery_compatibility
 
-          expect(captured_machinery_output).to include(
+          expect(captured_machinery_stderr).to include(
             "openSUSE 13.2 (Harlequin)", "SUSE Linux Enterprise Server 12"
           )
         end
@@ -130,7 +130,7 @@ describe LocalSystem do
         it "shows how to turn off the warning" do
           LocalSystem.validate_machinery_compatibility
 
-          expect(captured_machinery_output).to include("'machinery config perform-support-check false'")
+          expect(captured_machinery_stderr).to include("'machinery config perform-support-check false'")
         end
       end
 
@@ -141,7 +141,7 @@ describe LocalSystem do
           )
           LocalSystem.validate_machinery_compatibility
 
-          expect(captured_machinery_output).to eq("")
+          expect(captured_machinery_stderr).to eq("")
         end
       end
     end
