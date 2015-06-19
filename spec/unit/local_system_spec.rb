@@ -110,10 +110,13 @@ describe LocalSystem do
       end
 
       context "when plattform_support_check is enabled" do
-        it "shows a warning" do
+        before(:each) do
           allow(Machinery::Config).to receive(:new).and_return(
             double(perform_support_check: true)
           )
+        end
+
+        it "shows a warning" do
           LocalSystem.validate_machinery_compatibility
 
           expect(captured_machinery_stderr).to include("platform we do not explicitly support")
