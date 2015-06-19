@@ -109,7 +109,9 @@ describe LocalSystem do
         allow(Machinery::Config).to receive(:new).and_return(
           double(perform_support_check: true)
         )
+      before(:each) do
         allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+      end
 
         LocalSystem.validate_machinery_compatibility
 
@@ -120,7 +122,6 @@ describe LocalSystem do
         allow(Machinery::Config).to receive(:new).and_return(
           double(perform_support_check: false)
         )
-        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
 
         LocalSystem.validate_machinery_compatibility
 
@@ -129,7 +130,6 @@ describe LocalSystem do
     end
 
     it "lists all supported operating systems if the host is not supported" do
-      allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
 
       LocalSystem.validate_machinery_compatibility
 
