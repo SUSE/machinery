@@ -105,38 +105,45 @@ describe LocalSystem do
     end
 
     context "on hosts that can not run machinery" do
-      it "shows a warning when perform_support_check is enabled in config" do
-        allow(Machinery::Config).to receive(:new).and_return(
-          double(perform_support_check: true)
-        )
       before(:each) do
         allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
       end
 
-        LocalSystem.validate_machinery_compatibility
+      context "when plattform_support_check is enabled" do
+        it "shows a warning" do
+          allow(Machinery::Config).to receive(:new).and_return(
+            double(perform_support_check: true)
+          )
+          LocalSystem.validate_machinery_compatibility
 
-        expect(captured_machinery_output).to include("platform we do not explicitly support")
+          expect(captured_machinery_output).to include("platform we do not explicitly support")
+        end
+
+        it "lists all supported operating systems if the host is not supported" do
+          LocalSystem.validate_machinery_compatibility
+
+          expect(captured_machinery_output).to include(
+            "openSUSE 13.2 (Harlequin)", "SUSE Linux Enterprise Server 12"
+          )
+        end
+
+        it "shows how to turn off the warning" do
+          LocalSystem.validate_machinery_compatibility
+
+          expect(captured_machinery_output).to include("'machinery config perform-support-check false'")
+        end
       end
 
-      it "shows no warning when perform_support_check is disabled in config" do
-        allow(Machinery::Config).to receive(:new).and_return(
-          double(perform_support_check: false)
-        )
+      context "when plattform_support_check is disabled" do
+        it "shows no warning" do
+          allow(Machinery::Config).to receive(:new).and_return(
+            double(perform_support_check: false)
+          )
+          LocalSystem.validate_machinery_compatibility
 
-        LocalSystem.validate_machinery_compatibility
-
-        expect(captured_machinery_output).to eq("")
+          expect(captured_machinery_output).to eq("")
+        end
       end
-    end
-
-    it "lists all supported operating systems if the host is not supported" do
-
-      LocalSystem.validate_machinery_compatibility
-
-      expect(captured_machinery_output).to include(
-        ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
-          " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
-        )
     end
   end
 
