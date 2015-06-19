@@ -71,7 +71,8 @@ EOF
       # test file content
       expect(
         @machinery.run(
-          "grep config_files_integration_test #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/etc/crontab",
+          "grep config_files_integrationtest #{machinery_config[:machinery_dir]}/" \
+          "#{@subject_system.ip}/config_files/etc/crontab",
           as: "vagrant"
         )
       ).to succeed.and have_stdout(expected_content)

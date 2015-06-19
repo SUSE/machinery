@@ -92,8 +92,8 @@ EOF
       it "does not extract unmanaged directories which are remote file systems" do
         expect(
           @machinery.run(
-            "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
-            as: "vagrant"
+            "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; " \
+            "find -type f", as: "vagrant"
           )
         ).to succeed.and not_include_stdout("./#{remote_file_system_tree_path}.tgz")
       end

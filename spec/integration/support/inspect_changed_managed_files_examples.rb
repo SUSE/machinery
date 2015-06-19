@@ -74,8 +74,8 @@ EOF
       # test file content
       expect(
         @machinery.run(
-          "cat #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/usr/share/info/sed.info.gz",
-          as: machinery_config[:owner]
+          "cat #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/" \
+          "usr/share/info/sed.info.gz", as: machinery_config[:owner]
         )
       ).to succeed.and include_stdout("changed managed files test entry")
     end

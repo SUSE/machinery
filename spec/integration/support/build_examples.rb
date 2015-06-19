@@ -34,8 +34,8 @@ shared_examples "build" do |distribution|
       measure("Build image") do
         expect(
           @machinery.run(
-            "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > /tmp/#{distribution}-build.log",
-            as: "vagrant"
+            "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > " \
+            "/tmp/#{distribution}-build.log", as: "vagrant"
           )
         ).to succeed.with_stderr
       end
@@ -69,7 +69,8 @@ shared_examples "build" do |distribution|
         measure("inspect image") do
           expect(
             @machinery.run(
-              "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns,repositories,config-files,unmanaged-files,services,changed-managed-files -x",
+              "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns," \
+              "repositories,config-files,unmanaged-files,services,changed-managed-files -x",
               as: "vagrant"
             )
           ).to succeed
@@ -126,13 +127,14 @@ shared_examples "build" do |distribution|
         it "contains the changed managed file" do
           expect(
             @machinery.run(
-              "find", "/home/vagrant/.machinery/built_image/changed_managed_files/", "-printf", "%P\n"
+              "find", "/home/vagrant/.machinery/built_image/changed_managed_files/",
+              "-printf", "%P\n"
             )
           ).to succeed.and include_stdout("usr/share/doc/packages/rsync/README")
           expect(
             @machinery.run(
-              "md5sum",
-              "/home/vagrant/.machinery/built_image/changed_managed_files/usr/share/doc/packages/rsync/README"
+              "md5sum", "/home/vagrant/.machinery/built_image/changed_managed_files/usr/share/" \
+              "doc/packages/rsync/README"
             )
           ).to succeed.and include_stdout("23183915f5dd4202d2e00520807f02ff")
         end

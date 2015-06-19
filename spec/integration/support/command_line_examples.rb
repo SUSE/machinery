@@ -32,7 +32,9 @@ shared_examples "CLI" do
     it "processes help option for subcommands" do
       expect(
         @machinery.run("#{machinery_command} inspect --help", as: "vagrant")
-      ).to succeed.and include_stdout("machinery [global options] inspect [command options] HOSTNAME")
+      ).to succeed.and include_stdout(
+        "machinery [global options] inspect [command options] HOSTNAME"
+      )
     end
 
     it "does not offer --no-help or unneccessary negatable options" do
