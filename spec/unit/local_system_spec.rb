@@ -100,43 +100,53 @@ describe LocalSystem do
 
         LocalSystem.validate_machinery_compatibility
 
-        expect(captured_machinery_output).to eq ""
+        expect(captured_machinery_stderr).to eq ""
       end
     end
 
     context "on hosts that can not run machinery" do
-      it "shows a warning when perform_support_check is enabled in config" do
-        allow(Machinery::Config).to receive(:new).and_return(
-          double(perform_support_check: true)
-        )
+      before(:each) do
         allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
-
-        LocalSystem.validate_machinery_compatibility
-
-        expect(captured_machinery_output).to include("platform we do not explicitly support")
       end
 
-      it "shows no warning when perform_support_check is disabled in config" do
-        allow(Machinery::Config).to receive(:new).and_return(
-          double(perform_support_check: false)
-        )
-        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+      context "when plattform_support_check is enabled" do
+        before(:each) do
+          allow(Machinery::Config).to receive(:new).and_return(
+            double(perform_support_check: true)
+          )
+        end
 
-        LocalSystem.validate_machinery_compatibility
+        it "shows a warning" do
+          LocalSystem.validate_machinery_compatibility
 
-        expect(captured_machinery_output).to eq("")
+          expect(captured_machinery_stderr).to include("platform we do not explicitly support")
+        end
+
+        it "lists all supported operating systems if the host is not supported" do
+          LocalSystem.validate_machinery_compatibility
+
+          expect(captured_machinery_stderr).to include(
+            "openSUSE 13.2 (Harlequin)", "SUSE Linux Enterprise Server 12"
+          )
+        end
+
+        it "shows how to turn off the warning" do
+          LocalSystem.validate_machinery_compatibility
+
+          expect(captured_machinery_stderr).to include("'machinery config perform-support-check false'")
+        end
       end
-    end
 
-    it "lists all supported operating systems if the host is not supported" do
-      allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
+      context "when plattform_support_check is disabled" do
+        it "shows no warning" do
+          allow(Machinery::Config).to receive(:new).and_return(
+            double(perform_support_check: false)
+          )
+          LocalSystem.validate_machinery_compatibility
 
-      LocalSystem.validate_machinery_compatibility
-
-      expect(captured_machinery_output).to include(
-        ": SUSE Linux Enterprise Server 12, openSUSE 13.1 (Bottle)," \
-          " openSUSE 13.2 (Harlequin), openSUSE Tumbleweed"
-        )
+          expect(captured_machinery_stderr).to eq("")
+        end
+      end
     end
   end
 
