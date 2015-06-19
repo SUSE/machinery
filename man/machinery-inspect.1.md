@@ -46,7 +46,7 @@ trigger errors.
     Defines the user which is used to access the inspected system via SSH.
     This user needs to be allowed to run certain commands using sudo (see
     PREREQUISITES for more information).
-    To change the default-user use `machinery config remote-user USER`
+    To change the default-user use `machinery config remote-user=USER`
 
   * `-x`, `--extract-files` (optional):
     Extract changed configuration and unmanaged files from the inspected system.

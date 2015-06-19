@@ -46,9 +46,9 @@ class Cli
 
       Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
       if @config.hints
-        Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints off'."
+        Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints=off'."
       else
-        Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints on'."
+        Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints=on'."
       end
 
       Hint.print(:get_started)
@@ -732,7 +732,7 @@ class Cli
       task.config(key, value)
 
       if key == "hints" && !@config.hints
-        Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints on'."
+        Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints=on'."
       end
     end
   end
