@@ -717,8 +717,16 @@ class Cli
   arg "VALUE", :optional
   command "config" do |c|
     c.action do |global_options,options,args|
-      key = args[0]
-      value = args[1]
+      if args[0] && args[0].include?("=")
+        if args[1]
+          raise GLI::BadCommandLine, "Too many arguments: got 2 arguments, expected only: KEY=VALUE"
+        else
+          key, value = args[0].split("=")
+        end
+      else
+        key = args[0]
+        value = args[1]
+      end
 
       task = ConfigTask.new
       task.config(key, value)

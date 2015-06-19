@@ -559,6 +559,12 @@ describe Cli do
         with("foo", "bar")
       run_command(["config", "foo", "bar"])
     end
+
+    it "handles parameter with equal sign syntax" do
+      expect_any_instance_of(ConfigTask).to receive(:config).
+        with("foo", "bar")
+      run_command(["config", "foo=bar"])
+    end
   end
 
   describe ".process_scope_option" do
