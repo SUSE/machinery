@@ -31,8 +31,8 @@ def prepare_machinery_for_host(system, ip, opts = {})
 end
 
 def prepare_local_machinery_for_host(system, ip)
-  system.run_command("ssh-keygen -R #{ip}")
-  system.run_command("ssh-keyscan -H #{ip} >> ~/.ssh/known_hosts")
+  system.run("ssh-keygen -R #{ip}")
+  system.run("ssh-keyscan -H #{ip} >> ~/.ssh/known_hosts")
 end
 
 def prepare_remote_machinery_for_host(system, ip, opts)
@@ -52,7 +52,7 @@ def prepare_remote_machinery_for_host(system, ip, opts)
     mode: "600"
   )
 
-  system.run_command(
+  system.run(
     "echo -e \"Host #{ip}\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null\" >> ~/.ssh/config",
     as: "vagrant"
   )

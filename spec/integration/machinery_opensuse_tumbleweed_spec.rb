@@ -116,21 +116,22 @@ describe "machinery@openSUSE Tumbleweed" do
       describe "--scope=#{scope}" do
         it "inspects #{scope}" do
           measure("Inspect #{scope}") do
-            @machinery.run_command(
-              "#{machinery_command} inspect #{@subject_system.ip} --remote-user machinery" \
-                " --extract-files --scope=#{scope} --name=test",
-              as: "vagrant",
-              stdout: :capture
-            )
+            expect(
+              @machinery.run(
+                "#{machinery_command} inspect #{@subject_system.ip} --remote-user machinery" \
+                  " --extract-files --scope=#{scope} --name=test",
+                as: "vagrant"
+              )
+            ).to have_exit_code(0)
           end
 
-          show_output = @machinery.run_command(
-            "#{machinery_command} show test --scope=#{scope}",
-            as: "vagrant",
-            stdout: :capture
+          show_command = @machinery.run(
+            "#{machinery_command} show test --scope=#{scope}", as: "vagrant"
           )
+          expect(show_command).to succeed
+
           test_data[scope].each do |regex|
-            expect(show_output).to match(regex)
+            expect(show_command.stdout).to match(regex)
           end
         end
       end
