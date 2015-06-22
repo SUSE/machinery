@@ -122,7 +122,7 @@ describe "machinery@openSUSE Tumbleweed" do
                   " --extract-files --scope=#{scope} --name=test",
                 as: "vagrant"
               )
-            ).to have_exit_code(0)
+            ).to succeed.with_or_without_stderr
           end
 
           show_command = @machinery.run_command(
