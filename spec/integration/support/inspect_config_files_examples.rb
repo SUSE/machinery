@@ -71,7 +71,7 @@ EOF
       # test file content
       expect(
         @machinery.run_command(
-          "grep config_files_integrationtest #{machinery_config[:machinery_dir]}/" \
+          "grep config_files_integration_test #{machinery_config[:machinery_dir]}/" \
           "#{@subject_system.ip}/config_files/etc/crontab",
           as: "vagrant"
         )
