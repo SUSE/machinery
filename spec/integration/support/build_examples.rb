@@ -37,7 +37,7 @@ shared_examples "build" do |distribution|
             "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > " \
             "/tmp/#{distribution}-build.log", as: "vagrant"
           )
-        ).to succeed.with_stderr
+        ).to succeed.with_or_without_stderr
       end
 
       # Check that image was built
