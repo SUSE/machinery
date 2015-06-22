@@ -4,7 +4,10 @@
 ### SYNOPSIS
 
 `machinery config`
-    [KEY]=[VALUE]
+
+`machinery config` KEY
+
+`machinery config` KEY=VALUE
 
 `machinery` help config
 
