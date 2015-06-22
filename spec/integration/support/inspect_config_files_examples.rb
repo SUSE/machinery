@@ -21,7 +21,7 @@ shared_examples "inspect config files" do |base|
   describe "--scope=config-files" do
     it "extracts list of config files and shows progress" do
       measure("Inspect system") do
-        inspect_command = @machinery.run(
+        inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
             "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=config-files --extract-files",
@@ -31,7 +31,7 @@ shared_examples "inspect config files" do |base|
         @machinery_output = inspect_command.stdout
       end
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
         "#{machinery_command} show #{@subject_system.ip} --scope=config-files",
         as: "vagrant"
       )
@@ -49,7 +49,7 @@ EOF
     end
 
     it "extracts files from system" do
-      description_json = @machinery.run(
+      description_json = @machinery.run_command(
         "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
         as: machinery_config[:owner]
       ).stdout
@@ -57,7 +57,7 @@ EOF
 
       actual_config_files = nil
       measure("Gather information about extracted files") do
-        actual_config_files = @machinery.run(
+        actual_config_files = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/; find -type f",
           as: "vagrant"
         ).stdout.split("\n").map { |file_name| # Remove trailing dots returned by find
@@ -70,7 +70,7 @@ EOF
 
       # test file content
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "grep config_files_integrationtest #{machinery_config[:machinery_dir]}/" \
           "#{@subject_system.ip}/config_files/etc/crontab",
           as: "vagrant"

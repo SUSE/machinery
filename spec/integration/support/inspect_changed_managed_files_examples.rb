@@ -19,7 +19,7 @@ shared_examples "inspect changed managed files" do |base|
   describe "--scope=changed-managed-files" do
     it "extracts list of managed files and shows progress" do
       measure("Inspect system") do
-        inspect_command = @machinery.run(
+        inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
             "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=changed-managed-files --extract-files",
@@ -29,7 +29,7 @@ shared_examples "inspect changed managed files" do |base|
         @machinery_output = inspect_command.stdout
       end
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
         "#{machinery_command} show #{@subject_system.ip} --scope=changed-managed-files",
         as: machinery_config[:owner]
       )
@@ -47,7 +47,7 @@ EOF
     end
 
     it "extracts files from the system" do
-      description_json = @machinery.run(
+      description_json = @machinery.run_command(
         "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
         as: machinery_config[:owner]
       ).stdout
@@ -55,7 +55,7 @@ EOF
       actual_managed_files_list = nil
 
       measure("Gather information about extracted files") do
-        actual_managed_files_list = @machinery.run(
+        actual_managed_files_list = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/; find",
           as: machinery_config[:owner]
         ).stdout.split("\n").
@@ -73,7 +73,7 @@ EOF
 
       # test file content
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "cat #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/" \
           "usr/share/info/sed.info.gz", as: machinery_config[:owner]
         )

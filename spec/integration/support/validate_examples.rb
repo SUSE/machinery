@@ -33,7 +33,7 @@ EOF
       )
 
       expect(
-        @machinery.run("machinery validate validation-error", as: "vagrant")
+        @machinery.run_command("machinery validate validation-error", as: "vagrant")
       ).to fail.and have_stderr(/#{Regexp.quote(expected)}/)
     end
 
@@ -54,7 +54,7 @@ EOF
       )
 
       expect(
-        @machinery.run("machinery validate invalid-json", as: "vagrant")
+        @machinery.run_command("machinery validate invalid-json", as: "vagrant")
       ).to fail.and have_stderr(/#{Regexp.quote(expected)}/)
     end
   end

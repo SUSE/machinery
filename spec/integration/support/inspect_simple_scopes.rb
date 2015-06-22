@@ -20,7 +20,7 @@ shared_examples "inspect simple scope" do |scope, base|
     it "inspects #{scope}" do
       measure("Inspect #{scope}") do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "#{machinery_command} inspect #{@subject_system.ip} " \
               "#{inspect_options if defined?(inspect_options)} " \
               "--scope=#{scope} --name=test",
@@ -30,7 +30,7 @@ shared_examples "inspect simple scope" do |scope, base|
       end
 
       expected = File.read("spec/data/#{scope}/#{base}")
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
         "#{machinery_command} show test --scope=#{scope}",
         as: "vagrant"
       )

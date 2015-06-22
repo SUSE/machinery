@@ -35,7 +35,7 @@ shared_examples "inspect unmanaged files" do |base|
     it "extracts list of unmanaged files" do
       inspect_command = nil
       measure("Inspect system") do
-        inspect_command = @machinery.run(
+        inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
             "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=unmanaged-files --extract-files " \
@@ -45,7 +45,7 @@ shared_examples "inspect unmanaged files" do |base|
         expect(inspect_command).to succeed.with_stderr.and include_stderr("contains invalid UTF-8")
       end
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
         "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant"
       )
@@ -75,7 +75,7 @@ EOF
       link_example = File.read("spec/data/unmanaged_files/output_link.#{base}")
 
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
           as: "vagrant"
         )
@@ -91,7 +91,7 @@ EOF
 
       it "does not extract unmanaged directories which are remote file systems" do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; " \
             "find -type f", as: "vagrant"
           )
@@ -100,7 +100,7 @@ EOF
 
       it "lists remote fs directories as 'remote_dir'" do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
             as: "vagrant"
           )
@@ -109,7 +109,7 @@ EOF
 
       it "also shows remote fs which are mounted in a sub directory of a tree" do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
             as: "vagrant"
           )
@@ -120,7 +120,7 @@ EOF
     it "filters directories which consist temporary or automatically generated files" do
       measure("Get list of unmanaged-files") do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
             as: "vagrant"
           )
@@ -138,7 +138,7 @@ EOF
 
     it "adheres to user provided filters" do
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
           as: "vagrant"
         )
@@ -150,12 +150,12 @@ EOF
       tarballs_command = nil
       files_command = nil
       measure("Gather information about extracted files") do
-        tarballs_command = @machinery.run(
+        tarballs_command = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; find -type f",
           as: "vagrant"
         )
 
-        files_command = @machinery.run(
+        files_command = @machinery.run_command(
           "tar -tf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/files.tgz",
           as: "vagrant"
         )
@@ -189,7 +189,7 @@ EOF
       FileUtils.rm_r(tmp_dir)
       expected_md5sums = parse_md5sums(expected_output)
 
-      md5_command = @machinery.run(
+      md5_command = @machinery.run_command(
         "cd /tmp; tar -xf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/srv/test.tgz;" \
           " md5sum /tmp/srv/test/*",
         as: "vagrant"
@@ -201,13 +201,13 @@ EOF
     end
 
     it "can deal with spaces and quotes in file names" do
-      file_command = @machinery.run(
+      file_command = @machinery.run_command(
         "ls #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/opt/test-quote-char/test-dir-name-with-\\'\\ quote-char\\ \\'/unmanaged-dir-with-\\'\\ quote\\ \\'.tgz",
         as: "vagrant"
       )
       expect(file_command).to succeed.and include_stdout("unmanaged-dir-with-' quote '.tgz")
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
         "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
         as: "vagrant"
       )

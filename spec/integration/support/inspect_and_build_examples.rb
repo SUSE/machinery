@@ -26,14 +26,14 @@ shared_examples "inspect and build" do |bases|
 
         # Enabled experimental features so that the --exclude option can be used
         expect(
-          @machinery.run("machinery config experimental-features on", as: "vagrant")
+          @machinery.run_command("machinery config experimental-features on", as: "vagrant")
         ).to succeed
       end
 
       it "inspects" do
         measure("Inspect") do
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "machinery --exclude=/packages/name=test-quote-char inspect #{@subject_system.ip} " \
               " -x --name=build_test --remote-user=machinery",
               as: "vagrant"
@@ -45,7 +45,7 @@ shared_examples "inspect and build" do |bases|
       it "builds" do
         measure("Build") do
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "machinery build -i /home/vagrant/build_image -d -s " \
               "> /tmp/#{base}-build.log build_test",
               as: "vagrant"
@@ -57,7 +57,7 @@ shared_examples "inspect and build" do |bases|
       it "extracts and boots" do
         measure("Extract and boot") do
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "find", "/home/vagrant/build_image", "-name", "*qcow2"
             )
           ).to succeed.and include_stdout("qcow2")
@@ -73,7 +73,7 @@ shared_examples "inspect and build" do |bases|
 
           # Run 'ls' via ssh in the built system to verify its booted and accessible.
           expect(
-            @machinery.run("ls", "tmp")
+            @machinery.run_command("ls", "tmp")
           ).to succeed
         end
       end

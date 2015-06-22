@@ -30,14 +30,14 @@ shared_examples "analyze config file diffs" do |distribution|
 
       measure("Analyze system description") do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "machinery analyze #{distribution}-build --operation=config-file-diffs",
             as: "vagrant"
           )
         ).to succeed
       end
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
         "machinery show #{distribution}-build --scope=config-files --show-diffs",
         as: "vagrant"
       )

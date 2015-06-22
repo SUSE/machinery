@@ -33,7 +33,7 @@ shared_examples "build" do |distribution|
 
       measure("Build image") do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > " \
             "/tmp/#{distribution}-build.log", as: "vagrant"
           )
@@ -42,7 +42,7 @@ shared_examples "build" do |distribution|
 
       # Check that image was built
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "find", "/home/vagrant/build_image", "-name", "*qcow2"
         )
       ).to succeed.and include_stdout("qcow2")
@@ -51,7 +51,7 @@ shared_examples "build" do |distribution|
     describe "built image" do
       before(:all) do
         local_image = nil
-        images = @machinery.run(
+        images = @machinery.run_command(
           "find", "/home/vagrant/build_image", "-name", "*qcow2"
         ).stdout
         measure("Extract image") do
@@ -68,7 +68,7 @@ shared_examples "build" do |distribution|
 
         measure("inspect image") do
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns," \
               "repositories,config-files,unmanaged-files,services,changed-managed-files -x",
               as: "vagrant"
@@ -77,7 +77,7 @@ shared_examples "build" do |distribution|
         end
 
         # Read in system description from built and booted image
-        new_description_json = @machinery.run(
+        new_description_json = @machinery.run_command(
           "cat ~/.machinery/built_image/manifest.json",
           as: "vagrant"
         ).stdout
@@ -105,7 +105,7 @@ shared_examples "build" do |distribution|
       describe "config-files:" do
         it "contains the changed config file" do
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "find", "/home/vagrant/.machinery/built_image/config_files/", "-printf", "%P\n"
             )
           ).to succeed.and include_stdout("etc/crontab")
@@ -118,7 +118,7 @@ shared_examples "build" do |distribution|
 
         it "removed the deleted config file" do
           expect(
-            @test_system.run("ls /etc/postfix/LICENSE")
+            @test_system.run_command("ls /etc/postfix/LICENSE")
           ).to fail.and include_stderr("No such file")
         end
       end
@@ -126,13 +126,13 @@ shared_examples "build" do |distribution|
       describe "changed-managed-files:" do
         it "contains the changed managed file" do
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "find", "/home/vagrant/.machinery/built_image/changed_managed_files/",
               "-printf", "%P\n"
             )
           ).to succeed.and include_stdout("usr/share/doc/packages/rsync/README")
           expect(
-            @machinery.run(
+            @machinery.run_command(
               "md5sum", "/home/vagrant/.machinery/built_image/changed_managed_files/usr/share/" \
               "doc/packages/rsync/README"
             )
@@ -146,7 +146,7 @@ shared_examples "build" do |distribution|
 
         it "removed the deleted managed file" do
           expect(
-            @test_system.run("ls /usr/share/doc/packages/rsync/NEWS")
+            @test_system.run_command("ls /usr/share/doc/packages/rsync/NEWS")
           ).to fail.and include_stderr("No such file")
         end
       end
@@ -159,7 +159,7 @@ shared_examples "build" do |distribution|
 
         # Check file content
         expect(
-          @test_system.run(
+          @test_system.run_command(
             "cat '/usr/local/magicapp/weird-filenames/spacy file name'",
             as: "root"
           )

@@ -31,7 +31,7 @@ shared_examples "autoyast export" do
 
       measure("export to autoyast") do
         expect(
-          @machinery.run(
+          @machinery.run_command(
             "#{machinery_command} export-autoyast jeos --autoyast-dir=/tmp",
             as: machinery_config[:owner]
           )
@@ -39,7 +39,7 @@ shared_examples "autoyast export" do
       end
 
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "ls /tmp/jeos-autoyast",
           as: machinery_config[:owner]
         )

@@ -26,14 +26,14 @@ shared_examples "upgrade format" do
       )
 
       expect(
-        @machinery.run("machinery show format_v1", as: "vagrant")
+        @machinery.run_command("machinery show format_v1", as: "vagrant")
       ).to fail.and include_stderr("incompatible data format")
 
       expect(
-        @machinery.run("machinery upgrade-format format_v1", as: "vagrant")
+        @machinery.run_command("machinery upgrade-format format_v1", as: "vagrant")
       ).to succeed
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
           "machinery show format_v1 -s unmanaged-files",
           as: "vagrant"
       )
@@ -53,10 +53,10 @@ shared_examples "upgrade format" do
       )
 
       expect(
-        @machinery.run("machinery upgrade-format format_v2", as: "vagrant")
+        @machinery.run_command("machinery upgrade-format format_v2", as: "vagrant")
       ).to succeed
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
           "machinery show format_v2 --scope=config-files --show-diffs",
           as: "vagrant"
       )
@@ -66,7 +66,7 @@ shared_examples "upgrade format" do
       )
       expect(show_command.stdout).to match_machinery_show_scope(expected)
 
-      show_command = @machinery.run(
+      show_command = @machinery.run_command(
           "machinery show format_v2 --scope=repositories --show-diffs",
           as: "vagrant"
       )

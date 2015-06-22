@@ -117,7 +117,7 @@ describe "machinery@openSUSE Tumbleweed" do
         it "inspects #{scope}" do
           measure("Inspect #{scope}") do
             expect(
-              @machinery.run(
+              @machinery.run_command(
                 "#{machinery_command} inspect #{@subject_system.ip} --remote-user machinery" \
                   " --extract-files --scope=#{scope} --name=test",
                 as: "vagrant"
@@ -125,7 +125,7 @@ describe "machinery@openSUSE Tumbleweed" do
             ).to have_exit_code(0)
           end
 
-          show_command = @machinery.run(
+          show_command = @machinery.run_command(
             "#{machinery_command} show test --scope=#{scope}", as: "vagrant"
           )
           expect(show_command).to succeed

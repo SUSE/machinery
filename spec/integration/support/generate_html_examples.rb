@@ -26,11 +26,11 @@ shared_examples "generate html" do
       )
 
       expect(
-        @machinery.run("machinery generate-html jeos", as: "vagrant")
+        @machinery.run_command("machinery generate-html jeos", as: "vagrant")
       ).to succeed
 
       expect(
-        @machinery.run(
+        @machinery.run_command(
           "ls /home/vagrant/.machinery/jeos/index.html",
           as: "vagrant"
         )
