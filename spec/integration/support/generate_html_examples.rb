@@ -25,18 +25,16 @@ shared_examples "generate html" do
         group: "users"
       )
 
-      @machinery.run_command(
-        "machinery generate-html jeos",
-        as: "vagrant"
-      )
+      expect(
+        @machinery.run_command("machinery generate-html jeos", as: "vagrant")
+      ).to succeed
 
-      file_list = @machinery.run_command(
-        "ls /home/vagrant/.machinery/jeos/index.html",
-        stdout: :capture,
-        as: "vagrant"
-      ).chomp
-
-      expect(file_list).to eq("/home/vagrant/.machinery/jeos/index.html")
+      expect(
+        @machinery.run_command(
+          "ls /home/vagrant/.machinery/jeos/index.html",
+          as: "vagrant"
+        )
+      ).to succeed.and include_stdout("/home/vagrant/.machinery/jeos/index.html")
     end
   end
 end

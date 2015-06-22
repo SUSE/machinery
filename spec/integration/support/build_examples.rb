@@ -32,25 +32,28 @@ shared_examples "build" do |distribution|
       )
 
       measure("Build image") do
-        @machinery.run_command(
-          "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > /tmp/#{distribution}-build.log",
-          as: "vagrant"
-        )
+        expect(
+          @machinery.run_command(
+            "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > " \
+            "/tmp/#{distribution}-build.log", as: "vagrant"
+          )
+        ).to succeed.with_stderr
       end
 
       # Check that image was built
-      images = @machinery.run_command(
-        "find", "/home/vagrant/build_image", "-name", "*qcow2", stdout: :capture
-      )
-      expect(images).not_to be_empty
+      expect(
+        @machinery.run_command(
+          "find", "/home/vagrant/build_image", "-name", "*qcow2"
+        )
+      ).to succeed.and include_stdout("qcow2")
     end
 
     describe "built image" do
       before(:all) do
         local_image = nil
         images = @machinery.run_command(
-          "find", "/home/vagrant/build_image", "-name", "*qcow2", stdout: :capture
-        )
+          "find", "/home/vagrant/build_image", "-name", "*qcow2"
+        ).stdout
         measure("Extract image") do
           # Extract image from master VM
           image = images.split.first.chomp
@@ -64,18 +67,20 @@ shared_examples "build" do |distribution|
         prepare_machinery_for_host(@machinery, @test_system.ip, password: "linux")
 
         measure("inspect image") do
-          @machinery.run_command(
-            "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns,repositories,config-files,unmanaged-files,services,changed-managed-files -x",
-            as: "vagrant"
-          )
+          expect(
+            @machinery.run_command(
+              "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns," \
+              "repositories,config-files,unmanaged-files,services,changed-managed-files -x",
+              as: "vagrant"
+            )
+          ).to succeed
         end
 
         # Read in system description from built and booted image
         new_description_json = @machinery.run_command(
           "cat ~/.machinery/built_image/manifest.json",
-          as: "vagrant",
-          stdout: :capture
-        )
+          as: "vagrant"
+        ).stdout
         @new_description = create_test_description(json: new_description_json)
       end
 
@@ -99,11 +104,11 @@ shared_examples "build" do |distribution|
 
       describe "config-files:" do
         it "contains the changed config file" do
-          actual_config_files = @machinery.run_command(
-            "find", "/home/vagrant/.machinery/built_image/config_files/", "-printf", "%P\n",
-            stdout: :capture
-          ).split("\n")
-          expect(actual_config_files).to include("etc/crontab")
+          expect(
+            @machinery.run_command(
+              "find", "/home/vagrant/.machinery/built_image/config_files/", "-printf", "%P\n"
+            )
+          ).to succeed.and include_stdout("etc/crontab")
         end
 
         it "contains the changed config-files from the system description" do
@@ -112,26 +117,26 @@ shared_examples "build" do |distribution|
         end
 
         it "removed the deleted config file" do
-          expect {
-            @test_system.run_command("ls /etc/postfix/LICENSE", stdout: :capture)
-          }.to raise_error(Pennyworth::ExecutionFailed, /No such file/)
+          expect(
+            @test_system.run_command("ls /etc/postfix/LICENSE")
+          ).to fail.and include_stderr("No such file")
         end
       end
 
       describe "changed-managed-files:" do
         it "contains the changed managed file" do
-          actual_files = @machinery.run_command(
-            "find", "/home/vagrant/.machinery/built_image/changed_managed_files/", "-printf", "%P\n",
-            stdout: :capture
-          ).split("\n")
-          actual_md5 = @machinery.run_command(
-            "md5sum",
-            "/home/vagrant/.machinery/built_image/changed_managed_files/usr/share/doc/packages/rsync/README",
-            stdout: :capture
-          )
-
-          expect(actual_files).to include("usr/share/doc/packages/rsync/README")
-          expect(actual_md5).to include("23183915f5dd4202d2e00520807f02ff")
+          expect(
+            @machinery.run_command(
+              "find", "/home/vagrant/.machinery/built_image/changed_managed_files/",
+              "-printf", "%P\n"
+            )
+          ).to succeed.and include_stdout("usr/share/doc/packages/rsync/README")
+          expect(
+            @machinery.run_command(
+              "md5sum", "/home/vagrant/.machinery/built_image/changed_managed_files/usr/share/" \
+              "doc/packages/rsync/README"
+            )
+          ).to succeed.and include_stdout("23183915f5dd4202d2e00520807f02ff")
         end
 
         it "contains the changed managed-files from the system description" do
@@ -140,9 +145,9 @@ shared_examples "build" do |distribution|
         end
 
         it "removed the deleted managed file" do
-          expect {
-            @test_system.run_command("ls /usr/share/doc/packages/rsync/NEWS", stdout: :capture)
-          }.to raise_error(Pennyworth::ExecutionFailed, /No such file/)
+          expect(
+            @test_system.run_command("ls /usr/share/doc/packages/rsync/NEWS")
+          ).to fail.and include_stderr("No such file")
         end
       end
 
@@ -153,12 +158,12 @@ shared_examples "build" do |distribution|
           "unmanaged_files")
 
         # Check file content
-        file_content = @test_system.run_command(
-          "cat '/usr/local/magicapp/weird-filenames/spacy file name'",
-          as: "root",
-          stdout: :capture
-        )
-        expect(file_content).to eq "This is a file with spaces in its name.\n"
+        expect(
+          @test_system.run_command(
+            "cat '/usr/local/magicapp/weird-filenames/spacy file name'",
+            as: "root"
+          )
+        ).to succeed.and have_stdout("This is a file with spaces in its name.\n")
       end
 
       it "contains the activated services from the system description" do

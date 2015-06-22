@@ -19,22 +19,23 @@ shared_examples "inspect simple scope" do |scope, base|
   describe "--scope=#{scope}" do
     it "inspects #{scope}" do
       measure("Inspect #{scope}") do
-        @machinery.run_command(
-          "#{machinery_command} inspect #{@subject_system.ip} " \
-            "#{inspect_options if defined?(inspect_options)} " \
-            "--scope=#{scope} --name=test",
-          as: "vagrant",
-          stdout: :capture
-        )
+        expect(
+          @machinery.run_command(
+            "#{machinery_command} inspect #{@subject_system.ip} " \
+              "#{inspect_options if defined?(inspect_options)} " \
+              "--scope=#{scope} --name=test",
+            as: "vagrant"
+          )
+        ).to succeed
       end
 
       expected = File.read("spec/data/#{scope}/#{base}")
-      actual = @machinery.run_command(
+      show_command = @machinery.run_command(
         "#{machinery_command} show test --scope=#{scope}",
-        as: "vagrant",
-        stdout: :capture
+        as: "vagrant"
       )
-      expect(actual).to match_machinery_show_scope(expected)
+      expect(show_command).to succeed
+      expect(show_command.stdout).to match_machinery_show_scope(expected)
     end
   end
 end

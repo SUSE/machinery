@@ -29,19 +29,22 @@ shared_examples "analyze config file diffs" do |distribution|
       )
 
       measure("Analyze system description") do
-        @machinery.run_command(
-          "machinery analyze #{distribution}-build --operation=config-file-diffs",
-          as: "vagrant"
-        )
+        expect(
+          @machinery.run_command(
+            "machinery analyze #{distribution}-build --operation=config-file-diffs",
+            as: "vagrant"
+          )
+        ).to succeed
       end
 
-      result = @machinery.run_command(
+      show_command = @machinery.run_command(
         "machinery show #{distribution}-build --scope=config-files --show-diffs",
-        as: "vagrant",
-        stdout: :capture
+        as: "vagrant"
       )
 
-      expect(result).to match_machinery_show_scope(File.read("spec/data/analyze_config_file_diffs/#{distribution}"))
+      expect(show_command).to succeed
+      expect(show_command.stdout).to match_machinery_show_scope(
+        File.read("spec/data/analyze_config_file_diffs/#{distribution}"))
     end
   end
 end

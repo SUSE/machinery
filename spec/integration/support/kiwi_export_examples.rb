@@ -30,50 +30,39 @@ shared_examples "kiwi export" do
       )
 
       measure("export to kiwi") do
-        @machinery.run_command(
-          "#{machinery_command} export-kiwi jeos --kiwi-dir=/tmp --force",
-          as: machinery_config[:owner]
-        )
+        expect(
+          @machinery.run_command(
+            "#{machinery_command} export-kiwi jeos --kiwi-dir=/tmp --force",
+            as: machinery_config[:owner]
+          )
+        ).to succeed
       end
 
-      file_list = @machinery.run_command(
-        "ls /tmp/jeos-kiwi",
-        stdout: :capture,
-        as: machinery_config[:owner]
-      ).split("\n")
-      expect(file_list).to match_array(["README.md", "config.sh", "config.xml", "root"])
+      expect(
+        @machinery.run_command("ls /tmp/jeos-kiwi", as: machinery_config[:owner])
+      ).to succeed.and have_stdout("config.sh\nconfig.xml\nREADME.md\nroot\n")
     end
 
     it "generates a proper config.sh" do
       expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "config.sh"))
-      actual = @machinery.run_command(
-        "cat /tmp/jeos-kiwi/config.sh",
-        stdout: :capture,
-        as: machinery_config[:owner]
-      )
-      expect(actual).to eq(expected)
+      expect(
+        @machinery.run_command("cat /tmp/jeos-kiwi/config.sh", as: machinery_config[:owner])
+      ).to succeed.and have_stdout(expected)
     end
 
     it "generates a proper config.xml" do
       expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "config.xml"))
-      actual = @machinery.run_command(
-        "cat /tmp/jeos-kiwi/config.xml",
-        stdout: :capture,
-        as: machinery_config[:owner]
-      )
-
-      expect(actual).to eq(expected)
+      expect(
+        @machinery.run_command("cat /tmp/jeos-kiwi/config.xml", as: machinery_config[:owner])
+      ).to succeed.and have_stdout(expected)
     end
 
     it "generates a proper root tree" do
-      expected = File.
-        read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "root"))
-      actual = @machinery.run_command(
-        "ls -1R --time-style=+ /tmp/jeos-kiwi/root",
-        stdout: :capture,
-        as: machinery_config[:owner]
-      )
-      expect(actual).to eq(expected)
+      expected = File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", "root"))
+      expect(
+        @machinery.run_command("ls -1R --time-style=+ /tmp/jeos-kiwi/root",
+          as: machinery_config[:owner])
+      ).to succeed.and have_stdout(expected)
     end
   end
 end

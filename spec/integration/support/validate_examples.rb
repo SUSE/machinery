@@ -32,11 +32,9 @@ EOF
         group: "users"
       )
 
-       expect { @machinery.run_command(
-        "machinery validate validation-error",
-        as: "vagrant",
-        stdout: :capture
-      ) }.to raise_error(Pennyworth::ExecutionFailed, /#{Regexp.quote(expected)}/)
+      expect(
+        @machinery.run_command("machinery validate validation-error", as: "vagrant")
+      ).to fail.and have_stderr(/#{Regexp.quote(expected)}/)
     end
 
     it "checks a system description for valid JSON syntax" do
@@ -55,11 +53,9 @@ EOF
         group: "users"
       )
 
-      expect { @machinery.run_command(
-        "machinery validate invalid-json",
-        as: "vagrant",
-        stdout: :capture
-      ) }.to raise_error(Pennyworth::ExecutionFailed, /#{Regexp.quote(expected)}/)
+      expect(
+        @machinery.run_command("machinery validate invalid-json", as: "vagrant")
+      ).to fail.and have_stderr(/#{Regexp.quote(expected)}/)
     end
   end
 end

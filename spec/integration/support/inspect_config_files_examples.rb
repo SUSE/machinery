@@ -21,22 +21,24 @@ shared_examples "inspect config files" do |base|
   describe "--scope=config-files" do
     it "extracts list of config files and shows progress" do
       measure("Inspect system") do
-        @machinery_output = @machinery.run_command(
+        inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
             "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=config-files --extract-files",
-          as: "vagrant",
-          stdout: :capture
+          as: "vagrant"
         )
+        expect(inspect_command).to succeed
+        @machinery_output = inspect_command.stdout
       end
 
-      actual_files_list = @machinery.run_command(
+      show_command = @machinery.run_command(
         "#{machinery_command} show #{@subject_system.ip} --scope=config-files",
-        as: "vagrant", stdout: :capture
+        as: "vagrant"
       )
+      expect(show_command).to succeed
 
       expected_files_list = File.read("spec/data/config_files/#{base}")
-      expect(actual_files_list).to match_machinery_show_scope(expected_files_list)
+      expect(show_command.stdout).to match_machinery_show_scope(expected_files_list)
 
       expected = <<EOF
 Inspecting 0.0.0.0 for config-files...
@@ -49,17 +51,16 @@ EOF
     it "extracts files from system" do
       description_json = @machinery.run_command(
         "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
-        as: machinery_config[:owner],
-        stdout: :capture
-      )
+        as: machinery_config[:owner]
+      ).stdout
       description = create_test_description(json: description_json)
 
       actual_config_files = nil
       measure("Gather information about extracted files") do
         actual_config_files = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/; find -type f",
-          as: "vagrant", stdout: :capture
-        ).split("\n").map { |file_name| # Remove trailing dots returned by find
+          as: "vagrant"
+        ).stdout.split("\n").map { |file_name| # Remove trailing dots returned by find
           file_name.sub(/^\./, "")
         }
       end
@@ -68,11 +69,13 @@ EOF
       expect(actual_config_files).to match_array(expected_config_files)
 
       # test file content
-      actual_content = @machinery.run_command(
-        "grep config_files_integration_test #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/etc/crontab",
-        as: "vagrant", stdout: :capture
-      )
-      expect(actual_content).to eq(expected_content)
+      expect(
+        @machinery.run_command(
+          "grep config_files_integration_test #{machinery_config[:machinery_dir]}/" \
+          "#{@subject_system.ip}/config_files/etc/crontab",
+          as: "vagrant"
+        )
+      ).to succeed.and have_stdout(expected_content)
     end
   end
 end

@@ -18,119 +18,86 @@
 shared_examples "CLI" do
   describe "CLI" do
     it "throws an error on invalid command" do
-      expect { @machinery.run_command(
-        "#{machinery_command} invalid_command",
-        as: "vagrant",
-        stdout: :capture
-      ) }.to raise_error(Pennyworth::ExecutionFailed)
+      expect(
+        @machinery.run_command("#{machinery_command} invalid_command", as: "vagrant")
+      ).to fail.with_exit_code(1).and include_stderr("Unknown command 'invalid_command'")
     end
 
     it "processes help option" do
-      output = @machinery.run_command(
-        "#{machinery_command} -h",
-        as: "vagrant",
-        stdout: :capture
-      )
-      expect(output).to include("COMMANDS")
-      expect(output).to include("help")
-      expect(output).to include("GLOBAL OPTIONS")
+      expect(
+        @machinery.run_command("#{machinery_command} -h", as: "vagrant")
+      ).to succeed.and have_stdout(/GLOBAL OPTIONS.*COMMANDS.*help/m)
     end
 
     it "processes help option for subcommands" do
-      output = @machinery.run_command(
-        "#{machinery_command} inspect --help",
-        as: "vagrant",
-        stdout: :capture
+      expect(
+        @machinery.run_command("#{machinery_command} inspect --help", as: "vagrant")
+      ).to succeed.and include_stdout(
+        "machinery [global options] inspect [command options] HOSTNAME"
       )
-      expect(output).to include("machinery [global options] inspect [command options] HOSTNAME")
     end
 
     it "does not offer --no-help or unneccessary negatable options" do
-      global_output = @machinery.run_command(
-        "#{machinery_command} --help",
-        as: "vagrant",
-        stdout: :capture
-      )
-      inspect_help_output = @machinery.run_command(
-        "#{machinery_command} inspect --help",
-        as: "vagrant",
-        stdout: :capture
-      )
-      show_help_output = @machinery.run_command(
-        "#{machinery_command} inspect --help",
-        as: "vagrant",
-        stdout: :capture
-      )
-      expect(global_output).to_not include("--[no-]help")
-      expect(inspect_help_output).to_not include("--[no-]")
-      expect(show_help_output).to_not include("--[no-]no-pager")
+      expect(
+        @machinery.run_command("#{machinery_command} --help", as: "vagrant")
+      ).to succeed.and not_include_stdout("--[no-]help")
+
+      expect(
+        @machinery.run_command("#{machinery_command} inspect --help", as: "vagrant")
+      ).to succeed.and not_include_stdout("--[no-]")
+
+      expect(
+        @machinery.run_command("#{machinery_command} show --help", as: "vagrant")
+      ).to succeed.and not_include_stdout("--[no-]no-pager")
     end
 
     describe "inspect" do
       it "fails inspect for non existing scope" do
-        expect { @machinery.run_command(
-          "sudo #{machinery_command} inspect localhost --scope=foobar --name=test",
-          as: "vagrant",
-          stdout: :capture
-        ) }.to raise_error(Pennyworth::ExecutionFailed, /The following scope is not supported: foobar/)
+        expect(
+          @machinery.run_command(
+            "sudo #{machinery_command} inspect localhost --scope=foobar --name=test",
+            as: "vagrant"
+          )
+        ).to fail.and include_stderr("The following scope is not supported: foobar")
       end
     end
 
     describe "build" do
       it "fails without an output path" do
-        expect { @machinery.run_command(
-          "#{machinery_command} build test",
-          as: "vagrant",
-          stdout: :capture
-        ) }.to raise_error(Pennyworth::ExecutionFailed, /image-dir is required/)
+        expect(
+          @machinery.run_command("#{machinery_command} build test", as: "vagrant")
+        ).to fail.and include_stderr("image-dir is required")
       end
 
       it "fails without a name" do
-        expect { @machinery.run_command(
-          "#{machinery_command} build --image-dir=/tmp/",
-          as: "vagrant",
-          stdout: :capture
-        ) }.to raise_error(Pennyworth::ExecutionFailed, /You need to provide the required argument/)
+        expect(
+          @machinery.run_command("#{machinery_command} build --image-dir=/tmp/", as: "vagrant")
+        ).to fail.and include_stderr("You need to provide the required argument")
       end
     end
 
     describe "validate number of given arguments" do
       context "when no arguments are expected" do
         it "fails with a message" do
-          message = /Too many arguments: got 2 arguments, expected none/
-          expect {
-            @machinery.run_command(
-              "#{machinery_command} list foo bar",
-              as: "vagrant",
-              stderr: :capture
-            )
-          }.to raise_error(Pennyworth::ExecutionFailed, message)
+          expect(
+            @machinery.run_command("#{machinery_command} list foo bar", as: "vagrant")
+          ).to fail.and include_stderr("Too many arguments: got 2 arguments, expected none")
         end
       end
 
       context "when a specific number of arguments are expected" do
         it "fails with a message" do
-          message = /Too many arguments: got 2 arguments, expected only: NAME/
-          expect {
-            @machinery.run_command(
-              "#{machinery_command} show foo bar",
-              as: "vagrant",
-              stderr: :capture
-            )
-          }.to raise_error(Pennyworth::ExecutionFailed, message)
+          expect(
+            @machinery.run_command("#{machinery_command} show foo bar", as: "vagrant")
+          ).to fail.and include_stderr("Too many arguments: got 2 arguments, expected only: NAME")
         end
       end
 
       context "when multiple (undefined) number of arguments are expected" do
         it "fails with a message" do
-          message = /No arguments given. Nothing to do./
-          expect {
-            @machinery.run_command(
-              "#{machinery_command} remove",
-              as: "vagrant",
-              stderr: :capture
-            )
-          }.to raise_error(Pennyworth::ExecutionFailed, message)
+          expect(
+            @machinery.run_command("#{machinery_command} remove", as: "vagrant")
+          ).to fail.and include_stderr("No arguments given. Nothing to do.")
         end
       end
     end

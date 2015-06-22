@@ -19,22 +19,24 @@ shared_examples "inspect changed managed files" do |base|
   describe "--scope=changed-managed-files" do
     it "extracts list of managed files and shows progress" do
       measure("Inspect system") do
-        @machinery_output = @machinery.run_command(
+        inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
             "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
             "--scope=changed-managed-files --extract-files",
-          as: machinery_config[:owner],
-          stdout: :capture
+          as: machinery_config[:owner]
         )
+        expect(inspect_command).to succeed
+        @machinery_output = inspect_command.stdout
       end
 
-      actual_files_list = @machinery.run_command(
+      show_command = @machinery.run_command(
         "#{machinery_command} show #{@subject_system.ip} --scope=changed-managed-files",
-        as: machinery_config[:owner], stdout: :capture
+        as: machinery_config[:owner]
       )
+      expect(show_command).to succeed
 
       expected_files_list = File.read("spec/data/changed_managed_files/#{base}")
-      expect(actual_files_list).to match_machinery_show_scope(expected_files_list)
+      expect(show_command.stdout).to match_machinery_show_scope(expected_files_list)
 
       expected = <<EOF
 Inspecting 0.0.0.0 for changed-managed-files...
@@ -47,19 +49,16 @@ EOF
     it "extracts files from the system" do
       description_json = @machinery.run_command(
         "cat  #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/manifest.json",
-        as: machinery_config[:owner],
-        stdout: :capture
-      )
+        as: machinery_config[:owner]
+      ).stdout
       description = create_test_description(json: description_json)
       actual_managed_files_list = nil
 
       measure("Gather information about extracted files") do
         actual_managed_files_list = @machinery.run_command(
           "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/; find",
-          as: machinery_config[:owner],
-          stdout: :capture
-        ).
-          split("\n").
+          as: machinery_config[:owner]
+        ).stdout.split("\n").
           map { |file_name| file_name.sub(/^\./, "") } # Remove trailing dots returned by find
       end
 
@@ -73,11 +72,12 @@ EOF
       expect(actual_managed_files).to match_array(expected_managed_files)
 
       # test file content
-      actual_content = @machinery.run_command(
-        "cat #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/usr/share/info/sed.info.gz",
-        as: machinery_config[:owner], stdout: :capture
-      )
-      expect(actual_content).to include("changed managed files test entry")
+      expect(
+        @machinery.run_command(
+          "cat #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_managed_files/" \
+          "usr/share/info/sed.info.gz", as: machinery_config[:owner]
+        )
+      ).to succeed.and include_stdout("changed managed files test entry")
     end
   end
 end

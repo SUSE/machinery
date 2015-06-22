@@ -30,18 +30,20 @@ shared_examples "autoyast export" do
       )
 
       measure("export to autoyast") do
-        @machinery.run_command(
-          "#{machinery_command} export-autoyast jeos --autoyast-dir=/tmp",
-          as: machinery_config[:owner]
-        )
+        expect(
+          @machinery.run_command(
+            "#{machinery_command} export-autoyast jeos --autoyast-dir=/tmp",
+            as: machinery_config[:owner]
+          )
+        ).to succeed
       end
 
-      file_list = @machinery.run_command(
-        "ls /tmp/jeos-autoyast",
-        stdout: :capture,
-        as: machinery_config[:owner]
-      ).split("\n")
-      expect(file_list).to include("autoinst.xml")
+      expect(
+        @machinery.run_command(
+          "ls /tmp/jeos-autoyast",
+          as: machinery_config[:owner]
+        )
+      ).to succeed.and include_stdout("autoinst.xml")
     end
   end
 end
