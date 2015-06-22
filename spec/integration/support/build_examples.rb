@@ -163,7 +163,9 @@ shared_examples "build" do |distribution|
             "cat '/usr/local/magicapp/weird-filenames/spacy file name'",
             as: "root"
           )
-        ).to succeed.and have_stdout("This is a file with spaces in its name.\n")
+          # the built image does not contain the required locale and thus shows a warning on STDERR,
+          # that's why we have to explicitly allow stderr output (`with_stderr`)
+        ).to succeed.with_stderr.and have_stdout("This is a file with spaces in its name.\n")
       end
 
       it "contains the activated services from the system description" do
