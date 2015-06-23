@@ -50,7 +50,8 @@ shared_examples "serve html" do
             next
           end
 
-          expect(curl_command).to succeed.with_stderr.and have_stdout(/<title>.*jeos - Machinery System Description.*<\/title>/m)
+          expect(curl_command).to succeed.with_stderr.
+            and have_stdout(/<title>.*jeos - Machinery System Description.*<\/title>/m)
           break
         end
       ensure

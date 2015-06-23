@@ -382,7 +382,6 @@ describe Cli do
           description, "0.0.0.0", 3000
         )
 
-
         run_command(["serve", "description1", "--ip=0.0.0.0", "--port=3000"])
       end
     end
@@ -405,7 +404,8 @@ describe Cli do
             show_html: true, ip: "0.0.0.0", port: 3000
           )
 
-          run_command(["show", "description1", "--scope=packages", "--html", "--port=3000", "--ip=0.0.0.0"])
+          run_command(["show", "description1", "--scope=packages", "--html", "--port=3000",
+            "--ip=0.0.0.0"])
         end
       end
 

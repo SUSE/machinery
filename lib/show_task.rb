@@ -45,7 +45,6 @@ EOF
 
       LoggedCheetah.run("xdg-open", url)
 
-
       server.join # Wait until the user cancelled the blocking webserver
     rescue Cheetah::ExecutionFailed => e
       raise Machinery::Errors::OpenInBrowserFailed.new(

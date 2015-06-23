@@ -36,7 +36,7 @@ class Html
       diff_object[:lines] = lines.map do |line|
         line = ERB::Util.html_escape(line.chomp).
           gsub("\\", "&#92;").
-          gsub("\t", "&nbsp;"*8)
+          gsub("\t", "&nbsp;" * 8)
         case line
         when /^@.*/
           entry = {
@@ -77,16 +77,16 @@ class Html
     end
   end
 
-  # this is required for the #generate_comparison method which renders a HAML template manually with the local binding,
-  # so it expects the helper methods to be available in Html. It can be removed oncen the comparison was move to the
-  # webserver approach as well
+  # this is required for the #generate_comparison method which renders a HAML template manually with
+  # the local binding, so it expects the helper methods to be available in Html. It can be removed
+  # once the comparison was move to the webserver approach as well
   extend Helpers
 
   # Creates a new thread running a sinatra webserver which serves the local system descriptions
   # The Thread object is returned so that the caller can `.join` it until it's finished.
   def self.run_server(opts)
     Thread.new do
-      require 'sinatra/base'
+      require "sinatra/base"
 
       server = Sinatra.new do
         set :port, opts[:port] || 7585
@@ -110,10 +110,11 @@ class Html
         end
 
         get "/:id" do
-          haml File.read(File.join(Machinery::ROOT, "html/index.html.haml")), locals: {description_name: params[:id]}
+          haml File.read(File.join(Machinery::ROOT, "html/index.html.haml")),
+            locals: { description_name: params[:id] }
         end
-
       end
+
       begin
         setup_output_redirection
         server.run!

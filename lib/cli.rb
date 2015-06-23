@@ -658,7 +658,7 @@ class Cli
       task = ShowTask.new
       opts = {
         show_diffs: options["show-diffs"],
-        show_html:  options["html"],
+        show_html: options["html"],
         ip: options["ip"],
         port: options["port"]
       }
