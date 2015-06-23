@@ -72,7 +72,7 @@ shared_examples "inspect and build" do |bases|
 
           # Run 'ls' via ssh in the built system to verify its booted and accessible.
           expect(
-            @machinery.run_command("ls", "tmp")
+            @machinery.run_command("ls", "/tmp")
           ).to succeed
         end
       end
