@@ -739,6 +739,26 @@ class Cli
     end
   end
 
+  desc "Start a webserver serving an HTML view of a system description"
+  long_desc <<-LONGDESC
+    Starts a web server which serves an HTML view for the given system description.
+  LONGDESC
+  arg "NAME"
+  command "serve" do |c|
+    c.flag [:port, :p], type: Integer, required: false, default_value: 7585,
+      desc: "Listen on port PORT", arg_name: "PORT"
+    c.flag [:ip, :i], type: String, required: false, default_value: "localhost",
+      desc: "Listen on ip IP", arg_name: "IP"
+
+    c.action do |global_options, options, args|
+      name = shift_arg(args, "NAME")
+
+      description = SystemDescription.load(name, system_description_store)
+      task = ServeHtmlTask.new
+      task.serve(description, options[:ip], options[:port])
+    end
+  end
+
   def self.system_description_store
     if ENV.has_key?("MACHINERY_DIR")
       SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
