@@ -20,25 +20,6 @@ require_relative "spec_helper"
 describe Html do
   initialize_system_description_factory_store
 
-  describe ".escape_javascript" do
-    it "escapes the given signs for javascript" do
-      input = "a\\b'c\"d"
-
-      output = Html.escape_javascript(input)
-      expect(output).to eq("a\\\\b\\'c\\\"d")
-    end
-  end
-
-  describe ".generate" do
-    it "generates a web page" do
-      description = create_test_description(store_on_disk: true)
-      html_path = description.store.html_path(description.name)
-
-      Html.generate(description)
-      expect(File.exists?(html_path)).to be(true)
-    end
-  end
-
   describe "#diff_to_object" do
     let(:diff) {<<EOF}
 --- a/etc/postfix/TLS_LICENSE
