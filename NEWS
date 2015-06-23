@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.9.1 - Tue Jun 23 16:57:35 CEST 2015 - thardeck@suse.de
+
 * `machinery config` takes arguments of the form 'key=value' as well
 
 ## Version 1.9.0 - Wed Jun 17 09:57:07 CEST 2015 - thardeck@suse.de
