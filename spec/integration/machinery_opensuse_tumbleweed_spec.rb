@@ -101,7 +101,6 @@ describe "machinery@openSUSE Tumbleweed" do
   include_examples "autoyast export"
   include_examples "validate"
   include_examples "upgrade format"
-  include_examples "generate html"
 
   describe "inspect openSUSE Tumbleweed system" do
     before(:all) do

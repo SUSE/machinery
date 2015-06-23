@@ -497,15 +497,6 @@ describe Cli do
         run_command(["analyze", "description1", "--operation=config-file-diffs"])
       end
     end
-
-    describe "#generate-html" do
-      it "triggers an HTML export of a system description" do
-        expect_any_instance_of(GenerateHtmlTask).to receive(:generate).
-          with(an_instance_of(SystemDescription))
-
-        run_command(["generate-html", "description1"])
-      end
-    end
   end
 
   describe "#remove" do

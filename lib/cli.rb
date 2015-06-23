@@ -708,21 +708,6 @@ class Cli
     end
   end
 
-  desc "Generate an HTML view for a system description"
-  long_desc <<-LONGDESC
-    Generates an HTML view for a system description.
-  LONGDESC
-  arg "NAME"
-  command "generate-html" do |c|
-    c.action do |global_options,options,args|
-      name = shift_arg(args, "NAME")
-
-      description = SystemDescription.load(name, system_description_store)
-      task = GenerateHtmlTask.new
-      task.generate(description)
-    end
-  end
-
   desc "Show or change machinery's configuration"
   long_desc <<-LONGDESC
     Show or change machinery's configuration.
