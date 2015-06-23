@@ -4,17 +4,19 @@ angular.module("machinery-show")
   .config(function($locationProvider) {
     $locationProvider.html5Mode({enabled: true, requireBase: false});
   })
-  .controller("showController", function($scope) {
-    $scope.description = getDescription();
+  .controller("showController", function($scope, $http) {
+    $http.get("/descriptions/" + $("body").data("description") + ".js").then(function(result) {
+      $scope.description = result.data;
 
 
-    $scope.description.meta_info = {};
-    angular.forEach($scope.description, function(index, scope) {
-      if($scope.description.meta[scope]) {
-        $scope.description.meta_info[scope] = " (" +
-        "inspected host: '" + $scope.description.meta[scope].hostname + "', " +
-        "at: " + new Date($scope.description.meta[scope].modified).toLocaleString() + ")";
-      }
+      $scope.description.meta_info = {};
+      angular.forEach($scope.description, function(index, scope) {
+        if($scope.description.meta[scope]) {
+          $scope.description.meta_info[scope] = " (" +
+          "inspected host: '" + $scope.description.meta[scope].hostname + "', " +
+          "at: " + new Date($scope.description.meta[scope].modified).toLocaleString() + ")";
+        }
+      });
     });
   })
   .directive("scopeHeader", function(){

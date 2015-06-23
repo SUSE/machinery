@@ -616,6 +616,10 @@ class Cli
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["exclude-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
+    c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
+      desc: "Listen on port PORT", arg_name: "PORT"
+    c.flag [:ip, :i], type: String, required: false, default_value: "localhost",
+      desc: "Listen on ip IP", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
@@ -653,8 +657,10 @@ class Cli
 
       task = ShowTask.new
       opts = {
-          show_diffs: options["show-diffs"],
-          show_html:  options["html"]
+        show_diffs: options["show-diffs"],
+        show_html:  options["html"],
+        ip: options["ip"],
+        port: options["port"]
       }
       task.show(description, scope_list, filter, opts)
     end

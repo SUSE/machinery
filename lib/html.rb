@@ -16,39 +16,127 @@
 # you may find current contact information at www.suse.com
 
 class Html
-  def self.escape_javascript(object)
-    object.gsub(/([\\'"])/, "\\\\\\1")
-  end
-
-  def self.generate(description)
-    template = Haml::Engine.new(
-      File.read(File.join(Machinery::ROOT, "html", "index.html.haml"))
-    )
-    target = description.store.description_path(description.name)
-
-    diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
-    if description.config_files && diffs_dir
-      # Enrich description with the config file diffs
-      description.config_files.files.each do |file|
-        path = File.join(diffs_dir, file.name + ".diff")
-        file.diff = diff_to_object(File.read(path)) if File.exists?(path)
-      end
+  module Helpers
+    def scope_help(scope)
+      text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
+      Kramdown::Document.new(text).to_html
     end
 
-    FileUtils.cp_r(File.join(Machinery::ROOT, "html", "assets"), target)
-    File.write(File.join(target, "index.html"), template.render(binding))
-
-    # Generate JSON and escape the 's and "s in order to not break the JSON
-    # string in javascript.
-    json = escape_javascript(description.to_hash.to_json)
-    File.write(File.join(target, "assets/description.js"),<<-EOT
-      function getDescription() {
-        return JSON.parse('#{json}'
-        )
+    def diff_to_object(diff)
+      diff = Machinery.scrub(diff)
+      lines = diff.lines[2..-1]
+      diff_object = {
+        file: diff[/--- a(.*)/, 1],
+        additions: lines.select { |l| l.start_with?("+") }.length,
+        deletions: lines.select { |l| l.start_with?("-") }.length
       }
-      EOT
-    )
-    target
+
+      original_line_number = 0
+      new_line_number = 0
+      diff_object[:lines] = lines.map do |line|
+        line = ERB::Util.html_escape(line.chomp).
+          gsub("\\", "&#92;").
+          gsub("\t", "&nbsp;"*8)
+        case line
+        when /^@.*/
+          entry = {
+            type: "header",
+            content: line
+          }
+          original_line_number = line[/-(\d+)/, 1].to_i
+          new_line_number = line[/\+(\d+)/, 1].to_i
+        when /^ .*/, ""
+          entry = {
+            type: "common",
+            new_line_number: new_line_number,
+            original_line_number: original_line_number,
+            content: line[1..-1]
+          }
+          new_line_number += 1
+          original_line_number += 1
+        when /^\+.*/
+          entry = {
+            type: "addition",
+            new_line_number: new_line_number,
+            content: line[1..-1]
+          }
+          new_line_number += 1
+        when /^\-.*/
+          entry = {
+            type: "deletion",
+            original_line_number: original_line_number,
+            content: line[1..-1]
+          }
+          original_line_number += 1
+        end
+
+        entry
+      end
+
+      diff_object
+    end
+  end
+
+  # this is required for the #generate_comparison method which renders a HAML template manually with the local binding,
+  # so it expects the helper methods to be available in Html. It can be removed oncen the comparison was move to the
+  # webserver approach as well
+  extend Helpers
+
+  # Creates a new thread running a sinatra webserver which serves the local system descriptions
+  # The Thread object is returned so that the caller can `.join` it until it's finished.
+  def self.run_server(opts)
+    Thread.new do
+      require 'sinatra/base'
+
+      server = Sinatra.new do
+        set :port, opts[:port] || 7585
+        set :bind, opts[:ip] || "localhost"
+        set :public_folder, File.join(Machinery::ROOT, "html")
+
+        helpers Helpers
+
+        get "/descriptions/:id.js" do
+          description = SystemDescription.load(params[:id], SystemDescriptionStore.new)
+          diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
+          if description.config_files && diffs_dir
+            # Enrich description with the config file diffs
+            description.config_files.files.each do |file|
+              path = File.join(diffs_dir, file.name + ".diff")
+              file.diff = diff_to_object(File.read(path)) if File.exists?(path)
+            end
+          end
+
+          description.to_hash.to_json
+        end
+
+        get "/:id" do
+          haml File.read(File.join(Machinery::ROOT, "html/index.html.haml")), locals: {description_name: params[:id]}
+        end
+
+      end
+      begin
+        setup_output_redirection
+        server.run!
+      rescue => e
+        # Re-raise exception in main thread
+        Thread.main.raise e
+      ensure
+        remove_output_redirection
+      end
+    end
+  end
+
+  def self.setup_output_redirection
+    @orig_stdout = STDOUT.clone
+    @orig_stderr = STDERR.clone
+    server_log = File.join(Machinery::DEFAULT_CONFIG_DIR, "webserver.log")
+    STDOUT.reopen server_log, "w"
+    STDERR.reopen server_log, "w"
+  end
+
+  def self.remove_output_redirection
+    STDOUT.reopen @orig_stdout
+    STDERR.reopen @orig_stderr
   end
 
   def self.generate_comparison(diff, target)
@@ -67,66 +155,5 @@ class Html
       }
       EOT
     )
-  end
-
-  # Template helpers
-
-  def self.scope_help(scope)
-    text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
-    Kramdown::Document.new(text).to_html
-  end
-
-  def self.diff_to_object(diff)
-    diff = Machinery.scrub(diff)
-    lines = diff.lines[2..-1]
-    diff_object = {
-      file: diff[/--- a(.*)/, 1],
-      additions: lines.select { |l| l.start_with?("+") }.length,
-      deletions: lines.select { |l| l.start_with?("-") }.length
-    }
-
-    original_line_number = 0
-    new_line_number = 0
-    diff_object[:lines] = lines.map do |line|
-      line = ERB::Util.html_escape(line.chomp).
-        gsub("\\", "&#92;").
-        gsub("\t", "&nbsp;"*8)
-      case line
-      when /^@.*/
-        entry = {
-          type: "header",
-          content: line
-        }
-        original_line_number = line[/-(\d+)/, 1].to_i
-        new_line_number = line[/\+(\d+)/, 1].to_i
-      when /^ .*/, ""
-        entry = {
-          type: "common",
-          new_line_number: new_line_number,
-          original_line_number: original_line_number,
-          content: line[1..-1]
-        }
-        new_line_number += 1
-        original_line_number += 1
-      when /^\+.*/
-        entry = {
-          type: "addition",
-          new_line_number: new_line_number,
-          content: line[1..-1]
-        }
-        new_line_number += 1
-      when /^\-.*/
-        entry = {
-          type: "deletion",
-          original_line_number: original_line_number,
-          content: line[1..-1]
-        }
-        original_line_number += 1
-      end
-
-      entry
-    end
-
-    diff_object
   end
 end
