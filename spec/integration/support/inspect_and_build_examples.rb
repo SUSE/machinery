@@ -38,7 +38,7 @@ shared_examples "inspect and build" do |bases|
               " -x --name=build_test --remote-user=machinery",
               as: "vagrant"
             )
-          ).to succeed
+          ).to succeed.with_stderr
         end
       end
 
@@ -56,13 +56,12 @@ shared_examples "inspect and build" do |bases|
 
       it "extracts and boots" do
         measure("Extract and boot") do
-          expect(
-            @machinery.run_command(
-              "find", "/home/vagrant/build_image", "-name", "*qcow2"
-            )
-          ).to succeed.and include_stdout("qcow2")
+          find_command = @machinery.run_command(
+            "find", "/home/vagrant/build_image", "-name", "*qcow2"
+          )
+          expect(find_command).to succeed.and include_stdout("qcow2")
 
-          image = images.split.first.chomp
+          image = find_command.stdout.split.first.chomp
           local_image = File.join("/tmp", File.basename(image))
           `sudo rm #{local_image}` if File.exists?(local_image)
           @machinery.extract_file image, "/tmp"
