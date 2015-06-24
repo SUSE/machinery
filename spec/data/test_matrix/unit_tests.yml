@@ -1,0 +1,5 @@
+---
+# Test once per Ruby version
+tested:
+  "openSUSE_13_1:x86_64" #ruby2.0
+  "openSUSE_13_2:x86_64" #ruby2.1

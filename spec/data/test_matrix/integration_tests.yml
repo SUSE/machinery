@@ -1,0 +1,120 @@
+inspect:
+  supported:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64": minimal_test
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64": full_test
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+build:
+  supported:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64": full_test
+  future_support:
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+  unsupported:
+    "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "Tumbleweed:x86_64":
+      "fedora":
+export:
+  supported:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64": acceptance_test
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64": full_test
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+  unsupported:
+    "openSUSE_13_2:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "openSUSE_13_1:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+analyze:
+  supported:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64": acceptance_test
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64": full_test
+  future_support:
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+  unsupported:
+deploy:
+  supported:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64":
+  future_support:
+  working:
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64":
+    "Tumbleweed:x86_64":
+      "Tumbleweed:x86_64":
+  unsupported:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:arm":
+      "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:arm":
+      "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:arm":
+      "openSUSE_13_1:arm":
+      "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:arm":
+      "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:arm":
+      "Tumbleweed:arm":
+      "fedora":
