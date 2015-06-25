@@ -140,4 +140,8 @@ class RemoteSystem < System
       raise
     end
   end
+
+  def inject_file(local_file, remote_path)
+    system("scp #{local_file} root@#{host}:#{remote_path}")
+  end
 end
