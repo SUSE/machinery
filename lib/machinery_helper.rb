@@ -15,6 +15,18 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# The MachineryHelper class handles the helper binaries Machinery can use to
+# do inspections. It provides methods to check, if a helper is available, to
+# inject it to the target machine, run it there, and clean up after it's done.
+#
+# The inspection checks, if a binary helper is available on the machine where
+# the inspection is started. It looks at the location
+#
+#    /usr/share/machinery/helpers/<arch>/machinery_helper
+#
+# where <arch> is the hardware architecture of the target system. Valid values
+# are x86_64, i586, s390x, and ppcle.
+
 class MachineryHelper
   attr_accessor :local_helpers_path
 
