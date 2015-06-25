@@ -26,6 +26,11 @@ describe UnmanagedFilesInspector do
   }
   subject { UnmanagedFilesInspector.new(system, description) }
 
+  before(:each) do
+    allow_any_instance_of(MachineryHelper).to receive(:can_help?).
+      and_return(false)
+  end
+
   describe ".inspect" do
     include FakeFS::SpecHelpers
 
