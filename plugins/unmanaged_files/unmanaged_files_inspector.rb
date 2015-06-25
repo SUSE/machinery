@@ -213,6 +213,18 @@ class UnmanagedFilesInspector < Inspector
 
     scope.scope_file_store = file_store_tmp
 
+    helper = MachineryHelper.new(@system)
+    if helper.can_help?
+      helper.inject_helper
+      helper.run_helper(scope)
+      scope.extracted = false
+      @description["unmanaged_files"] = scope
+    else
+      run_inspection(filter, options, do_extract, file_store_tmp, file_store_final, scope)
+    end
+  end
+
+  def run_inspection(filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
 
     rpm_files, rpm_dirs = extract_rpm_database
@@ -335,6 +347,16 @@ class UnmanagedFilesInspector < Inspector
       Machinery::Ui.progress(progress)
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
+
+    processed_files = run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links, excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
+
+    scope.extracted = !!do_extract
+    scope.files = UnmanagedFileList.new(processed_files.sort_by(&:name))
+
+    @description["unmanaged_files"] = scope
+  end
+
+  def run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links, excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
     begin
       if do_extract
         file_store_tmp.remove
@@ -374,10 +396,7 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    scope.extracted = !!do_extract
-    scope.files = UnmanagedFileList.new(osl.sort_by(&:name))
-
-    @description["unmanaged_files"] = scope
+    osl
   end
 
   def summary
