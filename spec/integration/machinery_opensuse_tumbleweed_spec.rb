@@ -96,6 +96,7 @@ describe "machinery@openSUSE Tumbleweed" do
   end
 
   include_examples "CLI"
+  include_examples "man"
   include_examples "kiwi export"
   include_examples "autoyast export"
   include_examples "validate"
