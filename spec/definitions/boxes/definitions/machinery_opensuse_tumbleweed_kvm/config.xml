@@ -66,6 +66,7 @@
         <package name="db45-utils"/>
         <package name="db-utils"/>
         <package name="grub"/>
+        <package name="man"/>
     </packages>
     <packages type="bootstrap">
         <package name="udev"/>
