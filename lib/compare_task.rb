@@ -74,17 +74,18 @@ class CompareTask
         partial_description_common = SystemDescription.new(
           "common",
           store,
-          scope => comparison[2]
+          scope => comparison[3]
         )
 
         output += Renderer.for(scope).render_comparison(
           partial_description1,
           partial_description2,
+          comparison[2],
           partial_description_common,
           options
         )
 
-        if partial_description1[scope] || partial_description2[scope]
+        if partial_description1[scope] || partial_description2[scope] || comparison[2]
           identical = false
         else
           identical_scopes << scope

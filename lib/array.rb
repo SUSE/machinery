@@ -113,6 +113,7 @@ module Machinery
       [
         self - other,
         other - self,
+        [],
         self & other
       ].map { |e| e.empty? ? nil : e }
     end

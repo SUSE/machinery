@@ -70,8 +70,8 @@ describe "unmanaged_files model" do
           )
         ])
 
-        expect(list.compare_with(list_equal)).to eq([nil, nil, list])
-        expect(list.compare_with(list_different)).to eq([list, list_different, nil])
+        expect(list.compare_with(list_equal)).to eq([nil, nil, nil, list])
+        expect(list.compare_with(list_different)).to eq([list, list_different, nil, nil])
       end
     end
   end

@@ -70,13 +70,13 @@ describe Os do
     it "equal objects" do
       expect(@os_scope1 == @os_scope2).to be(true)
       expect(@os_scope1.eql?(@os_scope2)).to be(true)
-      expect(@os_scope1.compare_with(@os_scope2)).to eq([nil, nil, @os_scope1])
+      expect(@os_scope1.compare_with(@os_scope2)).to eq([nil, nil, nil, @os_scope1])
     end
 
     it "unequal objects" do
       expect(@os_scope1 == @os_scope3).to be(false)
       expect(@os_scope1.eql?(@os_scope3)).to be(false)
-      expect(@os_scope1.compare_with(@os_scope3)).to eq([@os_scope1, @os_scope3, nil])
+      expect(@os_scope1.compare_with(@os_scope3)).to eq([@os_scope1, @os_scope3, nil, nil])
     end
   end
 
