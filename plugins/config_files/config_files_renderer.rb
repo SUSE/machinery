@@ -16,24 +16,25 @@
 # you may find current contact information at www.suse.com
 
 class ConfigFilesRenderer < Renderer
-  def do_render
-    return unless @system_description["config_files"]
+  def content(description)
+    return unless description["config_files"]
 
-    diffs_dir = @system_description.scope_file_store("analyze/config_file_diffs").path
+    diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
 
     if !diffs_dir && @options[:show_diffs]
       raise Machinery::Errors::SystemDescriptionError.new(
         "Diffs can not be shown because they were not generated yet.\n" \
-        "You can generate them with `#{$0} analyze --operation=config-file-diffs #{@system_description.name}`."
+        "You can generate them with `#{$0} analyze" \
+        " --operation=config-file-diffs #{description.name}`."
       )
     end
 
     list do
-      file_status = @system_description["config_files"].extracted
+      file_status = description["config_files"].extracted
       if !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
-      files = @system_description["config_files"].files
+      files = description["config_files"].files
       if files
         files.each do |p|
           item_content = "#{p.name} (#{p.package_name}-#{p.package_version}, " \

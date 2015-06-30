@@ -16,15 +16,15 @@
 # you may find current contact information at www.suse.com
 
 class RepositoriesRenderer < Renderer
-  def do_render
-    return unless @system_description.repositories
+  def content(description)
+    return unless description.repositories
 
-    if @system_description.repositories.empty?
+    if description.repositories.empty?
       puts "System has no repositories"
     end
 
     list do
-      @system_description.repositories.each do |p|
+      description.repositories.each do |p|
         item "#{p.name}" do
           puts "URI: #{p.url}"
           puts "Alias: #{p.alias}"

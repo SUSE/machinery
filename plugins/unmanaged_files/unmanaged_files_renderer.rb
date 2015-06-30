@@ -16,17 +16,17 @@
 # you may find current contact information at www.suse.com
 
 class UnmanagedFilesRenderer < Renderer
-  def do_render
-    return unless @system_description["unmanaged_files"]
+  def content(description)
+    return unless description["unmanaged_files"]
 
     list do
-      file_status = @system_description["unmanaged_files"].extracted
+      file_status = description["unmanaged_files"].extracted
       if !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
 
-      if @system_description["unmanaged_files"].files
-        @system_description["unmanaged_files"].files.each do |p|
+      if description["unmanaged_files"].files
+        description["unmanaged_files"].files.each do |p|
           if p.user && p.group
             item "#{p.name} (#{p.type})" do
               puts "User/Group: #{p.user}:#{p.group}"

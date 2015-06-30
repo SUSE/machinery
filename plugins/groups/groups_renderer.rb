@@ -16,11 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class GroupsRenderer < Renderer
-  def do_render
-    return unless @system_description.groups
+  def content(description)
+    return unless description.groups
 
     list do
-      @system_description.groups.each do |group|
+      description.groups.each do |group|
         gid = group.gid || "N/A"
         details ="gid: #{gid}"
         details += ", users: #{group.users.join(",")}" if !group.users.empty?
