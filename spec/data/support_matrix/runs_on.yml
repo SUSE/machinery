@@ -1,12 +1,12 @@
 ---
 supported:
-  "openSUSE_13_1:x86_64":
+  "sles12:x86_64":
     "Package installation": full_test
-    "General commands": minimal_test
-working:
-  "openSUSE_13_1:x86_64":
+    "General commands": acceptance_test
+  "sles12:s390x":
     "Package installation": full_test
     "General commands":
-  "Tumbleweed:x86_64":
+working:
+  "openSUSE_13_1:x86_64":
     "Package installation": full_test
     "General commands":

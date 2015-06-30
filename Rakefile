@@ -44,6 +44,11 @@ task :spec => ["spec:unit", "spec:integration"]
 desc 'Alias for "spec:unit"'
 task :test => ["spec:unit"]
 
+desc "Run RSpec code examples in spec/tools"
+RSpec::Core::RakeTask.new("spec:tools") do |t|
+  t.pattern = "spec/tools/**/*_spec.rb"
+end
+
 Packaging.configuration do |conf|
   conf.obs_api = "https://api.opensuse.org"
   conf.obs_project = "systemsmanagement:machinery"
@@ -176,4 +181,24 @@ task :upgrade_test_descriptions do
   update_json_format_version(
     File.join(Machinery::ROOT, "spec/data/schema/validation_error/unmanaged_files")
   )
+end
+
+desc "Generate Machinery Test Matrix as a Spreadsheet"
+task "matrix:spreadsheet" do
+  begin
+    require_relative "tools/support_matrix/lib/support_matrix"
+  rescue LoadError => e
+    puts <<-EOF
+      Error: #{e.message}
+
+      You can solve this issue by:
+
+        1) running `bundle exec rake matrix:spreadsheet` or
+        2) by installing the gems binstubs `bundle install --binstubs`
+
+    EOF
+  end
+  sources = File.join(Machinery::ROOT, "spec", "definitions", "support")
+  file = SupportMatrix.new(sources, OdsFormatter.new).write(sources)
+  puts "File #{File.absolute_path(file)} was created"
 end

@@ -27,4 +27,5 @@ group :test do
   gem "given_filesystem", ">= 0.1.1"
   gem "ruby-libvirt"
   gem "codeclimate-test-reporter"
+  gem "rodf", github: "mauromorales/rodf"
 end
