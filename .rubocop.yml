@@ -26,3 +26,6 @@ Rails/Output:
 
 Lint/EndAlignment:
   AlignWith: variable
+
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented

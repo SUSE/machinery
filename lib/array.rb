@@ -114,7 +114,7 @@ module Machinery
         self - other,
         other - self,
         self & other
-      ].map { |e| !e.empty? ? e : nil }
+      ].map { |e| e.empty? ? nil : e }
     end
 
     def method_missing(name, *args, &block)
