@@ -359,7 +359,6 @@ class Cli
   end
 
 
-
   desc "Deploy image to OpenStack cloud"
   long_desc <<-LONGDESC
     Deploy system description as image to OpenStack cloud.
@@ -563,6 +562,18 @@ class Cli
     c.action do |global_options,options,args|
       task = ListTask.new
       task.list(system_description_store, options)
+    end
+  end
+
+  desc "Shows man page"
+  long_desc <<-LONGDESC
+    Shows the man page of the machinery tool.
+
+  LONGDESC
+  command :man do |c|
+    c.action do
+      task = ManTask.new
+      task.man
     end
   end
 

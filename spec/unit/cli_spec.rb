@@ -525,6 +525,14 @@ describe Cli do
     end
   end
 
+  describe "#man" do
+    it "triggers the man task" do
+      expect_any_instance_of(ManTask).to receive(:man)
+
+      run_command(["man"])
+    end
+  end
+
   describe "#copy" do
     it "triggers the copy task" do
       expect_any_instance_of(CopyTask).to receive(:copy).
