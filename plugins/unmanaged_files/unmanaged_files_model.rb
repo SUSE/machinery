@@ -36,7 +36,7 @@ class UnmanagedFileList < Machinery::Array
       self.class.new(only_self),
       self.class.new(only_other),
       self.class.new(both)
-    ].map { |e| !e.empty? ? e : nil }
+    ].map { |e| e.empty? ? nil : e }
   end
 
   private
