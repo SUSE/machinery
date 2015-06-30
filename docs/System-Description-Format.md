@@ -1,5 +1,7 @@
-This is the documentation of the format Machinery uses to store system
-descriptions.
+# Machinery System Description Format
+
+This is the documentation of the format
+[Machinery](http://machinery-project.org) uses to store system descriptions.
 
 ## Structure
 
@@ -55,7 +57,7 @@ A simplified example of the manifest can look like this:
         "user": "root",
         "group": "ntp",
         "mode": "640",
-        "type": "file
+        "type": "file"
       }
     ]
   },
@@ -171,10 +173,10 @@ JSON Example:
     },
     {
       "name": "/etc/sshd/ssh_config",
-      "package_name:" "ssh",
-      "package_version:" "1.2.3-4",
-      "status:"           "error",
-      "error_message:"    "some error message that would appear",
+      "package_name": "ssh",
+      "package_version": "1.2.3-4",
+      "status": "error",
+      "error_message": "some error message that would appear",
       "type": "file"
     }
   ]
@@ -283,10 +285,10 @@ JSON Example
     },
     {
       "name": "/etc/sshd/ssh_config",
-      "package_name:" "ssh",
-      "package_version:" "1.2.3-4",
-      "status:"          "error",
-      "error_message:"   "some error message that would appear",
+      "package_name": "ssh",
+      "package_version": "1.2.3-4",
+      "status": "error",
+      "error_message": "some error message that would appear",
       "type": "file"
     }
   ]
