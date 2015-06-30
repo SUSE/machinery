@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Improve display of package differences in compare command
 
 ## Version 1.9.1 - Tue Jun 23 16:57:35 CEST 2015 - thardeck@suse.de
 
