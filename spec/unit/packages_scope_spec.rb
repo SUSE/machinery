@@ -65,7 +65,7 @@ describe PackagesScope do
       expect(@packages_scope1 == @packages_scope2).to be(true)
       expect(@packages_scope1.eql?(@packages_scope2)).to be(true)
 
-     only_scope1, only_scope2, changed, common = @packages_scope1.compare_with(@packages_scope2)
+      only_scope1, only_scope2, changed, common = @packages_scope1.compare_with(@packages_scope2)
 
       expect(only_scope1).to be(nil)
       expect(only_scope2).to be(nil)

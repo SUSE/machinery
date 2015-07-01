@@ -42,7 +42,7 @@ class BarBazScope < Machinery::Object
 end
 
 class BarBazRenderer < Renderer
-  def content(description)
+  def content(_description)
     heading("bar")
 
     puts("new line")
