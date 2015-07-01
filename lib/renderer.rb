@@ -142,27 +142,24 @@ class Renderer
   #
   # When necessary the default behavior can be overridden by specializing either the outer
   # `content_comparison` method and/or `content_only_in` and `content_common`.
-  def render_comparison(description1, description2, changed_elements, description_common,
-      options = {})
+  def render_comparison(comparison, options = {})
     @options = options
     @buffer = ""
     @indent = 0
     @stack = []
 
     show_heading = if options[:show_all]
-      description1[scope] || description2[scope] || changed_elements || description_common[scope]
+      comparison.only_in1 || comparison.only_in2 || comparison.changed || comparison.common
     else
-      description1[scope] || description2[scope] || changed_elements
+      comparison.only_in1 || comparison.only_in2 || comparison.changed
     end
 
     heading(display_name) if show_heading
 
-    render_comparison_only_in(description1)
-    render_comparison_only_in(description2)
-    if changed_elements
-      render_comparison_changed(description1.name, description2.name, changed_elements)
-    end
-    render_comparison_common(description_common) if @options[:show_all]
+    render_comparison_only_in(comparison.as_description(:one))
+    render_comparison_only_in(comparison.as_description(:two))
+    render_comparison_changed(comparison) if comparison.changed
+    render_comparison_common(comparison.as_description(:common)) if @options[:show_all]
     @buffer
   end
 
@@ -174,9 +171,9 @@ class Renderer
     @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
   end
 
-  def render_comparison_changed(name1, name2, changed_elements)
-    puts "In both with different attributes ('#{name1}' <> '#{name2}'):"
-    indent { compare_content_changed(changed_elements) }
+  def render_comparison_changed(comparison)
+    puts "In both with different attributes ('#{comparison.name1}' <> '#{comparison.name2}'):"
+    indent { compare_content_changed(comparison.changed) }
     @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
   end
 

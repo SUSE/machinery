@@ -27,7 +27,9 @@ class FooRenderer < Renderer
   end
 
   def compare_content_changed(changed_elements)
-    puts "#{changed_elements.first} <> #{changed_elements.last}"
+    changed_elements.each do |change|
+      puts "#{change.first} <> #{change.last}"
+    end
   end
 
   def display_name
@@ -85,15 +87,11 @@ describe Renderer do
     create_test_description(json: '{ "foo": { "data": "data_common" } }', name: "name2")
   }
 
-  let(:output_data_none) { "" }
   let(:output_data_missing) { <<-EOT }
 # Foo
 
 Only in 'name2':
   data2
-
-In both with different attributes ('name1' <> 'name2'):
-  one <> One
 
   EOT
   let(:output_data_only_common) { <<-EOT }
@@ -112,9 +110,6 @@ Only in 'name1':
 Only in 'name2':
   data2
 
-In both with different attributes ('name1' <> 'name2'):
-  one <> One
-
   EOT
   let(:output_data_all_with_common) { <<-EOT }
 # Foo
@@ -132,6 +127,19 @@ Common to both systems:
   data_common
 
   EOT
+
+  def stub_comparison(scope, description1, description2, changed, common)
+    comparison = Comparison::Result.new
+    comparison.store = SystemDescriptionMemoryStore.new
+    comparison.scope = scope
+    comparison.name1 = "name1"
+    comparison.name2 = "name2"
+    comparison.only_in1 = description1[scope]
+    comparison.only_in2 = description2[scope]
+    comparison.changed = changed
+    comparison.common = common[scope]
+    comparison
+  end
 
   describe ".for" do
     it "returns the requested Renderer" do
@@ -260,37 +268,34 @@ EOF
       let(:options) { { show_all: false } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
-          nil,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
-        expect(output).to eq(output_data_none)
+        expect(output).to eq("")
       end
 
       it "renders error message when there is no scope data in at least one description" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_without_data,
           description2_with_data,
-          ["one", "One"],
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_missing)
       end
 
       it "renders correct output when there is scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
-          ["one", "One"],
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_all_without_common)
       end
@@ -300,49 +305,36 @@ EOF
       let(:options) { { show_all: true } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
-          nil,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
-        expect(output).to eq(output_data_none)
+        expect(output).to eq("")
       end
 
       it "renders correct output when there is no scope data in the common description" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
-          ["one", "One"],
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_all_without_common)
       end
 
-      it "renders correct output when there is scope data in the common description" do
-        output = subject.render_comparison(
-          description1_without_data,
-          description2_without_data,
-          nil,
-          description_common_with_data,
-          options
-        )
-
-        expect(output).to eq(output_data_only_common)
-      end
-
       it "renders correct output when there is scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = stub_comparison(
+          "foo",
           description1_with_data,
           description2_with_data,
-          ["one", "One"],
-          description_common_with_data,
-          options
+          [["one", "One"]],
+          description_common_with_data
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_all_with_common)
       end
@@ -361,13 +353,14 @@ EOF
         expect(description).to eq(description_common_with_data)
       end
 
-      subject.render_comparison(
+      comparison = stub_comparison(
+        "foo",
         description1_with_data,
         description2_with_data,
-        ["one", "One"],
-        description_common_with_data,
-        show_all: true
+        [["one", "One"]],
+        description_common_with_data
       )
+      subject.render_comparison(comparison, show_all: true)
     end
 
     it "sets the options" do
@@ -379,13 +372,14 @@ EOF
         expect(options).to eq(passed_options)
       end.exactly(3).times
 
-      subject.render_comparison(
+      comparison = stub_comparison(
+        "foo",
         description1_with_data,
         description2_with_data,
-        ["one", "One"],
-        description_common_with_data,
-        passed_options
+        [["one", "One"]],
+        description_common_with_data
       )
+      subject.render_comparison(comparison, show_all: true)
     end
   end
 
