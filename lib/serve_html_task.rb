@@ -23,7 +23,7 @@ class ServeHtmlTask
     Machinery::Ui.puts <<EOF
 The description is now available at #{url}
 
-The webserver can be closed with Ctrl+c.
+The webserver can be closed with Ctrl+C.
 EOF
 
     server = Html.run_server(port: port, ip: ip)

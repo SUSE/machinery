@@ -38,7 +38,7 @@ class ShowTask
       Machinery::Ui.puts <<EOF
 There is a webserver running, serving the description on #{url}.
 
-The server can be closed with Ctrl+c.
+The server can be closed with Ctrl+C.
 EOF
 
       server = Html.run_server(port: options[:port], ip: options[:ip])

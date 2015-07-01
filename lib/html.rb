@@ -115,6 +115,14 @@ class Html
         end
       end
 
+      if opts[:ip] != "localhost" && opts[:ip] != "127.0.0.1"
+        Machinery::Ui.puts <<EOF
+Warning:
+You specified an IP address other than '127.0.0.1', your server may be reachable from the network.
+This could lead to confidential data like passwords or private keys being readable by others.
+EOF
+      end
+
       begin
         setup_output_redirection
         server.run!
