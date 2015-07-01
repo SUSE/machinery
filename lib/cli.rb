@@ -742,7 +742,7 @@ class Cli
       task = ConfigTask.new
       task.config(key, value)
 
-      if key == "hints" && !@config.hints
+      if key == "hints" && (value == "false" || value == "off")
         Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints=on'."
       end
     end
