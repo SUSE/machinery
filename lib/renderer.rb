@@ -124,24 +124,7 @@ class Renderer
     @buffer
   end
 
-  # Renders the result of a comparison of two system descriptions. The arguments to that method
-  # are three SystemDescriptions:
-  #
-  # [description1] contains all elements that are only present in description1
-  # [description2] contains all elements that are only present in description2
-  # [description_common] contains all elements that are present in both descriptions
-  #
-  # The actual rendering is done using the `content_comparison` method. The default behaviour
-  # of that method is to
-  #
-  # * render description1 (the actual rendering happens in `content_only_in`)
-  # * render description2 (the actual rendering happens in `content_only_in`)
-  # * render description_common (the actual rendering happens in `content_common`)
-  #
-  # Both `content_only_in` and `content_common` fall back to the `content` method by default.
-  #
-  # When necessary the default behavior can be overridden by specializing either the outer
-  # `content_comparison` method and/or `content_only_in` and `content_common`.
+  # Renders the result of a comparison of two system descriptions.
   def render_comparison(comparison, options = {})
     @options = options
     @buffer = ""
