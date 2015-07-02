@@ -750,7 +750,7 @@ class Cli
     c.flag [:ip, :i], type: String, required: false, default_value: "localhost",
       desc: "Listen on ip IP", arg_name: "IP"
 
-    c.action do |global_options, options, args|
+    c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
 
       description = SystemDescription.load(name, system_description_store)

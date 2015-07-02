@@ -389,9 +389,8 @@ describe Cli do
     describe "#show" do
       it "triggers the show task for packages when scope packages is specified" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(ShowTask).to receive(:show).with(
-          description, ["packages"], an_instance_of(Filter), show_diffs: false,
-            show_html: false, ip: "localhost", port: 7585)
+        expect_any_instance_of(ShowTask).to receive(:show).with(description, ["packages"],
+          an_instance_of(Filter), show_diffs: false, show_html: false, ip: "localhost", port: 7585)
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
       end
@@ -399,13 +398,12 @@ describe Cli do
       context "with --html" do
         it "forwards the specified port and IP" do
           description = create_test_description(json: test_manifest)
-          expect_any_instance_of(ShowTask).to receive(:show).with(
-            description, ["packages"], an_instance_of(Filter), show_diffs: false,
-            show_html: true, ip: "0.0.0.0", port: 3000
-          )
+          expect_any_instance_of(ShowTask).to receive(:show).with(description, ["packages"],
+            an_instance_of(Filter), show_diffs: false, show_html: true, ip: "0.0.0.0", port: 3000)
 
-          run_command(["show", "description1", "--scope=packages", "--html", "--port=3000",
-            "--ip=0.0.0.0"])
+          run_command(
+            ["show", "description1", "--scope=packages", "--html", "--port=3000", "--ip=0.0.0.0"]
+          )
         end
       end
 
