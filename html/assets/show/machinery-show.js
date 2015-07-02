@@ -4,8 +4,9 @@ angular.module("machinery-show")
   .config(function($locationProvider) {
     $locationProvider.html5Mode({enabled: true, requireBase: false});
   })
-  .controller("showController", function($scope, $http) {
+  .controller("showController", function($scope, $http, $timeout, $anchorScroll) {
     $http.get("/descriptions/" + $("body").data("description") + ".js").then(function(result) {
+      $timeout($anchorScroll, 0);
       $scope.description = result.data;
 
 
