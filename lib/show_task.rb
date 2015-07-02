@@ -36,7 +36,7 @@ class ShowTask
 
       Machinery::Ui.use_pager = false
       Machinery::Ui.puts <<EOF
-There is a webserver running, serving the description on #{url}.
+There is a web server running, serving the description on #{url}.
 
 The server can be closed with Ctrl+C.
 EOF
