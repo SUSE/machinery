@@ -8,7 +8,7 @@ angular.module("machinery-show")
     $http.get("/descriptions/" + $("body").data("description") + ".js").then(function(result) {
       // Setup links and scroll to desired scope when rendering is done
       $timeout(function() {
-        setupDiffLinks();
+        setupDynamicContent();
         $anchorScroll();
       }, 0);
       $scope.description = result.data;

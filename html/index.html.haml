@@ -248,7 +248,7 @@
                 %tbody
                   %tr{"ng-repeat" => "service in description.services.services | filter:query"}
                     %td {{service.name}}
-                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                    %td{:class=>"{{description.services.init_system}}_{{service.state}}"}
                       {{service.state}}
 
     %script#scope_config_files.partial{:type => "text/ng-template"}
