@@ -129,7 +129,7 @@ Common to both systems:
   EOT
 
   def stub_comparison(scope, description1, description2, changed, common)
-    comparison = Comparison::Result.new
+    comparison = Comparison.new
     comparison.store = SystemDescriptionMemoryStore.new
     comparison.scope = scope
     comparison.name1 = "name1"

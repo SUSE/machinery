@@ -16,30 +16,10 @@
 # you may find current contact information at www.suse.com
 
 class Comparison
-  class Result
-    attr_accessor :name1, :name2, :only_in1, :only_in2, :changed, :common, :store, :scope
-
-    def as_description(which)
-      case which
-      when :one
-        name = name1
-        data = only_in1
-      when :two
-        name = name2
-        data = only_in2
-      when :common
-        name = "common"
-        data = common
-      else
-        raise "'which' has to be :one, :two or :common"
-      end
-
-      SystemDescription.new(name, store, scope => data)
-    end
-  end
+  attr_accessor :name1, :name2, :only_in1, :only_in2, :changed, :common, :store, :scope
 
   def self.compare_scope(description1, description2, scope)
-    result = Result.new
+    result = new
     result.store = description1.store
     result.scope = scope
     result.name1 = description1.name
@@ -55,5 +35,23 @@ class Comparison
     end
 
     result
+  end
+
+  def as_description(which)
+    case which
+    when :one
+      name = name1
+      data = only_in1
+    when :two
+      name = name2
+      data = only_in2
+    when :common
+      name = "common"
+      data = common
+    else
+      raise "'which' has to be :one, :two or :common"
+    end
+
+    SystemDescription.new(name, store, scope => data)
   end
 end

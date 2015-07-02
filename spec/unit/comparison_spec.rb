@@ -23,10 +23,10 @@ describe Comparison do
   let(:empty_description) { create_test_description(name: "empty") }
   subject { Comparison }
 
-  describe "#compare_scope" do
-    it "returns a Comparison::Result" do
+  describe ".compare_scope" do
+    it "returns a Comparison" do
       expect(subject.compare_scope(description1, description2, "packages")).
-        to be_a(Comparison::Result)
+        to be_a(Comparison)
     end
 
     it "returns nil for the mission scope when a description does not have the scope" do
