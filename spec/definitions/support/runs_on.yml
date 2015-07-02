@@ -1,0 +1,13 @@
+---
+supported:
+  "openSUSE_13_2:x86_64":
+    "Package installation": full_test
+    "General commands": minimal_test
+working:
+  "openSUSE_13_1:x86_64":
+    "Package installation": full_test
+    "General commands":
+  "Tumbleweed:x86_64":
+    "Package installation": full_test
+    "General commands":
+
