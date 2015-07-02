@@ -619,7 +619,7 @@ class Cli
     c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
       desc: "Listen on port PORT", arg_name: "PORT"
     c.flag [:ip, :i], type: String, required: false, default_value: "localhost",
-      desc: "Listen on ip IP", arg_name: "IP"
+      desc: "Listen on ip address IP", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
