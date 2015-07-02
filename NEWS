@@ -1,9 +1,10 @@
 # Machinery Release Notes
 
 
+* Add `man` command to show the Machinery man page
+
 ## Version 1.9.1 - Tue Jun 23 16:57:35 CEST 2015 - thardeck@suse.de
 
-* Add `man` command to show the Machinery man page
 * `machinery config` takes arguments of the form 'key=value' as well
 
 ## Version 1.9.0 - Wed Jun 17 09:57:07 CEST 2015 - thardeck@suse.de
