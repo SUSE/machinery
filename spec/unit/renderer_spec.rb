@@ -22,8 +22,14 @@ class FooScope < Machinery::Object
 end
 
 class FooRenderer < Renderer
-  def do_render
-    puts @system_description.foo.data
+  def content(description)
+    puts description.foo.data
+  end
+
+  def compare_content_changed(changed_elements)
+    changed_elements.each do |change|
+      puts "#{change.first} <> #{change.last}"
+    end
   end
 
   def display_name
@@ -36,7 +42,7 @@ class BarBazScope < Machinery::Object
 end
 
 class BarBazRenderer < Renderer
-  def do_render
+  def content(_description)
     heading("bar")
 
     puts("new line")
@@ -62,6 +68,79 @@ class BarBazRenderer < Renderer
 end
 
 describe Renderer do
+  let(:description1_without_data) {
+    create_test_description(json: "{}", name: "name1")
+  }
+  let(:description2_without_data) {
+    create_test_description(json: "{}", name: "name2")
+  }
+  let(:description_common_without_data) {
+    create_test_description(json: "{}", name: "common")
+  }
+  let(:description1_with_data) {
+    create_test_description(json: '{ "foo": { "data": "data1" } }', name: "name1")
+  }
+  let(:description2_with_data) {
+    create_test_description(json: '{ "foo": { "data": "data2" } }', name: "name2")
+  }
+  let(:description_common_with_data) {
+    create_test_description(json: '{ "foo": { "data": "data_common" } }', name: "name2")
+  }
+
+  let(:output_data_missing) { <<-EOT }
+# Foo
+
+Only in 'name2':
+  data2
+
+  EOT
+  let(:output_data_only_common) { <<-EOT }
+# Foo
+
+Common to both systems:
+  data_common
+
+  EOT
+  let(:output_data_all_without_common) { <<-EOT }
+# Foo
+
+Only in 'name1':
+  data1
+
+Only in 'name2':
+  data2
+
+  EOT
+  let(:output_data_all_with_common) { <<-EOT }
+# Foo
+
+Only in 'name1':
+  data1
+
+Only in 'name2':
+  data2
+
+In both with different attributes ('name1' <> 'name2'):
+  one <> One
+
+Common to both systems:
+  data_common
+
+  EOT
+
+  def stub_comparison(scope, description1, description2, changed, common)
+    comparison = Comparison.new
+    comparison.store = SystemDescriptionMemoryStore.new
+    comparison.scope = scope
+    comparison.name1 = "name1"
+    comparison.name2 = "name2"
+    comparison.only_in1 = description1[scope]
+    comparison.only_in2 = description2[scope]
+    comparison.changed = changed
+    comparison.common = common[scope]
+    comparison
+  end
+
   describe ".for" do
     it "returns the requested Renderer" do
       expect(Renderer.for("foo")).to be_a(FooRenderer)
@@ -108,7 +187,7 @@ describe Renderer do
     }
 
     it "calls specialized do_render method" do
-      expect(renderer).to receive(:do_render)
+      expect(renderer).to receive(:content)
 
       renderer.render(description)
     end
@@ -132,7 +211,7 @@ EOF
     end
 
     it "removes :list elements from the structure stack" do
-      def renderer.do_render
+      def renderer.content(_description)
         list("some list") do
           item("some item")
         end
@@ -143,7 +222,7 @@ EOF
     end
 
     it "raises an exception when a list is empty" do
-      def renderer.do_render
+      def renderer.content(_description)
         list("some list")
       end
 
@@ -153,7 +232,7 @@ EOF
     end
 
     it "raises an exception when an item is created outside a list" do
-      def renderer.do_render
+      def renderer.content(_description)
         item("some item")
       end
 
@@ -163,7 +242,7 @@ EOF
     end
 
     it "renders a scope of a system description with a date and a hostname" do
-      def renderer.do_render
+      def renderer.content(_description)
       end
 
       expected = <<EOF
@@ -174,7 +253,7 @@ EOF
     end
 
     it "indents string with newlines properly" do
-      def renderer.do_render
+      def renderer.content(_description)
         puts "line 1\nline 2"
       end
 
@@ -185,96 +264,38 @@ EOF
   describe "#render_comparison" do
     subject { FooRenderer.new }
 
-    let(:description1_without_data) {
-      create_test_description(json: "{}", name: "name1")
-    }
-    let(:description2_without_data) {
-      create_test_description(json: "{}", name: "name2")
-    }
-    let(:description_common_without_data) {
-      create_test_description(json: "{}", name: "common")
-    }
-    let(:description1_with_data) {
-      create_test_description(json: '{ "foo": { "data": "data1" } }', name: "name1")
-    }
-    let(:description2_with_data) {
-      create_test_description(json: '{ "foo": { "data": "data2" } }', name: "name2")
-    }
-    let(:description_common_with_data) {
-      create_test_description(json: '{ "foo": { "data": "data_common" } }', name: "name2")
-    }
-
-    let(:output_data_none) { "" }
-    let(:output_data_missing) { <<-EOT }
-# Foo
-
-Only in 'name2':
-  data2
-
-EOT
-    let(:output_data_only_common) { <<-EOT }
-# Foo
-
-Common to both systems:
-  data_common
-
-EOT
-    let(:output_data_all_without_common) { <<-EOT }
-# Foo
-
-Only in 'name1':
-  data1
-
-Only in 'name2':
-  data2
-
-EOT
-    let(:output_data_all_with_common) { <<-EOT }
-# Foo
-
-Only in 'name1':
-  data1
-
-Only in 'name2':
-  data2
-
-Common to both systems:
-  data_common
-
-EOT
-
     context "when not showing common properties" do
       let(:options) { { show_all: false } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
-        expect(output).to eq(output_data_none)
+        expect(output).to eq("")
       end
 
       it "renders error message when there is no scope data in at least one description" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_without_data,
           description2_with_data,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_missing)
       end
 
       it "renders correct output when there is scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_all_without_common)
       end
@@ -284,92 +305,97 @@ EOT
       let(:options) { { show_all: true } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
-        expect(output).to eq(output_data_none)
+        expect(output).to eq("")
       end
 
       it "renders correct output when there is no scope data in the common description" do
-        output = subject.render_comparison(
+        comparison = Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
-          description_common_without_data,
-          options
+          "foo"
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_all_without_common)
       end
 
-      it "renders correct output when there is scope data in the common description" do
-        output = subject.render_comparison(
-          description1_without_data,
-          description2_without_data,
-          description_common_with_data,
-          options
-        )
-
-        expect(output).to eq(output_data_only_common)
-      end
-
       it "renders correct output when there is scope data in all descriptions" do
-        output = subject.render_comparison(
+        comparison = stub_comparison(
+          "foo",
           description1_with_data,
           description2_with_data,
-          description_common_with_data,
-          options
+          [["one", "One"]],
+          description_common_with_data
         )
+        output = subject.render_comparison(comparison, options)
 
         expect(output).to eq(output_data_all_with_common)
       end
     end
 
-    it "uses the #do_render method to do the actual rendering" do
-      expect(subject).to receive(:do_render) do
-        description = subject.instance_variable_get(:@system_description)
-
+    it "uses #do_render_comparison_only_in and #do_render_comparison_common for rendering" do
+      expect(subject).to receive(:compare_content_only_in) do |description|
         expect(description).to eq(description1_with_data)
       end
 
-      expect(subject).to receive(:do_render) do
-        description = subject.instance_variable_get(:@system_description)
-
+      expect(subject).to receive(:compare_content_only_in) do |description|
         expect(description).to eq(description2_with_data)
       end
 
-      expect(subject).to receive(:do_render) do
-        description = subject.instance_variable_get(:@system_description)
-
+      expect(subject).to receive(:compare_content_common) do |description|
         expect(description).to eq(description_common_with_data)
       end
 
-      subject.render_comparison(
+      comparison = stub_comparison(
+        "foo",
         description1_with_data,
         description2_with_data,
-        description_common_with_data,
-        show_all: true
+        [["one", "One"]],
+        description_common_with_data
       )
+      subject.render_comparison(comparison, show_all: true)
     end
 
     it "sets the options" do
       passed_options = { show_all: true }
 
-      expect(subject).to receive(:do_render) do
+      expect(subject).to receive(:content) do
         options = subject.instance_variable_get(:@options)
 
         expect(options).to eq(passed_options)
       end.exactly(3).times
 
-      subject.render_comparison(
+      comparison = stub_comparison(
+        "foo",
         description1_with_data,
         description2_with_data,
-        description_common_with_data,
-        passed_options
+        [["one", "One"]],
+        description_common_with_data
       )
+      subject.render_comparison(comparison, show_all: true)
+    end
+  end
+
+  describe "#compare_content_only_in" do
+    it "falls back to #content by default" do
+      expect(subject).to receive(:content)
+
+      subject.compare_content_only_in(description1_with_data)
+    end
+  end
+
+  describe "#compare_content_common" do
+    it "falls back to #content by default" do
+      expect(subject).to receive(:content)
+
+      subject.compare_content_common(description1_with_data)
     end
   end
 end

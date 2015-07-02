@@ -16,17 +16,17 @@
 # you may find current contact information at www.suse.com
 
 class ChangedManagedFilesRenderer < Renderer
-  def do_render
-    return unless @system_description["changed_managed_files"]
+  def content(description)
+    return unless description["changed_managed_files"]
 
-    if  @system_description["changed_managed_files"].files
-      files, errors = @system_description["changed_managed_files"].files.partition do |file|
+    if description["changed_managed_files"].files
+      files, errors = description["changed_managed_files"].files.partition do |file|
         file.status != "error"
       end
     end
 
     list do
-      file_status = @system_description["changed_managed_files"].extracted
+      file_status = description["changed_managed_files"].extracted
       if !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end

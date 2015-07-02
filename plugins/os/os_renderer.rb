@@ -17,12 +17,12 @@
 
 #  This renderer prints the operating system
 class OsRenderer < Renderer
-  def do_render
-    return unless @system_description.os
+  def content(description)
+    return unless description.os
 
-    puts "Name: #{@system_description.os.name}"
-    puts "Version: #{@system_description.os.version}"
-    puts "Architecture: #{@system_description.os.architecture}"
+    puts "Name: #{description.os.name}"
+    puts "Version: #{description.os.version}"
+    puts "Architecture: #{description.os.architecture}"
   end
 
   def display_name

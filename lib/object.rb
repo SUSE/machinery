@@ -152,7 +152,7 @@ module Machinery
     end
 
     def compare_with(other)
-      self == other ? [nil, nil, self] : [self, other, nil]
+      self == other ? [nil, nil, nil, self] : [self, other, nil, nil]
     end
   end
 end

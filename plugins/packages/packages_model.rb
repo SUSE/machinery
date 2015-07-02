@@ -23,4 +23,29 @@ class PackagesScope < Machinery::Array
   include Machinery::Scope
 
   has_elements class: Package
+
+  def compare_with(other)
+    only_self = self - other
+    only_other = other - self
+    common = self & other
+
+    changed_package_names = only_self.map(&:name) & only_other.map(&:name)
+    changed = []
+
+    changed_package_names.each do |name|
+      changed << [
+        only_self.find { |package| package.name == name },
+        only_other.find { |package| package.name == name },
+      ]
+      only_self.reject! { |package| package.name == name }
+      only_other.reject! { |package| package.name == name }
+    end
+
+    [
+      only_self,
+      only_other,
+      changed,
+      common
+    ].map { |e| (e && !e.empty?) ? e : nil }
+  end
 end

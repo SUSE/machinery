@@ -46,7 +46,7 @@ shared_examples "FileScope" do
       )
 
       comparison = a.compare_with(b)
-      expect(comparison).to eq([nil, nil, a])
+      expect(comparison).to eq([nil, nil, nil, a])
     end
 
     it "works for differing objects" do
@@ -63,6 +63,7 @@ shared_examples "FileScope" do
       expect(comparison).to eq([
         scope.class.new(extracted: true, files: [file_a]),
         scope.class.new(extracted: false, files: [file_c]),
+        nil,
         scope.class.new(files: [file_b])
       ])
     end

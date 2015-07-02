@@ -18,7 +18,22 @@
 # Renderer is the base class for all text renderer plugins
 #
 # It defines methods for rendering data which will be called from the
-# specialized `do_render` methods in the subclasses.
+# specialized content methods in the subclasses.
+#
+# Subclasses can define the output for the `show` and `compare` commands using
+# the following `content` methods:
+#
+# For `machinery show`:
+# [content] (required) Defines the output for a scope in `machinery show`
+#
+# For `machinery compare`:
+# [compare_content_only_in] Defines the output of the "only in x" sections. The
+#                           default behavior is to fall back to `content`.
+# [compare_content_common]  Defines the output of the "in both" section. The
+#                           default behavior is to fall back to `content`.
+# [compare_content_changed] Defines the output of the "in both with changed
+#                           attributes" section for scopes where this is
+#                           supported.
 #
 # The names of the subclasses are 1:1 mappings of the scope areas, e.g.
 # the PackagesRenderer class would be used for rendering when the user
@@ -34,11 +49,11 @@
 # Accordingly a simple renderer for the "packages" scope could look like this:
 #
 # class PackagesRenderer < Renderer
-#   def do_render
-#     return if @system_description.packages.empty?
+#   def content(description)
+#     return if description.packages.empty?
 #
 #     list "Packages" do
-#       @system_description.packages.each do |p|
+#       description.packages.each do |p|
 #         item "#{p.name} (#{p.version})"
 #       end
 #     end
@@ -51,7 +66,8 @@ class Renderer
   attr_accessor :system_description
   attr_accessor :buffer
 
-  abstract_method :do_render
+  abstract_method :content
+  abstract_method :compare_content_changed
 
   @@renderers = []
 
@@ -73,8 +89,15 @@ class Renderer
     end
   end
 
+  def scope
+    # Return the un-camelcased name of the inspector,
+    # e.g. "foo_bar" for "FooBarInspector"
+    scope = self.class.name.match(/^(.*)Renderer$/)[1]
+    scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+  end
+
+  # Renders one system description using the specialized `content` method
   def render(system_description, options = {})
-    @system_description = system_description
     @options = options
     @buffer = ""
     @indent = 2
@@ -94,52 +117,63 @@ class Renderer
       heading(header)
     end
 
-    do_render
+    content(system_description)
 
     @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
 
     @buffer
   end
 
-  def render_comparison_section(description)
-    @system_description = description
-    indent { do_render }
-    @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
-  end
-
-  def render_comparison_only_in(description, scope)
-    if description[scope]
-      puts "Only in '#{description.name}':"
-      render_comparison_section(description)
-    end
-  end
-
-  def render_comparison_common(description, scope)
-    if description[scope]
-      puts "Common to both systems:"
-      render_comparison_section(description)
-    end
-  end
-
-  def render_comparison(description1, description2, description_common, options = {})
+  # Renders the result of a comparison of two system descriptions.
+  def render_comparison(comparison, options = {})
     @options = options
     @buffer = ""
     @indent = 0
     @stack = []
 
     show_heading = if options[:show_all]
-      description1[scope] || description2[scope] || description_common[scope]
+      comparison.only_in1 || comparison.only_in2 || comparison.changed || comparison.common
     else
-      description1[scope] || description2[scope]
+      comparison.only_in1 || comparison.only_in2 || comparison.changed
     end
 
     heading(display_name) if show_heading
 
-    render_comparison_only_in(description1, scope)
-    render_comparison_only_in(description2, scope)
-    render_comparison_common(description_common, scope) if options[:show_all]
-
+    render_comparison_only_in(comparison.as_description(:one))
+    render_comparison_only_in(comparison.as_description(:two))
+    render_comparison_changed(comparison) if comparison.changed
+    render_comparison_common(comparison.as_description(:common)) if @options[:show_all]
     @buffer
+  end
+
+  def render_comparison_only_in(description)
+    return if !description[scope]
+
+    puts "Only in '#{description.name}':"
+    indent { compare_content_only_in(description) }
+    @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
+  end
+
+  def render_comparison_changed(comparison)
+    puts "In both with different attributes ('#{comparison.name1}' <> '#{comparison.name2}'):"
+    indent { compare_content_changed(comparison.changed) }
+    @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
+  end
+
+  def render_comparison_common(description)
+    return if !description[scope]
+
+    puts "Common to both systems:"
+    indent { compare_content_common(description) }
+    @buffer += "\n" unless @buffer.empty? || @buffer.end_with?("\n\n")
+  end
+
+  def compare_content_only_in(description)
+    content(description)
+  end
+
+  def compare_content_common(description)
+    content(description)
   end
 
   def render_comparison_missing_scope(description1, description2)
@@ -163,6 +197,8 @@ class Renderer
 
     @buffer
   end
+
+  protected
 
   def heading(s)
     @buffer += "# #{s}\n\n"
@@ -212,13 +248,6 @@ class Renderer
       @buffer += "\n"
       @stack.pop
     end
-  end
-
-  def scope
-    # Return the un-camelcased name of the inspector,
-    # e.g. "foo_bar" for "FooBarInspector"
-    scope = self.class.name.match(/^(.*)Renderer$/)[1]
-    scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
   end
 
   private

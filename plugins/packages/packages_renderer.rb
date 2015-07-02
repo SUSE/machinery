@@ -16,17 +16,48 @@
 # you may find current contact information at www.suse.com
 
 class PackagesRenderer < Renderer
-  def do_render
-    return unless @system_description.packages
+  def display_name
+    "Packages"
+  end
+
+  def content(description)
+    return unless description.packages
 
     list do
-      @system_description.packages.each do |p|
+      description.packages.each do |p|
         item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{p.vendor})"
       end
     end
   end
 
-  def display_name
-    "Packages"
+  # In the comparison case we only want to show the package name, not all details like version,
+  # architecture etc.
+  def compare_content_only_in(description)
+    list do
+      description.packages.each do |p|
+        item "#{p.name}"
+      end
+    end
+  end
+
+  def compare_content_changed(changed_elements)
+    list do
+      changed_elements.each do |one, two|
+        changes = []
+        relevant_attributes = ["version", "vendor", "arch"]
+        if one.version == two.version
+          relevant_attributes << "release"
+          relevant_attributes << "checksum" if one.release == two.release
+        end
+
+        relevant_attributes.each do |attribute|
+          if one[attribute] != two[attribute]
+            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+          end
+        end
+
+        item "#{one.name} (#{changes.join(", ")})"
+      end
+    end
   end
 end

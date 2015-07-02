@@ -16,11 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class ServicesRenderer < Renderer
-  def do_render
-    return unless @system_description["services"]
+  def content(description)
+    return unless description["services"]
 
     list do
-      @system_description["services"].services.each do |p|
+      description["services"].services.each do |p|
         item "#{p.name}: #{p.state}"
       end
     end

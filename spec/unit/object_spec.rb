@@ -146,7 +146,7 @@ describe Machinery::Object do
 
       comparison = a.compare_with(b)
 
-      expect(comparison).to eq([nil, nil, Machinery::Object.new(a: 42)])
+      expect(comparison).to eq([nil, nil, nil, Machinery::Object.new(a: 42)])
     end
 
     it "returns correct result when compared objects aren't equal" do
@@ -158,6 +158,7 @@ describe Machinery::Object do
       expect(comparison).to eq([
         Machinery::Object.new(a: 42),
         Machinery::Object.new(b: 43),
+        nil,
         nil
       ])
     end

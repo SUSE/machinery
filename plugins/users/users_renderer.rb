@@ -16,11 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class UsersRenderer < Renderer
-  def do_render
-    return unless @system_description.users
+  def content(description)
+    return unless description.users
 
     list do
-      @system_description.users.each do |user|
+      description.users.each do |user|
         info = user.comment.empty? ? "N/A" : user.comment
         uid = user.uid || "N/A"
         gid = user.gid || "N/A"

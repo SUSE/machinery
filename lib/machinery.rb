@@ -94,6 +94,7 @@ require_relative "file_scope"
 require_relative "system_file"
 require_relative "scope_file_access"
 require_relative "man_task"
+require_relative "comparison"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

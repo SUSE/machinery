@@ -16,11 +16,11 @@
 # you may find current contact information at www.suse.com
 
 class PatternsRenderer < Renderer
-  def do_render
-    return unless @system_description.patterns
+  def content(description)
+    return unless description.patterns
 
     list do
-      @system_description.patterns.each do |p|
+      description.patterns.each do |p|
         item "#{p.name}"
       end
     end

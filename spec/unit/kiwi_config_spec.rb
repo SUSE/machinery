@@ -85,8 +85,9 @@ describe KiwiConfig do
       expect(users.count).to eq(1)
       expect(users[0].attr("home")).to eq("/root")
       packages = config.xml.xpath("/image/packages/package")
-      expect(packages.count).to eq(1)
+      expect(packages.count).to eq(2)
       expect(packages[0].attr("name")).to eq("bash")
+      expect(packages[1].attr("name")).to eq("autofs")
     end
 
     it "applies the packages to the kiwi config" do

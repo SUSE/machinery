@@ -38,6 +38,7 @@
     <packages config:type="list">
       <package>bash</package>
       <package>openSUSE-release-dvd</package>
+      <package>autofs</package>
     </packages>
     <patterns config:type="list">
       <pattern>base</pattern>

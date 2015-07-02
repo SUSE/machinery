@@ -34,8 +34,8 @@ describe CompareTask do
     end
 
     class CompareTaskFooRenderer < Renderer
-      def do_render
-        @system_description["compare_task_foo"].each do |e|
+      def content(description)
+        description["compare_task_foo"].each do |e|
           puts e
         end
       end
@@ -46,8 +46,8 @@ describe CompareTask do
     end
 
     class CompareTaskBarRenderer < Renderer
-      def do_render
-        @system_description["compare_task_bar"].each do |e|
+      def content(description)
+        description["compare_task_bar"].each do |e|
           puts e
         end
       end
@@ -58,8 +58,8 @@ describe CompareTask do
     end
 
     class CompareTaskBazRenderer < Renderer
-      def do_render
-        @system_description["compare_task_baz"].each do |e|
+      def content(description)
+        description["compare_task_baz"].each do |e|
           puts e
         end
       end
@@ -70,8 +70,8 @@ describe CompareTask do
     end
 
     class CompareTaskFoobarRenderer < Renderer
-      def do_render
-        @system_description["compare_task_foobar"].each do |e|
+      def content(description)
+        description["compare_task_foobar"].each do |e|
           puts e
         end
       end
@@ -398,7 +398,7 @@ EOT
 # Packages
 
 Only in 'one':
-  * kernel-3-1.x86_64 (openSUSE)
+  * kernel
 
 EOT
       output = CompareTask.new.render_comparison(system_description1,
@@ -457,11 +457,8 @@ EOT
       expected_output = <<EOT
 # Packages
 
-Only in 'one':
-  * kernel-3-1.x86_64 (openSUSE)
-
-Only in 'two':
-  * kernel-4-1.x86_64 (openSUSE)
+In both with different attributes ('one' <> 'two'):
+  * kernel (version: 3 <> 4)
 
 EOT
       output = CompareTask.new.render_comparison(system_description1,

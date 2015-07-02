@@ -154,6 +154,7 @@ describe Machinery::Array do
         [
           nil,
           nil,
+          nil,
           Machinery::Array.new(["a", "b", "c"])
         ]
       )
@@ -168,6 +169,7 @@ describe Machinery::Array do
         [
           Machinery::Array.new(["a", "b", "c"]),
           Machinery::Array.new(["d", "e", "f"]),
+          nil,
           nil
         ]
       )
@@ -182,6 +184,7 @@ describe Machinery::Array do
         [
           Machinery::Array.new(["c", "d"]),
           Machinery::Array.new(["e", "f"]),
+          nil,
           Machinery::Array.new(["a", "b"])
         ]
       )
@@ -195,9 +198,9 @@ describe Machinery::Array do
       comparison2 = not_empty.compare_with(empty)
       comparison3 = empty.compare_with(empty)
 
-      expect(comparison1).to eq([nil, Machinery::Array.new(["a", "b", "c"]), nil])
-      expect(comparison2).to eq([Machinery::Array.new(["a", "b", "c"]), nil, nil])
-      expect(comparison3).to eq([nil, nil, nil])
+      expect(comparison1).to eq([nil, Machinery::Array.new(["a", "b", "c"]), nil, nil])
+      expect(comparison2).to eq([Machinery::Array.new(["a", "b", "c"]), nil, nil, nil])
+      expect(comparison3).to eq([nil, nil, nil, nil])
     end
   end
 
