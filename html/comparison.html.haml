@@ -48,7 +48,7 @@
             .col-xs-5{"ng-show" => "diff.os.only_in2"}
               %only-in-b
               %render-template{:template => "scope_os_partial", :object => "diff.os.only_in2"}
-          .row
+          .row.scope_content_common.collapse.in
             .col-xs-1
             .col-xs-11{"ng-show" => "diff.os.common"}
               %in-both
@@ -122,9 +122,16 @@
               %changed
               %changed_packages{:object => "diff.packages.changed"}
           %a.both_anchor{id: "packages_both"}
-          .row{"ng-show" => "diff.packages.common"}
+          .row
             .col-xs-1
-            .col-xs-11.table_container
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.packages.common"}
+                Show common elements in packages
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.packages.common"}
+                Hide common elements in packages
+          .row.scope_common_content.collapse{"ng-show" => "diff.packages.common"}
+            .col-xs-1
+            .col-xs-10.table_container
               %in-both
               %render-template{:template => "scope_packages_partial", :object => "diff.packages.common"}
 
@@ -172,13 +179,18 @@
               %only-in-b
               %render-template{:template => "scope_patterns_partial", :object => "diff.patterns.only_in2"}
           %a.both_anchor{id: "patterns_both"}
-          .row{"ng-show" => "diff.patterns.common"}
+          .row
+            .col-xs-1
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.patterns.common"}
+                Show common elements in patterns
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.patterns.common"}
+                Hide common elements in patterns
+          .row.scope_common_content.collapse{"ng-show" => "diff.patterns.common"}
             .col-xs-1
             .col-xs-11
               %in-both
               %render-template{:template => "scope_patterns_partial", :object => "diff.patterns.common"}
-
-
 
     %script#scope_users_partial{:type => "text/ng-template"}
       %table.table.table-striped.table-hover.table-condensed
@@ -229,7 +241,14 @@
               %only-in-b
               %render-template{:template => "scope_users_partial", :object => "diff.users.only_in2"}
           %a.both_anchor{id: "users_both"}
-          .row{"ng-show" => "diff.users.common"}
+          .row
+            .col-xs-1
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.users.common"}
+                Show common elements in users
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.users.common"}
+                Hide common elements in users
+          .row.scope_common_content.collapse{"ng-show" => "diff.users.common"}
             .col-xs-1
             .col-xs-11
               %in-both
@@ -280,6 +299,13 @@
           %a.both_anchor{id: "unmanaged_files_both"}
           .row
             .col-xs-1
+            .col-xs-4
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.unmanaged_files.common"}
+                Show common elements in unmanaged_files
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.unmanaged_files.common"}
+                Hide common elements in unmanaged_files
+          .row.scope_common_content.collapse{"ng-show" => "diff.unmanaged_files.common"}
+            .col-xs-1
             .col-xs-11
               %in-both
               %render-template{:template => "scope_unmanaged_files_partial", :object => "diff.unmanaged_files.common"}
@@ -329,7 +355,14 @@
               %only-in-b
               %render-template{:template => "scope_groups_partial", :object => "diff.groups.only_in2"}
           %a.both_anchor{id: "groups_both"}
-          .row{"ng-show" => "diff.groups.common"}
+          .row
+            .col-xs-1
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.groups.common"}
+                Show common elements in groups
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.groups.common"}
+                Hide common elements in groups
+          .row.scope_common_content.collapse{"ng-show" => "diff.groups.common"}
             .col-xs-1
             .col-xs-11
               %in-both
@@ -393,7 +426,14 @@
               %only-in-b
               %render-template{:template => "scope_repositories_partial", :object => "diff.repositories.only_in2"}
           %a.both_anchor{id: "repositories_both"}
-          .row{"ng-show" => "diff.repositories.common"}
+          .row
+            .col-xs-1
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.repositories.common"}
+                Show common elements in repositories
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.repositories.common"}
+                Hide common elements in repositories
+          .row.scope_common_content.collapse{"ng-show" => "diff.repositories.common"}
             .col-xs-1
             .col-xs-11
               %in-both
@@ -453,7 +493,14 @@
               %only-in-b
               %render-template{:template => "scope_changed_managed_files_partial", :object => "diff.changed_managed_files.only_in2"}
           %a.both_anchor{id: "changed_managed_files_both"}
-          .row{"ng-show" => "diff.changed_managed_files.common"}
+          .row
+            .col-xs-1
+            .col-xs-4
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.changed_managed_files.common"}
+                Show common elements in changed_managed_files
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.changed_managed_files.common"}
+                Hide common elements in changed_managed_files
+          .row.scope_common_content.collapse{"ng-show" => "diff.changed_managed_files.common"}
             .col-xs-1
             .col-xs-11
               %in-both
@@ -515,11 +562,18 @@
               %only-in-b
               %render-template{:template => "scope_config_files_partial", :object => "diff.config_files.only_in2"}
           %a.both_anchor{id: "config_files_both"}
-          .row{"ng-show" => "diff.config_files.common"}
+          .row
+            .col-xs-1
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.config_files.common"}
+                Show common elements in config_files
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.config_files.common"}
+                Hide common elements in config_files
+          .row.scope_common_content.collapse{"ng-show" => "diff.config_files.common"}
             .col-xs-1
             .col-xs-11
               %in-both
-                %render-template{:template => "scope_config_files_partial", :object => "diff.config_files.common"}
+              %render-template{:template => "scope_config_files_partial", :object => "diff.config_files.common"}
 
     %script#scope_services_partial{:type => "text/ng-template"}
       %table.table.table-striped.table-hover.table-condensed
@@ -563,7 +617,14 @@
               %only-in-b
               %render-template{:template => "scope_services_partial", :object => "diff.services.only_in2"}
           %a.both_anchor{id: "services_both"}
-          .row{"ng-show" => "diff.services.common"}
+          .row
+            .col-xs-1
+            .col-xs-2
+              %a{:class=>"show-common-elements", :href => "#", "ng-show" => "diff.services.common"}
+                Show common elements in services
+              %a{:class=>"hide-common-elements", :href => "#", :style => "display: none", "ng-show" => "diff.services.common"}
+                Hide common elements in services
+          .row.scope_common_content.collapse{"ng-show" => "diff.services.common"}
             .col-xs-1
             .col-xs-11
               %in-both
@@ -610,7 +671,8 @@
               Expand all
             %a#collapse-all{:href => "#"}
               Collapse all
-          .col-xs-10
+        .row
+          .col-xs-9
             %small.pull-right.pad-top
               created by
               %a{:href => "http://machinery-project.org", :target => "_blank"}
