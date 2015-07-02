@@ -9,6 +9,12 @@ Style/StringLiteralsInInterpolation:
 Style/NegatedIf:
   Enabled: false
 
+Style/AlignArray:
+  Enabled: false
+
+Style/AlignHash:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 100
 
