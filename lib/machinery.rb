@@ -33,6 +33,7 @@ require "kramdown"
 require "find"
 require "pathname"
 require "nokogiri"
+require "socket"
 
 require_relative "machinery_logger"
 require_relative "zypper"

@@ -135,6 +135,19 @@ EOF
     end
   end
 
+  def self.when_server_ready(ip, port, &block)
+    20.times do
+      begin
+        TCPSocket.new(ip, port).close
+        block.call
+        return
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        sleep 0.1
+      end
+    end
+    raise Machinery::Errors::MachineryError, "The web server did not come up in time."
+  end
+
   def self.setup_output_redirection
     @orig_stdout = STDOUT.clone
     @orig_stderr = STDERR.clone
