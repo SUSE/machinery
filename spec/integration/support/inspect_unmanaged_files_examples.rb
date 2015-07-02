@@ -23,7 +23,8 @@ shared_examples "inspect unmanaged files" do |base|
         "/var/spool/cron/lastrun/cron.daily",
         "/var/log/sa",
         "/root/.local",
-        "/etc/ssh"
+        "/etc/ssh",
+        "/var/log/mcelog"
       ]
     }
 
