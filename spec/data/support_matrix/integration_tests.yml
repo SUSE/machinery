@@ -1,0 +1,34 @@
+---
+inspect:
+  supported:
+    "sles12:x86_64":
+      "sles12:x86_64": full_test
+      "sles12:s390x": full_test
+      "sles12:power_le": full_test
+      "sles11:x86_64": full_test
+      "rhel5": full_test
+      "rhel6": full_test
+  working:
+    "sles12:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+build:
+  supported:
+    "sles12:x86_64":
+      "sles12:x86_64": full_test
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64": full_test
+  future_support:
+    "sles12:x86_64":
+      "sles11:x86_64": full_test
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64":
+  unsupported:
+    "sles12:x86_64":
+      "sles12:s390x":
+      "sles12:power_le":
+      "sles12:arm":
