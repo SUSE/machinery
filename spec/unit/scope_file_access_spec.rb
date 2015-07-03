@@ -130,7 +130,7 @@ describe "ScopeFileAccess" do
         expect {
           description.unmanaged_files.file_content("/etc/crontab")
         }.to raise_error(
-            Machinery::Errors::FileUtilsError, /for scope 'unmanaged_files' were not extracted/
+          Machinery::Errors::FileUtilsError, /for scope 'unmanaged_files' were not extracted/
           )
       end
     end
