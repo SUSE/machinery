@@ -78,4 +78,18 @@ module ScopeFileAccessArchive
       File.join(system_file.scope.scope_file_store.path, "files.tgz")
     end
   end
+
+  def file_content(filename)
+    if !extracted
+      raise Machinery::Errors::FileUtilsError, "The requested file '#{filename}' is not available" \
+        " because files for scope '#{scope_name}' were not extracted."
+    end
+
+    tarball_path = File.join(scope_file_store.path, "files.tgz")
+    begin
+      Cheetah.run("tar", "xfO", tarball_path, filename.gsub(/^\//, ""), stdout: :capture)
+    rescue
+      raise Machinery::Errors::FileUtilsError, "The requested file '#{filename}' was not found."
+    end
+  end
 end

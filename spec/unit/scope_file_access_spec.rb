@@ -107,6 +107,34 @@ describe "ScopeFileAccess" do
       end
     end
 
+    describe "#file_content" do
+      let(:description) {
+        SystemDescription.load!("opensuse131-build",
+          SystemDescriptionStore.new("spec/data/descriptions"))
+      }
+
+      it "returns the file content of a file stored in the files.tgz tar ball" do
+        file_content = description.unmanaged_files.file_content("/etc/magicapp.conf")
+
+        expect(file_content).to eq("This is magicapp.conf\n")
+      end
+
+      it "raises an error if file is not found" do
+        expect {
+          description.unmanaged_files.file_content("/does/not/exist")
+        }.to raise_error(Machinery::Errors::FileUtilsError, /'\/does\/not\/exist' was not found/)
+      end
+
+      it "raises an error if the files were not extracted" do
+        description = create_test_description(scopes: ["unmanaged_files"])
+        expect {
+          description.unmanaged_files.file_content("/etc/crontab")
+        }.to raise_error(
+            Machinery::Errors::FileUtilsError, /for scope 'unmanaged_files' were not extracted/
+          )
+      end
+    end
+
     describe "#export_files_as_tarballs" do
       it "should copy all tarballs to the destination" do
         target = given_directory
