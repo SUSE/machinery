@@ -58,12 +58,14 @@ describe ShowTask, "#show" do
   end
 
   it "opens the system description in the web browser" do
-    expect(Html).to receive(:generate)
     expect(LocalSystem).to receive(:validate_existence_of_package).with("xdg-utils")
-    html_path = SystemDescriptionStore.new.html_path(system_description.name)
-    expect(Cheetah).to receive(:run).with("xdg-open", html_path)
+    expect(Cheetah).to receive(:run).with("xdg-open", "http://0.0.0.0:3000/foo")
+    expect(Html).to receive(:run_server).and_return(double(join: nil))
+    expect(Html).to receive(:when_server_ready) { |_ip, _port, &block| block.call }
 
-    show_task.show(system_description, ["packages"], Filter.new, show_html: true)
+    show_task.show(
+      system_description, ["packages"], Filter.new, show_html: true, ip: "0.0.0.0", port: 3000
+    )
   end
 
   it "passes along a sorted scope list" do

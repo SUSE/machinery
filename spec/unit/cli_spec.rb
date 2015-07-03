@@ -375,14 +375,36 @@ describe Cli do
       end
     end
 
+    describe "#serve" do
+      it "triggers the serve task" do
+        description = create_test_description(json: test_manifest)
+        expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+          description, "0.0.0.0", 3000
+        )
+
+        run_command(["serve", "description1", "--ip=0.0.0.0", "--port=3000"])
+      end
+    end
+
     describe "#show" do
       it "triggers the show task for packages when scope packages is specified" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(ShowTask).to receive(:show).with(
-          description, ["packages"], an_instance_of(Filter), show_diffs: false,
-            show_html: false)
+        expect_any_instance_of(ShowTask).to receive(:show).with(description, ["packages"],
+          an_instance_of(Filter), show_diffs: false, show_html: false, ip: "127.0.0.1", port: 7585)
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
+      end
+
+      context "with --html" do
+        it "forwards the specified port and IP" do
+          description = create_test_description(json: test_manifest)
+          expect_any_instance_of(ShowTask).to receive(:show).with(description, ["packages"],
+            an_instance_of(Filter), show_diffs: false, show_html: true, ip: "0.0.0.0", port: 3000)
+
+          run_command(
+            ["show", "description1", "--scope=packages", "--html", "--port=3000", "--ip=0.0.0.0"]
+          )
+        end
       end
 
       describe "--verbose" do
@@ -495,15 +517,6 @@ describe Cli do
         )
 
         run_command(["analyze", "description1", "--operation=config-file-diffs"])
-      end
-    end
-
-    describe "#generate-html" do
-      it "triggers an HTML export of a system description" do
-        expect_any_instance_of(GenerateHtmlTask).to receive(:generate).
-          with(an_instance_of(SystemDescription))
-
-        run_command(["generate-html", "description1"])
       end
     end
   end

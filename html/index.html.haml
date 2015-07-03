@@ -2,7 +2,7 @@
 %html{"ng-app" => "machinery-show"}
   %head
     %title
-      = description.name + " - Machinery System Description"
+      = description_name + " - Machinery System Description"
     %meta{:charset => 'utf-8'}/
     %link{:href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css"}/
@@ -248,7 +248,7 @@
                 %tbody
                   %tr{"ng-repeat" => "service in description.services.services | filter:query"}
                     %td {{service.name}}
-                    %td{:class=>"{{services.init_system}}_{{state}}"}
+                    %td{:class=>"{{description.services.init_system}}_{{service.state}}"}
                       {{service.state}}
 
     %script#scope_config_files.partial{:type => "text/ng-template"}
@@ -365,19 +365,18 @@
                     %td {{file.name}}
                     %td {{file.type}}
 
-    %script{:src => "assets/description.js"}
     %script{:src => "assets/show/machinery.js"}
     %script{:src => "assets/bootstrap-tooltip.js"}
     %script{:src => "assets/bootstrap-popover.js"}
 
-  %body
+  %body{"data-description" => description_name}
     .container-fluid
       #nav-bar
         .row
           .col-xs-1
           .col-xs-10
             %h1
-              System '#{description.name}'
+              System '#{description_name}'
 
             %a.inspection_details{:href => "#", "data-toggle" => "popover"} (inspection details)
         .row

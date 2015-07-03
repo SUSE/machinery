@@ -45,38 +45,6 @@ $(document).ready(function () {
     html: true
   });
 
-  // Set up config file diffs popovers
-  var counter;
-  $(".diff-toggle").popover({
-    trigger: "mouseenter",
-    html: true,
-    template: "<div class='popover diff-popover' role='tooltip'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div></div>",
-    content: function() {
-      file = $(this).data("config-file");
-      return $("*[data-config-file-diff='" + file + "']").html();
-    },
-    title: function() {
-      return "Changes for '" + $(this).data("config-file") + "'";
-    }
-  }).on("mouseenter",function () {
-    clearTimeout(counter);
-    var _this = this;
-    $(".diff-toggle").not(_this).popover("hide");
-
-    counter = setTimeout(function(){
-      $(_this).popover("show");
-      $(".diff-popover").on("mouseleave", function () {
-          $(".diff-toggle").popover("hide");
-      });
-    }, 100);
-  }).on("mouseleave", function () {
-    counter = setTimeout(function(){
-      if (!$(".diff-popover:hover").length) {
-        $(".diff-toggle").popover("hide");
-      }
-    }, 500);
-  });
-
   // Set up inspection details popover
   $("a.inspection_details").popover({
     template: "<div class='popover inspection-details-popover' role='tooltip'>\
@@ -99,6 +67,41 @@ $(document).ready(function () {
     }
   });
   $('.inspection-details-popover .close').click(function() { $(".inspection_details").popover("hide") });
+});
+
+
+setupDynamicContent = function() {
+  // Set up config file diffs popovers
+  var counter;
+  $(".diff-toggle").popover({
+    trigger: "mouseenter",
+    html: true,
+    template: "<div class='popover diff-popover' role='tooltip'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div></div>",
+    content: function() {
+      file = $(this).data("config-file");
+      return $("*[data-config-file-diff='" + file + "']").html();
+    },
+    title: function() {
+      return "Changes for '" + $(this).data("config-file") + "'";
+    }
+  }).on("mouseenter",function () {
+    clearTimeout(counter);
+    var _this = this;
+    $(".diff-toggle").not(_this).popover("hide");
+
+    counter = setTimeout(function(){
+      $(_this).popover("show");
+      $(".diff-popover").on("mouseleave", function () {
+        $(".diff-toggle").popover("hide");
+      });
+    }, 100);
+  }).on("mouseleave", function () {
+    counter = setTimeout(function(){
+      if (!$(".diff-popover:hover").length) {
+        $(".diff-toggle").popover("hide");
+      }
+    }, 500);
+  });
 
   // Tooltips for service states
   $("td.systemd_enabled, td.systemd_enabled-runtime").attr("title", "Enabled through a symlink in .wants directory (permanently or just in /run).");
@@ -118,4 +121,4 @@ $(document).ready(function () {
       $this.attr('title', $this.text());
     }
   });
-});
+};

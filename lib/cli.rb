@@ -616,6 +616,10 @@ class Cli
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["exclude-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
+    c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
+      desc: "Listen on port PORT", arg_name: "PORT"
+    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
+      desc: "Listen on ip address IP", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
@@ -653,8 +657,10 @@ class Cli
 
       task = ShowTask.new
       opts = {
-          show_diffs: options["show-diffs"],
-          show_html:  options["html"]
+        show_diffs: options["show-diffs"],
+        show_html: options["html"],
+        ip: options["ip"],
+        port: options["port"]
       }
       task.show(description, scope_list, filter, opts)
     end
@@ -702,21 +708,6 @@ class Cli
     end
   end
 
-  desc "Generate an HTML view for a system description"
-  long_desc <<-LONGDESC
-    Generates an HTML view for a system description.
-  LONGDESC
-  arg "NAME"
-  command "generate-html" do |c|
-    c.action do |global_options,options,args|
-      name = shift_arg(args, "NAME")
-
-      description = SystemDescription.load(name, system_description_store)
-      task = GenerateHtmlTask.new
-      task.generate(description)
-    end
-  end
-
   desc "Show or change machinery's configuration"
   long_desc <<-LONGDESC
     Show or change machinery's configuration.
@@ -745,6 +736,26 @@ class Cli
       if key == "hints" && (value == "false" || value == "off")
         Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints=on'."
       end
+    end
+  end
+
+  desc "Start a webserver serving an HTML view of a system description"
+  long_desc <<-LONGDESC
+    Starts a web server which serves an HTML view for the given system description.
+  LONGDESC
+  arg "NAME"
+  command "serve" do |c|
+    c.flag [:port, :p], type: Integer, required: false, default_value: 7585,
+      desc: "Listen on port PORT", arg_name: "PORT"
+    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
+      desc: "Listen on ip IP", arg_name: "IP"
+
+    c.action do |_global_options, options, args|
+      name = shift_arg(args, "NAME")
+
+      description = SystemDescription.load(name, system_description_store)
+      task = ServeHtmlTask.new
+      task.serve(description, options[:ip], options[:port])
     end
   end
 

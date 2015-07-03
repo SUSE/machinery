@@ -33,6 +33,7 @@ require "kramdown"
 require "find"
 require "pathname"
 require "nokogiri"
+require "socket"
 
 require_relative "machinery_logger"
 require_relative "zypper"
@@ -75,7 +76,6 @@ require_relative "validate_task"
 require_relative "migration"
 require_relative "upgrade_format_task"
 require_relative "html"
-require_relative "generate_html_task"
 require_relative "hint"
 require_relative "mountpoints"
 require_relative "config_base"
@@ -95,6 +95,7 @@ require_relative "system_file"
 require_relative "scope_file_access"
 require_relative "man_task"
 require_relative "comparison"
+require_relative "serve_html_task"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

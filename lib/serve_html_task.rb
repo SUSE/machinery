@@ -15,11 +15,19 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class GenerateHtmlTask
-  def generate(description)
-    output = Html.generate(description)
-    Machinery::Ui.puts "The generated HTML file is stored in: \n" +
-      "#{output}"
-    Hint.print(:share_html_contents, directory: output)
+class ServeHtmlTask
+  def serve(description, ip, port)
+    url = "http://#{ip}:#{port}/#{CGI.escape(description.name)}"
+
+    Machinery::Ui.use_pager = false
+    Machinery::Ui.puts <<EOF
+The description is now available at #{url}
+
+The web server can be closed with Ctrl+C.
+EOF
+
+    server = Html.run_server(port: port, ip: ip)
+
+    server.join
   end
 end

@@ -3,7 +3,7 @@
 
 ### SYNOPSIS
 
-`machinery show` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME
+`machinery show` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] [-p PORT | --port=PORT] [-i IP | --ip=IP] NAME
 
 `machinery` help show
 
@@ -42,7 +42,14 @@ in local time are shown in the title of each scope section.
     for more information).
 
   * `--html` (optional):
-    Open the system description in HTML format in your web browser using the `xdg-open` command.
+    Run a web server and open the system description in HTML format in your web browser using the
+    `xdg-open` command.
+
+  * `-p PORT`, `--port=PORT` (optional):
+    Specify the port on which the web server will serve the system description: Default: 7585
+
+  * `-i IP`, `--ip=IP` (optional):
+    Specify the IP address on which the web server will be made available. Default: 127.0.0.1
 
   * `--verbose` (optional):
     Display the filters which were applied before showing the system description.

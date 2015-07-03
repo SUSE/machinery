@@ -42,6 +42,10 @@ module Machinery
         default: true,
         description: "Check whether the current platform is supported by Machinery"
       )
+      entry("http_server_port",
+        default: 7585,
+        description: "TCP port used by the HTTP server for the HTML view"
+      )
     end
   end
 end

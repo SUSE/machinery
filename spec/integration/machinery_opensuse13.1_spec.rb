@@ -36,5 +36,4 @@ describe "machinery@openSUSE 13.1" do
   include_examples "autoyast export"
   include_examples "validate"
   include_examples "upgrade format"
-  include_examples "generate html"
 end

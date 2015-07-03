@@ -19,7 +19,7 @@ class ShowTask
   def show(description, scopes, filter, options = {})
     scopes = Inspector.sort_scopes(scopes)
     if options[:show_html]
-      show_html(description)
+      show_html(description, options)
     else
       filter.apply!(description)
       show_console(description, scopes, options )
@@ -28,12 +28,26 @@ class ShowTask
 
   private
 
-  def show_html(description)
+  def show_html(description, options)
     begin
       LocalSystem.validate_existence_of_package("xdg-utils")
-      Html.generate(description)
-      html_path = SystemDescriptionStore.new.html_path(description.name)
-      LoggedCheetah.run("xdg-open", html_path)
+
+      url = "http://#{options[:ip]}:#{options[:port]}/#{CGI.escape(description.name)}"
+
+      Machinery::Ui.use_pager = false
+      Machinery::Ui.puts <<EOF
+There is a web server running, serving the description on #{url}.
+
+The server can be closed with Ctrl+C.
+EOF
+
+      server = Html.run_server(port: options[:port], ip: options[:ip])
+
+      Html.when_server_ready(options[:ip], options[:port]) do
+        LoggedCheetah.run("xdg-open", url)
+      end
+
+      server.join # Wait until the user cancelled the blocking webserver
     rescue Cheetah::ExecutionFailed => e
       raise Machinery::Errors::OpenInBrowserFailed.new(
         "Could not open system description '#{description.name}' in the web browser.\n" \
