@@ -618,7 +618,7 @@ class Cli
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
       desc: "Listen on port PORT", arg_name: "PORT"
-    c.flag [:ip, :i], type: String, required: false, default_value: "localhost",
+    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
       desc: "Listen on ip address IP", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
@@ -747,7 +747,7 @@ class Cli
   command "serve" do |c|
     c.flag [:port, :p], type: Integer, required: false, default_value: 7585,
       desc: "Listen on port PORT", arg_name: "PORT"
-    c.flag [:ip, :i], type: String, required: false, default_value: "localhost",
+    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
       desc: "Listen on ip IP", arg_name: "IP"
 
     c.action do |_global_options, options, args|
