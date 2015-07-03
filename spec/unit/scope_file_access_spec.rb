@@ -46,6 +46,33 @@ describe "ScopeFileAccess" do
         expect(File.exists?(File.join(target, file.name))).to be(true)
       end
     end
+
+    describe "#file_content" do
+      let(:description) {
+        SystemDescription.load!("opensuse131-build",
+          SystemDescriptionStore.new("spec/data/descriptions"))
+      }
+
+      it "returns the file content of a file stored in a directory" do
+        file_content = description.config_files.file_content("/etc/crontab")
+        expect(file_content).to eq("-*/15 * * * *   root  echo config_files_integration_test\n")
+      end
+
+      it "raises an error if file is not found" do
+        expect {
+          description.changed_managed_files.file_content("/does/not/exist")
+        }.to raise_error(Machinery::Errors::FileUtilsError, /'\/does\/not\/exist' was not found/)
+      end
+
+      it "raises an error if the files were not extracted" do
+        description = create_test_description(scopes: ["changed_managed_files"])
+        expect {
+          description.changed_managed_files.file_content("/etc/crontab")
+        }.to raise_error(
+          Machinery::Errors::FileUtilsError, /for scope 'changed_managed_files' were not extracted/
+        )
+      end
+    end
   end
 
   describe ScopeFileAccessArchive do
