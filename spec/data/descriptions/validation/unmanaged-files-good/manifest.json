@@ -11,6 +11,30 @@
         "mode": "644"
       },
       {
+        "name": "/etc/grub.conf",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 42,
+        "mode": "644"
+      },
+      {
+        "name": "/var/lib/misc/random-seed",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 42,
+        "mode": "644"
+      },
+      {
+        "name": "/root/.bash_history",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 0,
+        "mode": "644"
+      },
+      {
         "name": "/root/.ssh/",
         "type": "dir",
         "user": "root",
