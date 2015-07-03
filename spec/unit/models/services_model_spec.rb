@@ -50,7 +50,7 @@ describe ServicesScope do
         )
 
         comparison = data_a.compare_with(data_b)
-        expect(comparison).to eq([nil, nil, data_a])
+        expect(comparison).to eq([nil, nil, nil, data_a])
       end
 
       it "returns correct result when service lists aren't equal and don't have common elements" do
@@ -65,7 +65,7 @@ describe ServicesScope do
 
         comparison = data_a.compare_with(data_b)
 
-        expect(comparison).to eq([data_a, data_b, nil])
+        expect(comparison).to eq([data_a, data_b, nil, nil])
       end
 
       it "returns correct result when service lists aren't equal but have common elements" do
@@ -89,6 +89,7 @@ describe ServicesScope do
             init_system: "systemd",
             services: [service_e, service_f]
           ),
+          nil,
           ServicesScope.new(
             init_system: "systemd",
             services: [service_a, service_b]
@@ -110,7 +111,7 @@ describe ServicesScope do
 
         comparison = data_a.compare_with(data_b)
 
-        expect(comparison).to eq([data_a, data_b, nil])
+        expect(comparison).to eq([data_a, data_b, nil, nil])
       end
     end
   end

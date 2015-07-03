@@ -38,11 +38,12 @@ class ServicesScope < Machinery::Object
 
   def compare_with(other)
     if self.init_system != other.init_system
-      [self, other, nil]
+      [self, other, nil, nil]
     else
       [
         self.services - other.services,
         other.services - self.services,
+        [],
         self.services & other.services
       ].map do |services|
         if !services.empty?
@@ -54,4 +55,3 @@ class ServicesScope < Machinery::Object
     end
   end
 end
-
