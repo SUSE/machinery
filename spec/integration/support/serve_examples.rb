@@ -43,7 +43,6 @@ shared_examples "serve html" do
 
           if curl_command.stderr =~ /Failed to connect/
             raise "Could not connect to webserver" if wait_time >= 10
-            puts "not connected. retry"
 
             sleep 0.5
             wait_time += 0.5
