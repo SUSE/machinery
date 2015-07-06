@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Data which hasn't changed is not shown in the comparison HTML view by default
 * Improve display of package differences in compare command
 
 * Add `man` command to show the Machinery man page
