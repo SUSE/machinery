@@ -76,6 +76,11 @@
             %td.hidden-lg{:title => "Name: {{package.name}}\nVersion: {{package.version}}\nRelease: {{package.release}}\n" |
                "Architecture: {{package.arch}}\nVendor: {{package.vendor}}\nChecksum: {{package.checksum}}"} ... |
 
+    %script#scope_packages_changed_partial{:type => "text/ng-template"}
+      %ul.changed
+        %li{"ng-repeat" => "changed_element in changed_elements"}
+          {{changed_element}}
+
     %script#scope_packages.partial{:type => "text/ng-template"}
       %a.scope_anchor{:id => "packages"}
       #packages_container.scope
@@ -114,8 +119,8 @@
           .row{"ng-show" => "diff.packages.changed"}
             .col-xs-1
             .col-xs-11.table_container
-              %in-both
-              %render-template{:template => "scope_packages_partial", :object => "diff.packages.common"}
+              %changed
+              %changed_packages{:object => "diff.packages.changed"}
           %a.both_anchor{id: "packages_both"}
           .row{"ng-show" => "diff.packages.common"}
             .col-xs-1
