@@ -24,6 +24,8 @@ a.both_anchor {
   visibility: hidden;
 }
 
+.scope_content{border-bottom: 1px dotted #d58512}
+
 .scope-summary {
   display: inline;
   font-weight: normal;
