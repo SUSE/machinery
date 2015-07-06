@@ -22,6 +22,11 @@ angular.module("machinery-compare")
       template: "<h3>In both descriptions:</h3>"
     };
   })
+  .directive("changed", function() {
+    return {
+      template: "<h3>In both with different attributes:</h3>"
+    };
+  })
   .directive("renderTemplate", function() {
     return {
       restrict: "E",
@@ -32,5 +37,43 @@ angular.module("machinery-compare")
         scope.templateUrl = attrs.template;
       },
       template: '<div ng-include="templateUrl"></div>'
+    };
+  });
+
+
+// Scope specific directives
+angular.module("machinery-compare")
+  .directive("changedPackages", function() {
+    return {
+      restrict: "E",
+      scope: {
+        object: "=object"
+      },
+      link: function(scope, element, attrs) {
+        var elements = [];
+
+        angular.forEach(scope.object, function(value) {
+          var changes = [];
+          var relevant_attributes = ["version", "vendor", "arch"];
+
+          if(value[0].version == value[1].version) {
+            relevant_attributes.push("release");
+            if(value[0].version == value[1].version) {
+              relevant_attributes.push("checksum");
+            }
+          }
+
+          angular.forEach(relevant_attributes, function(attribute) {
+            if(value[0][attribute] != value[1][attribute]) {
+              changes.push(attribute + ": " + value[0][attribute] + " ↔ " + value[1][attribute]);
+            }
+          });
+
+          elements.push(value[0].name + " (" + changes.join(", ") + ")");
+        });
+
+        scope.changed_elements = elements;
+      },
+      templateUrl: "scope_packages_changed_partial"
     };
   });

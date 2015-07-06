@@ -36,8 +36,8 @@ class CompareTask
 
     scopes.each do |scope|
       if description1[scope] && description2[scope]
-        comparison = description1[scope].compare_with(description2[scope])
-        diff[scope] = comparison.map { |scope| scope.as_json if scope }
+        comparison = Comparison.compare_scope(description1, description2, scope)
+        diff[scope] = comparison.as_json
       end
     end
 

@@ -54,4 +54,16 @@ class Comparison
 
     SystemDescription.new(name, store, scope => data)
   end
+
+  def as_json
+    json = {}
+    json["only_in1"] = only_in1.as_json if only_in1
+    json["only_in2"] = only_in2.as_json if only_in2
+    if changed
+      json["changed"] = changed.map { |elements| [elements.first.as_json, elements.last.as_json] }
+    end
+    json["common"] = common.as_json if common
+
+    json
+  end
 end
