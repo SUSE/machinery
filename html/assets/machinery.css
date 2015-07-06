@@ -84,10 +84,15 @@ span.toggle {
   height: 24px;
   background: url("arrow_up.png");
   cursor: pointer;
+  background-color: white;
+  border-radius: 50%;
+
 }
 
 span.toggle.collapsed {
   background :url("arrow_down.png");
+  background-color: white;
+  border-radius: 50%;
 }
 
 .popover{
