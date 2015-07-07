@@ -67,6 +67,7 @@
         <package name="db-utils"/>
         <package name="grub"/>
         <package name="man"/>
+        <package name="curl"/>
     </packages>
     <packages type="bootstrap">
         <package name="udev"/>
