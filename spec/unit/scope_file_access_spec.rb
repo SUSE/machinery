@@ -54,23 +54,59 @@ describe "ScopeFileAccess" do
       }
 
       it "returns the file content of a file stored in a directory" do
-        file_content = description.config_files.file_content("/etc/crontab")
+        system_file = description.config_files.files.find do |file|
+          file.name == "/etc/crontab"
+        end
+
+        file_content = description.config_files.file_content(system_file)
         expect(file_content).to eq("-*/15 * * * *   root  echo config_files_integration_test\n")
       end
 
-      it "raises an error if file is not found" do
-        expect {
-          description.changed_managed_files.file_content("/does/not/exist")
-        }.to raise_error(Machinery::Errors::FileUtilsError, /'\/does\/not\/exist' was not found/)
-      end
-
       it "raises an error if the files were not extracted" do
-        description = create_test_description(scopes: ["changed_managed_files"])
+        description["changed_managed_files"].extracted = false
+        system_file = description.config_files.files.find do |file|
+          file.name == "/etc/crontab"
+        end
+
         expect {
-          description.changed_managed_files.file_content("/etc/crontab")
+          description.changed_managed_files.file_content(system_file)
         }.to raise_error(
           Machinery::Errors::FileUtilsError, /for scope 'changed_managed_files' were not extracted/
         )
+      end
+    end
+
+    describe "#binary?" do
+      let(:description) {
+        SystemDescription.load!("changed-managed-files-good",
+          SystemDescriptionStore.new("spec/data/descriptions/validation"))
+      }
+
+      it "returns false if a file is a text file" do
+        system_file = description.changed_managed_files.files.find do |file|
+          file.name == "/lib/mkinitrd/scripts/setup-done.sh"
+        end
+
+        is_binary = description.changed_managed_files.binary?(system_file)
+        expect(is_binary).to be(false)
+      end
+
+      it "returns true if a file is a binary file" do
+        system_file = description.changed_managed_files.files.find do |file|
+          file.name == "/lib/libc-2.19.so"
+        end
+
+        is_binary = description.changed_managed_files.binary?(system_file)
+        expect(is_binary).to be(true)
+      end
+
+      it "returns false if the file is empty" do
+        system_file = description.changed_managed_files.files.find do |file|
+          file.name == "/lib/mkinitrd/scripts/empty.sh"
+        end
+
+        is_binary = description.changed_managed_files.binary?(system_file)
+        expect(is_binary).to be(false)
       end
     end
   end
@@ -114,24 +150,12 @@ describe "ScopeFileAccess" do
       }
 
       it "returns the file content of a file stored in the files.tgz tar ball" do
-        file_content = description.unmanaged_files.file_content("/etc/magicapp.conf")
+        system_file = description.unmanaged_files.files.find do |file|
+          file.name == "/etc/magicapp.conf"
+        end
+        file_content = description.unmanaged_files.file_content(system_file)
 
         expect(file_content).to eq("This is magicapp.conf\n")
-      end
-
-      it "raises an error if file is not found" do
-        expect {
-          description.unmanaged_files.file_content("/does/not/exist")
-        }.to raise_error(Machinery::Errors::FileUtilsError, /'\/does\/not\/exist' was not found/)
-      end
-
-      it "raises an error if the files were not extracted" do
-        description = create_test_description(scopes: ["unmanaged_files"])
-        expect {
-          description.unmanaged_files.file_content("/etc/crontab")
-        }.to raise_error(
-          Machinery::Errors::FileUtilsError, /for scope 'unmanaged_files' were not extracted/
-          )
       end
     end
 
@@ -142,6 +166,40 @@ describe "ScopeFileAccess" do
 
         expect(File.exists?(File.join(target, "files.tgz"))).to be(true)
         expect(File.exists?(File.join(target, "trees/etc/tarball with spaces.tgz"))).to be(true)
+      end
+    end
+
+    describe "#binary?" do
+      let(:description) {
+        SystemDescription.load!("unmanaged-files-good",
+          SystemDescriptionStore.new("spec/data/descriptions/validation"))
+      }
+
+      it "returns false if a file is a text file" do
+        system_file = description.unmanaged_files.files.find do |file|
+          file.name == "/etc/grub.conf"
+        end
+
+        is_binary = description.unmanaged_files.binary?(system_file)
+        expect(is_binary).to be(false)
+      end
+
+      it "returns true if a file is a binary file" do
+        system_file = description.unmanaged_files.files.find do |file|
+          file.name == "/var/lib/misc/random-seed"
+        end
+
+        is_binary = description.unmanaged_files.binary?(system_file)
+        expect(is_binary).to be(true)
+      end
+
+      it "returns false if the file is empty" do
+        system_file = description.unmanaged_files.files.find do |file|
+          file.name == "/root/.bash_history"
+        end
+
+        is_binary = description.unmanaged_files.binary?(system_file)
+        expect(is_binary).to be(false)
       end
     end
   end
