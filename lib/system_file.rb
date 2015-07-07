@@ -40,5 +40,30 @@ module Machinery
         false
       end
     end
+
+    def on_disk?
+      assert_scope
+
+      scope.extracted && file? && !deleted?
+    end
+
+    def binary?
+      assert_scope
+      scope.binary?(self)
+    end
+
+    def content
+      assert_scope
+      scope.file_content(self)
+    end
+
+    private
+
+    def assert_scope
+      return if scope
+
+      raise Machinery::Errors::MachineryError.new,
+        "File store related method unavailable, the SystemFile does not have a Scope associated."
+    end
   end
 end

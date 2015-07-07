@@ -18,8 +18,9 @@
 require_relative "spec_helper"
 
 describe Machinery::SystemFile do
+  let(:scope) { double(extracted: true) }
   let(:file) {
-    Machinery::SystemFile.new(
+    file = Machinery::SystemFile.new(
       name: "/etc/ImageVersion",
       type: "file",
       user: "root",
@@ -27,9 +28,11 @@ describe Machinery::SystemFile do
       size: 25,
       mode: "644"
     )
+    file.scope = scope
+    file
   }
   let(:deleted_file) {
-    Machinery::SystemFile.new(
+    file = Machinery::SystemFile.new(
       name: "/usr/share/man/man1/sed.1.gz",
       package_name: "sed",
       package_version: "4.2.2",
@@ -38,17 +41,21 @@ describe Machinery::SystemFile do
         "deleted"
       ]
     )
+    file.scope = scope
+    file
   }
   let(:link) {
-    Machinery::SystemFile.new(
+    file = Machinery::SystemFile.new(
       name: "/etc/alternatives/awk",
       type: "link",
       user: "root",
       group: "root"
     )
+    file.scope = scope
+    file
   }
   let(:dir) {
-    Machinery::SystemFile.new(
+    file = Machinery::SystemFile.new(
       name: "/etc/YaST2/licenses/",
       type: "dir",
       user: "root",
@@ -57,12 +64,16 @@ describe Machinery::SystemFile do
       mode: "755",
       files: 17
     )
+    file.scope = scope
+    file
   }
   let(:remote_dir) {
-    Machinery::SystemFile.new(
+    file = Machinery::SystemFile.new(
       name: "/remote-dir/",
       type: "remote_dir"
     )
+    file.scope = scope
+    file
   }
 
   context "files only return true for #file?" do
@@ -96,5 +107,35 @@ describe Machinery::SystemFile do
   describe "#deleted?" do
     specify { expect(file.deleted?).to be(false) }
     specify { expect(deleted_file.deleted?).to be(true) }
+  end
+
+  describe "#on_disk?" do
+    specify { expect(file.on_disk?).to be(true) }
+    specify {
+      allow(scope).to receive(:extracted).and_return(false)
+      expect(file.on_disk?).to be(false)
+    }
+    specify { expect(deleted_file.on_disk?).to be(false) }
+    specify { expect(link.on_disk?).to be(false) }
+    specify { expect(dir.on_disk?).to be(false) }
+    specify { expect(remote_dir.on_disk?).to be(false) }
+  end
+
+  describe "#binary?" do
+    it "delegates to scope" do
+      result = double
+      expect(scope).to receive(:binary?).with(file).and_return(result)
+
+      expect(file.binary?).to eq(result)
+    end
+  end
+
+  describe "#on_disk?" do
+    it "delegates to scope" do
+      result = double
+      expect(scope).to receive(:file_content).with(file).and_return(result)
+
+      expect(file.content).to eq(result)
+    end
   end
 end
