@@ -57,6 +57,7 @@ $(document).ready(function () {
     $scope.find(".scope_common_content").collapse("show");
     $(this).hide();
     $scope.find(".hide-common-elements").show();
+    return false;
   });
 
   $(".hide-common-elements").click(function(){
@@ -64,5 +65,6 @@ $(document).ready(function () {
     $scope.find(".scope_common_content").collapse("hide");
     $(this).hide();
     $scope.find(".show-common-elements").show();
+    return false;
   });
 });
