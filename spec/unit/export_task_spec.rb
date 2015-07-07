@@ -25,10 +25,22 @@ describe ExportTask do
     double(
       name: "kiwi",
       export_name: "name-type",
-      system_description: create_test_description(scopes: ["os", "unmanaged_files"])
+      system_description: create_test_description(
+        scopes: ["os"], extracted_scopes: ["unmanaged_files"]
+      )
     )
   }
   subject { ExportTask.new(exporter) }
+
+  let(:exporter_autoyast) {
+    double(
+      name: "autoyast",
+      export_name: "no-extracted-files",
+      system_description: create_test_description(
+        scopes: ["os", "config_files", "unmanaged_files"]
+      )
+    )
+  }
 
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
@@ -58,6 +70,14 @@ EOF
       expect {
         subject.export(File.join(output_dir, "name"), force: false)
       }.to raise_error(Machinery::Errors::ExportFailed, /Permission denied/)
+    end
+
+    it "raises a known error if files are not extracted" do
+      expect {
+        ExportTask.new(exporter_autoyast).export("/foo", {})
+      }.to raise_error(
+        Machinery::Errors::MissingExtractedFiles, /files weren't extracted during inspection/
+      )
     end
 
     describe "when the output directory already exists" do

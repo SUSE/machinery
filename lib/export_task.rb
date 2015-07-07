@@ -24,6 +24,13 @@ class ExportTask
     @exporter.system_description.assert_scopes("os")
     @exporter.system_description.validate_export_compatibility
 
+    ["unmanaged_files", "changed_managed_files", "config_files"].each do |scope|
+      if @exporter.system_description[scope] &&
+          !@exporter.system_description.scope_extracted?(scope)
+        raise Machinery::Errors::MissingExtractedFiles.new(@exporter.system_description, [scope])
+      end
+    end
+
     output_dir = File.join(output_dir, @exporter.export_name)
     if File.exists?(output_dir)
       if options[:force]
