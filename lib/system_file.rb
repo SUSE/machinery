@@ -62,7 +62,7 @@ module Machinery
     def assert_scope
       return if scope
 
-      raise Machinery::Errors::MachineryError.new,
+      raise Machinery::Errors::MachineryError,
         "File store related method unavailable, the SystemFile does not have a Scope associated."
     end
   end
