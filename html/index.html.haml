@@ -12,6 +12,7 @@
     %script{:src => "assets/jquery-2.1.1.min.js"}
     %script{:src => "assets/transition.js"}
     %script{:src => "assets/collapse.js"}
+    %script{:src => "assets/modal.js"}
 
     %script#inspection_details_template{:type => "text/ng-template"}
       #inspection_details.hidden
@@ -254,7 +255,7 @@
     %script#scope_config_files.partial{:type => "text/ng-template"}
       %div{"ng-show" => "description.config_files.files"}
         %a.scope_anchor{:id => "config_files"}
-        #config_files_container.scope
+        #config_files_container.scope{"data-scope" => "config_files"}
           %scope-header{ |
             :summary => "'#{scope_help('config_files')}'", |
             :logo => "'assets/logo-config-files.png'", |
@@ -289,7 +290,11 @@
                 %tbody
                   %tr{"ng-repeat" => "file in description.config_files.files | filter:query"}
                     %td
-                      {{file.name}}
+                      %span{"ng-switch" => true, "on" => "file.downloadable"}
+                        %a.file-download{"ng-switch-when" => "true", "href" => "#"}
+                          {{file.name}}
+                        %span{"ng-switch-default" => true}
+                          {{file.name}}
                       %a.diff-toggle{"ng-show" => "file.diff", "data-config-file" => "{{file.name}}", "data-toggle" => "popover"}
                         Show diff
                     %td {{file.package_name}}
@@ -304,7 +309,7 @@
     %script#scope_changed_managed_files.partial{:type => "text/ng-template"}
       %div{"ng-show" => "description.changed_managed_files.files"}
         %a.scope_anchor{:id => "changed_managed_files"}
-        #changed_managed_files_container.scope
+        #changed_managed_files_container.scope{"data-scope" => "changed_managed_files"}
           %scope-header{ |
             :summary => "'#{scope_help('changed_managed_files')}'", |
             :logo => "'assets/logo-changed-managed-files.png'", |
@@ -329,7 +334,11 @@
                     %th Group
                 %tbody
                   %tr{"ng-repeat" => "file in description.changed_managed_files.files | filter:query"}
-                    %td {{file.name}}
+                    %td{"ng-switch" => true, "on" => "file.downloadable"}
+                      %a.file-download{"ng-switch-when" => "true", "href" => "#"}
+                        {{file.name}}
+                      %span{"ng-switch-default" => true}
+                        {{file.name}}
                     %td {{file.package_name}}
                     %td {{file.package_version}}
                     %td
@@ -342,7 +351,7 @@
     %script#scope_unmanaged_files.partial{:type => "text/ng-template"}
       %div{"ng-show" => "description.unmanaged_files.files"}
         %a.scope_anchor{:id => "unmanaged_files"}
-        #unmanaged_files_container.scope
+        #unmanaged_files_container.scope{"data-scope" => "unmanaged_files"}
           %scope-header{ |
             :summary => "'#{scope_help('unmanaged_files')}'", |
             :logo => "'assets/logo-unmanaged-files.png'", |
@@ -362,7 +371,11 @@
                     %th Type
                 %tbody
                   %tr{"ng-repeat" => "file in description.unmanaged_files.files | filter:query"}
-                    %td {{file.name}}
+                    %td{"ng-switch" => true, "on" => "file.downloadable"}
+                      %a.file-download{"ng-switch-when" => "true", "href" => "#"}
+                        {{file.name}}
+                      %span{"ng-switch-default" => true}
+                        {{file.name}}
                     %td {{file.type}}
 
     %script{:src => "assets/show/machinery.js"}
@@ -370,6 +383,28 @@
     %script{:src => "assets/bootstrap-popover.js"}
 
   %body{"data-description" => description_name}
+    #file-modal.modal.fade
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            %button.close{"type" => "button", "data-dismiss" => "modal"}
+              &times;
+            %h4#file-modal-title
+          .modal-body
+            %textarea#file-modal-file-content{"readonly" => "true"}
+            #file-modal-error{"style" => "display: none"}
+          .modal-footer
+            %a#file-modal-download-link.btn.btn-success{"target" => "_blank"}
+              Download
+            %button.btn.btn-primary{"type" => "button", "data-dismiss" => "modal"}
+              Close
+
+    #file_popover{:style => "display: none"}
+      .header
+        %h3.name
+      .body
+        %textarea.content
+
     .container-fluid
       #nav-bar
         .row

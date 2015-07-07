@@ -105,6 +105,12 @@ class Html
               path = File.join(diffs_dir, file.name + ".diff")
               file.diff = diff_to_object(File.read(path)) if File.exists?(path)
             end
+            # Enrich file information with downloadable flag
+            ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
+              description[scope].files.each do |file|
+                file.downloadable = file.on_disk?
+              end
+            end
           end
 
           description.to_hash.to_json

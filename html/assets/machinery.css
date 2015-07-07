@@ -184,3 +184,8 @@ li.filter {
 h1 {
   display: inline-block;
 }
+
+#file-modal-file-content {
+  width: 100%;
+  min-height: 450px;
+}

@@ -71,6 +71,37 @@ $(document).ready(function () {
 
 
 setupDynamicContent = function() {
+  // Set up file download links
+  $(".file-download").click(function() {
+    $("#file-modal-file-content").hide();
+    $("#file-modal-error").hide();
+
+    var file = $(this);
+    var scope = file.parents(".scope").data("scope");
+    var description = $("body").data("description");
+    var url = "/descriptions/" + description + "/files/" + scope + file.text().trim();
+
+    $("#file-modal-download-link").attr("href", url);
+    $.get(url, function(res) {
+        if(res.length === 0) {
+          $("#file-modal-error").html("File is empty.").show();
+        } else {
+          $("#file-modal-file-content").val(res).show();
+        }
+      }, "text").
+      error(function(res) {
+        if(res.status == 406) {
+          $("#file-modal-error").html("File is binary.").show();
+        } else {
+          $("#file-modal-error").html("There was an unknown error downloading the file.").show();
+        }
+      });
+
+    $("#file-modal-title").html(file.html() + ":");
+    $("#file-modal").modal("show");
+
+    return false;
+  });
   // Set up config file diffs popovers
   var counter;
   $(".diff-toggle").popover({
