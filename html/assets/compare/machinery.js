@@ -50,4 +50,21 @@ $(document).ready(function () {
     $(this).hide();
     $("#collapse-all").show();
   });
+
+  // Show or hide elements which are common in scope
+  $(".show-common-elements").click(function(){
+    $scope = $(this).closest(".scope");
+    $scope.find(".scope_common_content").collapse("show");
+    $(this).hide();
+    $scope.find(".hide-common-elements").show();
+    return false;
+  });
+
+  $(".hide-common-elements").click(function(){
+    $scope = $(this).closest(".scope");
+    $scope.find(".scope_common_content").collapse("hide");
+    $(this).hide();
+    $scope.find(".show-common-elements").show();
+    return false;
+  });
 });
