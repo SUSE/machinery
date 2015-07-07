@@ -87,6 +87,7 @@ class Html
   def self.run_server(opts)
     Thread.new do
       require "sinatra/base"
+      require "mimemagic"
 
       server = Sinatra.new do
         set :port, opts[:port] || 7585
@@ -107,6 +108,26 @@ class Html
           end
 
           description.to_hash.to_json
+        end
+
+        get "/descriptions/:id/files/:scope/*" do
+          description = SystemDescription.load(params[:id], SystemDescriptionStore.new)
+          filename = File.join("/", params["splat"].first)
+
+          file = description[params[:scope]].files.find { |f| f.name == filename }
+
+          if request.accept.first.to_s == "text/plain" && file.binary?
+            status 406
+            return "binary file"
+          end
+
+          content = file.content
+          type = MimeMagic.by_path(filename) || MimeMagic.by_magic(content) || "text/plain"
+
+          content_type type
+          attachment File.basename(filename)
+
+          content
         end
 
         get "/:id" do
