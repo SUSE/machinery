@@ -23,6 +23,10 @@ class FileDiff
     file2 = description2[scope].files.find { |f| f.name == path }
     return nil if !file1 || !file2
 
+    if file1.binary? || file2.binary?
+      raise Machinery::Errors::MachineryError, "Can't diff binary files"
+    end
+
     Diffy::Diff.new(file1.content, file2.content)
   end
 end
