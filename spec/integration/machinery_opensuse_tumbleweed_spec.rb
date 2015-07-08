@@ -17,7 +17,7 @@
 
 require_relative "integration_spec_helper"
 
-describe "machinery@openSUSE Tumbleweed" do
+describe "machinery@Tumbleweed" do
   let(:test_data) {
     {
       "packages" =>
@@ -91,16 +91,16 @@ describe "machinery@openSUSE Tumbleweed" do
   }
   let(:machinery_command) { "machinery" }
 
+  host = machinery_host(metadata[:description])
+
   before(:all) do
-    @machinery = start_system(box: "machinery_tumbleweed")
+    @machinery = start_system(box: "machinery_#{host}")
   end
 
   include_examples "CLI"
-  include_examples "man"
-  include_examples "kiwi export"
-  include_examples "autoyast export"
   include_examples "validate"
   include_examples "upgrade format"
+  include_examples_for_platform(host)
 
   describe "inspect openSUSE Tumbleweed system" do
     before(:all) do

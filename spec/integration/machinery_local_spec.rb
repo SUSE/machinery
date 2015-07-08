@@ -42,8 +42,7 @@ describe "machinery@local", ci: true do
   end
 
   include_examples "CLI"
-  include_examples "inspect", ["opensuse131", "machinery", "linux"]
-  include_examples "kiwi export"
-  include_examples "autoyast export"
   include_examples "serve html"
+  include_examples "inspect", "opensuse131"
+  include_examples "export", "opensuse132"
 end

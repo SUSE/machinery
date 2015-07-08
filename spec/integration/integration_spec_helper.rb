@@ -16,6 +16,7 @@
 # you may find current contact information at www.suse.com
 
 require "etc"
+require "yaml"
 
 require_relative "../../lib/machinery"
 require_relative "../../../pennyworth/lib/pennyworth/spec"
@@ -62,6 +63,60 @@ def normalize_inspect_output(output)
   output.
     gsub!(/\d+/, "0"). # Normalize output
     gsub!(/(\r\033\[K.*?\r\033\[K).*\r\033\[K(.*)/, "\\1\\2") # strip all progress messages but two
+end
+
+def machinery_host(description)
+  description.sub!(/.*@/, "")
+end
+
+def boxes
+  {
+    "openSUSE_13_2" => "opensuse132",
+    "openSUSE_13_1" => "opensuse131",
+    "sles12" => "sles12",
+    "sles11" => "sles11sp3",
+    "rhel5" => "rhel5",
+    "rhel6" => "rhel6"
+  }
+end
+
+def test_group_hierarchy
+  {
+    "full" => %w(full_test minimal_test acceptance_test),
+    "minimal" => %w(minimal_test acceptance_test),
+    "acceptance" => %w(acceptance_test)
+  }
+end
+
+def matrix_path
+  File.join(Machinery::ROOT, "spec", "definitions", "support", "integration_tests.yml")
+end
+
+def validate_test_group
+  ENV["TESTGROUP"] = "full" if ENV["TESTGROUP"].nil?
+
+  message = "#{ENV["TESTGROUP"]} is not a supported TESTGROUP. Valid are acceptance, minimal, full."
+  abort message unless test_group_hierarchy.keys.include?(ENV["TESTGROUP"])
+end
+
+def include_examples_for_platform(currently_running_on)
+  integration_tests = YAML.load_file(matrix_path)
+
+  validate_test_group
+
+  integration_tests.each do |test, support_levels|
+    support_levels.each do |_level, matrix|
+      matrix.select { |host, _guests| host.include?(currently_running_on) }.each do |_host, guests|
+        guests.select! do |_guest, test_group|
+          test_group_hierarchy[ENV["TESTGROUP"]].include?(test_group)
+        end
+        guests.each do |guest, _test_group|
+          os, _arch = guest.split(":")
+          include_examples test, "#{boxes[os]}" if boxes[os]
+        end
+      end
+    end
+  end
 end
 
 Dir[File.join(Machinery::ROOT, "/spec/integration/support/*.rb")].each { |f| require f }

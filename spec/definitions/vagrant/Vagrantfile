@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     add_test_user(opensuse131)
   end
 
-  config.vm.define :machinery_131 do |machinery_131|
+  config.vm.define :machinery_openSUSE_13_1 do |machinery_131|
     machinery_131.vm.box = "machinery_opensuse13.1_kvm"
     machinery_131.vm.network :private_network, network_name: "default"
 
@@ -63,7 +63,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     add_test_user(opensuse132)
   end
 
-  config.vm.define :machinery_132 do |machinery_132|
+  config.vm.define :machinery_openSUSE_13_2 do |machinery_132|
     machinery_132.vm.box = "machinery_opensuse13.2_kvm"
     machinery_132.vm.network :private_network, network_name: "default"
 
@@ -94,7 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     add_test_user(opensuse_tumbleweed)
   end
 
-  config.vm.define :machinery_tumbleweed do |machinery_tumbleweed|
+  config.vm.define :machinery_Tumbleweed do |machinery_tumbleweed|
     machinery_tumbleweed.vm.box = "machinery_opensuse_tumbleweed_kvm"
     machinery_tumbleweed.vm.network :private_network, network_name: "default"
 
