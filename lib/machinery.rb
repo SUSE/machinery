@@ -34,6 +34,7 @@ require "find"
 require "pathname"
 require "nokogiri"
 require "socket"
+require "diffy"
 
 require_relative "machinery_logger"
 require_relative "zypper"
@@ -97,6 +98,7 @@ require_relative "scope_file_access_archive"
 require_relative "man_task"
 require_relative "comparison"
 require_relative "serve_html_task"
+require_relative "file_diff"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
   s.add_dependency "tilt", ">= 2.0"
   s.add_dependency "sinatra", "~> 1.4.6"
   s.add_dependency "mimemagic", "~> 0.3.0"
+  s.add_dependency "diffy", "~> 3.0.7"
 
   s.files        = Dir[
     "lib/**/*.rb",
