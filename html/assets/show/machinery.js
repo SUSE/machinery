@@ -99,7 +99,7 @@ setupDynamicContent = function() {
         }
       });
 
-    $("#file-modal-title").html(file.html() + ":");
+    $("#file-modal-title").html(file.html());
     $("#file-modal").modal("show");
 
     return false;
