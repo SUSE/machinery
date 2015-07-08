@@ -42,6 +42,11 @@ describe Repository do
       expect(subject.external_medium?).to be(true)
     end
 
+    it "returns true in case of a iso" do
+      subject.url = "iso:///?iso=/home/col/down/SUSE-Enterprise-Storage-1.0-DVD-x86_64"
+      expect(subject.external_medium?).to be(true)
+    end
+
     it "returns false in case of a network url" do
       subject.url = "http://download.opensuse.org/distribution/13.1/repo/oss/"
       expect(subject.external_medium?).to be(false)
