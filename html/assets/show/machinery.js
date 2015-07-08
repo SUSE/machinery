@@ -90,7 +90,9 @@ setupDynamicContent = function() {
         }
       }, "text").
       error(function(res) {
-        if(res.status == 406) {
+        if(res.readyState == 0) {
+          $("#file-modal-error").html("Could not download file content. Is the web server still running?").show();
+        } else if(res.status == 406) {
           $("#file-modal-error").html("File is binary.").show();
         } else {
           $("#file-modal-error").html("There was an unknown error downloading the file.").show();
