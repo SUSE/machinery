@@ -188,4 +188,5 @@ h1 {
 #file-modal-file-content {
   width: 100%;
   min-height: 450px;
+  font-family: monospace;
 }
