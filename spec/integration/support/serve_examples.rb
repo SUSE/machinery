@@ -19,7 +19,7 @@ shared_examples "serve html" do
   describe "serve html" do
     let(:system_description_dir) {
       system_description_file = File.join(Machinery::ROOT,
-        "spec/data/descriptions/jeos/manifest.json")
+        "spec/data/descriptions/jeos/opensuse131/manifest.json")
       File.dirname(system_description_file)
     }
 
@@ -31,7 +31,7 @@ shared_examples "serve html" do
         group: machinery_config[:group]
       )
 
-      cmd = "#{machinery_command} serve jeos --port 5000"
+      cmd = "#{machinery_command} serve opensuse131 --port 5000"
       Thread.new do
         @machinery.run_command(cmd)
       end
@@ -39,7 +39,7 @@ shared_examples "serve html" do
       # Test basic HTML
       wait_time = 0
       loop do
-        curl_command = @machinery.run_command("curl http://localhost:5000/jeos")
+        curl_command = @machinery.run_command("curl http://localhost:5000/opensuse131")
 
         if curl_command.stderr =~ /Failed to connect/
           raise "Could not connect to webserver" if wait_time >= 10
@@ -50,7 +50,7 @@ shared_examples "serve html" do
         end
 
         expect(curl_command).to succeed.with_stderr.
-          and have_stdout(/<title>.*jeos - Machinery System Description.*<\/title>/m)
+          and have_stdout(/<title>.*opensuse131 - Machinery System Description.*<\/title>/m)
         break
       end
 
@@ -59,7 +59,7 @@ shared_examples "serve html" do
         File.join(system_description_dir, "config_files", "etc", "crontab")
       )
       curl_command = @machinery.run_command(
-        "curl http://localhost:5000/descriptions/jeos/files/config_files/etc/crontab"
+        "curl http://localhost:5000/descriptions/opensuse131/files/config_files/etc/crontab"
       )
       expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
 
