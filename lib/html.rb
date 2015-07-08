@@ -84,9 +84,10 @@ class Html
 
   # Creates a new thread running a sinatra webserver which serves the local system descriptions
   # The Thread object is returned so that the caller can `.join` it until it's finished.
-  def self.run_server(opts)
+  def self.run_server(system_description_store, opts)
     Thread.new do
       require "sinatra/base"
+      require "mimemagic"
 
       server = Sinatra.new do
         set :port, opts[:port] || 7585
@@ -96,7 +97,7 @@ class Html
         helpers Helpers
 
         get "/descriptions/:id.js" do
-          description = SystemDescription.load(params[:id], SystemDescriptionStore.new)
+          description = SystemDescription.load(params[:id], system_description_store)
           diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
           if description.config_files && diffs_dir
             # Enrich description with the config file diffs
@@ -106,7 +107,34 @@ class Html
             end
           end
 
+          # Enrich file information with downloadable flag
+          ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
+            description[scope].files.each do |file|
+              file.downloadable = file.on_disk?
+            end
+          end
+
           description.to_hash.to_json
+        end
+
+        get "/descriptions/:id/files/:scope/*" do
+          description = SystemDescription.load(params[:id], system_description_store)
+          filename = File.join("/", params["splat"].first)
+
+          file = description[params[:scope]].files.find { |f| f.name == filename }
+
+          if request.accept.first.to_s == "text/plain" && file.binary?
+            status 406
+            return "binary file"
+          end
+
+          content = file.content
+          type = MimeMagic.by_path(filename) || MimeMagic.by_magic(content) || "text/plain"
+
+          content_type type
+          attachment File.basename(filename)
+
+          content
         end
 
         get "/:id" do
