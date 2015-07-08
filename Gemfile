@@ -28,5 +28,6 @@ group :test do
   gem "ruby-libvirt"
   gem "codeclimate-test-reporter"
   gem "rspec_junit_formatter"
+  gem "byebug"
   gem "rodf", github: "mauromorales/rodf"
 end
