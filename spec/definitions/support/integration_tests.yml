@@ -20,7 +20,7 @@ inspect:
 build:
   supported:
     "openSUSE_13_2:x86_64":
-      "openSUSE_13_2:x86_64": full_test
+      "openSUSE_13_2:x86_64":
   working:
     "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":
@@ -74,9 +74,9 @@ export:
 analyze:
   supported:
     "openSUSE_13_2:x86_64":
-      "openSUSE_13_2:x86_64": acceptance_test
+      "openSUSE_13_1:x86_64": acceptance_test
     "openSUSE_13_1:x86_64":
-      "openSUSE_13_1:x86_64": full_test
+      "openSUSE_13_1:x86_64":
   working:
     "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":

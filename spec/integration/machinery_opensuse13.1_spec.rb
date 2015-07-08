@@ -17,7 +17,7 @@
 
 require_relative "integration_spec_helper"
 
-describe "machinery@openSUSE 13.1" do
+describe "machinery@openSUSE_13_1" do
   let(:machinery_config) {
     {
       machinery_dir: "/home/vagrant/.machinery",
@@ -27,13 +27,14 @@ describe "machinery@openSUSE 13.1" do
   }
   let(:machinery_command) { "machinery" }
 
+  host = machinery_host(metadata[:description])
+
   before(:all) do
-    @machinery = start_system(box: "machinery_131")
+    @machinery = start_system(box: "machinery_#{host}")
   end
 
   include_examples "CLI"
-  include_examples "kiwi export"
-  include_examples "autoyast export"
   include_examples "validate"
   include_examples "upgrade format"
+  include_examples_for_platform(host)
 end

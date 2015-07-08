@@ -1,0 +1,2477 @@
+{
+  "os": {
+    "name": "SUSE Linux Enterprise Server 11",
+    "version": "11 SP3",
+    "architecture": "i686"
+  },
+  "packages": [
+    {
+      "name": "ConsoleKit",
+      "version": "0.2.10",
+      "release": "64.65.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b64c54e165a07747319c9567fe44e1dc"
+    },
+    {
+      "name": "PolicyKit",
+      "version": "0.9",
+      "release": "14.41.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0cc0c79144f29132f58fdacb0abecbff"
+    },
+    {
+      "name": "aaa_base",
+      "version": "11",
+      "release": "6.90.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "ac482a5df189cd83d2177014921b1aa1"
+    },
+    {
+      "name": "audit-libs",
+      "version": "1.8",
+      "release": "0.30.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "475623ab048de4204b69bf55a7e14771"
+    },
+    {
+      "name": "autofs",
+      "version": "5.0.6",
+      "release": "3.8.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f76d8d556ac96274b95c8524ee7f6240"
+    },
+    {
+      "name": "bash",
+      "version": "3.2",
+      "release": "147.17.30",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "dd8e6b9f819e3c3f276cb5ede5b826df"
+    },
+    {
+      "name": "branding-SLES",
+      "version": "11",
+      "release": "3.20.30",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "03cdd73db9d41f177bf2c9ca4dddaa32"
+    },
+    {
+      "name": "bridge-utils",
+      "version": "1.4",
+      "release": "23.18.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b1a140c76c757861fca876ac70626200"
+    },
+    {
+      "name": "bzip2",
+      "version": "1.0.5",
+      "release": "34.253.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "39f30b8424f7dcb5a0e9acd90e7f0d57"
+    },
+    {
+      "name": "coreutils",
+      "version": "8.12",
+      "release": "6.25.27.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5b599a059a8535d8d932535d339e60f5"
+    },
+    {
+      "name": "cpio",
+      "version": "2.9",
+      "release": "75.76.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "ef98638e8d4c78922997c6d116e07932"
+    },
+    {
+      "name": "cpio-lang",
+      "version": "2.9",
+      "release": "75.76.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "e302716e4d412b1be1f51bcfb53228fa"
+    },
+    {
+      "name": "cracklib",
+      "version": "2.8.12",
+      "release": "56.9.9",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "fe707553b0c304755860a516aac5266d"
+    },
+    {
+      "name": "cracklib-dict-full",
+      "version": "2.8.12",
+      "release": "43.16",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "12ea7f4eb28f3e57a1e21b9a6876acfc"
+    },
+    {
+      "name": "cron",
+      "version": "4.1",
+      "release": "194.207.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7db1c11df2d8bb9b6afb432f2efdd90c"
+    },
+    {
+      "name": "curl",
+      "version": "7.19.7",
+      "release": "1.26.8",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5aae3ec5fbeda2b1266133acc440d7ea"
+    },
+    {
+      "name": "cyrus-sasl",
+      "version": "2.1.22",
+      "release": "182.20.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "ede7599a3bf267da6d44b45812f23ffd"
+    },
+    {
+      "name": "dbus-1",
+      "version": "1.2.10",
+      "release": "3.27.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f9d597dc88524a0858d5fce5542ae6d6"
+    },
+    {
+      "name": "dbus-1-glib",
+      "version": "0.76",
+      "release": "34.22.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "e93786e2a3e38432368469b83b751835"
+    },
+    {
+      "name": "device-mapper",
+      "version": "1.02.77",
+      "release": "0.11.33",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "fe8ab7bbb3402f4266c8c99542af1d15"
+    },
+    {
+      "name": "dhcpcd",
+      "version": "3.2.3",
+      "release": "44.30.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "464c1f5eefc9d14c80a4096222063be2"
+    },
+    {
+      "name": "diffutils",
+      "version": "2.8.7",
+      "release": "143.23.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "04e2d59b34347d591d09ae35d4ec6687"
+    },
+    {
+      "name": "dirmngr",
+      "version": "1.0.2",
+      "release": "1.19",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5cd2bf3876df7f66ee416aa1e97f438b"
+    },
+    {
+      "name": "e2fsprogs",
+      "version": "1.41.9",
+      "release": "2.9.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "e66954bc8a679eb395d8ae6d0c0678a6"
+    },
+    {
+      "name": "elfutils",
+      "version": "0.152",
+      "release": "4.7.86",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "89438e556740373bf4f554032dd76c51"
+    },
+    {
+      "name": "expat",
+      "version": "2.0.1",
+      "release": "88.34.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "a920f8b44edd5f73c0017a5d6220b66c"
+    },
+    {
+      "name": "file",
+      "version": "4.24",
+      "release": "43.23.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5ff4c2869fdb78a553c7dc1df7e7dec9"
+    },
+    {
+      "name": "filesystem",
+      "version": "11.1",
+      "release": "3.5.3",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "502abf7bd0fba1fcc13a08396506ae32"
+    },
+    {
+      "name": "fillup",
+      "version": "1.42",
+      "release": "242.21",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7ccbf59ecb7a275d06784b37037521d2"
+    },
+    {
+      "name": "findutils",
+      "version": "4.4.0",
+      "release": "38.26.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "bcc616810bb893762dd637cd000710e5"
+    },
+    {
+      "name": "gawk",
+      "version": "3.1.8",
+      "release": "2.6.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d0bf9eec1603588830e9eec4299c450f"
+    },
+    {
+      "name": "gdbm",
+      "version": "1.8.3",
+      "release": "371.83",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "4b7cae1ecd1740bba6bc1771839f8789"
+    },
+    {
+      "name": "glib2",
+      "version": "2.22.5",
+      "release": "0.8.8.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d396689934e46c7989b04d280b6ac3a5"
+    },
+    {
+      "name": "glib2-branding-SLES",
+      "version": "2.16",
+      "release": "47.3",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b71ecce29f154c6f586e7da3c72b1d50"
+    },
+    {
+      "name": "glib2-lang",
+      "version": "2.22.5",
+      "release": "0.8.8.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7b07b58d3b96cf96c831603c768cfca7"
+    },
+    {
+      "name": "glibc",
+      "version": "2.11.3",
+      "release": "17.54.1",
+      "arch": "i686",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7d07ec78749ef984f228933e5955688f"
+    },
+    {
+      "name": "glibc-locale",
+      "version": "2.11.3",
+      "release": "17.54.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9e4873e2cb89a2013561f508b308c160"
+    },
+    {
+      "name": "gpg2",
+      "version": "2.0.9",
+      "release": "25.33.31.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "1c894fc92fe93ccf487fc5463f176334"
+    },
+    {
+      "name": "gpg2-lang",
+      "version": "2.0.9",
+      "release": "25.33.31.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0f014b3c67310ca482998ca1d1780f8d"
+    },
+    {
+      "name": "gpm",
+      "version": "1.20.1",
+      "release": "452.83",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b4b2b4b7ed8cc635328d33d1b9d52fd1"
+    },
+    {
+      "name": "grep",
+      "version": "2.7",
+      "release": "5.7.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "ac020db2ee6bb19d8621ae47ebe995c8"
+    },
+    {
+      "name": "grub",
+      "version": "0.97",
+      "release": "162.168.25",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b14e653e009e39cde78f3f415d2114e1"
+    },
+    {
+      "name": "gzip",
+      "version": "1.3.12",
+      "release": "69.23.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "597c52f70e9804a4aaa3992acfed7332"
+    },
+    {
+      "name": "hal",
+      "version": "0.5.12",
+      "release": "23.68.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "bbd08ee77cf75eb6d6b3f57f303c56a8"
+    },
+    {
+      "name": "haveged",
+      "version": "1.3",
+      "release": "0.6.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f741481c5d53b056687c84322bc67f05"
+    },
+    {
+      "name": "hwinfo",
+      "version": "15.50",
+      "release": "0.7.3",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "1dd4a25dfc0584dc498d84417785599f"
+    },
+    {
+      "name": "ifplugd",
+      "version": "0.28",
+      "release": "210.20",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "71b9a052c759271885b246552176682a"
+    },
+    {
+      "name": "info",
+      "version": "4.12",
+      "release": "1.86",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c22436deedbf0fd4ddcd5f35e027060c"
+    },
+    {
+      "name": "initviocons",
+      "version": "0.5",
+      "release": "55.21",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "1913617e4f49a8ae546843129f9fa0a1"
+    },
+    {
+      "name": "insserv",
+      "version": "1.12.0",
+      "release": "25.11.47",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9ae5da98f99c416dca752b5bebb0f75c"
+    },
+    {
+      "name": "iproute2",
+      "version": "2.6.29.1",
+      "release": "6.33.9",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7e82935939b8eb362c5b2a7592fd3e20"
+    },
+    {
+      "name": "iputils",
+      "version": "ss021109",
+      "release": "292.28.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "22d7a1d5fb0cbbfc304fde2cb0f79de4"
+    },
+    {
+      "name": "irqbalance",
+      "version": "1.0.4",
+      "release": "0.7.55",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "67003dec4f9684adf5c390e430ee7316"
+    },
+    {
+      "name": "kbd",
+      "version": "1.14.1",
+      "release": "16.31.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0f24bbba33aa268eaf976424a5fd8b14"
+    },
+    {
+      "name": "kernel-default",
+      "version": "3.0.76",
+      "release": "0.11.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7eab0f5fdf83e0c37f0d79d2711172ed"
+    },
+    {
+      "name": "kernel-default-base",
+      "version": "3.0.76",
+      "release": "0.11.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "6ad95e828dee8f9dea42af178f73be18"
+    },
+    {
+      "name": "keyutils-libs",
+      "version": "1.2",
+      "release": "107.29.15",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "673649ef1ff3d5a18b41e13194399763"
+    },
+    {
+      "name": "klogd",
+      "version": "1.4.1",
+      "release": "708.44.32",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b9d510fa4eeb4bc1e7137ffa02a0047f"
+    },
+    {
+      "name": "krb5",
+      "version": "1.6.3",
+      "release": "133.49.54.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "68a5ad1cec7d7c8f45cb3318b2ad5f1b"
+    },
+    {
+      "name": "libacl",
+      "version": "2.2.47",
+      "release": "30.34.29",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "129389133b8bfc59ffd3ca2b8e93bba4"
+    },
+    {
+      "name": "libaio",
+      "version": "0.3.109",
+      "release": "0.1.46",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "8dc4f7ce849b58714a6ca87600a8af08"
+    },
+    {
+      "name": "libasm1",
+      "version": "0.152",
+      "release": "4.7.86",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "2779d0f17ba5e33e3da367dc17ae677e"
+    },
+    {
+      "name": "libattr",
+      "version": "2.4.43",
+      "release": "1.18",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "490c7c8accfe3c599cbd09171291a3c2"
+    },
+    {
+      "name": "libaugeas0",
+      "version": "0.9.0",
+      "release": "3.9.29",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "52f75f16aef47a07fe53f884de0efa2d"
+    },
+    {
+      "name": "libblkid1",
+      "version": "2.19.1",
+      "release": "6.48.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b7dc6535a675ddc0e17cc59f51f2d55c"
+    },
+    {
+      "name": "libbz2-1",
+      "version": "1.0.5",
+      "release": "34.253.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "90f7afa3a1b12a7c0ab36619ce3f47e3"
+    },
+    {
+      "name": "libcap2",
+      "version": "2.11",
+      "release": "2.17.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "570ee61d6b190ccb842f81242cfe7ff5"
+    },
+    {
+      "name": "libcom_err2",
+      "version": "1.41.9",
+      "release": "2.9.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c7349a7e8ad6179df3ab2c035d5775ad"
+    },
+    {
+      "name": "libcurl4",
+      "version": "7.19.7",
+      "release": "1.26.8",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "da8d91b0b5c97dfeb0a85c45fc4f0d78"
+    },
+    {
+      "name": "libdb-4_5",
+      "version": "4.5.20",
+      "release": "95.39",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c1de647d6efb582c87aa0491184fa1a3"
+    },
+    {
+      "name": "libdw1",
+      "version": "0.152",
+      "release": "4.7.86",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "3461bd4841c13e8209fd27864d2ee8d0"
+    },
+    {
+      "name": "libelf1",
+      "version": "0.152",
+      "release": "4.7.86",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5142c99c19ff2fc297ffbc3dde5160c6"
+    },
+    {
+      "name": "libevent-1_4-2",
+      "version": "1.4.5",
+      "release": "24.21",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "53c0913aebb1ba2ea306e6601b334f59"
+    },
+    {
+      "name": "libexpat1",
+      "version": "2.0.1",
+      "release": "88.34.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f28565c3a1f2eeeaa8e95371f3d0f353"
+    },
+    {
+      "name": "libext2fs2",
+      "version": "1.41.9",
+      "release": "2.9.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7fb21540d53f560a475bec1d6b545ddb"
+    },
+    {
+      "name": "libgcc_s1",
+      "version": "4.7.2_20130108",
+      "release": "0.15.45",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9769917fd6af0cc0f6924f10af4d86da"
+    },
+    {
+      "name": "libgcrypt11",
+      "version": "1.5.0",
+      "release": "0.13.14",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "68b3e3e5b58ebf2f66920bc124700516"
+    },
+    {
+      "name": "libglib-2_0-0",
+      "version": "2.22.5",
+      "release": "0.8.8.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "25b721157633b3395cf4a532b862bb33"
+    },
+    {
+      "name": "libgobject-2_0-0",
+      "version": "2.22.5",
+      "release": "0.8.8.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "6b8d227628575f28923454d732dc5860"
+    },
+    {
+      "name": "libgpg-error0",
+      "version": "1.10",
+      "release": "0.7.29",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "8f420fac183600c4ab34cceaf6eb2ca2"
+    },
+    {
+      "name": "libgssglue1",
+      "version": "0.1",
+      "release": "20.2.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "2e31df1711bca19df9317b5b73796cf0"
+    },
+    {
+      "name": "libgthread-2_0-0",
+      "version": "2.22.5",
+      "release": "0.8.8.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5cb37feda0e73af7e3f91fd8ab1ad4c3"
+    },
+    {
+      "name": "libidn",
+      "version": "1.10",
+      "release": "3.18",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d3fce371d648e5e6f7624a4637aecc08"
+    },
+    {
+      "name": "libksba",
+      "version": "1.0.4",
+      "release": "1.16",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "51858a732e0f53046853d16bc25111c8"
+    },
+    {
+      "name": "libldap-2_4-2",
+      "version": "2.4.26",
+      "release": "0.24.36",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "82cd0aa4289f2562d3e7e781817fe863"
+    },
+    {
+      "name": "liblzma5",
+      "version": "5.0.3",
+      "release": "0.12.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d6040b0ae7dc4bbe5cea68fdea9ed883"
+    },
+    {
+      "name": "libncurses5",
+      "version": "5.6",
+      "release": "90.55",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "26507240aad6f1e795d3e420fd72454f"
+    },
+    {
+      "name": "libnet",
+      "version": "1.1.2.1",
+      "release": "140.24.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "eecb84f8bfbc2a481d012c98c9d09115"
+    },
+    {
+      "name": "libnscd",
+      "version": "2.0.2",
+      "release": "73.18",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "45d51bad76192e9dab55e21f6a477f2f"
+    },
+    {
+      "name": "libopenssl0_9_8",
+      "version": "0.9.8j",
+      "release": "0.50.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7158074efe7f94a2c9ad5d41193309f2"
+    },
+    {
+      "name": "libpython2_6-1_0",
+      "version": "2.6.8",
+      "release": "0.15.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b4323110cd812960892e0fb667454a1c"
+    },
+    {
+      "name": "libreadline5",
+      "version": "5.2",
+      "release": "147.17.30",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "bc58e7b56c7efab35590e63565831cb7"
+    },
+    {
+      "name": "libreiserfs",
+      "version": "0.3.0.5",
+      "release": "143.3",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "bc4e5cf85356730031c2b6cb47ce50ef"
+    },
+    {
+      "name": "libselinux1",
+      "version": "2.0.91",
+      "release": "4.2.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "6ff0b6c103e18c9b6e1651814337a5fe"
+    },
+    {
+      "name": "libsepol1",
+      "version": "2.0.41",
+      "release": "2.2.9",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "51121266e680a3d5fdd7ba3145feb007"
+    },
+    {
+      "name": "libsmbios2",
+      "version": "2.0.2",
+      "release": "11.8.4",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0c2deace8a998a023d4d3ed8c94e5607"
+    },
+    {
+      "name": "libstdc++6",
+      "version": "4.7.2_20130108",
+      "release": "0.15.45",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "a1ef43d060438425740703eb43624aa9"
+    },
+    {
+      "name": "libtirpc1",
+      "version": "0.2.1",
+      "release": "1.5.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "a84c58660dcd19e811ea3903605524d6"
+    },
+    {
+      "name": "libudev0",
+      "version": "147",
+      "release": "0.84.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "30b5e42da13a26a415a3e8c103d10f56"
+    },
+    {
+      "name": "libusb-0_1-4",
+      "version": "0.1.12",
+      "release": "139.1.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0b9ab16fb8bb38d652af729ca8d50d1a"
+    },
+    {
+      "name": "libuuid1",
+      "version": "2.19.1",
+      "release": "6.48.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f208ce1e84f432d3fe9bb45b823b3205"
+    },
+    {
+      "name": "libxcrypt",
+      "version": "3.0.3",
+      "release": "0.6.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "39efab20040dc866e4e40f262968df09"
+    },
+    {
+      "name": "libxml2",
+      "version": "2.7.6",
+      "release": "0.23.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c58056cc39f63419ba08872484057e91"
+    },
+    {
+      "name": "libzio",
+      "version": "0.9",
+      "release": "5.77",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0423f3f692f9694f58de27605077bd10"
+    },
+    {
+      "name": "libzypp",
+      "version": "9.34.0",
+      "release": "0.7.15",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "aceba4a22f48efc1e9e291db49225921"
+    },
+    {
+      "name": "login",
+      "version": "3.41",
+      "release": "0.4.2",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c28481f763a66e6e2a30199c22e1df3f"
+    },
+    {
+      "name": "logrotate",
+      "version": "3.7.7",
+      "release": "10.26.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d85876787e48ea11a9b985a81035c7dc"
+    },
+    {
+      "name": "lvm2",
+      "version": "2.02.98",
+      "release": "0.25.3",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d75eb28562a4f99430755a6e368690b5"
+    },
+    {
+      "name": "mdadm",
+      "version": "3.2.6",
+      "release": "0.19.9",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "627b208d0f8e01179fb5e0ce3c696ea6"
+    },
+    {
+      "name": "mingetty",
+      "version": "1.0.7s",
+      "release": "92.22",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "ae3f7a77022d4ca68ee1e970c03f3132"
+    },
+    {
+      "name": "mkinitrd",
+      "version": "2.4.2",
+      "release": "0.80.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "6f76c7088201fa6fd53062b7a880a9bf"
+    },
+    {
+      "name": "module-init-tools",
+      "version": "3.11.1",
+      "release": "1.28.5",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "452491acf6e1dada0f8635c3e58cf1ec"
+    },
+    {
+      "name": "mtools",
+      "version": "3.9.11",
+      "release": "165.31",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9b1a8036a098018a1a2248330317cefc"
+    },
+    {
+      "name": "ncurses-utils",
+      "version": "5.6",
+      "release": "90.55",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "05d1a308eb4390d383e3abe9da186e67"
+    },
+    {
+      "name": "net-tools",
+      "version": "1.60",
+      "release": "725.32.2.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "e54b89d87be794ebb0b8121883264ab0"
+    },
+    {
+      "name": "netcfg",
+      "version": "11.2",
+      "release": "0.5.2",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5b8b5ace4dc1c9fed5be968f48441260"
+    },
+    {
+      "name": "nfs-client",
+      "version": "1.2.3",
+      "release": "18.31.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "e48d34c487a4de404111419a8455e350"
+    },
+    {
+      "name": "nfs-kernel-server",
+      "version": "1.2.3",
+      "release": "18.29.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "d7e352a6ceb7f6447d38f038a13803c9"
+    },
+    {
+      "name": "nfsidmap",
+      "version": "0.25",
+      "release": "0.11.29",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "add069b31df6df257f513af861792d41"
+    },
+    {
+      "name": "openldap2-client",
+      "version": "2.4.26",
+      "release": "0.24.36",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "ec15a983ef0554758a429ba75762de14"
+    },
+    {
+      "name": "openslp",
+      "version": "1.2.0",
+      "release": "172.22.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "69e65797afc2f524f2201beff8fc26ce"
+    },
+    {
+      "name": "openssh",
+      "version": "6.2p2",
+      "release": "0.9.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9dc955b1a1702354a4f0fd83feb9f0d6"
+    },
+    {
+      "name": "openssl",
+      "version": "0.9.8j",
+      "release": "0.50.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "1f7c6517b7beb7cc8fdee1239a602a60"
+    },
+    {
+      "name": "openssl-certs",
+      "version": "1.85",
+      "release": "0.6.1",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "74ffaa3a7de97c06eb24a1a9b85ba528"
+    },
+    {
+      "name": "pam",
+      "version": "1.1.5",
+      "release": "0.10.17",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "69ceacba4be9c3044854679827241ed9"
+    },
+    {
+      "name": "pam-config",
+      "version": "0.79",
+      "release": "2.5.58",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "8cc69d69f159e78ee2519e494ea8d032"
+    },
+    {
+      "name": "pam-modules",
+      "version": "11",
+      "release": "1.22.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "cab0e9e79a0aef9460e736e02ec124c3"
+    },
+    {
+      "name": "parted",
+      "version": "2.3",
+      "release": "10.38.16",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "3bfea94c32744970400cf92bf37154ca"
+    },
+    {
+      "name": "pciutils",
+      "version": "3.1.7",
+      "release": "11.7.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5a0002c3b8aa0598333a95980329050a"
+    },
+    {
+      "name": "pciutils-ids",
+      "version": "2013.2.11",
+      "release": "0.7.28",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "2e2cf989600b19db7492dc3860dd74a3"
+    },
+    {
+      "name": "pcre",
+      "version": "7.8",
+      "release": "2.18",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c05d794fed88f46bc3fb52733b94249a"
+    },
+    {
+      "name": "perl",
+      "version": "5.10.0",
+      "release": "64.67.52",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "767932d75e1e178c71e8488a4d9ab3ff"
+    },
+    {
+      "name": "perl-Bootloader",
+      "version": "0.4.89.55",
+      "release": "0.7.15",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "4012cc4226b8cac2429b1475b5f72bd3"
+    },
+    {
+      "name": "perl-Module-Build",
+      "version": "0.2808.01",
+      "release": "0.67.52",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "1dbf3d230fdc4b97e0e533bbc166626e"
+    },
+    {
+      "name": "perl-Test-Simple",
+      "version": "0.72",
+      "release": "0.67.52",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "665c3d67714120aa1361f9c7db4befc6"
+    },
+    {
+      "name": "perl-URI",
+      "version": "1.37",
+      "release": "1.22",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "87f56837bca0cd87d4853511bc5a0079"
+    },
+    {
+      "name": "perl-WWW-Curl",
+      "version": "4.09",
+      "release": "2.1.72",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "dd9e278a7d1a39dac0e11f450092e15a"
+    },
+    {
+      "name": "perl-XML-Parser",
+      "version": "2.36",
+      "release": "1.18",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c8d43d8bc125a76ec26f734f111664e8"
+    },
+    {
+      "name": "perl-XML-Writer",
+      "version": "0.604",
+      "release": "2.10",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7513cb9228b3e9cd89c8ce71f12ad890"
+    },
+    {
+      "name": "perl-base",
+      "version": "5.10.0",
+      "release": "64.67.52",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "3466592b7274b69ecdc92bbf10b2a272"
+    },
+    {
+      "name": "permissions",
+      "version": "2013.1.7",
+      "release": "0.3.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0f9abec8fd76baacc866a1a6910113cf"
+    },
+    {
+      "name": "pinentry",
+      "version": "0.7.5",
+      "release": "61.33.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "a06319e6d8cdf0ae4a785e15e8a7401f"
+    },
+    {
+      "name": "pm-utils",
+      "version": "0.99.4.20071229",
+      "release": "12.14.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "78f6feb38da48b2931bd92cb7ea55f6d"
+    },
+    {
+      "name": "pmtools",
+      "version": "20071116",
+      "release": "44.31.25",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "26116717d191dff24fa10dedef509aca"
+    },
+    {
+      "name": "popt",
+      "version": "1.7",
+      "release": "37.56.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "894f78d80be7a8c1142cf99e59b25ccb"
+    },
+    {
+      "name": "postfix",
+      "version": "2.9.4",
+      "release": "0.13.9",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "395cbd0d49078aa6445046af625214e2"
+    },
+    {
+      "name": "procps",
+      "version": "3.2.7",
+      "release": "151.26.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "29555d60f646292098810313d5a2105c"
+    },
+    {
+      "name": "psmisc",
+      "version": "22.7",
+      "release": "7.1.40",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "6d7d156b54dcec3a2a0b1ae88447c104"
+    },
+    {
+      "name": "pth",
+      "version": "2.0.7",
+      "release": "102.22",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "99875c655723067b8fcf0eca9503c82e"
+    },
+    {
+      "name": "pwdutils",
+      "version": "3.2.15",
+      "release": "0.13.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "828373e9887ac0a84f582883738f8f59"
+    },
+    {
+      "name": "python-base",
+      "version": "2.6.8",
+      "release": "0.15.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "b1cfb02703a6e6de761d6691f980af71"
+    },
+    {
+      "name": "release-notes-sles",
+      "version": "11.3.22",
+      "release": "0.7.2",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f584dd9603cc3650b673171a67139a11"
+    },
+    {
+      "name": "rpcbind",
+      "version": "0.1.6+git20080930",
+      "release": "6.18.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "a382bbae1252996ff9bc1d6ebda07ea4"
+    },
+    {
+      "name": "rpm",
+      "version": "4.4.2.3",
+      "release": "37.56.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "93b73438a2031d97dcc4a59ba80dec13"
+    },
+    {
+      "name": "rsync",
+      "version": "3.0.4",
+      "release": "2.47.28",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "2c25dc8ecc50aa6efbbb1a0923b9ed96"
+    },
+    {
+      "name": "satsolver-tools",
+      "version": "0.17.7",
+      "release": "0.6.2.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "cd56ac82c2cc02c87c0a8e405985e830"
+    },
+    {
+      "name": "sed",
+      "version": "4.1.5",
+      "release": "85.22",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "50fb60fabde6f950cae3deea954b16b8"
+    },
+    {
+      "name": "setserial",
+      "version": "2.17",
+      "release": "716.22",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c914ccceb3fc4593f939b01e1818a8e5"
+    },
+    {
+      "name": "sles-release",
+      "version": "11.3",
+      "release": "1.138",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "042e9da373fabd55f4b8df9b333b4261"
+    },
+    {
+      "name": "sles-release-DVD",
+      "version": "11.3",
+      "release": "1.138",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "7622bb7cc670cd89dee4ca285b8e5328"
+    },
+    {
+      "name": "sudo",
+      "version": "1.7.6p2",
+      "release": "0.17.5",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "e9fbb527520a5afef72ad411b8874686"
+    },
+    {
+      "name": "suse-build-key",
+      "version": "1.0",
+      "release": "907.42.35",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "aeb24743d0118c5178baa253dc7173f2"
+    },
+    {
+      "name": "suseRegister",
+      "version": "1.4",
+      "release": "1.29.12",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "740693f25b41aaa07e0805e367f5f45f"
+    },
+    {
+      "name": "sysconfig",
+      "version": "0.71.61",
+      "release": "0.11.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "473d029dd88000ea2dbfcfaa30996b09"
+    },
+    {
+      "name": "sysfsutils",
+      "version": "2.1.0",
+      "release": "102.25.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "c51b2db21c91e9c6efb24242a4180182"
+    },
+    {
+      "name": "syslinux",
+      "version": "3.82",
+      "release": "8.10.23",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "24814c539d941772cc84aefea8255f94"
+    },
+    {
+      "name": "syslog-ng",
+      "version": "2.0.9",
+      "release": "27.34.36.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "383ea4470f64c50c4b8a9745ae05a17d"
+    },
+    {
+      "name": "sysvinit",
+      "version": "2.86",
+      "release": "215.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "461dc894e3106abcd11933c926acfe37"
+    },
+    {
+      "name": "tar",
+      "version": "1.26",
+      "release": "1.2.4.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "630333ada0f34d294b777844c2de95fb"
+    },
+    {
+      "name": "tcpd",
+      "version": "7.6",
+      "release": "856.13",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "fd140529ae5e0b25794d654259e0f2e5"
+    },
+    {
+      "name": "terminfo-base",
+      "version": "5.6",
+      "release": "90.55",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9da84905024d98a87c44e4825a1d7b79"
+    },
+    {
+      "name": "test-quote-char",
+      "version": "1.0",
+      "release": "1",
+      "arch": "noarch",
+      "vendor": "(none)",
+      "checksum": "387eb39c355af8707f16947da013815b"
+    },
+    {
+      "name": "timezone",
+      "version": "2013b",
+      "release": "0.4.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9b493a2e70875579c080c54bcf5e52d9"
+    },
+    {
+      "name": "tunctl",
+      "version": "20070815",
+      "release": "10.22",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "f4fdf8ee3177de9692a49bb34252cf03"
+    },
+    {
+      "name": "udev",
+      "version": "147",
+      "release": "0.84.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "889ba6c455a52c202b251cb255bfacae"
+    },
+    {
+      "name": "update-alternatives",
+      "version": "1.14.19",
+      "release": "1.22",
+      "arch": "noarch",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "0092d66e8fe09e9061a12d32d11e4ea3"
+    },
+    {
+      "name": "util-linux",
+      "version": "2.19.1",
+      "release": "6.48.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "63004e58ba1b7b2f9c71a7ab1b818173"
+    },
+    {
+      "name": "util-linux-lang",
+      "version": "2.19.1",
+      "release": "6.48.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9502f7d50bc5654b5ddfeaa52e5b455b"
+    },
+    {
+      "name": "uuid-runtime",
+      "version": "2.19.1",
+      "release": "6.48.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "9cb843e44d825dd26070a49fb8c6974a"
+    },
+    {
+      "name": "vim",
+      "version": "7.2",
+      "release": "8.15.2",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "1be44247f0bde2126496d6e9581d7bc5"
+    },
+    {
+      "name": "vim-base",
+      "version": "7.2",
+      "release": "8.15.2",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "a4aabe2beb56ebdaa95346876ce20404"
+    },
+    {
+      "name": "vlan",
+      "version": "1.9",
+      "release": "62.24.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "354a44819454b43d1c2023618122f7e6"
+    },
+    {
+      "name": "w3m",
+      "version": "0.5.2",
+      "release": "132.2.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "5e196603fe699f456e4bb36789f0d549"
+    },
+    {
+      "name": "wget",
+      "version": "1.11.4",
+      "release": "1.15.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "de23366d2b3d3d1b970bb3177b63246d"
+    },
+    {
+      "name": "xz",
+      "version": "5.0.3",
+      "release": "0.12.1",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "cc2560000bdd506ef692fb6492908f4e"
+    },
+    {
+      "name": "zlib",
+      "version": "1.2.7",
+      "release": "0.10.128",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "4355caee403fe36889599c7f7e969498"
+    },
+    {
+      "name": "zypper",
+      "version": "1.6.307",
+      "release": "0.7.12",
+      "arch": "i586",
+      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+      "checksum": "fc6c0050219e1ea04069df0676d73906"
+    }
+  ],
+  "patterns": [
+    {
+      "name": "Minimal",
+      "version": "11",
+      "release": "38.44.33"
+    },
+    {
+      "name": "file_server",
+      "version": "11",
+      "release": "38.44.33"
+    },
+    {
+      "name": "jeos",
+      "version": "11",
+      "release": "38.44.33"
+    }
+  ],
+  "repositories": [
+    {
+      "alias": "SLE-11-SLP",
+      "name": "SLE-11-SLP",
+      "type": "yast2",
+      "url": "http://dist.suse.de/install/SLP/SLES-11-SP3-GM/i386/DVD1/",
+      "enabled": true,
+      "autorefresh": false,
+      "gpgcheck": true,
+      "priority": 99,
+      "package_manager": "zypp"
+    }
+  ],
+  "users": [
+    {
+      "name": "+",
+      "password": "",
+      "uid": null,
+      "gid": null,
+      "comment": "",
+      "home": "",
+      "shell": ""
+    },
+    {
+      "name": "bin",
+      "password": "x",
+      "uid": 1,
+      "gid": 1,
+      "comment": "bin",
+      "home": "/bin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "uid": 2,
+      "gid": 2,
+      "comment": "Daemon",
+      "home": "/sbin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "uid": 40,
+      "gid": 49,
+      "comment": "FTP account",
+      "home": "/srv/ftp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "uid": 12,
+      "gid": 100,
+      "comment": "Games account",
+      "home": "/var/games",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "haldaemon",
+      "password": "x",
+      "uid": 102,
+      "gid": 103,
+      "comment": "User for haldaemon",
+      "home": "/var/run/hald",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "uid": 4,
+      "gid": 7,
+      "comment": "Printing daemon",
+      "home": "/var/spool/lpd",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "machinery",
+      "password": "x",
+      "uid": 1001,
+      "gid": 100,
+      "comment": "",
+      "home": "/home/machinery",
+      "shell": "/bin/bash",
+      "encrypted_password": "$1$b1Q4x/1G$r3..q8FGnpgkJrx/COWXv1",
+      "last_changed_date": 16609,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "uid": 8,
+      "gid": 12,
+      "comment": "Mailer daemon",
+      "home": "/var/spool/clientmqueue",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "uid": 13,
+      "gid": 62,
+      "comment": "Manual pages viewer",
+      "home": "/var/cache/man",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "uid": 100,
+      "gid": 101,
+      "comment": "User for D-Bus",
+      "home": "/var/run/dbus",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "uid": 9,
+      "gid": 13,
+      "comment": "News system",
+      "home": "/etc/news",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "uid": 65534,
+      "gid": 65533,
+      "comment": "nobody",
+      "home": "/var/lib/nobody",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "polkituser",
+      "password": "x",
+      "uid": 101,
+      "gid": 102,
+      "comment": "PolicyKit",
+      "home": "/var/run/PolicyKit",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "postfix",
+      "password": "x",
+      "uid": 51,
+      "gid": 51,
+      "comment": "Postfix Daemon",
+      "home": "/var/spool/postfix",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "uid": 0,
+      "gid": 0,
+      "comment": "root",
+      "home": "/root",
+      "shell": "/bin/bash",
+      "encrypted_password": "VvkOiM09sFZZs",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "uid": 71,
+      "gid": 65,
+      "comment": "SSH daemon",
+      "home": "/var/lib/sshd",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "uid": 10,
+      "gid": 14,
+      "comment": "Unix-to-Unix CoPy system",
+      "home": "/etc/uucp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "uuidd",
+      "password": "x",
+      "uid": 103,
+      "gid": 104,
+      "comment": "User for uuidd",
+      "home": "/var/run/uuidd",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "vagrant",
+      "password": "x",
+      "uid": 1000,
+      "gid": 1000,
+      "comment": "",
+      "home": "/home/vagrant",
+      "shell": "/bin/bash",
+      "encrypted_password": "VvkOiM09sFZZs",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "wwwrun",
+      "password": "x",
+      "uid": 30,
+      "gid": 8,
+      "comment": "WWW daemon apache",
+      "home": "/var/lib/wwwrun",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    }
+  ],
+  "groups": [
+    {
+      "name": "+",
+      "password": "",
+      "gid": null,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "audio",
+      "password": "x",
+      "gid": 17,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "bin",
+      "password": "x",
+      "gid": 1,
+      "users": [
+        "daemon"
+      ]
+    },
+    {
+      "name": "cdrom",
+      "password": "x",
+      "gid": 20,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "console",
+      "password": "x",
+      "gid": 21,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "gid": 2,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "dialout",
+      "password": "x",
+      "gid": 16,
+      "users": [
+        "vagrant",
+        "machinery"
+      ]
+    },
+    {
+      "name": "disk",
+      "password": "x",
+      "gid": 6,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "floppy",
+      "password": "x",
+      "gid": 19,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "gid": 49,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "gid": 40,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "haldaemon",
+      "password": "!",
+      "gid": 103,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "kmem",
+      "password": "x",
+      "gid": 9,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "lock",
+      "password": "x",
+      "gid": 54,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "gid": 7,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "gid": 12,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "maildrop",
+      "password": "!",
+      "gid": 59,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "gid": 62,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "messagebus",
+      "password": "!",
+      "gid": 101,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "modem",
+      "password": "x",
+      "gid": 43,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "gid": 13,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "gid": 65533,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "nogroup",
+      "password": "x",
+      "gid": 65534,
+      "users": [
+        "nobody"
+      ]
+    },
+    {
+      "name": "polkituser",
+      "password": "!",
+      "gid": 102,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "postfix",
+      "password": "!",
+      "gid": 51,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "public",
+      "password": "x",
+      "gid": 32,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "gid": 0,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "shadow",
+      "password": "x",
+      "gid": 15,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "sshd",
+      "password": "!",
+      "gid": 65,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "sys",
+      "password": "x",
+      "gid": 3,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "trusted",
+      "password": "x",
+      "gid": 42,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "tty",
+      "password": "x",
+      "gid": 5,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "users",
+      "password": "x",
+      "gid": 100,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "utmp",
+      "password": "x",
+      "gid": 22,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "gid": 14,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "uuidd",
+      "password": "!",
+      "gid": 104,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "vagrant",
+      "password": "!",
+      "gid": 1000,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "video",
+      "password": "x",
+      "gid": 33,
+      "users": [
+        "vagrant",
+        "machinery"
+      ]
+    },
+    {
+      "name": "wheel",
+      "password": "x",
+      "gid": 10,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "www",
+      "password": "x",
+      "gid": 8,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "xok",
+      "password": "x",
+      "gid": 41,
+      "users": [
+
+      ]
+    }
+  ],
+  "services": {
+    "init_system": "sysvinit",
+    "services": [
+      {
+        "name": "arpd",
+        "state": "off"
+      },
+      {
+        "name": "autofs",
+        "state": "on"
+      },
+      {
+        "name": "boot.cgroup",
+        "state": "off"
+      },
+      {
+        "name": "boot.cleanup",
+        "state": "on"
+      },
+      {
+        "name": "boot.clock",
+        "state": "on"
+      },
+      {
+        "name": "boot.debugfs",
+        "state": "on"
+      },
+      {
+        "name": "boot.device-mapper",
+        "state": "on"
+      },
+      {
+        "name": "boot.efivars",
+        "state": "on"
+      },
+      {
+        "name": "boot.ipconfig",
+        "state": "on"
+      },
+      {
+        "name": "boot.klog",
+        "state": "on"
+      },
+      {
+        "name": "boot.ldconfig",
+        "state": "on"
+      },
+      {
+        "name": "boot.loadmodules",
+        "state": "on"
+      },
+      {
+        "name": "boot.localfs",
+        "state": "on"
+      },
+      {
+        "name": "boot.localnet",
+        "state": "on"
+      },
+      {
+        "name": "boot.lvm",
+        "state": "on"
+      },
+      {
+        "name": "boot.lvm_monitor",
+        "state": "on"
+      },
+      {
+        "name": "boot.md",
+        "state": "on"
+      },
+      {
+        "name": "boot.proc",
+        "state": "on"
+      },
+      {
+        "name": "boot.rootfsck",
+        "state": "on"
+      },
+      {
+        "name": "boot.swap",
+        "state": "on"
+      },
+      {
+        "name": "boot.sysctl",
+        "state": "on"
+      },
+      {
+        "name": "boot.udev",
+        "state": "on"
+      },
+      {
+        "name": "boot.udev_retry",
+        "state": "on"
+      },
+      {
+        "name": "cron",
+        "state": "on"
+      },
+      {
+        "name": "dbus",
+        "state": "on"
+      },
+      {
+        "name": "earlysyslog",
+        "state": "on"
+      },
+      {
+        "name": "gpm",
+        "state": "off"
+      },
+      {
+        "name": "haldaemon",
+        "state": "on"
+      },
+      {
+        "name": "haveged",
+        "state": "on"
+      },
+      {
+        "name": "irq_balancer",
+        "state": "on"
+      },
+      {
+        "name": "kbd",
+        "state": "on"
+      },
+      {
+        "name": "lvm_wait_merge_snapshot",
+        "state": "on"
+      },
+      {
+        "name": "mdadmd",
+        "state": "off"
+      },
+      {
+        "name": "netstat",
+        "state": "off"
+      },
+      {
+        "name": "network",
+        "state": "on"
+      },
+      {
+        "name": "network-remotefs",
+        "state": "on"
+      },
+      {
+        "name": "nfs",
+        "state": "on"
+      },
+      {
+        "name": "nfsserver",
+        "state": "on"
+      },
+      {
+        "name": "postfix",
+        "state": "on"
+      },
+      {
+        "name": "powerd",
+        "state": "off"
+      },
+      {
+        "name": "purge-kernels",
+        "state": "on"
+      },
+      {
+        "name": "random",
+        "state": "on"
+      },
+      {
+        "name": "raw",
+        "state": "off"
+      },
+      {
+        "name": "rpasswdd",
+        "state": "off"
+      },
+      {
+        "name": "rpcbind",
+        "state": "on"
+      },
+      {
+        "name": "rpmconfigcheck",
+        "state": "off"
+      },
+      {
+        "name": "rsync",
+        "state": "off"
+      },
+      {
+        "name": "rsyncd",
+        "state": "off"
+      },
+      {
+        "name": "setserial",
+        "state": "off"
+      },
+      {
+        "name": "skeleton.compat",
+        "state": "off"
+      },
+      {
+        "name": "sshd",
+        "state": "on"
+      },
+      {
+        "name": "syslog",
+        "state": "on"
+      },
+      {
+        "name": "systat",
+        "state": "off"
+      },
+      {
+        "name": "uuidd",
+        "state": "off"
+      }
+    ]
+  },
+  "config_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cron",
+        "package_version": "4.1",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644",
+        "type": "file"
+      }
+    ]
+  },
+  "changed_managed_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/usr/share/bash/helpfiles/cd",
+        "package_name": "bash",
+        "package_version": "3.2",
+        "status": "changed",
+        "changes": [
+          "deleted"
+        ]
+      },
+      {
+        "name": "/usr/share/bash/helpfiles/read",
+        "package_name": "bash",
+        "package_version": "3.2",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "mode": "644",
+        "user": "root",
+        "group": "root",
+        "type": "file"
+      }
+    ]
+  },
+  "unmanaged_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/unmanaged-file",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 8,
+        "mode": "644"
+      },
+      {
+        "name": "/etc/unmanaged-tree/",
+        "type": "dir",
+        "user": "root",
+        "group": "root",
+        "size": 339,
+        "mode": "644",
+        "files": 2
+      }
+    ]
+  },
+  "meta": {
+    "format_version": 4,
+    "os": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "packages": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "patterns": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "repositories": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "users": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "groups": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "services": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "config_files": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "changed_managed_files": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "unmanaged_files": {
+      "modified": "2015-06-23T13:05:40Z",
+      "hostname": "192.168.121.210"
+    },
+    "filters": {
+      "inspect": [
+        "/unmanaged_files/files/name=/etc/passwd",
+        "/unmanaged_files/files/name=/etc/shadow",
+        "/unmanaged_files/files/name=/etc/group",
+        "/unmanaged_files/files/name=/tmp",
+        "/unmanaged_files/files/name=/var/tmp",
+        "/unmanaged_files/files/name=/lost+found",
+        "/unmanaged_files/files/name=/var/run",
+        "/unmanaged_files/files/name=/var/lib/rpm",
+        "/unmanaged_files/files/name=/.snapshots",
+        "/unmanaged_files/files/name=/proc",
+        "/unmanaged_files/files/name=/boot",
+        "/unmanaged_files/files/name=/etc/init.d/boot.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc0.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc1.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc2.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc3.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc4.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc5.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc6.d",
+        "/unmanaged_files/files/name=/etc/init.d/rcS.d"
+      ]
+    }
+  }
+}

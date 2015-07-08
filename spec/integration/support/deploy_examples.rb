@@ -15,26 +15,6 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-require_relative "integration_spec_helper"
-
-describe "machinery@openSUSE_13_2" do
-  let(:machinery_config) {
-    {
-      machinery_dir: "/home/vagrant/.machinery",
-      owner: "vagrant",
-      group: "vagrant"
-    }
-  }
-  let(:machinery_command) { "machinery" }
-
-  host = machinery_host(metadata[:description])
-
-  before(:all) do
-    @machinery = start_system(box: "machinery_#{host}")
-  end
-
-  include_examples "CLI"
-  include_examples "validate"
-  include_examples "upgrade format"
-  include_examples_for_platform(host)
+shared_examples "deploy" do
+  describe "deploy"
 end

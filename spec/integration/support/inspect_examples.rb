@@ -15,7 +15,10 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "inspect" do |base, username, password|
+shared_examples "inspect" do |base|
+  username = "machinery"
+  password = "linux"
+
   describe "inspect #{base} system" do
     let(:inspect_options) {
       "--remote-user=#{username}" if username != "root"
