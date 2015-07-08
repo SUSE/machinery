@@ -26,7 +26,7 @@ The description is now available at #{url}
 The web server can be closed with Ctrl+C.
 EOF
 
-    server = Html.run_server(port: port, ip: ip)
+    server = Html.run_server(description.store, port: port, ip: ip)
 
     server.join
   end

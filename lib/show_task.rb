@@ -41,7 +41,7 @@ There is a web server running, serving the description on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-      server = Html.run_server(port: options[:port], ip: options[:ip])
+      server = Html.run_server(description.store, port: options[:port], ip: options[:ip])
 
       Html.when_server_ready(options[:ip], options[:port]) do
         LoggedCheetah.run("xdg-open", url)

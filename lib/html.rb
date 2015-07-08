@@ -84,7 +84,7 @@ class Html
 
   # Creates a new thread running a sinatra webserver which serves the local system descriptions
   # The Thread object is returned so that the caller can `.join` it until it's finished.
-  def self.run_server(opts)
+  def self.run_server(system_description_store, opts)
     Thread.new do
       require "sinatra/base"
       require "mimemagic"
@@ -97,7 +97,7 @@ class Html
         helpers Helpers
 
         get "/descriptions/:id.js" do
-          description = SystemDescription.load(params[:id], SystemDescriptionStore.new)
+          description = SystemDescription.load(params[:id], system_description_store)
           diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
           if description.config_files && diffs_dir
             # Enrich description with the config file diffs
@@ -118,7 +118,7 @@ class Html
         end
 
         get "/descriptions/:id/files/:scope/*" do
-          description = SystemDescription.load(params[:id], SystemDescriptionStore.new)
+          description = SystemDescription.load(params[:id], system_description_store)
           filename = File.join("/", params["splat"].first)
 
           file = description[params[:scope]].files.find { |f| f.name == filename }
