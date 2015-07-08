@@ -48,7 +48,6 @@
         <package name="cronie"/>
         <package name="nfs-kernel-server"/>
         <package name="autofs"/>
-        <package name="curl"/>
     </packages>
     <packages type="bootstrap">
         <package name="udev"/>
