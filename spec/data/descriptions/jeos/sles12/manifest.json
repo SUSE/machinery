@@ -1,0 +1,2845 @@
+{
+  "os": {
+    "name": "SUSE Linux Enterprise Server 12",
+    "version": "12",
+    "architecture": "x86_64"
+  },
+  "packages": [
+    {
+      "name": "SUSEConnect",
+      "version": "0.2.14",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "369f158c79acc7151a60317c4f25d25e"
+    },
+    {
+      "name": "aaa_base",
+      "version": "13.2+git20140911.61c1681",
+      "release": "1.16",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "dd97ccef925e9b77366d68191aa018be"
+    },
+    {
+      "name": "acl",
+      "version": "2.2.52",
+      "release": "3.148",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6678f6e7fa44029ad205ea9ab42b5241"
+    },
+    {
+      "name": "autofs",
+      "version": "5.0.9",
+      "release": "3.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+    },
+    {
+      "name": "bash",
+      "version": "4.2",
+      "release": "75.2",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c5d510e5b5e4e8921a7c5d52be29b917"
+    },
+    {
+      "name": "btrfsprogs",
+      "version": "3.16",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "db96018161193aaa42ee8cd1234247f9"
+    },
+    {
+      "name": "bzip2",
+      "version": "1.0.6",
+      "release": "27.1129",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5bb27e9f23a7a25df5cce7bddb97cfb0"
+    },
+    {
+      "name": "ca-certificates",
+      "version": "1_201403302107",
+      "release": "6.2",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "199839f49fd6a8ff1b235fdbb2d4ea42"
+    },
+    {
+      "name": "ca-certificates-mozilla",
+      "version": "1.97",
+      "release": "4.5",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "9f98b9d904dbdb2d5805b286bead95da"
+    },
+    {
+      "name": "coreutils",
+      "version": "8.22",
+      "release": "5.17",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e71dd6a6b263173aa1b56e25dff0c6c0"
+    },
+    {
+      "name": "cpio",
+      "version": "2.11",
+      "release": "26.182",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "091d486ab725d7542933b74f9b3204e4"
+    },
+    {
+      "name": "cracklib",
+      "version": "2.9.0",
+      "release": "3.244",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c722ac34919dccb13a94dfbd21ab04dd"
+    },
+    {
+      "name": "cracklib-dict-full",
+      "version": "2.8.12",
+      "release": "63.17",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "221fe418bf9bb467c8f5dfaa12dc84de"
+    },
+    {
+      "name": "cron",
+      "version": "4.2",
+      "release": "55.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "bfe380223a4a3fca7c38e8347770bdce"
+    },
+    {
+      "name": "cronie",
+      "version": "1.4.11",
+      "release": "55.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0bf12788afc083e1c86786b4e6630e1e"
+    },
+    {
+      "name": "dbus-1",
+      "version": "1.8.8",
+      "release": "1.5",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "320e92538af5728afe594ffb4c2394da"
+    },
+    {
+      "name": "device-mapper",
+      "version": "1.02.78",
+      "release": "21.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "23540a180880e013ea390df9234b1a1c"
+    },
+    {
+      "name": "diffutils",
+      "version": "3.3",
+      "release": "5.40",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "62918e2c52b0e099a83518bd694866b1"
+    },
+    {
+      "name": "dirmngr",
+      "version": "1.1.1",
+      "release": "1.28",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "8fe11636a06997693a474499756f685a"
+    },
+    {
+      "name": "dmidecode",
+      "version": "2.12",
+      "release": "5.20",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "924c7575f74aeded288c8f55892f685f"
+    },
+    {
+      "name": "dmraid",
+      "version": "1.0.0.rc16",
+      "release": "31.5",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5dee016231c2b775c426d3cc267704fa"
+    },
+    {
+      "name": "dracut",
+      "version": "037",
+      "release": "34.4",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "7a548ab01c41da75d5a33d101453bd55"
+    },
+    {
+      "name": "e2fsprogs",
+      "version": "1.42.11",
+      "release": "1.17",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "54eab4f0746a705cfc7054708b881b2a"
+    },
+    {
+      "name": "elfutils",
+      "version": "0.158",
+      "release": "3.200",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5b917b06a96b2bea835bfe27672a2d15"
+    },
+    {
+      "name": "expat",
+      "version": "2.1.0",
+      "release": "13.232",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "53c727a9af1c1e2778d794e2a4f278b6"
+    },
+    {
+      "name": "fdupes",
+      "version": "1.50",
+      "release": "5.97",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "dfa999a8c71d1f5a87800f0ae014ce9e"
+    },
+    {
+      "name": "file",
+      "version": "5.19",
+      "release": "2.149",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "28733b4733e3883d993c4fbb81c0b3f5"
+    },
+    {
+      "name": "file-magic",
+      "version": "5.19",
+      "release": "2.149",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6d8a9e9756dea9848f47f1615eac8fe9"
+    },
+    {
+      "name": "filesystem",
+      "version": "13.1",
+      "release": "11.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "045ac0aa0671dedbde8394ac565b0067"
+    },
+    {
+      "name": "fillup",
+      "version": "1.42",
+      "release": "270.64",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c5e0fbd0e21fa715925087aee509005f"
+    },
+    {
+      "name": "findutils",
+      "version": "4.5.12",
+      "release": "5.124",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "087d1f32e7d7176739a5002f5cef5fbc"
+    },
+    {
+      "name": "fipscheck",
+      "version": "1.2.0",
+      "release": "9.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e8d2c0063e1bfa60415bde4d6334de73"
+    },
+    {
+      "name": "gawk",
+      "version": "4.1.0",
+      "release": "3.663",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "ffb83e739cd871c17ce720744eded865"
+    },
+    {
+      "name": "gettext-runtime",
+      "version": "0.19.2",
+      "release": "1.103",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3a58d0329104085434903ceee0552a98"
+    },
+    {
+      "name": "glibc",
+      "version": "2.19",
+      "release": "17.72",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e00e7562a923cb92fd091821df9efe9b"
+    },
+    {
+      "name": "glibc-locale",
+      "version": "2.19",
+      "release": "17.72",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f1878b13df96d9513b77e49f8df5eeed"
+    },
+    {
+      "name": "gpg2",
+      "version": "2.0.24",
+      "release": "1.5",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c981b5c05a65bb64e96807b09bfa324f"
+    },
+    {
+      "name": "grep",
+      "version": "2.16",
+      "release": "1.29",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b84374c33eaebec7b865b1bcbf6d6b30"
+    },
+    {
+      "name": "grub2",
+      "version": "2.02~beta2",
+      "release": "48.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f87a9ad4ff804dd9a55ae9ee6bb0fdf1"
+    },
+    {
+      "name": "grub2-i386-pc",
+      "version": "2.02~beta2",
+      "release": "48.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "81335ee2812150669edd9d4eb7b6381f"
+    },
+    {
+      "name": "gzip",
+      "version": "1.6",
+      "release": "7.392",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "eb4bcdd7ee0d0402b9583737a01ba23a"
+    },
+    {
+      "name": "hardlink",
+      "version": "1.0",
+      "release": "6.45",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "083de048482b1218056f9521c65b27e2"
+    },
+    {
+      "name": "hwinfo",
+      "version": "21.6",
+      "release": "1.50",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "83bc59b6ee2617ec1aaafe019c15cf19"
+    },
+    {
+      "name": "info",
+      "version": "4.13a",
+      "release": "37.229",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "2f778c730e0d29ac949c95d1810a2f82"
+    },
+    {
+      "name": "insserv-compat",
+      "version": "0.1",
+      "release": "11.80",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "36f6ceab89db02c59e1ac5861f5c2cad"
+    },
+    {
+      "name": "iproute2",
+      "version": "3.12",
+      "release": "5.36",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d725b58aa7d5a0de3cbdb217558b7ea6"
+    },
+    {
+      "name": "iputils",
+      "version": "s20121221",
+      "release": "2.19",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "765e4242fdaa1aa65d815919227368aa"
+    },
+    {
+      "name": "kbd",
+      "version": "1.15.5",
+      "release": "7.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "2559e91714f0b7eca7650fe1d9704c29"
+    },
+    {
+      "name": "kernel-default",
+      "version": "3.12.28",
+      "release": "4.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "8924f78c5d097229885ab2f5cd6e0f7b"
+    },
+    {
+      "name": "keyutils",
+      "version": "1.5.9",
+      "release": "3.29",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f55c23974ba93f7b46383d6c639a2d31"
+    },
+    {
+      "name": "kmod",
+      "version": "17",
+      "release": "1.18",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "26fb0da20ddfc83fd1ea0f3ce09fec0b"
+    },
+    {
+      "name": "kmod-compat",
+      "version": "17",
+      "release": "1.18",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "243802410aea556f544a3343497ebcd1"
+    },
+    {
+      "name": "kpartx",
+      "version": "0.5.0",
+      "release": "30.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "ff7a8654bd57c5eb489df54406928a2f"
+    },
+    {
+      "name": "krb5",
+      "version": "1.12.1",
+      "release": "6.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "7eae77645d583b61249c3bc024e707d9"
+    },
+    {
+      "name": "libacl1",
+      "version": "2.2.52",
+      "release": "3.148",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e2a04ccee20f5d436a1deda9b8cd13de"
+    },
+    {
+      "name": "libadns1",
+      "version": "1.4",
+      "release": "101.65",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b85e44a2b35678347e1cbd073f92b288"
+    },
+    {
+      "name": "libapparmor1",
+      "version": "2.8.2",
+      "release": "25.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0c200e7c9766e52124b64d3b07d4132f"
+    },
+    {
+      "name": "libasm1",
+      "version": "0.158",
+      "release": "3.200",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "45b53d1ae9949e735387f266033ae01d"
+    },
+    {
+      "name": "libassuan0",
+      "version": "2.1.1",
+      "release": "3.217",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6d0a94ec385311f78a95f6106d6deb84"
+    },
+    {
+      "name": "libattr1",
+      "version": "2.4.47",
+      "release": "3.143",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "9854dd90c1f502998f5eee93835db1f7"
+    },
+    {
+      "name": "libaudit1",
+      "version": "2.3.6",
+      "release": "3.103",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a5cbeb0cfe68c73f397081870db144b0"
+    },
+    {
+      "name": "libaugeas0",
+      "version": "1.2.0",
+      "release": "1.5",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "1d42a4de3b9507f21b683f72d67d3ca1"
+    },
+    {
+      "name": "libblkid1",
+      "version": "2.25",
+      "release": "6.69",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3b21a8f43159208d26747c48178bbc86"
+    },
+    {
+      "name": "libbz2-1",
+      "version": "1.0.6",
+      "release": "27.1129",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6d47c5d3315c12874402bfdb93d64e91"
+    },
+    {
+      "name": "libcap-ng0",
+      "version": "0.7.3",
+      "release": "4.125",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "505d076301974ed4931dcffea78c6981"
+    },
+    {
+      "name": "libcap2",
+      "version": "2.22",
+      "release": "11.709",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "46a30e1220091c24596f315725a8fcb7"
+    },
+    {
+      "name": "libcom_err2",
+      "version": "1.42.11",
+      "release": "1.17",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "2b78574d681bc092e1b7700f18a3dda7"
+    },
+    {
+      "name": "libcrack2",
+      "version": "2.9.0",
+      "release": "3.244",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "46a341920dc40c4517b901db89f52e2a"
+    },
+    {
+      "name": "libcroco-0_6-3",
+      "version": "0.6.8",
+      "release": "6.62",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3426c3632f97a2918e9a641990743c28"
+    },
+    {
+      "name": "libcryptsetup4",
+      "version": "1.6.4",
+      "release": "2.10",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e65090276c84d9331476650ec311895e"
+    },
+    {
+      "name": "libcurl4",
+      "version": "7.37.0",
+      "release": "2.5",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "22e77d8f806b86b4b6db70602d5a69a9"
+    },
+    {
+      "name": "libdb-4_8",
+      "version": "4.8.30",
+      "release": "27.206",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b51cc50e300990db9a717ba942369f0a"
+    },
+    {
+      "name": "libdbus-1-3",
+      "version": "1.8.8",
+      "release": "1.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "4b07c22b0b5cf21bacc96bebd558476f"
+    },
+    {
+      "name": "libdw1",
+      "version": "0.158",
+      "release": "3.200",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c384c77aee40f18659dbc848e70dde91"
+    },
+    {
+      "name": "libedit0",
+      "version": "3.1.snap20140620",
+      "release": "1.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b933d8ec3afa5d3a63a688ac94caea13"
+    },
+    {
+      "name": "libelf1",
+      "version": "0.158",
+      "release": "3.200",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f18b752e720b43a4b4b236d288fb4042"
+    },
+    {
+      "name": "libevent-2_0-5",
+      "version": "2.0.21",
+      "release": "4.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0e2c17c321e9bc327a26845f8e546856"
+    },
+    {
+      "name": "libexpat1",
+      "version": "2.1.0",
+      "release": "13.232",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c97b36ca6626c6f6f40798a445d24f79"
+    },
+    {
+      "name": "libext2fs2",
+      "version": "1.42.11",
+      "release": "1.17",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6685ed8c56a50daa7901356baa2d9a95"
+    },
+    {
+      "name": "libffi4",
+      "version": "4.8.3+r212056",
+      "release": "6.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "613c8626c1fd5031c6d8e4761f29fb4f"
+    },
+    {
+      "name": "libfipscheck1",
+      "version": "1.2.0",
+      "release": "9.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d298dc84233d26074ae36be470aa5467"
+    },
+    {
+      "name": "libfreetype6",
+      "version": "2.5.3",
+      "release": "2.18",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6a4f829c4a6f0299f7fc8307ae8a2dd2"
+    },
+    {
+      "name": "libfuse2",
+      "version": "2.9.3",
+      "release": "3.65",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "cbbf24bc13f5b62b5c2891c47e15fe3b"
+    },
+    {
+      "name": "libgcc_s1",
+      "version": "4.8.3+r212056",
+      "release": "6.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "4f4b508e6a4992d38ed4b0210801f7fe"
+    },
+    {
+      "name": "libgcrypt20",
+      "version": "1.6.1",
+      "release": "9.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3935c5ba97861f11af4f48fa5bf4af56"
+    },
+    {
+      "name": "libgdbm4",
+      "version": "1.10",
+      "release": "9.70",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a899beb5f8f6a4d9b8b9216b01d14433"
+    },
+    {
+      "name": "libglib-2_0-0",
+      "version": "2.38.2",
+      "release": "5.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "079a91fe508332569fbb735b0d7629dd"
+    },
+    {
+      "name": "libgmp10",
+      "version": "5.1.3",
+      "release": "2.121",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "9cf211ccb5ec2533f7134906b02ca726"
+    },
+    {
+      "name": "libgpg-error0",
+      "version": "1.13",
+      "release": "1.79",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0d96be770d15d5a97dc54ed57d01d6c8"
+    },
+    {
+      "name": "libidn11",
+      "version": "1.28",
+      "release": "2.34",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "45e2e9709e55768c75f008f832305d8d"
+    },
+    {
+      "name": "libkeyutils1",
+      "version": "1.5.9",
+      "release": "3.29",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "232db40b7dee443dbff18fb149dd723d"
+    },
+    {
+      "name": "libkmod2",
+      "version": "17",
+      "release": "1.18",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "238744dcb2d0b6fb5efc329dfd29983d"
+    },
+    {
+      "name": "libksba8",
+      "version": "1.3.0",
+      "release": "6.65",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3e354d20b771254720d9340a467d39fb"
+    },
+    {
+      "name": "libldap-2_4-2",
+      "version": "2.4.39",
+      "release": "10.2",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c349851852af7be2a31e2a1e6b50cc87"
+    },
+    {
+      "name": "liblua5_1",
+      "version": "5.1.5",
+      "release": "7.127",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0d7c5f812b709e50b3d46a3bf2b26fcf"
+    },
+    {
+      "name": "liblzma5",
+      "version": "5.0.5",
+      "release": "4.852",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "ea845a2fb8774381dbfef8da9c162b29"
+    },
+    {
+      "name": "liblzo2-2",
+      "version": "2.08",
+      "release": "1.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "119e4753722d4cf768b47ece122b3469"
+    },
+    {
+      "name": "libmagic1",
+      "version": "5.19",
+      "release": "2.149",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e69f9f3a1beb42efb148002b93c48354"
+    },
+    {
+      "name": "libmodman1",
+      "version": "2.0.1",
+      "release": "15.75",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "81d62464aafb5691c4e7725837df06e0"
+    },
+    {
+      "name": "libmount1",
+      "version": "2.25",
+      "release": "6.69",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d0578a5dfa1bea87b8a46ee3e9135655"
+    },
+    {
+      "name": "libncurses5",
+      "version": "5.9",
+      "release": "40.124",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "66e1453f980b39aadbb2f76baa5abd05"
+    },
+    {
+      "name": "libncurses6",
+      "version": "5.9",
+      "release": "40.124",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "85c485a253145a0edc127e1208d38a30"
+    },
+    {
+      "name": "libnl-config",
+      "version": "3.2.23",
+      "release": "2.21",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "72aa5583c22f60b28f02ae11a183d4a2"
+    },
+    {
+      "name": "libnl3-200",
+      "version": "3.2.23",
+      "release": "2.21",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a4d7a6dad3756f7e84997e8fb9fe7b0a"
+    },
+    {
+      "name": "libopenssl1_0_0",
+      "version": "1.0.1i",
+      "release": "2.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "348f395d19697a032126acba708c4945"
+    },
+    {
+      "name": "libp11-kit0",
+      "version": "0.20.3",
+      "release": "1.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "378545ce38661f30c56ebd3bdb145f3d"
+    },
+    {
+      "name": "libparted0",
+      "version": "3.1",
+      "release": "13.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "1b25b5f405a69ed307d27a6c066bcc68"
+    },
+    {
+      "name": "libpcre1",
+      "version": "8.33",
+      "release": "3.314",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "11e609433c537579383d770ef1f5780d"
+    },
+    {
+      "name": "libpng16-16",
+      "version": "1.6.8",
+      "release": "2.24",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0db20c8ada967e897f649dede1d0c3df"
+    },
+    {
+      "name": "libpopt0",
+      "version": "1.16",
+      "release": "26.128",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5fdb15f92191b9f5abdf24717422375a"
+    },
+    {
+      "name": "libprocps3",
+      "version": "3.3.9",
+      "release": "1.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "41288300db5f387214ecffac7d132aa0"
+    },
+    {
+      "name": "libproxy1",
+      "version": "0.4.11",
+      "release": "11.2",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d25dbe09cab0a964ed68c93f2491e5de"
+    },
+    {
+      "name": "libpth20",
+      "version": "2.0.7",
+      "release": "139.67",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f0f86023b616d457e0f320e40ee81c65"
+    },
+    {
+      "name": "libqrencode3",
+      "version": "3.4.3",
+      "release": "1.31",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3027f5e65de92f225e4ee8d5b370c050"
+    },
+    {
+      "name": "libreadline6",
+      "version": "6.2",
+      "release": "75.2",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "7421680ddc1a67e0264858622d1dd54e"
+    },
+    {
+      "name": "libreiserfscore0",
+      "version": "3.6.24",
+      "release": "5.47",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "62e322d900333258f77805071f62bfce"
+    },
+    {
+      "name": "libruby2_1-2_1",
+      "version": "2.1.2",
+      "release": "6.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a6cab286296d8cd5c1cbaf3a1124b3da"
+    },
+    {
+      "name": "libsasl2-3",
+      "version": "2.1.26",
+      "release": "7.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "da541a8452591a2143cb4861e77367d1"
+    },
+    {
+      "name": "libseccomp2",
+      "version": "2.1.1",
+      "release": "2.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "fde1785e1e791f51693e1e6a642e0775"
+    },
+    {
+      "name": "libselinux1",
+      "version": "2.3",
+      "release": "2.75",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b460def02601286943f208aa5d889f4e"
+    },
+    {
+      "name": "libsemanage1",
+      "version": "2.3",
+      "release": "1.340",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "8b0e77f9b73cad70180a60f8c170ba1e"
+    },
+    {
+      "name": "libsepol1",
+      "version": "2.3",
+      "release": "1.476",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "879e49a60da3754a2614125ff447b978"
+    },
+    {
+      "name": "libsgutils2-2",
+      "version": "1.38",
+      "release": "10.9",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "024ed11e6166fd27a391625a5a893a23"
+    },
+    {
+      "name": "libsmartcols1",
+      "version": "2.25",
+      "release": "6.69",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6dc4d6a3cfae16102303a430065da4bb"
+    },
+    {
+      "name": "libsolv-tools",
+      "version": "0.6.5",
+      "release": "1.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "04ea970b26e9446e36ee18ba063892f8"
+    },
+    {
+      "name": "libsqlite3-0",
+      "version": "3.8.3.1",
+      "release": "1.14",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "cfd687c7e8e5bddb4831df0addfeb594"
+    },
+    {
+      "name": "libssh2-1",
+      "version": "1.4.3",
+      "release": "8.60",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "9f40402f1400a58fbef8048f09337e7f"
+    },
+    {
+      "name": "libstdc++6",
+      "version": "4.8.3+r212056",
+      "release": "6.3",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "306b4f338404775e6be8b4a9a7cb796c"
+    },
+    {
+      "name": "libtasn1",
+      "version": "3.7",
+      "release": "2.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "8ce3f1c317daef53b74aa37e44c30be3"
+    },
+    {
+      "name": "libtasn1-6",
+      "version": "3.7",
+      "release": "2.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "bd5b165627fa62bc6bdf8145b2972973"
+    },
+    {
+      "name": "libtirpc1",
+      "version": "0.2.3",
+      "release": "5.21",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e42d9030c7f4a10ba76658f582df9b7a"
+    },
+    {
+      "name": "libudev1",
+      "version": "210",
+      "release": "44.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "12012a6b436295d9cbb196323c93ef07"
+    },
+    {
+      "name": "libusb-0_1-4",
+      "version": "0.1.13",
+      "release": "29.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a8eb2aa7132491e105ca836379c8842d"
+    },
+    {
+      "name": "libusb-1_0-0",
+      "version": "1.0.18",
+      "release": "2.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6087473c0ce305af79a12a916bc0ada9"
+    },
+    {
+      "name": "libustr-1_0-1",
+      "version": "1.0.4",
+      "release": "31.197",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b4eede025a8c0972c402bf5b24a8e6ee"
+    },
+    {
+      "name": "libutempter0",
+      "version": "1.1.6",
+      "release": "5.114",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0cbab066780201047b7a0b083f4170d7"
+    },
+    {
+      "name": "libuuid1",
+      "version": "2.25",
+      "release": "6.69",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c9019da7239ffa34d94f7158cb64d692"
+    },
+    {
+      "name": "libwicked-0-6",
+      "version": "0.6.11",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "81c778a6197a801f8be5ddab0ceefed8"
+    },
+    {
+      "name": "libwrap0",
+      "version": "7.6",
+      "release": "883.68",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "bbe64afdb9f5c344500bc85dcb371a3f"
+    },
+    {
+      "name": "libx86emu1",
+      "version": "1.1",
+      "release": "21.50",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b356a4959ac71e3cfc86ec7be6c53106"
+    },
+    {
+      "name": "libxml2-2",
+      "version": "2.9.1",
+      "release": "6.2",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "2e51381fdadcf9c69748ca8e3c2bbaff"
+    },
+    {
+      "name": "libxtables10",
+      "version": "1.4.21",
+      "release": "2.10",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "cfa0064976edbf8303cc254ee586fffd"
+    },
+    {
+      "name": "libyaml-0-2",
+      "version": "0.1.6",
+      "release": "1.19",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "29d0e122de99fca22a74ff580484c2ea"
+    },
+    {
+      "name": "libz1",
+      "version": "1.2.8",
+      "release": "5.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "cb127dceb850705f3b302931d9e03293"
+    },
+    {
+      "name": "libzio1",
+      "version": "1.00",
+      "release": "9.188",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "962b616288a6740ee1ea3de54aa6e911"
+    },
+    {
+      "name": "libzypp",
+      "version": "14.29.4",
+      "release": "1.10",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "dd10ba41a190a595e0fbd18a23c6ded3"
+    },
+    {
+      "name": "lvm2",
+      "version": "2.02.98",
+      "release": "48.8",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "afdfa409f55f7ef32e2dbfab1de2e9e6"
+    },
+    {
+      "name": "mtools",
+      "version": "4.0.18",
+      "release": "4.379",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d3945c5462f1f215929aec44d0157d29"
+    },
+    {
+      "name": "ncurses-utils",
+      "version": "5.9",
+      "release": "40.124",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "9d71a7bba51de0ce98b7563fe3b60567"
+    },
+    {
+      "name": "net-tools",
+      "version": "1.60",
+      "release": "764.185",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6c69d4355b5310e24119522f00aed349"
+    },
+    {
+      "name": "netcfg",
+      "version": "11.5",
+      "release": "24.13",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "57bb5dfe4b4aa00092f967313b21c473"
+    },
+    {
+      "name": "nfs-client",
+      "version": "1.3.0",
+      "release": "6.9",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c4f8aa05b3c55484eae34506f94a6e65"
+    },
+    {
+      "name": "nfs-kernel-server",
+      "version": "1.3.0",
+      "release": "6.9",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "7659b0569b5ae98dfc88b204647a0ecf"
+    },
+    {
+      "name": "nfsidmap",
+      "version": "0.25",
+      "release": "5.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "208d724ab205f99c30673b89db700c44"
+    },
+    {
+      "name": "openslp",
+      "version": "2.0.0",
+      "release": "2.9",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "885b0a25825e8c629ba4dcf6840c5d61"
+    },
+    {
+      "name": "openssh",
+      "version": "6.6p1",
+      "release": "4.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "40512ac3f1af0e74c8b266576e03879e"
+    },
+    {
+      "name": "openssl",
+      "version": "1.0.1i",
+      "release": "2.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a683ce47899e6f0b59e7cd3a15a666c9"
+    },
+    {
+      "name": "os-prober",
+      "version": "1.61",
+      "release": "11.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b8113d62f5e6b1f71d1470c76b9dca90"
+    },
+    {
+      "name": "p11-kit",
+      "version": "0.20.3",
+      "release": "1.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b6d9aa233684046db2223120ceacdc89"
+    },
+    {
+      "name": "p11-kit-tools",
+      "version": "0.20.3",
+      "release": "1.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c9683690c4a9f6751e262c14e6e1d3d9"
+    },
+    {
+      "name": "pam",
+      "version": "1.1.8",
+      "release": "11.57",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "a5a5005d3085fe3165c90222c164c52f"
+    },
+    {
+      "name": "pam-config",
+      "version": "0.88",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "038966cf8def73ca43f7fb3411416c39"
+    },
+    {
+      "name": "parted",
+      "version": "3.1",
+      "release": "13.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "534145d8bf107cf5a7f55ef0826e66e6"
+    },
+    {
+      "name": "patterns-sles-Minimal",
+      "version": "12",
+      "release": "58.8",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0d342e385e2aabfbd80eddf7fab5fa9d"
+    },
+    {
+      "name": "perl",
+      "version": "5.18.2",
+      "release": "3.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3b80fd398724fc130cea71865fb88ee3"
+    },
+    {
+      "name": "perl-Bootloader",
+      "version": "0.824",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "4fcb1d0550167b2c740c53e273496185"
+    },
+    {
+      "name": "perl-base",
+      "version": "5.18.2",
+      "release": "3.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b50da572826c28eae9c15a7a0b27c983"
+    },
+    {
+      "name": "permissions",
+      "version": "2014.08.26.1452",
+      "release": "1.12",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "35597da26c661c6d854ed26b4574211d"
+    },
+    {
+      "name": "pigz",
+      "version": "2.3",
+      "release": "3.66",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "8204315a770ff03578b5bc94f4b767ee"
+    },
+    {
+      "name": "pinentry",
+      "version": "0.8.3",
+      "release": "4.27",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "8642a746d703a1a9465666e1b9cc6ff9"
+    },
+    {
+      "name": "pkg-config",
+      "version": "0.28",
+      "release": "6.98",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "63005b18e7ac0585ad8271656e573f83"
+    },
+    {
+      "name": "procps",
+      "version": "3.3.9",
+      "release": "1.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d353ed962c5470774909ceb7310db8ad"
+    },
+    {
+      "name": "rpcbind",
+      "version": "0.2.1_rc4",
+      "release": "8.6",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5f79ef500c1a41d4d8d1a4ae7fbbfa41"
+    },
+    {
+      "name": "rpm",
+      "version": "4.11.2",
+      "release": "5.92",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "ee2735f56036a9dba51da46bae4686e4"
+    },
+    {
+      "name": "rsync",
+      "version": "3.1.0",
+      "release": "2.7",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "7d9d8b28efc2aabc53001a84ef046237"
+    },
+    {
+      "name": "ruby-common",
+      "version": "2.1",
+      "release": "12.1",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0be69b3979850608bf6f6377fc0371dc"
+    },
+    {
+      "name": "ruby2.1",
+      "version": "2.1.2",
+      "release": "6.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f29123ed43924ca37492a9e7d44b8652"
+    },
+    {
+      "name": "ruby2.1-rubygem-gem2rpm",
+      "version": "0.10.1",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "9b671a9739119f3509b10c73a93d8fdc"
+    },
+    {
+      "name": "ruby2.1-rubygem-suse-connect",
+      "version": "0.2.14",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "7761321640251a63cc8bb3bc29e8934e"
+    },
+    {
+      "name": "ruby2.1-stdlib",
+      "version": "2.1.2",
+      "release": "6.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d749a3c6b88ad01222eff7189730ca50"
+    },
+    {
+      "name": "sed",
+      "version": "4.2.2",
+      "release": "4.15",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "665b58727a4e12ec41730c577bf58b3b"
+    },
+    {
+      "name": "sg3_utils",
+      "version": "1.38",
+      "release": "10.9",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b95a9af9f6e522ad0da02579ce481c19"
+    },
+    {
+      "name": "shadow",
+      "version": "4.1.5.1",
+      "release": "12.80",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "3a813125988d3768deb577b9cb73230c"
+    },
+    {
+      "name": "sles-release",
+      "version": "12",
+      "release": "1.377",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "4c4feeae82479cdce0d641832f999a3d"
+    },
+    {
+      "name": "sles-release-DVD",
+      "version": "12",
+      "release": "1.377",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0678c0073f63523ada7a9dcdebc300ba"
+    },
+    {
+      "name": "sudo",
+      "version": "1.8.10p3",
+      "release": "1.62",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "e32d4d70e1fbd5942fa44dd43b2bbb7c"
+    },
+    {
+      "name": "suse-module-tools",
+      "version": "12.3",
+      "release": "14.14",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f4ed472552fe4616567949fe07616d3d"
+    },
+    {
+      "name": "sysconfig",
+      "version": "0.83.7",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "d03cb24b05d9b5c56a318a829ac2b1b1"
+    },
+    {
+      "name": "sysconfig-netconfig",
+      "version": "0.83.7",
+      "release": "2.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5ff9255bf2908a9af613b1289d2a1fd6"
+    },
+    {
+      "name": "syslinux",
+      "version": "4.04",
+      "release": "32.14",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "96c35d5a8aceb1cbfeccafddfd4b0cbd"
+    },
+    {
+      "name": "systemd",
+      "version": "210",
+      "release": "44.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "76700f61cd8ebd166f2f44d61303b06e"
+    },
+    {
+      "name": "systemd-presets-branding-SLE",
+      "version": "12.0",
+      "release": "13.1",
+      "arch": "noarch",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "5fbc14bb2fd4267bfdd7c30151284b07"
+    },
+    {
+      "name": "systemd-sysvinit",
+      "version": "210",
+      "release": "44.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "fdc2d85a6a74663cbd703a2654c51b52"
+    },
+    {
+      "name": "sysvinit-tools",
+      "version": "2.88+",
+      "release": "94.13",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6e97d2346f9e31f67a0909df69b36930"
+    },
+    {
+      "name": "tar",
+      "version": "1.27.1",
+      "release": "2.22",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "ae5b1a9b1d219573336dcb8d3e5c80dc"
+    },
+    {
+      "name": "terminfo-base",
+      "version": "5.9",
+      "release": "40.124",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "4086a49f48b91c7e3c39c9dfaf7b8457"
+    },
+    {
+      "name": "test-quote-char",
+      "version": "1.0",
+      "release": "1",
+      "arch": "noarch",
+      "vendor": "(none)",
+      "checksum": "387eb39c355af8707f16947da013815b"
+    },
+    {
+      "name": "udev",
+      "version": "210",
+      "release": "44.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "f677c6ed51345c4c294436ec29fd53f8"
+    },
+    {
+      "name": "update-alternatives",
+      "version": "1.16.10",
+      "release": "6.109",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "fd316f7dc19d1cde68acae65ade7b665"
+    },
+    {
+      "name": "util-linux",
+      "version": "2.25",
+      "release": "6.69",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "13cf86828639e85c405deff364a342f4"
+    },
+    {
+      "name": "util-linux-systemd",
+      "version": "2.25",
+      "release": "6.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b151332848343f6260e952657437e8b7"
+    },
+    {
+      "name": "vim",
+      "version": "7.4.326",
+      "release": "2.62",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "b676b68420743ce6f396f6cc448e0baa"
+    },
+    {
+      "name": "which",
+      "version": "2.20",
+      "release": "3.180",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "deabaf64d2d23573bbb98f7c83d0638c"
+    },
+    {
+      "name": "wicked",
+      "version": "0.6.11",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "c23a0684fcc267023005cb11dc4e966d"
+    },
+    {
+      "name": "wicked-service",
+      "version": "0.6.11",
+      "release": "1.1",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "6a8c34d27ceecf90d72fe30683b17f47"
+    },
+    {
+      "name": "xz",
+      "version": "5.0.5",
+      "release": "4.852",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "0a00a89b577e62faa8d4f8b0a5b8ad4e"
+    },
+    {
+      "name": "zypper",
+      "version": "1.11.14",
+      "release": "1.2",
+      "arch": "x86_64",
+      "vendor": "SUSE LLC <https://www.suse.com/>",
+      "checksum": "4297a2bf104892099da66872968aa928"
+    }
+  ],
+  "patterns": [
+    {
+      "name": "Minimal",
+      "version": "12",
+      "release": "58.8"
+    }
+  ],
+  "repositories": [
+    {
+      "alias": "SLE-12-SLP",
+      "name": "SLE-12-SLP",
+      "type": "yast2",
+      "url": "http://dist.suse.de/install/SLP/SLE-12-Server-GM/x86_64/DVD1/",
+      "enabled": true,
+      "autorefresh": false,
+      "gpgcheck": true,
+      "priority": 99,
+      "package_manager": "zypp"
+    }
+  ],
+  "users": [
+    {
+      "name": "+",
+      "password": "",
+      "uid": null,
+      "gid": null,
+      "comment": "",
+      "home": "",
+      "shell": ""
+    },
+    {
+      "name": "bin",
+      "password": "x",
+      "uid": 1,
+      "gid": 1,
+      "comment": "bin",
+      "home": "/bin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "uid": 2,
+      "gid": 2,
+      "comment": "Daemon",
+      "home": "/sbin",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "uid": 40,
+      "gid": 49,
+      "comment": "FTP account",
+      "home": "/srv/ftp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "uid": 12,
+      "gid": 100,
+      "comment": "Games account",
+      "home": "/var/games",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "uid": 4,
+      "gid": 7,
+      "comment": "Printing daemon",
+      "home": "/var/spool/lpd",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "machinery",
+      "password": "x",
+      "uid": 1001,
+      "gid": 100,
+      "comment": "",
+      "home": "/home/machinery",
+      "shell": "/bin/bash",
+      "encrypted_password": "$6$70FCl2ci$KYywoGrRqKqEjdBjuW518FK5GtKnl3Dv71tYys/5ny4WWmsqgd1LxbQGHJBrJQZyzBGW/VWn/2fcJ4AhvuBj2.",
+      "last_changed_date": 16609,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "uid": 8,
+      "gid": 12,
+      "comment": "Mailer daemon",
+      "home": "/var/spool/clientmqueue",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "uid": 13,
+      "gid": 62,
+      "comment": "Manual pages viewer",
+      "home": "/var/cache/man",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "uid": 499,
+      "gid": 497,
+      "comment": "User for D-Bus",
+      "home": "/var/run/dbus",
+      "shell": "/bin/false",
+      "encrypted_password": "!",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "uid": 9,
+      "gid": 13,
+      "comment": "News system",
+      "home": "/etc/news",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "uid": 65534,
+      "gid": 65533,
+      "comment": "nobody",
+      "home": "/var/lib/nobody",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "uid": 0,
+      "gid": 0,
+      "comment": "root",
+      "home": "/root",
+      "shell": "/bin/bash",
+      "encrypted_password": "U2aGMUY8llQHI",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "rpc",
+      "password": "x",
+      "uid": 498,
+      "gid": 65534,
+      "comment": "user for rpcbind",
+      "home": "/var/lib/empty",
+      "shell": "/sbin/nologin",
+      "encrypted_password": "!",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "uid": 497,
+      "gid": 496,
+      "comment": "SSH daemon",
+      "home": "/var/lib/sshd",
+      "shell": "/bin/false",
+      "encrypted_password": "!",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "statd",
+      "password": "x",
+      "uid": 496,
+      "gid": 65534,
+      "comment": "NFS statd daemon",
+      "home": "/var/lib/nfs",
+      "shell": "/sbin/nologin",
+      "encrypted_password": "!",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "uid": 10,
+      "gid": 14,
+      "comment": "Unix-to-Unix CoPy system",
+      "home": "/etc/uucp",
+      "shell": "/bin/bash",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    },
+    {
+      "name": "vagrant",
+      "password": "x",
+      "uid": 1000,
+      "gid": 1000,
+      "comment": "",
+      "home": "/home/vagrant",
+      "shell": "/bin/bash",
+      "encrypted_password": "U2aGMUY8llQHI",
+      "last_changed_date": 16584,
+      "min_days": 0,
+      "max_days": 99999,
+      "warn_days": 7
+    },
+    {
+      "name": "wwwrun",
+      "password": "x",
+      "uid": 30,
+      "gid": 8,
+      "comment": "WWW daemon apache",
+      "home": "/var/lib/wwwrun",
+      "shell": "/bin/false",
+      "encrypted_password": "*",
+      "last_changed_date": 16584
+    }
+  ],
+  "groups": [
+    {
+      "name": "+",
+      "password": "",
+      "gid": null,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "audio",
+      "password": "x",
+      "gid": 17,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "bin",
+      "password": "x",
+      "gid": 1,
+      "users": [
+        "daemon"
+      ]
+    },
+    {
+      "name": "cdrom",
+      "password": "x",
+      "gid": 20,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "console",
+      "password": "x",
+      "gid": 21,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "daemon",
+      "password": "x",
+      "gid": 2,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "dialout",
+      "password": "x",
+      "gid": 16,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "disk",
+      "password": "x",
+      "gid": 6,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "floppy",
+      "password": "x",
+      "gid": 19,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "ftp",
+      "password": "x",
+      "gid": 49,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "games",
+      "password": "x",
+      "gid": 40,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "kmem",
+      "password": "x",
+      "gid": 9,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "lock",
+      "password": "x",
+      "gid": 54,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "lp",
+      "password": "x",
+      "gid": 7,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "mail",
+      "password": "x",
+      "gid": 12,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "man",
+      "password": "x",
+      "gid": 62,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "messagebus",
+      "password": "x",
+      "gid": 497,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "modem",
+      "password": "x",
+      "gid": 43,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "news",
+      "password": "x",
+      "gid": 13,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "nobody",
+      "password": "x",
+      "gid": 65533,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "nogroup",
+      "password": "x",
+      "gid": 65534,
+      "users": [
+        "nobody"
+      ]
+    },
+    {
+      "name": "public",
+      "password": "x",
+      "gid": 32,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "root",
+      "password": "x",
+      "gid": 0,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "shadow",
+      "password": "x",
+      "gid": 15,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "sshd",
+      "password": "x",
+      "gid": 496,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "sys",
+      "password": "x",
+      "gid": 3,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "systemd-journal",
+      "password": "x",
+      "gid": 499,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "tape",
+      "password": "x",
+      "gid": 498,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "trusted",
+      "password": "x",
+      "gid": 42,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "tty",
+      "password": "x",
+      "gid": 5,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "users",
+      "password": "x",
+      "gid": 100,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "utmp",
+      "password": "x",
+      "gid": 22,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "uucp",
+      "password": "x",
+      "gid": 14,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "vagrant",
+      "password": "x",
+      "gid": 1000,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "video",
+      "password": "x",
+      "gid": 33,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "wheel",
+      "password": "x",
+      "gid": 10,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "www",
+      "password": "x",
+      "gid": 8,
+      "users": [
+
+      ]
+    },
+    {
+      "name": "xok",
+      "password": "x",
+      "gid": 41,
+      "users": [
+
+      ]
+    }
+  ],
+  "services": {
+    "init_system": "systemd",
+    "services": [
+      {
+        "name": "after-local.service",
+        "state": "static"
+      },
+      {
+        "name": "autofs.service",
+        "state": "enabled"
+      },
+      {
+        "name": "blk-availability.service",
+        "state": "disabled"
+      },
+      {
+        "name": "cgroup.service",
+        "state": "masked"
+      },
+      {
+        "name": "cleanup.service",
+        "state": "static"
+      },
+      {
+        "name": "clock.service",
+        "state": "masked"
+      },
+      {
+        "name": "console-getty.service",
+        "state": "disabled"
+      },
+      {
+        "name": "console-shell.service",
+        "state": "static"
+      },
+      {
+        "name": "cron.service",
+        "state": "enabled"
+      },
+      {
+        "name": "crypto-early.service",
+        "state": "masked"
+      },
+      {
+        "name": "crypto.service",
+        "state": "masked"
+      },
+      {
+        "name": "dbus-org.freedesktop.hostname1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.locale1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.login1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.machine1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.freedesktop.timedate1.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus-org.opensuse.Network.AUTO4.service",
+        "state": "enabled"
+      },
+      {
+        "name": "dbus-org.opensuse.Network.DHCP4.service",
+        "state": "enabled"
+      },
+      {
+        "name": "dbus-org.opensuse.Network.DHCP6.service",
+        "state": "enabled"
+      },
+      {
+        "name": "dbus-org.opensuse.Network.Nanny.service",
+        "state": "enabled"
+      },
+      {
+        "name": "dbus.service",
+        "state": "static"
+      },
+      {
+        "name": "dbus.socket",
+        "state": "static"
+      },
+      {
+        "name": "debug-shell.service",
+        "state": "disabled"
+      },
+      {
+        "name": "device-mapper.service",
+        "state": "masked"
+      },
+      {
+        "name": "dm-event.service",
+        "state": "enabled"
+      },
+      {
+        "name": "dm-event.socket",
+        "state": "enabled"
+      },
+      {
+        "name": "dmraid-activation.service",
+        "state": "disabled"
+      },
+      {
+        "name": "dracut-cmdline.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-initqueue.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-mount.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-pre-mount.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-pre-pivot.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-pre-trigger.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-pre-udev.service",
+        "state": "static"
+      },
+      {
+        "name": "dracut-shutdown.service",
+        "state": "static"
+      },
+      {
+        "name": "earlysyslog.service",
+        "state": "masked"
+      },
+      {
+        "name": "earlyxdm.service",
+        "state": "masked"
+      },
+      {
+        "name": "emergency.service",
+        "state": "static"
+      },
+      {
+        "name": "fstrim.service",
+        "state": "static"
+      },
+      {
+        "name": "grub2-once.service",
+        "state": "disabled"
+      },
+      {
+        "name": "halt-local.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-cleanup.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-parse-etc.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-switch-root.service",
+        "state": "static"
+      },
+      {
+        "name": "initrd-udevadm-cleanup-db.service",
+        "state": "static"
+      },
+      {
+        "name": "kbd.service",
+        "state": "masked"
+      },
+      {
+        "name": "kmod-static-nodes.service",
+        "state": "static"
+      },
+      {
+        "name": "ldconfig.service",
+        "state": "masked"
+      },
+      {
+        "name": "loadmodules.service",
+        "state": "masked"
+      },
+      {
+        "name": "localfs.service",
+        "state": "static"
+      },
+      {
+        "name": "localnet.service",
+        "state": "masked"
+      },
+      {
+        "name": "lvm2-lvmetad.service",
+        "state": "disabled"
+      },
+      {
+        "name": "lvm2-lvmetad.socket",
+        "state": "disabled"
+      },
+      {
+        "name": "lvm2-monitor.service",
+        "state": "disabled"
+      },
+      {
+        "name": "network.service",
+        "state": "enabled"
+      },
+      {
+        "name": "proc.service",
+        "state": "masked"
+      },
+      {
+        "name": "purge-kernels.service",
+        "state": "enabled"
+      },
+      {
+        "name": "quotaon.service",
+        "state": "static"
+      },
+      {
+        "name": "random.service",
+        "state": "static"
+      },
+      {
+        "name": "rc-local.service",
+        "state": "static"
+      },
+      {
+        "name": "rescue.service",
+        "state": "static"
+      },
+      {
+        "name": "rootfsck.service",
+        "state": "static"
+      },
+      {
+        "name": "rpc-statd.service",
+        "state": "static"
+      },
+      {
+        "name": "rpcbind.service",
+        "state": "enabled"
+      },
+      {
+        "name": "rpcbind.socket",
+        "state": "enabled"
+      },
+      {
+        "name": "rsyncd.service",
+        "state": "disabled"
+      },
+      {
+        "name": "single.service",
+        "state": "masked"
+      },
+      {
+        "name": "sshd.service",
+        "state": "enabled"
+      },
+      {
+        "name": "startpreload.service",
+        "state": "masked"
+      },
+      {
+        "name": "stoppreload.service",
+        "state": "masked"
+      },
+      {
+        "name": "swap.service",
+        "state": "masked"
+      },
+      {
+        "name": "sysctl.service",
+        "state": "static"
+      },
+      {
+        "name": "syslog.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-ask-password-console.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-ask-password-wall.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-binfmt.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-fsck-root.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-halt.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-hibernate.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-hostnamed.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-hybrid-sleep.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-initctl.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-initctl.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-journal-flush.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-journald.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-journald.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-kexec.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-localed.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-logind.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-machined.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-modules-load.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-poweroff.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-quotacheck.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-random-seed.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-readahead-collect.service",
+        "state": "enabled"
+      },
+      {
+        "name": "systemd-readahead-done.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-readahead-drop.service",
+        "state": "enabled"
+      },
+      {
+        "name": "systemd-readahead-replay.service",
+        "state": "enabled"
+      },
+      {
+        "name": "systemd-reboot.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-remount-fs.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-shutdownd.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-shutdownd.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-suspend.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-sysctl.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-timedated.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-tmpfiles-clean.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-tmpfiles-setup-dev.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-tmpfiles-setup.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udev-root-symlink.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udev-settle.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udev-trigger.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udevd-control.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udevd-kernel.socket",
+        "state": "static"
+      },
+      {
+        "name": "systemd-udevd.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-update-utmp-runlevel.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-update-utmp.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-user-sessions.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-vconsole-setup.service",
+        "state": "static"
+      },
+      {
+        "name": "udev.service",
+        "state": "static"
+      },
+      {
+        "name": "wicked.service",
+        "state": "enabled"
+      },
+      {
+        "name": "wickedd-auto4.service",
+        "state": "enabled"
+      },
+      {
+        "name": "wickedd-dhcp4.service",
+        "state": "enabled"
+      },
+      {
+        "name": "wickedd-dhcp6.service",
+        "state": "enabled"
+      },
+      {
+        "name": "wickedd-nanny.service",
+        "state": "enabled"
+      },
+      {
+        "name": "wickedd.service",
+        "state": "enabled"
+      }
+    ]
+  },
+  "config_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cron",
+        "package_version": "4.1",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644",
+        "type": "file"
+      }
+    ]
+  },
+  "changed_managed_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/usr/share/bash/helpfiles/cd",
+        "package_name": "bash",
+        "package_version": "3.2",
+        "status": "changed",
+        "changes": [
+          "deleted"
+        ]
+      },
+      {
+        "name": "/usr/share/bash/helpfiles/read",
+        "package_name": "bash",
+        "package_version": "3.2",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "mode": "644",
+        "user": "root",
+        "group": "root",
+        "type": "file"
+      }
+    ]
+  },
+  "unmanaged_files": {
+    "extracted": true,
+    "files": [
+      {
+        "name": "/etc/unmanaged-file",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 8,
+        "mode": "644"
+      },
+      {
+        "name": "/etc/unmanaged-tree/",
+        "type": "dir",
+        "user": "root",
+        "group": "root",
+        "size": 339,
+        "mode": "644",
+        "files": 2
+      }
+    ]
+  },
+  "meta": {
+    "format_version": 4,
+    "os": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "packages": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "patterns": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "repositories": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "users": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "groups": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "services": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "config_files": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "changed_managed_files": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "unmanaged_files": {
+      "modified": "2015-06-23T12:56:18Z",
+      "hostname": "192.168.121.96"
+    },
+    "filters": {
+      "inspect": [
+        "/unmanaged_files/files/name=/etc/passwd",
+        "/unmanaged_files/files/name=/etc/shadow",
+        "/unmanaged_files/files/name=/etc/group",
+        "/unmanaged_files/files/name=/tmp",
+        "/unmanaged_files/files/name=/var/tmp",
+        "/unmanaged_files/files/name=/lost+found",
+        "/unmanaged_files/files/name=/var/run",
+        "/unmanaged_files/files/name=/var/lib/rpm",
+        "/unmanaged_files/files/name=/.snapshots",
+        "/unmanaged_files/files/name=/proc",
+        "/unmanaged_files/files/name=/boot",
+        "/unmanaged_files/files/name=/etc/init.d/boot.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc0.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc1.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc2.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc3.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc4.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc5.d",
+        "/unmanaged_files/files/name=/etc/init.d/rc6.d",
+        "/unmanaged_files/files/name=/etc/init.d/rcS.d"
+      ]
+    }
+  }
+}
