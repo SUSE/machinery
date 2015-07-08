@@ -17,15 +17,15 @@
 
 shared_examples "serve html" do
   describe "serve html" do
-    before(:each) do
-      @system_description_file = "spec/data/descriptions/jeos/manifest.json"
-      @system_description_dir = File.dirname(@system_description_file)
-      @system_description = create_test_description(json: File.read(@system_description_file))
-    end
+    let(:system_description_dir) {
+      system_description_file = File.join(Machinery::ROOT,
+        "spec/data/descriptions/jeos/manifest.json")
+      File.dirname(system_description_file)
+    }
 
-    it "makes the system description HTML available at the specified port" do
+    it "makes the system description HTML and extracted files available at the specified port" do
       @machinery.inject_directory(
-        @system_description_dir,
+        system_description_dir,
         machinery_config[:machinery_dir],
         owner: machinery_config[:owner],
         group: machinery_config[:group]
@@ -36,27 +36,35 @@ shared_examples "serve html" do
         @machinery.run_command(cmd)
       end
 
-      begin
-        wait_time = 0
-        loop do
-          curl_command = @machinery.run_command("curl http://localhost:5000/jeos")
+      # Test basic HTML
+      wait_time = 0
+      loop do
+        curl_command = @machinery.run_command("curl http://localhost:5000/jeos")
 
-          if curl_command.stderr =~ /Failed to connect/
-            raise "Could not connect to webserver" if wait_time >= 10
+        if curl_command.stderr =~ /Failed to connect/
+          raise "Could not connect to webserver" if wait_time >= 10
 
-            sleep 0.5
-            wait_time += 0.5
-            next
-          end
-
-          expect(curl_command).to succeed.with_stderr.
-            and have_stdout(/<title>.*jeos - Machinery System Description.*<\/title>/m)
-          break
+          sleep 0.5
+          wait_time += 0.5
+          next
         end
-      ensure
-        # Kill the webserver again
-        @machinery.run_command("pkill -f '#{cmd}'")
+
+        expect(curl_command).to succeed.with_stderr.
+          and have_stdout(/<title>.*jeos - Machinery System Description.*<\/title>/m)
+        break
       end
+
+      # Test file content download
+      expected_content = File.read(
+        File.join(system_description_dir, "config_files", "etc", "crontab")
+      )
+      curl_command = @machinery.run_command(
+        "curl http://localhost:5000/descriptions/jeos/files/config_files/etc/crontab"
+      )
+      expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
+
+      # Kill the webserver again
+      @machinery.run_command("pkill -f '#{cmd}'")
     end
   end
 end
