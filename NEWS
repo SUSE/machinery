@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix connection errors caused by reading from stdin (gh#SUSE/machinery#1050)
 
 ## Version 1.10.0 - Thu Jul 09 16:26:35 CEST 2015 - thardeck@suse.de
 
