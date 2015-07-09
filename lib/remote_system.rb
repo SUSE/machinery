@@ -83,10 +83,10 @@ class RemoteSystem < System
     end
   end
 
-  # Tries to connect to the remote system as root (without a password or passphrase)
+  # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def connect
-    LoggedCheetah.run "ssh", "-q", "-o", "BatchMode=yes", "#{remote_user}@#{host}"
+    LoggedCheetah.run "ssh", "-q", "-o", "BatchMode=yes", "#{remote_user}@#{host}", ":"
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
       "Could not establish SSH connection to host '#{host}'. Please make sure that " \

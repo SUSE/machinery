@@ -23,7 +23,7 @@ describe RemoteSystem do
   describe "#initialize" do
     it "raises ConnectionFailed when it can't connect" do
       expect(Cheetah).to receive(:run).with(
-         "ssh", "-q", "-o", "BatchMode=yes", "root@example.com"
+        "ssh", "-q", "-o", "BatchMode=yes", "root@example.com", ":"
       ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect {
