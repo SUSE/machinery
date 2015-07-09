@@ -41,8 +41,9 @@ describe "machinery@local", ci: true do
     FileUtils.rm_r machinery_config[:machinery_dir]
   end
 
+  host = machinery_host(metadata[:description])
+
   include_examples "CLI"
   include_examples "serve html"
-  include_examples "inspect", "opensuse131"
-  include_examples "export", "opensuse132"
+  include_examples_for_platform(host)
 end
