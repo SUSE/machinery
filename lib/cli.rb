@@ -86,6 +86,9 @@ class Cli
     Machinery::Ui.kill_pager
 
     case e
+    when GLI::MissingRequiredArgumentsException
+      Machinery::Ui.error("Option --" + e.message)
+      exit 1 
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
         GLI::UnknownCommand, GLI::BadCommandLine, OptionParser::MissingArgument
       Machinery::Ui.error e.to_s + "\n\n"
@@ -420,8 +423,6 @@ class Cli
     end
   end
 
-
-
   desc "Export system description as AutoYaST profile"
   long_desc <<-LONGDESC
     Export system description as AutoYaST profile
@@ -448,8 +449,6 @@ class Cli
       )
     end
   end
-
-
 
   desc "Inspect running system"
   long_desc <<-LONGDESC
