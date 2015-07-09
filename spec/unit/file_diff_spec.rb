@@ -69,7 +69,7 @@ describe FileDiff do
       expect_any_instance_of(Machinery::SystemFile).to receive(:binary?).and_return(true)
       expect {
         subject.diff(description1, description2, "config_files", "/etc/cron tab")
-      }.to raise_error(Machinery::Errors::MachineryError, /binary/)
+      }.to raise_error(Machinery::Errors::BinaryDiffError, /binary/)
     end
 
     it "returns an empty string if files are equal" do

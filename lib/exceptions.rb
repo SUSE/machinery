@@ -126,6 +126,7 @@ module Machinery
     class ExportFailed < MachineryError; end
     class AnalysisFailed < MachineryError; end
     class UpgradeFailed < MachineryError; end
+    class BinaryDiffError < MachineryError; end
 
     class SshConnectionFailed < MachineryError; end
     class RsyncFailed < MachineryError; end

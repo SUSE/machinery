@@ -190,3 +190,22 @@ h1 {
   min-height: 450px;
   font-family: monospace;
 }
+
+#diff-unmanaged-files.modal .modal-body {
+  margin: 0 0.5em;
+  font-family: monospace;
+}
+
+#diff-unmanaged-files-diff {
+  background-color: #EEEEEE;
+}
+
+#diff-unmanaged-files-diff .diff ul {
+  background-color: #EEEEEE;
+  border: 1px solid gray;
+  padding: 4px;
+}
+
+#diff-unmanaged-files-file {
+  margin-bottom: 1em;
+}

@@ -64,4 +64,34 @@ $(document).ready(function () {
     $scope.find(".show-common-elements").show();
     return false;
   });
+
+  // Unmanaged files diffs
+  $("#diff-unmanaged-files-file").change(function(){
+    $("#diff-unmanaged-files-content").hide();
+    $("#diff-unmanaged-files-error").hide();
+    $("#diff-unmanaged-files-spinner").show();
+
+    var description1 = $("body").data("description-a");
+    var description2 = $("body").data("description-b");
+    var url = "/compare/" + description1 + "/" + description2 + "/files/unmanaged_files" + $(this).val();
+    $.get(url, function(res) {
+      $("#diff-unmanaged-files-spinner").hide();
+        if(res.length === 0) {
+          $("#diff-unmanaged-files-error").html("Files are equal.").show();
+        } else {
+          $("#diff-unmanaged-files-diff").html(res);
+          $("#diff-unmanaged-files-content").show();
+        }
+      }, "text").
+      error(function(res) {
+        $("#diff-unmanaged-files-spinner").hide();
+        if(res.readyState == 0) {
+          $("#diff-unmanaged-files-error").html("Could not download file content. Is the web server still running?").show();
+        } else if(res.status == 406) {
+          $("#diff-unmanaged-files-error").html("Can't generate diff, the files are binary.").show();
+        } else {
+          $("#diff-unmanaged-files-error").html("There was an unknown error downloading the file.").show();
+        }
+      });
+  });
 });

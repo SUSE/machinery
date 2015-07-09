@@ -12,6 +12,10 @@
     %script{:src => "/assets/jquery-2.1.1.min.js"}
     %script{:src => "/assets/transition.js"}
     %script{:src => "/assets/collapse.js"}
+    %script{:src => "/assets/modal.js"}
+
+    %style
+      = Diffy::CSS
 
     %script#scope_os_partial{:type => "text/ng-template"}
       %table.table.table-striped.table-condensed
@@ -284,6 +288,9 @@
                   %a{href: "#unmanaged_files_both"}
                     both
                   = ": {{diff.unmanaged_files.common.files.length}} files"
+                %span.summary-part
+                  %a#diff-unmanaged-files{"data-toggle" => "modal", "data-target" => "#diff-unmanaged-files"}
+                    Diff files
         .row.scope_content.collapse.in
           .row
             .col-xs-1
@@ -632,7 +639,30 @@
     %script{:src => "/assets/bootstrap-tooltip.js"}
     %script{:src => "/assets/bootstrap-popover.js"}
 
-  %body{"data-description-a" => description_a, "data-description-b" => description_b}
+  %body{"ng-controller" => "compareController", "data-description-a" => description_a, "data-description-b" => description_b}
+    #diff-unmanaged-files.modal.fade
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            %button.close{"type" => "button", "data-dismiss" => "modal"}
+              &times;
+            %h4
+              Diff Unmanaged Files
+          .modal-body
+            .row
+              File
+              %select#diff-unmanaged-files-file{"ng-options" => "file for file in diffableUnmanagedFiles track by file",
+                "ng-model" => "selected"}
+            .row#diff-unmanaged-files-content{"style" => "display: none"}
+              Diff ('#{description_a}' -> '#{description_b}')
+              #diff-unmanaged-files-diff
+            #diff-unmanaged-files-error{"style" => "display: none"}
+            #diff-unmanaged-files-spinner{"style" => "display: none"}
+              Generating diff. Please wait...
+          .modal-footer
+            %button.btn.btn-primary{"type" => "button", "data-dismiss" => "modal"}
+              Close
+
     .container-fluid
       #nav-bar
         .row
@@ -675,7 +705,7 @@
               %a{:href => "http://machinery-project.org", :target => "_blank"}
                 Machinery
 
-      #content_container{"ng-controller" => "compareController"}
+      #content_container
         .row{"ng-hide" => "diff"}
           .col-xs-11.col-xs-offset-1
             %p

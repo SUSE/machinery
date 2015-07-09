@@ -24,9 +24,9 @@ class FileDiff
     return nil if !file1 || !file2
 
     if file1.binary? || file2.binary?
-      raise Machinery::Errors::MachineryError, "Can't diff binary files"
+      raise Machinery::Errors::BinaryDiffError, "Can't diff binary files"
     end
 
-    Diffy::Diff.new(file1.content, file2.content)
+    Diffy::Diff.new(file1.content, file2.content, include_plus_and_minus_in_html: true)
   end
 end

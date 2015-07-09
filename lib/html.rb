@@ -163,6 +163,21 @@ class Html
             locals: { description_a: params[:a], description_b: params[:b] }
         end
 
+        get "/compare/:a/:b/files/:scope/*" do
+          description1 = SystemDescription.load(params[:a], system_description_store)
+          description2 = SystemDescription.load(params[:b], system_description_store)
+          filename = File.join("/", params["splat"].first)
+
+          begin
+            diff = FileDiff.diff(description1, description2, params[:scope], filename)
+          rescue Machinery::Errors::BinaryDiffError
+            status 406
+            return "binary file"
+          end
+
+          diff.to_s(:html)
+        end
+
         get "/:id" do
           haml File.read(File.join(Machinery::ROOT, "html/index.html.haml")),
             locals: { description_name: params[:id] }
