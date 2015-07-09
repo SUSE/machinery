@@ -288,7 +288,7 @@
                   %a{href: "#unmanaged_files_both"}
                     both
                   = ": {{diff.unmanaged_files.common.files.length}} files"
-                %span.summary-part
+                %span.summary-part{"ng-show" => "diffableUnmanagedFiles.length"}
                   %a#diff-unmanaged-files{"data-toggle" => "modal", "data-target" => "#diff-unmanaged-files"}
                     Diff files
         .row.scope_content.collapse.in
