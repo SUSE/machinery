@@ -317,6 +317,10 @@ class Cli
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
     if @config.experimental_features
+      c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
+        desc: "Listen on port PORT", arg_name: "PORT"
+      c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
+        desc: "Listen on ip address IP", arg_name: "IP"
       c.switch "html", required: false, negatable: false,
         desc: "Open comparison in HTML format in your web browser."
     end
@@ -336,7 +340,9 @@ class Cli
       task = CompareTask.new
       opts = {
         show_html: options["html"],
-        show_all: options["show-all"]
+        show_all: options["show-all"],
+        ip: options["ip"],
+        port: options["port"]
       }
       task.compare(description1, description2, scope_list, opts)
     end

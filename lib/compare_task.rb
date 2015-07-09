@@ -27,26 +27,25 @@ class CompareTask
   end
 
   def render_html_comparison(description1, description2, scopes, options)
-    diff = {
-      meta: {
-        description_a: description1.name,
-        description_b: description2.name,
-      }
-    }
+    LocalSystem.validate_existence_of_package("xdg-utils")
 
-    scopes.each do |scope|
-      if description1[scope] && description2[scope]
-        comparison = Comparison.compare_scope(description1, description2, scope)
-        diff[scope] = comparison.as_json
-      end
+    url = "http://#{options[:ip]}:#{options[:port]}/compare/" \
+      "#{CGI.escape(description1.name)}/#{CGI.escape(description2.name)}"
+
+    Machinery::Ui.use_pager = false
+    Machinery::Ui.puts <<EOF
+There is a web server running, serving the comparison result on #{url}.
+
+The server can be closed with Ctrl+C.
+EOF
+
+    server = Html.run_server(description1.store, port: options[:port], ip: options[:ip])
+
+    Html.when_server_ready(options[:ip], options[:port]) do
+      LoggedCheetah.run("xdg-open", url)
     end
 
-    target = File.join(Machinery::DEFAULT_CONFIG_DIR, "html-comparison")
-    FileUtils.rm_r(target) if Dir.exists?(target)
-    FileUtils.mkdir_p(target)
-
-    Html.generate_comparison(diff, target)
-    LoggedCheetah.run("xdg-open", File.join(target, "index.html"))
+    server.join # Wait until the user cancelled the blocking webserver
   end
 
   def render_comparison(description1, description2, scopes, options = {})

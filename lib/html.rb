@@ -137,6 +137,32 @@ class Html
           content
         end
 
+        get "/compare/:a/:b.json" do
+          description_a = SystemDescription.load(params[:a], system_description_store)
+          description_b = SystemDescription.load(params[:b], system_description_store)
+
+          diff = {
+            meta: {
+              description_a: description_a.name,
+              description_b: description_b.name,
+            }
+          }
+
+          Inspector.all_scopes.each do |scope|
+            if description_a[scope] && description_b[scope]
+              comparison = Comparison.compare_scope(description_a, description_b, scope)
+              diff[scope] = comparison.as_json
+            end
+          end
+
+          diff.to_json
+        end
+
+        get "/compare/:a/:b" do
+          haml File.read(File.join(Machinery::ROOT, "html/comparison.html.haml")),
+            locals: { description_a: params[:a], description_b: params[:b] }
+        end
+
         get "/:id" do
           haml File.read(File.join(Machinery::ROOT, "html/index.html.haml")),
             locals: { description_name: params[:id] }

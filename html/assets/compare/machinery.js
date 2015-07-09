@@ -1,7 +1,4 @@
 $(document).ready(function () {
-  // Render the diff
-  var diff = getDiff();
-
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
   $("#content_container").css("margin-top", header_height);
