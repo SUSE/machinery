@@ -15,6 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require "net/http"
 require_relative "integration_spec_helper"
 
 describe "machinery@Tumbleweed" do
@@ -133,6 +134,36 @@ describe "machinery@Tumbleweed" do
           test_data[scope].each do |regex|
             expect(show_command.stdout).to match(regex)
           end
+        end
+      end
+    end
+
+    describe "check if the latest version is run" do
+      let(:tumbleweed_version) {
+        Net::HTTP.get(
+          "download.opensuse.org", "/tumbleweed/repo/oss/media.1/products"
+        )[/\d{8}/]
+      }
+
+      context "when running a base image" do
+        it "matches the latest Tumbleweed version" do
+          output = @machinery.run_command(
+            "#{machinery_command} inspect  #{@subject_system.ip} --remote-user=machinery " \
+              "--scope=os --show", as: "vagrant"
+          ).stdout
+
+          expect(output).to include(tumbleweed_version)
+        end
+      end
+
+      context "when running a machinery image" do
+        it "matches the latest Tumbleweed version" do
+          output = @machinery.run_command(
+            "sudo #{machinery_command} inspect localhost --remote-user=machinery --scope=os --show",
+            as: "vagrant"
+          ).stdout
+
+          expect(output).to include(tumbleweed_version)
         end
       end
     end
