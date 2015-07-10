@@ -152,6 +152,17 @@ class Html
             if description_a[scope] && description_b[scope]
               comparison = Comparison.compare_scope(description_a, description_b, scope)
               diff[scope] = comparison.as_json
+            else
+              diff[:meta][:uninspected] ||= Hash.new
+
+              if !description_a[scope] && description_b[scope]
+                diff[:meta][:uninspected][description_a.name] ||= Array.new
+                diff[:meta][:uninspected][description_a.name] << scope
+              end
+              if !description_b[scope] && description_a[scope]
+                diff[:meta][:uninspected][description_b.name] ||= Array.new
+                diff[:meta][:uninspected][description_b.name] << scope
+              end
             end
           end
 

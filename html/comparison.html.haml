@@ -17,6 +17,17 @@
     %style
       = Diffy::CSS
 
+    %script#alert{:type => "text/ng-template"}
+      #alert_container.scope{"ng-show" => "diff.meta.uninspected"}
+        .row
+          .col-xs-10.col-xs-offset-1
+            .well
+              %span.text-right.dismiss{:title => "Collapse/Expand"}
+              %p{"ng-show" => "diff.meta.uninspected[diff.meta.description_a].length"}
+                Couldn't compare <strong>'{{diff.meta.uninspected[diff.meta.description_a].join(", ")}}'</strong> because they are not present in description <strong>'{{diff.meta.description_a}}'</strong>
+              %p{"ng-show" => "diff.meta.uninspected[diff.meta.description_b].length"}
+                Couldn't compare <strong>'{{diff.meta.uninspected[diff.meta.description_b].join(", ")}}'</strong> because they are not present in description <strong>'{{diff.meta.description_b}}'</strong>
+
     %script#scope_os_partial{:type => "text/ng-template"}
       %table.table.table-striped.table-condensed
         %tr
@@ -292,7 +303,7 @@
                   %a#diff-unmanaged-files{"data-toggle" => "modal", "data-target" => "#diff-unmanaged-files"}
                     Diff files
         .row.scope_content.collapse.in
-          .row
+          .row{"ng-show" => "diff.unmanaged_files.only_in1 || diff.unmanaged_files.only_in2"}
             .col-xs-1
             .col-xs-5
               %only-in-a
@@ -672,25 +683,25 @@
               Comparing '#{description_a}' with '#{description_b}'
             %span.scope-navigation
               Scopes:
-              %a{:href => "#os", :title => "Operating System"}
+              %a{:href => "#os", :title => "Operating System", "ng-show" => "diff.os"}
                 %img{:src => "/assets/logo-os-small.png"}/
-              %a{:href => "#packages", :title => "Packages"}
+              %a{:href => "#packages", :title => "Packages", "ng-show" => "diff.packages"}
                 %img{:src => "/assets/logo-packages-small.png"}/
-              %a{:href => "#patterns", :title => "Patterns"}
+              %a{:href => "#patterns", :title => "Patterns", "ng-show" => "diff.patterns"}
                 %img{:src => "/assets/logo-patterns-small.png"}/
-              %a{:href => "#users", :title => "Users"}
+              %a{:href => "#users", :title => "Users", "ng-show" => "diff.users"}
                 %img{:src => "/assets/logo-users-small.png"}/
-              %a{:href => "#groups", :title => "Groups"}
+              %a{:href => "#groups", :title => "Groups", "ng-show" => "diff.groups"}
                 %img{:src => "/assets/logo-groups-small.png"}/
-              %a{:href => "#repositories", :title => "Repositories"}
+              %a{:href => "#repositories", :title => "Repositories", "ng-show" => "diff.repositories"}
                 %img{:src => "/assets/logo-repositories-small.png"}/
-              %a{:href => "#unmanaged_files", :title => "Unmanaged Files"}
+              %a{:href => "#unmanaged_files", :title => "Unmanaged Files", "ng-show" => "diff.unmanaged_files"}
                 %img{:src => "/assets/logo-unmanaged-files-small.png"}/
-              %a{:href => "#changed_managed_files", :title => "Changed Managed Files"}
+              %a{:href => "#changed_managed_files", :title => "Changed Managed Files", "ng-show" => "diff.changed_managed_files"}
                 %img{:src => "/assets/logo-changed-managed-files-small.png"}/
-              %a{:href => "#config_files", :title => "Config Files"}
+              %a{:href => "#config_files", :title => "Config Files", "ng-show" => "diff.config_files"}
                 %img{:src => "/assets/logo-config-files-small.png"}/
-              %a{:href => "#services", :title => "Services"}
+              %a{:href => "#services", :title => "Services", "ng-show" => "diff.services"}
                 %img{:src => "/assets/logo-services-small.png"}/
         .row
           .col-xs-1
@@ -711,13 +722,14 @@
             %p
               Loading comparison results. Please wait...
         %div{"ng-show" => "diff"}
-          %div{"src" => "'scope_os'", "ng-include" => true}
-          %div{"src" => "'scope_packages'", "ng-include" => true}
-          %div{"src" => "'scope_patterns'", "ng-include" => true}
-          %div{"src" => "'scope_users'", "ng-include" => true}
-          %div{"src" => "'scope_groups'", "ng-include" => true}
-          %div{"src" => "'scope_repositories'", "ng-include" => true}
-          %div{"src" => "'scope_unmanaged_files'", "ng-include" => true}
-          %div{"src" => "'scope_changed_managed_files'", "ng-include" => true}
-          %div{"src" => "'scope_config_files'", "ng-include" => true}
-          %div{"src" => "'scope_services'", "ng-include" => true}
+          %div{"src" => "'alert'", "ng-include" => true}
+          %div{"src" => "'scope_os'", "ng-include" => true, "ng-show" => "diff.os"}
+          %div{"src" => "'scope_packages'", "ng-include" => true, "ng-show" => "diff.packages"}
+          %div{"src" => "'scope_patterns'", "ng-include" => true, "ng-show" => "diff.patterns"}
+          %div{"src" => "'scope_users'", "ng-include" => true, "ng-show" => "diff.users"}
+          %div{"src" => "'scope_groups'", "ng-include" => true, "ng-show" => "diff.groups"}
+          %div{"src" => "'scope_repositories'", "ng-include" => true, "ng-show" => "diff.repositories"}
+          %div{"src" => "'scope_unmanaged_files'", "ng-include" => true, "ng-show" => "diff.unmanaged_files"}
+          %div{"src" => "'scope_changed_managed_files'", "ng-include" => true, "ng-show" => "diff.changed_managed_files"}
+          %div{"src" => "'scope_config_files'", "ng-include" => true, "ng-show" => "diff.config_files"}
+          %div{"src" => "'scope_services'", "ng-include" => true, "ng-show" => "diff.services"}
