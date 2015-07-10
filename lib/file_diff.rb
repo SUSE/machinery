@@ -15,19 +15,18 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-source "https://rubygems.org"
+class FileDiff
+  def self.diff(description1, description2, scope, path)
+    return nil if !description1.scope_extracted?(scope) || !description2.scope_extracted?(scope)
 
-gemspec
+    file1 = description1[scope].files.find { |f| f.name == path }
+    file2 = description2[scope].files.find { |f| f.name == path }
+    return nil if !file1 || !file2
 
-group :test do
-  gem "guard"
-  gem "guard-rspec"
-  gem "rspec", "~> 3.2.0"
-  gem "fakefs", ">= 0.6.7"
-  gem "given_filesystem", ">= 0.1.1"
-  gem "ruby-libvirt"
-  gem "codeclimate-test-reporter"
-  gem "rspec_junit_formatter"
-  gem "byebug"
-  gem "rodf", github: "mauromorales/rodf"
+    if file1.binary? || file2.binary?
+      raise Machinery::Errors::BinaryDiffError, "Can't diff binary files"
+    end
+
+    Diffy::Diff.new(file1.content, file2.content, include_plus_and_minus_in_html: true)
+  end
 end

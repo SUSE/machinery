@@ -4,8 +4,27 @@ angular.module("machinery-compare")
   .config(function($locationProvider) {
     $locationProvider.html5Mode({enabled: true, requireBase: false});
   })
-  .controller("compareController", function($scope) {
-    $scope.diff = getDiff();
+  .controller("compareController", function($scope, $http, $timeout, $anchorScroll) {
+    $http.get("/compare/" + $("body").data("description-a") + "/" + $("body").data("description-b") + ".json").then(function(result) {
+      // Scroll to desired scope when rendering is done
+      $timeout(function () {
+        $anchorScroll();
+      }, 0);
+      $scope.diff = result.data;
+
+      // Determine which unmanaged files can be diffed
+      if($scope.diff.unmanaged_files !== undefined &&
+          $scope.diff.unmanaged_files.only_in1 !== undefined &&
+          $scope.diff.unmanaged_files.only_in2 !== undefined) {
+        var unmanagedFilesIn1 = $.map($scope.diff.unmanaged_files.only_in1.files, function(file){
+          return file.type == 'file' ? file.name : null;
+        });
+        var unmanagedFilesIn2 = $.map($scope.diff.unmanaged_files.only_in2.files, function(file){
+          return file.type == 'file' ? file.name : null;
+        });
+        $scope.diffableUnmanagedFiles = $(unmanagedFilesIn1).filter(unmanagedFilesIn2);
+      }
+    });
   })
   .directive("onlyInA", function() {
     return {
@@ -46,33 +65,35 @@ angular.module("machinery-compare")
   .directive("changedPackages", function() {
     return {
       restrict: "E",
-      scope: {
-        object: "=object"
-      },
       link: function(scope, element, attrs) {
-        var elements = [];
-
-        angular.forEach(scope.object, function(value) {
-          var changes = [];
-          var relevant_attributes = ["version", "vendor", "arch"];
-
-          if(value[0].version == value[1].version) {
-            relevant_attributes.push("release");
-            if(value[0].version == value[1].version) {
-              relevant_attributes.push("checksum");
-            }
+        scope.$watch("diff", function(){
+          if(scope.diff == undefined || scope.diff.packages == undefined) {
+            return;
           }
+          var elements = [];
 
-          angular.forEach(relevant_attributes, function(attribute) {
-            if(value[0][attribute] != value[1][attribute]) {
-              changes.push(attribute + ": " + value[0][attribute] + " ↔ " + value[1][attribute]);
+          angular.forEach(scope.diff.packages.changed, function(value) {
+            var changes = [];
+            var relevant_attributes = ["version", "vendor", "arch"];
+
+            if(value[0].version == value[1].version) {
+              relevant_attributes.push("release");
+              if(value[0].version == value[1].version) {
+                relevant_attributes.push("checksum");
+              }
             }
+
+            angular.forEach(relevant_attributes, function(attribute) {
+              if(value[0][attribute] != value[1][attribute]) {
+                changes.push(attribute + ": " + value[0][attribute] + " ↔ " + value[1][attribute]);
+              }
+            });
+
+            elements.push(value[0].name + " (" + changes.join(", ") + ")");
           });
 
-          elements.push(value[0].name + " (" + changes.join(", ") + ")");
+          scope.changed_elements = elements;
         });
-
-        scope.changed_elements = elements;
       },
       templateUrl: "scope_packages_changed_partial"
     };
