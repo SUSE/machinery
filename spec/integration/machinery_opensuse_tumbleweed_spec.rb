@@ -118,7 +118,7 @@ describe "machinery@Tumbleweed" do
           measure("Inspect #{scope}") do
             expect(
               @machinery.run_command(
-                "#{machinery_command} inspect #{@subject_system.ip} --remote-user machinery" \
+                "#{machinery_command} inspect #{@subject_system.ip} --remote-user=machinery" \
                   " --extract-files --scope=#{scope} --name=test",
                 as: "vagrant"
               )
