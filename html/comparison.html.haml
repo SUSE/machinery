@@ -104,7 +104,7 @@
                   Changed
                   = ": {{diff.packages.changed.length}} packages"
                 %span.summary-part{"ng-show" => "diff.packages.common"}
-                  %a{:class=>"both-show-common-elements", href: "#packages_both"}
+                  %a{:class=>"show-common-elements", href: "#packages_both"}
                     both
                   = ": {{diff.packages.common.length}} packages"
         .row.scope_content.collapse.in
@@ -167,7 +167,7 @@
                 %span.summary-part{"ng-show" => "diff.patterns.only_in2"}
                   {{diff.meta.description_b}}: {{diff.patterns.only_in2.length}} patterns
                 %span.summary-part{"ng-show" => "diff.patterns.common"}
-                  %a{:class=>"both-show-common-elements", href: "#patterns_both"}
+                  %a{:class=>"show-common-elements", href: "#patterns_both"}
                     both
                   = ": {{diff.patterns.common.length}} patterns"
         .row.scope_content.collapse.in
@@ -229,7 +229,7 @@
                 %span.summary-part{"ng-show" => "diff.users.only_in2"}
                   {{diff.meta.description_b}}: {{diff.users.only_in2.length}} users
                 %span.summary-part{"ng-show" => "diff.users.common"}
-                  %a{:class=>"both-show-common-elements", href: "#users_both"}
+                  %a{:class=>"show-common-elements", href: "#users_both"}
                     both
                   = ": {{diff.users.common.length}} users"
         .row.scope_content.collapse.in
@@ -285,7 +285,7 @@
                 %span.summary-part{"ng-show" => "diff.unmanaged_files.only_in2"}
                   {{diff.meta.description_b}}: {{diff.unmanaged_files.only_in2.files.length || 0}} files
                 %span.summary-part{"ng-show" => "diff.unmanaged_files.common"}
-                  %a{:class=>"both-show-common-elements", href: "#unmanaged_files_both"}
+                  %a{:class=>"show-common-elements", href: "#unmanaged_files_both"}
                     both
                   = ": {{diff.unmanaged_files.common.files.length}} files"
                 %span.summary-part{"ng-show" => "diffableUnmanagedFiles.length"}
@@ -346,7 +346,7 @@
                 %span.summary-part{"ng-show" => "diff.groups.only_in2"}
                   {{diff.meta.description_b}}: {{diff.groups.only_in2.length}} groups
                 %span.summary-part{"ng-show" => "diff.groups.common"}
-                  %a{:class=>"both-show-common-elements", href: "#groups_both"}
+                  %a{:class=>"show-common-elements", href: "#groups_both"}
                     both
                   = ": {{diff.groups.common.length}} groups"
         .row.scope_content.collapse.in
@@ -417,7 +417,7 @@
                 %span.summary-part{"ng-show" => "diff.repositories.only_in2"}
                   {{diff.meta.description_b}}: {{diff.repositories.only_in2.length}} repos
                 %span.summary-part{"ng-show" => "diff.repositories.common"}
-                  %a{:class=>"both-show-common-elements", href: "#repositories_both"}
+                  %a{:class=>"show-common-elements", href: "#repositories_both"}
                     both
                   = ": {{diff.repositories.common.length}} repos"
         .row.scope_content.collapse.in
@@ -484,7 +484,7 @@
                 %span.summary-part{"ng-show" => "diff.changed_managed_files.only_in2"}
                   {{diff.meta.description_b}}: {{diff.changed_managed_files.only_in2.files.length || 0}} files
                 %span.summary-part{"ng-show" => "diff.changed_managed_files.common"}
-                  %a{:class=>"both-show-common-elements", href: "#changed_managed_files_both"}
+                  %a{:class=>"show-common-elements", href: "#changed_managed_files_both"}
                     both
                   = ": {{diff.changed_managed_files.common.files.length}} files"
         .row.scope_content.collapse.in
@@ -553,7 +553,7 @@
                 %span.summary-part{"ng-show" => "diff.config_files.only_in2"}
                   {{diff.meta.description_b}}: {{diff.config_files.only_in2.files.length || 0}} files
                 %span.summary-part{"ng-show" => "diff.config_files.common"}
-                  %a{:class=>"both-show-common-elements", href: "#config_files_both"}
+                  %a{:class=>"show-common-elements", href: "#config_files_both"}
                     both
                   = ": {{diff.config_files.common.files.length}} files"
         .row.scope_content.collapse.in
@@ -608,7 +608,7 @@
                 %span.summary-part{"ng-show" => "diff.services.only_in2"}
                   {{diff.meta.description_b}}: {{diff.services.only_in2.services.length || 0}} services ({{diff.services.only_in2.init_system}})
                 %span.summary-part{"ng-show" => "diff.services.common"}
-                  %a{:class=>"both-show-common-elements", href: "#services_both"}
+                  %a{:class=>"show-common-elements", href: "#services_both"}
                     both
                   = ": {{diff.services.common.services.length}} services ({{diff.services.common.init_system}})"
         .row.scope_content.collapse.in
