@@ -1,6 +1,7 @@
 # Machinery Release Notes
 
 * Fix connection errors caused by reading from stdin (gh#SUSE/machinery#1050)
+* Differences between unmanaged files can be viewed in the HTML comparison
 
 ## Version 1.10.0 - Thu Jul 09 16:26:35 CEST 2015 - thardeck@suse.de
 
@@ -8,7 +9,6 @@
 * Improve display of package differences in compare command
 * Add `man` command to show the Machinery man page
 * Content of extracted files can be displayed in HTML view
-* Differences between unmanaged files can be viewed in the HTML comparison
 
 ## Version 1.9.1 - Tue Jun 23 16:57:35 CEST 2015 - thardeck@suse.de
 
