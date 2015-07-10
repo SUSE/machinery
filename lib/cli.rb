@@ -26,9 +26,6 @@ class Cli
   switch :version, negatable: false, desc: "Show version"
   switch :debug, negatable: false, desc: "Enable debug mode"
   switch [:help, :h], negatable: false, desc: "Show help"
-  if @config.experimental_features
-    flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
-  end
 
   sort_help :manually
   pre do |global_options,command,options,args|
@@ -88,7 +85,7 @@ class Cli
     case e
     when GLI::MissingRequiredArgumentsException
       Machinery::Ui.error("Option --" + e.message)
-      exit 1 
+      exit 1
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
         GLI::UnknownCommand, GLI::BadCommandLine, OptionParser::MissingArgument
       Machinery::Ui.error e.to_s + "\n\n"
@@ -226,6 +223,12 @@ class Cli
     end
 
     Inspector.sort_scopes(scopes.uniq)
+  end
+
+  def self.supports_filtering(command)
+    if @config.experimental_features
+      command.flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
+    end
   end
 
   AVAILABLE_SCOPE_LIST = Machinery::Ui.internal_scope_list_to_string(
@@ -461,6 +464,7 @@ class Cli
   LONGDESC
   arg "HOSTNAME"
   command :inspect do |c|
+    supports_filtering(c)
     c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
       desc: "Store system description under the specified name"
     c.flag [:scope, :s], type: String, required: false,
@@ -611,6 +615,7 @@ class Cli
   LONGDESC
   arg "NAME"
   command :show do |c|
+    supports_filtering(c)
     c.flag [:scope, :s], type: String, required: false,
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["exclude-scope", :e], type: String, required: false,
