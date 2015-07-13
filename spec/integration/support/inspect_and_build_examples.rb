@@ -34,7 +34,7 @@ shared_examples "inspect and build" do |bases|
         measure("Inspect") do
           expect(
             @machinery.run_command(
-              "machinery --exclude=/packages/name=test-quote-char inspect #{@subject_system.ip} " \
+              "machinery inspect --exclude=/packages/name=test-quote-char #{@subject_system.ip} " \
               " -x --name=build_test --remote-user=machinery",
               as: "vagrant"
             )
