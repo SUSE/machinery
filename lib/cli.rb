@@ -526,7 +526,7 @@ class Cli
       end
       inspect_options[:remote_user] = options["remote-user"]
 
-      filter = FilterOptionParser.parse("inspect", options, global_options)
+      filter = FilterOptionParser.parse("inspect", options)
 
       if options["verbose"] && !filter.empty?
         Machinery::Ui.puts "\nThe following filters are applied during inspection:"
@@ -649,7 +649,7 @@ class Cli
       description = SystemDescription.load(name, system_description_store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
 
-      filter = FilterOptionParser.parse("show", options, global_options)
+      filter = FilterOptionParser.parse("show", options)
 
       inspected_filters = description.filter_definitions("inspect")
 

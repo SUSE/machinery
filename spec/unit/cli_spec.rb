@@ -20,6 +20,20 @@ require_relative "spec_helper"
 describe Cli do
   capture_machinery_output
 
+  before(:all) do
+    # Manually create the exclude option. It depends on the experimental_features option,
+    # but that is evaluated when the class is loaded, not when the test is run, so it can't be
+    # stubbed.
+    if !Cli.commands[:inspect].flags[:exclude]
+      Cli.commands[:inspect].flag :exclude, negatable: false,
+        desc: "Exclude elements matching the filter criteria"
+    end
+    if !Cli.commands[:show].flags[:exclude]
+      Cli.commands[:show].flag :exclude, negatable: false,
+        desc: "Exclude elements matching the filter criteria"
+    end
+  end
+
   describe "#initialize" do
     before :each do
       allow_any_instance_of(IO).to receive(:puts)
@@ -74,15 +88,8 @@ describe Cli do
       end
 
       it "shows a note if there are filters for the selected scopes" do
-        # Manually create the global exclude option. It depends on the experimental_features option,
-        # but that is evaluated when the class is loaded, not when the test is run, so it can't be
-        # stubbed.
-        if !Cli.flags[:exclude]
-          Cli.flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
-        end
-
         run_command([
-          "--exclude=/os/name=bar", "inspect", "description1", "--scope=os",
+          "inspect", "--exclude=/os/name=bar", "description1", "--scope=os",
         ])
 
         expect(captured_machinery_output).
@@ -92,7 +99,7 @@ describe Cli do
 
       it "does not show a note unless any filters for the selected scopes are set" do
         run_command([
-          "--exclude=/foo=bar", "inspect", "description1", "--scope=os",
+          "inspect", "--exclude=/foo=bar", "description1", "--scope=os",
         ])
 
         expect(captured_machinery_output).not_to include("Filters are applied during inspection.")
@@ -226,12 +233,6 @@ describe Cli do
       end
 
       it "forwards the global --exclude option to the InspectTask" do
-        # Manually create the global exclude option. It depends on the experimental_features option,
-        # but that is evaluated when the class is loaded, not when the test is run, so it can't be
-        # stubbed.
-        if !Cli.flags[:exclude]
-          Cli.flag :exclude, negatable: false, desc: "Exclude elements matching the filter criteria"
-        end
         expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
           _host, _name, _user, _scopes, filter, _options|
           expect(filter.element_filter_for("/unmanaged_files/files/name").matchers["="]).
@@ -239,8 +240,9 @@ describe Cli do
         end.and_return(description)
 
         run_command([
+          "inspect",
           "--exclude=/unmanaged_files/files/name=/foo/bar",
-          "inspect", example_host
+          example_host
         ])
       end
 
@@ -423,7 +425,7 @@ describe Cli do
 
         it "shows the filters when `--verbose` is provided" do
           run_command([
-            "--exclude=/unmanaged_files/files/name=/foo", "show", "description1", "--verbose",
+            "show", "description1", "--exclude=/unmanaged_files/files/name=/foo", "--verbose",
           ])
 
           expect(captured_machinery_output).
