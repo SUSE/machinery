@@ -19,11 +19,11 @@
 # actual Filter objects.
 class FilterOptionParser
   class <<self
-    def parse(command, options, global_options)
+    def parse(command, options)
       filter = Filter.from_default_definition(command)
 
       definitions = skip_files_definitions(options.delete("skip-files"))
-      definitions += exclude_definitions(global_options["exclude"])
+      definitions += exclude_definitions(options["exclude"])
 
       definitions.map! { |definition| definition.gsub("\\@", "@") } # Unescape escaped @s
       definitions.each do |definition|

@@ -32,7 +32,6 @@ describe FilterOptionParser do
       it "handles simple filter definitions" do
         filter = subject.parse(
           "inspect",
-          {},
           "exclude" => "/unmanaged_files/files/name=/foo"
         )
 
@@ -48,8 +47,7 @@ describe FilterOptionParser do
 /changed_managed_files/files/name=/bar
 EOF
 
-        filter = subject.parse("inspect", {},
-          "exclude" => "@#{exclude_file}")
+        filter = subject.parse("inspect", "exclude" => "@#{exclude_file}")
 
         expect(filter.to_array).to match_array([
           "/changed_managed_files/files/change=md5,size",
@@ -62,7 +60,7 @@ EOF
       it "it reads a list of excluded files from a file" do
         exclude_file = given_dummy_file("exclude_file")
         File.write(exclude_file, "/foo/bar\n/baz \n")
-        filter = subject.parse("inspect", { "skip-files" => "/foo,@#{exclude_file}" }, {})
+        filter = subject.parse("inspect", "skip-files" => "/foo,@#{exclude_file}")
         expect(filter.to_array).to match_array([
           "/unmanaged_files/files/name=/foo",
           "/unmanaged_files/files/name=/foo/bar",
@@ -71,13 +69,13 @@ EOF
       end
 
       it "handles simple excludes" do
-        filter = subject.parse("inspect", { "skip-files" => "/foo" }, {})
+        filter = subject.parse("inspect", "skip-files" => "/foo")
 
         expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
       end
 
       it "handles lists of excludes" do
-        filter = subject.parse("inspect", { "skip-files" => "/foo,/bar" }, {})
+        filter = subject.parse("inspect", "skip-files" => "/foo,/bar")
 
         expect(filter.to_array).to eq([
           "/unmanaged_files/files/name=/foo",
@@ -88,8 +86,7 @@ EOF
       it "handles escaped commas" do
         filter = subject.parse(
           "inspect",
-          { "skip-files" => "/foo,/bar,/file\\,with_comma" },
-          {}
+          "skip-files" => "/foo,/bar,/file\\,with_comma"
         )
 
         expect(filter.to_array).to eq([
@@ -100,7 +97,7 @@ EOF
       end
 
       it "handles escaped @s" do
-        filter = subject.parse("inspect", { "skip-files" => "\\@file_with_at,/foo" }, {})
+        filter = subject.parse("inspect", "skip-files" => "\\@file_with_at,/foo")
 
         expect(filter.to_array).to eq([
           "/unmanaged_files/files/name=@file_with_at",
@@ -110,7 +107,7 @@ EOF
 
       it "fails gracefully when a filter file does not exist" do
         expect {
-          subject.parse("inspect", { "skip-files" => "@does_not_exist" }, {})
+          subject.parse("inspect", "skip-files" => "@does_not_exist")
         }.to raise_error(Machinery::Errors::MachineryError, /does not exist/)
       end
 
@@ -118,14 +115,14 @@ EOF
         exclude_file = given_dummy_file("exclude_file")
         File.write(exclude_file, "/foo")
 
-        filter = subject.parse("inspect", { "skip-files" => "@/foo/../#{exclude_file}" }, {})
+        filter = subject.parse("inspect", "skip-files" => "@/foo/../#{exclude_file}")
         expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
       end
 
       it "ignores empty filters" do
         exclude_file = given_dummy_file("exclude_file")
         File.write(exclude_file, "/foo\n\n/bar\n")
-        filter = subject.parse("inspect", { "skip-files" => "@#{exclude_file}" }, {})
+        filter = subject.parse("inspect", "skip-files" => "@#{exclude_file}")
 
         expect(filter.to_array).to eq([
           "/unmanaged_files/files/name=/foo",
