@@ -209,3 +209,18 @@ h1 {
 #diff-unmanaged-files-file {
   margin-bottom: 1em;
 }
+
+.well .dismiss{
+  margin: -14px;
+}
+
+.dismiss {
+  float: right;
+  width: 24px;
+  height: 24px;
+  background: url("cross.png");
+  cursor: pointer;
+  background-color: white;
+  border-radius: 50%;
+}
+
