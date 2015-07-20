@@ -54,6 +54,9 @@ $(document).ready(function () {
     $scope.find(".scope_common_content").collapse("show");
     $scope.find(".scope_content").find(".show-common-elements").hide();
     $scope.find(".hide-common-elements").show();
+    if ($(this).attr("href")){
+      $('html,body').animate({scrollTop: $($(this).attr("href")).offset().top}, 'slow');
+    }
     return false;
   });
 
