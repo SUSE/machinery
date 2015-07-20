@@ -18,6 +18,10 @@ body {
   text-decoration: none;
 }
 
+.scope{
+  border-spacing: 5px;
+}
+
 a.scope_anchor,
 a.both_anchor {
   display: block;

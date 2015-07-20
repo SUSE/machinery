@@ -56,8 +56,11 @@ $(document).ready(function () {
   $(".show-common-elements").click(function(){
     $scope = $(this).closest(".scope");
     $scope.find(".scope_common_content").collapse("show");
-    $(this).hide();
+    $scope.find(".scope_content").find(".show-common-elements").hide();
     $scope.find(".hide-common-elements").show();
+    if ($(this).attr("href")){
+      $('html,body').animate({scrollTop: $($(this).attr("href")).offset().top}, 'slow');
+    }
     return false;
   });
 
@@ -74,6 +77,7 @@ $(document).ready(function () {
     $("#diff-unmanaged-files-content").hide();
     $("#diff-unmanaged-files-error").hide();
     $("#diff-unmanaged-files-spinner").show();
+  });
 
     var description1 = $("body").data("description-a");
     var description2 = $("body").data("description-b");
@@ -97,5 +101,4 @@ $(document).ready(function () {
           $("#diff-unmanaged-files-error").html("There was an unknown error downloading the file.").show();
         }
       });
-  });
 });
