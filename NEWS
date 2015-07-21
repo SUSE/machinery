@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix unmanaged-files diff in HTML view (gh#SUSE/machinery#1143)
 
 ## Version 1.11.0 - Mon Jul 20 13:51:09 CEST 2015 - thardeck@suse.de
 
