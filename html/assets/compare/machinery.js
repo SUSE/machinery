@@ -77,7 +77,6 @@ $(document).ready(function () {
     $("#diff-unmanaged-files-content").hide();
     $("#diff-unmanaged-files-error").hide();
     $("#diff-unmanaged-files-spinner").show();
-  });
 
     var description1 = $("body").data("description-a");
     var description2 = $("body").data("description-b");
@@ -101,4 +100,5 @@ $(document).ready(function () {
           $("#diff-unmanaged-files-error").html("There was an unknown error downloading the file.").show();
         }
       });
+  });
 });
