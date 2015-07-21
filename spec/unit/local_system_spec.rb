@@ -155,9 +155,15 @@ describe LocalSystem do
   describe ".validate_existence_of_package" do
     it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
       allow(LocalSystem).to receive(:os).and_return(Os.new)
+      output = <<-EOF
+You need the package 'does_not_exist'.
+You can install it by running `zypper install does_not_exist`.
+EOF
 
       package = "does_not_exist"
-      expect { LocalSystem.validate_existence_of_package(package) }.to raise_error(Machinery::Errors::MissingRequirement, /#{package}/)
+      expect { LocalSystem.validate_existence_of_package(package) }.to raise_error(
+        Machinery::Errors::MissingRequirement, output
+      )
     end
 
     it "doesn't raise an error if the package exists" do
@@ -171,6 +177,21 @@ describe LocalSystem do
       expect {
         LocalSystem.validate_existence_of_package("python-glanceclient")
       }.to raise_error(Machinery::Errors::MissingRequirement, /Public Cloud Module/)
+    end
+  end
+
+  describe ".validate_existence_of_packages" do
+    it "raises an error if packages doesn't exist" do
+      allow(LocalSystem).to receive(:os).and_return(Os.new)
+
+      output = <<-EOF
+You need the packages 'does_not_exist','no_existing_package'.
+You can install it by running `zypper install does_not_exist no_existing_package`.
+EOF
+      package = ["does_not_exist", "no_existing_package"]
+      expect {
+        LocalSystem.validate_existence_of_packages(package)
+      }.to raise_error(Machinery::Errors::MissingRequirement, output)
     end
   end
 
