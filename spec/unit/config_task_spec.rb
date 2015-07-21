@@ -18,16 +18,14 @@
 require_relative "spec_helper"
 
 describe ConfigTask do
+  capture_machinery_output
+
   include FakeFS::SpecHelpers
   let(:config_task) { ConfigTask.new }
+  let(:key) { "hints" }
 
   describe "#config" do
-    before(:each) do
-      allow(Machinery::Ui).to receive(:puts)
-    end
-
     it "sets a bool config variable to false" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(true)
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, false)
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -35,7 +33,6 @@ describe ConfigTask do
     end
 
     it "sets a bool config variable to true" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(true)
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, true)
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -43,7 +40,6 @@ describe ConfigTask do
     end
 
     it "sets a string config variable" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return("foo")
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, "foo")
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -51,22 +47,21 @@ describe ConfigTask do
     end
 
     it "sets an integer config variable" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(42)
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, 21)
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
       config_task.config(key, "21")
     end
 
-    it "retrieves the value of a config variable" do
-      key = "my_config"
-      expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
+    it "shows the value of a config variable if a key is provided" do
       config_task.config(key)
+      expect(captured_machinery_output).to include("#{key}=")
     end
 
-    it "retrieves the values of all config variables" do
-      expect_any_instance_of(Machinery::Config).to receive(:each)
+    it "shows the values of all config variables if no key provided" do
       config_task.config()
+      expect(captured_machinery_output).to include("#{key}=")
+      expect(captured_machinery_output).to include("remote-user=")
     end
   end
 
