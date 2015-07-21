@@ -20,6 +20,7 @@ require_relative "spec_helper"
 describe ConfigTask do
   include FakeFS::SpecHelpers
   let(:config_task) { ConfigTask.new }
+  let(:key) { "hints" }
 
   describe "#config" do
     before(:each) do
@@ -27,7 +28,6 @@ describe ConfigTask do
     end
 
     it "sets a bool config variable to false" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(true)
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, false)
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -35,7 +35,6 @@ describe ConfigTask do
     end
 
     it "sets a bool config variable to true" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(true)
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, true)
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -43,7 +42,6 @@ describe ConfigTask do
     end
 
     it "sets a string config variable" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return("foo")
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, "foo")
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -51,7 +49,6 @@ describe ConfigTask do
     end
 
     it "sets an integer config variable" do
-      key = "my_config"
       allow_any_instance_of(Machinery::Config).to receive(:get).with(key).and_return(42)
       expect_any_instance_of(Machinery::Config).to receive(:set).with(key, 21)
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
@@ -59,7 +56,6 @@ describe ConfigTask do
     end
 
     it "retrieves the value of a config variable" do
-      key = "my_config"
       expect_any_instance_of(Machinery::Config).to receive(:get).with(key)
       config_task.config(key)
     end
