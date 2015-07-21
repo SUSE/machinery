@@ -24,15 +24,15 @@ class ConfigTask
     if !key
       # show all config entries
       @config.each do |key, value|
-        Machinery::Ui.puts "#{key} = #{value[:value]} (#{value[:description]})"
+        Machinery::Ui.puts "#{key}=#{value[:value]} (#{value[:description]})"
       end
     elsif !value_string
       # show one specific config entry
-      Machinery::Ui.puts "#{key} = #{@config.get(key)}"
+      Machinery::Ui.puts "#{key}=#{@config.get(key)}"
     else
       # set one specific config entry
       @config.set(key, parse_value_string(key, value_string))
-      Machinery::Ui.puts "#{key} = #{@config.get(key)}"
+      Machinery::Ui.puts "#{key}=#{@config.get(key)}"
     end
   end
 
