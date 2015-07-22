@@ -68,7 +68,10 @@ class Inspector
       scope_priority = {}
 
       scope_list.each do |scope|
-        scope_priority[self.for(scope).priority] = scope
+        inspector = self.for(scope)
+        next if !inspector
+
+        scope_priority[inspector.priority] = scope
       end
 
       scope_priority.sort.map do |key, value|
