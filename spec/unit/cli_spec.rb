@@ -530,6 +530,13 @@ describe Cli do
 
       run_command(["remove", "foo"])
     end
+
+    it "triggers the remove task with --all option if given" do
+      expect_any_instance_of(RemoveTask).to receive(:remove).
+        with(an_instance_of(SystemDescriptionStore), anything(), verbose: false, all: true)
+
+      run_command(["remove", "--all"])
+    end
   end
 
   describe "#list" do

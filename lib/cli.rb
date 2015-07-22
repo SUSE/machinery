@@ -35,7 +35,11 @@ class Cli
       Machinery.logger.level = Logger::INFO
     end
 
-    validate_number_of_arguments(command.arguments, args)
+    if !validate_arguments_overwrite?(command.arguments, options)
+      validate_number_of_arguments(command.arguments, args)
+    end
+
+    true
   end
 
   post do |global_options,command,options,args|
@@ -55,6 +59,13 @@ class Cli
 
   GLI::Commands::Help.skips_post = false
 
+  def self.validate_arguments_overwrite?(arguments, options)
+    overwriting_switches = arguments.map { |arg| arg.options.select { |option| /never_validate_args_on_(.*)/.match(option.to_s) }.first }
+    overwriting_switches.map! { |switch| switch.to_s.gsub(/never_validate_args_on_/, "") }
+    return false if (options.keys & overwriting_switches).empty?
+    overwriting_switches.any? { |switch| options[switch] }
+  end
+
   def self.validate_number_of_arguments(defined, parsed)
     if defined.any?(&:multiple?) && parsed.empty?
       message = "No arguments given. Nothing to do."
@@ -65,8 +76,6 @@ class Cli
       message = "Too many arguments: got #{parsed_arguments}, expected #{defined_arguments}"
       raise GLI::BadCommandLine.new(message)
     end
-
-    true
   end
 
   def self.buildable_distributions
@@ -594,7 +603,7 @@ class Cli
 
     The success of a removal can be shown with the verbose option.
   LONGDESC
-  arg "NAME", :multiple
+  arg "NAME", [:multiple, :never_validate_args_on_all]
 
   command :remove do |c|
     c.switch :all, negatable: false,

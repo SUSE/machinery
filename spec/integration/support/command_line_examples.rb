@@ -100,6 +100,17 @@ shared_examples "CLI" do
           ).to fail.and include_stderr("No arguments given. Nothing to do.")
         end
       end
+
+      context "when a switch invalidates number of arguments needed" do
+        it "succeeds without failure" do
+          expect(
+            @machinery.run_command("#{machinery_command} remove --all", as: "vagrant")
+          ).to succeed
+          expect(
+            @machinery.run_command("#{machinery_command} remove --verbose --all", as: "vagrant")
+          ).to succeed
+        end
+      end
     end
   end
 end
