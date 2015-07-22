@@ -121,8 +121,8 @@ class Server < Sinatra::Base
   end
 
   get "/compare/:a/:b.json" do
-    description_a = SystemDescription.load(params[:a], system_description_store)
-    description_b = SystemDescription.load(params[:b], system_description_store)
+    description_a = SystemDescription.load(params[:a], settings.system_description_store)
+    description_b = SystemDescription.load(params[:b], settings.system_description_store)
 
     diff = {
       meta: {
@@ -158,8 +158,8 @@ class Server < Sinatra::Base
   end
 
   get "/compare/:a/:b/files/:scope/*" do
-    description1 = SystemDescription.load(params[:a], system_description_store)
-    description2 = SystemDescription.load(params[:b], system_description_store)
+    description1 = SystemDescription.load(params[:a], settings.system_description_store)
+    description2 = SystemDescription.load(params[:b], settings.system_description_store)
     filename = File.join("/", params["splat"].first)
 
     begin
