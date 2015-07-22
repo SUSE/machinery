@@ -18,7 +18,7 @@
 class DeployTask
   def deploy(description, cloud_config, options = {})
     LocalSystem.validate_architecture("x86_64")
-    LocalSystem.validate_existence_of_package("python-glanceclient")
+    LocalSystem.validate_existence_of_packages(["python-glanceclient", "kiwi", "kiwi-desc-vmxboot"])
     LocalSystem.validate_build_compatibility(description)
 
     if !File.exists?(cloud_config)

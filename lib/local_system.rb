@@ -30,16 +30,40 @@ class LocalSystem < System
     end
 
     def validate_existence_of_package(package)
-      begin
-        Cheetah.run("rpm", "-q", package)
-      rescue
-        needed_module = os.module_required_by_package(package)
-        if needed_module
-          raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}' from module '#{needed_module}'. You can install it as follows:\n" \
-            "If you haven't selected the module '#{needed_module}' before, run `yast2 scc` and choose 'Select Extensions' and activate '#{needed_module}'.\nRun `zypper install #{package}` to install the package."))
-        else
-          raise(Machinery::Errors::MissingRequirement.new("You need the package '#{package}'. You can install it by running `zypper install #{package}`"))
+      validate_existence_of_packages([package])
+    end
+
+    def validate_existence_of_packages(packages)
+      missing_packages = []
+      needed_modules = []
+
+      packages.each do |package|
+        begin
+          Cheetah.run("rpm", "-q", package)
+        rescue Cheetah::ExecutionFailed
+          missing_packages << package
+          needed_module = os.module_required_by_package(package)
+          if needed_module
+            needed_modules << package
+            if needed_module
+              output = <<-EOF
+You need the package '#{package}' from module '#{needed_module}'. You can install it as follows:
+If you haven't selected the module '#{needed_module}' before, run `yast2 scc` and choose 'Select Extensions' and activate '#{needed_module}'.
+Run `zypper install #{package}` to install the package.
+              EOF
+              raise(Machinery::Errors::MissingRequirement.new(output))
+            end
+          end
         end
+      end
+
+      if !missing_packages.empty?
+        count = missing_packages.count
+        error_string = <<-EOF
+You need the #{Machinery::pluralize(count, "package")} '#{missing_packages.join("\',\'")}'.
+You can install it by running `zypper install #{missing_packages.join(" ")}`.
+        EOF
+        raise(Machinery::Errors::MissingRequirement.new(error_string))
       end
     end
 
