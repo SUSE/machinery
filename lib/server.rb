@@ -92,6 +92,8 @@ class Server < Sinatra::Base
 
     # Enrich file information with downloadable flag
     ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
+      next if !description[scope]
+
       description[scope].files.each do |file|
         file.downloadable = file.on_disk?
       end
