@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix issue with showing HTML view when not all file scopes are inspected
+  (gh#SUSE/machinery#1150)
 
 ## Version 1.11.1 - Tue Jul 21 09:44:16 CEST 2015 - thardeck@suse.de
 
