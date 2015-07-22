@@ -146,7 +146,7 @@ module SystemDescriptionFactory
           )
         else
           description[extracted_scope].files.each do |file|
-            next if file.link?
+            next if !file.file? || file.deleted?
 
             file_name = File.join(file_store.path, file.name)
             FileUtils.mkdir_p(File.dirname(file_name))
