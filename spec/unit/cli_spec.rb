@@ -542,7 +542,7 @@ describe Cli do
   describe "#list" do
     it "triggers the list task" do
       expect_any_instance_of(ListTask).to receive(:list).
-          with(an_instance_of(SystemDescriptionStore), anything)
+        with(an_instance_of(SystemDescriptionStore), anything)
       run_command(["list"])
     end
   end
