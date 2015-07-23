@@ -66,5 +66,24 @@ shared_examples "serve html" do
       # Kill the webserver again
       @machinery.run_command("pkill -f '#{cmd}'")
     end
+
+    it "raises an error if port is already in use" do
+      @machinery.inject_directory(
+        system_description_dir,
+        machinery_config[:machinery_dir],
+        owner: machinery_config[:owner],
+        group: machinery_config[:group]
+      )
+
+      cmd = "#{machinery_command} serve opensuse131 --port 5000"
+
+      Thread.new do
+        @machinery.run_command(cmd)
+      end
+
+      expect(@machinery.run_command(cmd)).to fail.and have_stderr(
+        /Port 5000 is already in use.\n/
+      )
+    end
   end
 end

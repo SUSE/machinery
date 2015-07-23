@@ -35,7 +35,15 @@ EOF
 
       begin
         setup_output_redirection
-        Server.run!
+        begin
+          Server.run!
+        rescue Errno::EADDRINUSE
+          servefailed_error = <<-EOF.chomp
+Port #{Server.settings.port} is already in use.
+Stop the already running server on port #{Server.settings.port} or specify a new port by using --port option.
+EOF
+          raise Machinery::Errors::ServeFailed, servefailed_error
+        end
       rescue => e
         # Re-raise exception in main thread
         Thread.main.raise e
