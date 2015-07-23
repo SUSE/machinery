@@ -66,7 +66,7 @@ describe Zypper do
           </stream>
       EOF
 
-      expect(subject).to receive(:call_zypper).with("-x", "download", anything(), anything()).
+      expect(subject).to receive(:call_zypper).with("-x", "download", anything, anything).
         and_return(zypper_xml)
 
       path = subject.download_package("fontconfig-2.6.0")
