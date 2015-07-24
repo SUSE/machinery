@@ -526,16 +526,23 @@ describe Cli do
   describe "#remove" do
     it "triggers the remove task" do
       expect_any_instance_of(RemoveTask).to receive(:remove).
-        with(an_instance_of(SystemDescriptionStore), ["foo"], anything())
+        with(an_instance_of(SystemDescriptionStore), ["foo"], anything)
 
       run_command(["remove", "foo"])
+    end
+
+    it "triggers the remove task with --all option if given" do
+      expect_any_instance_of(RemoveTask).to receive(:remove).
+        with(an_instance_of(SystemDescriptionStore), anything, verbose: false, all: true)
+
+      run_command(["remove", "--all"])
     end
   end
 
   describe "#list" do
     it "triggers the list task" do
       expect_any_instance_of(ListTask).to receive(:list).
-          with(an_instance_of(SystemDescriptionStore), anything())
+        with(an_instance_of(SystemDescriptionStore), anything)
       run_command(["list"])
     end
   end

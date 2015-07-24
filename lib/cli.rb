@@ -35,7 +35,9 @@ class Cli
       Machinery.logger.level = Logger::INFO
     end
 
-    validate_number_of_arguments(command.arguments, args)
+    validate_command_line(command.arguments, args)
+
+    true
   end
 
   post do |global_options,command,options,args|
@@ -55,8 +57,8 @@ class Cli
 
   GLI::Commands::Help.skips_post = false
 
-  def self.validate_number_of_arguments(defined, parsed)
-    if defined.any?(&:multiple?) && parsed.empty?
+  def self.validate_command_line(defined, parsed)
+    if defined.any?(&:multiple?) && !defined.any?(&:optional?) && parsed.empty?
       message = "No arguments given. Nothing to do."
       raise GLI::BadCommandLine.new(message)
     elsif !defined.any?(&:multiple?) && parsed.size > defined.size
@@ -65,8 +67,6 @@ class Cli
       message = "Too many arguments: got #{parsed_arguments}, expected #{defined_arguments}"
       raise GLI::BadCommandLine.new(message)
     end
-
-    true
   end
 
   def self.buildable_distributions
@@ -594,7 +594,7 @@ class Cli
 
     The success of a removal can be shown with the verbose option.
   LONGDESC
-  arg "NAME", :multiple
+  arg "NAME", [:multiple, :optional]
 
   command :remove do |c|
     c.switch :all, negatable: false,
@@ -603,6 +603,10 @@ class Cli
       desc: "Explain what is being done"
 
     c.action do |global_options,options,args|
+      if !options[:all] && args.empty?
+        raise GLI::BadCommandLine.new, "You need to either specify `--all` or a list of system descriptions"
+      end
+
       task = RemoveTask.new
       task.remove(system_description_store, args, verbose: options[:verbose], all: options[:all])
     end
