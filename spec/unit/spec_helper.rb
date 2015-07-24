@@ -21,6 +21,7 @@ CodeClimate::TestReporter.start
 require "fakefs/spec_helpers"
 require "given_filesystem/spec_helpers"
 require "byebug"
+require "rack/test"
 require_relative "../../tools/support_matrix/lib/support_matrix"
 
 require File.expand_path('../../../lib/machinery', __FILE__)
