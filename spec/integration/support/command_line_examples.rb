@@ -94,10 +94,10 @@ shared_examples "CLI" do
       end
 
       context "when multiple (undefined) number of arguments are expected" do
-        it "fails with a message" do
+        it "fails" do
           expect(
             @machinery.run_command("#{machinery_command} remove", as: "vagrant")
-          ).to fail.and include_stderr("No arguments given. Nothing to do.")
+          ).to fail
         end
       end
 

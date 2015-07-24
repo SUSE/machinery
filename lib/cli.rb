@@ -35,9 +35,7 @@ class Cli
       Machinery.logger.level = Logger::INFO
     end
 
-    if !validate_arguments_overwrite?(command.arguments, options)
-      validate_number_of_arguments(command.arguments, args)
-    end
+    validate_command_line(command.arguments, args)
 
     true
   end
@@ -59,15 +57,8 @@ class Cli
 
   GLI::Commands::Help.skips_post = false
 
-  def self.validate_arguments_overwrite?(arguments, options)
-    overwriting_switches = arguments.map { |arg| arg.options.select { |option| /never_validate_args_on_(.*)/.match(option.to_s) }.first }
-    overwriting_switches.map! { |switch| switch.to_s.gsub(/never_validate_args_on_/, "") }
-    return false if (options.keys & overwriting_switches).empty?
-    overwriting_switches.any? { |switch| options[switch] }
-  end
-
-  def self.validate_number_of_arguments(defined, parsed)
-    if defined.any?(&:multiple?) && parsed.empty?
+  def self.validate_command_line(defined, parsed)
+    if defined.any?(&:multiple?) && !defined.any?(&:optional?) && parsed.empty?
       message = "No arguments given. Nothing to do."
       raise GLI::BadCommandLine.new(message)
     elsif !defined.any?(&:multiple?) && parsed.size > defined.size
@@ -603,7 +594,7 @@ class Cli
 
     The success of a removal can be shown with the verbose option.
   LONGDESC
-  arg "NAME", [:multiple, :never_validate_args_on_all]
+  arg "NAME", [:multiple, :optional]
 
   command :remove do |c|
     c.switch :all, negatable: false,
@@ -612,6 +603,10 @@ class Cli
       desc: "Explain what is being done"
 
     c.action do |global_options,options,args|
+      if !options[:all] && args.empty?
+        raise GLI::BadCommandLine.new, "You need to either specify `--all` or a list of system descriptions"
+      end
+
       task = RemoveTask.new
       task.remove(system_description_store, args, verbose: options[:verbose], all: options[:all])
     end
