@@ -18,7 +18,7 @@
 class Html
   # Creates a new thread running a sinatra webserver which serves the local system descriptions
   # The Thread object is returned so that the caller can `.join` it until it's finished.
-  def self.run_server(system_description_store, opts)
+  def self.run_server(system_description_store, opts, &block)
     Thread.new do
       Server.set :system_description_store, system_description_store
       Server.set :port, opts[:port] || 7585
@@ -35,27 +35,24 @@ EOF
 
       begin
         setup_output_redirection
-        Server.run!
+        begin
+          Server.run! do
+            Thread.new { block.call }
+          end
+        rescue Errno::EADDRINUSE
+          servefailed_error = <<-EOF.chomp
+Port #{Server.settings.port} is already in use.
+Stop the already running server on port #{Server.settings.port} or specify a new port by using --port option.
+EOF
+          raise Machinery::Errors::ServeFailed, servefailed_error
+        end
+        remove_output_redirection
       rescue => e
+        remove_output_redirection
         # Re-raise exception in main thread
         Thread.main.raise e
-      ensure
-        remove_output_redirection
       end
     end
-  end
-
-  def self.when_server_ready(ip, port, &block)
-    20.times do
-      begin
-        TCPSocket.new(ip, port).close
-        block.call
-        return
-      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-        sleep 0.1
-      end
-    end
-    raise Machinery::Errors::MachineryError, "The web server did not come up in time."
   end
 
   def self.setup_output_redirection

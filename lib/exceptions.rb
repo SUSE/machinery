@@ -134,5 +134,6 @@ module Machinery
     class ZypperFailed < MachineryError; end
     class UnknownConfig < MachineryError; end
     class UnsupportedArchitecture < MachineryError; end
+    class ServeFailed < MachineryError; end
   end
 end
