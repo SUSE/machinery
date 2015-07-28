@@ -288,7 +288,8 @@ class OdsFormatter
       row do
         cell
         cell "Host", style: "empty"
-        3.times do
+        cell style: "empty"
+        matrix.runs_on_rows.size.times do
           cell style: "empty"
         end
       end
