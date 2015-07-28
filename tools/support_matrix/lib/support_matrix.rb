@@ -1,5 +1,6 @@
 require "yaml"
 require_relative "support_matrix/ods_formatter"
+require_relative "support_matrix/pdf_formatter"
 
 class SupportMatrix
   attr_reader :path

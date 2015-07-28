@@ -31,4 +31,6 @@ group :test do
   gem "byebug"
   gem "rodf", github: "mauromorales/rodf"
   gem "rack-test"
+  gem "prawn"
+  gem "prawn-table"
 end
