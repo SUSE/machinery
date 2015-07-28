@@ -39,9 +39,7 @@ There is a web server running, serving the comparison result on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-    server = Html.run_server(description1.store, port: options[:port], ip: options[:ip])
-
-    Html.when_server_ready(options[:ip], options[:port]) do
+    server = Html.run_server(description1.store, port: options[:port], ip: options[:ip]) do
       LoggedCheetah.run("xdg-open", url)
     end
 
