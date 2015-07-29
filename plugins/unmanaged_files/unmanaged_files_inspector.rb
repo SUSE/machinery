@@ -53,6 +53,17 @@ class UnmanagedFilesInspector < Inspector
         files[pair.first] = pair[1]
       end
     end
+    # make sure that all parent directories of managed rpm directories are considered
+    # managed
+    dirh.dup.each do |d, _e|
+      dir, _sep, _file = d.rpartition("/")
+
+      while !dirh.has_key?(dir) && dir.size > 1
+        dirh[dir] = false
+        dir = dir[0..dir.rindex("/") - 1]
+      end
+    end
+
     files.each do |f,e|
       dir, sep, file = f.rpartition("/")
 
