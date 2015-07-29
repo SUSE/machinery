@@ -38,7 +38,7 @@ class MachineryHelper
   end
 
   def local_helper_path
-    File.join(@local_helpers_path, @arch, "machinery_helper")
+    File.join(@local_helpers_path, @arch, "machinery-helper")
   end
 
   # Returns true, if there is a helper binary matching the architecture of the
@@ -52,11 +52,11 @@ class MachineryHelper
   end
 
   def run_helper(scope)
-    json = @system.run_command("./machinery_helper", stdout: :capture)
+    json = @system.run_command("./machinery-helper", stdout: :capture)
     scope.set_attributes(JSON.parse(json)["unmanaged_files"])
   end
 
   def remove_helper
-    @system.remove_file("./machinery_helper")
+    @system.remove_file("./machinery-helper")
   end
 end
