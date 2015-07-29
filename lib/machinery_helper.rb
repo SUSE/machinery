@@ -53,7 +53,7 @@ class MachineryHelper
 
   def run_helper(scope)
     json = @system.run_command("./machinery-helper", stdout: :capture)
-    scope.set_attributes(JSON.parse(json)["unmanaged_files"])
+    scope.set_attributes(JSON.parse(json))
   end
 
   def remove_helper
