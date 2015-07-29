@@ -87,7 +87,8 @@ class Cli
       Machinery::Ui.error("Option --" + e.message)
       exit 1
     when GLI::UnknownCommandArgument, GLI::UnknownGlobalArgument,
-        GLI::UnknownCommand, GLI::BadCommandLine, OptionParser::MissingArgument
+      GLI::UnknownCommand, GLI::BadCommandLine,
+      OptionParser::MissingArgument, OptionParser::AmbiguousOption
       Machinery::Ui.error e.to_s + "\n\n"
       command = ARGV & @commands.keys.map(&:to_s)
       Machinery::Ui.error "Run '#{$0} #{command.first} --help' for more information."

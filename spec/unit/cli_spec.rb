@@ -659,7 +659,24 @@ describe Cli do
     end
   end
 
-  describe "#error_handling" do
+  describe ".handle_error" do
+    context "for options" do
+      option_parser_exceptions = [OptionParser::MissingArgument, OptionParser::AmbiguousOption]
+
+      option_parser_exceptions.each do |error|
+        it "shows a proper error-message for [#{error}]" do
+          begin
+            raise(error.new)
+          rescue => e
+            expect { Cli.handle_error(e) }.to raise_error(SystemExit)
+          end
+          expect(captured_machinery_stderr).to include(
+            e.to_s, "Run '#{$0}", "--help' for more information."
+          )
+        end
+      end
+    end
+
     it "shows stderr, stdout and the backtrace for unexpected errors" do
       expected_cheetah_out = <<-EOT
 Machinery experienced an unexpected error. Please file a bug report at: https://github.com/SUSE/machinery/issues/new
