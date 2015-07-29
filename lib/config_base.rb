@@ -31,16 +31,14 @@ class ConfigBase
 
   abstract_method :default_config_files
 
+  abstract_method :define_entries
+
   def entry(key, parameters = {})
     key = normalize_key(key)
 
     @entries[key] = { value: parameters[:default], description: parameters[:description] }
      create_method(key.to_sym) { get(key) }
      create_method("#{key}=".to_sym) { |value| set(key, value) }
-  end
-
-  def define_entries
-    raise NotImplementedError.new("No config entries defined for #{self.class}")
   end
 
   def each(&block)
