@@ -93,6 +93,31 @@ describe LocalSystem do
     end
   end
 
+  describe "#inject_file" do
+    it "works" do
+      file = given_dummy_file
+      destination = given_directory
+
+      expected_file = File.join(destination, File.basename(file))
+
+      expect(File.exists?(expected_file)).to be(false)
+
+      local_system.inject_file(file, destination)
+      expect(File.exists?(expected_file)).to be(true)
+    end
+  end
+
+  describe "#remove_file" do
+    it "works" do
+      file = given_dummy_file
+
+      expect(File.exists?(file)).to be(true)
+
+      local_system.remove_file(file)
+      expect(File.exists?(file)).to be(false)
+    end
+  end
+
   describe ".validate_machinery_compatibility" do
     context "on hosts that can run machinery" do
       it "shows no warning" do
