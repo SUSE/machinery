@@ -20,16 +20,16 @@
 # the file 'machinery_config.rb'.
 
 class ConfigBase
-  def initialize
+  attr_reader :file
+
+  def initialize(file = default_config_file)
     @entries = {}
-    @file = ""
+    @file = file
     define_entries
     apply_custom_config(@file) if File.exist?(@file)
   end
 
-  def default_config_file(file)
-    @file = file
-  end
+  abstract_method :default_config_files
 
   def entry(key, parameters = {})
     key = normalize_key(key)

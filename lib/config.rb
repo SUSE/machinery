@@ -21,9 +21,11 @@
 
 module Machinery
   class Config < ConfigBase
-    def define_entries
-      default_config_file(Machinery::DEFAULT_CONFIG_FILE)
+    def default_config_file
+      ENV["MACHINERY_CONFIG_FILE"] || Machinery::DEFAULT_CONFIG_FILE
+    end
 
+    def define_entries
       entry("hints",
         default: true,
         description: "Show hints about usage of Machinery in the context of the commands ran by" \

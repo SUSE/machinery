@@ -33,6 +33,16 @@ describe Machinery::Config do
     expect(keys).to include("config-key")
   end
 
+  it "uses the default config-path if nothing is specified" do
+    config = Machinery::Config.new
+    expect(config.file).to eq(Machinery::DEFAULT_CONFIG_FILE)
+  end
+
+  it "uses the config-path specified by initialize" do
+    config = Machinery::Config.new(config_file_path)
+    expect(config.file).to eq(config_file_path)
+  end
+
   describe "#get" do
     it "returns the default value" do
       subject.entry("configkey", default: "configvalue", description: "configtext")
@@ -100,7 +110,6 @@ describe Machinery::Config do
   describe "#save" do
     it "writes the config to the file when the set method is called" do
       allow_any_instance_of(Machinery::Config).to receive(:define_entries)
-      subject.default_config_file(Machinery::DEFAULT_CONFIG_FILE)
       subject.entry("configkey", default: false, description: "configtext")
 
       subject.set("configkey", true)
@@ -112,7 +121,6 @@ describe Machinery::Config do
 
     it "writes the config to the file when the generated accessors are called" do
       allow_any_instance_of(Machinery::Config).to receive(:define_entries)
-      subject.default_config_file(Machinery::DEFAULT_CONFIG_FILE)
       subject.entry("configkey", default: false, description: "configtext")
 
       subject.configkey = true
