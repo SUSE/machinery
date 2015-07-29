@@ -21,7 +21,7 @@ class Html
   def self.run_server(system_description_store, opts, &block)
     Thread.new do
       Server.set :system_description_store, system_description_store
-      Server.set :port, opts[:port] || 7585
+      Server.set :port, opts[:port] || Machinery::Config.new.http_server_port
       Server.set :bind, opts[:ip] || "localhost"
       Server.set :public_folder, File.join(Machinery::ROOT, "html")
 
