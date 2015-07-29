@@ -80,7 +80,7 @@ class ConfigBase
       config_table_stripped[key] = value[:value]
     end
 
-    FileUtils.mkdir_p(Machinery::DEFAULT_CONFIG_DIR)
+    FileUtils.mkdir_p(File.dirname(file))
 
     begin
       File.write(@file, config_table_stripped.to_yaml)

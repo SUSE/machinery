@@ -58,6 +58,13 @@ describe Machinery::Config do
     expect(config.file).to eq(config_file_path)
   end
 
+  it "uses the config-path specified by the environment variable MACHINERY_CONFIG_FILE" do
+    with_env("MACHINERY_CONFIG_FILE" => config_file_path) do
+      config = Machinery::Config.new
+      expect(config.file).to eq(config_file_path)
+    end
+  end
+
   describe "#get" do
     it "returns the default value" do
       subject.entry("configkey", default: "configvalue", description: "configtext")
