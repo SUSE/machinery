@@ -224,8 +224,12 @@ class UnmanagedFilesInspector < Inspector
 
     helper = MachineryHelper.new(@system)
     if helper_usable?(helper, options)
-      helper.inject_helper
-      helper.run_helper(scope)
+      begin
+        helper.inject_helper
+        helper.run_helper(scope)
+      ensure
+        helper.remove_helper
+      end
       scope.extracted = false
 
       scope.files.delete_if { |f| file_filter.matches?(f.name) }
