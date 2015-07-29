@@ -23,23 +23,10 @@ shared_examples "serve html" do
       File.dirname(system_description_file)
     }
 
-    it "makes the system description HTML and extracted files available at the specified port" do
-      @machinery.inject_directory(
-        system_description_dir,
-        machinery_config[:machinery_dir],
-        owner: machinery_config[:owner],
-        group: machinery_config[:group]
-      )
-
-      cmd = "#{machinery_command} serve opensuse131 --port 5000"
-      Thread.new do
-        @machinery.run_command(cmd)
-      end
-
-      # Test basic HTML
+    def test_basic_html(port)
       wait_time = 0
       loop do
-        curl_command = @machinery.run_command("curl http://localhost:5000/opensuse131")
+        curl_command = @machinery.run_command("curl http://localhost:#{port}/opensuse131")
 
         if curl_command.stderr =~ /Failed to connect/
           raise "Could not connect to webserver" if wait_time >= 10
@@ -53,6 +40,23 @@ shared_examples "serve html" do
           and have_stdout(/<title>.*opensuse131 - Machinery System Description.*<\/title>/m)
         break
       end
+    end
+
+
+    it "makes the system description HTML and extracted files available at the specified port" do
+      @machinery.inject_directory(
+        system_description_dir,
+        machinery_config[:machinery_dir],
+        owner: machinery_config[:owner],
+        group: machinery_config[:group]
+      )
+
+      cmd = "#{machinery_command} serve opensuse131 --port 5000"
+      Thread.new do
+        @machinery.run_command(cmd)
+      end
+
+      test_basic_html(5000)
 
       # Test file content download
       expected_content = File.read(
