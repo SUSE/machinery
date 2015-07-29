@@ -213,14 +213,26 @@ class UnmanagedFilesInspector < Inspector
 
     scope.scope_file_store = file_store_tmp
 
+    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
+    file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
+    file_filter.add_matchers("=", @description.store.base_path)
+
+    # Add a recursive pendant to each ignored element
+    file_filter.matchers.each do |operator, matchers|
+      file_filter.add_matchers(operator, matchers.map { |entry| File.join(entry, "/*") })
+    end
+
     helper = MachineryHelper.new(@system)
     if helper_usable?(helper, options)
       helper.inject_helper
       helper.run_helper(scope)
       scope.extracted = false
+
+      scope.files.delete_if { |f| file_filter.matches?(f.name) }
+
       @description["unmanaged_files"] = scope
     else
-      run_inspection(filter, options, do_extract, file_store_tmp, file_store_final, scope)
+      run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
   end
 
@@ -248,7 +260,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
 
-  def run_inspection(filter, options, do_extract, file_store_tmp, file_store_final, scope)
+  def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
 
     rpm_files, rpm_dirs = extract_rpm_database
@@ -264,14 +276,6 @@ class UnmanagedFilesInspector < Inspector
     remote_dirs = mount_points.remote
     special_dirs = mount_points.special
 
-    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
-    file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
-    file_filter.add_matchers("=", @description.store.base_path)
-
-    # Add a recursive pendant to each ignored element
-    file_filter.matchers.each do |operator, matchers|
-      file_filter.add_matchers(operator, matchers.map { |entry| File.join(entry, "/*") })
-    end
 
     remote_dirs.delete_if { |e| file_filter.matches?(e) }
 
