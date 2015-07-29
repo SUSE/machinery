@@ -22,6 +22,7 @@ shared_examples "serve html" do
         "spec/data/descriptions/jeos/opensuse131/manifest.json")
       File.dirname(system_description_file)
     }
+    let(:config_tmp_file) { "/tmp/machinery/config" }
 
     def test_basic_html(port)
       wait_time = 0
@@ -42,6 +43,9 @@ shared_examples "serve html" do
       end
     end
 
+    after(:each) do
+      @machinery.run_command("pkill -f 'machinery serve' --signal 9")
+    end
 
     it "makes the system description HTML and extracted files available at the specified port" do
       @machinery.inject_directory(
@@ -67,9 +71,6 @@ shared_examples "serve html" do
       )
       expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
       expect(@machinery.run_command(cmd)).to fail.and have_stderr(/Port 5000 is already in use.\n/)
-
-      # Kill the webserver again
-      @machinery.run_command("pkill -f '#{cmd}'")
     end
 
     it "makes the system description HTML available at the config-file port" do
