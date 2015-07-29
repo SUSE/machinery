@@ -66,12 +66,13 @@ shared_examples "serve html" do
         "curl http://localhost:5000/descriptions/opensuse131/files/config_files/etc/crontab"
       )
       expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
+      expect(@machinery.run_command(cmd)).to fail.and have_stderr(/Port 5000 is already in use.\n/)
 
       # Kill the webserver again
       @machinery.run_command("pkill -f '#{cmd}'")
     end
 
-    it "raises an error if port is already in use" do
+    it "makes the system description HTML available at the config-file port" do
       @machinery.inject_directory(
         system_description_dir,
         machinery_config[:machinery_dir],
@@ -79,15 +80,16 @@ shared_examples "serve html" do
         group: machinery_config[:group]
       )
 
-      cmd = "#{machinery_command} serve opensuse131 --port 5000"
+      @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} config http-server-port=7500")
+
+      cmd = "#{machinery_command} serve opensuse131"
 
       Thread.new do
-        @machinery.run_command(cmd)
+        @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{cmd}")
       end
 
-      expect(@machinery.run_command(cmd)).to fail.and have_stderr(
-        /Port 5000 is already in use.\n/
-      )
+      test_basic_html(7500)
+      @machinery.run_command("rm -f '#{config_tmp_file}'")
     end
   end
 end

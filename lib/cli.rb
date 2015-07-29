@@ -759,7 +759,8 @@ class Cli
   LONGDESC
   arg "NAME"
   command "serve" do |c|
-    c.flag [:port, :p], type: Integer, required: false, default_value: 7585,
+    c.flag [:port, :p], type: Integer, required: false,
+      default_value: Machinery::Config.new.http_server_port,
       desc: "Listen on port PORT", arg_name: "PORT"
     c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
       desc: "Listen on ip IP", arg_name: "IP"
