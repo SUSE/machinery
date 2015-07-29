@@ -31,16 +31,6 @@ describe OsInspector do
     Dir.mkdir("/etc")
   end
 
-  describe "#get_arch" do
-    it "gets the architecture of the inspected system" do
-      result = "x86_64"
-
-      expect(system).to receive(:run_command).with(
-        "uname", "-m", stdout: :capture).and_return(result)
-      expect(inspector.get_arch).to eq(result)
-    end
-  end
-
   describe "#get_os_from_os_release" do
     it "gets os info from os-release file" do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/os-release",
@@ -100,7 +90,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE13.1/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).and_return("x86_64")
+      expect(system).to receive(:arch).and_return("x86_64")
 
       inspector.inspect(filter)
 
@@ -118,7 +108,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/rhel6/etc/redhat-release",
         "/etc/redhat-release")
 
-      expect(inspector).to receive(:get_arch).and_return("x86_64")
+      expect(system).to receive(:arch).and_return("x86_64")
 
       inspector.inspect(filter)
 
@@ -132,7 +122,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/SuSE-release",
         "/etc/SuSE-release")
 
-      expect(inspector).to receive(:get_arch).and_return("x86_64")
+      expect(system).to receive(:arch).and_return("x86_64")
 
       inspector.inspect(filter)
 
@@ -146,7 +136,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/openSUSETumbleweed/etc/os-release",
         "/etc/os-release")
 
-      expect(inspector).to receive(:get_arch).and_return("x86_64")
+      expect(system).to receive(:arch).and_return("x86_64")
 
       inspector.inspect(filter)
 
@@ -163,7 +153,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).and_return("x86_64")
+      expect(system).to receive(:arch).and_return("x86_64")
 
       inspector.inspect(filter)
 
@@ -176,7 +166,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/SLES11/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).and_return("x86_64")
+      expect(system).to receive(:arch).and_return("x86_64")
 
       inspector.inspect(filter)
 
@@ -189,7 +179,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/openSUSE11.2/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).and_return("i586")
+      expect(system).to receive(:arch).and_return("i586")
 
       inspector.inspect(filter)
 
@@ -203,7 +193,7 @@ describe OsInspector do
       FakeFS::FileSystem.clone("spec/data/os/dummy/etc/issue",
         "/etc/issue")
 
-      expect(inspector).to receive(:get_arch).and_return("i586")
+      expect(system).to receive(:arch).and_return("i586")
 
       inspector.inspect(filter)
 

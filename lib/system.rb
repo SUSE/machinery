@@ -90,4 +90,8 @@ class System
   rescue Cheetah::ExecutionFailed
     false
   end
+
+  def arch
+    run_command("uname", "-m", stdout: :capture).chomp
+  end
 end

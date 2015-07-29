@@ -18,10 +18,6 @@
 #  Inspect name, version, and other attributes of the operating system
 class OsInspector < Inspector
   has_priority 10
-  # determines the architecture
-  def get_arch
-    @system.run_command("uname", "-m", :stdout => :capture).chomp
-  end
 
   def strip_arch_from_name(name)
     # architecture information in the name might be misleading
@@ -49,7 +45,7 @@ class OsInspector < Inspector
 
     os = get_os
     if os
-      os.architecture = get_arch
+      os.architecture = @system.arch
       os.version += get_additional_version if os.version
     else
       raise Machinery::Errors::UnknownOs
