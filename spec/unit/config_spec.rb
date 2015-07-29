@@ -20,6 +20,17 @@ require_relative "spec_helper"
 describe Machinery::Config do
   include FakeFS::SpecHelpers
   subject { Machinery::Config.new }
+  it "creates the config directory if it doesn't exist" do
+    non_existing_path = File.join(given_directory, "non-existing-directory", "machinery.config")
+
+    expect(Dir.exist?(File.dirname(non_existing_path))).to be(false)
+
+    config = Machinery::Config.new(non_existing_path)
+    config.entry("config-key", default: "configvalue", description: "configtext")
+    config.set("config-key", "newconfigvalue")
+
+    expect(Dir.exist?(File.dirname(non_existing_path))).to be(true)
+  end
 
   it "works with keys with '-'s" do
     subject.entry("config-key", default: "configvalue", description: "configtext")
