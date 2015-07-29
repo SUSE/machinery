@@ -18,8 +18,12 @@
 require_relative "spec_helper"
 
 describe Machinery::Config do
-  include FakeFS::SpecHelpers
-  subject { Machinery::Config.new }
+  include GivenFilesystemSpecHelpers
+  use_given_filesystem
+
+  let(:config_file_path) { File.join(given_directory, "machinery.config") }
+  subject { Machinery::Config.new(config_file_path) }
+
   it "creates the config directory if it doesn't exist" do
     non_existing_path = File.join(given_directory, "non-existing-directory", "machinery.config")
 
@@ -124,10 +128,10 @@ describe Machinery::Config do
       subject.entry("configkey", default: false, description: "configtext")
 
       subject.set("configkey", true)
-      expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: true\n"])
+      expect(File.readlines(config_file_path)).to eq(["---\n", "configkey: true\n"])
 
       subject.set("configkey", false)
-      expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: false\n"])
+      expect(File.readlines(config_file_path)).to eq(["---\n", "configkey: false\n"])
     end
 
     it "writes the config to the file when the generated accessors are called" do
@@ -135,10 +139,10 @@ describe Machinery::Config do
       subject.entry("configkey", default: false, description: "configtext")
 
       subject.configkey = true
-      expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: true\n"])
+      expect(File.readlines(config_file_path)).to eq(["---\n", "configkey: true\n"])
 
       subject.configkey = false
-      expect(File.readlines(Machinery::DEFAULT_CONFIG_FILE)).to eq(["---\n", "configkey: false\n"])
+      expect(File.readlines(config_file_path)).to eq(["---\n", "configkey: false\n"])
     end
   end
 
