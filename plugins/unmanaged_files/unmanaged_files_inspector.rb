@@ -214,7 +214,7 @@ class UnmanagedFilesInspector < Inspector
     scope.scope_file_store = file_store_tmp
 
     helper = MachineryHelper.new(@system)
-    if helper.can_help?
+    if helper_usable?(helper, options)
       helper.inject_helper
       helper.run_helper(scope)
       scope.extracted = false
@@ -223,6 +223,30 @@ class UnmanagedFilesInspector < Inspector
       run_inspection(filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
   end
+
+  def helper_usable?(helper, options)
+    if !helper.can_help?
+      Machinery::Ui.puts(
+        "Note: Using traditional inspection because there is no helper binary for" \
+        " architecture '#{@system.arch}' available."
+      )
+    elsif options[:extract_unmanaged_files]
+      Machinery::Ui.puts(
+        "Note: Using traditional inspection because file extraction is not" \
+        " supported by the helper binary."
+      )
+    elsif options[:remote_user] && options[:remote_user] != "root"
+      Machinery::Ui.puts(
+        "Note: Using traditional inspection because only 'root' is supported as remote user."
+      )
+    else
+      Machinery::Ui.puts "Note: Using helper binary for inspection of unmanaged files."
+      return true
+    end
+
+    false
+  end
+
 
   def run_inspection(filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
