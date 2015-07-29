@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe UnmanagedFilesInspector do
   capture_machinery_output
 
-  let(:system) { double }
+  let(:system) { double(arch: "x86_64") }
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }

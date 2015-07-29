@@ -32,20 +32,12 @@ class MachineryHelper
 
   def initialize(s)
     @system = s
-    @arch = nil
+    @arch = @system.arch
 
     @local_helpers_path = "/usr/share/machinery/helpers"
   end
 
   def local_helper_path
-    if !@arch
-      description = SystemDescription.new("", SystemDescriptionMemoryStore.new)
-      inspector = OsInspector.new(@system, description)
-      inspector.inspect(nil)
-
-      @arch = description.os.architecture
-    end
-
     File.join(@local_helpers_path, @arch, "machinery_helper")
   end
 
