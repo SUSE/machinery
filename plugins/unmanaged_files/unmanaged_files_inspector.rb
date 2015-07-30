@@ -144,7 +144,6 @@ class UnmanagedFilesInspector < Inspector
       Machinery::Ui.warn(message)
     end
 
-
     # find creates three field per path
     out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
       next unless raw_path && !raw_path.empty?
@@ -263,7 +262,6 @@ class UnmanagedFilesInspector < Inspector
     false
   end
 
-
   def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
 
@@ -380,7 +378,8 @@ class UnmanagedFilesInspector < Inspector
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
 
-    processed_files = run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links, excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
+    processed_files = run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links,
+      excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
 
     scope.extracted = !!do_extract
     scope.files = UnmanagedFileList.new(processed_files.sort_by(&:name))
@@ -388,7 +387,8 @@ class UnmanagedFilesInspector < Inspector
     @description["unmanaged_files"] = scope
   end
 
-  def run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links, excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
+  def run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links, excluded_files, remote_dirs,
+      do_extract, file_store_tmp, file_store_final, scope)
     begin
       if do_extract
         file_store_tmp.remove
