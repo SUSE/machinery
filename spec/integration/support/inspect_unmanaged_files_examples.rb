@@ -63,6 +63,7 @@ shared_examples "inspect unmanaged files" do |base|
 
       expected = <<EOF
 Inspecting unmanaged-files...
+Note: Using traditional inspection because there is no helper binary for architecture 'x0_0' available.
  -> Found 0 files and trees...\r\033\[K -> Found 0 files and trees...\r\033\[K -> Extracted 0 unmanaged files and trees.
 EOF
       expect(normalize_inspect_output(inspect_command.stdout)).to include(expected)

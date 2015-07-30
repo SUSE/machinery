@@ -22,7 +22,7 @@
 # The inspection checks, if a binary helper is available on the machine where
 # the inspection is started. It looks at the location
 #
-#    /usr/share/machinery/helpers/<arch>/machinery_helper
+#    /usr/share/machinery/helpers/<arch>/machinery-helper
 #
 # where <arch> is the hardware architecture of the target system. Valid values
 # are x86_64, i586, s390x, and ppcle.
