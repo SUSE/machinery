@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.11.2 - Thu Jul 30 14:42:44 CEST 2015 - thardeck@suse.de
+
 * Fix issue with showing HTML view when not all file scopes are inspected
   (gh#SUSE/machinery#1150)
 * Fix `--all` option of `remove` command (gh#SUSE/machinery#1128)
