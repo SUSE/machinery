@@ -52,7 +52,7 @@ class MachineryHelper
   end
 
   def run_helper(scope)
-    json = @system.run_command("./machinery-helper", stdout: :capture)
+    json = @system.run_command("./machinery-helper", stdout: :capture, stderr: STDERR)
     scope.set_attributes(JSON.parse(json))
   end
 
