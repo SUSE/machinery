@@ -94,7 +94,7 @@ describe LocalSystem do
   end
 
   describe "#inject_file" do
-    it "works" do
+    it "injects the file" do
       file = given_dummy_file
       destination = given_directory
 
@@ -108,7 +108,7 @@ describe LocalSystem do
   end
 
   describe "#remove_file" do
-    it "works" do
+    it "removes the file" do
       file = given_dummy_file
 
       expect(File.exists?(file)).to be(true)

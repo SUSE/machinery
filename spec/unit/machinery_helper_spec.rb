@@ -23,60 +23,60 @@ describe MachineryHelper do
     end
   end
 
-  it "#inject_helper" do
-    helper = MachineryHelper.new(dummy_system)
+  describe "#inject_helper" do
+    it "injects the helper using System#inject_file" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:inject_file)
 
-    local_helper_path = "ab/cd/x86_64/machinery-helper"
-    helper.local_helpers_path = "ab/cd"
-    remote_path = "."
-
-    expect(dummy_system).to receive(:inject_file).with(local_helper_path,
-      remote_path)
-
-    helper.inject_helper
+      helper.inject_helper
+    end
   end
 
-  it "#remove_helper" do
-    helper = MachineryHelper.new(dummy_system)
+  describe "#remove_helper" do
+    it "removes the helper using System#remove_file" do
+      helper = MachineryHelper.new(dummy_system)
 
-    expect(dummy_system).to receive(:remove_file).with("./machinery-helper")
+      expect(dummy_system).to receive(:remove_file).with("./machinery-helper")
 
-    helper.remove_helper
+      helper.remove_helper
+    end
   end
 
-  it "#run_helper" do
-    helper = MachineryHelper.new(dummy_system)
+  describe "#run_helper" do
+    it "writes the inspection result into the scope" do
+      helper = MachineryHelper.new(dummy_system)
 
-    json = <<-EOT
-      {
-        "files": [
-          {
-            "name": "/opt/magic/file",
-            "type": "file",
-            "user": "root",
-            "group": "root",
-            "size": 0,
-            "mode": "644"
-          },
-          {
-            "name": "/opt/magic/other_file",
-            "type": "file",
-            "user": "root",
-            "group": "root",
-            "size": 0,
-            "mode": "644"
-          }
-        ]
-      }
-    EOT
+      json = <<-EOT
+        {
+          "files": [
+            {
+              "name": "/opt/magic/file",
+              "type": "file",
+              "user": "root",
+              "group": "root",
+              "size": 0,
+              "mode": "644"
+            },
+            {
+              "name": "/opt/magic/other_file",
+              "type": "file",
+              "user": "root",
+              "group": "root",
+              "size": 0,
+              "mode": "644"
+            }
+          ]
+        }
+      EOT
 
-    expect(dummy_system).to receive(:run_command).with("./machinery-helper", any_args).
-      and_return(json)
+      expect(dummy_system).to receive(:run_command).with("./machinery-helper", any_args).
+        and_return(json)
 
-    scope = UnmanagedFilesScope.new
-    helper.run_helper(scope)
+      scope = UnmanagedFilesScope.new
+      helper.run_helper(scope)
 
-    expect(scope.files.first.name).to eq("/opt/magic/file")
-    expect(scope.files.count).to eq(2)
+      expect(scope.files.first.name).to eq("/opt/magic/file")
+      expect(scope.files.count).to eq(2)
+    end
   end
 end
