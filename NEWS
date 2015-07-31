@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix for unmanaged-file inspector to not mark directories as unmanaged if they
+  only consist managed sub directories
 
 ## Version 1.11.2 - Thu Jul 30 14:42:44 CEST 2015 - thardeck@suse.de
 
