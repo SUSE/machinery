@@ -140,4 +140,32 @@ class RemoteSystem < System
       raise
     end
   end
+
+  # Copies a file to the system
+  def inject_file(source, destination)
+    destination = "#{remote_user}@#{host}:#{destination}"
+
+    cmd = [
+      "scp",
+      source,
+      destination
+    ]
+
+    begin
+      LoggedCheetah.run(*cmd)
+    rescue Cheetah::ExecutionFailed => e
+      raise Machinery::Errors::InjectFileFailed.new(
+        "Could not inject file '#{source}' to host '#{host}'.\nError: #{e}"
+      )
+    end
+  end
+
+  # Removes a file from the system
+  def remove_file(file)
+    run_command("rm", file, privileged: true)
+  rescue Cheetah::ExecutionFailed => e
+    raise Machinery::Errors::RemoveFileFailed.new(
+      "Could not remove file '#{file}' on host '#{host}'.\nError: #{e}"
+    )
+  end
 end

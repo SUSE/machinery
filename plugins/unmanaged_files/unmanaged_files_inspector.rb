@@ -155,7 +155,6 @@ class UnmanagedFilesInspector < Inspector
       Machinery::Ui.warn(message)
     end
 
-
     # find creates three field per path
     out.split("\0", -1).each_slice(3) do |type, raw_path, raw_link|
       next unless raw_path && !raw_path.empty?
@@ -224,6 +223,57 @@ class UnmanagedFilesInspector < Inspector
 
     scope.scope_file_store = file_store_tmp
 
+    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
+    file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
+    file_filter.add_matchers("=", @description.store.base_path)
+
+    # Add a recursive pendant to each ignored element
+    file_filter.matchers.each do |operator, matchers|
+      file_filter.add_matchers(operator, matchers.map { |entry| File.join(entry, "/*") })
+    end
+
+    helper = MachineryHelper.new(@system)
+    if helper_usable?(helper, options)
+      begin
+        helper.inject_helper
+        helper.run_helper(scope)
+      ensure
+        helper.remove_helper
+      end
+      scope.extracted = false
+
+      scope.files.delete_if { |f| file_filter.matches?(f.name) }
+
+      @description["unmanaged_files"] = scope
+    else
+      run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
+    end
+  end
+
+  def helper_usable?(helper, options)
+    if !helper.can_help?
+      Machinery::Ui.puts(
+        "Note: Using traditional inspection because there is no helper binary for" \
+        " architecture '#{@system.arch}' available."
+      )
+    elsif options[:extract_unmanaged_files]
+      Machinery::Ui.puts(
+        "Note: Using traditional inspection because file extraction is not" \
+        " supported by the helper binary."
+      )
+    elsif options[:remote_user] && options[:remote_user] != "root"
+      Machinery::Ui.puts(
+        "Note: Using traditional inspection because only 'root' is supported as remote user."
+      )
+    else
+      Machinery::Ui.puts "Note: Using helper binary for inspection of unmanaged files."
+      return true
+    end
+
+    false
+  end
+
+  def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
 
     rpm_files, rpm_dirs = extract_rpm_database
@@ -239,14 +289,6 @@ class UnmanagedFilesInspector < Inspector
     remote_dirs = mount_points.remote
     special_dirs = mount_points.special
 
-    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
-    file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
-    file_filter.add_matchers("=", @description.store.base_path)
-
-    # Add a recursive pendant to each ignored element
-    file_filter.matchers.each do |operator, matchers|
-      file_filter.add_matchers(operator, matchers.map { |entry| File.join(entry, "/*") })
-    end
 
     remote_dirs.delete_if { |e| file_filter.matches?(e) }
 
@@ -346,6 +388,18 @@ class UnmanagedFilesInspector < Inspector
       Machinery::Ui.progress(progress)
     end
     Machinery.logger.debug "inspect unmanaged files find calls:#{find_count} files:#{unmanaged_files.size} trees:#{unmanaged_trees.size}"
+
+    processed_files = run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links,
+      excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
+
+    scope.extracted = !!do_extract
+    scope.files = UnmanagedFileList.new(processed_files.sort_by(&:name))
+
+    @description["unmanaged_files"] = scope
+  end
+
+  def run_extraction(unmanaged_files, unmanaged_trees, unmanaged_links, excluded_files, remote_dirs,
+      do_extract, file_store_tmp, file_store_final, scope)
     begin
       if do_extract
         file_store_tmp.remove
@@ -385,10 +439,7 @@ class UnmanagedFilesInspector < Inspector
       osl << UnmanagedFile.new( name: remote_dir + "/", type: "remote_dir")
     end
 
-    scope.extracted = !!do_extract
-    scope.files = UnmanagedFileList.new(osl.sort_by(&:name))
-
-    @description["unmanaged_files"] = scope
+    osl
   end
 
   def summary

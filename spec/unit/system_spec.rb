@@ -191,4 +191,15 @@ describe System do
       end
     end
   end
+
+  describe "#arch" do
+    it "returns the system's architecture" do
+      system = LocalSystem.new
+      result = "x86_64"
+
+      expect(system).to receive(:run_command).with(
+        "uname", "-m", stdout: :capture).and_return(result)
+      expect(system.arch).to eq(result)
+    end
+  end
 end

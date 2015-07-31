@@ -20,11 +20,16 @@ require_relative "spec_helper"
 describe UnmanagedFilesInspector do
   capture_machinery_output
 
-  let(:system) { double }
+  let(:system) { double(arch: "x86_64") }
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
   subject { UnmanagedFilesInspector.new(system, description) }
+
+  before(:each) do
+    allow_any_instance_of(MachineryHelper).to receive(:can_help?).
+      and_return(false)
+  end
 
   describe ".inspect" do
     include FakeFS::SpecHelpers
@@ -445,5 +450,22 @@ describe UnmanagedFilesInspector do
       ])
       expect(captured_machinery_output).to match(/broken\uFFFDLink.*broken\uFFFDtarget/)
     end
+  end
+
+  it "runs helper" do
+    system = double(arch: "x86_64")
+    allow(system).to receive(:check_requirement)
+
+    description = SystemDescription.new("systemname", SystemDescriptionStore.new)
+    inspector = UnmanagedFilesInspector.new(system, description)
+
+    allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
+    expect_any_instance_of(MachineryHelper).to receive(:inject_helper)
+    expect_any_instance_of(MachineryHelper).to receive(:remove_helper)
+    expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope|
+      scope.files = UnmanagedFileList.new
+    end
+
+    inspector.inspect(Filter.from_default_definition("inspect"))
   end
 end

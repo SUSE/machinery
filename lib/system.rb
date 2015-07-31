@@ -27,6 +27,8 @@ class System
   abstract_method :kiwi_describe
   abstract_method :retrieve_files
   abstract_method :read_file
+  abstract_method :inject_file
+  abstract_method :remove_file
 
   def self.for(host, remote_user = "root")
     if host && host != "localhost"
@@ -89,5 +91,9 @@ class System
     true
   rescue Cheetah::ExecutionFailed
     false
+  end
+
+  def arch
+    run_command("uname", "-m", stdout: :capture).chomp
   end
 end

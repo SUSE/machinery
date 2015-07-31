@@ -102,6 +102,7 @@ require_relative "serve_html_task"
 require_relative "file_diff"
 require_relative "server"
 require_relative "html"
+require_relative "machinery_helper"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

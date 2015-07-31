@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cat << EOT
+{
+  "unmanaged_files": {
+    "files": [
+      {
+        "name": "/opt/magic/file",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 0,
+        "mode": "644"
+      },
+      {
+        "name": "/opt/magic/other_file",
+        "type": "file",
+        "user": "root",
+        "group": "root",
+        "size": 0,
+        "mode": "644"
+      }
+    ]
+  }
+}
+EOT

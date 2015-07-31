@@ -138,5 +138,21 @@ describe RemoteSystem do
         expect(remote_system.read_file("/foo")).to be_nil
       end
     end
+
+    describe "#inject_file" do
+      it "copies a file via scp" do
+        expect(Cheetah).to receive(:run).with("scp", "/usr/foobar", "root@remotehost:/tmp")
+        remote_system.inject_file("/usr/foobar", "/tmp")
+      end
+    end
+
+    describe "#remove_file" do
+      it "removes a file" do
+        expect(remote_system).to receive(:run_command).with(
+          "rm", "/tmp/foo", privileged: true
+        )
+        remote_system.remove_file("/tmp/foo")
+      end
+    end
   end
 end
