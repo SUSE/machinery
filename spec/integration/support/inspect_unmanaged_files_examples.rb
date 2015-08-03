@@ -65,7 +65,7 @@ shared_examples "inspect unmanaged files" do |base|
       # that's why the architecture string "x86_64" ends up as x0_0
       expected = <<EOF
 Inspecting unmanaged-files...
-Note: Using traditional inspection because there is no helper binary for architecture 'x0_0' available.
+Note: Using traditional inspection because there is no helper binary for architecture '<arch>' available.
  -> Found 0 files and trees...\r\033\[K -> Found 0 files and trees...\r\033\[K -> Extracted 0 unmanaged files and trees.
 EOF
       expect(normalize_inspect_output(inspect_command.stdout)).to include(expected)

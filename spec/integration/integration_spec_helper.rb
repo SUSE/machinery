@@ -61,8 +61,9 @@ end
 
 def normalize_inspect_output(output)
   output.
-    gsub!(/\d+/, "0"). # Normalize output
-    gsub!(/(\r\033\[K.*?\r\033\[K).*\r\033\[K(.*)/, "\\1\\2") # strip all progress messages but two
+    gsub(/x86_64|i\d86/, "<arch>"). # Normalize architectures
+    gsub(/\d+/, "0"). # Normalize output
+    gsub(/(\r\033\[K.*?\r\033\[K).*\r\033\[K(.*)/, "\\1\\2") # strip all progress messages but two
 end
 
 def machinery_host(description)
