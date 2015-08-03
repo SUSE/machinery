@@ -23,6 +23,14 @@ shared_examples "CLI" do
       ).to fail.with_exit_code(1).and include_stderr("Unknown command 'invalid_command'")
     end
 
+    it "throws an error on ambiguous option" do
+      expect(
+        @machinery.run_command("#{machinery_command} inspect --extract localhost", as: "vagrant")
+      ).to fail.with_exit_code(1).and include_stderr(
+        "ambiguous option: --extract", "Run #{0} inspect --help for more information."
+        )
+    end
+
     it "processes help option" do
       expect(
         @machinery.run_command("#{machinery_command} -h", as: "vagrant")
