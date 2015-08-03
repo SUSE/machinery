@@ -7,6 +7,7 @@
     "/unmanaged_files/files/name=/var/tmp",
     "/unmanaged_files/files/name=/lost+found",
     "/unmanaged_files/files/name=/var/run",
+    "/unmanaged_files/files/name=/var/lock",
     "/unmanaged_files/files/name=/var/lib/rpm",
     "/unmanaged_files/files/name=/.snapshots",
     "/unmanaged_files/files/name=/proc",
