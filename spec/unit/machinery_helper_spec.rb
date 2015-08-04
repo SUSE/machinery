@@ -36,7 +36,7 @@ describe MachineryHelper do
     it "removes the helper using System#remove_file" do
       helper = MachineryHelper.new(dummy_system)
 
-      expect(dummy_system).to receive(:remove_file).with("./machinery-helper")
+      expect(dummy_system).to receive(:remove_file).with("/root/machinery-helper")
 
       helper.remove_helper
     end
@@ -69,7 +69,7 @@ describe MachineryHelper do
         }
       EOT
 
-      expect(dummy_system).to receive(:run_command).with("./machinery-helper", any_args).
+      expect(dummy_system).to receive(:run_command).with("/root/machinery-helper", any_args).
         and_return(json)
 
       scope = UnmanagedFilesScope.new
