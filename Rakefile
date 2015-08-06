@@ -129,14 +129,13 @@ namespace :rpm do
 end
 
 namespace :release do
-  desc "Release a new Machinery version ('type' is either 'major', 'minor 'or 'patch')"
-  task :machinery, [:type] do |task, args|
-    unless ["major", "minor", "patch"].include?(args[:type])
+  def run_release(type)
+    unless ["major", "minor", "patch"].include?(type)
       puts "Please specify a valid release type (major, minor or patch)."
       exit 1
     end
 
-    new_version = Release.generate_release_version(args[:type])
+    new_version = Release.generate_release_version(type)
     release = Release.new(version: new_version)
     # Check syntax, git and CI state
     Rake::Task['check:committed'].invoke
@@ -144,6 +143,11 @@ namespace :release do
     release.check
 
     release.publish
+  end
+
+  desc "Release a new Machinery version ('type' is either 'major', 'minor 'or 'patch')"
+  task :machinery, [:type] do |task, args|
+    run_release(args[:type])
   end
 end
 
