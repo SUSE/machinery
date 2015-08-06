@@ -23,7 +23,6 @@ require_relative "release_checks"
 require_relative "spec_template"
 
 class Release
-  include ReleaseChecks
 
   RPM_CHANGES_FILE = File.join(Machinery::ROOT, "package/machinery.changes")
   CHANGELOG_FILES  = [
@@ -41,6 +40,11 @@ class Release
     @release_time    = Time.now.strftime('%a %b %d %H:%M:%S %Z %Y')
     @mail            = Cheetah.run(["git", "config", "user.email"], :stdout => :capture).chomp
     @gemspec         = Gem::Specification.load("machinery.gemspec")
+    @release_checks = ReleaseChecks.new(@tag)
+  end
+
+  def check
+    @release_checks.check
   end
 
   def prepare

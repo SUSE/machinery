@@ -19,7 +19,11 @@ require "json"
 require "net/http"
 require "uri"
 
-module ReleaseChecks
+class ReleaseChecks
+  def initialize(tag)
+    @tag = tag
+  end
+
   def check
     check_tag
     check_jenkins_state
