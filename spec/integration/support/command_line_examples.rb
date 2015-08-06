@@ -84,6 +84,18 @@ shared_examples "CLI" do
       end
     end
 
+    describe "config" do
+      context "--help" do
+        it "shows the alternative synopsis" do
+          expect(
+            @machinery.run_command("#{machinery_command} config --help", as: "vagrant")
+          ).to succeed.and include_stdout(
+            "machinery [global options] config [KEY][=VALUE]"
+          )
+        end
+      end
+    end
+
     describe "validate number of given arguments" do
       context "when no arguments are expected" do
         it "fails with a message" do

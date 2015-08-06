@@ -729,6 +729,10 @@ class Cli
 
     The value of a key is shown when no value argument is passed.
     If neither the key argument nor the value argument are specified a list of all keys and their values are shown.
+
+    ALTERNATIVE SYNOPSIS:
+
+    machinery [global options] config [KEY][=VALUE]
   LONGDESC
   arg "KEY", :optional
   arg "VALUE", :optional
