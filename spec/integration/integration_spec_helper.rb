@@ -72,10 +72,12 @@ end
 
 def boxes
   {
-    "openSUSE_13_2" => "opensuse132",
-    "openSUSE_13_1" => "opensuse131",
-    "sles12" => "sles12",
-    "sles11" => "sles11sp3",
+    "openSUSE_13_2:x86_64" => "opensuse132",
+    "openSUSE_13_1:x86_64" => "opensuse131",
+    "sles12:x86_64" => "sles12",
+    "sles12:power_le" => "sles12:power_le",
+    "sles12:s390x" => "sles12:s390x",
+    "sles11:x86_64" => "sles11sp3",
     "rhel5" => "rhel5",
     "rhel6" => "rhel6"
   }
@@ -112,8 +114,7 @@ def include_examples_for_platform(currently_running_on)
           test_group_hierarchy[ENV["TESTGROUP"]].include?(test_group)
         end
         guests.each do |guest, _test_group|
-          os, _arch = guest.split(":")
-          include_examples test, "#{boxes[os]}" if boxes[os]
+          include_examples test, "#{boxes[guest]}" if boxes[guest]
         end
       end
     end
