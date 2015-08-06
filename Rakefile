@@ -128,22 +128,23 @@ namespace :rpm do
   end
 end
 
-desc "Release a new version ('type' is either 'major', 'minor 'or 'patch')"
-task :release, [:type] do |task, args|
-  unless ["major", "minor", "patch"].include?(args[:type])
-    puts "Please specify a valid release type (major, minor or patch)."
-    exit 1
+namespace :release do
+  desc "Release a new Machinery version ('type' is either 'major', 'minor 'or 'patch')"
+  task :machinery, [:type] do |task, args|
+    unless ["major", "minor", "patch"].include?(args[:type])
+      puts "Please specify a valid release type (major, minor or patch)."
+      exit 1
+    end
+
+    new_version = Release.generate_release_version(args[:type])
+    release = Release.new(version: new_version)
+    # Check syntax, git and CI state
+    Rake::Task['check:committed'].invoke
+    Rake::Task['check:syntax'].invoke
+    release.check
+
+    release.publish
   end
-
-  new_version = Release.generate_release_version(args[:type])
-  release = Release.new(version: new_version)
-
-  # Check syntax, git and CI state
-  Rake::Task['check:committed'].invoke
-  Rake::Task['check:syntax'].invoke
-  release.check
-
-  release.publish
 end
 
 desc "Build files in destination directory with scope information for integration tests"
