@@ -53,7 +53,7 @@ Packaging.configuration do |conf|
   conf.obs_api = "https://api.opensuse.org"
   conf.obs_project = "systemsmanagement:machinery"
   conf.package_name = "machinery"
-  conf.obs_target = "openSUSE_13.1"
+  conf.obs_target = "openSUSE_13.2"
   conf.version = Machinery::VERSION
 
   #lets ignore license check for now
