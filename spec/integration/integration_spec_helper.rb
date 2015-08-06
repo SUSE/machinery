@@ -75,11 +75,16 @@ def boxes
     "openSUSE_13_2:x86_64" => "opensuse132",
     "openSUSE_13_1:x86_64" => "opensuse131",
     "sles12:x86_64" => "sles12",
-    "sles12:power_le" => "sles12:power_le",
-    "sles12:s390x" => "sles12:s390x",
     "sles11:x86_64" => "sles11sp3",
     "rhel5" => "rhel5",
     "rhel6" => "rhel6"
+  }
+end
+
+def servers
+  {
+    "sles12:power_le" => "sles12:power_le",
+    "sles12:s390x" => "sles12:s390x"
   }
 end
 
@@ -115,6 +120,7 @@ def include_examples_for_platform(currently_running_on)
         end
         guests.each do |guest, _test_group|
           include_examples test, "#{boxes[guest]}" if boxes[guest]
+          include_examples "#{test} #{servers[guest]}" if servers[guest]
         end
       end
     end
