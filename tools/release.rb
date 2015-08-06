@@ -33,14 +33,15 @@ class Release
   def initialize(opts = {})
     @options = {
       version:      generate_development_version,
-      skip_rpm_cleanup: false
+      skip_rpm_cleanup: false,
+      jenkins_name:     "machinery-unit"
     }.merge(opts)
     @release_version = @options[:version]
     @tag             = "v#{@release_version}"
     @release_time    = Time.now.strftime('%a %b %d %H:%M:%S %Z %Y')
     @mail            = Cheetah.run(["git", "config", "user.email"], :stdout => :capture).chomp
     @gemspec         = Gem::Specification.load("machinery.gemspec")
-    @release_checks = ReleaseChecks.new(@tag)
+    @release_checks  = ReleaseChecks.new(@tag, @options[:jenkins_name])
   end
 
   def check
