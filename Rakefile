@@ -149,6 +149,13 @@ namespace :release do
   task :machinery, [:type] do |task, args|
     run_release(args[:type])
   end
+
+  desc "Release a new machinery-helper version ('type' is either 'major', 'minor 'or 'patch')"
+  task :helper, [:type] do |task, args|
+    Dir.chdir("../machinery-helper") do
+      run_release(args[:type])
+    end
+  end
 end
 
 desc "Build files in destination directory with scope information for integration tests"
