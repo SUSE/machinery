@@ -23,18 +23,14 @@ require_relative "release_checks"
 require_relative "spec_template"
 
 class Release
-
-  RPM_CHANGES_FILE = File.join(Machinery::ROOT, "package/machinery.changes")
-  CHANGELOG_FILES  = [
-    File.join(Machinery::ROOT, "NEWS"),
-    File.join(Machinery::ROOT, "RPM_CHANGES")
-  ]
-
   def initialize(opts = {})
     @options = {
       version:      generate_development_version,
       skip_rpm_cleanup: false,
-      jenkins_name:     "machinery-unit"
+      jenkins_name:     "machinery-unit",
+      changes_file:     File.join(Machinery::ROOT, "NEWS"),
+      rpm_changes_file: File.join(Machinery::ROOT, "RPM_CHANGES"),
+      package_changes_path: File.join(Machinery::ROOT, "package/machinery.changes")
     }.merge(opts)
     @release_version = @options[:version]
     @tag             = "v#{@release_version}"
@@ -42,6 +38,8 @@ class Release
     @mail            = Cheetah.run(["git", "config", "user.email"], :stdout => :capture).chomp
     @gemspec         = Gem::Specification.load("machinery.gemspec")
     @release_checks  = ReleaseChecks.new(@tag, @options[:jenkins_name])
+    @changelog_files = [@options[:changes_file], @options[:rpm_changes_file]]
+    @package_changes_path = @options[:package_changes_path]
   end
 
   def check
@@ -146,7 +144,7 @@ class Release
   def generate_changelog
     changes = { @release_version => create_rpm_header(@release_version, @release_time, @mail) }
     news    = { @release_version => "" }
-    CHANGELOG_FILES.each do |file|
+    @changelog_files.each do |file|
       version = @release_version
       time    = @release_time
       mail    = @mail
@@ -185,11 +183,11 @@ class Release
       changelog += value
     end
 
-    File.write(RPM_CHANGES_FILE, changelog)
+    File.write(@package_changes_path, changelog)
   end
 
   def finalize_news_file
-    CHANGELOG_FILES.each do |file|
+    @changelog_files.each do |file|
       content = File.read(file)
       # All changes for the next release are directly added below the headline
       # by the developers without adding a version line.
