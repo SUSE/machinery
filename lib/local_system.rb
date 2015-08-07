@@ -161,7 +161,7 @@ EOF
 
   # Removes a file from the System
   def remove_file(file)
-    File.delete(file)
+    File.delete(file) if File.exist?(file)
   rescue => e
     raise Machinery::Errors::RemoveFileFailed.new(
       "Could not remove file '#{file}' on local system'.\n" \
