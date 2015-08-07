@@ -48,15 +48,19 @@ class MachineryHelper
   end
 
   def inject_helper
-    @system.inject_file(local_helper_path, "/root/")
+    @system.inject_file(local_helper_path, Machinery::REMOTE_HELPERS_PATH)
   end
 
   def run_helper(scope)
-    json = @system.run_command("/root/machinery-helper", stdout: :capture, stderr: STDERR)
+    json = @system.run_command(
+      File.join(
+        Machinery::REMOTE_HELPERS_PATH, "machinery-helper"
+      ), stdout: :capture, stderr: STDERR
+    )
     scope.set_attributes(JSON.parse(json))
   end
 
   def remove_helper
-    @system.remove_file("/root/machinery-helper")
+    @system.remove_file(File.join(Machinery::REMOTE_HELPERS_PATH, "machinery-helper"))
   end
 end
