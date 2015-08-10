@@ -135,5 +135,7 @@ module Machinery
     class UnknownConfig < MachineryError; end
     class UnsupportedArchitecture < MachineryError; end
     class ServeFailed < MachineryError; end
+    class RemoveFileFailed < MachineryError; end
+    class InjectFileFailed < MachineryError; end
   end
 end
