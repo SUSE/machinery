@@ -87,7 +87,9 @@ EOF
         message = "Building '#{system_description.os.display_name}' is " \
           "not supported on this distribution.\n" \
           "Check the 'BUILD SUPPORT MATRIX' by running `#{$0} build --help` for " \
-          "further information which build targets are supported."
+          "further information which build targets are supported.\n" \
+          "You are only able to build the architecture you are running " \
+          "(#{LocalSystem.os.architecture})."
 
         raise(Machinery::Errors::BuildFailed.new(message))
       end
