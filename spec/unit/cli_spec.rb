@@ -679,8 +679,8 @@ describe Cli do
 
     it "shows stderr, stdout and the backtrace for unexpected errors" do
       expected_cheetah_out = <<-EOT
-Machinery experienced an unexpected error. Please file a bug report at: https://github.com/SUSE/machinery/issues/new
-
+Machinery experienced an unexpected error. Please file a bug report at: https://www.suse.com/mysupport
+An active support contract is required.
 Cheetah::ExecutionFailed
 
 Error output:
@@ -691,13 +691,44 @@ This is STDOUT
 Backtrace:
       EOT
 
+      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
       begin
         # Actually raise the exception, so we have a backtrace
         raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
       rescue => e
-        expect{ Cli.handle_error(e) }.to raise_error(SystemExit)
+        expect { Cli.handle_error(e) } .to raise_error(SystemExit)
       end
       expect(captured_machinery_stderr).to include(expected_cheetah_out)
+    end
+
+    it "shows the usual bug report message for openSUSE" do
+      allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+
+      begin
+        raise
+      rescue => e
+        expect { Cli.handle_error(e) }.to raise_error
+      end
+
+      expect(captured_machinery_output).to include(
+        "Machinery experienced an unexpected error. Please file a " \
+        "bug report at: https://github.com/SUSE/machinery/issues/new\n"
+      )
+    end
+
+    it "shows a special bug report message for SLES" do
+      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
+
+      begin
+        raise
+      rescue => e
+        expect { Cli.handle_error(e) } .to raise_error
+      end
+
+      expect(captured_machinery_output).to include(
+        "Machinery experienced an unexpected error. Please file a " \
+        "bug report at: https://www.suse.com/mysupport"
+      )
     end
   end
 
