@@ -45,13 +45,18 @@ describe RemoteSystem do
 
     describe "#run_command" do
       it "executes commands via ssh" do
-        expect(Cheetah).to receive(:run).with("ssh", "root@remotehost", "LC_ALL=C", "ls", "/tmp", {})
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "root@remotehost", "LC_ALL=en_US.utf8", "ls", "/tmp", {}
+        )
 
         remote_system.run_command("ls", "/tmp")
       end
 
       it "executes piped commands via ssh" do
-        expect(Cheetah).to receive(:run).with("ssh", "root@remotehost", "LC_ALL=C", "ls", "/tmp", "|", "grep", "foo", "|", "wc", "-l", {})
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "root@remotehost", "LC_ALL=en_US.utf8", "ls", "/tmp", "|", "grep", "foo",
+            "|", "wc", "-l", {}
+        )
 
         remote_system.run_command(["ls", "/tmp"], ["grep", "foo"], ["wc", "-l"])
       end
@@ -71,7 +76,7 @@ describe RemoteSystem do
 
       it "adheres to the remote_user option" do
         expect(Cheetah).to receive(:run).with(
-          "ssh", "machinery@remotehost", "LC_ALL=C", "ls", "/tmp", {}
+          "ssh", "machinery@remotehost", "LC_ALL=en_US.utf8", "ls", "/tmp", {}
         )
 
         remote_system.remote_user = "machinery"
@@ -80,7 +85,8 @@ describe RemoteSystem do
 
       it "uses sudo when necessary" do
         expect(Cheetah).to receive(:run).with(
-          "ssh", "machinery@remotehost", "sudo", "-n", "LC_ALL=C", "ls", "/tmp", privileged: true
+          "ssh", "machinery@remotehost", "sudo", "-n", "LC_ALL=en_US.utf8",
+            "ls", "/tmp", privileged: true
         )
 
         remote_system.remote_user = "machinery"
@@ -89,7 +95,8 @@ describe RemoteSystem do
 
       it "raises an exception if the user is not allowed to run sudo" do
         expect(Cheetah).to receive(:run).with(
-          "ssh", "machinery@remotehost", "sudo", "-n", "LC_ALL=C", "ls", "/tmp", privileged: true
+          "ssh", "machinery@remotehost", "sudo", "-n", "LC_ALL=en_US.utf8", "ls", "/tmp",
+            privileged: true
         ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
 
         remote_system.remote_user = "machinery"

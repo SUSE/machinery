@@ -34,7 +34,7 @@ class BuildTask
         output_path, img_extension)
 
       begin
-        LoggedCheetah.run(
+        LoggedCheetah.run_with_c(
           "sudo",
           tmp_script.path,
           stdout: $stdout,

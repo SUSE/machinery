@@ -18,19 +18,34 @@
 require_relative "spec_helper"
 
 describe LoggedCheetah do
-  describe "#run" do
+  describe ".run" do
+    before (:each) do
+      expect(Cheetah).to receive(:run)
+    end
+
     it "logs the executed command" do
       expect(Machinery.logger).to receive(:info).with(/'ls -l'/)
-      expect(Cheetah).to receive(:run)
 
       LoggedCheetah.run("ls", "-l")
     end
 
     it "does not log Cheetah options" do
       expect(Machinery.logger).to receive(:info).with(/'ls -l'$/)
-      expect(Cheetah).to receive(:run)
 
       LoggedCheetah.run("ls", "-l", stdout: :capture)
+    end
+
+    it "runs the commands with_utf8_locale" do
+      expect(LoggedCheetah).to receive(:with_utf8_locale).and_call_original
+      LoggedCheetah.run("ls", "-l")
+    end
+  end
+
+  describe ".run_with_c" do
+    it "runs the commands with_c_locale" do
+      expect(LoggedCheetah).to receive(:with_c_locale).and_call_original
+      expect(Cheetah).to receive(:run).with("ls", "-l")
+      LoggedCheetah.run_with_c("ls", "-l")
     end
   end
 end
