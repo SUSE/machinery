@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 describe LoggedCheetah do
-  describe "#run" do
+  describe ".run" do
     before (:each) do
       expect(Cheetah).to receive(:run)
     end
