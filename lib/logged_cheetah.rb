@@ -20,6 +20,10 @@ class LoggedCheetah
     run_overloaded(*args, {})
   end
 
+  def self.run_with_c(*args)
+    run_overloaded(*args, with_c_locale: true)
+  end
+
   private
 
   def self.run_overloaded(*args, options)

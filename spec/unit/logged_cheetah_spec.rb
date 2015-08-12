@@ -40,5 +40,12 @@ describe LoggedCheetah do
       LoggedCheetah.run("ls", "-l")
     end
   end
+
+  describe ".run_with_c" do
+    it "runs the commands with_c_locale" do
+      expect(LoggedCheetah).to receive(:with_c_locale).and_call_original
+      expect(Cheetah).to receive(:run).with("ls", "-l")
+      LoggedCheetah.run_with_c("ls", "-l")
+    end
   end
 end
