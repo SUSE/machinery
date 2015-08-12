@@ -137,5 +137,6 @@ module Machinery
     class ServeFailed < MachineryError; end
     class RemoveFileFailed < MachineryError; end
     class InjectFileFailed < MachineryError; end
+    class UnexpectedInputData < MachineryError; end
   end
 end

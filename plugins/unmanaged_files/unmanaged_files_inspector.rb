@@ -108,6 +108,12 @@ class UnmanagedFilesInspector < Inspector
           os = osl.find do |o|
             o.name == "/#{file[:path]}#{file[:type] == :dir ? "/" : ""}"
           end
+          if !os
+            raise Machinery::Errors::UnexpectedInputData.new(
+              "The inspection failed because of the unexpected input data:\n#{file.inspect}\n\n" \
+                "Please file a bug report at: https://github.com/SUSE/machinery/issues/new"
+            )
+          end
 
           os.user = file[:user]
           os.group = file[:group]
