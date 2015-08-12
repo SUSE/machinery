@@ -188,7 +188,7 @@
     <package name="tar"/>
     <package name="tcpd"/>
     <package name="terminfo-base"/>
-    <package name="test-quote-char"/>
+    <package name="test-quote-char-and-umlauts"/>
     <package name="timezone"/>
     <package name="tunctl"/>
     <package name="udev"/>

@@ -1670,7 +1670,7 @@
       "checksum": "4c87f521aa2da791c0e6570330716718"
     },
     {
-      "name": "test-quote-char",
+      "name": "test-quote-char-and-umlauts",
       "version": "1.0",
       "release": "1",
       "arch": "noarch",

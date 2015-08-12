@@ -3,6 +3,7 @@
   Files extracted: yes
   * /opt/test-quote-char/link (link_path)
   * /usr/bin/crontab (link_path, group)
+  * /usr/bin/umlaut-äöü (size, md5)
   * /usr/share/info/sed.info.gz (size, md5)
   * /usr/share/man/man1/sed.1.gz (deleted)
   * /var/lib/nfs/rpc_pipefs (mode)

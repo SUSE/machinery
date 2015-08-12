@@ -201,7 +201,7 @@
   * sysvinit-tools-2.88+-89.1.2.x86_64 (openSUSE)
   * tar-1.26-19.1.2.x86_64 (openSUSE)
   * terminfo-base-5.9-33.1.2.x86_64 (openSUSE)
-  * test-quote-char-1.0-1.noarch ((none))
+  * test-quote-char-and-umlauts-1.0-10.1.noarch (obs://build.opensuse.org/systemsmanagement)
   * time-1.7-3.1.2.x86_64 (openSUSE)
   * tunctl-1.5-22.1.2.x86_64 (openSUSE)
   * udev-208-6.1.x86_64 (openSUSE)
