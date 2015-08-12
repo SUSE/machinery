@@ -678,9 +678,11 @@ describe Cli do
     end
 
     it "shows stderr, stdout and the backtrace for unexpected errors" do
-      expected_cheetah_out = <<-EOT
-Machinery experienced an unexpected error. Please file a bug report at: https://www.suse.com/mysupport
-An active support contract is required.
+      expected_cheetah_out = <<-EOT.chomp
+Machinery experienced an unexpected error.
+If this impacts your business please file a service request at https://www.suse.com/mysupport
+so that we can assist you on this issue. An active support contract is required.
+
 Cheetah::ExecutionFailed
 
 Error output:
@@ -726,8 +728,9 @@ Backtrace:
       end
 
       expect(captured_machinery_output).to include(
-        "Machinery experienced an unexpected error. Please file a " \
-        "bug report at: https://www.suse.com/mysupport"
+        "Machinery experienced an unexpected error.\n" \
+        "If this impacts your business please file a service request at https://www.suse.com/mysupport\n" \
+        "so that we can assist you on this issue. An active support contract is required.\n"
       )
     end
   end
