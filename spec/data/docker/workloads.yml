@@ -1,0 +1,5 @@
+mariadb:
+  service: db
+  parameters:
+    user: portus
+    password: portus

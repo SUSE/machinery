@@ -1,0 +1,5 @@
+db:
+  image: opensuse/mariadb
+  environment:
+    MYSQL_USER: portus
+    MYSQL_PASS: portus

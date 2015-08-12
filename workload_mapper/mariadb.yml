@@ -1,0 +1,7 @@
+mariadb:
+  image: opensuse/mariadb
+  environment:
+    MYSQL_ROOT_PASS:
+    MYSQL_USER: :user
+    MYSQL_PASS: :password
+    MYSQL_DB_NAME:
