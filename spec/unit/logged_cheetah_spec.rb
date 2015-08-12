@@ -34,5 +34,11 @@ describe LoggedCheetah do
 
       LoggedCheetah.run("ls", "-l", stdout: :capture)
     end
+
+    it "runs the commands with_utf8_locale" do
+      expect(LoggedCheetah).to receive(:with_utf8_locale).and_call_original
+      LoggedCheetah.run("ls", "-l")
+    end
+  end
   end
 end
