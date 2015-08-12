@@ -114,7 +114,7 @@ EOF
     else
       cheetah_class = LoggedCheetah
     end
-    with_c_locale do
+    with_utf8_locale do
       cheetah_class.run(*args)
     end
   end
