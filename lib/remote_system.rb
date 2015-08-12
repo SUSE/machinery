@@ -73,7 +73,7 @@ class RemoteSystem < System
     end
 
     sudo = ["sudo", "-n"] if options[:privileged] && remote_user != "root"
-    cmds = ["ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=C", *piped_args, options].compact.flatten
+    cmds = ["ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=en_US.utf8", *piped_args, options].compact.flatten
     cheetah_class.run(*cmds)
   rescue Cheetah::ExecutionFailed => e
     if e.stderr.include?("password is required")
