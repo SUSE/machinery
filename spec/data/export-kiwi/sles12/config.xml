@@ -212,7 +212,7 @@
     <package name="sysvinit-tools"/>
     <package name="tar"/>
     <package name="terminfo-base"/>
-    <package name="test-quote-char"/>
+    <package name="test-quote-char-and-umlauts"/>
     <package name="udev"/>
     <package name="update-alternatives"/>
     <package name="util-linux"/>
