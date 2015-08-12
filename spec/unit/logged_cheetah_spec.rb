@@ -19,16 +19,18 @@ require_relative "spec_helper"
 
 describe LoggedCheetah do
   describe "#run" do
+    before (:each) do
+      expect(Cheetah).to receive(:run)
+    end
+
     it "logs the executed command" do
       expect(Machinery.logger).to receive(:info).with(/'ls -l'/)
-      expect(Cheetah).to receive(:run)
 
       LoggedCheetah.run("ls", "-l")
     end
 
     it "does not log Cheetah options" do
       expect(Machinery.logger).to receive(:info).with(/'ls -l'$/)
-      expect(Cheetah).to receive(:run)
 
       LoggedCheetah.run("ls", "-l", stdout: :capture)
     end
