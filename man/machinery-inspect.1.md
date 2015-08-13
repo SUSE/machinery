@@ -108,7 +108,7 @@ trigger errors.
 
   * To add a remote `machinery` user run as root:
 
-    # `useradd -m  machinery  -c "remote user for machinery"`
+    # `useradd -m machinery -c "remote user for machinery"`
 
     To configure a password for the new user run:
 
