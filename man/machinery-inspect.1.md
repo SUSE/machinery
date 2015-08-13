@@ -106,6 +106,14 @@ trigger errors.
 
     machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -V *,/bin/tar --create *
 
+  * To add a remote `machinery` user run as root:
+
+    # `useradd -m  machinery  -c "remote user for machinery"`
+
+    To configure a password for the new user run:
+
+    # `passwd machinery`
+
 ### EXAMPLES
 
   * Inspect remote system `myhost` and save system description under name
