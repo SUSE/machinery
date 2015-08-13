@@ -729,7 +729,8 @@ Backtrace:
 
       expect(captured_machinery_output).to include(
         "Machinery experienced an unexpected error.\n" \
-        "If this impacts your business please file a service request at https://www.suse.com/mysupport\n" \
+        "If this impacts your business please file a service request at " \
+        "https://www.suse.com/mysupport\n" \
         "so that we can assist you on this issue. An active support contract is required.\n"
       )
     end
