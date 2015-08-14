@@ -534,4 +534,68 @@ describe SystemDescription do
       expect(subject.filter_definitions("inspect")).to eq(definitions)
     end
   end
+
+  describe "#runs_service?" do
+    let(:system_description) {
+      create_test_description(json: <<-EOF)
+        {
+          "services": {
+            "init_system": "systemd",
+            "services": [
+              {
+                "name": "mysql.service",
+                "state": "enabled"
+              }]
+          }
+        }
+      EOF
+    }
+    it "returns true when found" do
+      expect(system_description.runs_service?("mysql")).to be_truthy
+    end
+  end
+
+  describe "#has_file?" do
+    let(:system_description) {
+      create_test_description(json: <<-EOF)
+        {
+          "config_files": {
+            "extracted": true,
+            "files": [
+              {
+                "name": "/etc/my.cnf"
+              }
+            ]
+          }
+        }
+      EOF
+    }
+    it "returns true when found" do
+      expect(system_description.has_file?("/etc/my.cnf")).to be_truthy
+    end
+  end
+
+  describe "#read_config" do
+    let(:system_description) {
+      create_test_description(json: <<-EOF)
+        {
+          "config_files": {
+            "extracted": true,
+            "files": [
+              {
+                "name": "/etc/my.cnf"
+              }
+            ]
+          }
+        }
+      EOF
+    }
+    let(:mapper_path) { given_directory_from_data "mapper" }
+    let(:config_file_path) { File.join(mapper_path, "my.cnf") }
+    it "returns the parsed value" do
+      allow_any_instance_of(Machinery::SystemFile).
+        to receive(:content).and_return(File.read(config_file_path))
+      expect(system_description.read_config("/etc/my.cnf", "foo")).to eq("bar")
+    end
+  end
 end
