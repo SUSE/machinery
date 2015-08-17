@@ -19,6 +19,6 @@ class DockerizeTask
   def dockerize(description, dir)
     mapper = WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
-    mapper.write_compose_file(dir)
+    mapper.write_compose_file(workloads, dir)
   end
 end

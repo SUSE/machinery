@@ -47,14 +47,13 @@ describe DockerizeTask do
 
   describe "#dockerize" do
     let(:output_path) { given_directory }
-    let(:config_file_path) { File.join(mapper_path, "my.cnf") }
-    let(:mapper_path) { given_directory_from_data "mapper" }
+    let(:workloads) { Hash.new }
 
     it "dockerizes a system description" do
-      allow_any_instance_of(Machinery::SystemFile).
-        to receive(:content).and_return(File.read(config_file_path))
-      expect_any_instance_of(WorkloadMapper).to receive(:identify_workloads).with(system_description)
-      expect_any_instance_of(WorkloadMapper).to receive(:write_compose_file).with(output_path)
+      expect_any_instance_of(WorkloadMapper).
+        to receive(:identify_workloads).with(system_description).and_return(workloads)
+      expect_any_instance_of(WorkloadMapper).
+        to receive(:write_compose_file).with(workloads, output_path)
       dockerize_task.dockerize(system_description, output_path)
     end
   end
