@@ -269,4 +269,19 @@ class SystemDescription < Machinery::Object
   def description_path
     @store.description_path(name)
   end
+
+  def runs_service?(name)
+    self["services"].services.any? { |service| service.name == "#{name}.service" }
+  end
+
+  def has_file?(name)
+    self["config_files"].files.any? { |file| file.name == name }
+  end
+
+  def read_config(path, key)
+    if scope_extracted?("config_files")
+      file = self["config_files"].files.find { |f| f.name == path }
+      /^#{key} += *(.+)/.match(file.content).to_a.fetch(1, nil)
+    end
+  end
 end

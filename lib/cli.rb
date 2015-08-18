@@ -787,6 +787,26 @@ class Cli
     end
   end
 
+  if @config.experimental_features
+    desc "Dockerize a system description"
+    long_desc <<-LONGDESC
+      Detects workloads from a system description and creates a recommendation for a corresponding
+      docker container setup
+    LONGDESC
+    arg "NAME"
+    command :dockerize do |c|
+      c.flag ["docker-dir", :d], type: String, required: true,
+        desc: "Location where the docker files will be stored", arg_name: "DIRECTORY"
+
+      c.action do |_global_options, options, args|
+        name = shift_arg(args, "NAME")
+        description = SystemDescription.load(name, system_description_store)
+        task = DockerizeTask.new
+        task.dockerize(description, File.expand_path(options["docker-dir"]))
+      end
+    end
+  end
+
   def self.system_description_store
     if ENV.has_key?("MACHINERY_DIR")
       SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
