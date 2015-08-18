@@ -4,6 +4,7 @@
   * /opt/test-quote-char/link (link_path)
   * /sys (mode)
   * /usr/bin/crontab (link_path, group)
+  * /usr/bin/umlaut-äöü (size, md5)
   * /usr/share/info/sed.info.gz (size, md5)
   * /usr/share/man/man1/sed.1.gz (deleted)
   * /var/lib/ca-certificates/openssl (mode)

@@ -34,8 +34,8 @@ shared_examples "inspect and build" do |bases|
         measure("Inspect") do
           expect(
             @machinery.run_command(
-              "machinery inspect --exclude=/packages/name=test-quote-char #{@subject_system.ip} " \
-              " -x --name=build_test --remote-user=machinery",
+              "machinery inspect --exclude=/packages/name=test-quote-char-and-umlauts " \
+              "#{@subject_system.ip} -x --name=build_test --remote-user=machinery",
               as: "vagrant"
             )
           ).to succeed.with_stderr
