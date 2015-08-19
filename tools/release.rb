@@ -129,7 +129,7 @@ class Release
     # The development version RPMs have the following version number scheme:
     # <base version>.<timestamp><os>git<short git hash>
     timestamp = Time.now.strftime("%Y%m%dT%H%M%SZ")
-    commit_id = Cheetah.run("git", "rev-parse", "--short", "HEAD", :stdout => :capture).chomp
+    commit_id = Cheetah.run("git", "rev-parse", "--short", "HEAD", stdout: :capture).chomp
 
     "#{Release.version}.#{timestamp}#{build_dist.gsub(/[._]/, "")}git#{commit_id}"
   end
@@ -140,7 +140,7 @@ class Release
     prepare
 
     # Build gem and send everything to IBS
-    Rake::Task['osc:commit'].invoke
+    Rake::Task["osc:commit"].invoke
   end
 
   def remove_old_releases(skip_rpm_cleanup: false)
@@ -171,7 +171,7 @@ class Release
       env = SpecTemplate.new(@options[:version], @gemspec)
     else
       arch = @options[:package_name][/^machinery-helper-(\w*)$/, 1]
-      env = OpenStruct.new( { version: @options[:version], arch: arch } )
+      env = OpenStruct.new(version: @options[:version], arch: arch)
     end
 
     File.open("package/#{@options[:package_name]}.spec", "w+") do |spec_file|
@@ -239,7 +239,9 @@ class Release
       # Since the version line is automatically added during release by this
       # method we can check for new bullet points since the last release.
       if content.scan(/# Machinery .*$\n+## Version /).empty?
-        content = content.sub(/\n+/, "\n\n\n## Version #{@options[:version]} - #{@release_time} - #{@mail}\n\n")
+        content = content.sub(
+          /\n+/, "\n\n\n## Version #{@options[:version]} - #{@release_time} - #{@mail}\n\n"
+        )
         File.write(file, content)
       end
     end
