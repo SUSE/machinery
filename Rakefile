@@ -49,58 +49,70 @@ RSpec::Core::RakeTask.new("spec:tools") do |t|
   t.pattern = "spec/tools/**/*_spec.rb"
 end
 
-Packaging.configuration do |conf|
-  conf.obs_api = "https://api.opensuse.org"
-  conf.obs_project = "systemsmanagement:machinery"
-  conf.package_name = "machinery"
-  conf.obs_target = "openSUSE_13.2"
-  conf.version = Machinery::VERSION
+def configure_machinery
+  Packaging.configuration do |conf|
+    conf.obs_api = "https://api.opensuse.org"
+    conf.obs_project = "systemsmanagement:machinery"
+    conf.package_name = "machinery"
+    conf.obs_target = "openSUSE_13.2"
 
-  #lets ignore license check for now
-  conf.skip_license_check << /.*/
+    #lets ignore license check for now
+    conf.skip_license_check << /.*/
+  end
+end
+
+def configure_machinery_helper
+  Packaging.configuration do |conf|
+    conf.obs_api = "https://api.opensuse.org"
+    conf.obs_project = "systemsmanagement:machinery:helper"
+    conf.package_name = "machinery-helper-x86_64"
+    conf.obs_target = "SLE_12"
+
+    #lets ignore license check for now
+    conf.skip_license_check << /.*/
+  end
 end
 
 namespace :man_pages do
   desc 'Build man page(s)'
   task :build do
-    puts "  Building man pages"
-    manpage = ""
-    Inspector.all_scopes.each do |scope|
-      manpage += "* #{scope}\n\n"
-      manpage += File.read("plugins/#{scope}/#{scope}.md")
+    if Dir.exist?("man")
+      puts "  Building man pages"
+      manpage = ""
+      Inspector.all_scopes.each do |scope|
+        manpage += "* #{scope}\n\n"
+        manpage += File.read("plugins/#{scope}/#{scope}.md")
+        manpage += "\n"
+      end
       manpage += "\n"
+      File.write("man/generated/machinery_main_scopes.1.md", manpage)
+
+      system <<-EOF
+        cat man/machinery_main_general.1.md man/generated/machinery_main_scopes.1.md \
+          man/machinery_main_usecases.1.md man/machinery-*.1.md \
+          man/machinery_footer.1.md  > man/generated/machinery.1.md
+      EOF
+      system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
+      system "ronn man/generated/machinery.1.md"
+      system "gzip -f man/generated/*.1"
     end
-    manpage += "\n"
-    File.write("man/generated/machinery_main_scopes.1.md", manpage)
 
-    system <<-EOF
-      cat man/machinery_main_general.1.md man/generated/machinery_main_scopes.1.md \
-        man/machinery_main_usecases.1.md man/machinery-*.1.md \
-        man/machinery_footer.1.md  > man/generated/machinery.1.md
-    EOF
-    system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
-    system "ronn man/generated/machinery.1.md"
-    system "gzip -f man/generated/*.1"
-  end
-
-  desc 'Create web view of man page'
-  task :web => ["man_pages:build"] do
-    system "ronn -f man/generated/machinery.1.md"
-    system "man/generate_man"
+    desc 'Create web view of man page'
+    task :web => ["man_pages:build"] do
+      system "ronn -f man/generated/machinery.1.md"
+      system "man/generate_man"
+    end
   end
 end
 
-# Disable packaging_tasks' tarball task. We package a gem, so we don't have to
-# put the sources into IBS. Instead we build the gem in the tarball task
-Rake::Task[:tarball].clear
-task :tarball => ["man_pages:build"] do
-  Cheetah.run "gem", "build", "machinery.gemspec"
-  FileUtils.mv Dir.glob("machinery-*.gem"), "package/"
-end
 
-namespace :rpm do
-  desc 'Build RPM of current version'
-  task :build, [:api, :project, :target] do |task, args|
+namespace :build do
+  desc 'Build RPM of Machinery'
+  task :machinery, [:api, :project, :target] do |task, args|
+    configure_machinery
+    # Disable packaging_tasks' tarball task. We package a gem, so we don't have to
+    # put the sources into IBS. Instead we build the gem in the tarball task
+    Rake::Task[:tarball].clear
     if args[:api] && args[:project] && args[:target]
       Packaging.configuration do |conf|
         conf.obs_api = args[:api]
@@ -126,19 +138,52 @@ namespace :rpm do
     release = Release.new(skip_rpm_cleanup: skip_rpm_cleanup)
     release.build_local
   end
+
+  desc 'Build RPM of machinery-helper'
+  task :helper do |task, args|
+    Dir.chdir("../machinery-helper") do
+      configure_machinery_helper
+      version = Release.generate_development_version
+      Packaging.configuration do |conf|
+        conf.version = version
+      end
+
+      # This task builds unreleased versions of the RPM, so we don't want to
+      # bump and commit the version each time. Instead we just set the version
+      # temporarily and revert the change afterwards. That causes the
+      # check:committed check which is triggered by osc:build to fail, though,
+      # so we clear it instead.
+      Rake::Task["check:committed"].clear
+
+      # We don't want the unit tests to be called each time the package is
+      # build since building is also required for the integration tests.
+      # This allows running the integration tests on a work-in-progress code
+      # base even when the unit tests are failing.
+      Rake::Task["package"].prerequisites.delete("test")
+
+      skip_rpm_cleanup = (ENV["SKIP_RPM_CLEANUP"] == "true")
+      release = Release.new(skip_rpm_cleanup: skip_rpm_cleanup, package_name: "machinery-helper-x86_64", jenkins_name: "machinery-helper", changes_file: "CHANGES.md", version: version)
+      release.build_local
+    end
+  end
 end
 
 namespace :release do
-  def run_release(type)
-    unless ["major", "minor", "patch"].include?(type)
+  def run_release(options)
+    unless ["major", "minor", "patch"].include?(options[:type])
       puts "Please specify a valid release type (major, minor or patch)."
       exit 1
     end
 
-    new_version = Release.generate_release_version(type)
-    release = Release.new(version: new_version)
+    options[:version] = Release.generate_release_version(options[:type])
+    Packaging.configuration do |conf|
+      conf.version = options[:version]
+    end
+
     # Check syntax, git and CI state
     Rake::Task['check:committed'].invoke
+
+    release = Release.new(options)
     Rake::Task['check:syntax'].invoke
     release.check
 
@@ -147,13 +192,16 @@ namespace :release do
 
   desc "Release a new Machinery version ('type' is either 'major', 'minor 'or 'patch')"
   task :machinery, [:type] do |task, args|
-    run_release(args[:type])
+    configure_machinery
+    run_release(type: args[:type])
   end
 
   desc "Release a new machinery-helper version ('type' is either 'major', 'minor 'or 'patch')"
   task :helper, [:type] do |task, args|
     Dir.chdir("../machinery-helper") do
-      run_release(args[:type])
+      configure_machinery_helper
+
+      run_release(type: args[:type], package_name: "machinery-helper-x86_64", jenkins_name: "machinery-helper", changes_file: "CHANGES.md")
     end
   end
 end
