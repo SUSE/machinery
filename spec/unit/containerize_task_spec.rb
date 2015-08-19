@@ -17,11 +17,11 @@
 
 require_relative "spec_helper"
 
-describe DockerizeTask do
+describe ContainerizeTask do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
-  let(:dockerize_task) { DockerizeTask.new }
+  let(:containerize_task) { ContainerizeTask.new }
   let(:system_description) {
     create_test_description(json: <<-EOF)
       {
@@ -45,16 +45,16 @@ describe DockerizeTask do
     EOF
   }
 
-  describe "#dockerize" do
+  describe "#containerize" do
     let(:output_path) { given_directory }
     let(:workloads) { Hash.new }
 
-    it "dockerizes a system description" do
+    it "containerize a system description" do
       expect_any_instance_of(WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
       expect_any_instance_of(WorkloadMapper).
         to receive(:write_compose_file).with(workloads, output_path)
-      dockerize_task.dockerize(system_description, output_path)
+      containerize_task.containerize(system_description, output_path)
     end
   end
 end

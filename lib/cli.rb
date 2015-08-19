@@ -788,21 +788,21 @@ class Cli
   end
 
   if @config.experimental_features
-    desc "Dockerize a system description"
+    desc "Containerize a system description"
     long_desc <<-LONGDESC
       Detects workloads from a system description and creates a recommendation for a corresponding
-      docker container setup
+      container setup
     LONGDESC
     arg "NAME"
-    command :dockerize do |c|
-      c.flag ["docker-dir", :d], type: String, required: true,
-        desc: "Location where the docker files will be stored", arg_name: "DIRECTORY"
+    command :containerize do |c|
+      c.flag ["container-dir", :c], type: String, required: true,
+        desc: "Location where the container files will be stored", arg_name: "DIRECTORY"
 
       c.action do |_global_options, options, args|
         name = shift_arg(args, "NAME")
         description = SystemDescription.load(name, system_description_store)
-        task = DockerizeTask.new
-        task.dockerize(description, File.expand_path(options["docker-dir"]))
+        task = ContainerizeTask.new
+        task.containerize(description, File.expand_path(options["container-dir"]))
       end
     end
   end
