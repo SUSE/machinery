@@ -99,4 +99,25 @@ describe WorkloadMapper do
         to have_key("mariadb")
     end
   end
+
+  describe "#fill_in_template" do
+    let(:parameters) { { "symbol" => "value" } }
+
+    context "when it finds a symbol" do
+      let(:template) { { "service" => { "key" => :symbol } } }
+      let(:filled_in_template) { { "service" => { "key" => "value" } } }
+
+      it "replaces it with a value" do
+        expect(subject.fill_in_template(template, parameters)).to eq(filled_in_template)
+      end
+    end
+
+    context "when it finds a hash" do
+      let(:template) { { "service" => { "hash" => { "key" => :symbol } } } }
+      let(:filled_in_template) { { "service" => { "hash" => { "key" => "value" } } } }
+      it "replaces it with a value" do
+        expect(subject.fill_in_template(template, parameters)).to eq(filled_in_template)
+      end
+    end
+  end
 end

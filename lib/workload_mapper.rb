@@ -57,6 +57,16 @@ class WorkloadMapper
     workloads
   end
 
+  def fill_in_template(service, parameters)
+    service.each do |key, value|
+      if value.is_a?(Hash)
+        fill_in_template(value, parameters)
+      elsif value.is_a?(Symbol)
+        service[key] = parameters[value.to_s]
+      end
+    end
+  end
+
   private
 
   def workload_mapper_path
@@ -65,11 +75,5 @@ class WorkloadMapper
 
   def compact(service)
     service.each { |_, attr| attr.is_a?(Hash) && attr.reject! { |_, val| val.nil? } }
-  end
-
-  def fill_in_template(service, parameters)
-    service.each do |sk, sv|
-      sv.is_a?(Hash) && sv.each { |ki, kv| service[sk][ki] = parameters[kv.to_s] }
-    end
   end
 end
