@@ -281,7 +281,7 @@ class SystemDescription < Machinery::Object
   def read_config(path, key)
     if scope_extracted?("config_files")
       file = self["config_files"].files.find { |f| f.name == path }
-      /^#{key} += *(.+)/.match(file.content).to_a.fetch(1, nil)
+      / *#{key} *(=|:) *(.*)/.match(file.content).to_a.fetch(2, nil)
     end
   end
 end
