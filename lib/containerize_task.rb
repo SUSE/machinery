@@ -15,8 +15,8 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class DockerizeTask
-  def dockerize(description, dir)
+class ContainerizeTask
+  def containerize(description, dir)
     mapper = WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
     mapper.write_compose_file(workloads, dir)
