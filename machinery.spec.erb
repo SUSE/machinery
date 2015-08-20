@@ -26,6 +26,7 @@ Release:        0
 %define mod_weight 1
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  machinery-helper-x86_64
 BuildRequires:  ruby-macros >= 5
 # libxml2-devel and libxslt-devel are needed to install Nokogiri.
 BuildRequires:  libxml2-devel
@@ -77,6 +78,10 @@ toolkit for Linux.
 %build
 
 %install
+# Install machinery helpers
+for arch in x86_64; do
+  install -D -m 0755 %{_datadir}/machinery/helpers/$arch/machinery-helper %{buildroot}/%{_datadir}/machinery/helpers/$arch/machinery-helper
+done
 
 # Install the gem itself
 
@@ -155,6 +160,7 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 %{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_full_name}.gem
 %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_full_name}.gemspec
+%{_datadir}/machinery
 %{_mandir}/man1/*.1.gz
 %doc COPYING NEWS
 

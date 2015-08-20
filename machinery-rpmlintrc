@@ -2,3 +2,5 @@
 # gems violates many rpmlint checks.
 addFilter("/bundle/ruby/[^/]+/gems/")
 
+# machinery helper should be linked statically
+addFilter("statically-linked-binary")
