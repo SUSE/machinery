@@ -46,7 +46,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.volume_cache = 'none'
     end
 
-    machinery_131.vm.provision "machinery_rpm"
+    machinery_131.vm.provision "machinery_rpm",
+      api: "https://api.opensuse.org",
+      project: "systemsmanagement:machinery",
+      package: "openSUSE_13.1"
   end
 
   config.vm.define :opensuse132 do |opensuse132|

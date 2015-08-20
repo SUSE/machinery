@@ -38,7 +38,7 @@ If osc was already used before the only important part is the addition of `openS
 
 Since this question can't be confirmed in the build script `openSUSE:13.1` needs to be added manually if the repository wasn't used before. The separation char for `trusted_prj` is a space.
 
-The configuration can be tested by running `rake rpm:build` in the git tree.
+The configuration can be tested by running `rake build:machinery` in the git tree.
 
 ## Start
 

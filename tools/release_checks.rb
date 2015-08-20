@@ -19,7 +19,12 @@ require "json"
 require "net/http"
 require "uri"
 
-module ReleaseChecks
+class ReleaseChecks
+  def initialize(tag, jenkins_name)
+    @tag = tag
+    @jenkins_name = jenkins_name
+  end
+
   def check
     check_tag
     check_jenkins_state
@@ -42,7 +47,7 @@ module ReleaseChecks
   end
 
   def check_jenkins_state
-    uri = URI.parse("https://ci.opensuse.org/job/machinery-unit/lastStableBuild/api/json")
+    uri = URI.parse("https://ci.opensuse.org/job/#{@jenkins_name}/lastStableBuild/api/json")
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == "https"
