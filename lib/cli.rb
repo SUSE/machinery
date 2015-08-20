@@ -795,14 +795,14 @@ class Cli
     LONGDESC
     arg "NAME"
     command :containerize do |c|
-      c.flag ["container-dir", :c], type: String, required: true,
+      c.flag ["output-dir", :o], type: String, required: true,
         desc: "Location where the container files will be stored", arg_name: "DIRECTORY"
 
       c.action do |_global_options, options, args|
         name = shift_arg(args, "NAME")
         description = SystemDescription.load(name, system_description_store)
         task = ContainerizeTask.new
-        task.containerize(description, File.expand_path(options["container-dir"]))
+        task.containerize(description, File.expand_path(options["output-dir"]))
       end
     end
   end
