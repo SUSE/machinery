@@ -67,7 +67,7 @@ describe WorkloadMapper do
     let(:expected_node) {
       {
         "db" => {
-          "image" => "opensuse/mariadb",
+          "build" => "./mariadb",
           "environment" => {
             "MYSQL_USER" => "portus",
             "MYSQL_PASS" => "portus"

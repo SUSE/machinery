@@ -33,7 +33,7 @@ class WorkloadMapper
   end
 
   def load_compose_template(workload)
-    template = YAML::load(File.read(File.join(workload_mapper_path, "#{workload}.yml")))
+    template = YAML::load(File.read(File.join(workload_mapper_path, workload, "compose-template.yml")))
     template[workload]
   end
 
@@ -41,9 +41,10 @@ class WorkloadMapper
     system_description.assert_scopes("services")
 
     workloads = {}
-    Dir["#{File.expand_path(workload_mapper_path)}/*.rb"].each do |file_path|
-      mapper = WorkloadMapperDSL.new(system_description)
-      workload = mapper.check_clue(File.read(file_path))
+    mapper = WorkloadMapperDSL.new(system_description)
+
+    Dir["#{File.expand_path(workload_mapper_path)}/*"].each do |workload_dir|
+      workload = mapper.check_clue(File.read(File.join(workload_dir, "clue.rb")))
       workloads.merge!(workload.to_h)
     end
     workloads
