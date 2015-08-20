@@ -53,7 +53,7 @@ describe ContainerizeTask do
       expect_any_instance_of(WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
       expect_any_instance_of(WorkloadMapper).
-        to receive(:write_compose_file).with(workloads, output_path)
+        to receive(:save).with(workloads, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
     end
   end

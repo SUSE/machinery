@@ -55,11 +55,13 @@ describe WorkloadMapper do
   let(:workloads) { YAML::load(File.read(File.join(docker_path, "workloads.yml"))) }
   let(:config_file_path) { File.join(mapper_path, "my.cnf") }
 
-  describe "#write_compose_file" do
-    it "writes a docker-compose.yml" do
-      subject.write_compose_file(workloads, output_path)
+  describe "#save" do
+    it "creates a folder with a docker-compose.yml and images" do
+      subject.save(workloads, output_path)
       expect(File.read(File.join(output_path, "docker-compose.yml"))).
         to include(File.read(File.join(docker_path, "docker-compose.yml")))
+      expect(File.exists?(File.join(output_path, "mariadb", "Dockerfile"))).
+        to be_truthy
     end
   end
 

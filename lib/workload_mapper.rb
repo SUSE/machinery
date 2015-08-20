@@ -15,10 +15,15 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 class WorkloadMapper
-  def write_compose_file(workloads, path)
+  def save(workloads, path)
     compose_nodes = {}
     workloads.each do |workload, config|
       compose_nodes.merge!(compose_service(workload, config))
+      FileUtils.mkdir_p(File.join(path, workload))
+      FileUtils.cp_r(
+        File.join(workload_mapper_path, workload, "container", "."),
+        File.join(path, workload)
+      )
     end
     File.write(File.join(path, "docker-compose.yml"), compose_nodes.to_yaml)
   end
@@ -33,7 +38,9 @@ class WorkloadMapper
   end
 
   def load_compose_template(workload)
-    template = YAML::load(File.read(File.join(workload_mapper_path, workload, "compose-template.yml")))
+    template = YAML::load(
+      File.read(File.join(workload_mapper_path, workload, "compose-template.yml"))
+    )
     template[workload]
   end
 

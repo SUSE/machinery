@@ -19,6 +19,6 @@ class ContainerizeTask
   def containerize(description, dir)
     mapper = WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
-    mapper.write_compose_file(workloads, dir)
+    mapper.save(workloads, File.join(dir, description.name))
   end
 end
