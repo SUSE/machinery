@@ -38,6 +38,8 @@ class WorkloadMapper
   end
 
   def identify_workloads(system_description)
+    system_description.assert_scopes("services")
+
     workloads = {}
     Dir["#{File.expand_path(workload_mapper_path)}/*.rb"].each do |file_path|
       mapper = WorkloadMapperDSL.new(system_description)
