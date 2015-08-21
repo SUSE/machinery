@@ -63,12 +63,6 @@ shared_examples "inspect unmanaged files" do |base|
 
       # Note: We normalize numbers in tthe output in order to make the comparison more robust,
       # that's why the architecture string "x86_64" ends up as x0_0
-      expected = <<EOF
-Inspecting unmanaged-files...
-Note: Using traditional inspection because file extraction is not supported by the helper binary.
- -> Found 0 files and trees...\r\033\[K -> Found 0 files and trees...\r\033\[K -> Extracted 0 unmanaged files and trees.
-EOF
-      expect(normalize_inspect_output(inspect_command.stdout)).to include(expected)
     end
 
     it "extracts meta data of unmanaged files" do
