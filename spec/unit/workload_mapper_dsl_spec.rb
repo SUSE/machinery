@@ -49,4 +49,11 @@ describe WorkloadMapperDSL do
       expect(subject.parameters).to include("port" => "1234")
     end
   end
+
+  describe "#to_h" do
+    it "returns an empty hash if service is nil" do
+      mapper = WorkloadMapperDSL.new(system_description)
+      expect(mapper.to_h).to eq({})
+    end
+  end
 end
