@@ -77,7 +77,7 @@ class Release
   def build_local
     prepare
 
-    Rake::Task['osc:build'].invoke
+    Rake::Task['osc:build'].invoke("--clean")
 
     # Collect built RPMs in package/, e.g. so that jenkins can collect them
     output_dir = File.join("/var/tmp", obs_project, build_dist)
