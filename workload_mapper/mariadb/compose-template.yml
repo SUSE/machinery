@@ -1,5 +1,5 @@
 mariadb:
-  image: opensuse/mariadb
+  build: ./mariadb
   environment:
     MYSQL_ROOT_PASS:
     MYSQL_USER: :user
