@@ -1,0 +1,20 @@
+version: 0.1
+loglevel: debug
+storage:
+  filesystem:
+    rootdirectory: /var/lib/docker-registry
+http:
+  addr: 0.0.0.0:5000
+auth:
+  token:
+    realm: http://localhost:3000/v2/token
+    service: localhost
+    issuer: localhost:3000
+    rootcertbundle: /etc/registry/portus.crt
+notifications:
+  endpoints:
+    - name: portus
+      url: http://localhost:3000/v2/webhooks/events
+      timeout: 500ms
+      threshold: 5
+      backoff: 1s
