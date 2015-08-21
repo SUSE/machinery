@@ -52,10 +52,7 @@ class WorkloadMapper
 
     Dir["#{File.expand_path(workload_mapper_path)}/*"].each do |workload_dir|
       workload = mapper.check_clue(File.read(File.join(workload_dir, "clue.rb")))
-      if workload.to_h
-        Machinery::Ui.puts "Detected workload '#{workload.name}'."
-        workloads.merge!(workload.to_h)
-      end
+      workloads.merge!(workload.to_h)
     end
     workloads
   end

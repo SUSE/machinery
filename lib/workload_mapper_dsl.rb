@@ -32,7 +32,7 @@ class WorkloadMapperDSL
   end
 
   def to_h
-    return nil unless service
+    return {} unless service
     {
       name => {
         "service" => service,

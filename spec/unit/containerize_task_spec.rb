@@ -48,7 +48,10 @@ describe ContainerizeTask do
   describe "#containerize" do
     capture_machinery_output
     let(:output_path) { given_directory }
-    let(:workloads) { { "mariadb" => {"service" => "db"} } }
+    let(:workloads) {
+      { "mariadb" => { "service" => "db" },
+        "foo" => { "service" => "bar" } }
+    }
 
     it "containerize a system description" do
       expect_any_instance_of(WorkloadMapper).
@@ -58,15 +61,29 @@ describe ContainerizeTask do
       containerize_task.containerize(system_description, output_path)
     end
 
-    it "shows the number of detected workloads" do
+    it "shows detected workloads" do
       expect_any_instance_of(WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
       expect_any_instance_of(WorkloadMapper).
-        to receive(:write_compose_file).with(workloads, output_path)
+        to receive(:save).with(workloads, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
-      expect(captured_machinery_output).to include(
-        "Detected workload 'mariadb'.\n\nFound 1 workload. Wrote to"
-      )
+      expected_output = <<-EOF.chomp
+Detected workload 'mariadb'.
+Detected workload 'foo'.
+
+Wrote to
+EOF
+      expect(captured_machinery_output).to include(expected_output)
+    end
+
+    it "shows a hint when no workloads detected" do
+      expect_any_instance_of(WorkloadMapper).
+        to receive(:identify_workloads).with(system_description).and_return({})
+      expect_any_instance_of(WorkloadMapper).
+        to receive(:save).with({}, File.join(output_path, system_description.name))
+      containerize_task.containerize(system_description, output_path)
+
+      expect(captured_machinery_output).to eq("No workloads detected.\n")
     end
   end
 end

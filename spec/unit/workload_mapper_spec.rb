@@ -94,7 +94,6 @@ describe WorkloadMapper do
   end
 
   describe "#identify_workloads" do
-    capture_machinery_output
     it "returns a list of workloads" do
       expect(subject.identify_workloads(system_description)).
         to have_key("mariadb")

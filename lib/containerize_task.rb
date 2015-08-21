@@ -26,9 +26,7 @@ class ContainerizeTask
       workloads.each do |workload|
         Machinery::Ui.puts "Detected workload '#{workload[0]}'."
       end
-      Machinery::Ui.print "\nFound #{workloads.count}" \
-        " #{Machinery::pluralize(workloads.count, "workload")}."
+      Machinery::Ui.puts "\nWrote to #{dir}."
     end
-    Machinery::Ui.puts " Wrote to #{dir}."
   end
 end
