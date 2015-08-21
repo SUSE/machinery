@@ -452,6 +452,23 @@ describe UnmanagedFilesInspector do
     end
   end
 
+  describe "#helper_usable?" do
+    context "when helper is there and files are extracted" do
+      let(:system) { double(arch: "x86_64") }
+      let(:description) { SystemDescription.new("systemname", SystemDescriptionStore.new) }
+      let(:helper) { MachineryHelper.new(description) }
+      let(:expected) {
+        "Using traditional inspection because file extraction is not supported by the helper binary"
+      }
+
+      it "doesn't use the helper" do
+        allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
+        subject.helper_usable?(helper, extract_unmanaged_files: true)
+        expect(captured_machinery_output).to include(expected)
+      end
+    end
+  end
+
   it "runs helper" do
     system = double(arch: "x86_64")
     allow(system).to receive(:check_requirement)
