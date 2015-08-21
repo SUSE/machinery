@@ -20,5 +20,11 @@ class ContainerizeTask
     mapper = WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
     mapper.save(workloads, File.join(dir, description.name))
+    if workloads.empty?
+      Machinery::Ui.puts "No workloads detected."
+    else
+      Machinery::Ui.print "\nFound #{workloads.count} #{Machinery::pluralize(workloads.count, "workload")}."
+    end
+    Machinery::Ui.puts " Wrote to #{dir}."
   end
 end
