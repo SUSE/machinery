@@ -48,7 +48,7 @@ describe ContainerizeTask do
   describe "#containerize" do
     capture_machinery_output
     let(:output_path) { given_directory }
-    let(:workloads) { {"mariadb" => {"service" => "db"}} }
+    let(:workloads) { { "mariadb" => {"service" => "db"} } }
 
     it "containerize a system description" do
       expect_any_instance_of(WorkloadMapper).
@@ -65,7 +65,7 @@ describe ContainerizeTask do
         to receive(:write_compose_file).with(workloads, output_path)
       containerize_task.containerize(system_description, output_path)
       expect(captured_machinery_output).to include(
-        "\nFound 1 workload. Wrote to"
+        "Detected workload 'mariadb'.\n\nFound 1 workload. Wrote to"
       )
     end
   end

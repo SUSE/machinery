@@ -99,10 +99,5 @@ describe WorkloadMapper do
       expect(subject.identify_workloads(system_description)).
         to have_key("mariadb")
     end
-
-    it "shows the detected workloads" do
-      subject.identify_workloads(system_description)
-      expect(captured_machinery_output).to eq("Detected workload 'mariadb'.\n")
-    end
   end
 end

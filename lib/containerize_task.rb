@@ -23,7 +23,11 @@ class ContainerizeTask
     if workloads.empty?
       Machinery::Ui.puts "No workloads detected."
     else
-      Machinery::Ui.print "\nFound #{workloads.count} #{Machinery::pluralize(workloads.count, "workload")}."
+      workloads.each do |workload|
+        Machinery::Ui.puts "Detected workload '#{workload[0]}'."
+      end
+      Machinery::Ui.print "\nFound #{workloads.count}" \
+        " #{Machinery::pluralize(workloads.count, "workload")}."
     end
     Machinery::Ui.puts " Wrote to #{dir}."
   end
