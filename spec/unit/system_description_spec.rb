@@ -590,12 +590,19 @@ describe SystemDescription do
         }
       EOF
     }
-    let(:mapper_path) { given_directory_from_data "mapper" }
-    let(:config_file_path) { File.join(mapper_path, "my.cnf") }
-    it "returns the parsed value" do
-      allow_any_instance_of(Machinery::SystemFile).
-        to receive(:content).and_return(File.read(config_file_path))
-      expect(system_description.read_config("/etc/my.cnf", "foo")).to eq("bar")
+    context "when `=` assings the value" do
+      it "returns the value to the right of `=`" do
+        allow_any_instance_of(Machinery::SystemFile).
+          to receive(:content).and_return("foo = bar")
+        expect(system_description.read_config("/etc/my.cnf", "foo")).to eq("bar")
+      end
+    end
+    context "when `:` assings the value" do
+      it "returns the value to the right of `:`" do
+        allow_any_instance_of(Machinery::SystemFile).
+          to receive(:content).and_return(" foo: bar")
+        expect(system_description.read_config("/etc/my.cnf", "foo")).to eq("bar")
+      end
     end
   end
 end

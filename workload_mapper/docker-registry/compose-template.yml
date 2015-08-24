@@ -1,0 +1,4 @@
+docker-registry:
+  build: ./docker-registry
+  ports: :ports
+  volumes: :volumes
