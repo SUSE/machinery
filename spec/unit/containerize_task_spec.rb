@@ -21,6 +21,7 @@ describe ContainerizeTask do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
+  let(:output_path) { given_directory }
   let(:containerize_task) { ContainerizeTask.new }
   let(:system_description) {
     create_test_description(json: <<-EOF)
@@ -84,6 +85,21 @@ EOF
       containerize_task.containerize(system_description, output_path)
 
       expect(captured_machinery_output).to eq("No workloads detected.\n")
+    end
+  end
+
+  describe "#write_readme_file" do
+    subject { ContainerizeTask.new }
+    it "writes the README file to output dir" do
+      allow($stdout).to receive(:puts)
+      subject.write_readme_file(output_path)
+      readme = File.join(output_path, "README.md")
+
+      expect(File.exists?(readme)).to be(true)
+
+      expect(File.read(readme)).to include(
+        "README for Docker Containers created by Machinery"
+      )
     end
   end
 end
