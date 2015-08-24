@@ -29,4 +29,11 @@ class ContainerizeTask
       Machinery::Ui.puts "\nWrote to #{dir}."
     end
   end
+
+  def write_readme_file(dir)
+    FileUtils.cp(
+      File.join(Machinery::ROOT, "export_helpers/containerize_readme.md"),
+      File.join(dir, "README.md")
+    )
+  end
 end
