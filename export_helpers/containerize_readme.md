@@ -10,13 +10,13 @@ Details on Docker can be found at https://www.docker.com/.
 
 Docker and docker-compose are required. Packages are available in the Virtualization repository.
 
-Install on openSUSE 13.2 docker and docker-compose:
+Install on openSUSE 13.2:
 
-`zypper ar -f http://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_13.2/ virt`
-`zypper refresh`
-`zypper in docker docker-compose`
-`usermod -aG docker $(whoami)`
-`systemctl start docker`
+`sudo zypper ar -f http://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_13.2/ virt`
+`sudo zypper refresh`
+`sudo zypper in docker docker-compose`
+`sudo usermod -aG docker $(whoami)`
+`sudo systemctl start docker`
 
 ## Managing Docker containers
 
