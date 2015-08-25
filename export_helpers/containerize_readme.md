@@ -6,6 +6,17 @@ Machinery.
 The user is expected to be familiar with using Docker.
 Details on Docker can be found at https://www.docker.com/.
 
+## Requirements
+
+Docker and docker-compose are required. Packages are available in the Virtualization repository.
+
+Install on openSUSE 13.2 docker and docker-compose:
+
+`zypper ar -f http://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_13.2/ virt`
+`zypper refresh`
+`zypper in docker docker-compose`
+`usermod -aG docker $(whoami)`
+`systemctl start docker`
 
 ## Managing Docker containers
 
