@@ -50,6 +50,15 @@ describe WorkloadMapperDSL do
     end
   end
 
+  describe "#extract" do
+    let(:clue) { "extract '/foo/bar', 'faz'" }
+    it "appends a folder meant to be extracted to the current workflow" do
+      subject.check_clue(clue)
+
+      expect(subject.data).to include("/foo/bar" => "faz")
+    end
+  end
+
   describe "#to_h" do
     it "returns an empty hash if service is nil" do
       mapper = WorkloadMapperDSL.new(system_description)

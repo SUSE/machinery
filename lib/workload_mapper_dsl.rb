@@ -15,11 +15,12 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 class WorkloadMapperDSL
-  attr_reader :system, :name, :service, :parameters
+  attr_reader :system, :name, :service, :parameters, :data
 
   def initialize(system)
     @system = system
     @parameters = {}
+    @data = {}
   end
 
   def identify(name, service = nil)
@@ -31,12 +32,17 @@ class WorkloadMapperDSL
     @parameters[name] = value
   end
 
+  def extract(origin, destination)
+    @data[origin] = destination
+  end
+
   def to_h
     return {} unless service
     {
       name => {
         "service" => service,
-        "parameters" => parameters
+        "parameters" => parameters,
+        "data" => data
       }
     }
   end
