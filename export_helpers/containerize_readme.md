@@ -18,6 +18,8 @@ Install on openSUSE 13.2:
 `sudo usermod -aG docker $(whoami)`
 `sudo systemctl start docker`
 
+Log out and in again to refresh the user's group.
+
 ## Managing Docker containers
 
 Run container:
