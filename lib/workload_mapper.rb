@@ -48,9 +48,9 @@ class WorkloadMapper
     system_description.assert_scopes("services")
 
     workloads = {}
-    mapper = WorkloadMapperDSL.new(system_description)
 
     Dir["#{File.expand_path(workload_mapper_path)}/*"].each do |workload_dir|
+      mapper = WorkloadMapperDSL.new(system_description)
       workload = mapper.check_clue(File.read(File.join(workload_dir, "clue.rb")))
       workloads.merge!(workload.to_h)
     end
