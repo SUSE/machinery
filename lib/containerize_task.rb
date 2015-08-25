@@ -17,16 +17,17 @@
 
 class ContainerizeTask
   def containerize(description, dir)
+    output_path = File.join(dir, description.name)
     mapper = WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
-    mapper.save(workloads, File.join(dir, description.name))
+    mapper.save(workloads, output_path)
     if workloads.empty?
       Machinery::Ui.puts "No workloads detected."
     else
       workloads.each do |workload|
         Machinery::Ui.puts "Detected workload '#{workload[0]}'."
       end
-      Machinery::Ui.puts "\nWrote to #{dir}."
+      Machinery::Ui.puts "\nWrote to #{output_path}."
     end
   end
 
