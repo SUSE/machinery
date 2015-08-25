@@ -275,13 +275,24 @@ class SystemDescription < Machinery::Object
   end
 
   def has_file?(name)
-    self["config_files"].files.any? { |file| file.name == name }
+    self["config_files"].files.any? { |file| file.name == name } ||
+    self["unmanaged_files"].files.any? { |file| file.name == name }
   end
 
   def read_config(path, key)
     if scope_extracted?("config_files")
       file = self["config_files"].files.find { |f| f.name == path }
-      / *#{key} *(=|:) *(.*)/.match(file.content).to_a.fetch(2, nil)
+      return parse_variable_assignment(file.content, key) if file
     end
+    if scope_extracted?("unmanaged_files")
+      file = self["unmanaged_files"].files.find { |f| f.name == path }
+      return parse_variable_assignment(file.content, key) if file
+    end
+  end
+
+  private
+
+  def parse_variable_assignment(string, variable)
+    /^(?#) *#{variable} *(=|:| ) *(.*)/.match(string).to_a.fetch(2, "").gsub(/\"/, "").strip
   end
 end
