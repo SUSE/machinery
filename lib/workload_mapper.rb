@@ -67,6 +67,23 @@ class WorkloadMapper
     end
   end
 
+  def extract(system_description, workloads, path)
+    Dir.mktmpdir do |dir|
+      system_description.unmanaged_files.export_files_as_tarballs(dir)
+      workloads.each do |workload, config|
+        config.fetch("data", {}).each do |origin, destination|
+          file = system_description.unmanaged_files.files.find { |f| f.name == "#{origin}/" }
+          if file.directory?
+            tgz_file = File.join(dir, "trees", "#{origin}.tgz")
+            output_path = File.join(path, workload, destination)
+            FileUtils.mkdir_p(output_path)
+            Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=1")
+          end
+        end
+      end
+    end
+  end
+
   private
 
   def workload_mapper_path

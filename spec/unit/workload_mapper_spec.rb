@@ -44,6 +44,20 @@ describe WorkloadMapper do
               "name": "/etc/my.cnf"
             }
           ]
+        },
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/foo/bar/",
+              "type": "dir",
+              "user": "superuser",
+              "group": "users",
+              "size": 21084193,
+              "mode": "755",
+              "files": 718
+            }
+          ]
         }
       }
     EOF
@@ -62,6 +76,25 @@ describe WorkloadMapper do
         to include(File.read(File.join(docker_path, "docker-compose.yml")))
       expect(File.exists?(File.join(output_path, "mariadb", "Dockerfile"))).
         to be_truthy
+    end
+  end
+
+  describe "#extract" do
+    let(:output_path) { given_directory }
+    let(:workloads) {
+      {
+        "foo_workload" => {
+          "data" => {
+            "/foo/bar" => "/sub/path"
+          }
+        }
+      }
+    }
+
+    it "creates a folder with a docker-compose.yml and images" do
+      allow_any_instance_of(UnmanagedFilesScope).to receive(:export_files_as_tarballs)
+      expect(Cheetah).to receive(:run).with(/^tar zxvf .*\/foo\/bar\.tgz -C #{output_path}\/foo_workload\/sub\/path$/)
+      subject.extract(system_description, workloads, output_path)
     end
   end
 
