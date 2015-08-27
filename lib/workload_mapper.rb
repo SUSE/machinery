@@ -77,7 +77,10 @@ class WorkloadMapper
             tgz_file = File.join(dir, "trees", "#{origin}.tgz")
             output_path = File.join(path, workload, destination)
             FileUtils.mkdir_p(output_path)
-            Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=1")
+              FileUtils.mkdir_p(output_path)
+              Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=1")
+              copy_workload_config_files(workload, output_path)
+            end
           end
         end
       end
@@ -85,6 +88,10 @@ class WorkloadMapper
   end
 
   private
+
+  def copy_workload_config_files(workload, path)
+    FileUtils.cp_r(File.join(workload_mapper_path, workload, "config", "."), path)
+  end
 
   def workload_mapper_path
     File.join(Machinery::ROOT, "workload_mapper")

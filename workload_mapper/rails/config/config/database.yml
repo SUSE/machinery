@@ -1,0 +1,7 @@
+development:
+  adapter: mysql2
+  database: portus_development
+  encoding: utf8
+  host: db
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASS'] %>
