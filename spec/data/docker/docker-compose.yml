@@ -1,5 +1,5 @@
 db:
   build: "./mariadb"
   environment:
-    MYSQL_USER: portus
-    MYSQL_PASS: portus
+    DB_USER: portus
+    DB_PASS: portus

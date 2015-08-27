@@ -44,6 +44,20 @@ describe WorkloadMapper do
               "name": "/etc/my.cnf"
             }
           ]
+        },
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/foo/bar/",
+              "type": "dir",
+              "user": "superuser",
+              "group": "users",
+              "size": 21084193,
+              "mode": "755",
+              "files": 718
+            }
+          ]
         }
       }
     EOF
@@ -65,14 +79,36 @@ describe WorkloadMapper do
     end
   end
 
+  describe "#extract" do
+    let(:output_path) { given_directory }
+    let(:workloads) {
+      {
+        "foo_workload" => {
+          "data" => {
+            "/foo/bar" => "/sub/path"
+          }
+        }
+      }
+    }
+
+    it "extracts the related workload data" do
+      allow_any_instance_of(UnmanagedFilesScope).to receive(:export_files_as_tarballs)
+      allow_any_instance_of(WorkloadMapper).to receive(:copy_workload_config_files).and_return(true)
+
+      expect(Cheetah).to receive(:run).with("tar", "zxf", /.*\/foo\/bar\.tgz/, "-C",
+                                            /#{output_path}\/foo_workload\/sub\/path/, "--strip=1")
+      subject.extract(system_description, workloads, output_path)
+    end
+  end
+
   describe "#compose_service" do
     let(:expected_node) {
       {
         "db" => {
           "build" => "./mariadb",
           "environment" => {
-            "MYSQL_USER" => "portus",
-            "MYSQL_PASS" => "portus"
+            "DB_USER" => "portus",
+            "DB_PASS" => "portus"
           }
         }
       }
@@ -118,6 +154,43 @@ describe WorkloadMapper do
       it "replaces it with a value" do
         expect(subject.fill_in_template(template, parameters)).to eq(filled_in_template)
       end
+    end
+  end
+
+  describe "#link_compose_services" do
+    let(:unlinked_services) {
+      {
+        "db" => {
+          "environment" => {
+            "DB_VAR_1" => 1,
+            "DB_VAR_2" => 2
+          }
+        },
+        "web" => {
+          "links" => ["db"]
+        }
+      }
+    }
+    let(:linked_services) {
+      {
+        "db" => {
+          "environment" => {
+            "DB_VAR_1" => 1,
+            "DB_VAR_2" => 2
+          }
+        },
+        "web" => {
+          "links" => ["db"],
+          "environment" => {
+            "DB_VAR_1" => 1,
+            "DB_VAR_2" => 2
+          }
+        }
+      }
+    }
+    it "adds the environment variables to the linked workload" do
+      subject.link_compose_services(unlinked_services)
+      expect(unlinked_services).to eq(linked_services)
     end
   end
 end

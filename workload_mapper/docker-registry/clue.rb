@@ -7,4 +7,5 @@ if system.runs_service?("registry") && system.has_file?(docker_registry_config)
     to_a.fetch(1, nil)
   port = "#{used_port}:5000"
   parameter "ports", [port]
+  parameter "links", ["web"]
 end
