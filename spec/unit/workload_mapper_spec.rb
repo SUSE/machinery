@@ -95,7 +95,8 @@ describe WorkloadMapper do
       allow_any_instance_of(UnmanagedFilesScope).to receive(:export_files_as_tarballs)
       allow_any_instance_of(WorkloadMapper).to receive(:copy_workload_config_files).and_return(true)
 
-      expect(Cheetah).to receive(:run).with("tar", "zxf", /.*\/foo\/bar\.tgz/, "-C", /#{output_path}\/foo_workload\/sub\/path/, "--strip=1")
+      expect(Cheetah).to receive(:run).with("tar", "zxf", /.*\/foo\/bar\.tgz/, "-C",
+                                            /#{output_path}\/foo_workload\/sub\/path/, "--strip=1")
       subject.extract(system_description, workloads, output_path)
     end
   end
