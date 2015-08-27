@@ -12,23 +12,23 @@ __mysql_config() {
 
 __start_mysql() {
   printf "Running the start_mysql function.\n"
-  MYSQL_ROOT_PASS="${MYSQL_ROOT_PASS-$(pwgen -s -1 12)}"
-  MYSQL_USER="${MYSQL_USER-dbuser}"
-  MYSQL_PASS="${MYSQL_PASS-$(pwgen -s -1 12)}"
-  MYSQL_DB_NAME="${MYSQL_DB_NAME-db}"
-  printf "root password=%s\n" "$MYSQL_ROOT_PASS"
-  printf "MYSQL_DB_NAME=%s\n" "$MYSQL_DB_NAME"
-  printf "MYSQL_USER=%s\n" "$MYSQL_USER"
-  printf "MYSQL_PASS=%s\n" "$MYSQL_PASS"
-  mysqladmin -u root password "$MYSQL_ROOT_PASS"
-  mysql -uroot -p"$MYSQL_ROOT_PASS" <<-EOF
-	DELETE FROM mysql.user WHERE user = '$MYSQL_USER';
+  DB_ROOT_PASS="${DB_ROOT_PASS-$(pwgen -s -1 12)}"
+  DB_USER="${DB_USER-dbuser}"
+  DB_PASS="${DB_PASS-$(pwgen -s -1 12)}"
+  DB_NAME="${DB_NAME-db}"
+  printf "root password=%s\n" "$DB_ROOT_PASS"
+  printf "DB_NAME=%s\n" "$DB_NAME"
+  printf "DB_USER=%s\n" "$DB_USER"
+  printf "DB_PASS=%s\n" "$DB_PASS"
+  mysqladmin -u root password "$DB_ROOT_PASS"
+  mysql -uroot -p"$DB_ROOT_PASS" <<-EOF
+	DELETE FROM mysql.user WHERE user = '$DB_USER';
 	FLUSH PRIVILEGES;
-	CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASS';
-	GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'localhost' WITH GRANT OPTION;
-	CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASS';
-	GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'%' WITH GRANT OPTION;
-	CREATE DATABASE $MYSQL_DB_NAME;
+	CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
+	GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'localhost' WITH GRANT OPTION;
+	CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';
+	GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%' WITH GRANT OPTION;
+	CREATE DATABASE $DB_NAME;
 EOF
 
   killall mysqld

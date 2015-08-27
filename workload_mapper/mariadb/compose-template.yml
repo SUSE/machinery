@@ -1,7 +1,7 @@
 mariadb:
   build: ./mariadb
   environment:
-    MYSQL_ROOT_PASS:
-    MYSQL_USER: :user
-    MYSQL_PASS: :password
-    MYSQL_DB_NAME:
+    DB_ROOT_PASS:
+    DB_USER: :user
+    DB_PASS: :password
+    DB_NAME:
