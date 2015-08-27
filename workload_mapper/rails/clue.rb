@@ -4,7 +4,7 @@ if system.runs_service?("apache2") && system.has_file?("/usr/bin/rails")
     rails_env = system.read_config(vhost, "PassengerAppEnv")
     rails_public = system.read_config(vhost, "DocumentRoot")
 
-    if !rails_env.empty? && /public/.match(rails_public)
+    if rails_env && !rails_env.empty? && /public/.match(rails_public)
       identify "rails", "web"
       parameter "ports", ["3000:3000"]
       parameter "links", ["db"]
