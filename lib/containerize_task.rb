@@ -18,6 +18,8 @@
 class ContainerizeTask
   def containerize(description, dir)
     output_path = File.join(dir, description.name)
+    FileUtils.mkdir_p(output_path)
+
     mapper = WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
     mapper.save(workloads, output_path)
@@ -35,7 +37,7 @@ class ContainerizeTask
 
   def write_readme_file(dir)
     FileUtils.cp(
-      File.join(Machinery::ROOT, "export_helpers/containerize_readme.md"),
+      File.join(Machinery::ROOT, "export_helpers", "containerize_readme.md"),
       File.join(dir, "README.md")
     )
   end
