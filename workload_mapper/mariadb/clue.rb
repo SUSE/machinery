@@ -1,6 +1,5 @@
-mariadb_config = "/etc/my.cnf"
-if system.runs_service?("mysql") && system.has_file?(mariadb_config)
+if system.runs_service?("mysql")
   identify "mariadb", "db"
-  parameter "user", system.read_config(mariadb_config, "user")
-  parameter "password", system.read_config(mariadb_config, "password")
+  parameter "user", "dbuser"
+  parameter "password", SecureRandom.base64
 end
