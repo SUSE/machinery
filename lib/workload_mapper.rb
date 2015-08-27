@@ -16,16 +16,26 @@
 # you may find current contact information at www.suse.com
 class WorkloadMapper
   def save(workloads, path)
-    compose_nodes = {}
     workloads.each do |workload, config|
-      compose_nodes.merge!(compose_service(workload, config))
       FileUtils.mkdir_p(File.join(path, workload))
       FileUtils.cp_r(
         File.join(workload_mapper_path, workload, "container", "."),
         File.join(path, workload)
       )
     end
-    File.write(File.join(path, "docker-compose.yml"), compose_nodes.to_yaml)
+    compose_services = compose_services(workloads)
+    linked_services = link_compose_services(compose_services)
+    File.write(File.join(path, "docker-compose.yml"), linked_services.to_yaml)
+  end
+
+  def link_compose_services(services)
+    services.each do |service, config|
+      config.fetch("links", {}).each do |linked_service|
+        services[service]["environment"] ||= {}
+        vars = services[linked_service].fetch("environment", {})
+        services[service]["environment"].merge!(vars)
+      end
+    end
   end
 
   def compose_service(workload, config)
@@ -69,14 +79,14 @@ class WorkloadMapper
 
   def extract(system_description, workloads, path)
     Dir.mktmpdir do |dir|
-      system_description.unmanaged_files.export_files_as_tarballs(dir)
-      workloads.each do |workload, config|
-        config.fetch("data", {}).each do |origin, destination|
-          file = system_description.unmanaged_files.files.find { |f| f.name == "#{origin}/" }
-          if file.directory?
-            tgz_file = File.join(dir, "trees", "#{origin}.tgz")
-            output_path = File.join(path, workload, destination)
-            FileUtils.mkdir_p(output_path)
+      if !workloads.select { |_, w| w["data"] }.empty?
+        system_description.unmanaged_files.export_files_as_tarballs(dir)
+        workloads.each do |workload, config|
+          config.fetch("data", {}).each do |origin, destination|
+            file = system_description.unmanaged_files.files.find { |f| f.name == "#{origin}/" }
+            if file.directory?
+              tgz_file = File.join(dir, "trees", "#{origin}.tgz")
+              output_path = File.join(path, workload, destination)
               FileUtils.mkdir_p(output_path)
               Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=1")
               copy_workload_config_files(workload, output_path)
@@ -99,5 +109,13 @@ class WorkloadMapper
 
   def compact(service)
     service.each { |_, attr| attr.is_a?(Hash) && attr.reject! { |_, val| val.nil? } }
+  end
+
+  def compose_services(workloads)
+    compose_services = {}
+    workloads.each do |workload, config|
+      compose_services.merge!(compose_service(workload, config))
+    end
+    compose_services
   end
 end
