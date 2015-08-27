@@ -276,7 +276,7 @@ class SystemDescription < Machinery::Object
 
   def has_file?(name)
     self["config_files"].files.any? { |file| file.name == name } ||
-    self["unmanaged_files"].files.any? { |file| file.name == name }
+      self["unmanaged_files"].files.any? { |file| file.name == name }
   end
 
   def read_config(path, key)
