@@ -22,6 +22,7 @@ class ContainerizeTask
     workloads = mapper.identify_workloads(description)
     mapper.save(workloads, output_path)
     mapper.extract(description, workloads, output_path)
+    write_readme_file(output_path)
     if workloads.empty?
       Machinery::Ui.puts "No workloads detected."
     else
