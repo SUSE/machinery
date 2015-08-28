@@ -91,13 +91,19 @@ class WorkloadMapper
         system_description.unmanaged_files.export_files_as_tarballs(dir)
         workloads.each do |workload, config|
           config.fetch("data", {}).each do |origin, destination|
-            file = system_description.unmanaged_files.files.find { |f| f.name == "#{origin}/" }
-            if file.directory?
-              tgz_file = File.join(dir, "trees", "#{origin}.tgz")
+            file = system_description.unmanaged_files.files.find { |f| f.name == origin }
+            file ||= system_description.config_files.files.find { |f| f.name == origin }
+            if file && file.directory?
+              tgz_file = File.join(dir, "trees", "#{origin.chop}.tgz")
               output_path = File.join(path, workload, destination)
               FileUtils.mkdir_p(output_path)
               Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=1")
               copy_workload_config_files(workload, output_path)
+            end
+            if file && file.file?
+              output_path = File.join(path, workload, destination, origin)
+              FileUtils.mkdir_p(File.dirname(output_path))
+              File.write(output_path, file.content)
             end
           end
         end
