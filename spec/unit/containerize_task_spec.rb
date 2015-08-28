@@ -80,8 +80,6 @@ EOF
     it "shows a hint when no workloads detected" do
       expect_any_instance_of(WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return({})
-      expect_any_instance_of(WorkloadMapper).
-        to receive(:save).with({}, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
 
       expect(captured_machinery_output).to eq("No workloads detected.\n")
