@@ -130,6 +130,47 @@ describe WorkloadMapper do
   end
 
   describe "#identify_workloads" do
+    context "when one of the required scopes is missing" do
+      let(:system_description) { create_test_description }
+
+      it "raises an error" do
+        expect {
+          subject.identify_workloads(system_description)
+        }.to raise_error(
+          Machinery::Errors::SystemDescriptionError,
+          /The system description misses the following section\(s\): .*/
+        )
+      end
+    end
+
+    context "when one of the required scopes was not extracted" do
+      let(:system_description) { create_test_description(json: <<-EOF)
+        {
+          "services": {
+            "init_system": "systemd",
+            "services": []
+          },
+          "config_files": {
+            "extracted": false,
+            "files": []
+          },
+          "unmanaged_files": {
+            "extracted": false,
+            "files": []
+          }
+        }
+      EOF
+      }
+      it "raises an error" do
+        expect {
+          subject.identify_workloads(system_description)
+        }.to raise_error(
+          Machinery::Errors::SystemDescriptionError,
+          /Required scope: '.*' was not extracted\. Can't continue\./
+        )
+      end
+    end
+
     it "returns a list of workloads" do
       expect(subject.identify_workloads(system_description)).
         to have_key("mariadb")
