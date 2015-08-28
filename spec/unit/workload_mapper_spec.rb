@@ -85,7 +85,7 @@ describe WorkloadMapper do
       {
         "foo_workload" => {
           "data" => {
-            "/foo/bar" => "/sub/path"
+            "/foo/bar/" => "/sub/path"
           }
         }
       }
