@@ -12,31 +12,31 @@ Docker and docker-compose are required. Packages are available in the Virtualiza
 
 Install on openSUSE 13.2:
 
-`sudo zypper ar -f http://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_13.2/ virt`
-`sudo zypper refresh`
-`sudo zypper in docker docker-compose`
-`sudo usermod -aG docker $(whoami)`
-`sudo systemctl start docker`
+    sudo zypper ar -f http://download.opensuse.org/repositories/Virtualization:/containers/openSUSE_13.2/ virt
+    sudo zypper refresh
+    sudo zypper in docker docker-compose
+    sudo usermod -aG docker $(whoami)
+    sudo systemctl start docker
 
 ## Managing Docker containers
 
 Run container:
 
-`docker-compose up`
+    docker-compose up
 
 Run container as daemon in background:
 
-`docker-compose up -d`
+    docker-compose up -d
 
 Shows list of all running containers:
 
-`docker-compose ps`
+    docker-compose ps
 
 Stop the container:
 
-`docker-compose kill`
+    docker-compose kill
 
 Remove the container image:
 
-`docker-compose rm -vf`
+    docker-compose rm -vf
 
