@@ -55,7 +55,15 @@ class WorkloadMapper
   end
 
   def identify_workloads(system_description)
-    system_description.assert_scopes("services")
+    system_description.assert_scopes("services", "unmanaged_files", "config_files")
+
+    ["unmanaged_files", "config_files"].each do |scope|
+      if !system_description.scope_extracted?(scope)
+        raise Machinery::Errors::SystemDescriptionError.new(
+          "Required scope: '#{scope}' was not extracted. Can't continue."
+        )
+      end
+    end
 
     workloads = {}
 
