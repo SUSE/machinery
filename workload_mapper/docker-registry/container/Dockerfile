@@ -5,6 +5,8 @@ RUN zypper -n --gpg-auto-import-keys refresh
 RUN zypper -n --gpg-auto-import-keys update
 RUN zypper -n --gpg-auto-import-keys install docker docker-distribution-registry
 
+ADD ./data/etc/registry /etc/registry
+
 EXPOSE 5000
 ENTRYPOINT ["registry"]
-CMD ["/registry/config.yml"]
+CMD ["/etc/registry/config.yml"]
