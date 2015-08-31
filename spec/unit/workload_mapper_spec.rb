@@ -212,6 +212,15 @@ describe WorkloadMapper do
         }
       }
     }
+
+    let(:unlinked_services_one_missing) {
+      {
+        "web" => {
+          "links" => ["db"]
+        }
+      }
+    }
+
     let(:linked_services) {
       {
         "db" => {
@@ -229,9 +238,23 @@ describe WorkloadMapper do
         }
       }
     }
-    it "adds the environment variables to the linked workload" do
-      subject.link_compose_services(unlinked_services)
-      expect(unlinked_services).to eq(linked_services)
+
+    context "if the services which are intended to link are detected" do
+      it "adds the environment variables to the linked workload" do
+        subject.link_compose_services(unlinked_services)
+        expect(unlinked_services).to eq(linked_services)
+      end
+    end
+
+    context "if the services which are intended to link are not detected" do
+      it "throws an error which identifies the failed linking" do
+        expect {
+          subject.link_compose_services(unlinked_services_one_missing)
+        }.to raise_error(
+          Machinery::Errors::ComposeServiceLink,
+          /Could not detect 'db', which is referenced by 'web'./
+          )
+      end
     end
   end
 end
