@@ -49,6 +49,31 @@ describe ScopeFileAccessArchive do
     end
   end
 
+  describe "#has_file?" do
+    let(:description) {
+      SystemDescription.load!("opensuse131-build",
+        SystemDescriptionStore.new("spec/data/descriptions"))
+    }
+
+    context "when the description keeps track of the file" do
+      it "returns true" do
+        expect(description.unmanaged_files.has_file?("/etc/magicapp.conf")).to be_truthy
+      end
+    end
+
+    context "when file is hidden inside a tarball" do
+      it "returns true" do
+        expect(description.unmanaged_files.has_file?("/usr/local/magicapp/one")).to be_truthy
+      end
+    end
+
+    context "in any other case" do
+      it "returns false" do
+        expect(description.unmanaged_files.has_file?("/foo/bar/file.txt")).to be_falsy
+      end
+    end
+  end
+
   describe "#export_files_as_tarballs" do
     it "should copy all tarballs to the destination" do
       target = given_directory

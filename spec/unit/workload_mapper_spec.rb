@@ -100,7 +100,7 @@ describe WorkloadMapper do
       allow_any_instance_of(WorkloadMapper).to receive(:copy_workload_config_files).and_return(true)
 
       expect(Cheetah).to receive(:run).with("tar", "zxf", /.*\/foo\/bar\.tgz/, "-C",
-                                            /#{output_path}\/foo_workload\/sub\/path/, "--strip=1")
+                                            /#{output_path}\/foo_workload\/sub\/path/, /--strip=\d/)
       subject.extract(system_description, workloads, output_path)
     end
   end

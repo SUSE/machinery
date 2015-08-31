@@ -276,8 +276,12 @@ class SystemDescription < Machinery::Object
   end
 
   def has_file?(name)
-    self["config_files"].files.any? { |file| file.name == name } ||
-      self["unmanaged_files"].files.any? { |file| file.name == name }
+    EXTRACTABLE_SCOPES.each do |scope|
+      if scope_extracted?(scope)
+        return true if self[scope] && self[scope].has_file?(name)
+      end
+    end
+    false
   end
 
   def read_config(path, key)
