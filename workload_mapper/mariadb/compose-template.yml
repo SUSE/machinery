@@ -6,4 +6,4 @@ mariadb:
     DB_ROOT_PASS:
     DB_USER: :user
     DB_PASS: :password
-    DB_NAME:
+    DB_NAME: :name

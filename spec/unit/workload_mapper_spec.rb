@@ -112,8 +112,9 @@ describe WorkloadMapper do
           "build" => "./mariadb",
           "volumes" => ["./mariadb/data:/var/lib/mysql"],
           "environment" => {
-            "DB_USER" => "portus",
-            "DB_PASS" => "portus"
+            "DB_USER" => "username",
+            "DB_PASS" => "secret",
+            "DB_NAME" => "mydb"
           }
         }
       }
@@ -123,8 +124,9 @@ describe WorkloadMapper do
       {
         "service" => "db",
         "parameters" => {
-          "user" => "portus",
-          "password" => "portus"
+          "user" => "username",
+          "password" => "secret",
+          "name" => "mydb"
         }
       }
     }
