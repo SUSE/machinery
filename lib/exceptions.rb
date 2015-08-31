@@ -138,5 +138,6 @@ module Machinery
     class RemoveFileFailed < MachineryError; end
     class InjectFileFailed < MachineryError; end
     class UnexpectedInputData < MachineryError; end
+    class ComposeServiceLink < MachineryError; end
   end
 end

@@ -32,8 +32,14 @@ class WorkloadMapper
     services.each do |service, config|
       config.fetch("links", {}).each do |linked_service|
         services[service]["environment"] ||= {}
-        vars = services[linked_service].fetch("environment", {})
-        services[service]["environment"].merge!(vars)
+        if services[linked_service]
+          vars = services[linked_service].fetch("environment", {})
+          services[service]["environment"].merge!(vars)
+        else
+          raise Machinery::Errors::ComposeServiceLink.new(
+            "Could not detect '#{linked_service}', which is referenced by '#{service}'."\
+          )
+        end
       end
     end
   end
