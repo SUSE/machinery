@@ -318,11 +318,11 @@ EOF
 
     it "handles failing of the python yum api gracefully" do
       expect(system).to receive(:run_command).and_raise(
-        Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+        Cheetah::ExecutionFailed.new(nil, nil, nil, "Some error")
       )
 
       expect { inspector.inspect(filter) }.to raise_error(
-        Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed./
+        Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed:\nSome error/
       )
     end
 
