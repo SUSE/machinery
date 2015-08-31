@@ -316,6 +316,16 @@ EOF
       )
     end
 
+    it "handles failing of the python yum api gracefully" do
+      expect(system).to receive(:run_command).and_raise(
+        Cheetah::ExecutionFailed.new(nil, nil, nil, nil)
+      )
+
+      expect { inspector.inspect(filter) }.to raise_error(
+        Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed./
+      )
+    end
+
     # We don't support Yum Metalink repositories atm
     it "throws an Machinery AnalysisFailed error when the url is empty" do
       expect(system).to receive(:run_command).and_return(unsupported_metalink_repo)
