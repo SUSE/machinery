@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* The x86_64 machinery-helper is now shipped with machinery. It speeds up
+  inspection of unmanaged-files when the files are not extracted
 * Fix for unmanaged-file inspector to not mark directories as unmanaged if they
   only consist managed sub directories
 * Add experimental `containerize` command
