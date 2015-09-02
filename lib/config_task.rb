@@ -23,8 +23,11 @@ class ConfigTask
   def config(key = nil, value_string = nil)
     if !key
       # show all config entries
+      max_length = @config.entries.keys.map(&:length).max
       @config.each do |key, value|
-        Machinery::Ui.puts "#{key}=#{value[:value]} (#{value[:description]})"
+        Machinery::Ui.puts (
+          "%-#{max_length}s %s %s %s" % [key, "=", value[:value], "(#{value[:description]})"]
+        )
       end
     elsif !value_string
       # show one specific config entry

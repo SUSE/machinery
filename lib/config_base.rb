@@ -20,7 +20,7 @@
 # the file 'machinery_config.rb'.
 
 class ConfigBase
-  attr_reader :file
+  attr_reader :file, :entries
 
   def initialize(file = default_config_file)
     @entries = {}
