@@ -100,9 +100,6 @@ class Release
     finalize_news_file
     prepare
 
-    # Build gem and send everything to IBS
-    Rake::Task["osc:commit"].invoke
-
     commit
   end
 
@@ -251,6 +248,10 @@ class Release
   end
 
   def commit
+    # Build gem and send everything to IBS
+    Rake::Task["osc:commit"].invoke
+
+    # Set and commit git tag
     Cheetah.run "git", "commit", "-a", "-m", "package #{@options[:version]}"
     Cheetah.run "git", "tag", "-a", @tag, "-m", "Tag version #{@options[:version]}"
     Cheetah.run "git", "push"
