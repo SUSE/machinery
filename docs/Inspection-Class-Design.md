@@ -10,7 +10,8 @@ The main entities in the inspection process are **inspected systems** and
 
 ## Inspected Systems
 
-Inspected systems are represented by the `System` class and its subclasses:
+Inspected systems are represented by the `System` class and its subclasses as
+sketched below:
 
 ```ruby
 class System
@@ -18,7 +19,7 @@ class System
   abstract_method :retrieve_files
   # ...
 
-  def for(host)
+  def self.for(host)
     host ? RemoteSystem.new(host) : LocalSystem.new
   end
 end
@@ -56,7 +57,8 @@ commands using `ssh`.
 
 All systems are also capable of extracting files from the system with the
 `retrieve_files` method for processing on the inspecting machine or storage as
-part of the system description.
+part of the system description. There are a number of other methods for
+accessing as well.
 
 
 ## Inspection Code
@@ -65,9 +67,9 @@ part of the system description.
 
 On the data model level, information about the system is structured into
 *areas* (packages, repositories, services,...). These correspond to the
-toplevel keys in the JSON document.
+toplevel keys in the JSON manifest document.
 
-For example, a JSON document describing software configuration may look like this:
+For example, a manifest describing software configuration may look like this:
 
 ```json
 {
@@ -105,7 +107,8 @@ use the following command:
 
     $ machinery inspect --scope=packages dreadnought.suse.cz
 
-Finally, areas and scopes correspond 1:1 to *plugins* and *inspectors* (see below).
+Finally, areas and scopes correspond 1:1 to *plugins* and *inspectors* (see
+below).
 
 All these 1:1 correspondences are meant to simplify things and avoid
 unnecessary layers of indirection. If we find that some of these
@@ -117,7 +120,8 @@ The inspection code is implemented in plugins. This makes the design modular
 and ensures extensibility.
 
 In general, plugin is a set of classes performing a specific task (inspection,
-display, installation, ...) in a specific area (packages, repositories, services,...).
+display, installation, ...) in a specific area (packages, repositories,
+services,...).
 
 One of the plugin classes is the *main* one. In case of inspection, this class
 is derived from `Inspector` and implements the `inspect` method. Its class and
@@ -129,17 +133,18 @@ The main class is automatically found and loaded based on its file
 location. The other classes need to be loaded by the main class using the
 `require` statement.
 
-On the file system level, plugins are split along the task they perform and
-further along the area they cover. The overall directory structure looks like
+On the file system level, plugins are split along the area they cover and
+further along the task they perform. The overall directory structure looks like
 this:
 
     machinery
     └─ plugins
-       ├─ inspect
+       ├─ packages
        │  ├─ packages_inspector.rb
-       │  ├─ repositories_inspector.rb
+       │  ├─ packages_renderer.rb
        │  └─ ...
-       ├─ show
+       ├─ repositories
+       │  ├─ repositories_inspector.rb
        │  └─ ...
        └─ ...
 
@@ -166,25 +171,37 @@ end
 # Inside plugins
 
 class RepositoriesInspector < Inspector
-  def inspect(system)
-    output = system.run_command("zypper", ..., :stdout => :capture)
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect
+    output = @system.run_command("zypper", ..., :stdout => :capture)
 
     # Parse and convert the output into an array of OpenStructs...
   end
 end
 
 class PackagesInspector < Inspector
-  def inspect(system)
-    output = system.run_command("rpm", ..., :stdout => :capture)
+  def initialize(system, description)
+    @system = system
+    @description = description
+  end
+
+  def inspect
+    output = @system.run_command("rpm", ..., :stdout => :capture)
 
     # Parse and convert the output into an array of OpenStructs...
   end
 end
 ```
 
-The `inspect` method gets passed a `System` instance and a `SystemDescription`
-instance. It stores the inspected data under the corresponding key in the data
-model and returns a summary of the inspection.
+The inspectors get passed a `System` instance and a `SystemDescription` on
+creation. The `inspect` method then does the actual inspection and stores the
+inspected data under the corresponding key in the data model and returns the
+system description. The inspector also has a method to get a summary of the
+inspection.
 
 Code invoking the inspectors could look like this (just a sketch):
 
@@ -194,7 +211,7 @@ class InspectTask
     description = SystemDescription.new
 
     scopes.each do |scope|
-      Inspector.for(scope).inspect(system,description)
+      Inspector.for(scope).new(system,description).inspect
     end
 
     description
