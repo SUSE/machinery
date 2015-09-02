@@ -98,7 +98,7 @@ class Release
   # Commit version changes, tag release and push changes upstream.
   def publish
     finalize_news_file
-    prepare_and_publish
+    prepare
 
     # Build gem and send everything to IBS
     Rake::Task["osc:commit"].invoke
@@ -135,13 +135,6 @@ class Release
   end
 
   private
-
-  def prepare_and_publish
-    prepare
-
-    # Build gem and send everything to IBS
-    Rake::Task["osc:commit"].invoke
-  end
 
   def remove_old_releases(skip_rpm_cleanup: false)
     if skip_rpm_cleanup
