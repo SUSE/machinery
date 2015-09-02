@@ -81,7 +81,7 @@ For example, a manifest describing software configuration may look like this:
       "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
       "keep_packages": false,
       "enabled": true,
-      "autorefresh": true
+      "autorefresh": true,
       "priority": 99,
     },
     ...
