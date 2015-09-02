@@ -179,7 +179,7 @@ active:
 
 When it's clear how the data of scopes is used and it's not a problem if additional possibly duplicated data is present, it makes sense to make it as easy as possible to add scopes just to get more information about a system on inspection. This can be solved by providing new scopes as plugins.
 
-With the scope being the central unit, the files the scope consists of are structured in a central way. There is a directory per scope in the `scopes` directory, which at least contains a scope definition file as described above. Additional files such as a model, an inspector, etc can be added and are automatically recognized based on naming convention.
+The scope is the central unit. Each scope has its own sub directory in the `plugins` directory, which contains at least a scope definition file as described above. Additional files such as a model, an inspector, etc can be added and are automatically recognized based on naming conventions.
 
 ### Analysis as scope
 
