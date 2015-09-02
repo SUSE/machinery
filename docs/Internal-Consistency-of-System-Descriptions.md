@@ -173,20 +173,13 @@ filters:
 
 active:
   export: false
-
-files:
-  schema: plugins/schema/v3/system-description-example.schema.json
-  model: plugins/model/example_model.rb
-  inspect: plugins/inspect/example_inspector.rb
-  show: plugins/show/example_renderer.rb
-  docs: plugins/docs/example.md
 ```
 
 ### Scopes as plugins
 
 When it's clear how the data of scopes is used and it's not a problem if additional possibly duplicated data is present, it makes sense to make it as easy as possible to add scopes just to get more information about a system on inspection. This can be solved by providing new scopes as plugins.
 
-With the scope being the central unit, the files the scope consists of should be structured in a more central way. The easiest solution would be to have a directory per scope in the `scopes` directory, which at least contains a scope definition file as described above. Additional files such as a model, an inspector, etc can be added and either be automatically recognized based on naming convention or explicitly referenced by the `files` section proposed for the scope definition file.
+The scope is the central unit. Each scope has its own sub directory in the `plugins` directory, which contains at least a scope definition file as described above. Additional files such as a model, an inspector, etc can be added and are automatically recognized based on naming conventions.
 
 ### Analysis as scope
 
@@ -212,6 +205,5 @@ The core characteristics of the concept for dealing with the consistency of the 
 
 Future refinements include:
 
-* Structure scope plugins in individual directories, which contain everything which belongs to the scope.
 * Possibly move analyze operations to scopes.
 * Provide a command to validate consistency of data in a system description.
