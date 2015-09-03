@@ -139,7 +139,6 @@ class UnmanagedFilesInspector < Inspector
     dep = depth - 1
     files = {}
     dirs = {}
-    excluded_files = []
 
     # compute command line
     cmd = ["find", dir, "-xdev", "-maxdepth", "1", "-maxdepth", depth.to_s]
@@ -178,11 +177,9 @@ class UnmanagedFilesInspector < Inspector
         broken_names = []
         if path.include?("\uFFFD")
           broken_names << "filename '#{path}'"
-          excluded_files << raw_path
         end
         if link.include?("\uFFFD")
           broken_names << "link target '#{link}'"
-          excluded_files << raw_link
         end
 
         warning = broken_names.join(" and ")
@@ -201,8 +198,8 @@ class UnmanagedFilesInspector < Inspector
       # dirs at maxdepth could be non-leafs all othere are leafs
       dirs[path] = path.count("/") == dep if type == "d"
     end
-    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size} dirs:#{dirs.size} excluded:#{excluded_files}"
-    [files, dirs, excluded_files]
+    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size} dirs:#{dirs.size}"
+    [files, dirs]
   end
 
   def max_depth
@@ -341,8 +338,7 @@ class UnmanagedFilesInspector < Inspector
 
       # determine files and directories below find_dir until a certain depth
       depth = local_filesystems.include?(find_dir) ? start : max
-      files, dirs, excluded = get_find_data(find_dir, depth )
-      excluded_files += excluded
+      files, dirs = get_find_data(find_dir, depth )
       find_count += 1
       find_dir += "/" if find_dir.size > 1
       if !local_filesystems.empty?
