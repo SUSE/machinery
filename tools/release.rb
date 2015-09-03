@@ -59,6 +59,7 @@ class Release
   def prepare
     clean_up_tmp
     remove_old_releases(skip_rpm_cleanup: @options[:skip_rpm_cleanup])
+    build_man_page
     build_gem
     generate_specfile
     copy_rpmlintrc
@@ -69,6 +70,12 @@ class Release
     if File.exist?("machinery.gemspec")
       Cheetah.run "gem", "build", "machinery.gemspec"
       FileUtils.mv Dir.glob("machinery-*.gem"), "package/"
+    end
+  end
+
+  def build_man_page
+    if Dir.exist?("man")
+      Cheetah.run "rake", "man_pages:build"
     end
   end
 
