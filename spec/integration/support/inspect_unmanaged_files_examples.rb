@@ -34,7 +34,6 @@ shared_examples "inspect unmanaged files" do |base|
     test_tarball = File.join(Machinery::ROOT, "../machinery/spec/definitions/vagrant/unmanaged_files.tgz")
 
     it "extracts list of unmanaged files" do
-      inspect_command = nil
       measure("Inspect system") do
         inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
