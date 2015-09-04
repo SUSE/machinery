@@ -30,7 +30,7 @@ class KiwiConfig < Exporter
       "os"
     )
     check_existance_of_extracted_files
-
+    check_repositories
     generate_config
   end
 
@@ -156,6 +156,19 @@ EOF
 
     if !missing_scopes.empty?
       raise Machinery::Errors::MissingExtractedFiles.new(@system_description, missing_scopes)
+    end
+  end
+
+  def check_repositories
+    if @system_description.repositories.empty?
+      raise(
+        Machinery::Errors::MissingRequirement.new(
+          "The scope 'repositories' of the system description doesn't contain a" \
+            " repository, which is necesarry for kiwi." \
+            " Please make sure that there is at least one accessible repository" \
+            " with all the required packages."
+        )
+      )
     end
   end
 
