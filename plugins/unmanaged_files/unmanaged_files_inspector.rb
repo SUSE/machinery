@@ -238,38 +238,8 @@ class UnmanagedFilesInspector < Inspector
 
     helper = MachineryHelper.new(@system)
     if helper_usable?(helper, options)
-      begin
-        helper.inject_helper
-        helper.run_helper(scope)
-      ensure
-        helper.remove_helper
-      end
-
-      scope.extracted = !!do_extract
-      scope.files.delete_if { |f| file_filter.matches?(f.name) }
-
-      if do_extract
-        file_store_tmp.remove
-        file_store_tmp.create
-
-        files = scope.files.select { |f| f.file? || f.link? }.map(&:name)
-        scope.retrieve_files_from_system_as_archive(@system, files, [])
-        show_extraction_progress(files.count)
-
-        scope.retrieve_trees_from_system_as_archive(@system,
-          scope.files.select(&:directory?).map(&:name), []) do |count|
-          show_extraction_progress(files.count + count)
-        end
-
-        scope.files = extract_tar_metadata(scope.files, file_store_tmp.path)
-        file_store_final.remove
-        file_store_tmp.rename(file_store_final.store_name)
-        scope.scope_file_store = file_store_final
-      else
-        file_store_final.remove
-      end
-
-      @description["unmanaged_files"] = scope
+      run_helper_inspection(helper, file_filter, do_extract, file_store_tmp, file_store_final,
+        scope)
     else
       run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
@@ -291,6 +261,41 @@ class UnmanagedFilesInspector < Inspector
     end
 
     false
+  end
+
+  def run_helper_inspection(helper, filter, do_extract, file_store_tmp, file_store_final, scope)
+    begin
+      helper.inject_helper
+      helper.run_helper(scope)
+    ensure
+      helper.remove_helper
+    end
+
+    scope.extracted = !!do_extract
+    scope.files.delete_if { |f| filter.matches?(f.name) }
+
+    if do_extract
+      file_store_tmp.remove
+      file_store_tmp.create
+
+      files = scope.files.select { |f| f.file? || f.link? }.map(&:name)
+      scope.retrieve_files_from_system_as_archive(@system, files, [])
+      show_extraction_progress(files.count)
+
+      scope.retrieve_trees_from_system_as_archive(@system,
+        scope.files.select(&:directory?).map(&:name), []) do |count|
+        show_extraction_progress(files.count + count)
+      end
+
+      scope.files = extract_tar_metadata(scope.files, file_store_tmp.path)
+      file_store_final.remove
+      file_store_tmp.rename(file_store_final.store_name)
+      scope.scope_file_store = file_store_final
+    else
+      file_store_final.remove
+    end
+
+    @description["unmanaged_files"] = scope
   end
 
   def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
