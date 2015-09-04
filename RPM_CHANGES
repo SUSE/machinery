@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.12.0 - Fri Sep 04 16:51:10 CEST 2015 - cschum@suse.de
+
+* update to version 1.12.0
 * bundle x86_64 machinery-helper
 
 ## Version 1.11.2 - Thu Jul 30 14:42:44 CEST 2015 - thardeck@suse.de
