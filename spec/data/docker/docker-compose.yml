@@ -1,5 +1,0 @@
-db:
-  build: "./mariadb"
-  environment:
-    DB_USER: portus
-    DB_PASS: portus

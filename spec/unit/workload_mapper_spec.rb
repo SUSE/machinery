@@ -72,8 +72,12 @@ describe WorkloadMapper do
   describe "#save" do
     it "creates a folder with a docker-compose.yml and images" do
       subject.save(workloads, output_path)
-      expect(File.read(File.join(output_path, "docker-compose.yml"))).
-        to include(File.read(File.join(docker_path, "docker-compose.yml")))
+
+      yaml = YAML.load_file(File.join(output_path, "docker-compose.yml"))
+      expect(yaml["db"]["build"]).to eq("./mariadb")
+      expect(yaml["db"]["environment"]["DB_USER"]).to eq("portus")
+      expect(yaml["db"]["environment"]["DB_PASS"]).to eq("portus")
+
       expect(File.exists?(File.join(output_path, "mariadb", "Dockerfile"))).
         to be_truthy
     end
