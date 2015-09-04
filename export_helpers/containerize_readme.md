@@ -20,6 +20,13 @@ Install on openSUSE 13.2:
 
 Log out and in again to refresh the user's group.
 
+## Set Up
+
+When neccesarry, we've included a `setup.rb` script in your new containerized
+application. Please run it before starting docker-compose.
+
+    ./setup.rb
+
 ## Managing Docker containers
 
 Run container:
