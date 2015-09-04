@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Export of autoyast files is now possible with system descriptions,
+  which have empty repository scopes. (gh#SUSE/machinery#1268)
 * Inspection of unmanaged-files is now also using the faster machinery-helper
   when the files are extracted
 
