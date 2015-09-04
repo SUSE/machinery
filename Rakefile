@@ -111,7 +111,7 @@ namespace :build do
   task :machinery, [:api, :project, :target] do |task, args|
     configure_machinery
     # Disable packaging_tasks' tarball task. We package a gem, so we don't have to
-    # put the sources into IBS. Instead we build the gem in the tarball task
+    # put the sources into IBS.
     Rake::Task[:tarball].clear
     if args[:api] && args[:project] && args[:target]
       Packaging.configuration do |conf|
@@ -195,7 +195,7 @@ namespace :release do
     configure_machinery
 
     # Disable packaging_tasks' tarball task. We package a gem, so we don't have to
-    # put the sources into IBS. Instead we build the gem in the tarball task
+    # put the sources into IBS.
     Rake::Task[:tarball].clear
 
     run_release(type: args[:type])
