@@ -431,7 +431,7 @@ describe UnmanagedFilesInspector do
         result = subject.get_find_data("/etc", 1)
       }.to_not raise_error
 
-      expect(result).to eq([{"good_filename" => ""}, {}])
+      expect(result).to eq([{ "good_filename" => "" }, {}])
     end
   end
 

@@ -198,7 +198,8 @@ class UnmanagedFilesInspector < Inspector
       # dirs at maxdepth could be non-leafs all othere are leafs
       dirs[path] = path.count("/") == dep if type == "d"
     end
-    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size} dirs:#{dirs.size}"
+    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size}" \
+      " dirs:#{dirs.size}"
     [files, dirs]
   end
 
@@ -338,7 +339,7 @@ class UnmanagedFilesInspector < Inspector
 
       # determine files and directories below find_dir until a certain depth
       depth = local_filesystems.include?(find_dir) ? start : max
-      files, dirs = get_find_data(find_dir, depth )
+      files, dirs = get_find_data(find_dir, depth)
       find_count += 1
       find_dir += "/" if find_dir.size > 1
       if !local_filesystems.empty?
