@@ -271,7 +271,6 @@ class UnmanagedFilesInspector < Inspector
       helper.remove_helper
     end
 
-    scope.extracted = !!do_extract
     scope.files.delete_if { |f| filter.matches?(f.name) }
 
     if do_extract
@@ -291,8 +290,10 @@ class UnmanagedFilesInspector < Inspector
       file_store_final.remove
       file_store_tmp.rename(file_store_final.store_name)
       scope.scope_file_store = file_store_final
+      scope.extracted = true
     else
       file_store_final.remove
+      scope.extracted = false
     end
 
     @description["unmanaged_files"] = scope
