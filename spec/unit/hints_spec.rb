@@ -80,5 +80,23 @@ describe Hint do
       expect(Hint.to_string(:get_started)).to eq("\nHint: You can get started" \
        " by inspecting a system. Run:\nmachinery inspect HOSTNAME\n")
     end
+
+    describe ".program_name" do
+      before(:each) do
+        allow(Hint).to receive(:which_machinery).and_return("/usr/bin/machinery")
+      end
+
+      it "does not expand program if first in path" do
+        $PROGRAM_NAME = "/usr/bin/machinery"
+
+        expect(Hint.program_name).to eq("machinery")
+      end
+
+      it "expands program if not first in path" do
+        $PROGRAM_NAME = "./machinery"
+
+        expect(Hint.program_name).to eq("./machinery")
+      end
+    end
   end
 end

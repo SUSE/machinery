@@ -30,10 +30,18 @@ class Hint
     end
 
     def program_name
-      $PROGRAM_NAME
+      if which_machinery == $PROGRAM_NAME
+        "machinery"
+      else
+        $PROGRAM_NAME
+      end
     end
 
     private
+
+    def which_machinery
+      `which machinery`.chomp
+    end
 
     def get_started(_options)
       "You can get started by inspecting a system. Run:\n#{program_name} inspect HOSTNAME"
