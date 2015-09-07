@@ -109,7 +109,7 @@ module SystemDescriptionFactory
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
-    (options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
+    (["environment"] + options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
       json_objects << EXAMPLE_SCOPES[scope]
       if options[:add_scope_meta]
         meta[scope] = {
@@ -160,6 +160,12 @@ module SystemDescriptionFactory
   end
 
   EXAMPLE_SCOPES = {}
+
+  EXAMPLE_SCOPES["environment"] = <<-EOF.chomp
+    "environment": {
+      "locale": "C"
+    }
+  EOF
 
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
