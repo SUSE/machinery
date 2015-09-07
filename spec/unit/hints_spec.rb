@@ -72,4 +72,13 @@ describe Hint do
       )
     end
   end
+
+  describe "program name expansion" do
+    it "expands program name in get_started hint" do
+      $0 = "machinery"
+
+      expect(Hint.to_string(:get_started)).to eq("\nHint: You can get started" \
+       " by inspecting a system. Run:\nmachinery inspect HOSTNAME\n")
+    end
+  end
 end
