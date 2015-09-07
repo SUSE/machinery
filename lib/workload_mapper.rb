@@ -26,6 +26,7 @@ class WorkloadMapper
     compose_services = compose_services(workloads)
     linked_services = link_compose_services(compose_services)
     File.write(File.join(path, "docker-compose.yml"), linked_services.to_yaml)
+    linked_services
   end
 
   def link_compose_services(services)

@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby
+# Copyright (c) 2015 SUSE LLC
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of version 3 of the GNU General Public License as
+# published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, contact SUSE LLC.
+#
+# To contact SUSE about this file by physical or electronic mail,
+# you may find current contact information at www.suse.com
+require 'docker'
+require 'json'
+
+app_name = "<%= @name %>"
+web_env_vars = <%= @services["web"]["environment"].to_a.map { |ar| ar.join("=") } %>
+db_env_vars = <%= @services["db"]["environment"].to_a.map { |ar| ar.join("=") } %>
+db_workload = "<%= @workloads.find { |_, config| config["service"] == "db" }.first %>"
+
+def find_image(name)
+  Docker::Image.get(name)
+rescue
+  return false
+end
+
+def build_image(path, name)
+  if find_image(name)
+    puts "Found #{name} image, not building again"
+  else
+    puts "Building image #{name}"
+    Docker::Image.build_from_dir(path, t: name) do |output|
+      puts JSON.parse(output)["stream"]
+    end
+  end
+end
+
+puts "Setting up #{db_workload}"
+if File.exists?("#{Dir.pwd}/#{db_workload}/data/configured.txt")
+  puts "Exiting as database has already been configured.\n" \
+    "If you want to re run the configuration just remove the files in #{Dir.pwd}/#{db_workload}/data/"
+  exit 1
+end
+
+db_image = "#{app_name}_db"
+build_image("./#{db_workload}", db_image)
+
+volumes = ["#{Dir.pwd}/#{db_workload}/data:/var/lib/mysql"]
+db = Docker::Container.create("Image" => db_image, "name" => "#{db_image}_0", "Env" => db_env_vars, "Binds" => volumes, "Tty" => true, "Stream" => true)
+db.tap(&:start).attach(tty: true) { |output| puts output }
+
+web_image = "#{app_name}_web"
+build_image("./rails", web_image)
+
+db.start
+
+command = ["rake", "db:create", "db:migrate"]
+web = Docker::Container.create("Image" => web_image, "name" => "#{web_image}_0", "Cmd" => command, "Links" => ["#{db_image}_0:db"], "Env" => web_env_vars, "Tty" => true)
+web.tap(&:start).attach(tty: true) { |output| puts output }
+
+puts "Stopping db service"
+db.kill
+
+puts "removing containers"
+web.remove
+db.remove
+

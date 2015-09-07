@@ -45,5 +45,5 @@ if [ -z "$DB_FILES" ]; then
   __start_mysql
 fi
 
-# Don't run this again.
-rm -f /scripts/config_mariadb.sh
+touch /var/lib/mysql/configured.txt
+kill 1
