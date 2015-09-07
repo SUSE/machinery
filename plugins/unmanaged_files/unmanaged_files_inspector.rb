@@ -139,7 +139,6 @@ class UnmanagedFilesInspector < Inspector
     dep = depth - 1
     files = {}
     dirs = {}
-    excluded_files = []
 
     # compute command line
     cmd = ["find", dir, "-xdev", "-maxdepth", "1", "-maxdepth", depth.to_s]
@@ -178,11 +177,9 @@ class UnmanagedFilesInspector < Inspector
         broken_names = []
         if path.include?("\uFFFD")
           broken_names << "filename '#{path}'"
-          excluded_files << raw_path
         end
         if link.include?("\uFFFD")
           broken_names << "link target '#{link}'"
-          excluded_files << raw_link
         end
 
         warning = broken_names.join(" and ")
@@ -201,8 +198,9 @@ class UnmanagedFilesInspector < Inspector
       # dirs at maxdepth could be non-leafs all othere are leafs
       dirs[path] = path.count("/") == dep if type == "d"
     end
-    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size} dirs:#{dirs.size} excluded:#{excluded_files}"
-    [files, dirs, excluded_files]
+    Machinery.logger.debug "get_find_data dir:#{dir} depth:#{depth} file:#{files.size}" \
+      " dirs:#{dirs.size}"
+    [files, dirs]
   end
 
   def max_depth
@@ -240,17 +238,8 @@ class UnmanagedFilesInspector < Inspector
 
     helper = MachineryHelper.new(@system)
     if helper_usable?(helper, options)
-      begin
-        helper.inject_helper
-        helper.run_helper(scope)
-      ensure
-        helper.remove_helper
-      end
-      scope.extracted = false
-
-      scope.files.delete_if { |f| file_filter.matches?(f.name) }
-
-      @description["unmanaged_files"] = scope
+      run_helper_inspection(helper, file_filter, do_extract, file_store_tmp, file_store_final,
+        scope)
     else
       run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
@@ -262,11 +251,6 @@ class UnmanagedFilesInspector < Inspector
         "Note: Using traditional inspection because there is no helper binary for" \
         " architecture '#{@system.arch}' available."
       )
-    elsif options[:extract_unmanaged_files]
-      Machinery::Ui.puts(
-        "Note: Using traditional inspection because file extraction is not" \
-        " supported by the helper binary."
-      )
     elsif options[:remote_user] && options[:remote_user] != "root"
       Machinery::Ui.puts(
         "Note: Using traditional inspection because only 'root' is supported as remote user."
@@ -277,6 +261,42 @@ class UnmanagedFilesInspector < Inspector
     end
 
     false
+  end
+
+  def run_helper_inspection(helper, filter, do_extract, file_store_tmp, file_store_final, scope)
+    begin
+      helper.inject_helper
+      helper.run_helper(scope)
+    ensure
+      helper.remove_helper
+    end
+
+    scope.files.delete_if { |f| filter.matches?(f.name) }
+
+    if do_extract
+      file_store_tmp.remove
+      file_store_tmp.create
+
+      files = scope.files.select { |f| f.file? || f.link? }.map(&:name)
+      scope.retrieve_files_from_system_as_archive(@system, files, [])
+      show_extraction_progress(files.count)
+
+      scope.retrieve_trees_from_system_as_archive(@system,
+        scope.files.select(&:directory?).map(&:name), []) do |count|
+        show_extraction_progress(files.count + count)
+      end
+
+      scope.files = extract_tar_metadata(scope.files, file_store_tmp.path)
+      file_store_final.remove
+      file_store_tmp.rename(file_store_final.store_name)
+      scope.scope_file_store = file_store_final
+      scope.extracted = true
+    else
+      file_store_final.remove
+      scope.extracted = false
+    end
+
+    @description["unmanaged_files"] = scope
   end
 
   def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
@@ -325,8 +345,7 @@ class UnmanagedFilesInspector < Inspector
 
       # determine files and directories below find_dir until a certain depth
       depth = local_filesystems.include?(find_dir) ? start : max
-      files, dirs, excluded = get_find_data(find_dir, depth )
-      excluded_files += excluded
+      files, dirs = get_find_data(find_dir, depth)
       find_count += 1
       find_dir += "/" if find_dir.size > 1
       if !local_filesystems.empty?

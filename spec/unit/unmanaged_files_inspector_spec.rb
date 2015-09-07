@@ -431,39 +431,22 @@ describe UnmanagedFilesInspector do
         result = subject.get_find_data("/etc", 1)
       }.to_not raise_error
 
-      expect(result).to eq([{"good_filename" => ""}, {},
-        ["broken\255filename".force_encoding("binary")]])
-    end
-
-    it "reports both link and target if both is broken" do
-      expect(system).to receive(:run_command).and_return(
-        "f\0broken\255Link\0broken\255target\0"
-      )
-      result = subject.get_find_data("/etc", 1)
-      expect(result).to eq([
-        {},
-        {},
-        [
-          "broken\255Link".force_encoding("binary"),
-          "broken\255target".force_encoding("binary")
-        ]
-      ])
-      expect(captured_machinery_output).to match(/broken\uFFFDLink.*broken\uFFFDtarget/)
+      expect(result).to eq([{ "good_filename" => "" }, {}])
     end
   end
 
   describe "#helper_usable?" do
-    context "when helper is there and files are extracted" do
+    context "when helper is there" do
       let(:system) { double(arch: "x86_64") }
       let(:description) { SystemDescription.new("systemname", SystemDescriptionStore.new) }
       let(:helper) { MachineryHelper.new(description) }
-      let(:expected) {
-        "Using traditional inspection because file extraction is not supported by the helper binary"
-      }
 
-      it "doesn't use the helper" do
+      it "doesn't use the helper when a remote user != roote is used" do
+        expected = "Using traditional inspection because only 'root' is supported as remote user"
         allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
-        subject.helper_usable?(helper, extract_unmanaged_files: true)
+
+        subject.helper_usable?(helper, remote_user: "machinery")
+
         expect(captured_machinery_output).to include(expected)
       end
     end
