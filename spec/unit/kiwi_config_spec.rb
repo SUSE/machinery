@@ -150,14 +150,12 @@ describe KiwiConfig do
         /The system description doesn't contain any enabled or network reachable repository/
       )
     end
-    it "raises an error if no repository is activated" do
+
+    it "raises an error if scope repositories is empty" do
       description = system_description_with_content
-      description["repositories"].each do |repository|
-        repository.enabled = false
-      end
-      expect { KiwiConfig.new(description) }.to raise_error(
-        Machinery::Errors::MissingRequirement,
-        /The system description doesn't contain any enabled or network reachable repository/
+      description["repositories"] = []
+      expect { KiwiConfig.new(description) }.to raise_error(Machinery::Errors::MissingRequirement,
+        /^The scope 'repositories' of the system description doesn't contain a repository/
       )
     end
 

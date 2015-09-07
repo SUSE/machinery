@@ -218,11 +218,12 @@ class SystemDescription < Machinery::Object
   end
 
   def assert_scopes(*scopes)
-    missing = scopes.select { |scope| !self[scope] || self[scope].empty? }
+    missing = scopes.select { |scope| !self[scope] }
 
     unless missing.empty?
       raise Machinery::Errors::SystemDescriptionError.new(
-        "The system description misses the following section(s): #{missing.join(", ")}."
+        "The system description misses the following" \
+          " #{Machinery.pluralize(missing.size, "scope")} : #{missing.join(", ")}."
       )
     end
   end
