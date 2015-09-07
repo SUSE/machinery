@@ -106,6 +106,7 @@ require_relative "machinery_helper"
 require_relative "workload_mapper"
 require_relative "containerize_task"
 require_relative "workload_mapper_dsl"
+require_relative "containerized_app"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 
