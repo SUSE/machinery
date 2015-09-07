@@ -17,4 +17,6 @@
 
 class EnvironmentScope < Machinery::Object
   include Machinery::Scope
+
+  hidden_scope
 end

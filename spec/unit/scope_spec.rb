@@ -23,6 +23,7 @@ describe Machinery::Scope do
   end
   class MoreComplexScope < Machinery::Object
     include Machinery::Scope
+    hidden_scope
 
     has_property :foo, class: Machinery::Object
   end
@@ -41,6 +42,11 @@ describe Machinery::Scope do
     expect(t.utc?).to eq(true)
     expect(subject.meta.modified).to eq(mytime)
     expect(subject.meta.hostname).to eq(host)
+  end
+
+  describe ".scope_name" do
+    example { expect(SimpleScope.scope_name).to eq("simple") }
+    example { expect(MoreComplexScope.scope_name).to eq("more_complex") }
   end
 
   describe "#scope_name" do

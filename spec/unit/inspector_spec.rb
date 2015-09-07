@@ -20,20 +20,32 @@ require_relative "spec_helper"
 
 describe Inspector do
   before :each do
+    stub_const("FooScope", Class.new do
+      include Machinery::Scope
+      def self.name; "FooScope"; end
+    end)
     stub_const("FooInspector", Class.new(Inspector) do
       def self.name; "FooInspector"; end
       has_priority 2000
     end)
 
+    stub_const("BarBazScope", Class.new do
+      include Machinery::Scope
+      def self.name; "BarBazScope"; end
+    end)
     stub_const("BarBazInspector", Class.new(Inspector) do
       def self.name; "BarBazInspector"; end
       has_priority 1500
     end)
 
+    stub_const("BarracudaScope", Class.new do
+      include Machinery::Scope
+      def self.name; "BarracudaScope"; end
+    end)
     stub_const("BarracudaInspector", Class.new(Inspector) do
       def self.name; "BarracudaInspector"; end
       has_priority 1700
-    end)
+      end)
   end
 
   describe ".priority" do
@@ -41,6 +53,7 @@ describe Inspector do
       expect(Inspector.priority).to eq(1000)
     end
   end
+
 
   describe ".has_priority" do
     it "sets a priority" do

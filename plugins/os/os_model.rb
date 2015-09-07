@@ -18,6 +18,10 @@
 class Os < Machinery::Object
   include Machinery::Scope
 
+  def self.scope_name
+    "os"
+  end
+
   def self.descendants
     @descendants ||= ObjectSpace.each_object(::Class).select do |klass|
       klass < self && klass.descendants.empty?

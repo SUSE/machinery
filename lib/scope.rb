@@ -18,12 +18,18 @@
 module Machinery
   module Scope
     def self.included(mod)
+      mod.extend(ClassMethods)
+
       @scopes ||= []
       @scopes.push(mod)
     end
 
     def self.all_scopes
       @scopes
+    end
+
+    def self.visible_scopes
+      all_scopes.reject(&:hidden?)
     end
 
     def self.for(scope_name, json, scope_file_store)
@@ -40,6 +46,21 @@ module Machinery
       nil
     end
 
+    module ClassMethods
+      def hidden?
+        @hidden || false
+      end
+
+      def hidden_scope
+        @hidden = true
+      end
+
+      def scope_name
+        scope = name.match(/^(.*)Scope$/)[1]
+        scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+      end
+    end
+
     attr_accessor :meta
     attr_accessor :scope_file_store
 
@@ -51,8 +72,7 @@ module Machinery
     end
 
     def scope_name
-      scope = self.class.name.match(/^(.*)Scope$/)[1]
-      scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
+      self.class.scope_name
     end
 
     def is_extractable?

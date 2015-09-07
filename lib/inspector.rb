@@ -67,9 +67,10 @@ class Inspector
     def sort_scopes(scope_list)
       scope_priority = {}
 
+      visible_scopes = Machinery::Scope.visible_scopes.map(&:scope_name)
       scope_list.each do |scope|
         inspector = self.for(scope)
-        next if !inspector
+        next if !inspector || !visible_scopes.include?(scope)
 
         scope_priority[inspector.priority] = scope
       end
