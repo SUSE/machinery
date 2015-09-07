@@ -29,7 +29,7 @@ class ContainerizeTask
       services = mapper.save(workloads, output_path)
       mapper.extract(description, workloads, output_path)
       write_readme_file(output_path)
-      copy_workload_setup_files(description.name, workloads, services, output_path)
+      copy_workload_setup_files(description, workloads, services, output_path)
 
       workloads.each do |workload|
         Machinery::Ui.puts "Detected workload '#{workload[0]}'."
@@ -48,12 +48,13 @@ class ContainerizeTask
   private
 
   def copy_workload_setup_files(description, workloads, services, path)
-    workloads.each do |workload, workload_config|
-      Dir[File.join(Machinery::ROOT, "workload_mapper", workload, "setup", "*.erb")].each do |setup_file|
-        template = ERB.new(File.read(setup_file))
-        File.write(File.join(path, File.basename(setup_file, ".*")), template.result(binding))
+    app = ContainerizedApp.new(description.name, workloads, services)
+    workloads.each do |workload, _|
+      Dir[File.join(Machinery::ROOT, "workload_mapper", workload, "setup", "*.erb")].each do |file|
+        setup_script = ERB.new(File.read(file))
+        File.write(File.join(path, File.basename(file, ".*")), setup_script.result(app.get_binding))
+        FileUtils.chmod "+x", File.join(path, File.basename(file, ".*"))
       end
     end
   end
-
 end

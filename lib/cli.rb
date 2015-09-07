@@ -787,6 +787,26 @@ class Cli
     end
   end
 
+  if @config.experimental_features
+    desc "Containerize a system description"
+    long_desc <<-LONGDESC
+      Detects workloads from a system description and creates a recommendation for a corresponding
+      container setup
+    LONGDESC
+    arg "NAME"
+    command :containerize do |c|
+      c.flag ["output-dir", :o], type: String, required: true,
+        desc: "Location where the container files will be stored", arg_name: "DIRECTORY"
+
+      c.action do |_global_options, options, args|
+        name = shift_arg(args, "NAME")
+        description = SystemDescription.load(name, system_description_store)
+        task = ContainerizeTask.new
+        task.containerize(description, File.expand_path(options["output-dir"]))
+      end
+    end
+  end
+
   def self.system_description_store
     if ENV.has_key?("MACHINERY_DIR")
       SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
