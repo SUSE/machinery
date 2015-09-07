@@ -60,7 +60,8 @@ UseDNS no
 # Repositories
 #--------------------------------------
 zypper -n --gpg-auto-import-keys ar --refresh --name "Main Repository (OSS)" http://download.opensuse.org/tumbleweed/repo/oss/ download.opensuse.org-oss
-zypper -n refresh
+zypper -n --gpg-auto-import-keys ar --refresh --name "Machinery" "http://download.opensuse.org/repositories/systemsmanagement:machinery/openSUSE_Tumbleweed/" machinery
+zypper -n --gpg-auto-import-keys refresh
 
 #======================================
 # Umount kernel filesystems
