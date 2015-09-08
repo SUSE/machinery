@@ -47,14 +47,16 @@ shared_examples "serve html" do
       @machinery.run_command("pkill -f 'machinery serve' --signal 9")
     end
 
-    it "makes the system description HTML and extracted files available at the specified port" do
+    before(:each) do
       @machinery.inject_directory(
         system_description_dir,
         machinery_config[:machinery_dir],
         owner: machinery_config[:owner],
         group: machinery_config[:group]
       )
+    end
 
+    it "makes the system description HTML and extracted files available at the specified port" do
       cmd = "#{machinery_command} serve opensuse131 --port 5000"
       Thread.new do
         @machinery.run_command(cmd)
@@ -74,13 +76,6 @@ shared_examples "serve html" do
     end
 
     it "makes the system description HTML available at the config-file port" do
-      @machinery.inject_directory(
-        system_description_dir,
-        machinery_config[:machinery_dir],
-        owner: machinery_config[:owner],
-        group: machinery_config[:group]
-      )
-
       @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} config http-server-port=7500")
 
       cmd = "#{machinery_command} serve opensuse131"
@@ -91,6 +86,26 @@ shared_examples "serve html" do
 
       test_basic_html(7500)
       @machinery.run_command("rm -f '#{config_tmp_file}'")
+    end
+
+    it "checks for the correctness of hostnames" do
+      cmd = "#{machinery_command} serve --ip blabla --port 5000 opensuse131"
+      expect(@machinery.run_command(cmd)).to fail.and \
+        have_stderr(/Cannot start server on blabla\:5000\./)
+    end
+
+    it "checks if an IP-Address can be used for the web server binding" do
+      # use the suse.com ip address for test
+      cmd = "#{machinery_command} serve --ip 130.57.5.70 --port 5000 opensuse131"
+      expect(@machinery.run_command(cmd)).to fail.and have_stderr(
+        /The IP\-Address 130\.57\.5\.70 is not available\. Please choose a different IP\-Address\./
+      )
+    end
+
+    it "tests the output when we use ports which needs root privileges" do
+      cmd = "#{machinery_command} serve --ip 127.0.0.1 --port 1023 opensuse131"
+      expect(@machinery.run_command(cmd)).to fail.and \
+        have_stderr(/You need root privileges for ports between 1 and 1023!/)
     end
   end
 end

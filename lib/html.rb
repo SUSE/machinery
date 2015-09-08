@@ -45,6 +45,23 @@ Port #{Server.settings.port} is already in use.
 Stop the already running server on port #{Server.settings.port} or specify a new port by using --port option.
 EOF
           raise Machinery::Errors::ServeFailed, servefailed_error
+        rescue SocketError => e
+          servefailed_error = <<-EOF.chomp
+Cannot start server on #{opts[:ip]}:#{Server.settings.port}.
+ERROR: #{e.message}
+EOF
+          raise Machinery::Errors::ServeFailed, servefailed_error
+        rescue Errno::EADDRNOTAVAIL
+          servefailed_error = <<-EOF.chomp
+The IP-Address #{opts[:ip]} is not available. Please choose a different IP-Address.
+EOF
+          raise Machinery::Errors::ServeFailed, servefailed_error
+        rescue Errno::EACCES => e
+          servefailed_error = <<-EOF.chomp
+You are not allowed to start the server on port #{Server.settings.port}. You need root privileges for ports between 1 and 1023!
+ERROR: #{e.message}
+EOF
+          raise Machinery::Errors::ServeFailed, servefailed_error
         end
         remove_output_redirection
       rescue => e
