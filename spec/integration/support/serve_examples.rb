@@ -72,7 +72,6 @@ shared_examples "serve html" do
         "curl http://localhost:5000/descriptions/opensuse131/files/config_files/etc/crontab"
       )
       expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
-      expect(@machinery.run_command(cmd)).to fail.and have_stderr(/Port 5000 is already in use.\n/)
     end
 
     it "makes the system description HTML available at the config-file port" do
@@ -86,6 +85,31 @@ shared_examples "serve html" do
 
       test_basic_html(7500)
       @machinery.run_command("rm -f '#{config_tmp_file}'")
+    end
+
+    it "makes sure a port can't be used twice" do
+      cmd = "#{machinery_command} serve --ip 127.0.0.1 --port 5000 opensuse131"
+      Thread.new do
+        @machinery.run_command(cmd)
+      end
+
+      wait_time = 0
+
+      loop do
+        curl_command = @machinery.run_command("curl http://127.0.0.1:5000/opensuse131")
+
+        if curl_command.stderr =~ /Failed to connect/
+          raise "Could not connect to webserver" if wait_time >= 10
+
+          sleep 0.5
+          wait_time += 0.5
+          next
+        end
+
+        break
+      end
+
+      expect(@machinery.run_command(cmd)).to fail.and have_stderr(/Port 5000 is already in use.\n/)
     end
 
     it "checks for the correctness of hostnames" do
