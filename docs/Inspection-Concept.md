@@ -15,7 +15,7 @@ description on the local system, where Machinery is executed.
 Usually the inspected system will be different from the system where Machinery
 is running. Machinery will use ssh to access the remote system. For the special
 case where the inspected system is the local system where Machinery is run, the
-same commands will be executed locaclly, not via ssh.
+same commands will be executed locally, not via ssh.
 
 ## Privileges
 
