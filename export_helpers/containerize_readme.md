@@ -35,23 +35,26 @@ Once installed please make sure to run the setup script before running
 
 ## Managing Docker containers
 
-Run container:
+Start the application:
 
-    docker-compose up
+    $ docker-compose up
 
-Run container as daemon in background:
+_When started this way you can hit `ctrl-c` and the application will be
+stopped.)_
+
+Start the application as daemon in background:
 
     docker-compose up -d
 
-Shows list of all running containers:
+Shows a list of all running containers:
 
     docker-compose ps
 
-Stop the container:
+Stop the application:
 
     docker-compose kill
 
-Remove the container image:
+Remove all containers:
 
     docker-compose rm -vf
 
