@@ -129,7 +129,7 @@ shared_examples "serve html" do
     it "tests the output when we use ports which needs root privileges" do
       cmd = "#{machinery_command} serve --ip 127.0.0.1 --port 1023 opensuse131"
       expect(@machinery.run_command(cmd)).to fail.and \
-        have_stderr(/You need root privileges for ports between 1 and 1023!/)
+        have_stderr(/You need root privileges for ports between 2 and 1023!/)
     end
   end
 end

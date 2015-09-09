@@ -330,9 +330,13 @@ class Cli
       desc: "Show also common properties"
     if @config.experimental_features
       c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
-        desc: "Listen on port PORT", arg_name: "PORT"
+        desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
+          2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
+          arg_name: "PORT"
       c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-        desc: "Listen on ip address IP", arg_name: "IP"
+        desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
+          resolving to an IP address) which is assigned to a network interface on the local
+          machine.", arg_name: "IP"
       c.switch "html", required: false, negatable: false,
         desc: "Open comparison in HTML format in your web browser."
     end
@@ -640,9 +644,13 @@ class Cli
     c.flag ["exclude-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
-      desc: "Listen on port PORT", arg_name: "PORT"
+      desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
+        2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
+        arg_name: "PORT"
     c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-      desc: "Listen on ip address IP", arg_name: "IP"
+      desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
+        resolving to an IP address) which is assigned to a network interface on the local
+        machine.", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
@@ -774,9 +782,13 @@ class Cli
   command "serve" do |c|
     c.flag [:port, :p], type: Integer, required: false,
       default_value: Machinery::Config.new.http_server_port,
-      desc: "Listen on port PORT", arg_name: "PORT"
+      desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
+        2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
+        arg_name: "PORT"
     c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-      desc: "Listen on ip IP", arg_name: "IP"
+      desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
+        resolving to an IP address) which is assigned to a network interface on the local
+        machine.", arg_name: "IP"
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
