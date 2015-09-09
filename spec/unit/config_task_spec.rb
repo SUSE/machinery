@@ -23,6 +23,7 @@ describe ConfigTask do
   include FakeFS::SpecHelpers
   let(:config_task) { ConfigTask.new }
   let(:key) { "hints" }
+  let(:long_key) { "remote-user-configuration-change-long" }
 
   describe "#config" do
     it "sets a bool config variable to false" do
@@ -59,9 +60,14 @@ describe ConfigTask do
     end
 
     it "shows the values of all config variables if no key provided" do
-      config_task.config()
-      expect(captured_machinery_output).to include("#{key}=")
-      expect(captured_machinery_output).to include("remote-user=")
+      config = Machinery::Config.new
+      config.entry(key, default: true, description: "configtext")
+      config.entry(long_key, default: "root", description: "configtext")
+      @config_task = ConfigTask.new(config)
+
+      @config_task.config
+      expect(captured_machinery_output).to match(/#{key} {33}=/)
+      expect(captured_machinery_output).to match(/#{long_key} =/)
     end
   end
 

@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Align output of `machinery config`
 * Add rpc_pipefs to filtered filesystems (gh#SUSE/machinery#1250)
 * Add `containerize` command to the experimental features
 * Export of autoyast files is now possible with system descriptions,
