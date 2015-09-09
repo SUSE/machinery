@@ -71,6 +71,7 @@ describe InspectTask, "#inspect_system" do
 
   before :each do
     allow(System).to receive(:for).and_return(system)
+    allow(inspect_task).to receive(:set_system_locale)
   end
 
   let(:inspect_task) { InspectTask.new }
@@ -81,7 +82,8 @@ describe InspectTask, "#inspect_system" do
   let(:system) {
     system = double(
       requires_root?: false,
-      host:           "example.com"
+      host: "example.com",
+      locale: "C"
     )
     allow(system).to receive(:remote_user=)
     system
@@ -98,6 +100,13 @@ describe InspectTask, "#inspect_system" do
     allow(current_user).to receive(:is_root?).and_return(false)
     current_user
   }
+
+  it "gathers the system environment before running the actual inspection" do
+    expect(inspect_task).to receive(:set_system_locale)
+    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+
+    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
+  end
 
   it "runs the proper inspector when a scope is given" do
     expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
@@ -175,6 +184,7 @@ Inspecting foo...
     describe "when root is required" do
       before(:each) do
         expect(system).to receive(:requires_root?).and_return(true)
+        allow(inspect_task).to receive(:set_system_locale)
       end
 
       it "raises an exception we don't run as root" do

@@ -30,6 +30,8 @@ class System
   abstract_method :inject_file
   abstract_method :remove_file
 
+  attr_writer :locale
+
   def self.for(host, remote_user = "root")
     if host && host != "localhost"
       RemoteSystem.new(host, remote_user)
@@ -95,5 +97,9 @@ class System
 
   def arch
     run_command("uname", "-m", stdout: :capture).chomp
+  end
+
+  def locale
+    @locale || "C"
   end
 end

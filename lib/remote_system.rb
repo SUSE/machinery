@@ -74,7 +74,7 @@ class RemoteSystem < System
 
     sudo = ["sudo", "-n"] if options[:privileged] && remote_user != "root"
     cmds = [
-      "ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=en_US.utf8", *piped_args, options
+      "ssh", "#{remote_user}@#{host}", sudo, "LC_ALL=#{locale}", *piped_args, options
     ].compact.flatten
     cheetah_class.run(*cmds)
   rescue Cheetah::ExecutionFailed => e

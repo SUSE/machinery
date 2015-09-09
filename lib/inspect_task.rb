@@ -70,10 +70,12 @@ class InspectTask
     else
       host = system.host
     end
+    set_system_locale(system, description)
 
     failed_inspections = {}
 
     effective_filter = Filter.new(description.filter_definitions("inspect"))
+
 
     scopes.each do |scope|
       inspector = Inspector.for(scope).new(system, description)
@@ -101,5 +103,10 @@ class InspectTask
     end
 
     return description, failed_inspections
+  end
+
+  def set_system_locale(system, description)
+    Inspector.for("environment").new(system, description).inspect
+    system.locale = description.environment.locale
   end
 end

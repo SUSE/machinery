@@ -34,8 +34,16 @@ class EnvironmentInspector < Inspector
   private
 
   def get_locale
-    all_locales = @system.run_command("locale -a").split
+    output = nil
+    begin
+      output = @system.run_command("locale", "-a", stdout: :capture)
+    rescue
+      return "C"
+    end
 
-    ["en_US.utf8", "C"].find { |l| all_locales.include?(l) }
+    all_locales = output.split
+    locale = ["en_US.utf8"].find { |l| all_locales.include?(l) }
+
+    locale || "C"
   end
 end
