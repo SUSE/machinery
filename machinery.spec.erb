@@ -25,6 +25,15 @@ Release:        0
 %define mod_branch -%{version}
 %define mod_weight 1
 
+%if %suse_version > 1320
+# openSUSE Factory
+%define bundlegems 0
+%else
+# SLES12, openSUSE 13.1/13.2/Leap
+# LEAP has the suse_Version 1315
+%define bundlegems 1
+%endif
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  machinery-helper-x86_64
 BuildRequires:  ruby-macros >= 5
@@ -37,9 +46,15 @@ BuildRequires:  fdupes
 BuildRequires:  %{rubydevel}
 BuildRequires:  %{rubygem gem2rpm}
 BuildRequires:  %{rubygem bundler}
+%if 0%{?bundlegems}
 <% build_requires.each do |require| -%>
 BuildRequires:  %{rubygem <%= require[:name] %> <%= require[:operator] %> <%= require[:version] %>}
 <% end -%>
+%else
+<% build_requires.each do |require| -%>
+Requires:  %{rubygem <%= require[:name] %> <%= require[:operator] %> <%= require[:version] %>}
+<% end -%>
+%endif
 %else
 BuildRequires:  ruby-devel
 BuildRequires:  rubygem(gem2rpm)
@@ -87,6 +102,7 @@ done
 
 %gem_install -f
 
+%if %{?bundlegems}
 # Bundle dependencies
 
 pushd %{buildroot}%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}
@@ -127,6 +143,7 @@ rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/gem_make.out
 sed -i '\|%{buildroot}|d' bundle/bundler/setup.rb
 
 popd
+%endif
 
 # Adapt the binary
 
@@ -135,6 +152,7 @@ if [ ! -f "%{buildroot}%{_bindir}/%{binary_name}" ]; then
   mv "%{buildroot}%{_bindir}/%{binary_name}"* "%{buildroot}%{_bindir}/%{binary_name}"
 fi
 
+%if %{?bundlegems}
 # Here we do a surgery on the binary to actually load the bundled gems. This is
 # a hack, but it can't be done anywhere else because the binary is generated
 # during gem install.
@@ -142,6 +160,7 @@ sed -i '/gem /i \
 Gem.path.unshift("%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/bundle/ruby/%{rb_ver}")
 
 ' %{buildroot}%{_bindir}/%{binary_name}
+%endif
 
 # Man page & additional files
 
