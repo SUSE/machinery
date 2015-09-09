@@ -40,7 +40,7 @@ class Hint
     private
 
     def which_machinery
-      `which machinery`.chomp
+      `which machinery 2>/dev/null`.chomp
     end
 
     def get_started(_options)
