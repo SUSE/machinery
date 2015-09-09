@@ -68,7 +68,7 @@ Prophet.setup do |config|
   # NOTE: If you don't set config.success manually to a boolean value,Prophet
   # will try to determine it by looking at whether the last system call returned
   # 0 (= success).
-  if ENV["PROPHET_DRY_RUN"]
+  if ENV["PROPHET_TRIGGER_RUN"]
     config.execution do
       @run_main_jenkins_job = true
     end
