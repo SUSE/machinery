@@ -105,7 +105,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 4
+      format_version: 5
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 

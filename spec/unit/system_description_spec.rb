@@ -33,14 +33,14 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": 4
+        "format_version": 5
       }
     }'
   end
 
   it "returns empty JSON structure on .new" do
     data = SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
-    expect(data.to_json.delete(' ')).to eq(@empty_description.delete(' '))
+    expect(JSON.parse(data.to_json).keys).to eq(["meta"])
   end
 
   it "provides nested accessors for data attributes" do

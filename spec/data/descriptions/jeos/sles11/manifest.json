@@ -2408,7 +2408,7 @@
     ]
   },
   "meta": {
-    "format_version": 4,
+    "format_version": 5,
     "os": {
       "modified": "2015-06-23T13:05:40Z",
       "hostname": "192.168.121.210"
@@ -2473,5 +2473,8 @@
         "/unmanaged_files/files/name=/etc/init.d/rcS.d"
       ]
     }
+  },
+  "environment": {
+    "locale": "en_US.utf8"
   }
 }

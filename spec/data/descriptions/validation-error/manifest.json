@@ -48,7 +48,7 @@
     ]
   },
   "meta": {
-    "format_version": 4,
+    "format_version": 5,
     "repositories": {
       "modified": "2014-08-29T11:10:03Z",
       "hostname": "192.168.121.56"
@@ -57,5 +57,8 @@
       "modified": "2014-08-29T11:10:03Z",
       "hostname": "192.168.121.56"
     }
+  },
+  "environment": {
+    "locale": "en_US.utf8"
   }
 }

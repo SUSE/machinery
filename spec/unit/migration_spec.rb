@@ -37,21 +37,26 @@ describe Migration do
     )
     stub_const(
       "Migrate3To4", Class.new(Migration) do
-        # Bad migration, it does not describe its purpose.
         desc "Migrate version 3 to 4"
         def migrate; end
       end
     )
     stub_const(
       "Migrate4To5", Class.new(Migration) do
+        desc "Migrate version 4 to 5"
+        def migrate; end
+      end
+    )
+    stub_const(
+      "Migrate5To6", Class.new(Migration) do
         # Bad migration, it does not describe its purpose.
         def migrate; end
       end
     )
 
-    stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 4)
+    stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 5)
     stub_const("Machinery::DEFAULT_CONFIG_DIR", store.base_path)
-    [1, 2, 3, 4].each do |version|
+    1.upto(SystemDescription::CURRENT_FORMAT_VERSION).each do |version|
       store_raw_description("v#{version}_description", <<-EOF)
         {
           "meta": {
@@ -105,9 +110,10 @@ describe Migration do
       expect_any_instance_of(Migrate1To2).to_not receive(:migrate)
       expect_any_instance_of(Migrate2To3).to_not receive(:migrate)
       expect_any_instance_of(Migrate3To4).to_not receive(:migrate)
+      expect_any_instance_of(Migrate4To5).to_not receive(:migrate)
 
-      Migration.migrate_description(store, "v4_description")
-      description = SystemDescription.load("v4_description", store)
+      Migration.migrate_description(store, "v5_description")
+      description = SystemDescription.load("v5_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
       expect(captured_machinery_output).to include("No upgrade necessary")
     end
@@ -127,10 +133,10 @@ describe Migration do
     end
 
     it "refuses to run migrations without a migration_desc" do
-      stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 5)
+      stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 6)
       expect {
-        Migration.migrate_description(store, "v4_description")
-      }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate4To5'/)
+        Migration.migrate_description(store, "v5_description")
+      }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate5To6'/)
     end
 
     it "deletes the backup if the migration failed" do

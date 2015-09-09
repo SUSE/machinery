@@ -3111,7 +3111,7 @@
     }
   ],
   "meta": {
-    "format_version": 4,
+    "format_version": 5,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
@@ -3152,5 +3152,8 @@
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
     }
+  },
+  "environment": {
+    "locale": "en_US.utf8"
   }
 }

@@ -2025,12 +2025,14 @@
         "package_name": "postfix",
         "package_version": "2.9.6",
         "status": "changed",
-        "changes": ["link_path"],
+        "changes": [
+          "link_path"
+        ],
         "user": "root",
         "group": "root",
         "mode": "777",
         "type": "link",
-	      "target": "/test-f'le"
+        "target": "/test-f'le"
       }
     ]
   },
@@ -2098,7 +2100,9 @@
         "package_name": "postfix",
         "package_version": "2.9.6",
         "status": "changed",
-        "changes": ["link_path"],
+        "changes": [
+          "link_path"
+        ],
         "mode": "777",
         "user": "root",
         "group": "root",
@@ -2124,7 +2128,7 @@
 
   ],
   "meta": {
-    "format_version": 4,
+    "format_version": 5,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
@@ -2157,5 +2161,8 @@
       "modified": "2014-08-15T11:09:34Z",
       "hostname": "192.168.122.96"
     }
+  },
+  "environment": {
+    "locale": "en_US.utf8"
   }
 }
