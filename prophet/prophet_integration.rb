@@ -53,6 +53,8 @@ Prophet.setup do |config|
   config.status_success = "Tests are passing."
   config.status_failure = "Tests are failing."
 
+  @run_main_jenkins_job = false
+
   # If you need to make some system calls before looping through the pull requests,
   # you specify them here. This block will only be executed once and defaults to an
   # empty block.
@@ -66,14 +68,26 @@ Prophet.setup do |config|
   # NOTE: If you don't set config.success manually to a boolean value,Prophet
   # will try to determine it by looking at whether the last system call returned
   # 0 (= success).
-  config.execution do
-    log.info "Running tests ..."
+  if ENV["PROPHET_TRIGGER_RUN"]
+    config.execution do
+      @run_main_jenkins_job = true
+    end
+  else
+    config.execution do
+      log.info "Running tests ..."
 
-    system("cd ..; (bundle check || sudo bundle install) && rspec spec/integration --tag=ci")
-    config.success = ($? == 0)
+      system("cd ..; (bundle check || sudo bundle install) && rspec spec/integration --tag=ci")
+      config.success = ($? == 0)
 
-    log.info "Tests are #{config.success ? "passing" : "failing"}."
+      log.info "Tests are #{config.success ? "passing" : "failing"}."
+    end
   end
 end
 
 Prophet.run
+
+if @run_main_jenkins_job
+  crumb = options["default"]["crumb"]
+  token = options["default"]["token"]
+  system("curl -H #{crumb} -X POST https://ci.opensuse.org/view/Machinery/job/machinery-prophet-integration/build --data token=#{token}")
+end
