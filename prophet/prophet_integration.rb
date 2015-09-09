@@ -87,7 +87,10 @@ end
 Prophet.run
 
 if @run_main_jenkins_job
-  crumb = options["default"]["crumb"]
-  token = options["default"]["token"]
+  if File.exists?(CONFIG_FILE)
+    options = YAML.load_file(CONFIG_FILE)
+    crumb = options["default"]["crumb"]
+    token = options["default"]["token"]
+  end
   system("curl -H #{crumb} -X POST https://ci.opensuse.org/view/Machinery/job/machinery-prophet-integration/build --data token=#{token}")
 end
