@@ -230,12 +230,12 @@ task :upgrade_test_descriptions do
   # we don't want to upgrade format_vX, invalid-json, so we list the ones
   # we want to upgrade here
   descriptions = [
-    "jeos",
     "opensuse131-build",
     "validation-error"
   ]
 
   upgrade_descriptions(DESCRIPTIONS_PATH, descriptions)
+  upgrade_descriptions(File.join(DESCRIPTIONS_PATH, "jeos"))
   upgrade_descriptions(File.join(DESCRIPTIONS_PATH, "validation"))
   upgrade_descriptions(File.join(Machinery::ROOT, "spec/data/schema/"),
     ["faulty_description", "valid_description"]
