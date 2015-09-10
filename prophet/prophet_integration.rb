@@ -70,7 +70,9 @@ Prophet.setup do |config|
   # 0 (= success).
   if ENV["PROPHET_TRIGGER_RUN"]
     config.execution do
+      config.status_context = "prophet/trigger"
       @run_main_jenkins_job = true
+      config.success = ($? == 0)
     end
   else
     config.execution do
