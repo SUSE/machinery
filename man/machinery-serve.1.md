@@ -27,8 +27,14 @@ IP address and the port can be configured using the according options.
   * `-p PORT`, `--port=PORT` (optional):
     Specify the port on which the web server will serve the system description: Default: 7585
 
+    Ports can be selected in a range between 2-65535. Ports between 2 and 1023 can only be
+    chosen when `machinery` will be executed as `root` user.
+
   * `-i IP`, `--ip=IP` (optional):
     Specify the IP address on which the web server will be made available. Default: 127.0.0.1
+
+    It's only possible to use an IP address (or hostnames resolving to an IP address) which
+    is assigned to a network interface on the local machine.
 
 ### EXAMPLES
 
