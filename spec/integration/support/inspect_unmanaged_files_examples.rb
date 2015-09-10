@@ -179,7 +179,6 @@ shared_examples "inspect unmanaged files" do |base|
       expect(tarballs_command.stdout.split("\n")).to match_array(expected_tarballs)
       expect(files_command.stdout.split("\n")).to match_array(expected_filestgz_list)
 
-
       # check content of test tarball
       tmp_dir = Dir.mktmpdir("unmanaged_files", "/tmp")
       expected_output = `cd "#{tmp_dir}"; tar -xf "#{test_tarball}"; md5sum "#{tmp_dir}/srv/test/"*`
@@ -195,6 +194,14 @@ shared_examples "inspect unmanaged files" do |base|
       actual_md5sums = parse_md5sums(md5_command.stdout)
 
       expect(actual_md5sums).to match_array(expected_md5sums)
+    end
+
+    it "does not extract remote mounts" do
+      list = @machinery.run_command(
+        "tar tfv #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/mnt/unmanaged.tgz;",
+        as: "vagrant", stdout: :capture
+      ).stdout.split("\n")
+      expect(list.length).to eq(1)
     end
 
     it "can deal with spaces and quotes in file names" do

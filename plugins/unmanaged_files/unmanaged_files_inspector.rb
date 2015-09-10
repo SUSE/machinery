@@ -274,6 +274,9 @@ class UnmanagedFilesInspector < Inspector
     scope.files.delete_if { |f| filter.matches?(f.name) }
 
     if do_extract
+      mount_points = MountPoints.new(@system)
+      excluded_trees = mount_points.remote + mount_points.special
+
       file_store_tmp.remove
       file_store_tmp.create
 
@@ -282,7 +285,7 @@ class UnmanagedFilesInspector < Inspector
       show_extraction_progress(files.count)
 
       scope.retrieve_trees_from_system_as_archive(@system,
-        scope.files.select(&:directory?).map(&:name), []) do |count|
+        scope.files.select(&:directory?).map(&:name), excluded_trees) do |count|
         show_extraction_progress(files.count + count)
       end
 
