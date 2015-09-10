@@ -45,7 +45,7 @@ describe Inspector do
     stub_const("BarracudaInspector", Class.new(Inspector) do
       def self.name; "BarracudaInspector"; end
       has_priority 1700
-      end)
+    end)
   end
 
   describe ".priority" do
@@ -53,7 +53,6 @@ describe Inspector do
       expect(Inspector.priority).to eq(1000)
     end
   end
-
 
   describe ".has_priority" do
     it "sets a priority" do

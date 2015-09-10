@@ -76,7 +76,6 @@ class InspectTask
 
     effective_filter = Filter.new(description.filter_definitions("inspect"))
 
-
     scopes.each do |scope|
       inspector = Inspector.for(scope).new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
