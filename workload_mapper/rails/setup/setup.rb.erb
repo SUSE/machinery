@@ -35,7 +35,7 @@ def build_image(path, name)
   else
     puts "Building image #{name}"
     Docker::Image.build_from_dir(path, t: name) do |output|
-      puts JSON.parse(output)["stream"]
+      print JSON.parse(output)["stream"]
     end
   end
 end
@@ -52,7 +52,7 @@ build_image("./#{db_workload}", db_image)
 
 volumes = ["#{Dir.pwd}/#{db_workload}/data:/var/lib/mysql"]
 db = Docker::Container.create("Image" => db_image, "name" => "#{db_image}_0", "Env" => db_env_vars, "Binds" => volumes, "Tty" => true, "Stream" => true)
-db.tap(&:start).attach(tty: true) { |output| puts output }
+db.tap(&:start).attach(tty: true) { |output| print output }
 
 web_image = "#{app_name}_web"
 build_image("./rails", web_image)
@@ -61,7 +61,7 @@ db.start
 
 command = ["rake", "db:create", "db:migrate"]
 web = Docker::Container.create("Image" => web_image, "name" => "#{web_image}_0", "Cmd" => command, "Links" => ["#{db_image}_0:db"], "Env" => web_env_vars, "Tty" => true)
-web.tap(&:start).attach(tty: true) { |output| puts output }
+web.tap(&:start).attach(tty: true) { |output| print output }
 
 puts "Stopping db service"
 db.kill
