@@ -240,6 +240,18 @@ class Cli
     end
   end
 
+  def self.check_port_validity(port)
+    if port < 2 || port > 65535
+      raise Machinery::Errors::InvalidCommandLine.new("Please choose a port between 2 and " \
+        "65535.")
+    else
+      if port >= 2 && port <= 1023 && !CurrentUser.new.is_root?
+        raise Machinery::Errors::InvalidCommandLine.new("You need root rights when you want " \
+          "to use a port between 2 and 65535.")
+      end
+    end
+  end
+
   AVAILABLE_SCOPE_LIST = Machinery::Ui.internal_scope_list_to_string(
     Inspector.all_scopes
   )
@@ -348,6 +360,9 @@ class Cli
 
       name1 = shift_arg(args, "NAME1")
       name2 = shift_arg(args, "NAME2")
+
+      check_port_validity(options[:port]) if options[:html]
+
       store = system_description_store
       description1 = SystemDescription.load(name1, store)
       description2 = SystemDescription.load(name2, store)
@@ -667,6 +682,9 @@ class Cli
       if name == "localhost" && !CurrentUser.new.is_root?
         Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
+
+      check_port_validity(options[:port]) if options[:html]
+
       description = SystemDescription.load(name, system_description_store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
 
@@ -792,6 +810,8 @@ class Cli
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
+
+      check_port_validity(options[:port])
 
       description = SystemDescription.load(name, system_description_store)
       task = ServeHtmlTask.new

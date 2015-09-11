@@ -96,6 +96,36 @@ shared_examples "CLI" do
       end
     end
 
+    describe "compare" do
+      before(:each) do
+        @machinery.run_command("#{machinery_command} config experimental_features true", \
+          as: "vagrant")
+      end
+
+      it "checks if a port gets validated" do
+        expect(@machinery.run_command("#{machinery_command} compare description1 description2 " \
+          "--port=1 --html", as: "vagrant")).to fail.and include_stderr(
+            "Please choose a port between 2 and 65535."
+          )
+      end
+    end
+
+    describe "show" do
+      it "checks if a port gets validated" do
+        expect(@machinery.run_command("#{machinery_command} show description1 " \
+          "--port=1 --html", as: "vagrant")).to fail.and include_stderr(
+            "Please choose a port between 2 and 65535."
+          )
+      end
+    end
+
+    describe "serve" do
+      it "checks if a port gets validated" do
+        expect(@machinery.run_command("#{machinery_command} serve description1 --port=1", \
+          as: "vagrant")).to fail.and include_stderr("Please choose a port between 2 and 65535.")
+      end
+    end
+
     describe "validate number of given arguments" do
       context "when no arguments are expected" do
         it "fails with a message" do
