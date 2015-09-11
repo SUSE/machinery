@@ -22,7 +22,7 @@ require_relative '../lib/machinery'
 begin
   LocalSystem.validate_machinery_compatibility
   Machinery.initialize_logger(ENV["MACHINERY_LOG_FILE"] || Machinery::DEFAULT_LOG_FILE)
-  command_log = "Executing (Version #{Machinery::VERSION}) '#{$0} #{ARGV.join(" ")}'"
+  command_log = "Executing (Version #{Machinery::VERSION}) '#{$PROGRAM_NAME} #{ARGV.join(" ")}'"
   command_log += " (store: #{ENV["MACHINERY_DIR"]})" if ENV["MACHINERY_DIR"]
   Machinery.logger.info command_log
   Cli.run(ARGV)
