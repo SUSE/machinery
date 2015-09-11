@@ -29,34 +29,46 @@ class Hint
       "\nHint: #{send(method, options)}\n"
     end
 
+    def program_name
+      if which_machinery == $PROGRAM_NAME
+        "machinery"
+      else
+        $PROGRAM_NAME
+      end
+    end
+
     private
 
+    def which_machinery
+      `which machinery 2>/dev/null`.chomp
+    end
+
     def get_started(_options)
-      "You can get started by inspecting a system. Run:\n#{$0} inspect HOSTNAME"
+      "You can get started by inspecting a system. Run:\n#{program_name} inspect HOSTNAME"
     end
 
     def upgrade_format_force(options)
       "To force an upgrade of system descriptions run:\n" \
-      "#{$0} upgrade-format --force #{options[:name]}"
+      "#{program_name} upgrade-format --force #{options[:name]}"
     end
 
     def show_data(options)
-      "To show the data of the system you just inspected run:\n#{$0} show #{options[:name]}"
+      "To show the data of the system you just inspected run:\n#{program_name} show #{options[:name]}"
     end
 
     def show_analyze_data(options)
       "To show the config file diffs you just created run:\n" \
-        "#{$0} show --scope config-files --show-diffs #{options[:name]}"
+        "#{program_name} show --scope config-files --show-diffs #{options[:name]}"
     end
 
     def do_complete_inspection(options)
       "To do a full inspection containing all scopes and to extract files run:\n" \
-       "#{$0} inspect #{options[:host]} --name #{options[:name]} --extract-files"
+       "#{program_name} inspect #{options[:host]} --name #{options[:name]} --extract-files"
     end
 
     def upgrade_system_description(_options)
       "To upgrade all system descriptions run:\n" \
-       "#{$0} upgrade-format --all"
+       "#{program_name} upgrade-format --all"
     end
 
     def share_html_contents(options)
