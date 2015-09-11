@@ -16,8 +16,8 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "inspect" do |base|
-  username = "machinery"
-  password = "linux"
+  username = "root"
+  password = "vagrant"
 
   describe "inspect #{base} system" do
     let(:inspect_options) {

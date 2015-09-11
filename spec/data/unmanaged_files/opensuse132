@@ -262,6 +262,8 @@
     Mode: 600
     Size: 0 B
 
+  * /root/.ssh/ (dir)
+
   * /home/machinery/ (dir)
     User/Group: machinery:users
     Mode: 755
