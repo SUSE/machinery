@@ -49,6 +49,7 @@ Gem::Specification.new do |s|
   s.files        = Dir[
     "lib/**/*.rb",
     "plugins/**/*",
+    "workload_mapper/**/*",
     "bin/*",
     "man/generated/machinery.1.gz",
     "man/generated/machinery.1.html",
