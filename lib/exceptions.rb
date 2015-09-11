@@ -48,7 +48,7 @@ module Machinery
       def to_s
         "The system description '#{@name}' has an incompatible data " \
         "format and can not be read.\n" \
-        "Try '#{$0} upgrade-format #{name}' to upgrade it to the current version.\n"
+        "Try '#{Hint.program_name} upgrade-format #{name}' to upgrade it to the current version.\n"
       end
     end
 
@@ -65,7 +65,7 @@ module Machinery
         end.compact.first || "<HOSTNAME>"
         formatted_scopes = Machinery::Ui.internal_scope_list_to_string(@scopes)
 
-        cmd = "#{$0} inspect --extract-files --scope=#{formatted_scopes.delete(" ")}"
+        cmd = "#{Hint.program_name} inspect --extract-files --scope=#{formatted_scopes.delete(" ")}"
         cmd += " --name='#{@description.name}'" if hostname != @description.name
         cmd += " #{hostname}"
 
