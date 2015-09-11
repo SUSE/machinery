@@ -254,7 +254,7 @@ class Cli
       the package for the modified config files
   LONGDESC
   arg "NAME"
-  command :analyze do |c|
+  command "analyze" do |c|
     c.flag [:operation, :o], type: String, required: true,
       desc: "The analyze operation to perform", arg_name: "OPERATION"
 
@@ -288,7 +288,7 @@ class Cli
     #{buildable_distributions}
   LONGDESC
   arg "NAME"
-  command :build do |c|
+  command "build" do |c|
     c.flag ["image-dir", :i], type: String, required: true,
       desc: "Store the image under the specified path", arg_name: "DIRECTORY"
     c.switch ["enable-dhcp", :d], required: false, negatable: false,
@@ -321,7 +321,7 @@ class Cli
   LONGDESC
   arg "NAME1"
   arg "NAME2"
-  command :compare do |c|
+  command "compare" do |c|
     c.flag [:scope, :s], type: String, required: false,
       desc: "Compare specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["exclude-scope", :e], type: String, required: false,
@@ -374,7 +374,7 @@ class Cli
   LONGDESC
   arg "FROM_NAME"
   arg "TO_NAME"
-  command :copy do |c|
+  command "copy" do |c|
     c.action do |global_options,options,args|
       from = shift_arg(args, "FROM_NAME")
       to = shift_arg(args, "TO_NAME")
@@ -392,7 +392,7 @@ class Cli
     specified an image will be built from the description before deployment.
   LONGDESC
   arg "NAME"
-  command :deploy do |c|
+  command "deploy" do |c|
     c.flag ["cloud-config", :c], type: String, required: true, arg_name: "FILE",
       desc: "Path to file where the cloud config (openrc.sh) is located"
     c.flag ["image-dir", :i], type: String, required: false,
@@ -482,7 +482,7 @@ class Cli
     Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
   arg "HOSTNAME"
-  command :inspect do |c|
+  command "inspect" do |c|
     supports_filtering(c)
     c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
       desc: "Store system description under the specified name"
@@ -575,7 +575,7 @@ class Cli
     The date of modification for each scope can be shown with the verbose
     option.
   LONGDESC
-  command :list do |c|
+  command "list" do |c|
     c.switch :verbose, required: false, negatable: false,
       desc: "Display additional information about origin of scopes"
     c.switch :short, required: false, negatable: false,
@@ -592,7 +592,7 @@ class Cli
     Shows the man page of the machinery tool.
 
   LONGDESC
-  command :man do |c|
+  command "man" do |c|
     c.action do
       task = ManTask.new
       task.man
@@ -609,7 +609,7 @@ class Cli
   LONGDESC
   arg "NAME", [:multiple, :optional]
 
-  command :remove do |c|
+  command "remove" do |c|
     c.switch :all, negatable: false,
       desc: "Remove all system descriptions"
     c.switch :verbose, required: false, negatable: false,
@@ -637,7 +637,7 @@ class Cli
     Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
   arg "NAME"
-  command :show do |c|
+  command "show" do |c|
     supports_filtering(c)
     c.flag [:scope, :s], type: String, required: false,
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
@@ -703,7 +703,7 @@ class Cli
     Validate system description stored under the specified name.
   LONGDESC
   arg "NAME"
-  command :validate do |c|
+  command "validate" do |c|
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
@@ -806,7 +806,7 @@ class Cli
       container setup
     LONGDESC
     arg "NAME"
-    command :containerize do |c|
+    command "containerize" do |c|
       c.flag ["output-dir", :o], type: String, required: true,
         desc: "Location where the container files will be stored", arg_name: "DIRECTORY"
 
