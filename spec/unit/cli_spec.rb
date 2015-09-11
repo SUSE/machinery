@@ -736,6 +736,30 @@ Backtrace:
     end
   end
 
+  describe ".check_port_validity" do
+    it "checks if a port is invalid below 2" do
+      expect { Cli.check_port_validity(1) }.to raise_error(Machinery::Errors::InvalidCommandLine, \
+        "Please choose a port between 2 and 65535.")
+    end
+
+    it "checks if a port is invalid above 65535" do
+      expect { Cli.check_port_validity(65536) }.to raise_error(
+        Machinery::Errors::InvalidCommandLine, "Please choose a port between 2 and 65535."
+      )
+    end
+
+    it "checks if a port is valid between 2 and 65535" do
+      expect { Cli.check_port_validity(5000) }.to_not raise_error
+    end
+
+    it "checks if a port requires root privileges" do
+      expect { Cli.check_port_validity(1000) }.to raise_error(
+        Machinery::Errors::InvalidCommandLine, "You need root rights when you want to use a port " \
+          "between 2 and 65535."
+      )
+    end
+  end
+
   private
 
   def run_command(*args)

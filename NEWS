@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix: Validate port option in the `show` and `serve` commands
+  (gh#SUSE/machinery#1316)
 * Align output of `machinery config`
 * Add rpc_pipefs to filtered filesystems (gh#SUSE/machinery#1250)
 * Handle socket errors for `-i` option
