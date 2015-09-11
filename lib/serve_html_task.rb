@@ -21,7 +21,7 @@ class ServeHtmlTask
 
     Machinery::Ui.use_pager = false
     Machinery::Ui.puts <<EOF
-The description is now available at #{url}
+Trying to start a web server for the description on #{url}
 
 The web server can be closed with Ctrl+C.
 EOF
