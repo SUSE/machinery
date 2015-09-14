@@ -12,6 +12,11 @@
   which have empty repository scopes (gh#SUSE/machinery#1268)
 * Inspection of unmanaged-files is now also using the faster machinery-helper
   when the files are extracted
+* Introduce format version 5 which adds the "environment" scope (see
+  https://github.com/SUSE/machinery/blob/master/docs/System-Description-Format.md#version-5).
+  This scope is a hidden scope which is used internally by Machinery.
+* Only print binary path if it's not first in PATH (gh#SUSE/machinery#1284)
+* Do not exclude files with broken UTF-8 filenames anymore
 
 ## Version 1.12.0 - Fri Sep 04 16:51:10 CEST 2015 - cschum@suse.de
 
