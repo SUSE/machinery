@@ -24,8 +24,8 @@ require_relative "spec_template"
 
 class Release
   def self.version
-    if File.exist?("VERSION")
-      File.read("VERSION").chomp
+    if File.exist?("version.go")
+      File.read("version.go")[/(\d+\.\d+\.\d+)/]
     else
       Machinery::VERSION
     end
@@ -95,7 +95,7 @@ class Release
     if File.exist?("lib/version.rb")
       Cheetah.run "git", "checkout", "lib/version.rb"
     else
-      Cheetah.run "git", "checkout", "VERSION"
+      Cheetah.run "git", "checkout", "version.go"
     end
     @changelog_files.each do |file|
       Cheetah.run "git", "checkout", file
@@ -175,7 +175,8 @@ class Release
       Cheetah.run "sed", "-i", "s/VERSION.*=.*/VERSION = \"#{@options[:version]}\"/",
         "lib/version.rb"
     else
-      File.write("VERSION", @options[:version])
+      Cheetah.run "sed", "-i", "s/const VERSION .*/const VERSION = \"#{@options[:version]}\"/",
+        "version.go"
     end
   end
 
