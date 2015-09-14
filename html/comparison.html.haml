@@ -269,7 +269,7 @@
 
     %script#scope_unmanaged_files_partial{:type => "text/ng-template"}
       %p
-        <strong>Files extracted:</strong> {{object.extracted}}
+        <strong>Files extracted:</strong> {{object.extracted ? "yes" : "no"}}
       %table.table.table-striped.table-hover.table-condensed.files-table{{"ng-show" => "object.files"}}
         %thead
           %tr
@@ -457,7 +457,7 @@
 
     %script#scope_changed_managed_files_partial{:type => "text/ng-template"}
       %p
-        <strong>Files extracted:</strong> {{object.extracted}}
+        <strong>Files extracted:</strong> {{object.extracted ? "yes" : "no"}}
       %table.table.table-striped.table-hover.table-condensed.files-table{{"ng-show" => "object.files"}}
         %thead
           %tr
@@ -524,7 +524,7 @@
 
     %script#scope_config_files_partial{:type => "text/ng-template"}
       %p
-        <strong>Files extracted:</strong> {{object.extracted}}
+        <strong>Files extracted:</strong> {{object.extracted ? "yes" : "no"}}
       %table.table.table-striped.table-hover.table-condensed.files-table{{"ng-show" => "object.files"}}
         %thead
           %tr
