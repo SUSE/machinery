@@ -18,28 +18,9 @@
 class LoggedCheetah
   class << self
     def run(*args)
-      run_overloaded(*args, {})
-    end
-
-    def run_with_c(*args)
-      run_overloaded(*args, with_c_locale: true)
-    end
-
-    private
-
-    def run_overloaded(*args, options)
       command = args.select { |e| e.is_a?(String) }.join(" ")
       Machinery.logger.info("Running '#{command}'")
-
-      if options[:with_c_locale]
-        with_c_locale do
-          Cheetah.run(*args)
-        end
-      else
-        with_utf8_locale do
-          Cheetah.run(*args)
-        end
-      end
+      Cheetah.run(*args)
     end
   end
 end
