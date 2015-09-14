@@ -34,12 +34,14 @@ class BuildTask
         output_path, img_extension)
 
       begin
-        LoggedCheetah.run_with_c(
-          "sudo",
-          tmp_script.path,
-          stdout: $stdout,
-          stderr: $stderr
-        )
+        with_c_locale do
+          LoggedCheetah.run(
+            "sudo",
+            tmp_script.path,
+            stdout: $stdout,
+            stderr: $stderr
+          )
+        end
       rescue SignalException => e
         # Handle SIGHUP(1), SIGINT(2) and SIGTERM(15) gracefully
         if [1, 2, 15].include?(e.signo)
