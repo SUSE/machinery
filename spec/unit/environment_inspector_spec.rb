@@ -28,6 +28,7 @@ describe EnvironmentInspector do
       check_requirement: nil
     )
   }
+  let(:invalid_utf8) { "a\255b\nen_US.utf8" }
   let(:locale_list_without_utf8) {
     File.read(File.join(Machinery::ROOT, "spec/data/environment/locale_list_without_utf8"))
   }
@@ -46,6 +47,13 @@ describe EnvironmentInspector do
 
     it "returns the utf8 locale if utf8 locale is available" do
       expect(system).to receive(:run_command).and_return(locale_list_with_utf8)
+
+      subject.inspect
+      expect(description.environment.locale).to eq("en_US.utf8")
+    end
+
+    it "does not fail in case of invalid byte squences in UTF-8" do
+      expect(system).to receive(:run_command).and_return(invalid_utf8)
 
       subject.inspect
       expect(description.environment.locale).to eq("en_US.utf8")
