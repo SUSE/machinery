@@ -544,6 +544,7 @@ JSON Example:
       "encrypted_password": "*",
       "last_changed_date": 16266
     }
+]
 ```
 
 
