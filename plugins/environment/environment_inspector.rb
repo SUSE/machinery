@@ -37,7 +37,7 @@ class EnvironmentInspector < Inspector
     output = nil
     begin
       output = @system.run_command("locale", "-a", stdout: :capture)
-      output.encode!("UTF-8", invalid: :replace, undef: :replace, replace: "?")
+      output.encode!("UTF-16be", invalid: :replace, undef: :replace, replace: "?").encode!("UTF-8")
     rescue
       return "C"
     end
