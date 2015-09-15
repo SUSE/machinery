@@ -737,7 +737,7 @@ version of Machinery.
 
 ### Version 2
 
-* Schema version 2 introduces an "extracted" flag for the [[config-files|System Description Format#config-  files]], [[changed-managed-files|System Description Format#changed-managed-files]] and [[unmanaged-files|System Description Format#unmanaged-files]], indicating whether the files were extracted or not.
+* Schema version 2 introduces an "extracted" flag for the [config-files](#config-files), [changed-managed-files](#changed-managed-files) and [unmanaged-files](#unmanaged-files), indicating whether the files were extracted or not.
 
 * It also introduces a "remote_dir" type for the unmanaged_files scope indicating that the directory is a remote mount point and that the content is not checked or extracted.
 
@@ -751,6 +751,6 @@ version of Machinery.
 
 ### Version 4
 
-* Schema version 4 adds a "type" attribute to [[changed-managed-files|System Description Format#changed-managed-files]] and [[config-files|System Description Format#config-files]] with the possible values "file", "directory" and "link".
+* Schema version 4 adds a "type" attribute to [changed-managed-files](#changed-managed-files) and [config-files](#config-files) with the possible values "file", "directory" and "link".
 
 * For both scopes an additional attribute "target_path" was introduced which will be only added in case of the file type "link" to store the destination.
