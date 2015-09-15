@@ -28,6 +28,9 @@ A simplified example of the manifest can look like this:
 
 ```json
 {
+  "environment": {
+    "locale": "en_US.utf8"
+  },
   "os": {
     "name": "openSUSE 13.1 (Bottle)",
     "version": "13.1 (Bottle)",
@@ -91,6 +94,17 @@ at `~/.machinery/mini/config_files/etc/ntp.conf`.
 
 The names of the scopes in the JSON use `_` as separator of words, while when
 specifying a scope name on the command line `-` is used as separator of words.
+
+### environment
+
+This hidden scope in the system description contains the information about the locale of the target system.
+
+JSON Example:
+```json
+"environment": {
+  "locale": "en_US.utf8"
+}
+```
 
 ### meta
 
@@ -530,6 +544,7 @@ JSON Example:
       "encrypted_password": "*",
       "last_changed_date": 16266
     }
+]
 ```
 
 
@@ -754,3 +769,7 @@ version of Machinery.
 * Schema version 4 adds a "type" attribute to [changed-managed-files](#changed-managed-files) and [config-files](#config-files) with the possible values "file", "directory" and "link".
 
 * For both scopes an additional attribute "target_path" was introduced which will be only added in case of the file type "link" to store the destination.
+
+### Version 5
+
+* Schema version 5 adds the hidden scope [environment](#environment) in the description, which saves the locale of the target system.
