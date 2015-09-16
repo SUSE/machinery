@@ -21,7 +21,7 @@
         <a href="index.html"> <img src="img/hand3.png" class="hand3"> <div class="goback">Go back to the website</div></a>
       </div>
       <div class='mp'>
-<h1>Machinery — A Systems Management Toolkit for Linux</h1>
+  <h1>Machinery — A Systems Management Toolkit for Linux</h1>
 <!--
 
 General procedure:
@@ -45,6 +45,58 @@ discovery, system validation, and service migration. Machinery is based on the
 idea of an universal system description. Machinery has a set of commands which
 work with this system description. These commands can be combined to form work
 flows. Machinery is targeted at the system administrator of the data center.</p>
+
+<h2 id="WORK-FLOW-EXAMPLES">WORK FLOW EXAMPLES</h2>
+
+<h3 id="Inspect-a-System-and-Show-Results">Inspect a System and Show Results</h3>
+
+<ul>
+<li><code>machinery inspect --extract-files --name=NAME HOSTNAME</code></li>
+<li><code>machinery show NAME</code></li>
+</ul>
+
+
+<h3 id="Inspect-Two-Systems-and-Compare-Them">Inspect Two Systems and Compare Them</h3>
+
+<ul>
+<li><code>machinery inspect HOSTNAME1</code></li>
+<li><code>machinery inspect HOSTNAME2</code></li>
+<li><code>machinery compare HOSTNAME1 HOSTNAME2</code></li>
+</ul>
+
+
+<h3 id="Fully-Inspect-a-System-and-Export-a-Kiwi-Description">Fully Inspect a System and Export a Kiwi Description</h3>
+
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery export-kiwi --kiwi-dir=~/kiwi HOSTNAME</code></li>
+</ul>
+
+
+<h3 id="Fully-Inspect-a-System-and-Export-an-AutoYaST-Profile">Fully Inspect a System and Export an AutoYaST Profile</h3>
+
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery export-autoyast --autoyast-dir=~/autoyast HOSTNAME</code></li>
+</ul>
+
+
+<h3 id="Fully-Inspect-a-System-and-Deploy-a-Replicate-to-the-Cloud">Fully Inspect a System and Deploy a Replicate to the Cloud</h3>
+
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery deploy --cloud-config=~/openrc.sh HOSTNAME</code></li>
+</ul>
+
+
+<h3 id="How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12">How to upgrade a SLES 11 SP3 system to SLES 12</h3>
+
+<ul>
+<li>Machinery can help you to upgrade without affecting the original system.
+For more details please read the Wiki Page: <br />
+https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12</li>
+</ul>
+
 
 <h2 id="CONCEPTUAL-OVERVIEW">CONCEPTUAL OVERVIEW</h2>
 
@@ -123,21 +175,6 @@ scope to <code>packages</code>. This will output only the requested information.
 <p>Machinery supports the following scopes:</p>
 
 <ul>
-<li><p>changed-managed-files</p>
-
-<p>Contains the names and contents of all non-configuration files which have
-been changed compared to the files in the package.</p></li>
-<li><p>config-files</p>
-
-<p>Contains all configuration files which have been changed since they were
-installed.
-Configuration files are all those files which are marked as such in the
-package which has installed them. A configuration file is considered changed
-if either its content or its Linux permission bits have changed.</p></li>
-<li><p>groups</p>
-
-<p>Contains information about the system groups such as group attributes and the
-list of group members.</p></li>
 <li><p>os</p>
 
 <p>Contains information about the operating system, name, version, and
@@ -176,6 +213,15 @@ to the priorities of all other activated repositories. Values can
 range from 1 (highest) to 99 (lowest, default).</p></li>
 </ul>
 </li>
+<li><p>users</p>
+
+<p>Contains information about the system users including user and group ids,
+login information, such as password hashes and - if available - additional
+password properties.</p></li>
+<li><p>groups</p>
+
+<p>Contains information about the system groups such as group attributes and the
+list of group members.</p></li>
 <li><p>services</p>
 
 <p>Services are applications running in the background doing continuous work
@@ -184,14 +230,29 @@ The scope determines which services are configured to be started in which
 runlevel. It uses the <code>chkconfig</code> command to obtain that information.
 The xinetd services that are also displayed by <code>chkconfig</code> are switched
 on/off by editing config files and are ignored in this context.</p></li>
-<li><p>unmanaged-files</p>
+<li><p>config_files</p>
+
+<p>Contains all configuration files which have been changed since they were
+installed.
+Configuration files are all those files which are marked as such in the
+package which has installed them. A configuration file change is reported
+if its content or its attributes like Linux permission bits or ownership
+have changed.</p></li>
+<li><p>changed_managed_files</p>
+
+<p>Contains the names and contents of all non-configuration files which have
+been changed compared to the files in the package. A file change is reported
+if its content or its attributes like Linux permission bits or ownership
+have changed.</p></li>
+<li><p>unmanaged_files</p>
 
 <p>Contains the names and contents of all files which are not part of any RPM
 package. The list of unmanaged files contains only plain files and
 directories. Special files like device nodes, named pipes and Unix domain
-sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/sys</code>, <code>/dev</code>,
-<code>/.snapshots/</code>, and <code>/var/run</code> are ignored, too. If a directory is in this
-list, no file or directory below it belongs to a RPM package.</p>
+sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/.snapshots/</code>,
+<code>/var/run</code> and special mounts like procfs and sysfs are ignored, too.
+If a directory is in this list, no file or directory below it belongs to a
+RPM package.</p>
 
 <p>Meta data information of unmanaged files is only available if the files were
 extracted during inspection.</p>
@@ -199,17 +260,23 @@ extracted during inspection.</p>
 <p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from
 the system and stored in the system description. Depending on the content of
 the inspected system, the amount of data stored may be huge.</p></li>
-<li><p>users</p>
-
-<p>Contains information about the system users including user and group ids,
-login information, such as password hashes and - if available - additional
-password properties.</p></li>
 </ul>
 
 
 <h3 id="System-Description">System Description</h3>
 
-<p>The System Description format and file structure is documented in the machinery wiki: <a href="https://github.com/SUSE/machinery/wiki/System-Description-Format" data-bare-link="true">https://github.com/SUSE/machinery/wiki/System-Description-Format</a></p>
+<p>The System Description format and file structure is documented in the machinery
+wiki: <a href="https://github.com/SUSE/machinery/wiki/System-Description-Format" data-bare-link="true">https://github.com/SUSE/machinery/wiki/System-Description-Format</a></p>
+
+<p>Machinery validates descriptions on load. It checks that the JSON structure of
+the manifest file, which contains the primary and meta data of a description, is
+correct and it adheres to the schema. Validation errors are reported as warnings.
+It also checks that the information about extracted files is consistent. Missing
+files or extra files without reference in the manifest are treated also as
+warnings. All other issues are errors which need to be fixed so that Machinery
+can use the description</p>
+
+<p>To manually validate a description use the <code>machinery validate</code> command.</p>
 
 <h3 id="Use-Cases">Use Cases</h3>
 
@@ -336,17 +403,10 @@ build machine on which <code>machinery build</code> is called.</p></li>
 
 <h3 id="BUILD-SUPPORT-MATRIX">BUILD SUPPORT MATRIX</h3>
 
-<p>The following combinations of build hosts and targets are supported:</p>
+<p>Machinery only supports building x86_64 images on x86_64 systems.</p>
 
-<ul>
-<li><p>SUSE Linux Enterprise 12</p>
-
-<p>Can build SUSE Linux Enterprise 12</p></li>
-<li><p>openSUSE 13.1</p>
-
-<p>Can build SUSE Linux Enterprise 11 and openSUSE 13.1</p></li>
-</ul>
-
+<p>To see the list of supported combinations of build hosts and targets run
+<code>machinery build --help</code>.</p>
 
 <h3 id="EXAMPLES">EXAMPLES</h3>
 
@@ -405,6 +465,51 @@ list:</p>
 
 <p>$ <code>machinery</code> compare earth moon --scope=changed-managed-files --show-all</p></li>
 </ul>
+
+
+<h2 id="config-Configure-Machinery">config — Configure Machinery</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery config</code></p>
+
+<p><code>machinery config</code> KEY</p>
+
+<p><code>machinery config</code> KEY=VALUE</p>
+
+<p><code>machinery</code> help config</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>config</code> command shows or changes machinery's configuration.</p>
+
+<p>If no arguments are passed the <code>config</code> command lists all configuration
+entries and their values. If only the key is provided its value is shown.
+If key and value are specified this configuration entry is set accordingly.</p>
+
+<p>The configuration is stored in <code>~/.machinery/machinery.config</code>.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt class="flush"><code>KEY</code></dt><dd><p>Name of the configuration entry.</p></dd>
+<dt class="flush"><code>VALUE</code></dt><dd><p>Value of the configuration entry.</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Turn off hints:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> config hints=off</p></dd>
+<dt>Show current configuration of hints:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> config hints</p></dd>
+<dt>List all configuration entries and their values:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> config</p></dd>
+</dl>
 
 
 <h2 id="copy-Copy-System-Description">copy — Copy System Description</h2>
@@ -497,6 +602,10 @@ and <code>python-glanceclient</code> for uploading the image to the cloud.</li>
 </ul>
 
 
+<h3 id="SUPPORTED-ARCHITECTURES">SUPPORTED ARCHITECTURES</h3>
+
+<p>Machinery only supports deploying x86_64 images on x86_64 systems.</p>
+
 <h3 id="EXAMPLES">EXAMPLES</h3>
 
 <ul>
@@ -506,6 +615,65 @@ configuration file <code>openrc.sh</code> in directory <code>tux</code>:</p>
 
 <p>$ <code>machinery</code> deploy jeos -n tux-cloud -c tux/openrc.sh</p></li>
 </ul>
+
+
+<h2 id="export-autoyast-Export-System-Description-as-AutoYasST-profile">export-autoyast — Export System Description as AutoYasST profile</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery export-autoyast</code> -a | --autoyast-dir NAME
+   --force</p>
+
+<p><code>machinery</code> help export-autoyast</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>export-autoyast</code> subcommand exports a stored system description as a AutoYaST
+profile.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-a AUTOYAST_DIR</code>, <code>--autoyast-dir=AUTOYAST_DIR</code> (required)</dt><dd><p>Write the AutoYaST profile to a subdirectory at the specified directory. The directory
+will be created if it does not exist yet.</p></dd>
+<dt><code>--force</code> (optional)</dt><dd><p>Overwrite existing system description</p></dd>
+</dl>
+
+
+<h3 id="SYSTEM-REGISTRATION">SYSTEM REGISTRATION</h3>
+
+<ul>
+<li><p>To register a SLES 12 system automatically with AutoYaST, it is required to
+edit the generated profile. The following example registers the system with
+the SUSE Customer Center.</p>
+
+<pre><code class="xml">&lt;suse_register&gt;
+  &lt;do_registration config:type="boolean"&gt;true&lt;/do_registration&gt;
+  &lt;email&gt;tux@example.com&lt;/email&gt;
+  &lt;reg_code&gt;MY_SECRET_REGCODE&lt;/reg_code&gt;
+  &lt;install_updates config:type="boolean"&gt;true&lt;/install_updates&gt;
+  &lt;slp_discovery config:type="boolean"&gt;false&lt;/slp_discovery&gt;
+&lt;/suse_register&gt;
+</code></pre></li>
+<li>More information can be found at the SUSE AutoYaST documentation.
+https://www.suse.com/documentation/sles-12/singlehtml/book_autoyast/book_autoyast.html</li>
+</ul>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Export the <code>myhost</code> system description to <code>/tmp/myhost-autoyast</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> export-autoyast myhost --autoyast-dir=/tmp</p></dd>
+</dl>
 
 
 <h2 id="export-kiwi-Export-System-Description-as-KIWI-Image-Description">export-kiwi — Export System Description as KIWI Image Description</h2>
@@ -532,7 +700,7 @@ image description.</p>
 <h3 id="OPTIONS">OPTIONS</h3>
 
 <dl>
-<dt><code>-k KIWI_DIR</code>, <code>--kiwi-dir=KIWI_DIR</code> (required)</dt><dd><p>Write the KIWI image description to the specified directory. The directory
+<dt><code>-k KIWI_DIR</code>, <code>--kiwi-dir=KIWI_DIR</code> (required)</dt><dd><p>Write the KIWI image description to a subdirectory at the specified directory. The directory
 will be created if it does not exist yet.</p></dd>
 <dt><code>--force</code> (optional)</dt><dd><p>Overwrite existing system description</p></dd>
 </dl>
@@ -541,39 +709,9 @@ will be created if it does not exist yet.</p></dd>
 <h3 id="EXAMPLES">EXAMPLES</h3>
 
 <dl>
-<dt>Export the <code>myhost</code> system description to <code>/tmp/export</code>:</dt><dd><p></p>
+<dt>Export the <code>myhost</code> system description to <code>/tmp/myhost-kiwi</code>:</dt><dd><p></p>
 
-<p>$ <code>machinery</code> export-kiwi myhost --kiwi-dir=/tmp/export</p></dd>
-</dl>
-
-
-<h2 id="generate-html-Generate-an-HTML-view-of-a-System-Description">generate-html — Generate an HTML view of a System Description</h2>
-
-<h3 id="SYNOPSIS">SYNOPSIS</h3>
-
-<p><code>machinery generate-html</code> NAME</p>
-
-<p><code>machinery</code> help generate-html</p>
-
-<h3 id="DESCRIPTION">DESCRIPTION</h3>
-
-<p>The <code>generate-html</code> generates an HTML view of a system description. The
-index.html file can be found in the according system description directory, e.g.
-~/.machinery/NAME/index.html.</p>
-
-<h3 id="ARGUMENTS">ARGUMENTS</h3>
-
-<dl>
-<dt><code>NAME</code> (required)</dt><dd>Name of the system description.</dd>
-</dl>
-
-
-<h3 id="EXAMPLES">EXAMPLES</h3>
-
-<dl>
-<dt>Create an HTML view of the <code>moon</code> system description:</dt><dd><p></p>
-
-<p>$ <code>machinery</code> generate-html moon</p></dd>
+<p>$ <code>machinery</code> export-kiwi myhost --kiwi-dir=/tmp</p></dd>
 </dl>
 
 
@@ -614,12 +752,30 @@ provided with the <code>--name</code> option.</dd>
 See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
 <dt><code>-e SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional)</dt><dd><p>Inspect system for all scopes except the specified scope.
 See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>-r USER</code>, <code>--remote-user=USER</code> (optional)</dt><dd><p>Defines the user which is used to access the inspected system via SSH.
+This user needs to be allowed to run certain commands using sudo (see
+PREREQUISITES for more information).
+To change the default-user use <code>machinery config remote-user=USER</code></p></dd>
 <dt><code>-x</code>, <code>--extract-files</code> (optional)</dt><dd><p>Extract changed configuration and unmanaged files from the inspected system.
 Shortcut for the combination of <code>--extract-changed-config-files</code>,
 <code>--extract-unmanaged-files</code>, and <code>--extract-changed-managed-files</code></p></dd>
 <dt><code>--extract-changed-config-files</code> (optional)</dt><dd><p>Extract changed configuration files from the inspected system.</p></dd>
 <dt><code>--extract-unmanaged-files</code> (optional)</dt><dd><p>Extract unmanaged files from the inspected system.</p></dd>
 <dt><code>--extract-changed-managed-files</code> (optional)</dt><dd><p>Extract changed managed files from inspected system.</p></dd>
+<dt><code>--skip-files</code> (optional)</dt><dd><p>Do not consider given files or directories during inspection. Either provide
+one file or directory name or a list of names separated by commas. You can
+also point to a file which contains a list of files to filter (one per line)
+by adding an '@' before the path, e.g.</p>
+
+<p>  $ <code>machinery</code> inspect --skip-files=@/path/to/filter_file myhost</p>
+
+<p>If a filename contains a comma it needs to be escaped, e.g.</p>
+
+<p>  $ <code>machinery</code> inspect --skip-files=/file\,with_comma myhost</p>
+
+<p><strong>Note</strong>: File or directory names are not expanded, e.g. '../path' is taken
+  literally and not expanded.</p></dd>
+<dt><code>--verbose</code> (optional)</dt><dd><p>Display the filters which are used during inspection.</p></dd>
 </dl>
 
 
@@ -644,6 +800,17 @@ via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root
 <li><code>tar</code></li>
 </ul>
 </li>
+<li><p>When inspecting as non-root the user has to have the following command
+whitelist given in the sudoers file:</p>
+
+<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -V *,/bin/tar --create *</p></li>
+<li><p>To add a remote <code>machinery</code> user run as root:</p>
+
+<h1><code>useradd -m machinery -c "remote user for machinery"</code></h1>
+
+<p>To configure a password for the new user run:</p>
+
+<h1><code>passwd machinery</code></h1></li>
 </ul>
 
 
@@ -662,6 +829,9 @@ under the name 'localhost' (you need to become root):</p>
 configuration files are saved:</p>
 
 <p>$ <code>machinery</code> inspect --scope=changed-managed-files --extract-files myhost</p></li>
+<li><p>To inspect the remote system <code>myhost</code> with the user <code>machinery</code>:</p>
+
+<p>$ <code>machinery</code> inspect --remote-user machinery myhost</p></li>
 </ul>
 
 
@@ -684,6 +854,7 @@ scopes for each system.</p>
 <dl>
 <dt><code>--verbose</code> (optional)</dt><dd>Print additional information about the origin of scopes.
 Currently displays [HOSTNAME] and (DATE).</dd>
+<dt><code>--short</code> (optional)</dt><dd>List only descripton names.</dd>
 </dl>
 
 
@@ -696,10 +867,23 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 <dt>Same as previous command, but additionally prints the date of each scope:</dt><dd><p></p>
 
 <p>$ <code>machinery</code> list --verbose</p></dd>
+<dt>Lists all available system description names without any additional details:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> list --short</p></dd>
 </dl>
 
 
-<h2 id="remove-Remove-System-Description">remove — Remove System Description</h2>
+<h2 id="man-Shows-Man-Page">man — Shows Man Page</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p>  <code>machinery man</code></p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>man</code> command shows the Machinery man page.</p>
+
+<h2 id="remove-Remove-System-Descriptions">remove — Remove System Descriptions</h2>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
@@ -710,7 +894,7 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 
 <h3 id="DESCRIPTION">DESCRIPTION</h3>
 
-<p>The <code>remove</code> command removes a stored system description.</p>
+<p>The <code>remove</code> command removes all specified system descriptions.</p>
 
 <h3 id="OPTIONS">OPTIONS</h3>
 
@@ -723,7 +907,7 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 <h3 id="ARGUMENTS">ARGUMENTS</h3>
 
 <dl>
-<dt><code>NAME</code> (required)</dt><dd>Remove specified system description.</dd>
+<dt><code>NAME...</code> (required)</dt><dd>Remove specified system descriptions.</dd>
 </dl>
 
 
@@ -733,9 +917,60 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 <dt>Remove the system description stored as <code>earth</code>:</dt><dd><p></p>
 
 <p>$ <code>machinery</code> remove earth</p></dd>
+<dt>Remove the system descriptions stored as <code>earth</code> and <code>moon</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> remove earth moon</p></dd>
 <dt>Remove all stored system descriptions:</dt><dd><p></p>
 
 <p>$ <code>machinery</code> remove --all</p></dd>
+</dl>
+
+
+<h2 id="serve-Serve-A-System-Description-Using-A-Web-Server">serve — Serve A System Description Using A Web Server</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery serve</code> [-p PORT | --port=PORT] [-i IP | --ip=IP] NAME</p>
+
+<p><code>machinery</code> help serve</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>serve</code> command spawns a web server and serves a stored system description on
+it.
+By default the description is available from http://127.0.0.1:7585 but both the
+IP address and the port can be configured using the according options.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>NAME</code> (required)</dt><dd>Use specified system description.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-p PORT</code>, <code>--port=PORT</code> (optional)</dt><dd><p>Specify the port on which the web server will serve the system description: Default: 7585</p>
+
+<p>Ports can be selected in a range between 2-65535. Ports between 2 and 1023 can only be
+chosen when <code>machinery</code> will be executed as <code>root</code> user.</p></dd>
+<dt><code>-i IP</code>, <code>--ip=IP</code> (optional)</dt><dd><p>Specify the IP address on which the web server will be made available. Default: 127.0.0.1</p>
+
+<p>It's only possible to use an IP address (or hostnames resolving to an IP address) which
+is assigned to a network interface on the local machine.</p></dd>
+</dl>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Serve the system description taken from the last inspection, saved as <code>earth</code>:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> serve earth</p></dd>
+<dt>Make the system description available to other machines on the network:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> serve earth -i 10.10.100.123 -p 3000</p></dd>
 </dl>
 
 
@@ -743,7 +978,7 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME</p>
+<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] [-p PORT | --port=PORT] [-i IP | --ip=IP] NAME</p>
 
 <p><code>machinery</code> help show</p>
 
@@ -773,7 +1008,17 @@ See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more infor
 <dt><code>--no-pager</code> (optional)</dt><dd><p>Do not pipe output into a pager.</p></dd>
 <dt><code>--show-diffs</code> (optional)</dt><dd><p>Include the generated diffs in the output if available (see <code>machinery help analyze</code>
 for more information).</p></dd>
-<dt><code>--html</code> (optional)</dt><dd><p>Open the system description in HTML format in your web browser using the <code>xdg-open</code> command.</p></dd>
+<dt><code>--html</code> (optional)</dt><dd><p>Run a web server and open the system description in HTML format in your web browser using the
+<code>xdg-open</code> command.</p></dd>
+<dt><code>-p PORT</code>, <code>--port=PORT</code> (optional)</dt><dd><p>Specify the port on which the web server will serve the system description: Default: 7585</p>
+
+<p>Ports can be selected in a range between 2-65535. Ports between 2 and 1023 can only be
+chosen when <code>machinery</code> will be executed as <code>root</code> user.</p></dd>
+<dt><code>-i IP</code>, <code>--ip=IP</code> (optional)</dt><dd><p>Specify the IP address on which the web server will be made available. Default: 127.0.0.1</p>
+
+<p>It's only possible to use an IP address (or hostnames resolving to an IP address) which
+is assigned to a network interface on the local machine.</p></dd>
+<dt><code>--verbose</code> (optional)</dt><dd><p>Display the filters which were applied before showing the system description.</p></dd>
 </dl>
 
 
@@ -881,6 +1126,9 @@ manually editing it.</p>
 <h2 id="FILES-AND-DEVICES">FILES AND DEVICES</h2>
 
 <dl>
+<dt><code>~/.machinery/machinery.config</code>:</dt><dd><p></p>
+
+<p>Configuration file.</p></dd>
 <dt><code>~/.machinery/machinery.log</code>:</dt><dd><p></p>
 
 <p>Central log file, in the format date, time, process id, and log message.</p></dd>
@@ -901,7 +1149,7 @@ manually editing it.</p>
 
 <h2 id="COPYRIGHT">COPYRIGHT</h2>
 
-<p>Copyright (c) 2013-2014 <a href="http://www.suse.com">SUSE LLC</a></p>
+<p>Copyright (c) 2013-2015 <a href="http://www.suse.com">SUSE LLC</a></p>
 
 </div>
 
