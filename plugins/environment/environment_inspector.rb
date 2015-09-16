@@ -36,8 +36,7 @@ class EnvironmentInspector < Inspector
   def get_locale
     output = nil
     begin
-      output = @system.run_command("locale", "-a", stdout: :capture)
-      output.encode!("UTF-16be", invalid: :replace, undef: :replace, replace: "?").encode!("UTF-8")
+      output = Machinery.scrub(@system.run_command("locale", "-a", stdout: :capture))
     rescue
       return "C"
     end
