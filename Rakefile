@@ -186,6 +186,7 @@ namespace :release do
     release.check
 
     release.publish
+    release.publish_man_page if options[:publish_man_page]
   end
 
   desc "Release a new Machinery version ('type' is either 'major', 'minor 'or 'patch')"
@@ -196,7 +197,7 @@ namespace :release do
     # put the sources into IBS.
     Rake::Task[:tarball].clear
 
-    run_release(type: args[:type])
+    run_release(type: args[:type], publish_man_page: true)
   end
 
   desc "Release a new machinery-helper version ('type' is either 'major', 'minor 'or 'patch')"
