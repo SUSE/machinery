@@ -256,7 +256,6 @@ class UnmanagedFilesInspector < Inspector
         "Note: Using traditional inspection because only 'root' is supported as remote user."
       )
     else
-      Machinery::Ui.puts "Note: Using helper binary for inspection of unmanaged files."
       return true
     end
 
