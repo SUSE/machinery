@@ -127,6 +127,7 @@ namespace :build do
     # check:committed check which is triggered by osc:build to fail, though,
     # so we clear it instead.
     Rake::Task["check:committed"].clear
+    Rake::Task["check:syntax"].clear
 
     # We don't want the unit tests to be called each time the package is
     # build since building is also required for the integration tests.
