@@ -74,6 +74,10 @@ describe Hint do
   end
 
   describe "program name expansion" do
+    before(:each) do
+      enable_hints(true)
+    end
+
     it "expands program name in get_started hint" do
       $0 = "machinery"
 
