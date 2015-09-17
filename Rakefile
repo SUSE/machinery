@@ -95,13 +95,10 @@ namespace :man_pages do
       system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
       system "ronn man/generated/machinery.1.md"
       system "gzip -f man/generated/*.1"
+      # Build man page for website (manual.html)
+      system "ronn -f man/generated/machinery.1.md"
+      system "man/generate_man"
     end
-  end
-
-  desc 'Create web view of man page'
-  task :web => ["man_pages:build"] do
-    system "ronn -f man/generated/machinery.1.md"
-    system "man/generate_man"
   end
 end
 
