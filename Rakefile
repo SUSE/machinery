@@ -95,13 +95,10 @@ namespace :man_pages do
       system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
       system "ronn man/generated/machinery.1.md"
       system "gzip -f man/generated/*.1"
+      # Build man page for website (manual.html)
+      system "ronn -f man/generated/machinery.1.md"
+      system "man/generate_man"
     end
-  end
-
-  desc 'Create web view of man page'
-  task :web => ["man_pages:build"] do
-    system "ronn -f man/generated/machinery.1.md"
-    system "man/generate_man"
   end
 end
 
@@ -189,6 +186,7 @@ namespace :release do
     release.check
 
     release.publish
+    release.publish_man_page if options[:publish_man_page]
   end
 
   desc "Release a new Machinery version ('type' is either 'major', 'minor 'or 'patch')"
@@ -199,7 +197,7 @@ namespace :release do
     # put the sources into IBS.
     Rake::Task[:tarball].clear
 
-    run_release(type: args[:type])
+    run_release(type: args[:type], publish_man_page: true)
   end
 
   desc "Release a new machinery-helper version ('type' is either 'major', 'minor 'or 'patch')"
