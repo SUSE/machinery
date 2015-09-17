@@ -37,7 +37,7 @@ class ListTask
         next
       rescue Machinery::Errors::SystemDescriptionValidationFailed
         show_error("#{name}: This description is broken. Use " \
-          "`#{$0} validate #{name}` to see the error message.", options)
+          "`#{Hint.program_name} validate #{name}` to see the error message.", options)
         next
       rescue Machinery::Errors::SystemDescriptionError
         show_error("#{name}: This description is broken.", options)

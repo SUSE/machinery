@@ -45,9 +45,11 @@ class Cli
 
       Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
       if @config.hints
-        Machinery::Ui.puts "These hints can be switched off by '#{$0} config hints=off'."
+        Machinery::Ui.puts "These hints can be switched off by " \
+          "'#{Hint.program_name} config hints=off'."
       else
-        Machinery::Ui.puts "These hints can be switched on by '#{$0} config hints=on'."
+        Machinery::Ui.puts "These hints can be switched on by " \
+          "'#{Hint.program_name} config hints=on'."
       end
 
       Hint.print(:get_started)
@@ -91,7 +93,7 @@ class Cli
       OptionParser::MissingArgument, OptionParser::AmbiguousOption
       Machinery::Ui.error e.to_s + "\n\n"
       command = ARGV & @commands.keys.map(&:to_s)
-      Machinery::Ui.error "Run '#{$0} #{command.first} --help' for more information."
+      Machinery::Ui.error "Run '#{Hint.program_name} #{command.first} --help' for more information."
       exit 1
     when Machinery::Errors::MachineryError
       Machinery.logger.error(e.message)
@@ -787,7 +789,8 @@ class Cli
       task.config(key, value)
 
       if key == "hints" && (value == "false" || value == "off")
-        Machinery::Ui.puts "Hints can be switched on again by '#{$0} config hints=on'."
+        Machinery::Ui.puts "Hints can be switched on again by " \
+          "'#{Hint.program_name} config hints=on'."
       end
     end
   end
