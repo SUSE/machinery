@@ -33,6 +33,14 @@ describe System do
     end
   end
 
+  describe "#check_retrieve_files_dependencies" do
+    it "checks for the availibilty of rsync" do
+      system = System.new
+      expect(system).to receive(:check_requirement).with("rsync", "--version")
+      system.check_retrieve_files_dependencies
+    end
+  end
+
   describe "#create_archive" do
     it "creates an archive on LocalSystem" do
       dir = Dir.mktmpdir("machinery_unittest")
