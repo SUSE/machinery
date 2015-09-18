@@ -37,20 +37,20 @@ RSpec::Core::RakeTask.new("spec:integration") do |t|
   t.pattern = "spec/integration/**/*_spec.rb"
 end
 
-desc "Run minimal RSpec code examples in spec/integration"
-  RSpec::Core::RakeTask.new("spec:integration:acceptance") do |t|
+desc "Run acceptance RSpec code examples in spec/integration"
+RSpec::Core::RakeTask.new("spec:integration:acceptance") do |t|
   ENV["TESTGROUP"] = "acceptance"
   t.pattern = "spec/integration/**/*_spec.rb"
 end
 
 desc "Run minimal RSpec code examples in spec/integration"
-  RSpec::Core::RakeTask.new("spec:integration:minimal") do |t|
+RSpec::Core::RakeTask.new("spec:integration:minimal") do |t|
   ENV["TESTGROUP"] = "minimal"
   t.pattern = "spec/integration/**/*_spec.rb"
 end
 
-desc "Run minimal RSpec code examples in spec/integration"
-  RSpec::Core::RakeTask.new("spec:integration:full") do |t|
+desc "Run full RSpec code examples in spec/integration"
+RSpec::Core::RakeTask.new("spec:integration:full") do |t|
   ENV["TESTGROUP"] = "full"
   t.pattern = "spec/integration/**/*_spec.rb"
 end
