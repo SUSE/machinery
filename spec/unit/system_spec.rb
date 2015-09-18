@@ -41,6 +41,15 @@ describe System do
     end
   end
 
+  describe "#check_create_archive_dependencies" do
+    it "checks for the availibilty of tar and gzip" do
+      system = System.new
+      expect(system).to receive(:check_requirement).with("tar", "--version")
+      expect(system).to receive(:check_requirement).with("gzip", "--version")
+      system.check_create_archive_dependencies
+    end
+  end
+
   describe "#create_archive" do
     it "creates an archive on LocalSystem" do
       dir = Dir.mktmpdir("machinery_unittest")
