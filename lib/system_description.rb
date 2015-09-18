@@ -285,14 +285,20 @@ class SystemDescription < Machinery::Object
   end
 
   def read_config(path, key)
-    if scope_extracted?("config_files")
-      file = self["config_files"].files.find { |f| f.name == path }
-      return parse_variable_assignment(file.content, key) if file
+    EXTRACTABLE_SCOPES.each do |scope|
+      if scope_extracted?(scope)
+        file = self[scope].files.find { |f| f.name == path }
+        return parse_variable_assignment(file.content, key) if file
+      end
     end
-    if scope_extracted?("unmanaged_files")
-      file = self["unmanaged_files"].files.find { |f| f.name == path }
-      return parse_variable_assignment(file.content, key) if file
-    end
+    # if scope_extracted?("config_files")
+    #   file = self["config_files"].files.find { |f| f.name == path }
+    #   return parse_variable_assignment(file.content, key) if file
+    # end
+    # if scope_extracted?("unmanaged_files")
+    #   file = self["unmanaged_files"].files.find { |f| f.name == path }
+    #   return parse_variable_assignment(file.content, key) if file
+    # end
   end
 
   private
