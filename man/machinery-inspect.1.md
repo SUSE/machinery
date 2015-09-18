@@ -93,7 +93,7 @@ trigger errors.
   * The system to be inspected needs to have the following commands:
 
     * `rpm`
-    * `zypper`
+    * `zypper` or `yum`
     * `rsync`
     * `chkconfig`
     * `cat`
