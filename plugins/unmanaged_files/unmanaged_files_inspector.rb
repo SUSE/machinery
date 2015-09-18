@@ -24,8 +24,7 @@ class UnmanagedFilesInspector < Inspector
     @system.check_requirement("sed", "--version")
     @system.check_requirement("cat", "--version")
     @system.check_requirement("find", "--version")
-    @system.check_requirement("tar", "--version") if check_tar
-    @system.check_requirement("gzip", "--version") if check_tar
+    @system.check_create_archive_dependencies if check_tar
   end
 
   # extract pathes from rpm database into ruby hashes
