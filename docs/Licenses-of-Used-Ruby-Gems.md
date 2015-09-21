@@ -1,4 +1,4 @@
-# License of Used Ruby Gems
+# Licenses of Used Ruby Gems
 
 This is the result of a search for licensing information of all the ruby gems we currently use.
 The research was done on January 31th 2014.
