@@ -32,6 +32,7 @@ RUN passenger-install-apache2-module.ruby2.1 -a
 RUN mkdir /srv/www/rails
 WORKDIR /srv/www/rails
 ADD ./data /srv/www/rails
+RUN echo "gem: --no-ri --no-rdoc" > /srv/www/rails/.gemrc
 RUN chown -R wwwrun:www  /srv/www/rails
 
 RUN bundle config build.nokogiri --use-system-libraries
