@@ -15,7 +15,7 @@ Title     | Description
 ---------------------------- | ---
 [Architecture](https://github.com/SUSE/machinery/blob/master/docs/Architecture.md) | Information about the architecture of Machinery
 [Commit Guidelines](https://github.com/SUSE/machinery/blob/master/docs/Commit-Guidelines.md) | Our guidelines for properly committing
-[Machinery Data Model](https://github.com/SUSE/machinery/blob/master/docs/Commit-Guidelines.md) | The Machinery data model represents the system configuration as processed by Machinery
+[Machinery Data Model](https://github.com/SUSE/machinery/blob/master/docs/Data-Model.md) | The Machinery data model represents the system configuration as processed by Machinery
 [Development Work Flow](https://github.com/SUSE/machinery/blob/master/docs/Development-Work-Flow.md) | Our development work flow
 [Filtering System Descriptions](https://github.com/SUSE/machinery/blob/master/docs/Filtering-Design.md) | This guide describes the filtering mechanism for Machinery
 [Inspection Class Design](https://github.com/SUSE/machinery/blob/master/docs/Inspection-Class-Design.md) | Information about how we designed our Inspection Class
