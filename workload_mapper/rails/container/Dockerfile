@@ -1,6 +1,5 @@
 FROM opensuse:13.2
 
-# see update.sh for why all "apt-get install"s have to stay as one long line
 RUN zypper -n --gpg-auto-import-keys refresh
 RUN zypper -n --gpg-auto-import-keys update
 RUN zypper -n --gpg-auto-import-keys install ca-certificates-mozilla \
@@ -28,7 +27,6 @@ RUN touch /etc/apache2/sysconfig.d/include.conf
 RUN gem install passenger -v 5.0.7
 RUN passenger-install-apache2-module.ruby2.1 -a
 
-#variable?
 RUN mkdir /srv/www/rails
 WORKDIR /srv/www/rails
 ADD ./data /srv/www/rails
@@ -44,6 +42,6 @@ ADD apache2/listen.conf /etc/apache2/listen.conf
 ADD apache2/rails_app_vhost.conf /etc/apache2/vhosts.d/
 RUN cat /etc/apache2/httpd.conf.local >> /etc/apache2/httpd.conf
 
-ENV COMPOSE=1
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
 EXPOSE 3000
