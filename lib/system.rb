@@ -55,6 +55,15 @@ class System
     )
   end
 
+  def check_retrieve_files_dependencies
+    check_requirement("rsync", "--version")
+  end
+
+  def check_create_archive_dependencies
+    check_requirement("tar", "--version")
+    check_requirement("gzip", "--version")
+  end
+
   # Retrieves files specified in filelist from the remote system and create an archive.
   # To be able to deal with arbitrary filenames we use zero-terminated
   # filelist and the --null option of tar

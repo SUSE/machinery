@@ -277,12 +277,7 @@ describe UnmanagedFilesInspector do
         and_return(["opt"])
 
       if(extract)
-        expect(system).to receive(:check_requirement).with(
-          "tar", "--version"
-        )
-        expect(system).to receive(:check_requirement).with(
-          "gzip", "--version"
-        )
+        expect(system).to receive(:check_create_archive_dependencies)
       end
       expect_rpm_qa(system)
       expect_cat_mounts(system, add_files)

@@ -165,7 +165,7 @@ EOF
       end
 
       it "returns true if requirements are fulfilled for extraction" do
-        expect(system).to receive(:check_requirement).with("rsync", "--version")
+        expect(system).to receive(:check_retrieve_files_dependencies)
         requirements_fulfilled = subject.check_requirements(true)
         expect(requirements_fulfilled).equal?(true)
       end
