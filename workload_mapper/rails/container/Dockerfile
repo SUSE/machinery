@@ -36,7 +36,7 @@ RUN echo "gem: --no-ri --no-rdoc" > /srv/www/rails/.gemrc
 RUN chown -R wwwrun:www  /srv/www/rails
 
 RUN bundle config build.nokogiri --use-system-libraries
-RUN bundle install
+RUN bundle install --without test development
 
 ADD apache2/sysconfig_apache2 /etc/sysconfig/apache2
 ADD apache2/httpd.conf.local /etc/apache2/httpd.conf.local
