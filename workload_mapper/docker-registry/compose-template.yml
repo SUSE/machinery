@@ -1,5 +1,6 @@
 docker-registry:
   build: ./docker-registry
+  volumes:
+    - ./registry:/registry
   ports: :ports
-  volumes: :volumes
   links: :links
