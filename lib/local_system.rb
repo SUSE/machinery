@@ -114,6 +114,10 @@ EOF
     end
   end
 
+  def type
+    "local"
+  end
+
   def requires_root?
     true
   end

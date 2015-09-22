@@ -29,6 +29,7 @@ class System
   abstract_method :read_file
   abstract_method :inject_file
   abstract_method :remove_file
+  abstract_method :type
 
   attr_writer :locale
 
