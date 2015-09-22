@@ -590,7 +590,7 @@ class Cli
     supports_filtering(c)
     define_inspect_command_options(c)
 
-    c.action do |global_options,options,args|
+    c.action do |_global_options, options, args|
       host = shift_arg(args, "HOSTNAME")
       system = System.for(host, options["remote-user"])
       inspector_task = InspectTask.new
@@ -631,7 +631,7 @@ class Cli
     c.switch ["docker", :d], required: true, negatable: false,
       desc: "Inspect a docker container"
 
-    c.action do |global_options,options,args|
+    c.action do |_global_options, options, args|
       image = shift_arg(args, "IMAGENAME")
       system = DockerSystem.new(image)
       inspector_task = InspectTask.new
