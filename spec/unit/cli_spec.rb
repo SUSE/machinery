@@ -52,6 +52,30 @@ describe Cli do
     end
   end
 
+  describe "#inspect-container" do
+    before :each do
+      allow_any_instance_of(InspectTask).to receive(:inspect_system).
+        and_return(create_test_description)
+      allow(SystemDescription).to receive(:delete)
+      allow(DockerContainer).to receive(:new).and_return(double(start: nil, stop: nil))
+    end
+
+    it "calls the InspectTask" do
+      expect_any_instance_of(InspectTask).to receive(:inspect_system).
+        with(
+          an_instance_of(SystemDescriptionStore),
+          an_instance_of(DockerSystem),
+          "docker_image_foo",
+          an_instance_of(CurrentUser),
+          Inspector.all_scopes,
+          an_instance_of(Filter),
+          {}
+        )
+
+      run_command(["inspect-container", "--docker", "docker_image_foo"])
+    end
+  end
+
   context "machinery test directory" do
     include_context "machinery test directory"
 

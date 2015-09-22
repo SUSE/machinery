@@ -71,6 +71,8 @@ describe InspectTask, "#inspect_system" do
 
   before :each do
     allow_any_instance_of(RemoteSystem).to receive(:connect)
+    allow_any_instance_of(DockerSystem).to receive(:validate_image_name)
+    allow_any_instance_of(DockerSystem).to receive(:create_container)
     allow(inspect_task).to receive(:set_system_locale)
   end
 
@@ -79,6 +81,8 @@ describe InspectTask, "#inspect_system" do
   let(:description) { SystemDescription.new(name, store) }
   let(:name) { "name" }
   let(:system) { RemoteSystem.new("example.com") }
+  let(:local_system) { LocalSystem.new }
+  let(:docker_system) { DockerSystem.new("foo") }
 
   let(:current_user_root) {
     current_user = double
@@ -196,7 +200,8 @@ Inspecting foo...
         allow(Inspector).to receive(:all) { [] }
 
         expect {
-          inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+          inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"],
+            Filter.new)
         }.not_to raise_error
       end
     end

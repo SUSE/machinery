@@ -537,6 +537,45 @@ class Cli
       desc: "Display the filters which are used during inspection"
   end
 
+  def self.parse_inspect_command_options(host, options)
+    scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+    name = options[:name] || host
+
+
+    if !scope_list.empty?
+      inspected_scopes = " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
+    end
+    Machinery::Ui.puts "Inspecting #{host}#{inspected_scopes}..."
+
+    inspect_options = {}
+    if options["show"]
+      inspect_options[:show] = true
+    end
+    if options["verbose"]
+      inspect_options[:verbose] = true
+    end
+    if options["extract-files"] || options["extract-changed-config-files"]
+      inspect_options[:extract_changed_config_files] = true
+    end
+    if options["extract-files"] || options["extract-changed-managed-files"]
+      inspect_options[:extract_changed_managed_files] = true
+    end
+    if options["extract-files"] || options["extract-unmanaged-files"]
+      inspect_options[:extract_unmanaged_files] = true
+    end
+
+    filter = FilterOptionParser.parse("inspect", options)
+
+    if options["verbose"] && !filter.empty?
+      Machinery::Ui.puts "\nThe following filters are applied during inspection:"
+      Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+    else
+      show_filter_note(scope_list, filter)
+    end
+
+    [name, scope_list, inspect_options, filter]
+  end
+
   desc "Inspect running system"
   long_desc <<-LONGDESC
     Inspect running system and generate system descripton from inspected data.
@@ -555,40 +594,8 @@ class Cli
       host = shift_arg(args, "HOSTNAME")
       system = System.for(host, options["remote-user"])
       inspector_task = InspectTask.new
-      scope_list = process_scope_option(options[:scope], options["exclude-scope"])
-      name = options[:name] || host
 
-
-      if !scope_list.empty?
-        inspected_scopes = " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
-      end
-      Machinery::Ui.puts "Inspecting #{host}#{inspected_scopes}..."
-
-      inspect_options = {}
-      if options["show"]
-        inspect_options[:show] = true
-      end
-      if options["verbose"]
-        inspect_options[:verbose] = true
-      end
-      if options["extract-files"] || options["extract-changed-config-files"]
-        inspect_options[:extract_changed_config_files] = true
-      end
-      if options["extract-files"] || options["extract-changed-managed-files"]
-        inspect_options[:extract_changed_managed_files] = true
-      end
-      if options["extract-files"] || options["extract-unmanaged-files"]
-        inspect_options[:extract_unmanaged_files] = true
-      end
-
-      filter = FilterOptionParser.parse("inspect", options)
-
-      if options["verbose"] && !filter.empty?
-        Machinery::Ui.puts "\nThe following filters are applied during inspection:"
-        Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
-      else
-        show_filter_note(scope_list, filter)
-      end
+      name, scope_list, inspect_options, filter = parse_inspect_command_options(host, options)
 
       inspector_task.inspect_system(
         system_description_store,
@@ -608,7 +615,52 @@ class Cli
     end
   end
 
+  desc "Inspect container image"
+  long_desc <<-LONGDESC
+    Inspect container image and generate system descripton from inspected data.
 
+    Multiple scopes can be passed as comma-separated list. If no specific scopes
+    are given, all scopes are inspected.
+
+    Available scopes: #{AVAILABLE_SCOPE_LIST}
+  LONGDESC
+  arg "IMAGENAME"
+  command "inspect-container" do |c|
+    supports_filtering(c)
+    define_inspect_command_options(c)
+    c.switch ["docker", :d], required: true, negatable: false,
+      desc: "Inspect a docker container"
+
+    c.action do |global_options,options,args|
+      image = shift_arg(args, "IMAGENAME")
+      system = DockerSystem.new(image)
+      inspector_task = InspectTask.new
+
+      name, scope_list, inspect_options, filter = parse_inspect_command_options(image, options)
+
+      begin
+        system.start
+        inspector_task.inspect_system(
+          system_description_store,
+          system,
+          name,
+          CurrentUser.new,
+          scope_list,
+          filter,
+          inspect_options
+        )
+      ensure
+        system.stop
+      end
+
+
+      Hint.print(:show_data, name: name)
+
+      if !options["extract-files"] || Inspector.all_scopes.count != scope_list.count
+        Hint.print(:do_complete_inspection, name: name, docker_container: image)
+      end
+    end
+  end
 
   desc "List system descriptions"
   long_desc <<-LONGDESC
