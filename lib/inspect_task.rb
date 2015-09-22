@@ -14,10 +14,8 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-
 class InspectTask
-  def inspect_system(store, host, name, current_user, scopes, filter, options = {})
-    system = System.for(host, options[:remote_user])
+  def inspect_system(store, system, name, current_user, scopes, filter, options = {})
     check_root(system, current_user)
 
     description, failed_inspections = build_description(store, name, system,

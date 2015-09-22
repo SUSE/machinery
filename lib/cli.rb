@@ -510,18 +510,7 @@ class Cli
     end
   end
 
-  desc "Inspect running system"
-  long_desc <<-LONGDESC
-    Inspect running system and generate system descripton from inspected data.
-
-    Multiple scopes can be passed as comma-separated list. If no specific scopes
-    are given, all scopes are inspected.
-
-    Available scopes: #{AVAILABLE_SCOPE_LIST}
-  LONGDESC
-  arg "HOSTNAME"
-  command "inspect" do |c|
-    supports_filtering(c)
+  def self.define_inspect_command_options(c)
     c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
       desc: "Store system description under the specified name"
     c.flag [:scope, :s], type: String, required: false,
@@ -546,9 +535,25 @@ class Cli
       desc: "Print inspection result"
     c.switch :verbose, required: false, negatable: false,
       desc: "Display the filters which are used during inspection"
+  end
+
+  desc "Inspect running system"
+  long_desc <<-LONGDESC
+    Inspect running system and generate system descripton from inspected data.
+
+    Multiple scopes can be passed as comma-separated list. If no specific scopes
+    are given, all scopes are inspected.
+
+    Available scopes: #{AVAILABLE_SCOPE_LIST}
+  LONGDESC
+  arg "HOSTNAME"
+  command "inspect" do |c|
+    supports_filtering(c)
+    define_inspect_command_options(c)
 
     c.action do |global_options,options,args|
       host = shift_arg(args, "HOSTNAME")
+      system = System.for(host, options["remote-user"])
       inspector_task = InspectTask.new
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
       name = options[:name] || host
@@ -575,7 +580,6 @@ class Cli
       if options["extract-files"] || options["extract-unmanaged-files"]
         inspect_options[:extract_unmanaged_files] = true
       end
-      inspect_options[:remote_user] = options["remote-user"]
 
       filter = FilterOptionParser.parse("inspect", options)
 
@@ -588,7 +592,7 @@ class Cli
 
       inspector_task.inspect_system(
         system_description_store,
-        host,
+        system,
         name,
         CurrentUser.new,
         scope_list,
