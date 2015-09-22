@@ -2,6 +2,8 @@
 
 * Add `move` command to rename system descriptions (gh#SUSE/machinery#1397)
 
+* Add inspection of RPM based Docker containers
+
 ## Version 1.13.0 - Tue Sep 15 18:06:00 CEST 2015 - thardeck@suse.de
 
 * Fix: Show `Files extracted` status in `compare --html` when both
