@@ -16,13 +16,17 @@
 # you may find current contact information at www.suse.com
 
 class ListTask
-  def list(store, options = {})
-    descriptions = store.list
+  def list(store, system_descriptions, options = {})
+    if system_descriptions.empty?
+      descriptions = store.list
+    else
+      descriptions = system_descriptions.sort
+    end
     has_incompatible_version = false
 
     descriptions.each do |name|
       begin
-        description = SystemDescription.load(name, store, skip_validation: true)
+        system_description = SystemDescription.load(name, store, skip_validation: true)
       rescue Machinery::Errors::SystemDescriptionIncompatible => e
         if !e.format_version
           show_error("#{name}: incompatible format version. Can not be upgraded.\n", options)
@@ -34,6 +38,9 @@ class ListTask
           show_error("#{name}: format version #{e.format_version}. " \
             "Please upgrade Machinery to the latest version.", options)
         end
+        next
+      rescue Machinery::Errors::SystemDescriptionNotFound
+        show_error("#{name}: Couldn't find a system description with the name '#{name}'.", options)
         next
       rescue Machinery::Errors::SystemDescriptionValidationFailed
         show_error("#{name}: This description is broken. Use " \
@@ -49,10 +56,10 @@ class ListTask
       else
         scopes = []
 
-        description.scopes.each do |scope|
+        system_description.scopes.each do |scope|
           entry = Machinery::Ui.internal_scope_list_to_string(scope)
           if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
-            if description.scope_extracted?(scope)
+            if system_description.scope_extracted?(scope)
               entry += " (extracted)"
             else
               entry += " (not extracted)"
@@ -60,7 +67,7 @@ class ListTask
           end
 
           if options[:verbose]
-            meta = description[scope].meta
+            meta = system_description[scope].meta
             if meta
               time = Time.parse(meta.modified).getlocal
               date = time.strftime "%Y-%m-%d %H:%M:%S"
