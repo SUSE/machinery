@@ -186,6 +186,26 @@ EOF
     end
   end
 
+  describe ".validate_existence_of_command" do
+    it "raises an Machinery::Errors::MissingRequirementsError error if the command isn't found" do
+      allow(LocalSystem).to receive(:os).and_return(Os.new)
+      output = <<-EOF
+You need the command 'does_not_exist' from package 'not_installed_package'.
+You can install it by running `zypper install not_installed_package`.
+EOF
+
+      command = "does_not_exist"
+      package = "not_installed_package"
+      expect { LocalSystem.validate_existence_of_command(command, package) }.to raise_error(
+        Machinery::Errors::MissingRequirement, output
+      )
+    end
+
+    it "doesn't raise an error if the command exists" do
+      expect { LocalSystem.validate_existence_of_command("bash", "bash") }.not_to raise_error
+    end
+  end
+
   describe ".validate_existence_of_packages" do
     it "raises an error if packages doesn't exist" do
       allow(LocalSystem).to receive(:os).and_return(Os.new)

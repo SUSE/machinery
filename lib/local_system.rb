@@ -67,6 +67,16 @@ You can install it by running `zypper install #{missing_packages.join(" ")}`.
       end
     end
 
+    def validate_existence_of_command(command, package)
+      Cheetah.run("which", command)
+    rescue Cheetah::ExecutionFailed
+      output = <<-EOF
+You need the command '#{command}' from package '#{package}'.
+You can install it by running `zypper install #{package}`.
+      EOF
+      raise(Machinery::Errors::MissingRequirement.new(output))
+    end
+
     def validate_machinery_compatibility
       return if !Machinery::Config.new.perform_support_check || os.can_run_machinery?
 
