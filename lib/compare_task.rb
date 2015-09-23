@@ -27,7 +27,7 @@ class CompareTask
   end
 
   def render_html_comparison(description1, description2, scopes, options)
-    LocalSystem.validate_existence_of_package("xdg-utils")
+    LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
     url = "http://#{options[:ip]}:#{options[:port]}/compare/" \
       "#{CGI.escape(description1.name)}/#{CGI.escape(description2.name)}"
