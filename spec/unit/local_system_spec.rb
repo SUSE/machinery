@@ -187,7 +187,7 @@ EOF
   end
 
   describe ".validate_existence_of_command" do
-    it "raises an Machinery::Errors::MissingRequirementsError error if the command isn't found" do
+    it "raises a Machinery::Errors::MissingRequirement error if the command isn't found" do
       allow(LocalSystem).to receive(:os).and_return(Os.new)
       output = <<-EOF
 You need the command 'does_not_exist' from package 'not_installed_package'.
