@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Add `move` command to rename system descriptions (gh#SUSE/machinery#1397)
 
 ## Version 1.13.0 - Tue Sep 15 18:06:00 CEST 2015 - thardeck@suse.de
 
