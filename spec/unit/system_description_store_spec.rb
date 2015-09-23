@@ -176,6 +176,35 @@ describe SystemDescriptionStore do
     end
   end
 
+  describe "#move" do
+    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:new_name) { "description2" }
+
+    before(:each) do
+      create_machinery_dir
+    end
+
+    it "moves an existing SystemDescription" do
+      expect(store.list).to eq([test_name])
+      store.move(test_name, new_name)
+      expect(store.list).to eq([new_name])
+    end
+
+    it "throws an error when the to be moved SystemDescription does not exist" do
+      expect {
+        store.move("foo_bar_does_not_exist", new_name)
+      }.to raise_error(Machinery::Errors::SystemDescriptionNotFound, /foo_bar_does_not_exist/)
+    end
+
+    it "throws an error when the new name already exists" do
+      store.copy(test_name, new_name)
+      expect(store.list).to include(new_name)
+      expect {
+        store.move(test_name, new_name)
+      }.to raise_error(Machinery::Errors::SystemDescriptionError, /#{new_name}/)
+    end
+  end
+
   describe "#directory_for" do
     it "creates sub directory for system description" do
       path = "/tmp/test_dir"

@@ -74,6 +74,16 @@ class SystemDescriptionStore
     FileUtils.cp_r(description_path(from), description_path(to))
   end
 
+  def move(from, to)
+    SystemDescription.validate_name(from)
+    SystemDescription.validate_name(to)
+
+    validate_existence_of_description(from)
+    validate_nonexistence_of_description(to)
+
+    FileUtils.mv(description_path(from), description_path(to))
+  end
+
   def backup(description_name)
     SystemDescription.validate_name(description_name)
     validate_existence_of_description(description_name)
