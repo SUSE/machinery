@@ -404,6 +404,23 @@ class Cli
     end
   end
 
+  desc "Move system description"
+  long_desc <<-LONGDESC
+    Move a system description.
+
+    The system description name is changed to the provided name.
+  LONGDESC
+  arg "FROM_NAME"
+  arg "TO_NAME"
+  command "move" do |c|
+    c.action do |_global_options, _options, args|
+      from = shift_arg(args, "FROM_NAME")
+      to = shift_arg(args, "TO_NAME")
+      task = MoveTask.new
+      task.move(system_description_store, from, to)
+    end
+  end
+
 
   desc "Deploy image to OpenStack cloud"
   long_desc <<-LONGDESC

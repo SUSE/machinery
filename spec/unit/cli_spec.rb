@@ -565,6 +565,14 @@ describe Cli do
     end
   end
 
+  describe "#move" do
+    it "triggers the move task" do
+      expect_any_instance_of(MoveTask).to receive(:move).
+        with(an_instance_of(SystemDescriptionStore), "foo", "bar")
+      run_command(["move", "foo", "bar"])
+    end
+  end
+
   describe "#upgrade_format" do
     it "triggers the upgrade task for a specific description" do
       expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
