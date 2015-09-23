@@ -43,4 +43,4 @@ Title     | Description
 Title     | Description
 --------- | -----------
 [Licensing](https://github.com/SUSE/machinery/blob/master/docs/Licensing.md) | This guide describes what license we use and gives developer some instructions how they should implement the license text into documents
-[Licenses of Used Ruby Gems](https://github.com/SUSE/machinery/blob/master/docs/Licenses-of-Used-Ruby-Gems.m) | Licenses of Used Ruby Gems
+[Licenses of Used Ruby Gems](https://github.com/SUSE/machinery/blob/master/docs/Licenses-of-Used-Ruby-Gems.md) | Licenses of Used Ruby Gems
