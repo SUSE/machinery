@@ -44,8 +44,8 @@ class Cli
     if command.is_a?(GLI::Commands::Help) && !global_options[:version] && ARGV == ["help"]
 
       Machinery::Ui.puts "\nFor more detailed information, open the man page by typing 'man " \
-        "machinery'. If you are unable to find a solution within the man page visit our wiki " \
-        "page at https://github.com/SUSE/machinery/wiki"
+        "machinery'.\nIf you are unable to find a solution within the man page visit our wiki " \
+        "page\nat https://github.com/SUSE/machinery/wiki"
 
       Machinery::Ui.puts "\nMachinery can show hints which guide through a typical workflow."
       if @config.hints
