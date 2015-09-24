@@ -246,14 +246,27 @@ class Cli
     end
   end
 
-  def self.check_port_validity(port)
+  def self.check_port_validity(port, config_hint = false)
     if port < 2 || port > 65535
-      raise Machinery::Errors::InvalidCommandLine.new("Please choose a port between 2 and " \
-        "65535.")
+      if config_hint == true
+        raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid default " \
+          "server port in the 'http_server_port' section of the configuration file. A valid " \
+          "port can be in a range between 2 and 65535.")
+      else
+        raise Machinery::Errors::InvalidCommandLine.new("Please choose a port between 2 and " \
+          "65535.")
+      end
     else
       if port >= 2 && port <= 1023 && !CurrentUser.new.is_root?
-        raise Machinery::Errors::InvalidCommandLine.new("You need root rights when you want " \
-          "to use a port between 2 and 65535.")
+        if config_hint == true
+          raise Machinery::Errors::InvalidCommandLine.new("You specified the port '#{port}' " \
+            "in the 'http_server_port' section of the configuration file. To start the server, " \
+            "you need root rights. If you don't want to start the server as root user, you must " \
+            "choose a port between 1024 and 65535.")
+        else
+          raise Machinery::Errors::InvalidCommandLine.new("You need root rights when you want " \
+            "to use a port between 2 and 1023.")
+        end
       end
     end
   end
@@ -741,14 +754,6 @@ class Cli
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["exclude-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
-    c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
-      desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
-        2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
-        arg_name: "PORT"
-    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-      desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
-        resolving to an IP address) which is assigned to a network interface on the local
-        machine.", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
@@ -761,12 +766,12 @@ class Cli
     c.action do |global_options,options,args|
       Machinery::Ui.use_pager = options["pager"]
 
+      self.check_port_validity(@config.http_server_port, true)
+
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
         Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
-
-      check_port_validity(options[:port]) if options[:html]
 
       description = SystemDescription.load(name, system_description_store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
@@ -791,8 +796,8 @@ class Cli
       opts = {
         show_diffs: options["show-diffs"],
         show_html: options["html"],
-        ip: options["ip"],
-        port: options["port"]
+        ip: "127.0.0.1",
+        port: @config.http_server_port
       }
       task.show(description, scope_list, filter, opts)
     end

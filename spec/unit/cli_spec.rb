@@ -422,18 +422,6 @@ describe Cli do
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
       end
 
-      context "with --html" do
-        it "forwards the specified port and IP" do
-          description = create_test_description(json: test_manifest)
-          expect_any_instance_of(ShowTask).to receive(:show).with(description, ["packages"],
-            an_instance_of(Filter), show_diffs: false, show_html: true, ip: "0.0.0.0", port: 3000)
-
-          run_command(
-            ["show", "description1", "--scope=packages", "--html", "--port=3000", "--ip=0.0.0.0"]
-          )
-        end
-      end
-
       describe "--verbose" do
         before(:each) do
           expect_any_instance_of(ShowTask).to receive(:show)
@@ -786,7 +774,7 @@ Backtrace:
     it "checks if a port requires root privileges" do
       expect { Cli.check_port_validity(1000) }.to raise_error(
         Machinery::Errors::InvalidCommandLine, "You need root rights when you want to use a port " \
-          "between 2 and 65535."
+          "between 2 and 1023."
       )
     end
   end
