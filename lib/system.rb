@@ -68,6 +68,9 @@ class System
   # To be able to deal with arbitrary filenames we use zero-terminated
   # filelist and the --null option of tar
   def create_archive(file_list, archive, exclude = [])
+    Machinery.logger.info(
+      "The following files are packaged in #{archive}: " + Array(file_list).join(", ")
+    )
     created = !File.exists?(archive)
     out = File.open(archive, "w")
     begin
