@@ -18,6 +18,9 @@
 require_relative "spec_helper"
 
 describe System do
+  include GivenFilesystemSpecHelpers
+  use_given_filesystem
+
   describe ".for" do
     it "returns a LocalSystem when no hostname is given" do
       expect(System.for(nil)).to be_a(LocalSystem)
@@ -114,6 +117,18 @@ describe System do
         paths = file_list.map { |f| File.join("/", f[:path]) }
         expect(paths).to match_array([test_dir, included_file])
       end
+    end
+
+    it "doesn't log the commands" do
+      system = System.new
+      expect(system).to receive(:run_command) do |*args|
+        args.each do |arg|
+          if arg.is_a?(Hash)
+            expect(arg).to include(disable_logging: true)
+          end
+        end
+      end
+      system.create_archive([given_dummy_file], given_dummy_file("something.tgz"))
     end
   end
 

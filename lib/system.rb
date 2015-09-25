@@ -76,7 +76,8 @@ class System
         *exclude.flat_map { |f| ["--exclude", f]},
         stdout: out,
         stdin: Array(file_list).join("\0"),
-        privileged: true
+        privileged: true,
+        disable_logging: true
       )
     rescue Cheetah::ExecutionFailed => e
       if e.status.exitstatus == 1
