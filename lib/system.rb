@@ -68,6 +68,9 @@ class System
   # To be able to deal with arbitrary filenames we use zero-terminated
   # filelist and the --null option of tar
   def create_archive(file_list, archive, exclude = [])
+    Machinery.logger.info(
+      "The following files are packaged in #{archive}: " + Array(file_list).join(", ")
+    )
     created = !File.exists?(archive)
     out = File.open(archive, "w")
     begin
@@ -76,7 +79,8 @@ class System
         *exclude.flat_map { |f| ["--exclude", f]},
         stdout: out,
         stdin: Array(file_list).join("\0"),
-        privileged: true
+        privileged: true,
+        disable_logging: true
       )
     rescue Cheetah::ExecutionFailed => e
       if e.status.exitstatus == 1
