@@ -130,8 +130,8 @@ shared_examples "CLI" do
       context "when no arguments are expected" do
         it "fails with a message" do
           expect(
-            @machinery.run_command("#{machinery_command} list foo bar", as: "vagrant")
-          ).to fail.and include_stderr("Too many arguments: got 2 arguments, expected none")
+            @machinery.run_command("#{machinery_command} man list", as: "vagrant")
+          ).to fail.and include_stderr("Too many arguments: got 1 argument, expected none")
         end
       end
 
