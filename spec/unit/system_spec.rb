@@ -132,12 +132,16 @@ describe System do
     end
 
     it "logs the file list" do
-      system = System.new
-      allow(system).to receive(:run_command)
-      expect(Machinery.logger).to receive(:info).with(
-        "The following files are packaged in archive.tgz: file1, file2"
-      )
-      system.create_archive(["file1", "file2"], "archive.tgz")
+      Dir.mktmpdir("machinery_unittest") do |tmp_dir|
+        archive = File.join(tmp_dir, "/archive.tgz")
+
+        system = System.new
+        allow(system).to receive(:run_command)
+        expect(Machinery.logger).to receive(:info).with(
+          "The following files are packaged in #{archive}: file1, file2"
+        )
+        system.create_archive(["file1", "file2"], archive)
+      end
     end
   end
 
