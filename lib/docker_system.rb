@@ -63,7 +63,7 @@ class DockerSystem < System
 
   # Removes a file from the System
   def remove_file(file)
-    @container.run_command("rm", file)
+    run_command("rm", file)
   rescue => e
     raise Machinery::Errors::RemoveFileFailed.new(
       "Could not remove file '#{file}'.\nError: #{e}"
