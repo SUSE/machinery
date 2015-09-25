@@ -23,6 +23,8 @@ describe ListTask do
   let(:list_task) { ListTask.new }
   let(:store) { SystemDescriptionStore.new }
   let(:name) { "foo" }
+  let(:name2) { "bar" }
+  let(:name3) { "description" }
   let(:date) { "2014-02-07T14:04:45Z" }
   let(:hostname) { "example.com" }
   let(:date_human) { DateTime.parse(date).to_time.localtime.strftime("%Y-%m-%d %H:%M:%S") }
@@ -30,6 +32,18 @@ describe ListTask do
     create_test_description(
       scopes: ["packages", "repositories"], modified: date, hostname: hostname,
       name: name, store: store
+    )
+  }
+  let(:system_description2) {
+    create_test_description(
+      scopes: ["packages", "repositories"], modified: date, hostname: hostname,
+      name: name2, store: store
+    )
+  }
+  let(:system_description3) {
+    create_test_description(
+      scopes: ["packages", "repositories"], modified: date, hostname: hostname,
+      name: name3, store: store
     )
   }
   let(:system_description_without_scope_meta) {
@@ -62,101 +76,185 @@ describe ListTask do
       allow(JsonValidator).to receive(:new).and_return(double(validate: []))
     end
 
-    it "lists the system descriptions with scopes" do
-      system_description.save
-      expected_output = <<-EOF
+    context "when a system_description is specified" do
+      it "lists only this system description with scopes" do
+        system_description.save
+        expected_output = <<-EOF
  foo:
    * packages
    * repositories
 
-EOF
-      list_task.list(store)
-      expect(captured_machinery_output).to eq(expected_output)
+        EOF
+        list_task.list(store, ["foo"])
+        expect(captured_machinery_output).to eq(expected_output)
+      end
     end
 
-    it "if short is true it lists only the description names" do
-      system_description.save
-      expected_output = <<-EOF.chomp
+    context "when multiple system_descriptions are specified" do
+      it "lists only these system descriptions with scopes, sorted by name" do
+        system_description.save
+        system_description2.save
+        expected_output = <<-EOF
+ bar:
+   * packages
+   * repositories
+
+ foo:
+   * packages
+   * repositories
+
+        EOF
+        list_task.list(store, ["foo", "bar"])
+        expect(captured_machinery_output).to eq(expected_output)
+      end
+
+      it "lists only the existing system descriptions with scopes" do
+        system_description.save
+        expected_output = <<-EOF
+ bar: Couldn't find a system description with the name 'bar'.
+
+ foo:
+   * packages
+   * repositories
+
+        EOF
+        list_task.list(store, ["foo", "bar"])
+        expect(captured_machinery_output).to eq(expected_output)
+      end
+    end
+
+    context "when no system_description is specified" do
+      it "lists all system descriptions with scopes" do
+        system_description.save
+        system_description2.save
+        system_description3.save
+        expected_output = <<-EOF
+ bar:
+   * packages
+   * repositories
+
+ description:
+   * packages
+   * repositories
+
+ foo:
+   * packages
+   * repositories
+
+        EOF
+        list_task.list(store, [])
+        expect(captured_machinery_output).to eq(expected_output)
+      end
+
+      it "if short is true it lists only the description names" do
+        system_description.save
+        system_description2.save
+        system_description3.save
+        expected_output = <<-EOF.chomp
+bar
+description
 foo
 
-EOF
-      list_task.list(store, short: true)
-      expect(captured_machinery_output).to eq(expected_output)
-    end
+        EOF
+        list_task.list(store, [], short: true)
+        expect(captured_machinery_output).to eq(expected_output)
+      end
 
-    it "shows also the date and hostname of the descriptions if verbose is true" do
-      system_description.save
-      expected_output = <<-EOF
+      it "shows also the date and hostname of the descriptions if verbose is true" do
+        system_description.save
+        system_description2.save
+        system_description3.save
+        expected_output = <<-EOF
+ bar:
+   * packages
+      Host: [#{hostname}]
+      Date: (#{date_human})
+   * repositories
+      Host: [#{hostname}]
+      Date: (#{date_human})
+
+ description:
+   * packages
+      Host: [#{hostname}]
+      Date: (#{date_human})
+   * repositories
+      Host: [#{hostname}]
+      Date: (#{date_human})
+
  foo:
    * packages
       Host: [#{hostname}]
       Date: (#{date_human})
-EOF
-      list_task.list(store, verbose: true)
-      expect(captured_machinery_output).to include(expected_output)
-    end
+   * repositories
+      Host: [#{hostname}]
+      Date: (#{date_human})
+        EOF
+        list_task.list(store, [], verbose: true)
+        expect(captured_machinery_output).to include(expected_output)
+      end
 
-    it "verbose shows the date/hostname as unknown if there is no meta data for it" do
-      system_description_without_scope_meta.save
-      expected_output = <<-EOF
+      it "verbose shows the date/hostname as unknown if there is no meta data for it" do
+        system_description_without_scope_meta.save
+        expected_output = <<-EOF
  foo:
    * packages
       Host: [Unknown hostname]
       Date: (unknown)
-EOF
-      list_task.list(store, verbose: true)
-      expect(captured_machinery_output).to include(expected_output)
-    end
+        EOF
+        list_task.list(store, [], verbose: true)
+        expect(captured_machinery_output).to include(expected_output)
+      end
 
-    it "show the extracted state of extractable scopes" do
-      allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
+      it "show the extracted state of extractable scopes" do
+        allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
 
-      system_description_with_extracted_files.save
-      expected_output = <<-EOF
+        system_description_with_extracted_files.save
+        expected_output = <<-EOF
  foo:
    * config-files (extracted)
    * changed-managed-files (not extracted)
    * unmanaged-files (extracted)
-EOF
-      list_task.list(store)
-      expect(captured_machinery_output).to include(expected_output)
-    end
+        EOF
+        list_task.list(store, [])
+        expect(captured_machinery_output).to include(expected_output)
+      end
 
-    context "with old data format" do
-      let(:expected_output) {
-<<-EOF
+      context "with old data format" do
+        let(:expected_output) {
+          <<-EOF
 needs to be upgraded.
 
-EOF
-      }
+          EOF
+        }
 
-      context "using the long option" do
-        it "marks descriptions" do
-          system_description_with_old_data_format.save
-          list_task.list(store)
-          expect(captured_machinery_output).to include(expected_output)
+        context "using the long option" do
+          it "marks descriptions" do
+            system_description_with_old_data_format.save
+            list_task.list(store, [])
+            expect(captured_machinery_output).to include(expected_output)
+          end
+        end
+
+        context "using the short option" do
+          it "marks descriptions" do
+            system_description_with_old_data_format.save
+            list_task.list(store, [], short: true)
+            expect(captured_machinery_output).to include(expected_output)
+          end
         end
       end
 
-      context "using the short option" do
-        it "marks descriptions" do
-          system_description_with_old_data_format.save
-          list_task.list(store, short: true)
-          expect(captured_machinery_output).to include(expected_output)
-        end
+      it "marks descriptions with incompatible data format" do
+        system_description_with_incompatible_data_format.save
+        list_task.list(store, [])
+        expect(captured_machinery_output).to include("Can not be upgraded.")
       end
-    end
 
-    it "marks descriptions with incompatible data format" do
-      system_description_with_incompatible_data_format.save
-      list_task.list(store)
-      expect(captured_machinery_output).to include("Can not be upgraded.")
-    end
-
-    it "marks descriptions with newer data format" do
-      system_description_with_newer_data_format.save
-      list_task.list(store)
-      expect(captured_machinery_output).to include("upgrade Machinery")
+      it "marks descriptions with newer data format" do
+        system_description_with_newer_data_format.save
+        list_task.list(store, [])
+        expect(captured_machinery_output).to include("upgrade Machinery")
+      end
     end
   end
 end

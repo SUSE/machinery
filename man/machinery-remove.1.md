@@ -4,7 +4,7 @@
 ### SYNOPSIS
 
 `machinery remove` [--all]
-    NAME
+    [NAME[,NAME2[,NAME3]]]
 
 `machinery` help remove
 

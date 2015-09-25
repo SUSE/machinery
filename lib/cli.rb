@@ -608,11 +608,15 @@ class Cli
 
   desc "List system descriptions"
   long_desc <<-LONGDESC
-    List system descriptions and their stored scopes.
+    List all system descriptions and their stored scopes, when no NAME parameter is specified.
+
+    List only the specified system descriptions and its stored scopes, when NAME parameter is given.
 
     The date of modification for each scope can be shown with the verbose
     option.
   LONGDESC
+  arg "NAME", [:multiple, :optional]
+
   command "list" do |c|
     c.switch :verbose, required: false, negatable: false,
       desc: "Display additional information about origin of scopes"
@@ -621,7 +625,7 @@ class Cli
 
     c.action do |global_options,options,args|
       task = ListTask.new
-      task.list(system_description_store, options)
+      task.list(system_description_store, args, options)
     end
   end
 
