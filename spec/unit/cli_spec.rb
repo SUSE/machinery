@@ -404,10 +404,19 @@ describe Cli do
       it "triggers the serve task" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+          description, "127.0.0.1", 3000
+        )
+
+        run_command(["serve", "description1", "--port=3000"])
+      end
+
+      it "checks if the --public option works" do
+        description = create_test_description(json: test_manifest)
+        expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
           description, "0.0.0.0", 3000
         )
 
-        run_command(["serve", "description1", "--ip=0.0.0.0", "--port=3000"])
+        run_command(["serve", "description1", "--port=3000", "--public"])
       end
     end
 

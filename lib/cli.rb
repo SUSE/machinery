@@ -892,19 +892,23 @@ class Cli
       desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
         2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
         arg_name: "PORT"
-    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-      desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
-        resolving to an IP address) which is assigned to a network interface on the local
-        machine.", arg_name: "IP"
+    c.switch "public", required: false, negatable: false,
+      desc: "Makes the server reachable from all IP addresses."
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
 
       check_port_validity(options[:port])
 
+      if options[:public]
+        ip = "0.0.0.0"
+      else
+        ip = "127.0.0.1"
+      end
+
       description = SystemDescription.load(name, system_description_store)
       task = ServeHtmlTask.new
-      task.serve(description, options[:ip], options[:port])
+      task.serve(description, ip, options[:port])
     end
   end
 
