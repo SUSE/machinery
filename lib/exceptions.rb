@@ -140,5 +140,7 @@ module Machinery
     class UnexpectedInputData < MachineryError; end
     class ComposeServiceLink < MachineryError; end
     class UnsupportedHelperVersion < MachineryError; end
+    class InvalidServerPortSpecified < MachineryError; end
+    class ServerNeedRootPrivileges < MachineryError; end
   end
 end

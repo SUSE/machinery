@@ -246,27 +246,12 @@ class Cli
     end
   end
 
-  def self.check_port_validity(port, config_hint = false)
+  def self.check_port_validity(port)
     if port < 2 || port > 65535
-      if config_hint == true
-        raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid default " \
-          "server port in the 'http_server_port' section of the configuration file. A valid " \
-          "port can be in a range between 2 and 65535.")
-      else
-        raise Machinery::Errors::InvalidCommandLine.new("Please choose a port between 2 and " \
-          "65535.")
-      end
+      raise Machinery::Errors::InvalidServerPortSpecified
     else
       if port >= 2 && port <= 1023 && !CurrentUser.new.is_root?
-        if config_hint == true
-          raise Machinery::Errors::InvalidCommandLine.new("You specified the port '#{port}' " \
-            "in the 'http_server_port' section of the configuration file. To start the server, " \
-            "you need root rights. If you don't want to start the server as root user, you must " \
-            "choose a port between 1024 and 65535.")
-        else
-          raise Machinery::Errors::InvalidCommandLine.new("You need root rights when you want " \
-            "to use a port between 2 and 1023.")
-        end
+        raise Machinery::Errors::ServerNeedRootPrivileges
       end
     end
   end
@@ -360,14 +345,6 @@ class Cli
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
     if @config.experimental_features
-      c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
-        desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
-          2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
-          arg_name: "PORT"
-      c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-        desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
-          resolving to an IP address) which is assigned to a network interface on the local
-          machine.", arg_name: "IP"
       c.switch "html", required: false, negatable: false,
         desc: "Open comparison in HTML format in your web browser."
     end
@@ -380,7 +357,21 @@ class Cli
       name1 = shift_arg(args, "NAME1")
       name2 = shift_arg(args, "NAME2")
 
-      check_port_validity(options[:port]) if options[:html]
+      if options[:html]
+        begin
+          check_port_validity(@config.http_server_port)
+        rescue Machinery::Errors::InvalidServerPortSpecified
+          raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid server " \
+            "port in the 'http_server_port' section of the configuration file. The specified " \
+            "port '#{@config.http_server_port}' is not valid. A valid port can be in a range " \
+            "between 2 and 65535.")
+        rescue Machinery::Errors::ServerNeedRootPrivileges
+          raise Machinery::Errors::InvalidCommandLine.new("You specified the port " \
+            "'#{@config.http_server_port}' in the 'http_server_port' section. To start the " \
+            "server, you need root privileges. If you don't want to start the server as root " \
+            "user, you must choose a port between 1024 and 65535.")
+        end
+      end
 
       store = system_description_store
       description1 = SystemDescription.load(name1, store)
@@ -391,8 +382,8 @@ class Cli
       opts = {
         show_html: options["html"],
         show_all: options["show-all"],
-        ip: options["ip"],
-        port: options["port"]
+        ip: "127.0.0.1",
+        port: @config.http_server_port
       }
       task.compare(description1, description2, scope_list, opts)
     end
@@ -766,7 +757,21 @@ class Cli
     c.action do |global_options,options,args|
       Machinery::Ui.use_pager = options["pager"]
 
-      self.check_port_validity(@config.http_server_port, true)
+      if options[:html]
+        begin
+          check_port_validity(@config.http_server_port)
+        rescue Machinery::Errors::InvalidServerPortSpecified
+          raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid server " \
+            "port in the 'http_server_port' section of the configuration file. The specified " \
+            "port '#{@config.http_server_port}' is not valid. A valid port can be in a range " \
+            "between 2 and 65535.")
+        rescue Machinery::Errors::ServerNeedRootPrivileges
+          raise Machinery::Errors::InvalidCommandLine.new("You specified the port " \
+            "'#{@config.http_server_port}' in the 'http_server_port' section. To start the " \
+            "server, you need root privileges. If you don't want to start the server as root " \
+            "user, you must choose a port between 1024 and 65535.")
+        end
+      end
 
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
@@ -898,7 +903,20 @@ class Cli
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
 
-      check_port_validity(options[:port])
+      begin
+        check_port_validity(options[:port])
+      rescue Machinery::Errors::InvalidServerPortSpecified
+        raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid server " \
+          "port either in the 'http_server_port' section of the configuration file or " \
+          "via the --port option. The specified port '#{options[:port]}' is not valid. A valid " \
+          "port can be in a range between 2 and 65535.")
+      rescue Machinery::Errors::ServerNeedRootPrivileges
+        raise Machinery::Errors::InvalidCommandLine.new("You specified the port " \
+          "'#{options[:port]}' either in the 'http_server_port' section of the configuration " \
+          "file or via the --port option. To start the server, you need root privileges. If " \
+          "you don't want to start the server as root user, you must choose a port between " \
+          "1024 and 65535.")
+      end
 
       if options[:public]
         ip = "0.0.0.0"
