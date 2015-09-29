@@ -20,7 +20,9 @@ require_relative "spec_helper"
 describe ServicesInspector do
   let(:system) { double }
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    SystemDescription.new("systemname", SystemDescriptionStore.new).tap do |description|
+      description.environment = EnvironmentScope.new(system_type: "remote")
+    end
   }
   let(:filter) { nil }
   subject(:inspector) { ServicesInspector.new(system, description) }

@@ -24,7 +24,12 @@ class ServicesInspector < Inspector
   end
 
   def inspect(_filter, _options = {})
-    if @system.has_command?("systemctl")
+    if @description.environment.system_type == "docker"
+      result = ServicesScope.new(
+        init_system: "none",
+        services: []
+      )
+    elsif @system.has_command?("systemctl")
       result = ServicesScope.new(
         init_system: "systemd",
         services: inspect_systemd_services
