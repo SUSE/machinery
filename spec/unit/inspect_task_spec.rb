@@ -70,7 +70,9 @@ describe InspectTask, "#inspect_system" do
   end
 
   before :each do
-    allow(System).to receive(:for).and_return(system)
+    allow_any_instance_of(RemoteSystem).to receive(:connect)
+    allow_any_instance_of(DockerSystem).to receive(:validate_image_name)
+    allow_any_instance_of(DockerSystem).to receive(:create_container)
     allow(inspect_task).to receive(:set_system_locale)
   end
 
@@ -78,16 +80,9 @@ describe InspectTask, "#inspect_system" do
   let(:store) { SystemDescriptionStore.new }
   let(:description) { SystemDescription.new(name, store) }
   let(:name) { "name" }
-  let(:host) { "example.com" }
-  let(:system) {
-    system = double(
-      requires_root?: false,
-      host: "example.com",
-      locale: "C"
-    )
-    allow(system).to receive(:remote_user=)
-    system
-  }
+  let(:system) { RemoteSystem.new("example.com") }
+  let(:local_system) { LocalSystem.new }
+  let(:docker_system) { DockerSystem.new("foo") }
 
   let(:current_user_root) {
     current_user = double
@@ -105,34 +100,26 @@ describe InspectTask, "#inspect_system" do
     expect(inspect_task).to receive(:set_system_locale)
     expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
-    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
+    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
   end
 
   it "runs the proper inspector when a scope is given" do
     expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
-    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
+    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
     expect_any_instance_of(SystemDescription).to receive(:save).at_least(:once).times
 
-    inspect_task.inspect_system(store, host, name, current_user_non_root,
+    inspect_task.inspect_system(store, system, name, current_user_non_root,
       ["foo", "bar"], Filter.new)
-  end
-
-  it "uses the specified remote user to access the system" do
-    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
-    expect(System).to receive(:for).with(anything, "machinery")
-
-    inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new,
-      remote_user: "machinery")
   end
 
   it "creates a proper system description" do
     description = inspect_task.inspect_system(
       store,
-      host,
+      system,
       name,
       current_user_non_root,
       ["foo"],
@@ -157,7 +144,7 @@ describe InspectTask, "#inspect_system" do
         and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
-        inspect_task.inspect_system(store, host, name, current_user_non_root,
+        inspect_task.inspect_system(store, system, name, current_user_non_root,
           ["foo"], Filter.new)
       }.to raise_error(
         Machinery::Errors::InspectionFailed,
@@ -175,7 +162,7 @@ Inspecting foo...
       expect_any_instance_of(FooInspector).to receive(:inspect).and_raise(RuntimeError)
 
       expect {
-        inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
+        inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
       }.to raise_error(RuntimeError)
     end
   end
@@ -183,13 +170,13 @@ Inspecting foo...
   describe "root check" do
     describe "when root is required" do
       before(:each) do
-        expect(system).to receive(:requires_root?).and_return(true)
+        expect(local_system).to receive(:requires_root?).and_return(true)
         allow(inspect_task).to receive(:set_system_locale)
       end
 
       it "raises an exception we don't run as root" do
         expect {
-          inspect_task.inspect_system(store, "localhost", name, current_user_non_root,
+          inspect_task.inspect_system(store, local_system, name, current_user_non_root,
             ["foo"], Filter.new)
         }.to raise_error(Machinery::Errors::MissingRequirement)
       end
@@ -198,7 +185,7 @@ Inspecting foo...
         allow(Inspector).to receive(:all) { [] }
 
         expect {
-          inspect_task.inspect_system(store, "localhost", name, current_user_root,
+          inspect_task.inspect_system(store, local_system, name, current_user_root,
             ["foo"], Filter.new)
         }.not_to raise_error
       end
@@ -213,7 +200,8 @@ Inspecting foo...
         allow(Inspector).to receive(:all) { [] }
 
         expect {
-          inspect_task.inspect_system(store, host, name, current_user_non_root, ["foo"], Filter.new)
+          inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"],
+            Filter.new)
         }.not_to raise_error
       end
     end
@@ -235,7 +223,7 @@ Inspecting foo...
 
       inspect_task.inspect_system(
         store,
-        host,
+        system,
         name,
         current_user_non_root,
         ["foo"],
@@ -246,7 +234,7 @@ Inspecting foo...
     it "stores the filters in the system description" do
       description = inspect_task.inspect_system(
         store,
-        host,
+        system,
         name,
         current_user_non_root,
         ["foo"],
@@ -265,7 +253,7 @@ Inspecting foo...
 
       description = inspect_task.inspect_system(
         store,
-        host,
+        system,
         name,
         current_user_non_root,
         ["foo"],
@@ -282,7 +270,7 @@ Inspecting foo...
     it "asks for the summary only after filtering" do
       inspect_task.inspect_system(
         store,
-        host,
+        system,
         name,
         current_user_non_root,
         ["foo"],
@@ -297,7 +285,7 @@ Inspecting foo...
 
       inspect_task.inspect_system(
         store,
-        host,
+        system,
         name,
         current_user_non_root,
         ["foo"],

@@ -52,6 +52,31 @@ describe Cli do
     end
   end
 
+  describe "#inspect-container" do
+    let(:system) { double(start: nil, stop: nil) }
+    before :each do
+      allow_any_instance_of(InspectTask).to receive(:inspect_system).
+        and_return(create_test_description)
+      allow(SystemDescription).to receive(:delete)
+      allow(DockerSystem).to receive(:new).and_return(system)
+    end
+
+    it "calls the InspectTask" do
+      expect_any_instance_of(InspectTask).to receive(:inspect_system).
+        with(
+          an_instance_of(SystemDescriptionStore),
+          system,
+          "docker_image_foo",
+          an_instance_of(CurrentUser),
+          Inspector.all_scopes,
+          an_instance_of(Filter),
+          {}
+        )
+
+      run_command(["inspect-container", "--docker", "docker_image_foo"])
+    end
+  end
+
   context "machinery test directory" do
     include_context "machinery test directory"
 
@@ -85,6 +110,7 @@ describe Cli do
         allow_any_instance_of(InspectTask).to receive(:inspect_system).
           and_return(description)
         allow(SystemDescription).to receive(:delete)
+        allow_any_instance_of(RemoteSystem).to receive(:connect)
       end
 
       it "shows a note if there are filters for the selected scopes" do
@@ -109,12 +135,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
           ).
           and_return(description)
 
@@ -126,12 +152,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             name,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
            ).
            and_return(description)
 
@@ -142,12 +168,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
            ).
           and_return(description)
 
@@ -158,12 +184,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             ["packages", "repositories"],
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
           ).
           and_return(description)
 
@@ -174,12 +200,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             ["packages"],
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
           ).
           and_return(description)
 
@@ -190,12 +216,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
           ).
           and_return(description)
 
@@ -210,12 +236,12 @@ describe Cli do
         expect_any_instance_of(InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            example_host,
+            an_instance_of(RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             scope_list,
             an_instance_of(Filter),
-            remote_user: "root"
+            {}
           ).
           and_return(description)
 
@@ -224,7 +250,7 @@ describe Cli do
 
       it "forwards the --skip-files option to the InspectTask as an unmanaged_files filter" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
-          _host, _name, _user, _scopes, filter, _options|
+          _system, _name, _user, _scopes, filter, _options|
           expect(filter.element_filter_for("/unmanaged_files/files/name").matchers["="]).
             to include("/foo/bar", "/baz")
         end.and_return(description)
@@ -234,7 +260,7 @@ describe Cli do
 
       it "forwards the global --exclude option to the InspectTask" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
-          _host, _name, _user, _scopes, filter, _options|
+          _system, _name, _user, _scopes, filter, _options|
           expect(filter.element_filter_for("/unmanaged_files/files/name").matchers["="]).
             to include("/foo/bar")
         end.and_return(description)
@@ -246,10 +272,10 @@ describe Cli do
         ])
       end
 
-      it "forwards the --remote-user option to the InspectTask" do
+      it "adheres to the --remote-user option" do
         expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
-          _host, _name, _user, _scopes, _filter, options|
-          expect(options[:remote_user]).to eq("foo")
+          system, _name, _user, _scopes, _filter, _options|
+          expect(system.remote_user).to eq("foo")
         end.and_return(description)
 
         run_command([
@@ -297,12 +323,12 @@ describe Cli do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              example_host,
+              an_instance_of(RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              remote_user: "root"
+              {}
             ).
             and_return(description)
 
@@ -313,12 +339,11 @@ describe Cli do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              example_host,
+              an_instance_of(RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              remote_user: "root",
               extract_changed_config_files: true,
               extract_unmanaged_files: true,
               extract_changed_managed_files: true
@@ -332,12 +357,11 @@ describe Cli do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              example_host,
+              an_instance_of(RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              remote_user: "root",
               extract_changed_config_files: true
             ).
             and_return(description)
@@ -349,12 +373,11 @@ describe Cli do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              example_host,
+              an_instance_of(RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              remote_user: "root",
               extract_unmanaged_files: true
             ).
             and_return(description)

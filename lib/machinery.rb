@@ -37,6 +37,7 @@ require "socket"
 require "diffy"
 require "sinatra/base"
 require "mimemagic"
+require "docker"
 
 require_relative "machinery_logger"
 require_relative "zypper"
@@ -108,6 +109,7 @@ require_relative "containerize_task"
 require_relative "workload_mapper_dsl"
 require_relative "containerized_app"
 require_relative "move_task"
+require_relative "docker_system"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

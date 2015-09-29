@@ -19,6 +19,10 @@ class RemoteSystem < System
   attr_accessor :host
   attr_accessor :remote_user
 
+  def type
+    "remote"
+  end
+
   def initialize(host, remote_user = "root")
     @host = host
     @remote_user = remote_user

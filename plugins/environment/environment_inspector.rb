@@ -27,6 +27,7 @@ class EnvironmentInspector < Inspector
     environment = EnvironmentScope.new
 
     environment.locale = get_locale
+    environment.system_type = @system.type
 
     @description.environment = environment
   end

@@ -25,7 +25,8 @@ describe EnvironmentInspector do
     double(
       requires_root?: false,
       host: "example.com",
-      check_requirement: nil
+      check_requirement: nil,
+      type: "remote"
     )
   }
   let(:invalid_utf8) { "a\255b\nen_US.utf8" }
@@ -38,18 +39,27 @@ describe EnvironmentInspector do
   subject { EnvironmentInspector.new(system, description) }
 
   describe "#inspect" do
+    context "with a utf8 locale" do
+      before(:each) do
+        expect(system).to receive(:run_command).and_return(locale_list_with_utf8)
+      end
+
+      it "returns the utf8 locale if utf8 locale is available" do
+        subject.inspect
+        expect(description.environment.locale).to eq("en_US.utf8")
+      end
+
+      it "stores the system type" do
+        subject.inspect
+        expect(description.environment.system_type).to eq("remote")
+      end
+    end
+
     it "returns the C locale if no utf8 locale is available" do
       expect(system).to receive(:run_command).and_return(locale_list_without_utf8)
 
       subject.inspect
       expect(description.environment.locale).to eq("C")
-    end
-
-    it "returns the utf8 locale if utf8 locale is available" do
-      expect(system).to receive(:run_command).and_return(locale_list_with_utf8)
-
-      subject.inspect
-      expect(description.environment.locale).to eq("en_US.utf8")
     end
 
     it "does not fail in case of invalid byte squences in UTF-8" do
