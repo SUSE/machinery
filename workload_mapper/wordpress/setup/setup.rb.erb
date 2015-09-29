@@ -55,7 +55,7 @@ db = Docker::Container.create("Image" => db_image, "name" => "#{db_image}_0", "E
 db.tap(&:start).attach(tty: true) { |output| print output }
 
 web_image = "#{app_name}_web"
-build_image("./rails", web_image)
+build_image("./wordpress", web_image)
 
 db.start
 
