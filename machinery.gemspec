@@ -56,7 +56,7 @@ Gem::Specification.new do |s|
     "man/generated/machinery.1.html",
     "NEWS",
     "COPYING",
-    "helpers/*",
+    "inspect_helpers/*",
     "export_helpers/*",
     "schema/**/*",
     "html/**/*"
