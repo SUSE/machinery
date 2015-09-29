@@ -557,21 +557,12 @@ describe SystemDescription do
 
   describe "#has_file?" do
     let(:system_description) {
-      create_test_description(json: <<-EOF)
-        {
-          "config_files": {
-            "extracted": true,
-            "files": [
-              {
-                "name": "/etc/my.cnf"
-              }
-            ]
-          }
-        }
-      EOF
+      SystemDescription.load!("opensuse131-build",
+        SystemDescriptionStore.new("spec/data/descriptions"))
     }
+
     it "returns true when found" do
-      expect(system_description.has_file?("/etc/my.cnf")).to be_truthy
+      expect(system_description.has_file?("/etc/magicapp.conf")).to be_truthy
     end
   end
 

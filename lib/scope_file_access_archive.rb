@@ -32,6 +32,16 @@ module ScopeFileAccessArchive
     end
   end
 
+  def has_file?(name)
+    return true if files.any? { |file| file.name == name }
+    if files.any? { |file| file.name == File.join(File.dirname(name), "") }
+      tgz_file = File.join(scope_file_store.path, "trees", "#{File.dirname(name)}.tgz")
+      return Cheetah.run("tar", "ztf", tgz_file, stdout: :capture).split(/\n/).
+        any? { |f| "/#{f}" == name }
+    end
+    false
+  end
+
   def tarball_path(system_file)
     if system_file.directory?
       File.join(

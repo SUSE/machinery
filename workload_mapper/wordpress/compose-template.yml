@@ -1,0 +1,5 @@
+wordpress:
+  build: ./wordpress
+  ports: :ports
+  links: :links
+  command: "/usr/sbin/apache2ctl -D FOREGROUND"

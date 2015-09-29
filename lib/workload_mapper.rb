@@ -104,7 +104,8 @@ class WorkloadMapper
               tgz_file = File.join(dir, "trees", "#{origin.chop}.tgz")
               output_path = File.join(path, workload, destination)
               FileUtils.mkdir_p(output_path)
-              Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=1")
+              strip_number = origin.split("/").size - 1
+              Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=#{strip_number}")
               copy_workload_config_files(workload, output_path)
             end
             if file && file.file?
