@@ -37,7 +37,6 @@ require "socket"
 require "diffy"
 require "sinatra/base"
 require "mimemagic"
-require "docker"
 
 require_relative "machinery_logger"
 require_relative "zypper"

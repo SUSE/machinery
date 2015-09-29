@@ -24,20 +24,21 @@ class DockerSystem < System
 
   def initialize(image)
     @image = image
-    @container = create_container(image)
+
+    validate_image_name(image)
   end
 
   def start
-    @container.start!
+    @container = LoggedCheetah.run("docker", "run", "-id", @image, "bash", stdout: :capture).chomp
   end
 
   def stop
-    @container.delete(force: true)
+    LoggedCheetah.run("docker", "rm", "-f", @container)
   end
 
   def run_command(*args)
     Machinery.logger.info("Running '#{args}'")
-    LoggedCheetah.run("docker", "exec", "-i", @container.id, *args)
+    LoggedCheetah.run("docker", "exec", "-i", @container, *args)
   end
 
   def check_retrieve_files_dependencies
@@ -72,7 +73,7 @@ class DockerSystem < System
 
   # Copies a file to the system
   def inject_file(source, destination)
-    LoggedCheetah.run("docker", "cp", source, "#{@container.id}:#{destination}")
+    LoggedCheetah.run("docker", "cp", source, "#{@container}:#{destination}")
   end
 
   # Retrieves files specified in file_list from the container
@@ -81,7 +82,7 @@ class DockerSystem < System
       destination_path = File.join(destination, file)
       FileUtils.mkdir_p(File.dirname(destination_path), mode: 0700)
 
-      LoggedCheetah.run("docker", "cp", "#{@container.id}:#{file}", "#{destination_path}")
+      LoggedCheetah.run("docker", "cp", "#{@container}:#{file}", "#{destination_path}")
       LoggedCheetah.run("chmod", "go-rwx", destination_path)
     end
   end
@@ -119,14 +120,10 @@ class DockerSystem < System
 
   private
 
-  def create_container(image)
-    validate_image_name(image)
-
-    @container = Docker::Container.create("Cmd" => ["bash"], "Tty" => true, "Image" => image)
-  end
-
   def validate_image_name(image)
-    if !Docker::Image.exist?(image)
+    images = LoggedCheetah.run("docker", "images", stdout: :capture).split("\n")
+
+    if !images.find { |i| i.start_with?("#{image} ") || i.index(" #{image} ") }
       raise Machinery::Errors::InspectionFailed.new(
         "Unknown docker image: '#{image}'"
       )

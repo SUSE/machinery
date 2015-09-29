@@ -23,13 +23,14 @@ describe DockerSystem do
 
   let(:false_container_id) { "0a0a0a0a0a0a" }
   let(:valid_container_id) { "076f46c1bef1" }
-  let(:instance) { double(Docker::Container, id: "12345") }
-  subject { DockerSystem.new(valid_container_id) }
+  let(:instance) { "12345" }
+  let(:images) { "076f46c1bef1 latest\nfoobar latest" }
+  subject { DockerSystem.new(valid_container_id).tap(&:start) }
 
   before(:each) do
-    allow(Docker::Image).to receive(:exist?).with(false_container_id).and_return(false)
-    allow(Docker::Image).to receive(:exist?).with(valid_container_id).and_return(true)
-    allow(Docker::Container).to receive(:create).and_return(instance)
+    allow(LoggedCheetah).to receive(:run).with("docker", "images", any_args).and_return(images)
+    allow(LoggedCheetah).to receive(:run).with("docker", "run", any_args).and_return(instance)
+    allow(subject).to receive(:stop)
   end
 
   describe "#initialize" do
