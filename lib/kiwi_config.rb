@@ -235,7 +235,7 @@ EOF
 
   def apply_packages(xml)
     build_filter = YAML.load_file(File.join(
-      Machinery::ROOT, "helpers", "filter-packages-for-build.yaml")
+      Machinery::ROOT, "filters", "filter-packages-for-build.yaml")
     )
     filter = build_filter[@system_description.os.canonical_name] || []
 
