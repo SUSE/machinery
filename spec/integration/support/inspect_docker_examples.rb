@@ -67,7 +67,6 @@ shared_examples "inspect-container --docker" do |container|
       "os",
       "users",
       "groups",
-      "unmanaged-files",
       "config-files",
       "changed-managed-files"
     ].each do |scope|
@@ -87,6 +86,26 @@ shared_examples "inspect-container --docker" do |container|
     end
 
     context "--scope=unmanaged-files" do
+      it "inspects unmanaged-files" do
+        measure("Inspect unmanaged-files") do
+          expect(
+            @machinery.run_command(
+              "#{machinery_command} inspect-container -x --docker machinerytool/#{container} " \
+              "--scope=unmanaged-files --skip-files=/etc/resolv.conf --name=test",
+              as: "vagrant"
+            )
+          ).to succeed
+        end
+
+        expected = File.read("spec/data/docker/unmanaged-files/#{container}")
+        show_command = @machinery.run_command(
+          "#{machinery_command} show test --scope=unmanaged-files",
+          as: "vagrant"
+        )
+        expect(show_command).to succeed
+        expect(show_command.stdout).to match_machinery_show_scope(expected)
+      end
+
       it "extracts the files" do
         expected = File.read("spec/data/docker/unmanaged-files/#{container}_files_tgz_content")
         files_content_command = @machinery.run_command(

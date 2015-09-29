@@ -11,7 +11,6 @@ etc/pam.d/common-auth.pam-config-backup
 etc/pam.d/common-password.pam-config-backup
 etc/pam.d/common-session.pam-config-backup
 etc/passwd-
-etc/resolv.conf
 etc/sysconfig/boot
 etc/sysconfig/bootloader
 etc/sysconfig/console
