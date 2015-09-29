@@ -107,7 +107,8 @@ describe UnmanagedFilesInspector do
     before(:each) do
       allow(JsonValidator).to receive(:new).and_return(double(validate: []))
       FakeFS::FileSystem.clone(test_file_path,test_file_path)
-      FakeFS::FileSystem.clone("helpers/")
+      FakeFS::FileSystem.clone("inspect_helpers/")
+      FakeFS::FileSystem.clone("filters/")
       description.save
     end
 

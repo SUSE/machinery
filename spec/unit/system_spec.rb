@@ -142,12 +142,12 @@ describe System do
   end
 
   describe "#run_script" do
-    it "reads the script from MACHINERY_ROOT/helpers/ and executes it" do
+    it "reads the script from MACHINERY_ROOT/inspect_helpers/ and executes it" do
       begin
         FakeFS.activate!
         stub_const("Machinery::ROOT", "/")
-        FileUtils.mkdir("/helpers")
-        File.write("/helpers/foo", "ls /foo")
+        FileUtils.mkdir("/inspect_helpers")
+        File.write("/inspect_helpers/foo", "ls /foo")
 
         system = System.new
         expect(system).to receive(:run_command).

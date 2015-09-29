@@ -70,7 +70,7 @@ class RepositoriesInspector < Inspector
   end
 
   def inspect_yum_repositories
-    script = File.read(File.join(Machinery::ROOT, "helpers", "yum_repositories.py"))
+    script = File.read(File.join(Machinery::ROOT, "inspect_helpers", "yum_repositories.py"))
     begin
       repositories = JSON.parse(system.run_command(
         "bash", "-c", "python", stdin: script, stdout: :capture

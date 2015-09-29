@@ -51,11 +51,12 @@ Gem::Specification.new do |s|
     "plugins/**/*",
     "workload_mapper/**/*",
     "bin/*",
+    "filters/*",
     "man/generated/machinery.1.gz",
     "man/generated/machinery.1.html",
     "NEWS",
     "COPYING",
-    "helpers/*",
+    "inspect_helpers/*",
     "export_helpers/*",
     "schema/**/*",
     "html/**/*"

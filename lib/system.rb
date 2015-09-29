@@ -97,7 +97,7 @@ class System
   end
 
   def run_script(*args)
-    script = File.read(File.join(Machinery::ROOT, "helpers", args.shift))
+    script = File.read(File.join(Machinery::ROOT, "inspect_helpers", args.shift))
 
     run_command("bash", "-c", script, *args)
   end

@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 require_relative "spec_helper"
-require File.expand_path("../../../helpers/inspector_files", __FILE__)
+require File.expand_path("../../../tools/inspector_files", __FILE__)
 
 describe ReferenceTestData do
   describe ".inspect_system" do
