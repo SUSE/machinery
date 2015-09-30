@@ -1,0 +1,3 @@
+etc/lxc/
+etc/lxc/default.conf
+etc/lxc/fstab
