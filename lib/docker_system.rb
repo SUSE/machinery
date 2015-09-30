@@ -38,7 +38,7 @@ class DockerSystem < System
 
   def run_command(*args)
     Machinery.logger.info("Running '#{args}'")
-    LoggedCheetah.run("docker", "exec", "-i", @container, *args)
+    LoggedCheetah.run("docker", "exec", "--user=root", "-i", @container, *args)
   end
 
   def check_retrieve_files_dependencies
