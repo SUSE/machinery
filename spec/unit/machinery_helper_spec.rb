@@ -8,16 +8,29 @@ describe MachineryHelper do
   let(:dummy_system) { double(arch: "x86_64") }
 
   describe "#can_help?" do
-    it "can help if helper exists" do
-      helper = MachineryHelper.new(dummy_system)
-      helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+    context "on the same architecture" do
+      before(:each) do
+        allow(LocalSystem).to receive(:validate_architecture)
+      end
 
-      expect(helper.can_help?).to be(true)
+      it "returns true if helper exists" do
+        helper = MachineryHelper.new(dummy_system)
+        helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+
+        expect(helper.can_help?).to be(true)
+      end
+
+      it "returns false if helper does not exist" do
+        helper = MachineryHelper.new(dummy_system)
+        helper.local_helpers_path = given_directory
+
+        expect(helper.can_help?).to be(false)
+      end
     end
 
-    it "can not help if helper does not exist" do
-      helper = MachineryHelper.new(dummy_system)
-      helper.local_helpers_path = given_directory
+    it "returns false if the architectures don't match" do
+      helper = MachineryHelper.new(double(arch: "unknown_arch"))
+      helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
 
       expect(helper.can_help?).to be(false)
     end

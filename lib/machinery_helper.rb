@@ -22,10 +22,7 @@
 # The inspection checks, if a binary helper is available on the machine where
 # the inspection is started. It looks at the location
 #
-#    /usr/share/machinery/helpers/<arch>/machinery-helper
-#
-# where <arch> is the hardware architecture of the target system. Valid values
-# are x86_64, i586, s390x, and ppcle.
+# <machinery-installation-path>/machinery-helper/machinery-helper
 
 class MachineryHelper
   attr_accessor :local_helpers_path
@@ -34,17 +31,24 @@ class MachineryHelper
     @system = s
     @arch = @system.arch
 
-    @local_helpers_path = "/usr/share/machinery/helpers"
+    @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
   end
 
   def local_helper_path
-    File.join(@local_helpers_path, @arch, "machinery-helper")
+    File.join(@local_helpers_path, "machinery-helper")
   end
 
   # Returns true, if there is a helper binary matching the architecture of the
   # inspected system. Return false, if not.
   def can_help?
-    File.exist?(local_helper_path)
+    if File.exist?(local_helper_path)
+      LocalSystem.validate_architecture(@arch)
+      true
+    else
+      false
+    end
+  rescue Machinery::Errors::UnsupportedArchitecture
+    false
   end
 
   def inject_helper
