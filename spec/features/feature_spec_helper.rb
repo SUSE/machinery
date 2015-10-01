@@ -17,6 +17,17 @@
 
 require_relative "../../lib/machinery"
 
+# Suppress phantomjs-gem warning about phantomjs not being installed system-wide
+require "phantomjs"
+module Phantomjs
+  class Platform
+    def self.system_phantomjs_path
+      `which phantomjs 2> /dev/null`.delete("\n")
+    rescue
+    end
+  end
+end
+
 require "byebug"
 require "rspec-steps"
 require "capybara/rspec"
