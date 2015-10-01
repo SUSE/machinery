@@ -15,26 +15,18 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-source "https://rubygems.org"
+require_relative "../../lib/machinery"
 
-gemspec
+require "byebug"
+require "rspec-steps"
+require "capybara/rspec"
+require "capybara/poltergeist"
+require "phantomjs/poltergeist"
+require "tilt/haml"
 
-group :test do
-  gem "guard"
-  gem "guard-rspec"
-  gem "rspec", "~> 3.2.0"
-  gem "fakefs", ">= 0.6.7"
-  gem "given_filesystem", ">= 0.1.1"
-  gem "ruby-libvirt"
-  gem "codeclimate-test-reporter"
-  gem "rspec_junit_formatter"
-  gem "byebug"
-  gem "rodf", github: "mauromorales/rodf"
-  gem "rack-test"
-  gem "prawn"
-  gem "prawn-table"
-  gem "rspec-steps"
-  gem "capybara"
-  gem "poltergeist"
-  gem "phantomjs"
+Capybara.configure do |config|
+  Server.set :public_folder, File.join(Machinery::ROOT, "html")
+  config.app = Server
+
+  config.default_driver = :poltergeist
 end
