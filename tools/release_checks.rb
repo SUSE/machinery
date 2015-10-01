@@ -23,6 +23,7 @@ module ReleaseChecks
   def check
     check_tag
     check_jenkins_state("https://ci.opensuse.org/job/machinery-unit/lastStableBuild/api/json")
+    check_jenkins_state("https://ci.opensuse.org/job/machinery-helper/lastStableBuild/api/json")
   end
 
   private
