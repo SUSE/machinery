@@ -32,6 +32,7 @@ class MachineryHelper
     @arch = @system.arch
 
     @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
+    @remote_helper_path = File.join(Machinery::REMOTE_HELPER_PATH, "machinery-helper")
   end
 
   def local_helper_path
@@ -52,19 +53,23 @@ class MachineryHelper
   end
 
   def inject_helper
-    @system.inject_file(local_helper_path, Machinery::REMOTE_HELPERS_PATH)
+    @system.inject_file(local_helper_path, Machinery::REMOTE_HELPER_PATH)
   end
 
   def run_helper(scope)
-    json = @system.run_command(
-      File.join(
-        Machinery::REMOTE_HELPERS_PATH, "machinery-helper"
-      ), stdout: :capture, stderr: STDERR
-    )
+    json = @system.run_command(@remote_helper_path, stdout: :capture, stderr: STDERR)
     scope.set_attributes(JSON.parse(json))
   end
 
   def remove_helper
-    @system.remove_file(File.join(Machinery::REMOTE_HELPERS_PATH, "machinery-helper"))
+    @system.remove_file(@remote_helper_path)
+  end
+
+  def helper_version_supported?
+    output = @system.run_command(@remote_helper_path, "--version", stdout: :capture).chomp
+
+    version = output[/^Version: ([\w\.]+)$/, 1]
+
+    version == Machinery::VERSION
   end
 end

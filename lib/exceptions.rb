@@ -139,5 +139,6 @@ module Machinery
     class InjectFileFailed < MachineryError; end
     class UnexpectedInputData < MachineryError; end
     class ComposeServiceLink < MachineryError; end
+    class UnsupportedHelperVersion < MachineryError; end
   end
 end

@@ -264,6 +264,13 @@ class UnmanagedFilesInspector < Inspector
   def run_helper_inspection(helper, filter, do_extract, file_store_tmp, file_store_final, scope)
     begin
       helper.inject_helper
+      if !helper.helper_version_supported?
+        raise Machinery::Errors::UnsupportedHelperVersion.new(
+          "Error: machinery-helper is not compatible with this Machinery version." \
+            "\nTry to reinstall the package or gem to fix the issue."
+        )
+      end
+
       helper.run_helper(scope)
 
       scope.files.delete_if { |f| filter.matches?(f.name) }

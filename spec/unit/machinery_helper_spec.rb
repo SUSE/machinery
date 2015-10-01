@@ -92,4 +92,32 @@ describe MachineryHelper do
       expect(scope.files.count).to eq(2)
     end
   end
+
+  describe "#helper_version_supported?" do
+    let(:remote_helper) { File.join(Machinery::REMOTE_HELPER_PATH, "machinery-helper") }
+
+    it "returns true if the machinery version equals the helper version" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper, "--version", stdout: :capture
+      ).and_return("Version: #{Machinery::VERSION}")
+      expect(helper.helper_version_supported?).to be(true)
+    end
+
+    it "returns false if the machinery version does not equal the helper version" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper, "--version", stdout: :capture
+      ).and_return("Version: 0.0.1")
+      expect(helper.helper_version_supported?).to be(false)
+    end
+
+    it "returns false on empty output of an old machinery-helper" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper, "--version", stdout: :capture
+      ).and_return("")
+      expect(helper.helper_version_supported?).to be(false)
+    end
+  end
 end

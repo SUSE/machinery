@@ -97,7 +97,7 @@ class DockerSystem < System
     begin
       run_command(
         File.join(
-          Machinery::REMOTE_HELPERS_PATH, "machinery-helper"
+          Machinery::REMOTE_HELPER_PATH, "machinery-helper"
         ), "tar", "--create", "--gzip", "--null", "--files-from=-",
         *exclude.flat_map { |f| ["--exclude", f] },
         stdout: out,
