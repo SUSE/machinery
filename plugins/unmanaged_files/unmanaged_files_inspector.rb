@@ -236,7 +236,7 @@ class UnmanagedFilesInspector < Inspector
     end
 
     helper = MachineryHelper.new(@system)
-    if helper_usable?(helper, options)
+    if helper_usable?(helper)
       run_helper_inspection(helper, file_filter, do_extract, file_store_tmp, file_store_final,
         scope)
     else
@@ -244,13 +244,13 @@ class UnmanagedFilesInspector < Inspector
     end
   end
 
-  def helper_usable?(helper, options)
+  def helper_usable?(helper)
     if !helper.can_help?
       Machinery::Ui.puts(
         "Note: Using traditional inspection because there is no helper binary for" \
         " architecture '#{@system.arch}' available."
       )
-    elsif options[:remote_user] && options[:remote_user] != "root"
+    elsif @system.respond_to?(:remote_user) && @system.remote_user != "root"
       Machinery::Ui.puts(
         "Note: Using traditional inspection because only 'root' is supported as remote user."
       )
