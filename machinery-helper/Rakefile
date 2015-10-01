@@ -15,14 +15,37 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-task :default => "build_helper"
+task :default => "check_git_head"
+
+dir = File.expand_path(File.dirname(__FILE__))
+
+go_files = Dir.glob(File.join(dir, "*.go"))
+
+task :check_git_head do
+  git_head_file = File.join(dir, ".git_head")
+  current_head = `git rev-parse HEAD`.chomp if system("which git > /dev/null 2>&1")
+  old_head = File.read(git_head_file) if File.exist?(git_head_file)
+  if current_head != old_head
+    Rake::Task["build_helper"].invoke
+    File.write(git_head_file, current_head)
+  else
+    Rake::Task["machinery-helper"].invoke
+  end
+end
+
+file "machinery-helper" => go_files do |t|
+  Rake::Task["build_helper"].invoke
+end
 
 desc "Build machinery-helper with go"
 task :build_helper do
   if system("which go > /dev/null 2>&1")
     arch = `uname -p`.chomp
     if ["x86_64"].include?(arch)
-      system("go build")
+      Dir.chdir(dir) do
+        puts("Building machinery-helper binary.")
+        system("go build")
+      end
     else
       STDERR.puts(
         "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
