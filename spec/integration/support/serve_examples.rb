@@ -88,7 +88,7 @@ shared_examples "serve html" do
     end
 
     it "makes sure a port can't be used twice" do
-      cmd = "#{machinery_command} serve --ip 127.0.0.1 --port 5000 opensuse131"
+      cmd = "#{machinery_command} serve --port 5000 opensuse131"
       Thread.new do
         @machinery.run_command(cmd)
       end
@@ -110,20 +110,6 @@ shared_examples "serve html" do
       end
 
       expect(@machinery.run_command(cmd)).to fail.and have_stderr(/Port 5000 is already in use.\n/)
-    end
-
-    it "checks for the correctness of hostnames" do
-      cmd = "#{machinery_command} serve --ip blabla --port 5000 opensuse131"
-      expect(@machinery.run_command(cmd)).to fail.and \
-        have_stderr(/Cannot start server on blabla\:5000\./)
-    end
-
-    it "checks if an IP-Address can be used for the web server binding" do
-      # use the suse.com ip address for test
-      cmd = "#{machinery_command} serve --ip 130.57.5.70 --port 5000 opensuse131"
-      expect(@machinery.run_command(cmd)).to fail.and have_stderr(
-        /The IP\-Address 130\.57\.5\.70 is not available\. Please choose a different IP\-Address\./
-      )
     end
   end
 end
