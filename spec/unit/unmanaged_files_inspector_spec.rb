@@ -438,10 +438,11 @@ describe UnmanagedFilesInspector do
       let(:helper) { MachineryHelper.new(description) }
 
       it "doesn't use the helper when a remote user != roote is used" do
+        expect(system).to receive(:remote_user).and_return("machinery)")
         expected = "Using traditional inspection because only 'root' is supported as remote user"
         allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
 
-        subject.helper_usable?(helper, remote_user: "machinery")
+        subject.helper_usable?(helper)
 
         expect(captured_machinery_output).to include(expected)
       end
