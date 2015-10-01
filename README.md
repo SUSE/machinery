@@ -24,14 +24,18 @@ For more information, [visit our website](http://machinery-project.org/).
 
 ## Installation
 
+The easiest way to install Machinery is as an RPM from our
+[homepage](http://machinery-project.org) with the one-click-installer for SUSE
+systems.
+
+Please refer to our
+[Quick Start Guide](https://github.com/SUSE/machinery/wiki/Quick-Start-Guide) if you want
+to know, how you can install Machinery on SUSE or Non-SUSE Distributions.
+
 Machinery is tested and supported on [openSUSE13.1](http://en.opensuse.org/Portal:13.1)
 and SLES 12. It is also supported on [openSUSE13.2](http://en.opensuse.org/Portal:13.2).
-It will not run on other openSUSE versions, Linux distributions, or
-operating systems.
+It will run on other openSUSE versions and Linux distributions, but there is less testing there. 
 
-The easiest way to install Machinery is as an RPM from our
-[homepage](http://machinery-project.org) with
-the one-click-installer.
 
 ## Usage
 
