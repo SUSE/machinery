@@ -4,3 +4,6 @@ ruby:
 
 javascript:
   enabled: false
+
+go:
+  enabled: true
