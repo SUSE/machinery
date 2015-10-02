@@ -158,10 +158,22 @@ describe LocalSystem do
     end
   end
 
+  describe ".matching_architecture?" do
+    it "returns false if the architecture does not match" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("different_arch")
+      expect(LocalSystem.matching_architecture?("x86_64")).to be(false)
+    end
+
+    it "returns true if architecture match" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+      expect(LocalSystem.matching_architecture?("x86_64")).to be(true)
+    end
+  end
+
   describe ".validate_architecture" do
     it "raises UnsupportedArchitecture if the architecture does not match" do
       allow_any_instance_of(Os).to receive(:architecture).and_return("different_arch")
-      expect{ LocalSystem.validate_architecture("x86_64") }.to raise_error(
+      expect { LocalSystem.validate_architecture("x86_64") }.to raise_error(
         Machinery::Errors::UnsupportedArchitecture,
         /This operation is not supported on architecture 'different_arch'/
       )
@@ -169,7 +181,7 @@ describe LocalSystem do
 
     it "does not raise if architecture match" do
       allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
-      expect{ LocalSystem.validate_architecture("x86_64") }.not_to raise_error
+      expect { LocalSystem.validate_architecture("x86_64") }.not_to raise_error
     end
   end
 
