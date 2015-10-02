@@ -30,10 +30,13 @@ class DockerSystem < System
 
   def start
     @container = LoggedCheetah.run("docker", "run", "-id", @image, "bash", stdout: :capture).chomp
+  rescue Cheetah::ExecutionFailed => e
+    raise Machinery::Errors::MachineryError, "Container could not be started." \
+      " The error message was:\n" + e.stderr
   end
 
   def stop
-    LoggedCheetah.run("docker", "rm", "-f", @container)
+    LoggedCheetah.run("docker", "rm", "-f", @container) if @container
   end
 
   def run_command(*args)
