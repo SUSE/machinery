@@ -33,7 +33,7 @@ class MachineryHelper
     @arch = @system.arch
 
     @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
-    @remote_helper_path = File.join(Machinery::REMOTE_HELPER_PATH, "machinery-helper")
+    @remote_helper_path = File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")
   end
 
   def local_helper_path
@@ -47,7 +47,7 @@ class MachineryHelper
   end
 
   def inject_helper
-    @system.inject_file(local_helper_path, Machinery::REMOTE_HELPER_PATH)
+    @system.inject_file(local_helper_path, Machinery::HELPER_REMOTE_PATH)
   end
 
   def run_helper(scope)

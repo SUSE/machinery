@@ -21,5 +21,5 @@ module Machinery
   DEFAULT_LOG_FILE = File.join(DEFAULT_CONFIG_DIR, "machinery.log")
   DEFAULT_CONFIG_FILE = File.join(DEFAULT_CONFIG_DIR, "machinery.config")
   IMAGE_META_DATA_FILE = "machinery.meta"
-  REMOTE_HELPER_PATH = "/root"
+  HELPER_REMOTE_PATH = "/root"
 end

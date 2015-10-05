@@ -95,7 +95,7 @@ describe MachineryHelper do
 
   describe "#has_compatible_version?" do
     let(:commit_id) { "b5ebdef2ccc0398113e4d88e04083a8369394f12" }
-    let(:remote_helper) { File.join(Machinery::REMOTE_HELPER_PATH, "machinery-helper") }
+    let(:remote_helper) { File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper") }
 
     before(:each) do
       allow(File).to receive(:read).with(
