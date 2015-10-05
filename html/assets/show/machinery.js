@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  // Set up filter
+  $(".filterable").searcher({
+    inputSelector: "#filter"
+  });
+
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
   $("#content_container, #angular-content").css("margin-top", header_height);
@@ -67,10 +72,7 @@ $(document).ready(function () {
     }
   });
   $('.inspection-details-popover .close').click(function() { $(".inspection_details").popover("hide") });
-});
 
-
-setupDynamicContent = function() {
   // Set up file download links
   $(".file-download").click(function() {
     $("#file-modal-file-content").hide();
@@ -154,4 +156,4 @@ setupDynamicContent = function() {
       $this.attr('title', $this.text());
     }
   });
-};
+});

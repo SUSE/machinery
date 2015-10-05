@@ -1,0 +1,17 @@
+- meta = @description[scope].meta
+.row
+  .col-xs-1
+    %img.over.scope_logo_big{ "data-content" => "<p>#{scope_help(scope)}</p>",
+      "data-toggle" => "popover",
+      "src" => "assets/logo-#{scope.tr("_", "-")}.png",
+      "title" => "",
+      "data-original-title" => title,
+      "style" => "top: 125px;" }
+    %span.toggle{ "title" => "Collapse/Expand" }
+  .col-xs-11
+    %h2
+      = title
+      &nbsp;
+      .scope-summary
+        = count
+        (inspected host: '#{meta.hostname}', at: #{DateTime.parse(meta.modified).strftime("%F %T")})

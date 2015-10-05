@@ -17,6 +17,23 @@
 
 class Server < Sinatra::Base
   module Helpers
+    def render_partial(partial, locals)
+      source = File.read(File.join(Machinery::ROOT, "html/partials/#{partial}.html.haml"))
+      haml source, locals: locals
+    end
+
+    def render_scope(scope)
+      render_partial scope, scope => @description[scope]
+    end
+
+    def scope_meta_info(scope)
+      return "" if !@description[scope]
+
+      " (" \
+      "inspected host: '#{@description[scope].meta.hostname}', " \
+      "at: #{DateTime.parse(@description[scope].meta.modified).strftime("%F %T")})"
+    end
+
     def scope_help(scope)
       text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
       Kramdown::Document.new(text).to_html
@@ -175,7 +192,8 @@ class Server < Sinatra::Base
   end
 
   get "/:id" do
-    haml File.read(File.join(Machinery::ROOT, "html/index.html.haml")),
-      locals: { description_name: params[:id] }
+    @description = SystemDescription.load(params[:id], settings.system_description_store)
+
+    haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
   end
 end

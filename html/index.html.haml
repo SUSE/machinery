@@ -1,405 +1,38 @@
 !!!
-%html{"ng-app" => "machinery-show"}
+%html
   %head
     %title
-      = description_name + " - Machinery System Description"
-    %meta{:charset => 'utf-8'}/
-    %link{:href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css"}/
-    %link{:href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css"}/
-    %script{:src => "assets/angular.min.js"}
-    %script{:src => "assets/angular-sanitize.min.js"}
-    %script{:src => "assets/show/machinery-show.js"}
-    %script{:src => "assets/jquery-2.1.1.min.js"}
-    %script{:src => "assets/transition.js"}
-    %script{:src => "assets/collapse.js"}
-    %script{:src => "assets/modal.js"}
+      = @description.name + " - Machinery System Description"
+    %meta{ :charset => 'utf-8' }
+    %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
+    %script{ :src => "assets/jquery-2.1.1.min.js" }
+    %script{ :src => "assets/transition.js" }
+    %script{ :src => "assets/collapse.js" }
+    %script{ :src => "assets/modal.js" }
+    %script{ :src => "assets/jquery.searcher.min.js" }
+    %script{ :src => "assets/show/machinery.js" }
+    %script{ :src => "assets/bootstrap-tooltip.js" }
+    %script{ :src => "assets/bootstrap-popover.js" }
 
-    %script#inspection_details_template{:type => "text/ng-template"}
-      #inspection_details.hidden
-        #filters
-          .row
-            .col-xs-1
-            .col-xs-11
-              %h3 Filters used during Inspection
-
-          .row
-            .col-xs-1
-            .col-xs-11
-              %ul{"ng-show" => "description.meta.filters.inspect.length"}
-                %li.filter{{"ng-repeat" => "filter in description.meta.filters.inspect"}}
-                  {{filter}}
-
-              %p{"ng-hide" => "description.meta.filters.inspect.length"}
-                No filters were used.
-
-
-    %script#scope_os.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.os"}
-        %a.scope_anchor{:id => "os"}
-        #os_container.scope
-          .row
-            .col-xs-1
-              %img.scope_logo_big{:src => "assets/logo-os.png", :class=>"over", :"data-toggle"=>"popover", :title=>"Operating System", :"data-content"=>"#{scope_help('os')}"}/
-              %span.toggle{:title => "Collapse/Expand"}
-            .col-xs-11
-              %h2
-                Operating System
-                .scope-summary
-                  {{meta_info.os}}
-            .col-xs-1
-            .col-xs-3.scope_content.collapse.in
-              %table.table.table-striped.table-condensed
-                %tr
-                  %th Name
-                  %td {{description.os.name}}
-                %tr
-                  %th Version
-                  %td {{description.os.version}}
-                %tr
-                  %th Architecture
-                  %td {{description.os.architecture}}
-
-    %script#scope_packages.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.packages"}
-        %a.scope_anchor{:id => "packages"}
-        #packages_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('packages')}'", |
-            :logo => "'assets/logo-packages.png'", |
-            :title => "'Packages'", |
-            :meta => "description.meta.packages", |
-            :singular => "'package'", |
-            :plural => "'packages'", |
-            :count => "description.packages.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Version
-                    %th Release
-                    %th Arch
-                    %th Vendor
-                    %th Checksum
-                %tbody
-                  %tr{"ng-repeat" => "package in description.packages | filter:query"}
-                    %td {{package.name}}
-                    %td {{package.version}}
-                    %td {{package.release}}
-                    %td {{package.arch}}
-                    %td {{package.vendor}}
-                    %td {{package.checksum}}
-
-    %script#scope_patterns.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.patterns"}
-        %a.scope_anchor{:id => "patterns"}
-        #patterns_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('patterns')}'", |
-            :logo => "'assets/logo-patterns.png'", |
-            :title => "'Patterns'", |
-            :meta => "description.meta.patterns", |
-            :singular => "'pattern'", |
-            :plural => "'patterns'", |
-            :count => "description.patterns.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Version
-                    %th Release
-                %tbody
-                  %tr{"ng-repeat" => "pattern in description.patterns | filter:query"}
-                    %td {{pattern.name}}
-                    %td {{pattern.version}}
-                    %td {{pattern.release}}
-
-    %script#scope_repositories.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.repositories"}
-        %a.scope_anchor{:id => "repositories"}
-        #repositories_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('repositories')}'", |
-            :logo => "'assets/logo-repositories.png'", |
-            :title => "'Repositories'", |
-            :meta => "description.meta.repositories", |
-            :singular => "'repository'", |
-            :plural => "'repositories'", |
-            :count => "description.repositories.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th Alias
-                    %th Type
-                    %th URL
-                    %th Enabled
-                    %th Autorefresh
-                    %th GPG Check
-                    %th Priority
-                %tbody
-                  %tr{"ng-repeat" => "repo in description.repositories | filter:query"}
-                    %td {{repo.name}}
-                    %td {{repo.alias}}
-                    %td {{repo.type}}
-                    %td
-                      %a{:href => "{{url}}" } {{repo.url}}
-                    %td {{repo.enabled}}
-                    %td {{repo.autorefresh}}
-                    %td {{repo.gpgcheck}}
-                    %td {{repo.priority}}
-
-    %script#scope_users{:type => "text/ng-template"}
-      %div{"ng-show" => "description.users"}
-        %a.scope_anchor{:id => "users"}
-        #users_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('users')}'", |
-            :logo => "'assets/logo-users.png'", |
-            :title => "'Users'", |
-            :meta => "description.meta.users", |
-            :singular => "'user'", |
-            :plural => "'users'", |
-            :count => "description.users.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th UID
-                    %th GID
-                    %th Comment
-                    %th Home
-                    %th Shell
-                %tbody
-                  %tr{"ng-repeat" => "user in description.users | filter:query"}
-                    %td {{user.name}}
-                    %td {{user.uid}}
-                    %td {{user.gid}}
-                    %td {{user.comment}}
-                    %td {{user.home}}
-                    %td {{user.shell}}
-
-    %script#scope_groups{:type => "text/ng-template"}
-      %div{"ng-show" => "description.groups"}
-        %a.scope_anchor{:id => "groups"}
-        #groups_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('groups')}'", |
-            :logo => "'assets/logo-groups.png'", |
-            :title => "'Groups'", |
-            :meta => "description.meta.groups", |
-            :singular => "'group'", |
-            :plural => "'groups'", |
-            :count => "description.groups.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th GID
-                    %th Password
-                    %th Users
-                %tbody
-                  %tr{"ng-repeat" => "group in description.groups | filter:query"}
-                    %td {{group.name}}
-                    %td {{group.gid}}
-                    %td {{group.password}}
-                    %td {{group.users.join(",")}}
-
-    %script#scope_services.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.services.services"}
-        %a.scope_anchor{:id => "services"}
-        #services_container.scope
-          %scope-header{ |
-            :summary => "'#{scope_help('services')}'", |
-            :logo => "'assets/logo-services.png'", |
-            :title => "'Services'", |
-            :meta => "description.meta.services", |
-            :singular => "'service'", |
-            :plural => "'services'", |
-            :count => "description.services.services.length", |
-            "additional-summary" => "'Init System: '+description.services.init_system+', '" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed
-                %thead
-                  %tr
-                    %th Name
-                    %th State
-                %tbody
-                  %tr{"ng-repeat" => "service in description.services.services | filter:query"}
-                    %td {{service.name}}
-                    %td{:class=>"{{description.services.init_system}}_{{service.state}}"}
-                      {{service.state}}
-
-    %script#scope_config_files.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.config_files.files"}
-        %a.scope_anchor{:id => "config_files"}
-        #config_files_container.scope{"data-scope" => "config_files"}
-          %scope-header{ |
-            :summary => "'#{scope_help('config_files')}'", |
-            :logo => "'assets/logo-config-files.png'", |
-            :title => "'Config Files'", |
-            :meta => "description.meta.config_files", |
-            :singular => "'file'", |
-            :plural => "'files'", |
-            :count => "description.config_files.files.length" |
-          } |
-          .row.scope_content.collapse.in
-            .diff{"ng-repeat" => "file in description.config_files.files", :style => "display: none", "data-config-file-diff" => "{{file.diff.file}}"}
-              %span.diff-summary
-                {{file.diff.additions}} additions & {{file.diff.deletions}} deletions
-              %table.diff
-                %tr{"ng-repeat" => "line in file.diff.lines", "ng-class" => "{'addition': line.type == 'addition', 'deletion': line.type == 'deletion', 'header': line.type == 'header', 'common': line.type == 'common'}"}
-                  %td.active.linenumber {{line.original_line_number}}
-                  %td.linenumber {{line.new_line_number}}
-                  %td{"ng-bind-html" => "line.content"}
-                    {{line.content}}
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th Changes
-                    %th Mode
-                    %th User
-                    %th Group
-                %tbody
-                  %tr{"ng-repeat" => "file in description.config_files.files | filter:query"}
-                    %td
-                      %span{"ng-switch" => true, "on" => "file.downloadable"}
-                        %a.file-download{"ng-switch-when" => "true", "href" => "#"}
-                          {{file.name}}
-                        %span{"ng-switch-default" => true}
-                          {{file.name}}
-                      %a.diff-toggle{"ng-show" => "file.diff", "data-config-file" => "{{file.name}}", "data-toggle" => "popover"}
-                        Show diff
-                    %td {{file.package_name}}
-                    %td {{file.package_version}}
-                    %td
-                      {{file.changes.join(",")}}
-                      %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
-                    %td {{file.mode}}
-                    %td {{file.user}}
-                    %td {{file.group}}
-
-    %script#scope_changed_managed_files.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.changed_managed_files.files"}
-        %a.scope_anchor{:id => "changed_managed_files"}
-        #changed_managed_files_container.scope{"data-scope" => "changed_managed_files"}
-          %scope-header{ |
-            :summary => "'#{scope_help('changed_managed_files')}'", |
-            :logo => "'assets/logo-changed-managed-files.png'", |
-            :title => "'Changed Managed Files'", |
-            :meta => "description.meta.changed_managed_files", |
-            :singular => "'file'", |
-            :plural => "'files'", |
-            :count => "description.changed_managed_files.files.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Package Name
-                    %th Package Version
-                    %th Changes
-                    %th Mode
-                    %th User
-                    %th Group
-                %tbody
-                  %tr{"ng-repeat" => "file in description.changed_managed_files.files | filter:query"}
-                    %td{"ng-switch" => true, "on" => "file.downloadable"}
-                      %a.file-download{"ng-switch-when" => "true", "href" => "#"}
-                        {{file.name}}
-                      %span{"ng-switch-default" => true}
-                        {{file.name}}
-                    %td {{file.package_name}}
-                    %td {{file.package_version}}
-                    %td
-                      {{file.changes.join(",")}}
-                      %span{"ng-show" => "file.error_message", :title => "{{file.error_message}}"} (details)
-                    %td {{file.mode}}
-                    %td {{file.user}}
-                    %td {{file.group}}
-
-    %script#scope_unmanaged_files.partial{:type => "text/ng-template"}
-      %div{"ng-show" => "description.unmanaged_files.files"}
-        %a.scope_anchor{:id => "unmanaged_files"}
-        #unmanaged_files_container.scope{"data-scope" => "unmanaged_files"}
-          %scope-header{ |
-            :summary => "'#{scope_help('unmanaged_files')}'", |
-            :logo => "'assets/logo-unmanaged-files.png'", |
-            :title => "'Unmanaged Files'", |
-            :meta => "description.meta.unmanaged_files", |
-            :singular => "'file'", |
-            :plural => "'files'", |
-            :count => "description.unmanaged_files.files.length" |
-          } |
-          .row.scope_content.collapse.in
-            .col-xs-1
-            .col-xs-11
-              %table.table.table-striped.table-hover.table-condensed.files-table
-                %thead
-                  %tr
-                    %th Name
-                    %th Type
-                %tbody
-                  %tr{"ng-repeat" => "file in description.unmanaged_files.files | filter:query"}
-                    %td{"ng-switch" => true, "on" => "file.downloadable"}
-                      %a.file-download{"ng-switch-when" => "true", "href" => "#"}
-                        {{file.name}}
-                      %span{"ng-switch-default" => true}
-                        {{file.name}}
-                    %td {{file.type}}
-
-    %script{:src => "assets/show/machinery.js"}
-    %script{:src => "assets/bootstrap-tooltip.js"}
-    %script{:src => "assets/bootstrap-popover.js"}
-
-  %body{"data-description" => description_name}
+  %body{ "data-description" => @description.name }
     #file-modal.modal.fade
       .modal-dialog.modal-lg
         .modal-content
           .modal-header
-            %button.close{"type" => "button", "data-dismiss" => "modal"}
+            %button.close{ "type" => "button", "data-dismiss" => "modal" }
               &times;
             %h4#file-modal-title
           .modal-body
-            %textarea#file-modal-file-content{"readonly" => "true"}
-            #file-modal-error{"style" => "display: none"}
+            %textarea#file-modal-file-content{ "readonly" => "true" }
+            #file-modal-error{ "style" => "display: none" }
           .modal-footer
-            %a#file-modal-download-link.btn.btn-success{"target" => "_blank"}
+            %a.btn.btn-success#file-modal-download-link{ "target" => "_blank" }
               Download
-            %button.btn.btn-primary{"type" => "button", "data-dismiss" => "modal"}
+            %button.btn.btn-primary{ "type" => "button", "data-dismiss" => "modal" }
               Close
 
-    #file_popover{:style => "display: none"}
+    #file_popover{ :style => "display: none" }
       .header
         %h3.name
       .body
@@ -411,59 +44,89 @@
           .col-xs-1
           .col-xs-10
             %h1
-              System '#{description_name}'
+              System '#{@description.name}'
 
-            %a.inspection_details{:href => "#", "data-toggle" => "popover"} (inspection details)
+            %a.inspection_details{ :href => "#", "data-toggle" => "popover" } (inspection details)
         .row
           .col-xs-1
-            %a#expand-all{:href => "#", :style => "display: none"}
+            %a#expand-all{ :href => "#", :style => "display: none" }
               Expand all
-            %a#collapse-all{:href => "#"}
+            %a#collapse-all{ :href => "#" }
               Collapse all
           .col-xs-9
             %small.pull-right.pad-top
               created by
-              %a{:href => "http://machinery-project.org", :target => "_blank"}
+              %a{ :href => "http://machinery-project.org", :target => "_blank" }
                 Machinery
             .filter-input.col-md-3
-              %input#filter{"ng-model" => "query", :placeholder => "Type To Filter"}/
-              %a{:href => "#"}
-                %img{:src => "assets/reset.png", :titel => "Reset Filter", "ng-click" => "query = ''" }
+              %input#filter{ :placeholder => "Type To Filter" }
+              %a{ :href => "#" }
+                %img{ :src => "assets/reset.png", :titel => "Reset Filter",
+                  "ng-click" => "query = ''" }
 
             %span.scope-navigation
               Scopes:
-              %a{:href => "#os", :title => "Operating System"}
-                %img{:src => "assets/logo-os-small.png", :title=>"Operating System", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('os')}"}/
-              %a{:href => "#packages", :title => "Packages"}
-                %img{:src => "assets/logo-packages-small.png", :title => "Packages", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('packages')}"}/
-              %a{:href => "#patterns", :title => "Patterns"}
-                %img{:src => "assets/logo-patterns-small.png", :title => "Patterns", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('patterns')}"}/
-              %a{:href => "#repositories", :title => "Repositories"}
-                %img{:src => "assets/logo-repositories-small.png", :title => "Repositories", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('repositories')}"}/
-              %a{:href => "#users", :title => "Users"}
-                %img{:src => "assets/logo-users-small.png", :title => "Users", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('users')}"}/
-              %a{:href => "#groups", :title => "Groups"}
-                %img{:src => "assets/logo-groups-small.png", :title => "Groups", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('groups')}"}/
-              %a{:href => "#services", :title => "Services"}
-                %img{:src => "assets/logo-services-small.png", :title => "Services", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('services')}"}/
-              %a{:href => "#config_files", :title => "Config Files"}
-                %img{:src => "assets/logo-config-files-small.png", :title => "Config Files", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('config_files')}"}/
-              %a{:href => "#changed_managed_files", :title => "Changed Managed Files"}
-                %img{:src => "assets/logo-changed-managed-files-small.png", :title => "Changed Managed Files", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('changed_managed_files')}"}/
-              %a{:href => "#unmanaged_files", :title => "Unmanaged Files"}
-                %img{:src => "assets/logo-unmanaged-files-small.png", :title => "Unmanaged Files", :class=>"over", :"data-toggle"=>"popover", :"data-content"=>"#{scope_help('unmanaged_files')}"}/
+              %a{ :href => "#os", :title => "Operating System" }
+                %img{ :src => "assets/logo-os-small.png", :title=>"Operating System",
+                  "data-toggle"=>"popover", "data-content" => scope_help('os') }
+              %a{ :href => "#packages", :title => "Packages" }
+                %img{ :src => "assets/logo-packages-small.png", :title => "Packages",
+                  "data-toggle"=>"popover", "data-content" => scope_help('packages') }
+              %a{ :href => "#patterns", :title => "Patterns" }
+                %img{ :src => "assets/logo-patterns-small.png", :title => "Patterns",
+                  "data-toggle"=>"popover", "data-content" => scope_help('patterns') }
+              %a{ :href => "#repositories", :title => "Repositories" }
+                %img{ :src => "assets/logo-repositories-small.png", :title => "Repositories",
+                  "data-toggle"=>"popover", "data-content" => scope_help('repositories') }
+              %a{ :href => "#users", :title => "Users" }
+                %img{ :src => "assets/logo-users-small.png", :title => "Users",
+                  "data-toggle"=>"popover", "data-content" => scope_help('users') }
+              %a{ :href => "#groups", :title => "Groups" }
+                %img{ :src => "assets/logo-groups-small.png", :title => "Groups",
+                  "data-toggle"=>"popover", "data-content" => scope_help('groups') }
+              %a{ :href => "#services", :title => "Services" }
+                %img{ :src => "assets/logo-services-small.png", :title => "Services",
+                  "data-toggle"=>"popover", "data-content" => scope_help('services') }
+              %a{ :href => "#config_files", :title => "Config Files" }
+                %img{ :src => "assets/logo-config-files-small.png", :title => "Config Files",
+                  "data-toggle"=>"popover", "data-content" => scope_help('config_files') }
+              %a{ :href => "#changed_managed_files", :title => "Changed Managed Files" }
+                %img{ :src => "assets/logo-changed-managed-files-small.png",
+                 :title => "Changed Managed Files", "data-toggle" => "popover",
+                 "data-content" => scope_help('changed_managed_files') }
+              %a{ :href => "#unmanaged_files", :title => "Unmanaged Files" }
+                %img{ :src => "assets/logo-unmanaged-files-small.png", :title => "Unmanaged Files",
+                  :"data-toggle" => "popover", "data-content" => scope_help('unmanaged_files') }
 
 
-      #content_container{"ng-controller" => "showController"}
-        %div{"src" => "'scope_os'", "ng-include" => true}
-        %div{"src" => "'scope_packages'", "ng-include" => true}
-        %div{"src" => "'scope_patterns'", "ng-include" => true}
-        %div{"src" => "'scope_repositories'", "ng-include" => true}
-        %div{"src" => "'scope_users'", "ng-include" => true}
-        %div{"src" => "'scope_groups'", "ng-include" => true}
-        %div{"src" => "'scope_services'", "ng-include" => true}
-        %div{"src" => "'scope_config_files'", "ng-include" => true}
-        %div{"src" => "'scope_changed_managed_files'", "ng-include" => true}
-        %div{"src" => "'scope_unmanaged_files'", "ng-include" => true}
+      #content_container{ "ng-controller" => "showController" }
 
-        %div{"src" => "'inspection_details_template'", "ng-include" => true}
+        = render_scope "os"
+        = render_scope "packages"
+        = render_scope "patterns"
+        = render_scope "repositories"
+        = render_scope "users"
+        = render_scope "groups"
+        = render_scope "services"
+        = render_scope "config_files"
+        = render_scope "changed_managed_files"
+        = render_scope "unmanaged_files"
+
+        .hidden#inspection_details
+          #filters
+            .row
+              .col-xs-1
+              .col-xs-11
+                %h3 Filters used during Inspection
+
+            .row
+              .col-xs-1
+              .col-xs-11
+                - if !@description.filter_definitions("inspect").empty?
+                  %ul
+                    - @description.filter_definitions("inspect").each do |filter|
+                      %li.filter
+                        = filter
+
+                - else
+                  %p No filters were used.

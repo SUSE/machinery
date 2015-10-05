@@ -1,0 +1,23 @@
+- if services
+  %div
+    %a.scope_anchor{ id: "services" }
+    .scope#services_container
+      - count = services.services.length
+      = render_partial "scope_header",
+        :scope => "services",
+        :title => "Services",
+        :count => "#{count} #{Machinery.pluralize(count, "service")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th State
+            %tbody
+              - services.services.each do |service|
+                %tr
+                  %td= service.name
+                  %td{ class: "#{services.init_system}_#{service.state}" }
+                    = service.state

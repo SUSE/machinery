@@ -1,0 +1,25 @@
+- if groups
+  %div
+    %a.scope_anchor{ id: "groups" }
+    .scope#groups_container
+      = render_partial "scope_header",
+        :scope => "groups",
+        :title => "Groups",
+        :count => "#{groups.length} #{Machinery.pluralize(groups.length, "group")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th GID
+                %th Password
+                %th Users
+            %tbody
+              - groups.each do |group|
+                %tr
+                  %td= group.name
+                  %td= group.gid
+                  %td= group.password
+                  %td= group.users.join(",")

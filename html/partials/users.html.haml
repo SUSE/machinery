@@ -1,0 +1,29 @@
+- if users
+  %div
+    %a.scope_anchor{ id: "users" }
+    .scope#users_container
+      = render_partial "scope_header",
+        :scope => "users",
+        :title => "Users",
+        :count => "#{users.length} #{Machinery.pluralize(users.length, "user")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th UID
+                %th GID
+                %th Comment
+                %th Home
+                %th Shell
+            %tbody
+              - users.each do |user|
+                %tr
+                  %td= user.name
+                  %td= user.uid
+                  %td= user.gid
+                  %td= user.comment
+                  %td= user.home
+                  %td= user.shell
