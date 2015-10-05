@@ -15,46 +15,109 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-task :default => "check_git_head"
+task :default => "try_build"
 
-dir = File.expand_path(File.dirname(__FILE__))
+HELPER_DIR = File.expand_path(File.dirname(__FILE__))
+GIT_REVISION_FILE = File.join(HELPER_DIR, "..", ".git_revision")
 
-go_files = Dir.glob(File.join(dir, "*.go"))
+def write_go_version_file
+  file = <<-EOF
+// This is a generated file and shouldn't be changed
 
-task :check_git_head do
-  git_head_file = File.join(dir, ".git_head")
-  current_head = `git rev-parse HEAD`.chomp if system("which git > /dev/null 2>&1")
-  old_head = File.read(git_head_file) if File.exist?(git_head_file)
-  if current_head != old_head
-    Rake::Task["build_helper"].invoke
-    File.write(git_head_file, current_head)
-  else
-    Rake::Task["machinery-helper"].invoke
+package main
+
+const VERSION = "#{git_revision}"
+  EOF
+  File.write(File.join(HELPER_DIR, "version.go"), file)
+end
+
+def build_machinery_helper
+  FileUtils.rm_f(File.join(HELPER_DIR, "machinery-helper"))
+  Dir.chdir(HELPER_DIR) do
+    puts("Building machinery-helper binary.")
+    if !system("go build")
+      STDERR.puts("Warning: Building of the machinery-helper failed!")
+      false
+    else
+      true
+    end
   end
 end
 
-file "machinery-helper" => go_files do |t|
-  Rake::Task["build_helper"].invoke
-end
-
-desc "Build machinery-helper with go"
-task :build_helper do
-  if system("which go > /dev/null 2>&1")
-    arch = `uname -p`.chomp
-    if ["x86_64"].include?(arch)
-      Dir.chdir(dir) do
-        puts("Building machinery-helper binary.")
-        system("go build")
-      end
-    else
-      STDERR.puts(
-        "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
-      )
-    end
-  else
+def go_available?
+  if !system("which go > /dev/null 2>&1")
     STDERR.puts(
       "Warning: The Go compiler is not available on this system. Skipping building the" \
-        "machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
+        " machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
     )
+    false
+  else
+    true
   end
+end
+
+def arch_supported?
+  if !["x86_64"].include?(`uname -p`.chomp)
+    STDERR.puts(
+      "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
+    )
+    false
+  else
+    true
+  end
+end
+
+def runs_in_git?
+  Dir.exist?(File.join(HELPER_DIR, "..", ".git")) && system("which git > /dev/null 2>&1")
+end
+
+def git_revision
+  `git rev-parse HEAD`.chomp
+end
+
+def write_git_revision_file
+  File.write(GIT_REVISION_FILE, git_revision)
+end
+
+def changed_revision?
+  if File.exist?(GIT_REVISION_FILE)
+    old_revision = File.read(GIT_REVISION_FILE)
+  else
+    old_revision = "unknown"
+  end
+  git_revision != old_revision
+end
+
+def run_build
+  return false if !go_available?
+  # An unsupported architecture is no error
+  return true if !arch_supported?
+
+  # handle changed branches (where go files are older than the helper)
+  if runs_in_git? && changed_revision?
+    write_go_version_file
+    if build_machinery_helper
+      write_git_revision_file
+      return true
+    else
+      return false
+    end
+  end
+
+  if !FileUtils.uptodate?(
+    File.join(HELPER_DIR, "machinery-helper"), Dir.glob(File.join(HELPER_DIR, "*.go"))
+  )
+    return build_machinery_helper
+  end
+  true
+end
+
+desc "Build the helper if needed"
+task :build do
+  raise "Error: Build of Machinery helper failed" if !run_build
+end
+
+desc "Don't fail on build errors"
+task :try_build do
+  run_build
 end

@@ -94,13 +94,20 @@ describe MachineryHelper do
   end
 
   describe "#helper_version_supported?" do
+    let(:commit_id) { "b5ebdef2ccc0398113e4d88e04083a8369394f12" }
     let(:remote_helper) { File.join(Machinery::REMOTE_HELPER_PATH, "machinery-helper") }
+
+    before(:each) do
+      allow(File).to receive(:read).with(
+        File.join(Machinery::ROOT, ".git_revision")
+      ).and_return(commit_id)
+    end
 
     it "returns true if the machinery version equals the helper version" do
       helper = MachineryHelper.new(dummy_system)
       expect(dummy_system).to receive(:run_command).with(
         remote_helper, "--version", stdout: :capture
-      ).and_return("Version: #{Machinery::VERSION}")
+      ).and_return("Version: #{commit_id}")
       expect(helper.helper_version_supported?).to be(true)
     end
 
@@ -108,7 +115,7 @@ describe MachineryHelper do
       helper = MachineryHelper.new(dummy_system)
       expect(dummy_system).to receive(:run_command).with(
         remote_helper, "--version", stdout: :capture
-      ).and_return("Version: 0.0.1")
+      ).and_return("Version: 17c59264b8109ed33bb9bd1371af05bfb81d10df")
       expect(helper.helper_version_supported?).to be(false)
     end
 

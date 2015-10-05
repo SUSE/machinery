@@ -9,3 +9,5 @@ iso
 box_state.yaml
 import_state.yaml
 .vagrant
+
+.git_revision

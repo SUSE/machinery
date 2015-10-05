@@ -63,7 +63,8 @@ Gem::Specification.new do |s|
     "html/**/*",
     "machinery-helper/*.go",
     "machinery-helper/Rakefile",
-    "machinery-helper/README.md"
+    "machinery-helper/README.md",
+    ".git_revision"
   ]
   s.executables  = "machinery"
   s.require_path = "lib"
