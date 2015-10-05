@@ -59,7 +59,7 @@ class MachineryHelper
     @system.remove_file(remote_helper_path)
   end
 
-  def helper_version_supported?
+  def has_compatible_version?
     output = @system.run_command(remote_helper_path, "--version", stdout: :capture).chomp
 
     version = output[/^Version: ([a-f0-9]{40})$/, 1]
