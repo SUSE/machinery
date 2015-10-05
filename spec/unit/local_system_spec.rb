@@ -158,15 +158,15 @@ describe LocalSystem do
     end
   end
 
-  describe ".matching_architecture?" do
+  describe ".matches_architecture?" do
     it "returns false if the architecture does not match" do
       allow_any_instance_of(Os).to receive(:architecture).and_return("different_arch")
-      expect(LocalSystem.matching_architecture?("x86_64")).to be(false)
+      expect(LocalSystem.matches_architecture?("x86_64")).to be(false)
     end
 
     it "returns true if architecture match" do
       allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
-      expect(LocalSystem.matching_architecture?("x86_64")).to be(true)
+      expect(LocalSystem.matches_architecture?("x86_64")).to be(true)
     end
   end
 
