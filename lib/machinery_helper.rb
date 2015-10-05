@@ -26,6 +26,7 @@
 
 class MachineryHelper
   attr_accessor :local_helpers_path
+  attr_accessor :remote_helper_path
 
   def initialize(s)
     @system = s
@@ -36,7 +37,7 @@ class MachineryHelper
   end
 
   def local_helper_path
-    File.join(@local_helpers_path, "machinery-helper")
+    File.join(local_helpers_path, "machinery-helper")
   end
 
   # Returns true, if there is a helper binary matching the architecture of the
@@ -54,16 +55,16 @@ class MachineryHelper
   end
 
   def run_helper(scope)
-    json = @system.run_command(@remote_helper_path, stdout: :capture, stderr: STDERR)
+    json = @system.run_command(remote_helper_path, stdout: :capture, stderr: STDERR)
     scope.set_attributes(JSON.parse(json))
   end
 
   def remove_helper
-    @system.remove_file(@remote_helper_path)
+    @system.remove_file(remote_helper_path)
   end
 
   def helper_version_supported?
-    output = @system.run_command(@remote_helper_path, "--version", stdout: :capture).chomp
+    output = @system.run_command(remote_helper_path, "--version", stdout: :capture).chomp
 
     version = output[/^Version: ([a-f0-9]{40})$/, 1]
 
