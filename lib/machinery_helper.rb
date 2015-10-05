@@ -43,11 +43,7 @@ class MachineryHelper
   # Returns true, if there is a helper binary matching the architecture of the
   # inspected system. Return false, if not.
   def can_help?
-    if File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@arch)
-      true
-    else
-      false
-    end
+    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@arch)
   end
 
   def inject_helper
