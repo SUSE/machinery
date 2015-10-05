@@ -1,0 +1,10 @@
+NAME=openSUSE
+VERSION="Tumbleweed"
+VERSION_ID="20150421"
+PRETTY_NAME="openSUSE Tumbleweed (20150421) (x86_64)"
+ID=opensuse
+ANSI_COLOR="0;32"
+CPE_NAME="cpe:/o:opensuse:opensuse:20150421"
+BUG_REPORT_URL="https://bugs.opensuse.org"
+HOME_URL="https://opensuse.org/"
+ID_LIKE="suse"
