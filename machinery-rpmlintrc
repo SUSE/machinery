@@ -4,3 +4,6 @@ addFilter("/bundle/ruby/[^/]+/gems/")
 
 # machinery helper should be linked statically
 addFilter("statically-linked-binary")
+
+# machinery-helper consists the build path
+addFilter("file-contains-buildroot")
