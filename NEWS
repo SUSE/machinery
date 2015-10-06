@@ -2,6 +2,7 @@
 
 * Fix: Make links to sections with common elements clearer in HTML comparison
   view
+* Fix: XML files are no longer treated as binary files in HTML view
 * Fix: Scrolling issue of file view (gh#SUSE/machinery#1155)
 
 ## Version 1.14.0 - Tue Oct 06 21:26:12 CEST 2015 - thardeck@suse.de
