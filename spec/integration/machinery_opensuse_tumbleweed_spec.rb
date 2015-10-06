@@ -48,7 +48,7 @@ describe "machinery@Tumbleweed" do
       "os" =>
         [
           /Name: openSUSE Tumbleweed$/,
-          /Version: .* \(Tumbleweed\)$/,
+          /Version: [0-9]{8}$/,
           /Architecture: x86_64$/
         ],
       "users" =>

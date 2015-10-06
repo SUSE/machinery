@@ -91,7 +91,7 @@ class OsInspector < Inspector
       result["pretty_name"] = strip_arch_from_name(result["pretty_name"])
 
       # remove always changing Tumbleweed version from pretty name
-      if result["pretty_name"] =~ /^openSUSE.*\(Tumbleweed\)/
+      if result["pretty_name"] =~ /^openSUSE.*Tumbleweed/
         result["pretty_name"] = "openSUSE Tumbleweed"
       end
     end
@@ -99,6 +99,13 @@ class OsInspector < Inspector
     # name instead of an abbreviation
     os = Os.for(result["pretty_name"] || result["name"])
     os.version = result["version"]
+
+    # since Tumbleweed does no longer store the version number in the
+    # "version" property, we've to read from the "version_id" property
+    if os.version == "Tumbleweed"
+      os.version = result["version_id"]
+    end
+
     os
   end
 
@@ -111,19 +118,24 @@ class OsInspector < Inspector
     # name is always the first line in /etc/SuSE-release
     result["name"] = strip_arch_from_name(suse_release.split("\n").first)
 
-    patch = nil
-    suse_release.each_line do |l|
-      if l.start_with?("VERSION")
-        result["version"] = l.split("=").last.strip
-      end
-      if l.start_with?("PATCHLEVEL")
-        patch = l.split("=").last.strip
+    result["patchlevel"] = nil
+    suse_release.split("\n").slice(1, suse_release.length).each do |line|
+      if !line.start_with?("#")
+        key, value = line.split("=")
+        result[key.strip.downcase] = value.strip
       end
     end
-    if result["version"] && !patch.nil?
-      result["version"] = "#{result["version"]} SP#{patch}"
+
+    if result["version"] && !result["patchlevel"].nil?
+      result["version"] = "#{result["version"]} SP#{result["patchlevel"]}"
     end
-    os = Os.for(result["name"])
+
+    if result["codename"] == "Tumbleweed"
+      os = Os.for ("openSUSE Tumbleweed")
+    else
+      os = Os.for(result["name"])
+    end
+
     os.version = result["version"]
     os
   end

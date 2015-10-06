@@ -1,0 +1,4 @@
+openSUSE 20151002 (x86_64)
+VERSION = 20151002
+CODENAME = Tumbleweed
+# /etc/SuSE-release is deprecated and will be removed in the future, use /etc/os-release instead

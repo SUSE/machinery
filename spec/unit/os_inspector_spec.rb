@@ -46,6 +46,17 @@ describe OsInspector do
       )
     end
 
+    it "gets os info from os-release file for new Tumbleweed syntax" do
+      FakeFS::FileSystem.clone("spec/data/os/openSUSETumbleweedNewSyntax/etc/os-release",
+        "/etc/os-release")
+
+      os = inspector.send(:get_os_from_os_release)
+
+      expect(os).to be_an_instance_of(OsOpenSuseTumbleweed)
+      expect(os.name).to eq("openSUSE Tumbleweed")
+      expect(os.version).to match(/[0-9]{8}/)
+    end
+
     it "gets os info from RHEL7 os-release file" do
       FakeFS::FileSystem.clone("spec/data/os/rhel7/etc/os-release",
         "/etc/os-release")
@@ -69,6 +80,15 @@ describe OsInspector do
 
       expect(os.name).to eq "SUSE Linux Enterprise Server 11"
       expect(os.version).to eq "11 SP3"
+    end
+
+    it "gets os info from SuSE-release file for the new Tumbleweed syntax" do
+      FakeFS::FileSystem.clone("spec/data/os/openSUSETumbleweedNewSyntax/etc/SuSE-release",
+        "/etc/SuSE-release")
+      os = inspector.send(:get_os_from_suse_release)
+
+      expect(os.name).to eq "openSUSE Tumbleweed"
+      expect(os.version).to match(/[0-9]{8}/)
     end
   end
 
