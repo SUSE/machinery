@@ -100,6 +100,8 @@ class OsInspector < Inspector
     os = Os.for(result["pretty_name"] || result["name"])
     os.version = result["version"]
 
+    # since Tumbleweed does no longer store the version number in the
+    # "version" property, we've to read from the "version_id" property
     if os.version == "Tumbleweed"
       os.version = result["version_id"]
     end
