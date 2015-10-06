@@ -22,14 +22,20 @@ class UnmanagedFileList < Machinery::Array
   has_elements class: UnmanagedFile
 
   def compare_with(other)
-    only_self = elements.reject do |element|
-      other.elements.find { |other_element| files_match(element, other_element) }
+    self_hash = elements.inject({}) { |hash, e| hash[e.name] = e; hash }
+    other_hash = other.elements.inject({}) { |hash, e| hash[e.name] = e; hash }
+
+    both = []
+    only_self = []
+    elements.each do |element|
+      if other_hash.has_key?(element.name) && files_match(element, other_hash[element.name])
+        both << element
+      else
+        only_self << element
+      end
     end
     only_other = other.elements.reject do |element|
-      elements.find { |other_element| files_match(element, other_element) }
-    end
-    both = elements.select do |element|
-      other.elements.find { |other_element| files_match(element, other_element) }
+      self_hash.has_key?(element.name) && files_match(element, self_hash[element.name])
     end
 
     [
