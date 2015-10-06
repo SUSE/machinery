@@ -317,12 +317,13 @@ font-size: 16px;
   .wrap-typewriter {
 
     margin: auto;
-    margin-bottom: 10%;
+    margin-bottom: 4%;
     font-family: 'Special Elite', cursive;
     z-index: 200;
     position: relative;
     font-size: 17px;
     line-height: 1.6em;
+    text-align: center;
   }
 }
 
@@ -359,7 +360,7 @@ font-size: 16px;
   .headline {
   	font-family: 'Special Elite', cursive;
   	font-size: 100px;
-  	margin: 100px 0px 0px 0px;
+  	margin: 50px 0px 40px 0px;
   	color: #3c3935;
   }
 }
@@ -742,3 +743,19 @@ font-size: 16px;
   text-decoration: none;
 }
 
+
+.section15 {
+  padding-top: 150px;
+  padding-bottom: 50px;
+  background: #fff url('../img/bk-sec-15.png') no-repeat center center;
+}
+
+.ticket {
+  text-align: center;
+  margin-bottom: 5em;
+}
+
+.movie {
+  font-size: 1.4em;
+  margin-top: 1.6em;
+}

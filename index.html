@@ -25,6 +25,7 @@
       <h1 class="index">- Index -</h1>
       <ul>
         <li> <a href="#section1">Introduction</a></li>
+        <li> <a href="#section15">Movie</a></li>
         <li> <a href="#section2">Features</a></li>
         <li> <a href="#section3">System description</a></li>
         <li><a href="#section4">Philosophy</a></li>
@@ -61,19 +62,19 @@
 
               <div>
                 <div class="git">
-                  <a  class="btn btn-default" href="http://software.opensuse.org/ymp/systemsmanagement:machinery/openSUSE_13.1/machinery.ymp?base=openSUSE%3A13.1query=machinery">Install on openSUSE 13.1</a>
+                  <a  class="btn btn-default" href="machinery.ymp">Install on openSUSE</a>
                 </div>
               </div>
 
               <div>
                 <div class="git">
-                  <a  class="btn btn-default" href="http://software.opensuse.org/ymp/systemsmanagement:machinery/openSUSE_13.2/machinery.ymp?base=openSUSE%3A13.2query=machinery">Install on openSUSE 13.2</a>
+                  <a  class="btn btn-default" href="https://github.com/SUSE/machinery/wiki/Installation-on-Other-Distributions">Install on other systems</a>
                 </div>
               </div>
 
-              <div>
+                            <div>
                 <div class="git">
-                  <a  class="btn btn-default" href="http://software.opensuse.org/ymp/systemsmanagement:machinery/openSUSE_Tumbleweed/machinery.ymp?base=openSUSE%3ATumbleweed&amp;query=machinery">Install on Tumbleweed</a>
+                  <a  class="btn btn-default" href="http://machinery-project.org/manual.html">Documentation</a>
                 </div>
               </div>
 
@@ -83,25 +84,16 @@
                 </div>
               </div>
 
-              <div class="gem dropdown">
-                <a class="btn btn-default" data-toggle="dropdown" id="dropdownMenu1">
-                  More...
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu gemmaleft" role="menu" aria-labelledby="dropdownMenu1" id="gemma" align="left">
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/wiki/Installation">Install on other systems</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="manual.html">Read the man page</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/wiki">Read the Wiki</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/issues/new">Report a bug</a></li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="http://github.com/SUSE/machinery/blob/master/CONTRIBUTING.md">Contribute</a></li>
-                </ul>
-              </div>
 
             </div>
 
             <div>
             <div class="wrap-typewriter">
-              <div class="test" data-text="<p>A systems management toolkit for Linux.</p><p>Machinery supports <a href='#properties1'> configuration discovery</a>, <br/><a href='#properties2'>system validation</a>, <br/>and <a href='#properties3'>service migration</a>. </p><p>Machinery is based on the idea of an <br/><a href='#section3'> universal system description</a>.<br/>It is transparent,<br/>extensible, and crafted beautifully.</p><p>Machinery is made for the system administrator of the data center. Read more about the <a href='#section4'>philosophy</a> behind it."></div>
+              <p>A command line application for creating descriptions of Linux systems and working with them.</p><p>Machinery supports use cases such as<br><a href='#properties1'> configuration discovery</a>, <br/><a href='#properties2'>system validation</a>, <br/>and <a href='#properties3'>service migration</a>. </p><p>Machinery is based on the idea of an <br/><a href='#section3'> universal system description</a>.<br/>It is transparent,<br/>extensible, and crafted beautifully.</p><p>Machinery is made for the system administrator of the data center. Read more about the <a href='#section4'>philosophy</a> behind it.
+              <div class="movie"><a href="#section15">Watch the movie!</a></div>
+            </div>
+            <div class="ticket">
+              <a href="#section15"><img src="img/ticket2.png"></a>
             </div><!-- close typewriter --></div>
           </div>
 
@@ -110,13 +102,33 @@
 
         </div>
 
+
+      </div><!-- close section -->
+
+      <div class="row section15" id="section15">  <!-- section 1.5 -->
+       <div class="col-md-4 col-md-offset-1">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/oXvZhRcw7CQ?&autohide=1&showinfo=0&rel=0&color=white" frameborder="0" allowfullscreen></iframe>
+       </div>
+
+        <div class="col-md-6 col-md-offset-1">
+         <div class="second-text wrap-typewriter">
+          <p> Machinery is a command line application for creating descriptions of Linux systems and working with them. </p> 
+          <p> You can use it to get insight into existing systems, to store and track their state, or to create new systems based on existing ones.</p> 
+          <p> Machinery provides powerful views of individual and comparisons between systems.</p>  
+          <p> It can also export descriptions to other tools for installation, migration, image building, containerization, or cloud deployment, and provides defined interfaces to work with system descriptions from your custom tools.</p> 
+          <div class="movie">
+           <a href="https://github.com/SUSE/machinery/wiki/Quick-Start-Guide">Get started!</a>
+          </div>
+         </div>
+        </div>
+
         <div class="row">
           <div class="col-md-12 col-xs-12 continue" align="center">
            <a href="#section2">Scroll for more information<img src="img/hand2.png" class="hand2"></a>
           </div>
         </div>
-
-      </div><!-- close section -->
+        
+      </div>
 
 
       <!-- section 2 -->
@@ -191,8 +203,8 @@
               <li data-target="#carousel-example-generic" data-slide-to="0"><div type="button" class="btn btn-default ">The tools</div></li>
               <li data-target="#carousel-example-generic" data-slide-to="1"><div type="button" class="btn btn-default USDbutton">Physical to cloud</div></li>
               <li data-target="#carousel-example-generic" data-slide-to="2"><div type="button" class="btn btn-default USDbutton">From SLE 11 to SLE 12</div></li>
-              <li data-target="#carousel-example-generic" data-slide-to="3"><div type="button" class="btn btn-default USDbutton">configuration discovery</div></li>
-              <li data-target="#carousel-example-generic" data-slide-to="4"><div type="button" class="btn btn-default USDbutton">validate and show</div></li>
+              <li data-target="#carousel-example-generic" data-slide-to="3"><div type="button" class="btn btn-default USDbutton">Configuration discovery</div></li>
+              <li data-target="#carousel-example-generic" data-slide-to="4"><div type="button" class="btn btn-default USDbutton">Validate and show</div></li>
             </ol>
 
           </div>
@@ -251,7 +263,7 @@
                     <div class="usecase-title">
                       Use case: From SLE 11 to SLE 12
                     </div>
- Migrate a system from SLES 11 to SLES 12. Inspect the system to be migrated and create a system description. Let machinery adapt the description to SLES 12. Build an image to deploy the system.
+ Migrate a system from SLES 11 to SLES 12. Inspect the system to be migrated and create a system description. Let Machinery adapt the description to SLES 12. Build an image to deploy the system. See the <a href="https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12">how-to</a> in the Machinery Wiki for more details.
             </div>
           </div>
         </div>
@@ -266,7 +278,7 @@
           <div class="usecase">
             <div class="text-gallery">
                     <div class="usecase-title">
-                      Configuration Discovery
+                      Use case: Configuration discovery
                     </div>
       Inspect a running system and write its configuration as a system description. The written description can be shown and analyzed offline. It can also be used to perform subsequent operation on it, such as building a system image from it
             </div>
@@ -284,7 +296,7 @@
           <div class="usecase">
             <div class="text-gallery">
                     <div class="usecase-title">
-                      Validate and Show
+                      Use case: Validate and show
                     </div>
      Inspect a running system and write a system description. Validate the system by viewing the description and manually confirm expectations. Validate the system by comparing its system description to a reference and showing the differences.
             </div>
@@ -347,7 +359,7 @@
 
         <div class="col-md-offset-3 col-md-6 footer">
           <a href="mailto:machinery@lists.suse.com">Questions, Feedback, Suggestions</a>
-          <div class="credit">© <a href="http://suse.com">SUSE</a> 2014</div>
+          <div class="credit">© <a href="http://suse.com">SUSE</a> 2014-2015</div>
         </div>
 
 
