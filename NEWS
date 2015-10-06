@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix: Scrolling issue of file view (gh#SUSE/machinery#1155)
 
 ## Version 1.14.0 - Tue Oct 06 21:26:12 CEST 2015 - thardeck@suse.de
 
