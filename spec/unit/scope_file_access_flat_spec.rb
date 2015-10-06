@@ -107,4 +107,15 @@ describe ScopeFileAccessFlat do
       expect(is_binary).to be(false)
     end
   end
+
+  describe "#has_file?" do
+    let(:description) {
+      SystemDescription.load!("opensuse131-build",
+        SystemDescriptionStore.new("spec/data/descriptions"))
+    }
+
+    it "returns true" do
+      expect(description.config_files.has_file?("/etc/crontab")).to be_truthy
+    end
+  end
 end
