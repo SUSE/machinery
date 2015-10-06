@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+* The machinery-helper is now built during gem-installation on x86_64
+  machines if Go is available. The RPM package is still shipped with
+  a precompiled version.
 * Allow limiting the `list` command output to certain system descriptions
   by passing them along as argument (gh#SUSE/machinery#1398)
 * Add `move` command to rename system descriptions (gh#SUSE/machinery#1397)
