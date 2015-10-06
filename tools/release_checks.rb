@@ -23,7 +23,6 @@ module ReleaseChecks
   def check
     check_tag
     check_jenkins_state("https://ci.opensuse.org/job/machinery-unit/lastStableBuild/api/json")
-    check_jenkins_state("https://ci.opensuse.org/job/machinery-helper/lastStableBuild/api/json")
   end
 
   private
@@ -42,55 +41,34 @@ module ReleaseChecks
     end
   end
 
-  def check_jenkins_state(jenkins_url)
-    request = generate_request(jenkins_url)
-    json = JSON.parse(get_response(request))
-
-    actions = json["actions"].reject(&:empty?)
-    last_revision_tested?(get_last_revision, get_tested_revision(actions))
-
-    get_result(json["result"])
-  end
-
-  def get_response(request)
-    response = http.request(request)
-    if response.code != "200"
-      fail "Could not download Jenkins state information. Abort."
-    else
-      response.body
-    end
-  end
-
-  def generate_request(url)
+  def check_jenkins_state(url)
     uri = URI.parse(url)
+
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == "https"
-    Net::HTTP::Get.new(uri.request_uri)
-  end
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
 
-  def get_result(response)
-    result = response
-    if result != "SUCCESS"
-      fail "Current HEAD does not build successfully in Jenkins. Abort."
-    end
-    result
-  end
+    if response.code == "200"
+      json = JSON.parse(response.body)
 
-  def get_tested_revision(actions)
-    tested_revision = actions.find do |e|
-      e.has_key?("lastBuiltRevision")
-    end["lastBuiltRevision"]["SHA1"]
-    tested_revision
-  end
+      actions = json["actions"].reject{ |h| h.empty? }
 
-  def get_last_revision
-    Cheetah.run("git", "rev-parse", "HEAD", stdout::capture).chomp
-  end
+      last_revision = Cheetah.run("git", "rev-parse", "HEAD", :stdout => :capture).chomp
+      tested_revision = actions.find do |e|
+        e.has_key?("lastBuiltRevision")
+      end["lastBuiltRevision"]["SHA1"]
 
-  def last_revision_tested?(last_revision, tested_revision)
-    if last_revision != tested_revision
-      fail "Current HEAD (#{last_revision}) was not tested by Jenkins yet (#{tested_revision}). " /
-        "Abort."
+      if last_revision != tested_revision
+        fail "Current HEAD (#{last_revision}) was not tested by Jenkins yet (#{tested_revision}). Abort."
+      end
+
+      result = json["result"]
+      if result != "SUCCESS"
+        fail "Current HEAD does not build successfully in Jenkins. Abort."
+      end
+    else
+      fail "Could not download Jenkins state information. Abort."
     end
   end
 end
