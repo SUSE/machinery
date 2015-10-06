@@ -360,7 +360,7 @@ font-size: 16px;
   .headline {
   	font-family: 'Special Elite', cursive;
   	font-size: 100px;
-  	margin: 100px 0px 0px 0px;
+  	margin: 50px 0px 40px 0px;
   	color: #3c3935;
   }
 }
@@ -755,3 +755,7 @@ font-size: 16px;
   margin-bottom: 5em;
 }
 
+.movie {
+  font-size: 1.4em;
+  margin-top: 1.6em;
+}
