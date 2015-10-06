@@ -148,13 +148,14 @@ func TestRespectManagedDirsInUnmanagedDirs(t *testing.T) {
   }
 
   rpmFiles := make(map[string]string)
+  ignoreList := make(map[string]bool)
 
   rpmDirs := map[string]bool{
     "/managed_dir": true,
     "/managed_dir/unmanaged_dir/managed_dir": true,
   }
 
-  findUnmanagedFiles("/", rpmFiles, rpmDirs, unmanagedFiles)
+  findUnmanagedFiles("/", rpmFiles, rpmDirs, unmanagedFiles, ignoreList)
 
   if !reflect.DeepEqual(unmanagedFiles, wantUnmanagedFiles) {
     t.Errorf("findUnmanagedFiles() = '%v', want '%v'", unmanagedFiles, wantUnmanagedFiles)
