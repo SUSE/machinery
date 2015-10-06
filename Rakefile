@@ -116,6 +116,11 @@ end
 namespace :rpm do
   desc 'Build RPM of current version'
   task :build, [:api, :project, :target] do |task, args|
+    # make sure the helper version is up to date
+    Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
+      Cheetah.run("rake", "build")
+    end
+
     if args[:api] && args[:project] && args[:target]
       Packaging.configuration do |conf|
         conf.obs_api = args[:api]
@@ -149,6 +154,11 @@ task :release, [:type] do |task, args|
   unless ["major", "minor", "patch"].include?(args[:type])
     puts "Please specify a valid release type (major, minor or patch)."
     exit 1
+  end
+
+  # make sure the helper version is up to date
+  Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
+    Cheetah.run("rake", "build")
   end
 
   new_version = Release.generate_release_version(args[:type])
