@@ -33,4 +33,8 @@ module ScopeFileAccessFlat
     output = Cheetah.run("file", path, stdout: :capture)
     !output.include?("ASCII")
   end
+
+  def has_file?(name)
+    return true if files.any? { |file| file.name == name }
+  end
 end
