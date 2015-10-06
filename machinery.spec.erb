@@ -35,7 +35,9 @@ Release:        0
 %endif
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+%ifarch x86_64
 BuildRequires:  go
+%endif
 BuildRequires:  ruby-macros >= 5
 # libxml2-devel and libxslt-devel are needed to install Nokogiri.
 BuildRequires:  libxml2-devel
