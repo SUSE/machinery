@@ -30,8 +30,14 @@ module ScopeFileAccessFlat
     path = system_file.scope.file_path(system_file)
     return false if File.zero?(path)
 
-    output = Cheetah.run("file", path, stdout: :capture)
-    !output.include?("ASCII")
+    # Code by https://github.com/djberg96/ptools
+    # Modified by SUSE Linux GmbH
+    # License: Artistic 2.0
+    bytes = File.stat(path).blksize
+    bytes = 4096 if bytes > 4096
+    s = (File.read(path, bytes) || "")
+    s = s.encode("US-ASCII", undef: :replace).split(//)
+    ((s.size - s.grep(" ".."~").size) / s.size.to_f) > 0.30
   end
 
   def has_file?(name)
