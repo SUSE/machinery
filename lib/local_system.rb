@@ -105,8 +105,12 @@ EOF
       end
     end
 
+    def matches_architecture?(arch)
+      os.architecture == arch
+    end
+
     def validate_architecture(arch)
-      if os.architecture != arch
+      if !matches_architecture?(arch)
         raise(Machinery::Errors::UnsupportedArchitecture.new(
           "This operation is not supported on architecture '#{os.architecture}'."
         ))

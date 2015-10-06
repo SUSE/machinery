@@ -8,16 +8,29 @@ describe MachineryHelper do
   let(:dummy_system) { double(arch: "x86_64") }
 
   describe "#can_help?" do
-    it "can help if helper exists" do
-      helper = MachineryHelper.new(dummy_system)
-      helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+    context "on the same architecture" do
+      before(:each) do
+        allow(LocalSystem).to receive(:validate_architecture)
+      end
 
-      expect(helper.can_help?).to be(true)
+      it "returns true if helper exists" do
+        helper = MachineryHelper.new(dummy_system)
+        helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+
+        expect(helper.can_help?).to be(true)
+      end
+
+      it "returns false if helper does not exist" do
+        helper = MachineryHelper.new(dummy_system)
+        helper.local_helpers_path = given_directory
+
+        expect(helper.can_help?).to be(false)
+      end
     end
 
-    it "can not help if helper does not exist" do
-      helper = MachineryHelper.new(dummy_system)
-      helper.local_helpers_path = given_directory
+    it "returns false if the architectures don't match" do
+      helper = MachineryHelper.new(double(arch: "unknown_arch"))
+      helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
 
       expect(helper.can_help?).to be(false)
     end
@@ -77,6 +90,41 @@ describe MachineryHelper do
 
       expect(scope.files.first.name).to eq("/opt/magic/file")
       expect(scope.files.count).to eq(2)
+    end
+  end
+
+  describe "#has_compatible_version?" do
+    let(:commit_id) { "b5ebdef2ccc0398113e4d88e04083a8369394f12" }
+    let(:remote_helper) { File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper") }
+
+    before(:each) do
+      allow(File).to receive(:read).with(
+        File.join(Machinery::ROOT, ".git_revision")
+      ).and_return(commit_id)
+    end
+
+    it "returns true if the machinery version equals the helper version" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper, "--version", stdout: :capture
+      ).and_return("Version: #{commit_id}")
+      expect(helper.has_compatible_version?).to be(true)
+    end
+
+    it "returns false if the machinery version does not equal the helper version" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper, "--version", stdout: :capture
+      ).and_return("Version: 17c59264b8109ed33bb9bd1371af05bfb81d10df")
+      expect(helper.has_compatible_version?).to be(false)
+    end
+
+    it "returns false on empty output of an old machinery-helper" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper, "--version", stdout: :capture
+      ).and_return("")
+      expect(helper.has_compatible_version?).to be(false)
     end
   end
 end

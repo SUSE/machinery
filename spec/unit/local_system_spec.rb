@@ -158,6 +158,33 @@ describe LocalSystem do
     end
   end
 
+  describe ".matches_architecture?" do
+    it "returns false if the architecture does not match" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("different_arch")
+      expect(LocalSystem.matches_architecture?("x86_64")).to be(false)
+    end
+
+    it "returns true if architecture match" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+      expect(LocalSystem.matches_architecture?("x86_64")).to be(true)
+    end
+  end
+
+  describe ".validate_architecture" do
+    it "raises UnsupportedArchitecture if the architecture does not match" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("different_arch")
+      expect { LocalSystem.validate_architecture("x86_64") }.to raise_error(
+        Machinery::Errors::UnsupportedArchitecture,
+        /This operation is not supported on architecture 'different_arch'/
+      )
+    end
+
+    it "does not raise if architecture match" do
+      allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+      expect { LocalSystem.validate_architecture("x86_64") }.not_to raise_error
+    end
+  end
+
   describe ".validate_existence_of_package" do
     it "raises an Machinery::Errors::MissingRequirementsError error if the rpm-package isn't found" do
       allow(LocalSystem).to receive(:os).and_return(Os.new)

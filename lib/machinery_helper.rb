@@ -22,45 +22,48 @@
 # The inspection checks, if a binary helper is available on the machine where
 # the inspection is started. It looks at the location
 #
-#    /usr/share/machinery/helpers/<arch>/machinery-helper
-#
-# where <arch> is the hardware architecture of the target system. Valid values
-# are x86_64, i586, s390x, and ppcle.
+# <machinery-installation-path>/machinery-helper/machinery-helper
 
 class MachineryHelper
   attr_accessor :local_helpers_path
+  attr_accessor :remote_helper_path
 
   def initialize(s)
     @system = s
     @arch = @system.arch
 
-    @local_helpers_path = "/usr/share/machinery/helpers"
+    @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
+    @remote_helper_path = File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")
   end
 
   def local_helper_path
-    File.join(@local_helpers_path, @arch, "machinery-helper")
+    File.join(local_helpers_path, "machinery-helper")
   end
 
   # Returns true, if there is a helper binary matching the architecture of the
   # inspected system. Return false, if not.
   def can_help?
-    File.exist?(local_helper_path)
+    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@arch)
   end
 
   def inject_helper
-    @system.inject_file(local_helper_path, Machinery::REMOTE_HELPERS_PATH)
+    @system.inject_file(local_helper_path, Machinery::HELPER_REMOTE_PATH)
   end
 
   def run_helper(scope)
-    json = @system.run_command(
-      File.join(
-        Machinery::REMOTE_HELPERS_PATH, "machinery-helper"
-      ), stdout: :capture, stderr: STDERR
-    )
+    json = @system.run_command(remote_helper_path, stdout: :capture, stderr: STDERR)
     scope.set_attributes(JSON.parse(json))
   end
 
   def remove_helper
-    @system.remove_file(File.join(Machinery::REMOTE_HELPERS_PATH, "machinery-helper"))
+    @system.remove_file(remote_helper_path)
+  end
+
+  def has_compatible_version?
+    output = @system.run_command(remote_helper_path, "--version", stdout: :capture).chomp
+
+    version = output[/^Version: ([a-f0-9]{40})$/, 1]
+
+    version == File.read(File.join(Machinery::ROOT, ".git_revision"))
   end
 end

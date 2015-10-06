@@ -23,60 +23,34 @@ require_relative "release_checks"
 require_relative "spec_template"
 
 class Release
-  def self.version
-    if File.exist?("version.go")
-      File.read("version.go")[/(\d+\.\d+\.\d+)/]
-    else
-      Machinery::VERSION
-    end
-  end
+  include ReleaseChecks
+
+  RPM_CHANGES_FILE = File.join(Machinery::ROOT, "package/machinery.changes")
+  CHANGELOG_FILES = [
+    File.join(Machinery::ROOT, "NEWS"),
+    File.join(Machinery::ROOT, "RPM_CHANGES")
+  ]
 
   def initialize(opts = {})
-    @current_version = Release.version
     @options = {
-      version:      Release.generate_development_version,
-      skip_rpm_cleanup: false,
-      jenkins_name:     "machinery-unit",
-      changes_file:     "NEWS",
-      rpm_changes_file: "RPM_CHANGES",
-      package_name:     "machinery"
+      version: generate_development_version,
+      skip_rpm_cleanup: false
     }.merge(opts)
-    @tag             = "v#{@options[:version]}"
-    @release_time    = Time.now.strftime('%a %b %d %H:%M:%S %Z %Y')
-    @mail            = Cheetah.run(["git", "config", "user.email"], :stdout => :capture).chomp
-    @gemspec         = Gem::Specification.load("machinery.gemspec")
-    @release_checks  = ReleaseChecks.new(@tag, @options[:jenkins_name])
-    @changelog_files = [@options[:changes_file], @options[:rpm_changes_file]]
-    @package_changes_path = "package/#{@options[:package_name]}.changes"
-    set_version
-    add_default_rpm_changes_entry
-  end
-
-  def check
-    @release_checks.check
+    @release_version = @options[:version]
+    @tag = "v#{@release_version}"
+    @release_time = Time.now.strftime("%a %b %d %H:%M:%S %Z %Y")
+    @mail = Cheetah.run(["git", "config", "user.email"], stdout: :capture).chomp
+    @gemspec = Gem::Specification.load("machinery.gemspec")
   end
 
   def prepare
     clean_up_tmp
     remove_old_releases(skip_rpm_cleanup: @options[:skip_rpm_cleanup])
-    build_man_page
-    build_gem
+    set_version
     generate_specfile
     copy_rpmlintrc
+    add_default_rpm_changes_entry
     generate_changelog
-  end
-
-  def build_gem
-    if File.exist?("machinery.gemspec")
-      Cheetah.run "gem", "build", "machinery.gemspec"
-      FileUtils.mv Dir.glob("machinery-*.gem"), "package/"
-    end
-  end
-
-  def build_man_page
-    if Dir.exist?("man")
-      Cheetah.run "rake", "man_pages:build"
-    end
   end
 
   # Update the version file, generate a changelog and RPM specfile and build
@@ -84,35 +58,32 @@ class Release
   def build_local
     prepare
 
-    Rake::Task["osc:build"].invoke("--clean")
+    Rake::Task["osc:build"].invoke
 
     # Collect built RPMs in package/, e.g. so that jenkins can collect them
     output_dir = File.join("/var/tmp", obs_project, build_dist)
     FileUtils.cp Dir.glob("#{output_dir}/*.rpm"), "package/"
   ensure
     # revert the version and changelog changes
-
-    if File.exist?("lib/version.rb")
-      Cheetah.run "git", "checkout", "lib/version.rb"
-    else
-      Cheetah.run "git", "checkout", "version.go"
-    end
-    @changelog_files.each do |file|
-      Cheetah.run "git", "checkout", file
-    end
+    Cheetah.run "git", "checkout", File.join(Machinery::ROOT, "lib/version.rb")
+    Cheetah.run "git", "checkout", File.join(Machinery::ROOT, "RPM_CHANGES")
   end
 
   # Commit version changes, tag release and push changes upstream.
   def publish
-    finalize_news_file
     prepare
+    finalize_news_file
+
+    # Build gem and send everything to IBS
+    Rake::Task["osc:commit"].invoke
 
     commit
   end
 
   # Calculates the next version number according to the release type (:major, :minor or :patch)
   def self.generate_release_version(release_type)
-    major, minor, patch = version.scan(/(\d+)\.(\d+)\.(\d+)/).first.map(&:to_i)
+    current_version = Machinery::VERSION
+    major, minor, patch = current_version.scan(/(\d+)\.(\d+)\.(\d+)/).first.map(&:to_i)
 
     case release_type
     when "patch"
@@ -127,15 +98,6 @@ class Release
     end
 
     "#{major}.#{minor}.#{patch}"
-  end
-
-  def self.generate_development_version
-    # The development version RPMs have the following version number scheme:
-    # <base version>.<timestamp><os>git<short git hash>
-    timestamp = Time.now.strftime("%Y%m%dT%H%M%SZ")
-    commit_id = Cheetah.run("git", "rev-parse", "--short", "HEAD", stdout: :capture).chomp
-
-    "#{Release.version}.#{timestamp}#{build_dist.gsub(/[._]/, "")}git#{commit_id}"
   end
 
   def publish_man_page
@@ -159,9 +121,9 @@ class Release
 
   def remove_old_releases(skip_rpm_cleanup: false)
     if skip_rpm_cleanup
-      FileUtils.rm Dir.glob("package/*.gem")
+      FileUtils.rm Dir.glob(File.join(Machinery::ROOT, "package/*.gem"))
     else
-      FileUtils.rm Dir.glob("package/*")
+      FileUtils.rm Dir.glob(File.join(Machinery::ROOT, "package/*"))
     end
   end
 
@@ -171,41 +133,33 @@ class Release
   end
 
   def set_version
-    if File.exist?("lib/version.rb")
-      Cheetah.run "sed", "-i", "s/VERSION.*=.*/VERSION = \"#{@options[:version]}\"/",
-        "lib/version.rb"
-    else
-      Cheetah.run "sed", "-i", "s/const VERSION .*/const VERSION = \"#{@options[:version]}\"/",
-        "version.go"
+    Dir.chdir(Machinery::ROOT) do
+      Cheetah.run "sed", "-i", "s/VERSION.*=.*/VERSION = \"#{@release_version}\"/", "lib/version.rb"
     end
   end
 
   def generate_specfile
-    erb = ERB.new(File.read(Dir.glob("*.spec.erb").first), nil, "-")
-    if File.exist?("#{@options[:package_name]}.gemspec")
-      env = SpecTemplate.new(@options[:version], @gemspec)
-    else
-      arch = @options[:package_name][/^machinery-helper-(\w*)$/, 1]
-      env = OpenStruct.new(version: @options[:version], arch: arch)
-    end
+    Dir.chdir(Machinery::ROOT) do
+      erb = ERB.new(File.read("machinery.spec.erb"), nil, "-")
+      env = SpecTemplate.new(@release_version, @gemspec)
 
-    File.open("package/#{@options[:package_name]}.spec", "w+") do |spec_file|
-      spec_file.puts erb.result(env.instance_eval { binding })
+      File.open("package/machinery.spec", "w+") do |spec_file|
+        spec_file.puts erb.result(env.instance_eval { binding })
+      end
     end
   end
 
   def copy_rpmlintrc
-    rpmlint = Dir.glob("*-rpmlintrc").first
-    if rpmlint
-      FileUtils.cp rpmlint, "package/#{@options[:package_name]}-rpmlintrc"
+    Dir.chdir(Machinery::ROOT) do
+      FileUtils.cp "machinery-rpmlintrc", "package/machinery-rpmlintrc"
     end
   end
 
   def generate_changelog
-    changes = { @options[:version] => create_rpm_header(@options[:version], @release_time, @mail) }
-    news    = { @options[:version] => "" }
-    @changelog_files.each do |file|
-      version = @options[:version]
+    changes = { @release_version => create_rpm_header(@release_version, @release_time, @mail) }
+    news = { @release_version => "" }
+    CHANGELOG_FILES.each do |file|
+      version = @release_version
       time    = @release_time
       mail    = @mail
 
@@ -243,44 +197,48 @@ class Release
       changelog += value
     end
 
-    File.write(@package_changes_path, changelog)
+    File.write(RPM_CHANGES_FILE, changelog)
   end
 
   def finalize_news_file
-    @changelog_files.each do |file|
+    CHANGELOG_FILES.each do |file|
       content = File.read(file)
       # All changes for the next release are directly added below the headline
       # by the developers without adding a version line.
       # Since the version line is automatically added during release by this
       # method we can check for new bullet points since the last release.
       if content.scan(/# Machinery .*$\n+## Version /).empty?
-        content = content.sub(
-          /\n+/, "\n\n\n## Version #{@options[:version]} - #{@release_time} - #{@mail}\n\n"
-        )
+        content = content.sub(/\n+/, "\n\n\n## Version #{@release_version} - #{@release_time} " \
+          "- #{@mail}\n\n")
         File.write(file, content)
       end
     end
   end
 
   def add_default_rpm_changes_entry
-    file = "RPM_CHANGES"
+    file = File.join(Machinery::ROOT, "RPM_CHANGES")
     content = File.read(file)
 
-    regex = /(Machinery .{0,7}RPM Changelog).*?(\*|\n#)/m
-    content.sub!(regex, "\\1\n\n* update to version #{@options[:version]}\n\\2")
+    regex = /(Machinery RPM Changelog).*?(\*|\n#)/m
+    content.sub!(regex, "\\1\n\n* update to version #{@release_version}\n\\2")
 
     File.write(file, content)
   end
 
   def commit
-    # Build gem and send everything to IBS
-    Rake::Task["osc:commit"].invoke
-
-    # Set and commit git tag
-    Cheetah.run "git", "commit", "-a", "-m", "package #{@options[:version]}"
-    Cheetah.run "git", "tag", "-a", @tag, "-m", "Tag version #{@options[:version]}"
+    Cheetah.run "git", "commit", "-a", "-m", "package #{@release_version}"
+    Cheetah.run "git", "tag", "-a", @tag, "-m", "Tag version #{@release_version}"
     Cheetah.run "git", "push"
     Cheetah.run "git", "push", "--tags"
+  end
+
+  def generate_development_version
+    # The development version RPMs have the following version number scheme:
+    # <base version>.<timestamp><os>git<short git hash>
+    timestamp = Time.now.strftime("%Y%m%dT%H%M%SZ")
+    commit_id = Cheetah.run("git", "rev-parse", "--short", "HEAD", stdout: :capture).chomp
+
+    "#{Machinery::VERSION}.#{timestamp}#{build_dist.gsub(/[._]/, "")}git#{commit_id}"
   end
 
   def create_rpm_header(version, time, mail)

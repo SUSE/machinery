@@ -63,11 +63,12 @@ self-contained binary without external dependencies. It does the gathering of
 information and most of the processing on the inspected machine and then returns
 the result to Machinery.
 
-For each platform there is a helper binary. The binary is bundled with the
-Machinery package and is installed to
-`/usr/share/machinery/helpers/<arch>/machinery-helper`. On the target system it
-is copied to the home directory of the root user. It is removed when the
-inspection is done.
+There is a helper binary which is bundled with the Machinery package and is installed
+to `<machinery-installation-path>/machinery-helper/machinery-helper`.
+<machinery-installation-path> is the directory where all the Machinery gem files
+are installed.
+On the target system it is copied to the home directory of the root user. It is
+removed when the inspection is done.
 
 The helper is only used, when Machinery logs into the inspected machine as root
 user. For the mode, where it logs in as a non-root user Machinery falls back to

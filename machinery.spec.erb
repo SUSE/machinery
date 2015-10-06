@@ -35,7 +35,7 @@ Release:        0
 %endif
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  machinery-helper-x86_64
+BuildRequires:  go
 BuildRequires:  ruby-macros >= 5
 # libxml2-devel and libxslt-devel are needed to install Nokogiri.
 BuildRequires:  libxml2-devel
@@ -94,11 +94,6 @@ toolkit for Linux.
 %build
 
 %install
-# Install machinery helpers
-for arch in x86_64; do
-  install -D -m 0755 %{_datadir}/machinery/helpers/$arch/machinery-helper %{buildroot}/%{_datadir}/machinery/helpers/$arch/machinery-helper
-done
-
 # Install the gem itself
 
 %gem_install -f
@@ -163,6 +158,9 @@ Gem.path.unshift("%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/bundle/ru
 ' %{buildroot}%{_bindir}/%{binary_name}
 %endif
 
+# Clean up obsolete extension doc
+rm -rf %{buildroot}%{_libdir}/ruby/gems/%{rb_ver}/doc/extensions
+
 # Man page & additional files
 
 mkdir -p %{buildroot}%{_mandir}/man1
@@ -179,8 +177,14 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 %{_bindir}/%{binary_name}
 %{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_full_name}.gem
 %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/
+# check that the machinery-helper is there on x86_64
+%ifarch x86_64
+%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/machinery-helper/machinery-helper
+%endif
+%if %suse_version > 1310
+%{_libdir}/ruby/gems/%{rb_ver}/extensions/
+%endif
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_full_name}.gemspec
-%{_datadir}/machinery
 %{_mandir}/man1/*.1.gz
 %doc COPYING NEWS
 
