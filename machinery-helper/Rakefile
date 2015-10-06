@@ -57,7 +57,8 @@ def go_available?
 end
 
 def arch_supported?
-  if !["x86_64"].include?(`uname -p`.chomp)
+  arch = `uname -p`.chomp
+  if !["x86_64"].include?(arch)
     STDERR.puts(
       "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
     )
@@ -89,9 +90,9 @@ def changed_revision?
 end
 
 def run_build
-  return false if !go_available?
   # An unsupported architecture is no error
   return true if !arch_supported?
+  return false if !go_available?
 
   # handle changed branches (where go files are older than the helper)
   if runs_in_git? && changed_revision?
