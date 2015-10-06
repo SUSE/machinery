@@ -92,6 +92,7 @@ $(document).ready(function () {
           $("#file-modal-error").html("File is empty.").show();
         } else {
           $("#file-modal-file-content").val(res).show();
+          $("#file-modal-file-content").scrollTop(0);
         }
       }, "text").
       error(function(res) {
