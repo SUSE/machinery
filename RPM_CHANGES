@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.14.0 - Tue Oct 06 21:26:12 CEST 2015 - thardeck@suse.de
+
+* update to version 1.14.0
 * machinery-helper is now built during gem installation and thus part of the
   gem file structure
 

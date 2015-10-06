@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.14.0 - Tue Oct 06 21:26:12 CEST 2015 - thardeck@suse.de
+
 * The machinery-helper is now built during gem-installation on x86_64
   machines if Go is available. The RPM package is still shipped with
   a precompiled version.
