@@ -52,15 +52,16 @@ module ReleaseChecks
     if response.code == "200"
       json = JSON.parse(response.body)
 
-      actions = json["actions"].reject{ |h| h.empty? }
+      actions = json["actions"].reject(&:empty?)
 
-      last_revision = Cheetah.run("git", "rev-parse", "HEAD", :stdout => :capture).chomp
+      last_revision = Cheetah.run("git", "rev-parse", "HEAD", stdout: :capture).chomp
       tested_revision = actions.find do |e|
         e.has_key?("lastBuiltRevision")
       end["lastBuiltRevision"]["SHA1"]
 
       if last_revision != tested_revision
-        fail "Current HEAD (#{last_revision}) was not tested by Jenkins yet (#{tested_revision}). Abort."
+        fail "Current HEAD (#{last_revision}) was not tested by Jenkins yet" \
+          " (#{tested_revision}). Abort."
       end
 
       result = json["result"]
