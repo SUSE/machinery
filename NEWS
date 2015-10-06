@@ -6,7 +6,6 @@
 * Allow limiting the `list` command output to certain system descriptions
   by passing them along as argument (gh#SUSE/machinery#1398)
 * Add `move` command to rename system descriptions (gh#SUSE/machinery#1397)
-
 * Add inspection of RPM based Docker containers
 
 ## Version 1.13.0 - Tue Sep 15 18:06:00 CEST 2015 - thardeck@suse.de
