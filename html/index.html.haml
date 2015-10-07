@@ -61,8 +61,7 @@
             .filter-input.col-md-3
               %input#filter{ :placeholder => "Type To Filter" }
               %a{ :href => "#" }
-                %img{ :src => "assets/reset.png", :titel => "Reset Filter",
-                  "ng-click" => "query = ''" }
+                %img#reset-filter{ :src => "assets/reset.png", :titel => "Reset Filter" }
 
             %span.scope-navigation
               Scopes:
@@ -99,7 +98,7 @@
                   :"data-toggle" => "popover", "data-content" => scope_help('unmanaged_files') }
 
 
-      #content_container{ "ng-controller" => "showController" }
+      #content_container
 
         = render_scope "os"
         = render_scope "packages"

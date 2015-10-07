@@ -3,6 +3,9 @@ $(document).ready(function () {
   $(".filterable").searcher({
     inputSelector: "#filter"
   });
+  $("#reset-filter").click(function() {
+    $("#filter").val("").change()
+  });
 
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
