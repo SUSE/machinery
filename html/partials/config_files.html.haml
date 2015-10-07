@@ -1,0 +1,57 @@
+- if config_files && config_files.files.length > 0
+  %div
+    %a.scope_anchor{ id: "config_files" }
+    .scope#config_files_container{ "data-scope" => "config_files" }
+      - count = config_files.files.length
+      = render_partial "scope_header",
+        :scope => "config_files",
+        :title => "Config Files",
+        :count => "#{count} #{Machinery.pluralize(count, "file")}"
+      .row.scope_content.collapse.in
+        - config_files.files.each do |file|
+          - if file.diff
+            .diff{ style: "display: none", "data-config-file-diff" => file.diff.file }
+              %span.diff-summary
+                #{file.diff.additions} additions & #{file.diff.deletions} deletions
+              %table.diff
+                - file.diff.lines.each do |line|
+                  %tr{ class: line.type }
+                    %td.active.linenumber= line.original_line_number
+                    %td.linenumber= line.new_line_number
+                    %td
+                      = raw line.content
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.files-table.filterable
+            %thead
+              %tr
+                %th Name
+                %th Package Name
+                %th Package Version
+                %th Changes
+                %th Mode
+                %th User
+                %th Group
+            %tbody
+              - config_files.files.each do |file|
+                %tr
+                  %td
+                    %span
+                      - if file.on_disk?
+                        %a.file-download{ href: "#" }
+                          = file.name
+                      - else
+                        %span
+                          = file.name
+                    - if file.diff
+                      %a.diff-toggle{ "data-config-file" => file.name, "data-toggle" => "popover" }
+                        Show diff
+                  %td= file.package_name
+                  %td= file.package_version
+                  %td
+                    = file.changes.join(",")
+                    - if file.error_message
+                      %span{ title: file.error_message } (details)
+                  %td= file.mode
+                  %td= file.user
+                  %td= file.group

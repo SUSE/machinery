@@ -1,0 +1,30 @@
+- if packages
+  %div
+    %a.scope_anchor{ id: "packages" }
+    .scope#packages_container
+      = render_partial "scope_header",
+        :scope => "packages",
+        :title => "Packages",
+        :count => "#{packages.length} #{Machinery.pluralize(packages.length, "packages")}"
+
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th Version
+                %th Release
+                %th Arch
+                %th Vendor
+                %th Checksum
+            %tbody
+              - packages.each do |package|
+                %tr
+                  %td= package.name
+                  %td= package.version
+                  %td= package.release
+                  %td= package.arch
+                  %td= package.vendor
+                  %td= package.checksum

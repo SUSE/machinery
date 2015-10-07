@@ -1,0 +1,23 @@
+- if patterns
+  %div
+    %a.scope_anchor{ id: "patterns" }
+    .scope#patterns_container
+      = render_partial "scope_header",
+        :scope => "patterns",
+        :title => "Patterns",
+        :count => "#{patterns.length} #{Machinery.pluralize(patterns.length, "pattern")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th Version
+                %th Release
+            %tbody
+              - patterns.each do |pattern|
+                %tr
+                  %td= pattern.name
+                  %td= pattern.version
+                  %td= pattern.release

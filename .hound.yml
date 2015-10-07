@@ -7,3 +7,7 @@ javascript:
 
 go:
   enabled: true
+
+haml:
+  enabled: true
+  config_file: .haml-style.yml

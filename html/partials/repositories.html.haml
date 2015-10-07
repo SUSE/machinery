@@ -1,0 +1,35 @@
+- if repositories
+  %div
+    %a.scope_anchor{ id: "repositories" }
+    .scope#repositories_container
+      - count = repositories.length
+      = render_partial "scope_header",
+        :scope => "repositories",
+        :title => "Repositories",
+        :count => "#{count} #{Machinery.pluralize(count, "repository", "repositories")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th Alias
+                %th Type
+                %th URL
+                %th Enabled
+                %th Autorefresh
+                %th GPG Check
+                %th Priority
+            %tbody
+              - repositories.each do |repo|
+                %tr
+                  %td= repo.name
+                  %td= repo.alias
+                  %td= repo.type
+                  %td
+                    %a{ href: repo.url }= repo.url
+                  %td= repo.enabled
+                  %td= repo.autorefresh
+                  %td= repo.gpgcheck
+                  %td= repo.priority

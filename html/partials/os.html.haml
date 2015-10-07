@@ -1,0 +1,26 @@
+- if os
+  %div
+    %a.scope_anchor{ :id => "os" }
+    .scope#os_container
+      .row
+        .col-xs-1
+          %img.scope_logo_big.over{ "src" => "assets/logo-os.png", "data-toggle" => "popover",
+            "title" => "Operating System", "data-content" => scope_help('os') }
+          %span.toggle{ title: "Collapse/Expand" }
+        .col-xs-11
+          %h2
+            Operating System
+            .scope-summary
+              = scope_meta_info("os")
+        .col-xs-1
+        .col-xs-3.scope_content.collapse.in
+          %table.table.table-striped.table-condensed
+            %tr
+              %th Name
+              %td= os.name
+            %tr
+              %th Version
+              %td= os.version
+            %tr
+              %th Architecture
+              %td= os.architecture

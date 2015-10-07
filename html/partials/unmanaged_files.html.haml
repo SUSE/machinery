@@ -1,0 +1,28 @@
+- if unmanaged_files && unmanaged_files.files.length > 0
+  %div
+    %a.scope_anchor{ id: "unmanaged_files" }
+    .scope#unmanaged_files_container{ "data-scope" => "unmanaged_files" }
+      - count = unmanaged_files.files.length
+      = render_partial "scope_header",
+        :scope => "unmanaged_files",
+        :title => "Unmanaged Files",
+        :count => "#{count} #{Machinery.pluralize(count, "file")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %table.table.table-striped.table-hover.table-condensed.files-table.filterable
+            %thead
+              %tr
+                %th Name
+                %th Type
+            %tbody
+              - unmanaged_files.files.each do |file|
+                %tr
+                  %td
+                    - if file.on_disk?
+                      %a.file-download{ href: "#" }
+                        = file.name
+                    - else
+                      %span
+                        = file.name
+                  %td= file.type
