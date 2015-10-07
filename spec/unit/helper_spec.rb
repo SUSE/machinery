@@ -17,6 +17,8 @@
 
 require_relative "spec_helper"
 
+include GivenFilesystemSpecHelpers
+
 describe Machinery do
   describe ".pluralize" do
     context "when pluralform is not given" do
@@ -65,6 +67,22 @@ describe Machinery do
       expect(Machinery::is_int?("1 ")).to be(false)
       expect(Machinery::is_int?(" 1")).to be(false)
       expect(Machinery::is_int?("")).to be(false)
+    end
+  end
+
+  describe ".file_is_binary?" do
+    use_given_filesystem
+
+    it "detects xml file as non-binary" do
+      expect(Machinery::file_is_binary?(given_file("xml_file"))).to be(false)
+    end
+
+    it "detects text file as non-binary" do
+      expect(Machinery::file_is_binary?(given_file("text_file"))).to be(false)
+    end
+
+    it "detects binary file as binary" do
+      expect(Machinery::file_is_binary?(given_file("binary_file"))).to be(true)
     end
   end
 

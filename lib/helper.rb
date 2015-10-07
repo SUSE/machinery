@@ -20,6 +20,17 @@ module Machinery
     (string =~ /^\d+$/) != nil
   end
 
+  def self.file_is_binary?(path)
+    # Code by https://github.com/djberg96/ptools
+    # Modified by SUSE Linux GmbH
+    # License: Artistic 2.0
+    bytes = File.stat(path).blksize
+    bytes = 4096 if bytes > 4096
+    s = (File.read(path, bytes) || "")
+    s = s.encode("US-ASCII", undef: :replace).split(//)
+    ((s.size - s.grep(" ".."~").size) / s.size.to_f) > 0.30
+  end
+
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
   # UTF-8.
   def self.scrub(s)
