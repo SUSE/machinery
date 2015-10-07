@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency "json", "~>1.8.0"
   s.add_dependency "abstract_method", "~>1.2.1"
   s.add_dependency "nokogiri", "~>1.6.0"
-  s.add_dependency "gli", "~> 2.11.0"
+  s.add_dependency "gli", ">=2.11.0", "<2.14"
   s.add_dependency "json-schema", "~> 2.2.4"
   s.add_dependency "haml", "~> 4.0.5"
   s.add_dependency "kramdown", "~> 1.3.3"
