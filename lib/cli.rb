@@ -624,7 +624,7 @@ class Cli
 
     Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
-  arg "IMAGENAME"
+  arg "<IMAGENAME|IMAGEID>"
   command "inspect-container" do |c|
     supports_filtering(c)
     define_inspect_command_options(c)
@@ -632,7 +632,7 @@ class Cli
       desc: "Inspect a docker container"
 
     c.action do |_global_options, options, args|
-      image = shift_arg(args, "IMAGENAME")
+      image = shift_arg(args, "<IMAGENAME|IMAGEID>")
       system = DockerSystem.new(image)
       inspector_task = InspectTask.new
 
