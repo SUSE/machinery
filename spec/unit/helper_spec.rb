@@ -70,19 +70,20 @@ describe Machinery do
     end
   end
 
-  describe ".file_is_binary?" do
+  describe ".content_is_binary?" do
     use_given_filesystem
 
-    it "detects xml file as non-binary" do
-      expect(Machinery::file_is_binary?(given_file("xml_file"))).to be(false)
+    it "detects xml content as non-binary" do
+      expect(Machinery::content_is_binary?(File.read(given_file("xml_file")))).to be(false)
+      expect(Machinery::content_is_binary?(File.read(given_file("xml_file_2")))).to be(false)
     end
 
     it "detects text file as non-binary" do
-      expect(Machinery::file_is_binary?(given_file("text_file"))).to be(false)
+      expect(Machinery::content_is_binary?(File.read(given_file("text_file")))).to be(false)
     end
 
     it "detects binary file as binary" do
-      expect(Machinery::file_is_binary?(given_file("binary_file"))).to be(true)
+      expect(Machinery::content_is_binary?(File.read(given_file("binary_file")))).to be(true)
     end
   end
 

@@ -20,14 +20,14 @@ module Machinery
     (string =~ /^\d+$/) != nil
   end
 
-  def self.file_is_binary?(path)
+  def self.content_is_binary?(content)
     # Code by http://www.thecodingforums.com/threads/test-if-file-is-binary.843447/#post-4572282
     # Modified by SUSE Linux GmbH
     ascii = 0
     control = 0
     binary = 0
 
-    File.open(path, "rb") { |io| io.read(1024) }.each_byte do |byte|
+    content.each_byte do |byte|
       case byte
       when 0...32
         control += 1

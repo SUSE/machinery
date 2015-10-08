@@ -30,7 +30,7 @@ module ScopeFileAccessFlat
     path = system_file.scope.file_path(system_file)
     return false if File.zero?(path)
 
-    Machinery.file_is_binary?(path)
+    Machinery.content_is_binary?(File.read(path))
   end
 
   def has_file?(name)

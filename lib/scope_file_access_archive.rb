@@ -74,7 +74,6 @@ module ScopeFileAccessArchive
     content = file_content(system_file)
     return false if content.empty?
 
-    output = Cheetah.run("file", "-", stdin: content, stdout: :capture)
-    !output.include?("ASCII")
+    Machinery.content_is_binary?(content.slice(0, 1024))
   end
 end
