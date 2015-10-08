@@ -11,6 +11,6 @@ if there is a Go toolchain available.
 
 The RPM is maintained in the Open Build Service in the
 [systemsmamnagement:machinery](https://build.opensuse.org/project/show/systemsmanagement:machinery)
-project. The RPM bundles the gems it needs as well as the helper binary, so that
+project. The RPM bundles the required gems as well as the helper binary, so that
 there is one self-contained package, which can be easily installed, and doesn't
 expose any dependencies to the user.
