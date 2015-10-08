@@ -25,8 +25,8 @@ module Machinery
     # Modified by SUSE Linux GmbH
     ascii = control = binary = 0
 
-    File.open(path, "rb") { |io| io.read(1024) }.each_byte do |bt|
-      case bt
+    File.open(path, "rb") { |io| io.read(1024) }.each_byte do |byte|
+      case byte
       when 0...32
         control += 1
       when 32...128
