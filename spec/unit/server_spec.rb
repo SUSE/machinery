@@ -70,27 +70,6 @@ describe Server do
       end
     end
 
-    describe "GET /descriptions/:id.js" do
-      before(:each) do
-        get "/descriptions/#{description_a.name}.js"
-
-        @json = JSON.parse(last_response.body)
-      end
-
-      it "returns the json" do
-        expect(last_response).to be_ok
-        expect(@json["config_files"]).to_not be(nil)
-      end
-
-      it "adds the downloadable flag to files" do
-        deleted = @json["config_files"]["files"].find { |f| f["changes"].include?("deleted") }
-        changed = @json["config_files"]["files"].find { |f| f["changes"].include?("md5") }
-
-        expect(deleted["downloadable"]).to eq(false)
-        expect(changed["downloadable"]).to eq(true)
-      end
-    end
-
     describe "GET /descriptions/:id/files/:scope" do
       it "sends the file" do
         get "/descriptions/#{description_a.name}/files/config_files/etc/cron%20tab"

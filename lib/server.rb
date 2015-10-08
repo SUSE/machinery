@@ -96,29 +96,6 @@ class Server < Sinatra::Base
 
   helpers Helpers
 
-  get "/descriptions/:id.js" do
-    description = SystemDescription.load(params[:id], settings.system_description_store)
-    diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
-    if description.config_files && diffs_dir
-      # Enrich description with the config file diffs
-      description.config_files.files.each do |file|
-        path = File.join(diffs_dir, file.name + ".diff")
-        file.diff = diff_to_object(File.read(path)) if File.exists?(path)
-      end
-    end
-
-    # Enrich file information with downloadable flag
-    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
-      next if !description[scope]
-
-      description[scope].files.each do |file|
-        file.downloadable = file.on_disk?
-      end
-    end
-
-    description.to_hash.to_json
-  end
-
   get "/descriptions/:id/files/:scope/*" do
     description = SystemDescription.load(params[:id], settings.system_description_store)
     filename = File.join("/", params["splat"].first)
@@ -193,6 +170,15 @@ class Server < Sinatra::Base
 
   get "/:id" do
     @description = SystemDescription.load(params[:id], settings.system_description_store)
+
+    diffs_dir = @description.scope_file_store("analyze/config_file_diffs").path
+    if @description.config_files && diffs_dir
+      # Enrich description with the config file diffs
+      @description.config_files.files.each do |file|
+        path = File.join(diffs_dir, file.name + ".diff")
+        file.diff = diff_to_object(File.read(path)) if File.exists?(path)
+      end
+    end
 
     haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
   end
