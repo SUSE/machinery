@@ -21,14 +21,22 @@ module Machinery
   end
 
   def self.file_is_binary?(path)
-    # Code by https://github.com/djberg96/ptools
+    # Code by http://www.thecodingforums.com/threads/test-if-file-is-binary.843447/#post-4572282
     # Modified by SUSE Linux GmbH
-    # License: Artistic 2.0
-    bytes = File.stat(path).blksize
-    bytes = 4096 if bytes > 4096
-    s = (File.read(path, bytes) || "")
-    s = s.encode("US-ASCII", undef: :replace).split(//)
-    ((s.size - s.grep(" ".."~").size) / s.size.to_f) > 0.30
+    ascii = control = binary = 0
+
+    File.open(path, "rb") {|io| io.read(1024)}.each_byte do |bt|
+      case bt
+      when 0...32
+        control += 1
+      when 32...128
+        ascii += 1
+      else
+        binary += 1
+      end
+    end
+
+    control.to_f / ascii > 0.1 || binary.to_f / ascii > 0.05
   end
 
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
