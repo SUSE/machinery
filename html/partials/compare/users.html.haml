@@ -1,0 +1,52 @@
+- if @diff["patterns"]
+  %a.scope_anchor{ id: "users" }
+  .scope#users_container
+    .row
+      .col-xs-1
+        %a{ href: "#users" }
+          %img.over.scope_logo_big{ :src => "/assets/logo-users.png",
+            "data-toggle" => "popover",
+            :title => "Users",
+            "data-content" => "#{scope_help("users")}" }
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Users
+          .scope-summary
+            - if @diff["users"].only_in1
+              %span.summary-part
+                #{@description_a.name}: #{@diff["users"].only_in1.length} users
+            - if @diff["users"].only_in2
+              %span.summary-part
+                #{@description_b.name}: #{@diff["users"].only_in2.length} users
+            - if @diff["users"].common
+              %span.summary-part
+                %a.show-common-elements{ href: "#users_both" }<
+                  both
+                = ": #{@diff["users"].common.length} users"
+    .row.scope_content.collapse.in
+      .row
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["users"].only_in1
+            = only_in_a
+            = render_partial "compare/user_list", list: @diff["users"].only_in1
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["users"].only_in2
+            = only_in_b
+            = render_partial "compare/user_list", list: @diff["users"].only_in2
+      - if @diff["users"].common
+        %a.both_anchor{ id: "users_both" }
+        .row
+          .col-xs-1
+          .col-xs-2
+            %a.show-common-elements{ href: "#" }
+              Show common elements in users
+            %a.hide-common-elements{ href: "#", style: "display: none" }
+              Hide common elements in users
+        .row.scope_common_content.collapse
+          .col-xs-1
+          .col-xs-10.table_container
+            = in_both
+            = render_partial "compare/user_list", list: @diff["users"].common

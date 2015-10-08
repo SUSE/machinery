@@ -17,7 +17,7 @@
 
 class Server < Sinatra::Base
   module Helpers
-    def render_partial(partial, locals)
+    def render_partial(partial, locals = {})
       source = File.read(File.join(Machinery::ROOT, "html/partials/#{partial}.html.haml"))
       haml source, locals: locals
     end
@@ -37,6 +37,66 @@ class Server < Sinatra::Base
     def scope_help(scope)
       text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
       Kramdown::Document.new(text).to_html
+    end
+
+    def safe_length(object, attribute)
+      if object && collection = object.send(attribute)
+        collection.length
+      else
+        0
+      end
+    end
+
+    def only_in_a
+      "<h3>Only in '#{@description_a.name}':</h3>"
+    end
+
+    def only_in_b
+      "<h3>Only in '#{@description_b.name}':</h3>"
+    end
+
+    def in_both
+      "<h3>In both descriptions:</h3>"
+    end
+
+    def changed
+      "<h3>In both with different attributes:</h3>"
+    end
+
+    def changed_packages
+      changed = []
+      @diff["packages"].changed.each do |change|
+        changes = []
+        relevant_attributes = ["version", "vendor", "arch"]
+
+        if change[0].version == change[1].version
+          relevant_attributes.push("release")
+          if change[0].release == change[1].release
+            relevant_attributes.push("checksum")
+          end
+        end
+
+        relevant_attributes.each do |attribute|
+          if change[0][attribute] != change[1][attribute]
+            changes.push(attribute + ": " + change[0][attribute] + " ↔ " + change[1][attribute])
+          end
+        end
+
+        changed.push(change[0].name + " (" + changes.join(", ") + ")")
+      end
+      changed
+    end
+
+    def diffable_unmanaged_files
+      return @diffable_unmanaged_files if @diffable_unmanaged_files
+
+      return [] if !@diff["unmanaged_files"] || !@diff["unmanaged_files"].only_in1 ||
+          !@diff["unmanaged_files"].only_in2
+
+      files_in_1 = @diff["unmanaged_files"].only_in1.files.select(&:file?).map(&:name)
+      files_in_2 = @diff["unmanaged_files"].only_in2.files.select(&:file?).map(&:name)
+
+      @diffable_unmanaged_files = files_in_1 & files_in_2
     end
 
     def diff_to_object(diff)
@@ -116,41 +176,31 @@ class Server < Sinatra::Base
     content
   end
 
-  get "/compare/:a/:b.json" do
-    description_a = SystemDescription.load(params[:a], settings.system_description_store)
-    description_b = SystemDescription.load(params[:b], settings.system_description_store)
+  get "/compare/:a/:b" do
+    @description_a = SystemDescription.load(params[:a], settings.system_description_store)
+    @description_b = SystemDescription.load(params[:b], settings.system_description_store)
 
-    diff = {
-      meta: {
-        description_a: description_a.name,
-        description_b: description_b.name,
-      }
-    }
+    @meta = {}
+    @diff = {}
 
     Inspector.all_scopes.each do |scope|
-      if description_a[scope] && description_b[scope]
-        comparison = Comparison.compare_scope(description_a, description_b, scope)
-        diff[scope] = comparison.as_json
+      if @description_a[scope] && @description_b[scope]
+        @diff[scope] = Comparison.compare_scope(@description_a, @description_b, scope)
       else
-        diff[:meta][:uninspected] ||= Hash.new
+        @meta[:uninspected] ||= Hash.new
 
-        if !description_a[scope] && description_b[scope]
-          diff[:meta][:uninspected][description_a.name] ||= Array.new
-          diff[:meta][:uninspected][description_a.name] << scope
+        if !@description_a[scope] && @description_b[scope]
+          @meta[:uninspected][@description_a.name] ||= Array.new
+          @meta[:uninspected][@description_a.name] << scope
         end
-        if !description_b[scope] && description_a[scope]
-          diff[:meta][:uninspected][description_b.name] ||= Array.new
-          diff[:meta][:uninspected][description_b.name] << scope
+        if !@description_b[scope] && @description_a[scope]
+          @meta[:uninspected][@description_b.name] ||= Array.new
+          @meta[:uninspected][@description_b.name] << scope
         end
       end
     end
 
-    diff.to_json
-  end
-
-  get "/compare/:a/:b" do
-    haml File.read(File.join(Machinery::ROOT, "html/comparison.html.haml")),
-      locals: { description_a: params[:a], description_b: params[:b] }
+    haml File.read(File.join(Machinery::ROOT, "html/comparison.html.haml"))
   end
 
   get "/compare/:a/:b/files/:scope/*" do

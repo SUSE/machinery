@@ -1,0 +1,28 @@
+%table.table.table-striped.table-hover.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th Alias
+      %th URL
+      %th.small Type
+      %th.small Enabled
+      %th.small.visible-lg Autorefresh
+      %th.small.visible-lg GPG Check
+      %th.small.visible-lg Priority
+      %th.tiny.hidden-lg
+  %tbody
+    - list.each do |repo|
+      %tr
+        %td= repo.name
+        %td= repo.alias
+        %td
+          %a{ href: repo.url }= repo.url
+        %td= repo.type
+        %td= repo.enabled
+        %td.visible-lg= repo.autorefresh
+        %td.visible-lg= repo.gpgcheck
+        %td.visible-lg= repo.priority
+        %td.hidden-lg{ title: "Name: #{repo.name}\nAlias: #{repo.alias}\nUrl: #{repo.url}\n" |
+                 "Type: #{repo.type}\nEnabled: #{repo.enabled}\nAutorefresh: " |
+                 "#{repo.autorefresh}\nGPG Check: #{repo.gpgcheck}\nPriority: #{repo.priority}" } |
+          | ...

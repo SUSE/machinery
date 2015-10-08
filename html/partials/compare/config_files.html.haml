@@ -1,0 +1,54 @@
+- if @diff["config_files"]
+  %a.scope_anchor{ id: "config_files" }
+  .scope#config_files_container
+    .row
+      .col-xs-1
+        %a{ href: "#groups" }
+          %img.over.scope_logo_big{ src: "/assets/logo-config-files.png",
+            "data-toggle" => "popover",
+            :title => "Config Files",
+            "data-content" => "#{scope_help("config_files")}" }
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Config Files
+          .scope-summary
+            - if @diff["config_files"].only_in1
+              %span.summary-part
+                #{@description_a.name}:
+                #{safe_length(@diff["config_files"].only_in1, :files)} files
+            - if @diff["config_files"].only_in2
+              %span.summary-part
+                #{@description_b.name}:
+                #{safe_length(@diff["config_files"].only_in2, :files)} files
+            - if @diff["config_files"].common
+              %span.summary-part
+                %a.show-common-elements{ href: "#config_files_both" }<
+                  both
+                = ": #{safe_length(@diff["config_files"].common, :files)} files"
+    .row.scope_content.collapse.in
+      .row
+        .col-xs-1
+        .col-xs-5.table_container
+          - if safe_length(@diff["config_files"].only_in1, :files) > 0
+            = only_in_a
+            = render_partial "compare/config_file_list", list: @diff["config_files"].only_in1
+        .col-xs-1
+        .col-xs-5.table_container
+          - if safe_length(@diff["config_files"].only_in2, :files) > 0
+            = only_in_b
+            = render_partial "compare/config_file_list", list: @diff["config_files"].only_in2
+      - if safe_length(@diff["config_files"].common, :files) > 0
+        %a.both_anchor{ id: "config_files_both" }
+        .row
+          .col-xs-1
+          .col-xs-11
+            %a.show-common-elements{ href: "#" }
+              Show common elements in config-files
+            %a.hide-common-elements{ href: "#", style: "display: none" }
+              Hide common elements in config-files
+        .row.scope_common_content.collapse
+          .col-xs-1
+          .col-xs-10.table_container
+            = in_both
+            = render_partial "compare/config_file_list", list: @diff["config_files"].common

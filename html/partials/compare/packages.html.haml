@@ -1,0 +1,66 @@
+- if @diff["packages"]
+  %a.scope_anchor{ id: "packages" }
+  .scope#packages_container
+    .row
+      .col-xs-1
+        %a{ href: "#packages" }
+          %img.over.scope_logo_big{ :src => "/assets/logo-packages.png",
+            "data-toggle" => "popover",
+            :title => "Packages",
+            "data-content" => "#{scope_help("packages")}" }
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Packages
+          .scope-summary
+            - if @diff["packages"].only_in1
+              %span.summary-part
+                #{@description_a.name}: #{@diff["packages"].only_in1.length} packages
+            - if @diff["packages"].only_in2
+              %span.summary-part
+                #{@description_b.name}: #{@diff["packages"].only_in2.length} packages
+            - if @diff["packages"].changed
+              %span.summary-part
+                %a{ href: "#packages_changed" }
+                Changed
+                = ": #{@diff["packages"].changed.length} packages"
+            - if @diff["packages"].common
+              %span.summary-part
+                %a.show-common-elements{ href: "#packages_both" }<
+                  both
+                = ": #{@diff["packages"].common.length} packages"
+    .row.scope_content.collapse.in
+      .row
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["packages"].only_in1
+            = only_in_a
+            = render_partial "compare/package_list", list: @diff["packages"].only_in1
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["packages"].only_in2
+            = only_in_b
+            = render_partial "compare/package_list", list: @diff["packages"].only_in2
+      - if @diff["packages"].changed
+        %a.both_anchor{ id: "packages_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_packages.each do |change|
+                %li= change
+      - if @diff["packages"].common
+        %a.both_anchor{ id: "packages_both" }
+        .row
+          .col-xs-1
+          .col-xs-2
+            %a.show-common-elements{ href: "#" }
+              Show common elements in packages
+            %a.hide-common-elements{ href: "#", style: "display: none" }
+              Hide common elements in packages
+        .row.scope_common_content.collapse
+          .col-xs-1
+          .col-xs-10.table_container
+            = in_both
+            = render_partial "compare/package_list", list: @diff["packages"].common
