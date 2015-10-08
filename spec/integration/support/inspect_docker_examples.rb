@@ -15,13 +15,13 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "inspect-container --docker simple scope" do |scope, container|
+shared_examples "inspect-container simple scope" do |scope, container|
   describe "--scope=#{scope}" do
     it "inspects #{scope}" do
       measure("Inspect #{scope}") do
         expect(
           @machinery.run_command(
-            "#{machinery_command} inspect-container -x --docker machinerytool/#{container} " \
+            "#{machinery_command} inspect-container -x machinerytool/#{container} " \
               "--scope=#{scope} --name=test",
             as: "vagrant"
           )
@@ -48,13 +48,13 @@ end
   "users",
   "groups"
 ].each do |scope|
-  shared_examples "inspect-container --docker #{scope}" do |container|
-    include_examples("inspect-container --docker simple scope", scope, container)
+  shared_examples "inspect-container #{scope}" do |container|
+    include_examples("inspect-container simple scope", scope, container)
   end
 end
 
-shared_examples "inspect-container --docker" do |container|
-  describe "inspect-container --docker #{container}" do
+shared_examples "inspect-container" do |container|
+  describe "inspect-container #{container}" do
     let(:inspect_options) {
       "--remote-user=#{username}" if username != "root"
     }
@@ -70,7 +70,7 @@ shared_examples "inspect-container --docker" do |container|
       "config-files",
       "changed-managed-files"
     ].each do |scope|
-      include_examples("inspect-container --docker simple scope", scope, container)
+      include_examples("inspect-container simple scope", scope, container)
     end
 
     context "--scope=config-files" do
@@ -90,7 +90,7 @@ shared_examples "inspect-container --docker" do |container|
         measure("Inspect unmanaged-files") do
           expect(
             @machinery.run_command(
-              "#{machinery_command} inspect-container -x --docker machinerytool/#{container} " \
+              "#{machinery_command} inspect-container -x machinerytool/#{container} " \
               "--scope=unmanaged-files --skip-files=/etc/resolv.conf --name=test",
               as: "vagrant"
             )

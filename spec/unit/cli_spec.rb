@@ -73,7 +73,7 @@ describe Cli do
           {}
         )
 
-      run_command(["inspect-container", "--docker", "docker_image_foo"])
+      run_command(["inspect-container", "docker_image_foo"])
     end
   end
 
