@@ -117,6 +117,18 @@ class Release
     Cheetah.run("git", "checkout", "master")
   end
 
+  def publish_gem
+    Dir.chdir(File.join(Machinery::ROOT, "package")) do
+      gem = Dir.glob("*.gem").first
+      if gem
+        puts("Publishing gem to rubygems.org")
+        Cheetah.run("gem", "push", gem)
+      else
+        raise("There is no gem to publish")
+      end
+    end
+  end
+
   private
 
   def remove_old_releases(skip_rpm_cleanup: false)

@@ -170,6 +170,7 @@ task :release, [:type] do |task, args|
   release.check
 
   release.publish
+  release.publish_gem
   release.publish_man_page
 end
 
