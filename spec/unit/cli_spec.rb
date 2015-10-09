@@ -767,13 +767,13 @@ Backtrace:
   describe ".check_port_validity" do
     it "checks if a port is invalid below 2" do
       expect { Cli.check_port_validity(1) }.to raise_error(
-        Machinery::Errors::InvalidServerPortSpecified
+        Machinery::Errors::ServerPortError
       )
     end
 
     it "checks if a port is invalid above 65535" do
       expect { Cli.check_port_validity(65536) }.to raise_error(
-        Machinery::Errors::InvalidServerPortSpecified
+        Machinery::Errors::ServerPortError
       )
     end
 
@@ -783,7 +783,7 @@ Backtrace:
 
     it "checks if a port requires root privileges" do
       expect { Cli.check_port_validity(1000) }.to raise_error(
-        Machinery::Errors::ServerNeedRootPrivileges
+        Machinery::Errors::ServerPortError
       )
     end
   end

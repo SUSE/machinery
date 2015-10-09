@@ -140,7 +140,12 @@ module Machinery
     class UnexpectedInputData < MachineryError; end
     class ComposeServiceLink < MachineryError; end
     class UnsupportedHelperVersion < MachineryError; end
-    class InvalidServerPortSpecified < MachineryError; end
-    class ServerNeedRootPrivileges < MachineryError; end
+    class ServerPortError < MachineryError
+      attr_reader :message
+
+      def initialize(message)
+        @message = message
+      end
+    end
   end
 end

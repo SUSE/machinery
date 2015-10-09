@@ -248,10 +248,13 @@ class Cli
 
   def self.check_port_validity(port)
     if port < 2 || port > 65535
-      raise Machinery::Errors::InvalidServerPortSpecified
+      raise Machinery::Errors::ServerPortError.new("The specified port '#{port}' is not " \
+        "valid. A valid port can be in a range between 2 and 65535.")
     else
       if port >= 2 && port <= 1023 && !CurrentUser.new.is_root?
-        raise Machinery::Errors::ServerNeedRootPrivileges
+        raise Machinery::Errors::ServerPortError.new("The specified port '#{port}' needs " \
+          "root privileges. Otherwise, the server cannot be started. All ports in a range " \
+          "of 2-1023 need root privileges.")
       end
     end
   end
@@ -360,16 +363,9 @@ class Cli
       if options[:html]
         begin
           check_port_validity(@config.http_server_port)
-        rescue Machinery::Errors::InvalidServerPortSpecified
-          raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid server " \
-            "port in the 'http_server_port' section of the configuration file. The specified " \
-            "port '#{@config.http_server_port}' is not valid. A valid port can be in a range " \
-            "between 2 and 65535.")
-        rescue Machinery::Errors::ServerNeedRootPrivileges
-          raise Machinery::Errors::InvalidCommandLine.new("You specified the port " \
-            "'#{@config.http_server_port}' in the 'http_server_port' section. To start the " \
-            "server, you need root privileges. If you don't want to start the server as root " \
-            "user, you must choose a port between 1024 and 65535.")
+        rescue Machinery::Errors::ServerPortError => e
+          raise Machinery::Errors::InvalidCommandLine.new(e.message +  " The port can be " \
+            "specified in the 'http_server_port' section of the configuration file.")
         end
       end
 
@@ -760,16 +756,9 @@ class Cli
       if options[:html]
         begin
           check_port_validity(@config.http_server_port)
-        rescue Machinery::Errors::InvalidServerPortSpecified
-          raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid server " \
-            "port in the 'http_server_port' section of the configuration file. The specified " \
-            "port '#{@config.http_server_port}' is not valid. A valid port can be in a range " \
-            "between 2 and 65535.")
-        rescue Machinery::Errors::ServerNeedRootPrivileges
-          raise Machinery::Errors::InvalidCommandLine.new("You specified the port " \
-            "'#{@config.http_server_port}' in the 'http_server_port' section. To start the " \
-            "server, you need root privileges. If you don't want to start the server as root " \
-            "user, you must choose a port between 1024 and 65535.")
+        rescue Machinery::Errors::ServerPortError => e
+          raise Machinery::Errors::InvalidCommandLine.new(e.message +  " The port can be " \
+            "specified in the 'http_server_port' section of the configuration file.")
         end
       end
 
@@ -905,17 +894,10 @@ class Cli
 
       begin
         check_port_validity(options[:port])
-      rescue Machinery::Errors::InvalidServerPortSpecified
-        raise Machinery::Errors::InvalidCommandLine.new("You have to specify a valid server " \
-          "port either in the 'http_server_port' section of the configuration file or " \
-          "via the --port option. The specified port '#{options[:port]}' is not valid. A valid " \
-          "port can be in a range between 2 and 65535.")
-      rescue Machinery::Errors::ServerNeedRootPrivileges
-        raise Machinery::Errors::InvalidCommandLine.new("You specified the port " \
-          "'#{options[:port]}' either in the 'http_server_port' section of the configuration " \
-          "file or via the --port option. To start the server, you need root privileges. If " \
-          "you don't want to start the server as root user, you must choose a port between " \
-          "1024 and 65535.")
+      rescue Machinery::Errors::ServerPortError => e
+        raise Machinery::Errors::InvalidCommandLine.new(e.message +  " The port can be " \
+          "either specified in the 'http_server_port' section of the configuration file " \
+          "or via the --port option.")
       end
 
       if options[:public]
