@@ -75,7 +75,6 @@ describe Machinery do
 
     it "detects xml content as non-binary" do
       expect(Machinery::content_is_binary?(File.read(given_file("xml_file")))).to be(false)
-      expect(Machinery::content_is_binary?(File.read(given_file("xml_file_2")))).to be(false)
     end
 
     it "detects text file as non-binary" do
