@@ -1,0 +1,23 @@
+%table.table.table-striped.table-hover.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th.small Version
+      %th.small.visible-md.visible-lg Release
+      %th.small.visible-md.visible-lg Arch
+      %th.visible-lg Vendor
+      %th.visible-lg Checksum
+      %th.tiny.hidden-lg
+  %tbody
+    - list.each do |package|
+      %tr
+        %td= package.name
+        %td= package.version
+        %td.visible-md.visible-lg= package.release
+        %td.visible-md.visible-lg= package.arch
+        %td.visible-lg= package.vendor
+        %td.visible-lg= package.checksum
+        %td.hidden-lg{ title: "Name: #{package.name}\nVersion: #{package.version}\nRelease: " |
+          "#{package.release}\nArchitecture: #{package.arch}\nVendor: #{package.vendor}\n" |
+          "Checksum: #{package.checksum}" } ... |
+

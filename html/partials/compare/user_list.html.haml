@@ -1,0 +1,18 @@
+%table.table.table-striped.table-hover.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th.small UID
+      %th.small GID
+      %th Comment
+      %th Home
+      %th.small Shell
+  %tbody
+    - list.each do |user|
+      %tr
+        %td= user.name
+        %td= user.uid
+        %td= user.gid
+        %td= user.comment
+        %td= user.home
+        %td= user.shell

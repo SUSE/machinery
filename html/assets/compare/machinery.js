@@ -73,6 +73,7 @@ $(document).ready(function () {
   });
 
   // Unmanaged files diffs
+  $("#diff-unmanaged-files-file").prop("selectedIndex", -1)
   $("#diff-unmanaged-files-file").change(function(){
     $("#diff-unmanaged-files-content").hide();
     $("#diff-unmanaged-files-error").hide();

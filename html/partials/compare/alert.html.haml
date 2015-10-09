@@ -1,0 +1,22 @@
+- if @meta[:uninspected]
+  .scope#alert_container
+    .row
+      .col-xs-10.col-xs-offset-1
+        .well
+          %span.text-right.dismiss{ title: "Collapse/Expand" }
+          - if @meta[:uninspected][@description_a.name]
+            %p
+              Couldn't compare
+              %strong
+                '#{@meta[:uninspected][@description_a.name].join(", ")}'
+              because they are not present in description
+              %strong
+                '#{@description_a.name}'
+          - if @meta[:uninspected][@description_b.name]
+            %p
+              Couldn't compare
+              %strong
+                '#{@meta[:uninspected][@description_b.name].join(", ")}'
+              because they are not present in description
+              %strong
+                '#{@description_b.name}'

@@ -1,0 +1,53 @@
+- if @diff["patterns"]
+  %a.scope_anchor{ id: "patterns" }
+  .scope#patterns_container
+    .row
+      .col-xs-1
+        %a{ href: "#patterns" }
+          %img.over.scope_logo_big{ :src => "/assets/logo-patterns.png",
+            "data-toggle" => "popover",
+            :title => "Patterns",
+            "data-content" => "#{scope_help("patterns")}" }
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Patterns
+          .scope-summary
+            - if @diff["patterns"].only_in1
+              %span.summary-part
+                #{@description_a.name}: #{@diff["patterns"].only_in1.length} patterns
+            - if @diff["patterns"].only_in2
+              %span.summary-part
+                #{@description_b.name}: #{@diff["patterns"].only_in2.length} patterns
+            - if @diff["patterns"].common
+              %span.summary-part
+                %a.show-common-elements{ href: "#patterns_both" }<
+                  both
+                = ": #{@diff["patterns"].common.length} patterns"
+    .row.scope_content.collapse.in
+      .row
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["patterns"].only_in1
+            = only_in_a
+            = render_partial "compare/pattern_list", list: @diff["patterns"].only_in1
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["patterns"].only_in2
+            = only_in_b
+            = render_partial "compare/pattern_list", list: @diff["patterns"].only_in2
+      - if @diff["patterns"].common
+        %a.both_anchor{ id: "patterns_both" }
+        .row
+          .col-xs-1
+          .col-xs-2
+            %a.show-common-elements{ href: "#patterns_both" }
+              Show common elements in patterns
+            %a.hide-common-elements{ href: "#", style: "display: none" }
+              Hide common elements in patterns
+        .row.scope_common_content.collapse
+          .col-xs-1
+          .col-xs-10.table_container
+            = in_both
+            = render_partial "compare/pattern_list", list: @diff["patterns"].common
+

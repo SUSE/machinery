@@ -91,24 +91,6 @@ describe Server do
       end
     end
 
-    describe "GET /compare/:a/:b.json" do
-      before(:each) do
-        get "/compare/#{description_a.name}/#{description_b.name}.json"
-
-        @json = JSON.parse(last_response.body)
-      end
-
-      it "returns the json" do
-        expect(last_response).to be_ok
-        expect(@json["os"]["common"]).to_not be(nil)
-      end
-
-      it "adds the information about uncomparable scopes" do
-        expect(@json["meta"]["uninspected"]["description_a"]).to eq(["unmanaged_files"])
-        expect(@json["meta"]["uninspected"]["description_b"]).to eq(["config_files"])
-      end
-    end
-
     describe "GET /compare/:a/:b/files/:scope" do
       it "sends the diff between the files" do
         get "/compare/#{description_a.name}/#{description_c.name}/files/config_files/etc/cron%20tab"

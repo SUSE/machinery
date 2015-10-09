@@ -1,0 +1,51 @@
+- if @diff["repositories"]
+  %a.scope_anchor{ id: "repositories" }
+  .scope#repositories_container
+    .row
+      .col-xs-1
+        %img.over.scope_logo_big{ :src => "/assets/logo-repositories.png",
+            "data-toggle" => "popover",
+            :title => "Repositories",
+            "data-content" => "#{scope_help("repositories")}" }
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Repositories
+          .scope-summary
+            - if @diff["repositories"].only_in1
+              %span.summary-part
+                #{@description_a.name}: #{@diff["repositories"].only_in1.length} repositories
+            - if @diff["repositories"].only_in2
+              %span.summary-part
+                #{@description_b.name}: #{@diff["repositories"].only_in2.length} repositories
+            - if @diff["repositories"].common
+              %span.summary-part
+                %a.show-common-elements{ href: "#repositories_both" }<
+                  both
+                = ": #{@diff["repositories"].common.length} repositories"
+    .row.scope_content.collapse.in
+      .row
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["repositories"].only_in1
+            = only_in_a
+            = render_partial "compare/repository_list", list: @diff["repositories"].only_in1
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["repositories"].only_in2
+            = only_in_b
+            = render_partial "compare/repository_list", list: @diff["repositories"].only_in2
+      - if @diff["repositories"].common
+        %a.both_anchor{ id: "repositories_both" }
+        .row
+          .col-xs-1
+          .col-xs-2
+            %a.show-common-elements{ href: "#repositories_both" }
+              Show common elements in repositories
+            %a.hide-common-elements{ href: "#", style: "display: none" }
+              Hide common elements in repositories
+        .row.scope_common_content.collapse
+          .col-xs-1
+          .col-xs-10.table_container
+            = in_both
+            = render_partial "compare/repository_list", list: @diff["repositories"].common

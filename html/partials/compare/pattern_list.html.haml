@@ -1,0 +1,12 @@
+%table.table.table-striped.table-hover.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th Version
+      %th Release
+  %tbody
+    - list.each do |pattern|
+      %tr
+        %td= pattern.name
+        %td= pattern.version
+        %td= pattern.release

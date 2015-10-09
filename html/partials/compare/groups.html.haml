@@ -1,0 +1,52 @@
+- if @diff["groups"]
+  %a.scope_anchor{ id: "groups" }
+  .scope#groups_container
+    .row
+      .col-xs-1
+        %a{ href: "#groups" }
+          %img.over.scope_logo_big{ :src => "/assets/logo-groups.png",
+            "data-toggle" => "popover",
+            :title => "Groups",
+            "data-content" => "#{scope_help("groups")}" }
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Groups
+          .scope-summary
+            - if @diff["groups"].only_in1
+              %span.summary-part
+                #{@description_a.name}: #{@diff["groups"].only_in1.length} groups
+            - if @diff["groups"].only_in2
+              %span.summary-part
+                #{@description_b.name}: #{@diff["groups"].only_in2.length} groups
+            - if @diff["groups"].common
+              %span.summary-part
+                %a.show-common-elements{ href: "#groups_both" }<
+                  both
+                = ": #{@diff["groups"].common.length} groups"
+    .row.scope_content.collapse.in
+      .row
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["groups"].only_in1
+            = only_in_a
+            = render_partial "compare/group_list", list: @diff["groups"].only_in1
+        .col-xs-1
+        .col-xs-5.table_container
+          - if @diff["groups"].only_in2
+            = only_in_b
+            = render_partial "compare/group_list", list: @diff["groups"].only_in2
+      - if @diff["groups"].common
+        %a.both_anchor{ id: "groups_both" }
+        .row
+          .col-xs-1
+          .col-xs-2
+            %a.show-common-elements{ href: "#groups_both" }
+              Show common elements in groups
+            %a.hide-common-elements{ href: "#", style: "display: none" }
+              Hide common elements in groups
+        .row.scope_common_content.collapse
+          .col-xs-1
+          .col-xs-10.table_container
+            = in_both
+            = render_partial "compare/group_list", list: @diff["groups"].common
