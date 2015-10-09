@@ -835,6 +835,105 @@ configuration files are saved:</p>
 </ul>
 
 
+<h2 id="inspect-container-Inspect-Container">inspect-container — Inspect Container</h2>
+
+<h3 id="SYNOPSIS">SYNOPSIS</h3>
+
+<p><code>machinery inspect-container</code> <a href="#OPTIONS" title="OPTIONS" data-bare-link="true">OPTIONS</a> IMAGENAME</p>
+
+<p><code>machinery inspect-container</code> <a href="#OPTIONS" title="OPTIONS" data-bare-link="true">OPTIONS</a> IMAGEID</p>
+
+<p><code>machinery</code> help inspect-container</p>
+
+<h3 id="DESCRIPTION">DESCRIPTION</h3>
+
+<p>The <code>inspect-container</code> command inspects a container image. It creates and starts the container from the provided image before inspection
+and generates a system description from the gathered data. After the inspection the container will be killed and removed again.
+This approach ensures that no containers and images are affected by the inspection.</p>
+
+<p>Right now we support only images from the type <code>docker</code>.</p>
+
+<p>The system data is structured into scopes, controlled by the
+<code>--scope</code> option.</p>
+
+<p><strong>Note</strong>:
+Machinery will always inspect all specified scopes, and skip scopes which
+trigger errors.</p>
+
+<h3 id="ARGUMENTS">ARGUMENTS</h3>
+
+<dl>
+<dt><code>IMAGENAME / IMAGEID</code> (required)</dt><dd>The name or id of the image to be inspected. The provided name or id will also be
+used as the name of the stored system description unless another name is
+provided with the <code>--name</code> option.</dd>
+</dl>
+
+
+<h3 id="OPTIONS">OPTIONS</h3>
+
+<dl>
+<dt><code>-n NAME</code>, <code>--name=NAME</code> (optional)</dt><dd><p>Store the system description under the specified name.</p></dd>
+<dt><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional)</dt><dd><p>Inspect image for specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>-e SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional)</dt><dd><p>Inspect image for all scopes except the specified scope.
+See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
+<dt><code>-x</code>, <code>--extract-files</code> (optional)</dt><dd><p>Extract changed configuration and unmanaged files from the inspected container.
+Shortcut for the combination of <code>--extract-changed-config-files</code>,
+<code>--extract-unmanaged-files</code>, and <code>--extract-changed-managed-files</code></p></dd>
+<dt><code>--extract-changed-config-files</code> (optional)</dt><dd><p>Extract changed configuration files from the inspected image.</p></dd>
+<dt><code>--extract-unmanaged-files</code> (optional)</dt><dd><p>Extract unmanaged files from the inspected image.</p></dd>
+<dt><code>--extract-changed-managed-files</code> (optional)</dt><dd><p>Extract changed managed files from inspected image.</p></dd>
+<dt><code>--skip-files</code> (optional)</dt><dd><p>Do not consider given files or directories during inspection. Either provide
+one file or directory name or a list of names separated by commas. You can
+also point to a file which contains a list of files to filter (one per line)
+by adding an '@' before the path, e.g.</p>
+
+<p>  $ <code>machinery</code> inspect-container --skip-files=@/path/to/filter_file mycontainer</p>
+
+<p>If a filename contains a comma it needs to be escaped, e.g.</p>
+
+<p>  $ <code>machinery</code> inspect-container --skip-files=/file\,with_comma mycontainer</p>
+
+<p><strong>Note</strong>: File or directory names are not expanded, e.g. '../path' is taken
+  literally and not expanded.</p></dd>
+<dt><code>--verbose</code> (optional)</dt><dd><p>Display the filters which are used during inspection.</p></dd>
+</dl>
+
+
+<h3 id="PREREQUISITES">PREREQUISITES</h3>
+
+<ul>
+<li><p>Inspecting a container requires an image specified by the name or id.</p></li>
+<li><p>The image to be inspected needs to have the following commands:</p>
+
+<ul>
+<li><code>rpm</code></li>
+<li><code>zypper</code> or <code>yum</code></li>
+<li><code>rsync</code></li>
+<li><code>chkconfig</code></li>
+<li><code>cat</code></li>
+<li><code>sed</code></li>
+<li><code>find</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="EXAMPLES">EXAMPLES</h3>
+
+<dl>
+<dt>Inspect docker-container <code>mycontainer</code> and save system description under name 'MyContainer':</dt><dd><p></p>
+
+<p>$ <code>machinery</code> inspect-container --name=MyContainer mycontainer</p></dd>
+<dt>Inspect docker-container <code>076f46c1bef1</code> and save system description under name 'MySecondContainer':</dt><dd><p></p>
+
+<p>$ <code>machinery</code> inspect-container --name=MySecondContainer 076f46c1bef1</p></dd>
+<dt>Extracts changed managed files and saves them:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> inspect-container --scope=changed-managed-files --extract-files mycontainer</p></dd>
+</dl>
+
+
 <h2 id="list-List-System-Descriptions">list — List System Descriptions</h2>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
@@ -965,7 +1064,7 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery serve</code> [-p PORT | --port=PORT] [-i IP | --ip=IP] NAME</p>
+<p><code>machinery serve</code> [-p PORT | --port=PORT] [--public] NAME</p>
 
 <p><code>machinery</code> help serve</p>
 
@@ -990,10 +1089,8 @@ IP address and the port can be configured using the according options.</p>
 
 <p>Ports can be selected in a range between 2-65535. Ports between 2 and 1023 can only be
 chosen when <code>machinery</code> will be executed as <code>root</code> user.</p></dd>
-<dt><code>-i IP</code>, <code>--ip=IP</code> (optional)</dt><dd><p>Specify the IP address on which the web server will be made available. Default: 127.0.0.1</p>
-
-<p>It's only possible to use an IP address (or hostnames resolving to an IP address) which
-is assigned to a network interface on the local machine.</p></dd>
+<dt><code>--public</code> (optional)</dt><dd><p>Specifying this option, lets the server listen on each configured IP address. By default
+the server will only listen on the localhost IP address 127.0.0.1</p></dd>
 </dl>
 
 
@@ -1003,9 +1100,9 @@ is assigned to a network interface on the local machine.</p></dd>
 <dt>Serve the system description taken from the last inspection, saved as <code>earth</code>:</dt><dd><p></p>
 
 <p>$ <code>machinery</code> serve earth</p></dd>
-<dt>Make the system description available to other machines on the network:</dt><dd><p></p>
+<dt>Make the system description available to other machines on the network on port 3000:</dt><dd><p></p>
 
-<p>$ <code>machinery</code> serve earth -i 10.10.100.123 -p 3000</p></dd>
+<p>$ <code>machinery</code> serve earth --public --port 3000</p></dd>
 </dl>
 
 
@@ -1013,7 +1110,7 @@ is assigned to a network interface on the local machine.</p></dd>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] [-p PORT | --port=PORT] [-i IP | --ip=IP] NAME</p>
+<p><code>machinery show</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME</p>
 
 <p><code>machinery</code> help show</p>
 
@@ -1045,14 +1142,6 @@ See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more infor
 for more information).</p></dd>
 <dt><code>--html</code> (optional)</dt><dd><p>Run a web server and open the system description in HTML format in your web browser using the
 <code>xdg-open</code> command.</p></dd>
-<dt><code>-p PORT</code>, <code>--port=PORT</code> (optional)</dt><dd><p>Specify the port on which the web server will serve the system description: Default: 7585</p>
-
-<p>Ports can be selected in a range between 2-65535. Ports between 2 and 1023 can only be
-chosen when <code>machinery</code> will be executed as <code>root</code> user.</p></dd>
-<dt><code>-i IP</code>, <code>--ip=IP</code> (optional)</dt><dd><p>Specify the IP address on which the web server will be made available. Default: 127.0.0.1</p>
-
-<p>It's only possible to use an IP address (or hostnames resolving to an IP address) which
-is assigned to a network interface on the local machine.</p></dd>
 <dt><code>--verbose</code> (optional)</dt><dd><p>Display the filters which were applied before showing the system description.</p></dd>
 </dl>
 
