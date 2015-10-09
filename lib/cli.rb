@@ -248,12 +248,13 @@ class Cli
 
   def self.check_port_validity(port)
     if port < 2 || port > 65535
-      raise Machinery::Errors::InvalidCommandLine.new("Please choose a port between 2 and " \
-        "65535.")
+      raise Machinery::Errors::ServerPortError.new("The specified port '#{port}' is not " \
+        "valid. A valid port can be in a range between 2 and 65535.")
     else
       if port >= 2 && port <= 1023 && !CurrentUser.new.is_root?
-        raise Machinery::Errors::InvalidCommandLine.new("You need root rights when you want " \
-          "to use a port between 2 and 65535.")
+        raise Machinery::Errors::ServerPortError.new("The specified port '#{port}' needs " \
+          "root privileges. Otherwise, the server cannot be started. All ports in a range " \
+          "of 2-1023 need root privileges.")
       end
     end
   end
@@ -347,14 +348,6 @@ class Cli
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
     if @config.experimental_features
-      c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
-        desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
-          2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
-          arg_name: "PORT"
-      c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-        desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
-          resolving to an IP address) which is assigned to a network interface on the local
-          machine.", arg_name: "IP"
       c.switch "html", required: false, negatable: false,
         desc: "Open comparison in HTML format in your web browser."
     end
@@ -367,7 +360,14 @@ class Cli
       name1 = shift_arg(args, "NAME1")
       name2 = shift_arg(args, "NAME2")
 
-      check_port_validity(options[:port]) if options[:html]
+      if options[:html]
+        begin
+          check_port_validity(@config.http_server_port)
+        rescue Machinery::Errors::ServerPortError => e
+          raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
+            "specified in the 'http_server_port' section of the configuration file.")
+        end
+      end
 
       store = system_description_store
       description1 = SystemDescription.load(name1, store)
@@ -378,8 +378,8 @@ class Cli
       opts = {
         show_html: options["html"],
         show_all: options["show-all"],
-        ip: options["ip"],
-        port: options["port"]
+        ip: "127.0.0.1",
+        port: @config.http_server_port
       }
       task.compare(description1, description2, scope_list, opts)
     end
@@ -740,14 +740,6 @@ class Cli
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["exclude-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
-    c.flag [:port, :p], type: Integer, required: false, default_value: @config.http_server_port,
-      desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
-        2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
-        arg_name: "PORT"
-    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-      desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
-        resolving to an IP address) which is assigned to a network interface on the local
-        machine.", arg_name: "IP"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
@@ -760,12 +752,19 @@ class Cli
     c.action do |global_options,options,args|
       Machinery::Ui.use_pager = options["pager"]
 
+      if options[:html]
+        begin
+          check_port_validity(@config.http_server_port)
+        rescue Machinery::Errors::ServerPortError => e
+          raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
+            "specified in the 'http_server_port' section of the configuration file.")
+        end
+      end
+
       name = shift_arg(args, "NAME")
       if name == "localhost" && !CurrentUser.new.is_root?
         Machinery::Ui.puts "You need root rights to access the system description of your locally inspected system."
       end
-
-      check_port_validity(options[:port]) if options[:html]
 
       description = SystemDescription.load(name, system_description_store)
       scope_list = process_scope_option(options[:scope], options["exclude-scope"])
@@ -790,8 +789,8 @@ class Cli
       opts = {
         show_diffs: options["show-diffs"],
         show_html: options["html"],
-        ip: options["ip"],
-        port: options["port"]
+        ip: "127.0.0.1",
+        port: @config.http_server_port
       }
       task.show(description, scope_list, filter, opts)
     end
@@ -886,19 +885,29 @@ class Cli
       desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
         2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
         arg_name: "PORT"
-    c.flag [:ip, :i], type: String, required: false, default_value: "127.0.0.1",
-      desc: "Listen on ip address IP. It's only possible to use an IP address (or hostnames
-        resolving to an IP address) which is assigned to a network interface on the local
-        machine.", arg_name: "IP"
+    c.switch "public", required: false, negatable: false,
+      desc: "Makes the server reachable from all IP addresses."
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
 
-      check_port_validity(options[:port])
+      begin
+        check_port_validity(options[:port])
+      rescue Machinery::Errors::ServerPortError => e
+        raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
+          "either specified in the 'http_server_port' section of the configuration file " \
+          "or via the --port option.")
+      end
+
+      if options[:public]
+        ip = "0.0.0.0"
+      else
+        ip = "127.0.0.1"
+      end
 
       description = SystemDescription.load(name, system_description_store)
       task = ServeHtmlTask.new
-      task.serve(description, options[:ip], options[:port])
+      task.serve(description, ip, options[:port])
     end
   end
 

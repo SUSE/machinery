@@ -97,32 +97,40 @@ shared_examples "CLI" do
     end
 
     describe "compare" do
+      let(:config_tmp_file) { "/tmp/machinery/http_port_tests" }
+
       before(:each) do
-        @machinery.run_command("#{machinery_command} config experimental_features true", \
-          as: "vagrant")
+        @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} " \
+          "config experimental_features true", as: "vagrant")
       end
 
-      it "checks if a port gets validated" do
-        expect(@machinery.run_command("#{machinery_command} compare description1 description2 " \
-          "--port=1 --html", as: "vagrant")).to fail.and include_stderr(
-            "Please choose a port between 2 and 65535."
-          )
+      it "fails when a port is invalid" do
+        @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} " \
+          "config http_server_port 1", as: "vagrant")
+        expect(@machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} " \
+          "#{machinery_command} compare description1 description2 --html", as: "vagrant")).to fail.
+          and include_stderr("A valid port can be in a range between 2 and 65535.")
       end
     end
 
     describe "show" do
-      it "checks if a port gets validated" do
-        expect(@machinery.run_command("#{machinery_command} show description1 " \
-          "--port=1 --html", as: "vagrant")).to fail.and include_stderr(
-            "Please choose a port between 2 and 65535."
-          )
+      let(:config_tmp_file) { "/tmp/machinery/http_port_tests" }
+
+      it "fails when a port is invalid" do
+        @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} " \
+          "config http_server_port 1", as: "vagrant")
+        expect(@machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} " \
+          "#{machinery_command} show description1 --html", as: "vagrant")).to fail.
+          and include_stderr("A valid port can be in a range between 2 and 65535.")
       end
     end
 
     describe "serve" do
-      it "checks if a port gets validated" do
-        expect(@machinery.run_command("#{machinery_command} serve description1 --port=1", \
-          as: "vagrant")).to fail.and include_stderr("Please choose a port between 2 and 65535.")
+      it "fails when a port is invalid" do
+        expect(@machinery.run_command("#{machinery_command} serve description1 --port 1",
+          as: "vagrant")).to fail.and include_stderr(
+            "A valid port can be in a range between 2 and 65535."
+          )
       end
     end
 

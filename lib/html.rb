@@ -26,11 +26,19 @@ class Html
       Server.set :public_folder, File.join(Machinery::ROOT, "html")
 
       if opts[:ip] != "localhost" && opts[:ip] != "127.0.0.1"
-        Machinery::Ui.puts <<EOF
+        if opts[:ip] == "0.0.0.0"
+          Machinery::Ui.puts <<EOF
+Warning:
+The server is listening on all configured IP addresses.
+This could lead to confidential data like passwords or private keys being readable by others.
+EOF
+        else
+          Machinery::Ui.puts <<EOF
 Warning:
 You specified an IP address other than '127.0.0.1', your server may be reachable from the network.
 This could lead to confidential data like passwords or private keys being readable by others.
 EOF
+        end
       end
 
       begin

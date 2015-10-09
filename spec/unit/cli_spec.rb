@@ -404,10 +404,19 @@ describe Cli do
       it "triggers the serve task" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+          description, "127.0.0.1", 3000
+        )
+
+        run_command(["serve", "description1", "--port=3000"])
+      end
+
+      it "checks if the --public option works" do
+        description = create_test_description(json: test_manifest)
+        expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
           description, "0.0.0.0", 3000
         )
 
-        run_command(["serve", "description1", "--ip=0.0.0.0", "--port=3000"])
+        run_command(["serve", "description1", "--port=3000", "--public"])
       end
     end
 
@@ -420,18 +429,6 @@ describe Cli do
         )
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
-      end
-
-      context "with --html" do
-        it "forwards the specified port and IP" do
-          description = create_test_description(json: test_manifest)
-          expect_any_instance_of(ShowTask).to receive(:show).with(description, ["packages"],
-            an_instance_of(Filter), show_diffs: false, show_html: true, ip: "0.0.0.0", port: 3000)
-
-          run_command(
-            ["show", "description1", "--scope=packages", "--html", "--port=3000", "--ip=0.0.0.0"]
-          )
-        end
       end
 
       describe "--verbose" do
@@ -769,13 +766,14 @@ Backtrace:
 
   describe ".check_port_validity" do
     it "checks if a port is invalid below 2" do
-      expect { Cli.check_port_validity(1) }.to raise_error(Machinery::Errors::InvalidCommandLine, \
-        "Please choose a port between 2 and 65535.")
+      expect { Cli.check_port_validity(1) }.to raise_error(
+        Machinery::Errors::ServerPortError
+      )
     end
 
     it "checks if a port is invalid above 65535" do
       expect { Cli.check_port_validity(65536) }.to raise_error(
-        Machinery::Errors::InvalidCommandLine, "Please choose a port between 2 and 65535."
+        Machinery::Errors::ServerPortError
       )
     end
 
@@ -785,8 +783,7 @@ Backtrace:
 
     it "checks if a port requires root privileges" do
       expect { Cli.check_port_validity(1000) }.to raise_error(
-        Machinery::Errors::InvalidCommandLine, "You need root rights when you want to use a port " \
-          "between 2 and 65535."
+        Machinery::Errors::ServerPortError
       )
     end
   end
