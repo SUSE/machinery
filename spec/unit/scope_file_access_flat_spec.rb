@@ -106,6 +106,15 @@ describe ScopeFileAccessFlat do
       is_binary = description.changed_managed_files.binary?(system_file)
       expect(is_binary).to be(false)
     end
+
+    it "tests an xml file if it is marked as binary or not" do
+      system_file = description.changed_managed_files.files.find do |file|
+        file.name == "/lib/mkinitrd/scripts/test.xml"
+      end
+
+      is_binary = description.changed_managed_files.binary?(system_file)
+      expect(is_binary).to be(false)
+    end
   end
 
   describe "#has_file?" do

@@ -20,6 +20,27 @@ module Machinery
     (string =~ /^\d+$/) != nil
   end
 
+  def self.content_is_binary?(content)
+    # Code by http://www.thecodingforums.com/threads/test-if-file-is-binary.843447/#post-4572282
+    # Modified by SUSE Linux GmbH
+    ascii = 0
+    control = 0
+    binary = 0
+
+    content.each_byte do |byte|
+      case byte
+      when 0...32
+        control += 1
+      when 32...128
+        ascii += 1
+      else
+        binary += 1
+      end
+    end
+
+    control.to_f / ascii > 0.1 || binary.to_f / ascii > 0.05
+  end
+
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
   # UTF-8.
   def self.scrub(s)

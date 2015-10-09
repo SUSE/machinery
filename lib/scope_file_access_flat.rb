@@ -30,8 +30,7 @@ module ScopeFileAccessFlat
     path = system_file.scope.file_path(system_file)
     return false if File.zero?(path)
 
-    output = Cheetah.run("file", path, stdout: :capture)
-    !output.include?("ASCII")
+    Machinery.content_is_binary?(File.read(path))
   end
 
   def has_file?(name)

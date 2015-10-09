@@ -29,6 +29,19 @@
         "type": "file"
       },
       {
+        "name": "/lib/mkinitrd/scripts/test.xml",
+        "package_name": "mkinitrd",
+        "package_version": "2.4.2",
+        "status": "changed",
+        "changes": [
+          "mode"
+        ],
+        "mode": "555",
+        "user": "root",
+        "group": "root",
+        "type": "file"
+      },
+      {
         "name": "/usr/share/bash/helpfiles/read",
         "package_name": "bash",
         "package_version": "3.2",
