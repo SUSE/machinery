@@ -364,7 +364,7 @@ class Cli
         begin
           check_port_validity(@config.http_server_port)
         rescue Machinery::Errors::ServerPortError => e
-          raise Machinery::Errors::InvalidCommandLine.new(e.message +  " The port can be " \
+          raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
             "specified in the 'http_server_port' section of the configuration file.")
         end
       end
@@ -757,7 +757,7 @@ class Cli
         begin
           check_port_validity(@config.http_server_port)
         rescue Machinery::Errors::ServerPortError => e
-          raise Machinery::Errors::InvalidCommandLine.new(e.message +  " The port can be " \
+          raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
             "specified in the 'http_server_port' section of the configuration file.")
         end
       end
@@ -895,7 +895,7 @@ class Cli
       begin
         check_port_validity(options[:port])
       rescue Machinery::Errors::ServerPortError => e
-        raise Machinery::Errors::InvalidCommandLine.new(e.message +  " The port can be " \
+        raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
           "either specified in the 'http_server_port' section of the configuration file " \
           "or via the --port option.")
       end
