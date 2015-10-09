@@ -520,9 +520,6 @@ class Cli
     c.flag "skip-files", required: false, negatable: false,
       desc: "Do not consider given files or directories during inspection. " \
         "Either provide one file or directory name or a list of names separated by commas."
-    c.flag ["remote-user", :r], type: String, required: false, default_value: @config.remote_user,
-      desc: "Defines the user which is used to access the inspected system via SSH."\
-        "This user needs sudo access on the remote machine or be root.", arg_name: "USER"
     c.switch ["extract-files", :x], required: false, negatable: false,
       desc: "Extract changed configuration files and unmanaged files from inspected system"
     c.switch "extract-changed-config-files", required: false, negatable: false,
@@ -589,6 +586,9 @@ class Cli
   command "inspect" do |c|
     supports_filtering(c)
     define_inspect_command_options(c)
+    c.flag ["remote-user", :r], type: String, required: false, default_value: @config.remote_user,
+      desc: "Defines the user which is used to access the inspected system via SSH."\
+        "This user needs sudo access on the remote machine or be root.", arg_name: "USER"
 
     c.action do |_global_options, options, args|
       host = shift_arg(args, "HOSTNAME")
@@ -618,21 +618,20 @@ class Cli
   desc "Inspect container image"
   long_desc <<-LONGDESC
     Inspect container image and generate system descripton from inspected data.
+    Right now we only support docker images.
 
     Multiple scopes can be passed as comma-separated list. If no specific scopes
     are given, all scopes are inspected.
 
     Available scopes: #{AVAILABLE_SCOPE_LIST}
   LONGDESC
-  arg "IMAGENAME"
+  arg "(IMAGENAME|IMAGEID)"
   command "inspect-container" do |c|
     supports_filtering(c)
     define_inspect_command_options(c)
-    c.switch ["docker", :d], required: true, negatable: false,
-      desc: "Inspect a docker container"
 
     c.action do |_global_options, options, args|
-      image = shift_arg(args, "IMAGENAME")
+      image = shift_arg(args, "(IMAGENAME|IMAGEID)")
       system = DockerSystem.new(image)
       inspector_task = InspectTask.new
 

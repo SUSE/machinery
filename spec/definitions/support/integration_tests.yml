@@ -17,7 +17,7 @@ inspect:
       "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":
       "Tumbleweed:x86_64":
-"inspect-container --docker":
+"inspect-container":
   supported:
     "local":
       "docker:openSUSE_13_2": minimal_test
