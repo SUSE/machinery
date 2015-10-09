@@ -17,10 +17,12 @@
               %span.summary-part
                 #{@description_a.name}:
                 #{safe_length(@diff["services"].only_in1, :services)} services
+                (#{@diff["services"].only_in1.init_system})
             - if @diff["services"].only_in2
               %span.summary-part
                 #{@description_b.name}:
                 #{safe_length(@diff["services"].only_in2, :services)} services
+                (#{@diff["services"].only_in2.init_system})
             - if @diff["services"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#services_both" }<
