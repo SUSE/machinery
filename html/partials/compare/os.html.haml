@@ -25,7 +25,8 @@
               = only_in_b
               = render_partial "compare/os_table", os: @diff["os"].only_in2
         - if @diff["os"].common
-          .row.scope_common_content.collapse
+          .row.scope_common_content
             .col-xs-1
-            .col-xs-11.table_container
+            .col-xs-11.table_container.collapse.in
+              = in_both
               = render_partial "compare/os_table", os: @diff["os"].common
