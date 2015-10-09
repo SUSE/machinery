@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.14.1 - Fri Oct 09 18:30:13 CEST 2015 - thardeck@suse.de
+
 * Fix: Clean up binding the server for HTML view to IP addresses
   (gh#SUSE/machinery#1341)
 * Fix: Make links to sections with common elements clearer in HTML comparison
