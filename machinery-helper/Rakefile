@@ -15,110 +15,20 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "../tools/helper_builder"
+
 task :default => "try_build"
 
 HELPER_DIR = File.expand_path(File.dirname(__FILE__))
-GIT_REVISION_FILE = File.join(HELPER_DIR, "..", ".git_revision")
-
-def write_go_version_file
-  file = <<-EOF
-// This is a generated file and shouldn't be changed
-
-package main
-
-const VERSION = "#{git_revision}"
-  EOF
-  File.write(File.join(HELPER_DIR, "version.go"), file)
-end
-
-def build_machinery_helper
-  FileUtils.rm_f(File.join(HELPER_DIR, "machinery-helper"))
-  Dir.chdir(HELPER_DIR) do
-    puts("Building machinery-helper binary.")
-    if !system("go build")
-      STDERR.puts("Warning: Building of the machinery-helper failed!")
-      false
-    else
-      true
-    end
-  end
-end
-
-def go_available?
-  if !system("which go > /dev/null 2>&1")
-    STDERR.puts(
-      "Warning: The Go compiler is not available on this system. Skipping building the" \
-        " machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
-    )
-    false
-  else
-    true
-  end
-end
-
-def arch_supported?
-  arch = `uname -p`.chomp
-  if !["x86_64"].include?(arch)
-    STDERR.puts(
-      "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
-    )
-    false
-  else
-    true
-  end
-end
-
-def runs_in_git?
-  Dir.exist?(File.join(HELPER_DIR, "..", ".git")) && system("which git > /dev/null 2>&1")
-end
-
-def git_revision
-  `git rev-parse HEAD`.chomp
-end
-
-def write_git_revision_file
-  File.write(GIT_REVISION_FILE, git_revision)
-end
-
-def changed_revision?
-  if File.exist?(GIT_REVISION_FILE)
-    old_revision = File.read(GIT_REVISION_FILE)
-  else
-    old_revision = "unknown"
-  end
-  git_revision != old_revision
-end
-
-def run_build
-  # An unsupported architecture is no error
-  return true if !arch_supported?
-  return false if !go_available?
-
-  # handle changed branches (where go files are older than the helper)
-  if runs_in_git? && changed_revision?
-    write_go_version_file
-    if build_machinery_helper
-      write_git_revision_file
-      return true
-    else
-      return false
-    end
-  end
-
-  if !FileUtils.uptodate?(
-    File.join(HELPER_DIR, "machinery-helper"), Dir.glob(File.join(HELPER_DIR, "*.go"))
-  )
-    return build_machinery_helper
-  end
-  true
-end
 
 desc "Build the helper if needed"
 task :build do
-  raise "Error: Build of Machinery helper failed" if !run_build
+  helper_builder = HelperBuilder.new(HELPER_DIR)
+  raise "Error: Build of Machinery helper failed" if !helper_builder.run_build
 end
 
 desc "Don't fail on build errors"
 task :try_build do
-  run_build
+  helper_builder = HelperBuilder.new(HELPER_DIR)
+  helper_builder.run_build
 end
