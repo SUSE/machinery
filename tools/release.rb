@@ -117,6 +117,19 @@ class Release
     Cheetah.run("git", "checkout", "master")
   end
 
+  def publish_gem
+    Dir.chdir(File.join(Machinery::ROOT, "package")) do
+      gem = File.join(Dir.pwd, "machinery-tool-#{@release_version}.gem")
+      if File.exist?(gem)
+        puts("Publishing #{gem} to rubygems.org")
+        Cheetah.run("gem", "push", gem)
+      else
+        STDERR.puts("Error: There is no gem named '#{gem}' to publish")
+        exit 1
+      end
+    end
+  end
+
   private
 
   def remove_old_releases(skip_rpm_cleanup: false)
