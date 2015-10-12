@@ -64,6 +64,7 @@ Gem::Specification.new do |s|
     "machinery-helper/*.go",
     "machinery-helper/Rakefile",
     "machinery-helper/README.md",
+    "tools/build_helper.rb",
     ".git_revision"
   ]
   s.executables  = "machinery"
