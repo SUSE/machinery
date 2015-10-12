@@ -119,12 +119,13 @@ class Release
 
   def publish_gem
     Dir.chdir(File.join(Machinery::ROOT, "package")) do
-      gem = Dir.glob("*.gem").first
-      if gem
-        puts("Publishing gem to rubygems.org")
+      gem = File.join(Dir.pwd, "machinery-tool-#{@release_version}.gem")
+      if File.exist?(gem)
+        puts("Publishing #{gem} to rubygems.org")
         Cheetah.run("gem", "push", gem)
       else
-        raise("There is no gem to publish")
+        STDERR.puts("Error: There is no gem named '#{gem}' to publish")
+        exit 1
       end
     end
   end
