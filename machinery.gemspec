@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.add_dependency "gli", "~>2.11"
   s.add_dependency "json-schema", "~> 2.2.4"
   s.add_dependency "haml", "~> 4.0.5"
-  s.add_dependency "kramdown", "~> 1.3.3"
+  s.add_dependency "kramdown", "~> 1.3"
   s.add_dependency "tilt", "~> 2.0"
   s.add_dependency "sinatra", "~> 1.4.6"
   s.add_dependency "mimemagic", "~> 0.3.0"
