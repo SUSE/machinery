@@ -67,7 +67,7 @@ class Hint
          "#{program_name} inspect #{options[:host]} --name #{options[:name]} --extract-files"
       elsif options[:docker_container]
         "To do a full inspection containing all scopes and to extract files run:\n" \
-         "#{program_name} inspect-container #{options[:docker_container]}" \
+         "#{program_name} inspect-container #{options[:docker_container]} " \
          "--name #{options[:name]} --extract-files"
       end
     end
