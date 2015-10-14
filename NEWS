@@ -1,6 +1,8 @@
 # Machinery Release Notes
 
 
+## Version 1.14.2 - Wed Oct 14 18:00:51 CEST 2015 - thardeck@suse.de
+
 * Fix typo in HTML package view  (gh#SUSE/machinery#1493)
 
 ## Version 1.14.1 - Fri Oct 09 18:30:13 CEST 2015 - thardeck@suse.de
