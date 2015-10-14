@@ -39,6 +39,40 @@ class Server < Sinatra::Base
       Kramdown::Document.new(text).to_html
     end
 
+    def scope_title(scope)
+      {
+        "os" => "Operating System",
+        "packages" => "Packages",
+        "patterns" => "Patterns",
+        "repositories" => "Repositories",
+        "users" => "Users",
+        "groups" => "Groups",
+        "services" => "Services",
+        "config_files" => "Config Files",
+        "changed_managed_files" => "Changed Managed Files",
+        "unmanaged_files" => "Unmanaged Files"
+      }[scope]
+    end
+
+    def scope_initials(scope)
+      {
+        "os" => "os",
+        "packages" => "pk",
+        "patterns" => "pt",
+        "repositories" => "r",
+        "users" => "u",
+        "groups" => "g",
+        "services" => "s",
+        "config_files" => "cf",
+        "changed_managed_files" => "cmf",
+        "unmanaged_files" => "uf"
+      }[scope]
+    end
+
+    def nav_class(scope)
+      @description[scope] ? "" : "disabled"
+    end
+
     def safe_length(object, attribute)
       if collection = object.try(attribute)
         collection.length
