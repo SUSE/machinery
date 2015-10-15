@@ -60,6 +60,18 @@ describe Machinery::Array do
     end
   end
 
+  describe "#to_s" do
+    it "returns the concatenated elements" do
+      array = Machinery::Array.new(["a", "b", "c"])
+
+      expect(array.to_s).to eq("a,b,c")
+    end
+
+    it "returns 'empty' when the array is empty" do
+      expect(Machinery::Array.new.to_s).to eq("(empty)")
+    end
+  end
+
   describe "#==" do
     it "returns true when equal" do
       equal = Machinery::Array.new(["a", "b", "c"]) == Machinery::Array.new(["a", "b", "c"])

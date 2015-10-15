@@ -62,6 +62,10 @@ module Machinery
       end
     end
 
+    def to_s
+      @elements.empty? ? "(empty)" : @elements.join(",")
+    end
+
     def ==(other)
       self.class == other.class && @elements == other.elements
     end
