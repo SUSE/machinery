@@ -40,18 +40,28 @@ class ServicesScope < Machinery::Object
     if self.init_system != other.init_system
       [self, other, nil, nil]
     else
+      only_self = self.services - other.services
+      only_other = other.services - self.services
+      common = self.services & other.services
+      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+      changed = nil if changed.empty?
+
       [
-        self.services - other.services,
-        other.services - self.services,
-        [],
-        self.services & other.services
-      ].map do |services|
-        if !services.empty?
-          self.class.new(:init_system => self.init_system, :services => services)
-        else
-          nil
-        end
-      end
+        service_list_to_scope(only_self),
+        service_list_to_scope(only_other),
+        changed,
+        service_list_to_scope(common)
+      ]
+    end
+  end
+
+  private
+
+  def service_list_to_scope(services)
+    if !services.empty?
+      self.class.new(:init_system => self.init_system, :services => services)
+    else
+      nil
     end
   end
 end

@@ -23,6 +23,11 @@
                 #{@description_b.name}:
                 #{safe_length(@diff["services"].only_in2, :services)} services
                 (#{@diff["services"].only_in2.init_system})
+            - if @diff["services"].changed
+              %span.summary-part
+                %a{ href: "#services_changed" }
+                  Changed
+                = ": #{@diff["services"].changed.length} services"
             - if @diff["services"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#services_both" }<
@@ -40,6 +45,15 @@
           - if safe_length(@diff["services"].only_in2, :services) > 0
             = only_in_b
             = render_partial "compare/service_list", list: @diff["services"].only_in2
+      - if @diff["services"].changed
+        %a.both_anchor{ id: "services_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("services", key: "name").each do |change|
+                %li= change
       - if safe_length(@diff["services"].common, :services) > 0
         %a.both_anchor{ id: "services_both" }
         .row
