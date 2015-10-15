@@ -19,6 +19,11 @@
             - if @diff["users"].only_in2
               %span.summary-part
                 #{@description_b.name}: #{@diff["users"].only_in2.length} users
+            - if @diff["users"].changed
+              %span.summary-part
+                %a{ href: "#users_changed" }
+                  Changed
+                = ": #{@diff["users"].changed.length} users"
             - if @diff["users"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#users_both" }<
@@ -36,6 +41,17 @@
           - if @diff["users"].only_in2
             = only_in_b
             = render_partial "compare/user_list", list: @diff["users"].only_in2
+      - if @diff["users"].changed
+        %a.both_anchor{ id: "users_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("users",
+                  attributes: ["uid", "gid", "comment", "shell", "home"],
+                  key: "name").each do |change|
+                %li= change
       - if @diff["users"].common
         %a.both_anchor{ id: "users_both" }
         .row

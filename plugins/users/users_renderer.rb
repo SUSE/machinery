@@ -32,4 +32,21 @@ class UsersRenderer < Renderer
   def display_name
     "Users"
   end
+
+  def compare_content_changed(changed_elements)
+    list do
+      changed_elements.each do |one, two|
+        changes = []
+        relevant_attributes = ["uid", "gid", "comment", "shell", "home"]
+
+        relevant_attributes.each do |attribute|
+          if one[attribute] != two[attribute]
+            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+          end
+        end
+
+        item "#{one.name} (#{changes.join(", ")})"
+      end
+    end
+  end
 end

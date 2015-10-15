@@ -25,4 +25,15 @@ describe "users model" do
   end
 
   specify { expect(description.users.first).to be_a(User) }
+
+
+  describe "#compare_with" do
+    it "does not consider last_changed_date changes" do
+      users1 = description.users
+      users2 = create_test_description(scopes: ["users"]).users
+      users2.first.last_changed_date = 1
+
+      expect(users1.compare_with(users2)).to eq([nil, nil, nil, users1])
+    end
+  end
 end
