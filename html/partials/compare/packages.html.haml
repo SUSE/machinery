@@ -22,7 +22,7 @@
             - if @diff["packages"].changed
               %span.summary-part
                 %a{ href: "#packages_changed" }
-                Changed
+                  Changed
                 = ": #{@diff["packages"].changed.length} packages"
             - if @diff["packages"].common
               %span.summary-part
@@ -48,7 +48,10 @@
           .col-xs-11.table_container
             = changed
             %ul.changed
-              - changed_packages.each do |change|
+              - changed_elements("packages",
+                  key: "name",
+                  attributes: ["version", "vendor", "arch"],
+                  optional_attributes: ["version", "release", "checksum"]).each do |change|
                 %li= change
       - if @diff["packages"].common
         %a.both_anchor{ id: "packages_both" }
