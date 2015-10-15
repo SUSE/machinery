@@ -1,5 +1,6 @@
-%p
-  <strong>Files extracted:</strong> #{list.extracted ? "yes" : "no"}
+- if !list.extracted.nil?
+  %p
+    <strong>Files extracted:</strong> #{list.extracted ? "yes" : "no"}
 - if list.files
   %table.table.table-striped.table-hover.table-condensed.files-table
     %thead

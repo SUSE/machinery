@@ -54,24 +54,45 @@ describe "unmanaged_files model" do
       it "only compares common properties" do
         list = UnmanagedFileList.new([
           UnmanagedFile.new(
-            a: 1
+            name: "/foo",
+            b: 2
           )
         ])
         list_equal = UnmanagedFileList.new([
           UnmanagedFile.new(
-            a: 1,
-            b: 2
+            name: "/foo",
+            b: 2,
+            c: 3
+          )
+        ])
+        list_changed = UnmanagedFileList.new([
+          UnmanagedFile.new(
+            name: "/foo",
+            b: 3
           )
         ])
         list_different = UnmanagedFileList.new([
           UnmanagedFile.new(
-            a: 2,
+            name: "/bar",
             b: 2
           )
         ])
 
         expect(list.compare_with(list_equal)).to eq([nil, nil, nil, list])
         expect(list.compare_with(list_different)).to eq([list, list_different, nil, nil])
+        expect(list.compare_with(list_changed)).to eq([nil, nil,
+          [
+            [
+              UnmanagedFile.new(
+                name: "/foo",
+                b: 2
+              ),
+              UnmanagedFile.new(
+                name: "/foo",
+                b: 3
+              )
+            ]
+          ], nil])
       end
     end
   end

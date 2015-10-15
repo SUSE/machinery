@@ -37,11 +37,12 @@ class UnmanagedFileList < Machinery::Array
     only_other = other.elements.reject do |element|
       self_hash.has_key?(element.name) && files_match(element, self_hash[element.name])
     end
+    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
 
     [
       self.class.new(only_self),
       self.class.new(only_other),
-      [],
+      changed,
       self.class.new(both)
     ].map { |e| e.empty? ? nil : e }
   end
