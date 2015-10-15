@@ -21,6 +21,11 @@
               %span.summary-part
                 #{@description_b.name}:
                 #{safe_length(@diff["changed_managed_files"].only_in2, :files)} files
+            - if @diff["changed_managed_files"].changed
+              %span.summary-part
+                %a{ href: "#changed_managed_files_changed" }
+                  Changed
+                = ": #{@diff["changed_managed_files"].changed.length} changed_managed_files"
             - if @diff["changed_managed_files"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#changed_managed_files_both" }<
@@ -40,6 +45,15 @@
             = only_in_b
             = render_partial "compare/changed_managed_file_list",
               list: @diff["changed_managed_files"].only_in2
+      - if @diff["changed_managed_files"].changed
+        %a.both_anchor{ id: "changed_managed_files_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("changed_managed_files", key: "name").each do |change|
+                %li= change
       - if safe_length(@diff["changed_managed_files"].common, :files) > 0
         %a.both_anchor{ id: "changed_managed_files_both" }
         .row
