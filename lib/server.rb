@@ -76,8 +76,8 @@ class Server < Sinatra::Base
         end
 
         (1..optional_attributes.length).each do |i|
-          if change[0][optional_attributes[i-1]] ==
-              change[1][optional_attributes[i-1]]
+          if change[0][optional_attributes[i - 1]] ==
+              change[1][optional_attributes[i - 1]]
             relevant_attributes.push(optional_attributes[i])
           else
             break

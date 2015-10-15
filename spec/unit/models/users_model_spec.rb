@@ -26,7 +26,6 @@ describe "users model" do
 
   specify { expect(description.users.first).to be_a(User) }
 
-
   describe "#compare_with" do
     it "does not consider last_changed_date changes" do
       users1 = description.users

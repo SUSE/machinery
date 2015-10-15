@@ -27,7 +27,7 @@ describe "#try" do
   end
 
   context "on non-nil objects" do
-    subject { [1,2] }
+    subject { [1, 2] }
 
     it "returns the result of the method" do
       expect(subject.try(:count)).to eq(2)

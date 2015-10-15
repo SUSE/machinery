@@ -55,44 +55,47 @@ describe "unmanaged_files model" do
         list = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/foo",
-            b: 2
+            b:    2
           )
         ])
         list_equal = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/foo",
-            b: 2,
-            c: 3
+            b:    2,
+            c:    3
           )
         ])
         list_changed = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/foo",
-            b: 3
+            b:    3
           )
         ])
         list_different = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/bar",
-            b: 2
+            b:    2
           )
         ])
 
         expect(list.compare_with(list_equal)).to eq([nil, nil, nil, list])
         expect(list.compare_with(list_different)).to eq([list, list_different, nil, nil])
-        expect(list.compare_with(list_changed)).to eq([nil, nil,
+        expect(list.compare_with(list_changed)).to eq([
+          nil,
+          nil,
           [
             [
               UnmanagedFile.new(
                 name: "/foo",
-                b: 2
+                b:    2
               ),
               UnmanagedFile.new(
                 name: "/foo",
-                b: 3
+                b:    3
               )
             ]
-          ], nil])
+          ],
+          nil])
       end
     end
   end

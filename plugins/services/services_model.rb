@@ -58,10 +58,6 @@ class ServicesScope < Machinery::Object
   private
 
   def service_list_to_scope(services)
-    if !services.empty?
-      self.class.new(:init_system => self.init_system, :services => services)
-    else
-      nil
-    end
+    self.class.new(init_system: init_system, services: services) if !services.empty?
   end
 end
