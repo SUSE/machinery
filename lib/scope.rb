@@ -46,6 +46,22 @@ module Machinery
       nil
     end
 
+    def self.extract_changed_elements(a, b, primary_key)
+      changed_keys = a.map(&primary_key) & b.map(&primary_key)
+      changed = []
+
+      changed_keys.each do |key|
+        changed << [
+          a.find { |e| e.send(primary_key) == key },
+          b.find { |e| e.send(primary_key) == key },
+        ]
+        a.reject! { |e| e.send(primary_key) == key }
+        b.reject! { |e| e.send(primary_key) == key }
+      end
+
+      changed
+    end
+
     module ClassMethods
       def hidden?
         @hidden || false

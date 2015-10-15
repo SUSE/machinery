@@ -28,18 +28,7 @@ class PackagesScope < Machinery::Array
     only_self = self - other
     only_other = other - self
     common = self & other
-
-    changed_package_names = only_self.map(&:name) & only_other.map(&:name)
-    changed = []
-
-    changed_package_names.each do |name|
-      changed << [
-        only_self.find { |package| package.name == name },
-        only_other.find { |package| package.name == name },
-      ]
-      only_self.reject! { |package| package.name == name }
-      only_other.reject! { |package| package.name == name }
-    end
+    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
 
     [
       only_self,
