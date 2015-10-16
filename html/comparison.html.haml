@@ -53,26 +53,13 @@
               Comparing '#{@description_a.name}' with '#{@description_b.name}'
             %span.scope-navigation
               Scopes:
-              %a{:href => "#os", :title => "Operating System", "ng-show" => "diff.os"}
-                %img{:src => "/assets/logo-os-small.png"}/
-              %a{:href => "#packages", :title => "Packages", "ng-show" => "diff.packages"}
-                %img{:src => "/assets/logo-packages-small.png"}/
-              %a{:href => "#patterns", :title => "Patterns", "ng-show" => "diff.patterns"}
-                %img{:src => "/assets/logo-patterns-small.png"}/
-              %a{:href => "#users", :title => "Users", "ng-show" => "diff.users"}
-                %img{:src => "/assets/logo-users-small.png"}/
-              %a{:href => "#groups", :title => "Groups", "ng-show" => "diff.groups"}
-                %img{:src => "/assets/logo-groups-small.png"}/
-              %a{:href => "#repositories", :title => "Repositories", "ng-show" => "diff.repositories"}
-                %img{:src => "/assets/logo-repositories-small.png"}/
-              %a{:href => "#unmanaged_files", :title => "Unmanaged Files", "ng-show" => "diff.unmanaged_files"}
-                %img{:src => "/assets/logo-unmanaged-files-small.png"}/
-              %a{:href => "#changed_managed_files", :title => "Changed Managed Files", "ng-show" => "diff.changed_managed_files"}
-                %img{:src => "/assets/logo-changed-managed-files-small.png"}/
-              %a{:href => "#config_files", :title => "Config Files", "ng-show" => "diff.config_files"}
-                %img{:src => "/assets/logo-config-files-small.png"}/
-              %a{:href => "#services", :title => "Services", "ng-show" => "diff.services"}
-                %img{:src => "/assets/logo-services-small.png"}/
+              - ["os", "packages", "patterns", "repositories",
+                "users", "groups", "services", "config_files",
+                "changed_managed_files", "unmanaged_files"].each do |scope|
+                %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
+                  "data-toggle"=>"popover", "data-content" => scope_help(scope),
+                  :class => nav_class(scope), "ng-show" => "diff.#{scope}" }
+                  %span= scope_initials(scope)
         .row
           .col-xs-1
             %a#expand-all{:href => "#", :style => "display: none"}

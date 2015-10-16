@@ -1,3 +1,7 @@
+---
+:name: Services
+:initials: s
+:description: |
   Services are applications running in the background doing continuous work
   or waiting for requests to do work.
   The scope determines which services are configured to be started in which

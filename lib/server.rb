@@ -35,42 +35,28 @@ class Server < Sinatra::Base
     end
 
     def scope_help(scope)
-      text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
+      text = scope_info(scope)[:description]
       Kramdown::Document.new(text).to_html
     end
 
+    def scope_info(scope)
+      YAML.load(File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.yml")))
+    end
+
     def scope_title(scope)
-      {
-        "os" => "Operating System",
-        "packages" => "Packages",
-        "patterns" => "Patterns",
-        "repositories" => "Repositories",
-        "users" => "Users",
-        "groups" => "Groups",
-        "services" => "Services",
-        "config_files" => "Config Files",
-        "changed_managed_files" => "Changed Managed Files",
-        "unmanaged_files" => "Unmanaged Files"
-      }[scope]
+      scope_info(scope)[:name]
     end
 
     def scope_initials(scope)
-      {
-        "os" => "os",
-        "packages" => "pk",
-        "patterns" => "pt",
-        "repositories" => "r",
-        "users" => "u",
-        "groups" => "g",
-        "services" => "s",
-        "config_files" => "cf",
-        "changed_managed_files" => "cmf",
-        "unmanaged_files" => "uf"
-      }[scope]
+      scope_info(scope)[:initials].upcase
     end
 
     def nav_class(scope)
-      @description[scope] ? "" : "disabled"
+      if @description
+        return @description[scope] ? "" : "disabled"
+      elsif @description_a && @description_b
+        return @description_a[scope] && @description_b[scope] ? "" : "disabled"
+      end
     end
 
     def safe_length(object, attribute)

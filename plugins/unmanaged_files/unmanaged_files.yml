@@ -1,3 +1,7 @@
+---
+:name: Unmanaged Files
+:initials: uf
+:description: |
   Contains the names and contents of all files which are not part of any RPM
   package. The list of unmanaged files contains only plain files and
   directories. Special files like device nodes, named pipes and Unix domain
