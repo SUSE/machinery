@@ -40,7 +40,7 @@ class Server < Sinatra::Base
     end
 
     def safe_length(object, attribute)
-      if object && collection = object.send(attribute)
+      if collection = object.try(attribute)
         collection.length
       else
         0
