@@ -24,7 +24,7 @@
             - if @diff["changed_managed_files"].changed
               %span.summary-part
                 %a{ href: "#changed_managed_files_changed" }
-                  Changed
+                  changed
                 = ": #{@diff["changed_managed_files"].changed.length} changed_managed_files"
             - if @diff["changed_managed_files"].common
               %span.summary-part

@@ -22,7 +22,7 @@
             - if @diff["users"].changed
               %span.summary-part
                 %a{ href: "#users_changed" }
-                  Changed
+                  changed
                 = ": #{@diff["users"].changed.length} users"
             - if @diff["users"].common
               %span.summary-part

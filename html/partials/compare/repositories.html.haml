@@ -21,7 +21,7 @@
             - if @diff["repositories"].changed
               %span.summary-part
                 %a{ href: "#repositories_changed" }
-                  Changed
+                  changed
                 = ": #{@diff["repositories"].changed.length} repositories"
             - if @diff["repositories"].common
               %span.summary-part

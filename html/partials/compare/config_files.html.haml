@@ -24,7 +24,7 @@
             - if @diff["config_files"].changed
               %span.summary-part
                 %a{ href: "#config_files_changed" }
-                  Changed
+                  changed
                 = ": #{@diff["config_files"].changed.length} config_files"
             - if @diff["config_files"].common
               %span.summary-part
