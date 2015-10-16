@@ -64,7 +64,8 @@
                 %img#reset-filter{ :src => "assets/reset.png", :titel => "Reset Filter" }
 
             %span.scope-navigation
-              Scopes:
+              %span.nav-bar-title
+                Scopes:
               - ["os", "packages", "patterns", "repositories",
                 "users", "groups", "services", "config_files",
                 "changed_managed_files", "unmanaged_files"].each do |scope|

@@ -74,7 +74,9 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
     it "disables buttons whose scope was excluded in both descriptions" do
       visit("/compare/description_a/description_b")
 
-      expect(find_link("UF")[:class]).to include("disabled")
+      within(".scope-navigation") do
+        expect(find_link("UF")[:class]).to include("disabled")
+      end
     end
 
     it "disables buttons whose scope was excluded in any of the two descriptions" do

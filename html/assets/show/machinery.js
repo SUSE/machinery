@@ -48,13 +48,7 @@ $(document).ready(function () {
   });
 
   // Set up scope icon popovers
-  $("a").popover({
-    trigger: "hover",
-    html: true
-  });
-
-  // Set up scope icon popovers
-  $("img").popover({
+  $("a[data-toggle]").popover({
     trigger: "hover",
     html: true
   });
