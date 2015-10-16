@@ -35,8 +35,28 @@ class Server < Sinatra::Base
     end
 
     def scope_help(scope)
-      text = File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.md"))
+      text = scope_info(scope)[:description]
       Kramdown::Document.new(text).to_html
+    end
+
+    def scope_info(scope)
+      YAML.load(File.read(File.join(Machinery::ROOT, "plugins", "#{scope}/#{scope}.yml")))
+    end
+
+    def scope_title(scope)
+      scope_info(scope)[:name]
+    end
+
+    def scope_initials(scope)
+      scope_info(scope)[:initials].upcase
+    end
+
+    def nav_class(scope)
+      if @description
+        return @description[scope] ? "" : "disabled"
+      elsif @description_a && @description_b
+        return @description_a[scope] && @description_b[scope] ? "" : "disabled"
+      end
     end
 
     def safe_length(object, attribute)

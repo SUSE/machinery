@@ -1,13 +1,12 @@
-- if @diff["patterns"]
-  %a.scope_anchor{ id: "users" }
+- if @diff["users"]
+  - scope = "users"
+  %a.scope_anchor{ id: scope }
   .scope#users_container
     .row
       .col-xs-1
-        %a{ href: "#users" }
-          %img.over.scope_logo_big{ :src => "/assets/logo-users.png",
-            "data-toggle" => "popover",
-            :title => "Users",
-            "data-content" => "#{scope_help("users")}" }
+        %a.btn.btn-default.btn-lg{ :href => "##{scope}", :title => scope_title(scope),
+          "data-toggle"=>"popover", "data-content" => scope_help(scope) }
+          %span= scope_initials(scope)
         %span.toggle{ title: "Collapse/Expand" }
       .col-xs-11
         %h2

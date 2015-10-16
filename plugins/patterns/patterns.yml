@@ -1,3 +1,7 @@
+---
+:name: Patterns
+:initials: pt
+:description: |
   Contains all patterns installed on the inspected system. A pattern is a
   collection of software packages.
   The meaning of software patterns depends on the package manager of the

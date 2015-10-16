@@ -2033,8 +2033,8 @@ fieldset[disabled] .btn {
 }
 .btn-default {
     color: #333333;
-    background-color: #ffffff;
-    border-color: #cccccc;
+    background-color: #eec792;
+    border-color: #7f694f;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -2042,8 +2042,8 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
     color: #333333;
-    background-color: #ebebeb;
-    border-color: #adadad;
+    background-color: #e9b875;
+    border-color: #7f694f;
 }
 .btn-default:active,
 .btn-default.active,
@@ -2065,8 +2065,9 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-    background-color: #ffffff;
-    border-color: #cccccc;
+    background-color: #cccccc;
+    border-color: #000000;
+    color: #000000;
 }
 .btn-default .badge {
     color: #ffffff;
@@ -2312,17 +2313,25 @@ fieldset[disabled] .btn-link:focus {
 }
 .btn-lg,
 .btn-group-lg > .btn {
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.33;
-    border-radius: 6px;
+    font-size: 21px;
+    line-height: 2;
+    border-width: 2px;
+    border-radius: 8px;
+    padding: 2px;
+    width: 100%;
+    max-width: 50px;
+    min-width: 50px;
 }
 .btn-sm,
 .btn-group-sm > .btn {
-    padding: 5px 10px;
-    font-size: 12px;
+    padding: 6px 3px;
+    font-size: 11px;
+    font-weight: bold;
     line-height: 1.5;
     border-radius: 3px;
+    width:100%;
+    max-width: 30px;
+    min-width: 30px;
 }
 .btn-xs,
 .btn-group-xs > .btn {

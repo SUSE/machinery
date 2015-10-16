@@ -53,50 +53,26 @@
               Expand all
             %a#collapse-all{ :href => "#" }
               Collapse all
-          .col-xs-9
+          .col-xs-9.nav-buttons
             %small.pull-right.pad-top
               created by
               %a{ :href => "http://machinery-project.org", :target => "_blank" }
                 Machinery
-            .filter-input.col-md-3
-              %input#filter{ :placeholder => "Type To Filter" }
-              %a{ :href => "#" }
-                %img#reset-filter{ :src => "assets/reset.png", :titel => "Reset Filter" }
+            .filter-input.col-md-4
+              %input.col-md-8#filter{ :placeholder => "Type To Filter" }
+              %a.btn.btn-default.btn-reset{ :href => "#", :title => "Reset Filter" }
+                %span Reset
 
             %span.scope-navigation
-              Scopes:
-              %a{ :href => "#os", :title => "Operating System" }
-                %img{ :src => "assets/logo-os-small.png", :title=>"Operating System",
-                  "data-toggle"=>"popover", "data-content" => scope_help('os') }
-              %a{ :href => "#packages", :title => "Packages" }
-                %img{ :src => "assets/logo-packages-small.png", :title => "Packages",
-                  "data-toggle"=>"popover", "data-content" => scope_help('packages') }
-              %a{ :href => "#patterns", :title => "Patterns" }
-                %img{ :src => "assets/logo-patterns-small.png", :title => "Patterns",
-                  "data-toggle"=>"popover", "data-content" => scope_help('patterns') }
-              %a{ :href => "#repositories", :title => "Repositories" }
-                %img{ :src => "assets/logo-repositories-small.png", :title => "Repositories",
-                  "data-toggle"=>"popover", "data-content" => scope_help('repositories') }
-              %a{ :href => "#users", :title => "Users" }
-                %img{ :src => "assets/logo-users-small.png", :title => "Users",
-                  "data-toggle"=>"popover", "data-content" => scope_help('users') }
-              %a{ :href => "#groups", :title => "Groups" }
-                %img{ :src => "assets/logo-groups-small.png", :title => "Groups",
-                  "data-toggle"=>"popover", "data-content" => scope_help('groups') }
-              %a{ :href => "#services", :title => "Services" }
-                %img{ :src => "assets/logo-services-small.png", :title => "Services",
-                  "data-toggle"=>"popover", "data-content" => scope_help('services') }
-              %a{ :href => "#config_files", :title => "Config Files" }
-                %img{ :src => "assets/logo-config-files-small.png", :title => "Config Files",
-                  "data-toggle"=>"popover", "data-content" => scope_help('config_files') }
-              %a{ :href => "#changed_managed_files", :title => "Changed Managed Files" }
-                %img{ :src => "assets/logo-changed-managed-files-small.png",
-                 :title => "Changed Managed Files", "data-toggle" => "popover",
-                 "data-content" => scope_help('changed_managed_files') }
-              %a{ :href => "#unmanaged_files", :title => "Unmanaged Files" }
-                %img{ :src => "assets/logo-unmanaged-files-small.png", :title => "Unmanaged Files",
-                  :"data-toggle" => "popover", "data-content" => scope_help('unmanaged_files') }
-
+              %span.nav-bar-title
+                Scopes:
+              - ["os", "packages", "patterns", "repositories",
+                "users", "groups", "services", "config_files",
+                "changed_managed_files", "unmanaged_files"].each do |scope|
+                %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
+                  "data-toggle"=>"popover", "data-content" => scope_help(scope),
+                  :class => nav_class(scope) }
+                  %span= scope_initials(scope)
 
       #content_container
 

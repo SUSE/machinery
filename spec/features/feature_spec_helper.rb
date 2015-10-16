@@ -34,6 +34,12 @@ require "capybara/rspec"
 require "capybara/poltergeist"
 require "phantomjs/poltergeist"
 require "tilt/haml"
+require_relative "../support/system_description_factory"
+require "given_filesystem/spec_helpers"
+
+RSpec.configure do |config|
+  config.include SystemDescriptionFactory
+end
 
 Capybara.configure do |config|
   Server.set :public_folder, File.join(Machinery::ROOT, "html")

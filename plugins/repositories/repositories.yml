@@ -1,3 +1,7 @@
+---
+:name: Repositories
+:initials: r
+:description: |
   Contains all information about software repositories configured on the
   inspected system. The information about repositories depends on the package
   manager of the distribution. Thus on SUSE-based systems the `zypper` command

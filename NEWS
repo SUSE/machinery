@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Disable nav bar buttons when scope has been excluded (gh#SUSE/machinery#1199)
 * Show details of elements with changed attributes for all scopes in
   comparison view
 
