@@ -18,6 +18,15 @@ body {
   text-decoration: none;
 }
 
+.nav-bar-title {
+  float: left;
+  padding: 5px;
+}
+
+.nav-buttons {
+  padding: 9px 0px;
+}
+
 .scope{
   border-spacing: 5px;
 }
@@ -38,8 +47,10 @@ a.both_anchor {
   font-size: 65%;
 }
 
-.scope-navigation {
-  margin-left: 30px;
+.btn-reset {
+  height: 30px;
+  line-height: 1;
+  margin-left: 5px;
 }
 
 .inspection_details {
@@ -70,14 +81,6 @@ a.both_anchor {
 
 .scope-summary .summary-part {
   padding-left: 20px;
-}
-
-.filter-input {
-  margin-bottom: 10px;
-}
-
-.filter-input input {
-  width: 250px;
 }
 
 .fixed {

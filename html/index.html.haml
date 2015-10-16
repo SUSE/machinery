@@ -53,15 +53,15 @@
               Expand all
             %a#collapse-all{ :href => "#" }
               Collapse all
-          .col-xs-9
+          .col-xs-9.nav-buttons
             %small.pull-right.pad-top
               created by
               %a{ :href => "http://machinery-project.org", :target => "_blank" }
                 Machinery
-            .filter-input.col-md-3
-              %input#filter{ :placeholder => "Type To Filter" }
-              %a{ :href => "#" }
-                %img#reset-filter{ :src => "assets/reset.png", :titel => "Reset Filter" }
+            .filter-input.col-md-4
+              %input.col-md-8#filter{ :placeholder => "Type To Filter" }
+              %a.btn.btn-default.btn-reset{ :href => "#", :title => "Reset Filter" }
+                %span Reset
 
             %span.scope-navigation
               %span.nav-bar-title
