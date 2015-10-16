@@ -60,6 +60,33 @@ functional changes into one commit. When writing commit messages, adhere to
 [widely used
 conventions](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
+When the commit fixes a bug, put a message in the body of the commit message
+pointing to the number of the issue (e.g. "Fixes #123").
+
+### Pull requests and branches
+
+All work happens in branches. The master branch is only used as target for pull
+requests.
+
+During code review you often need to update pull requests. Usually you do that
+by pushing additional commits.
+
+In some cases where the commit history of a pull request gets too cumbersome to
+review or you need bigger changes in the way you approach a problem which needs
+changing of commits you already did it's more practical to create a new pull
+request. This new pull request often will contain squashed versions of the
+previous pull request. Use that to clarify the changes contained in a pull
+request and to make review easier.
+
+When you replace a pull request by another one, add a message in the
+description of the new pull request on GitHub referencing the pull request it
+replaces (e.g. "Supersedes #123").
+
+Never force push commits. This changes history, can lead to data loss, and
+causes trouble for people who have checked out the changes which are overwritten
+by a force push. Don't waste time with thinking about if the force push in this
+one particular case would be ok, just don't do it.
+
 # Additional Information
 
 If you have any question, feel free to ask on the [Machinery mailing
