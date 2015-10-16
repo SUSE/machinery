@@ -40,7 +40,7 @@ class Server < Sinatra::Base
     end
 
     def safe_length(object, attribute)
-      if object && collection = object.send(attribute)
+      if collection = object.try(attribute)
         collection.length
       else
         0
@@ -63,26 +63,35 @@ class Server < Sinatra::Base
       "<h3>In both with different attributes:</h3>"
     end
 
-    def changed_packages
-      changed = []
-      @diff["packages"].changed.each do |change|
-        changes = []
-        relevant_attributes = ["version", "vendor", "arch"]
+    def changed_elements(scope, opts)
+      optional_attributes = opts[:optional_attributes] || []
 
-        if change[0].version == change[1].version
-          relevant_attributes.push("release")
-          if change[0].release == change[1].release
-            relevant_attributes.push("checksum")
-          end
+      changed = []
+      @diff[scope].changed.each do |change|
+        changes = []
+        relevant_attributes = if opts[:attributes]
+          opts[:attributes].dup
+        else
+          change[0].attributes.keys & change[1].attributes.keys
         end
 
+        (1..optional_attributes.length).each do |i|
+          if change[0][optional_attributes[i - 1]] ==
+              change[1][optional_attributes[i - 1]]
+            relevant_attributes.push(optional_attributes[i])
+          else
+            break
+          end
+        end
         relevant_attributes.each do |attribute|
           if change[0][attribute] != change[1][attribute]
-            changes.push(attribute + ": " + change[0][attribute] + " ↔ " + change[1][attribute])
+            changes.push(
+              attribute + ": " + change[0][attribute].to_s + " ↔ " + change[1][attribute].to_s
+            )
           end
         end
 
-        changed.push(change[0].name + " (" + changes.join(", ") + ")")
+        changed.push(change[0][opts[:key]] + " (" + changes.join(", ") + ")")
       end
       changed
     end
@@ -90,8 +99,8 @@ class Server < Sinatra::Base
     def diffable_unmanaged_files
       return @diffable_unmanaged_files if @diffable_unmanaged_files
 
-      return [] if !@diff["unmanaged_files"] || !@diff["unmanaged_files"].only_in1 ||
-          !@diff["unmanaged_files"].only_in2
+      return [] if !@diff["unmanaged_files"].try(:only_in1).try(:files) ||
+          !@diff["unmanaged_files"].try(:only_in2).try(:files)
 
       files_in_1 = @diff["unmanaged_files"].only_in1.files.select(&:file?).map(&:name)
       files_in_2 = @diff["unmanaged_files"].only_in2.files.select(&:file?).map(&:name)

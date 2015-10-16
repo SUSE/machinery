@@ -21,6 +21,11 @@
               %span.summary-part
                 #{@description_b.name}:
                 #{safe_length(@diff["config_files"].only_in2, :files)} files
+            - if @diff["config_files"].changed
+              %span.summary-part
+                %a{ href: "#config_files_changed" }
+                  changed
+                = ": #{@diff["config_files"].changed.length} config_files"
             - if @diff["config_files"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#config_files_both" }<
@@ -38,6 +43,15 @@
           - if safe_length(@diff["config_files"].only_in2, :files) > 0
             = only_in_b
             = render_partial "compare/config_file_list", list: @diff["config_files"].only_in2
+      - if @diff["config_files"].changed
+        %a.both_anchor{ id: "config_files_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("config_files", key: "name").each do |change|
+                %li= change
       - if safe_length(@diff["config_files"].common, :files) > 0
         %a.both_anchor{ id: "config_files_both" }
         .row

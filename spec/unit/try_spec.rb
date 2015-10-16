@@ -15,26 +15,22 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "spec_helper"
 
-class Pattern < Machinery::Object
-end
+describe "#try" do
+  context "on nil objects" do
+    subject { nil }
 
-class PatternsScope < Machinery::Array
-  include Machinery::Scope
+    it "returns nil" do
+      expect(subject.try(:count)).to be(nil)
+    end
+  end
 
-  has_elements class: Pattern
+  context "on non-nil objects" do
+    subject { [1, 2] }
 
-  def compare_with(other)
-    only_self = self - other
-    only_other = other - self
-    common = self & other
-    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
-
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
+    it "returns the result of the method" do
+      expect(subject.try(:count)).to eq(2)
+    end
   end
 end

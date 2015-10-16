@@ -18,6 +18,11 @@
             - if @diff["repositories"].only_in2
               %span.summary-part
                 #{@description_b.name}: #{@diff["repositories"].only_in2.length} repositories
+            - if @diff["repositories"].changed
+              %span.summary-part
+                %a{ href: "#repositories_changed" }
+                  changed
+                = ": #{@diff["repositories"].changed.length} repositories"
             - if @diff["repositories"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#repositories_both" }<
@@ -35,6 +40,18 @@
           - if @diff["repositories"].only_in2
             = only_in_b
             = render_partial "compare/repository_list", list: @diff["repositories"].only_in2
+      - if @diff["repositories"].changed
+        %a.both_anchor{ id: "repositories_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("repositories",
+                  attributes: ["name", "url", "type", "enabled", "autorefresh", "gpgcheck",
+                  "priority"],
+                  key: "alias").each do |change|
+                %li= change
       - if @diff["repositories"].common
         %a.both_anchor{ id: "repositories_both" }
         .row

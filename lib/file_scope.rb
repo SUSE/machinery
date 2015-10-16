@@ -24,12 +24,12 @@ class FileScope < Machinery::Object
     shared = self.class.new
 
     compare_extracted(other, only_self, only_other, shared)
-    compare_files(other, only_self, only_other, shared)
+    changed = compare_files(other, only_self, only_other, shared)
 
     only_self = nil if only_self.empty?
     only_other = nil if only_other.empty?
     shared = nil if shared.empty?
-    [only_self, only_other, nil, shared]
+    [only_self, only_other, changed, shared]
   end
 
   private
@@ -57,10 +57,12 @@ class FileScope < Machinery::Object
   end
 
   def compare_files(other, only_self, only_other, shared)
-    own_files, other_files, _changed, shared_files = files.compare_with(other.files)
+    own_files, other_files, changed, shared_files = files.compare_with(other.files)
 
     only_self.files = own_files if own_files
     only_other.files = other_files if other_files
     shared.files = shared_files if shared_files
+
+    changed
   end
 end

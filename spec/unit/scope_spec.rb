@@ -100,4 +100,35 @@ describe Machinery::Scope do
       expect(scope.foo.scope).to eq(scope)
     end
   end
+
+  describe ".extract_changed_elements" do
+    before(:each) do
+      @a = [
+        Machinery::Object.new(name: "foo", value: 1),
+        Machinery::Object.new(name: "bar", value: 1)
+      ]
+      @b = [
+        Machinery::Object.new(name: "foo", value: 2),
+        Machinery::Object.new(name: "baz", value: 2)
+      ]
+
+      @changed = Machinery::Scope.extract_changed_elements(@a, @b, :name)
+    end
+
+    it "removes the changed elements from the scopes" do
+      expect(@a.length).to eq(1)
+      expect(@b.length).to eq(1)
+    end
+
+    it "detects the changed elements" do
+      expect(@changed).to eq(
+        [
+          [
+            Machinery::Object.new(name: "foo", value: 1),
+            Machinery::Object.new(name: "foo", value: 2)
+          ]
+        ]
+      )
+    end
+  end
 end

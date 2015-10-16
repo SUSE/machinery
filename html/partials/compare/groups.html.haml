@@ -19,6 +19,11 @@
             - if @diff["groups"].only_in2
               %span.summary-part
                 #{@description_b.name}: #{@diff["groups"].only_in2.length} groups
+            - if @diff["groups"].changed
+              %span.summary-part
+                %a{ href: "#groups_changed" }
+                  changed
+                = ": #{@diff["groups"].changed.length} groups"
             - if @diff["groups"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#groups_both" }<
@@ -36,6 +41,15 @@
           - if @diff["groups"].only_in2
             = only_in_b
             = render_partial "compare/group_list", list: @diff["groups"].only_in2
+      - if @diff["groups"].changed
+        %a.both_anchor{ id: "groups_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("groups", key: "name").each do |change|
+                %li= change
       - if @diff["groups"].common
         %a.both_anchor{ id: "groups_both" }
         .row

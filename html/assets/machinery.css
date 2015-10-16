@@ -228,6 +228,8 @@ h1 {
   border-radius: 50%;
 }
 
-.show-common-elements, .hide-common-elements {
+.scope-summary a,
+.show-common-elements,
+.hide-common-elements {
   text-decoration: underline;
 }

@@ -23,4 +23,18 @@ class GroupsScope < Machinery::Array
   include Machinery::Scope
 
   has_elements class: Group
+
+  def compare_with(other)
+    only_self = self - other
+    only_other = other - self
+    common = self & other
+    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+
+    [
+      only_self,
+      only_other,
+      changed,
+      common
+    ].map { |e| (e && !e.empty?) ? e : nil }
+  end
 end

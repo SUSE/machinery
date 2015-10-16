@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Show details of elements with changed attributes for all scopes in
+  comparison view
 
 ## Version 1.14.2 - Wed Oct 14 18:00:51 CEST 2015 - thardeck@suse.de
 

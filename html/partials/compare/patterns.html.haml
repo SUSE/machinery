@@ -19,6 +19,11 @@
             - if @diff["patterns"].only_in2
               %span.summary-part
                 #{@description_b.name}: #{@diff["patterns"].only_in2.length} patterns
+            - if @diff["patterns"].changed
+              %span.summary-part
+                %a{ href: "#patterns_changed" }
+                  changed
+                = ": #{@diff["patterns"].changed.length} patterns"
             - if @diff["patterns"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#patterns_both" }<
@@ -36,6 +41,18 @@
           - if @diff["patterns"].only_in2
             = only_in_b
             = render_partial "compare/pattern_list", list: @diff["patterns"].only_in2
+      - if @diff["patterns"].changed
+        %a.both_anchor{ id: "patterns_changed" }
+        .row
+          .col-xs-1
+          .col-xs-11.table_container
+            = changed
+            %ul.changed
+              - changed_elements("patterns",
+                  key: "name",
+                  attributes: ["version"],
+                  optional_attributes: ["version", "release"]).each do |change|
+                %li= change
       - if @diff["patterns"].common
         %a.both_anchor{ id: "patterns_both" }
         .row

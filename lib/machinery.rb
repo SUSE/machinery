@@ -38,6 +38,7 @@ require "diffy"
 require "sinatra/base"
 require "mimemagic"
 
+require_relative "try"
 require_relative "machinery_logger"
 require_relative "zypper"
 require_relative "rpm"
