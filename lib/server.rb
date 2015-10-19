@@ -110,7 +110,8 @@ class Server < Sinatra::Base
         relevant_attributes.each do |attribute|
           if change[0][attribute] != change[1][attribute]
             changes.push(
-              attribute + ": " + change[0][attribute].to_s + " ↔ " + change[1][attribute].to_s
+              attribute + ": " + human_readable_attribute(change[0], attribute) + " ↔ " +
+                human_readable_attribute(change[1], attribute)
             )
           end
         end
@@ -118,6 +119,17 @@ class Server < Sinatra::Base
         changed.push(change[0][opts[:key]] + " (" + changes.join(", ") + ")")
       end
       changed
+    end
+
+    def human_readable_attribute(object, attribute)
+      value = object[attribute]
+
+      case object
+      when Machinery::SystemFile
+        value = number_to_human_size(value) if attribute == "size"
+      end
+
+      value.to_s
     end
 
     def diffable_unmanaged_files

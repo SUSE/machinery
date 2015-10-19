@@ -219,5 +219,17 @@ EOF
         }.to_not raise_error
       end
     end
+
+    describe "#human_attribute" do
+      let(:file) { UnmanagedFile.new(name: "/tmp/foo", size: 1234567) }
+
+      it "renders file sizes properly" do
+        expect(human_readable_attribute(file, "size")).to eq("1.2 MiB")
+      end
+
+      it "just returns normal attributes" do
+        expect(human_readable_attribute(file, "name")).to eq("/tmp/foo")
+      end
+    end
   end
 end
