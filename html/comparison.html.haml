@@ -20,6 +20,8 @@
     %script{:src => "/assets/bootstrap-popover.js"}
 
   %body{ "data-description-a" => @description_a.name, "data-description-b" => @description_b.name }
+    - scopes = ["os", "packages", "patterns", "repositories", "users", "groups",
+       "services", "config_files", "changed_managed_files", "unmanaged_files"]
     #diff-unmanaged-files.modal.fade
       .modal-dialog.modal-lg
         .modal-content
@@ -53,9 +55,7 @@
               Comparing '#{@description_a.name}' with '#{@description_b.name}'
             %span.scope-navigation
               Scopes:
-              - ["os", "packages", "patterns", "repositories",
-                "users", "groups", "services", "config_files",
-                "changed_managed_files", "unmanaged_files"].each do |scope|
+              - scopes.each do |scope|
                 %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
                   "data-toggle"=>"popover", "data-content" => scope_help(scope),
                   :class => nav_class(scope), "ng-show" => "diff.#{scope}" }
@@ -76,13 +76,5 @@
       #content_container
         %div
           = render_partial "compare/alert"
-          = render_partial "compare/os"
-          = render_partial "compare/packages"
-          = render_partial "compare/patterns"
-          = render_partial "compare/users"
-          = render_partial "compare/groups"
-          = render_partial "compare/repositories"
-          = render_partial "compare/unmanaged_files"
-          = render_partial "compare/changed_managed_files"
-          = render_partial "compare/config_files"
-          = render_partial "compare/services"
+          - scopes.each do |scope|
+            = render_partial "compare/#{scope}"
