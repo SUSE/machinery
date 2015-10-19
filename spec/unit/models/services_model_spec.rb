@@ -27,91 +27,97 @@ describe "services model" do
 
   specify { expect(scope.services).to be_a(ServiceList) }
   specify { expect(scope.services.first).to be_a(Service) }
-end
 
-describe ServicesScope do
-  describe "#compare_with" do
-    let(:service_a) { Service::new(name: "a", state: "enabled") }
-    let(:service_b) { Service::new(name: "b", state: "enabled") }
-    let(:service_c) { Service::new(name: "c", state: "enabled") }
-    let(:service_d) { Service::new(name: "d", state: "enabled") }
-    let(:service_e) { Service::new(name: "e", state: "enabled") }
-    let(:service_f) { Service::new(name: "f", state: "enabled") }
-
-    context "when init systems are the same" do
-      it "returns correct result when service lists are equal" do
-        data_a = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_a, service_b, service_c]
-        )
-        data_b = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_a, service_b, service_c]
-        )
-
-        comparison = data_a.compare_with(data_b)
-        expect(comparison).to eq([nil, nil, nil, data_a])
-      end
-
-      it "returns correct result when service lists aren't equal and don't have common elements" do
-        data_a = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_a, service_b, service_c]
-        )
-        data_b = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_d, service_e, service_f]
-        )
-
-        comparison = data_a.compare_with(data_b)
-
-        expect(comparison).to eq([data_a, data_b, nil, nil])
-      end
-
-      it "returns correct result when service lists aren't equal but have common elements" do
-        data_a = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_a, service_b, service_c, service_d]
-        )
-        data_b = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_a, service_b, service_e, service_f]
-        )
-
-        comparison = data_a.compare_with(data_b)
-
-        expect(comparison).to eq([
-          ServicesScope.new(
-            init_system: "systemd",
-            services: [service_c, service_d]
-          ),
-          ServicesScope.new(
-            init_system: "systemd",
-            services: [service_e, service_f]
-          ),
-          nil,
-          ServicesScope.new(
-            init_system: "systemd",
-            services: [service_a, service_b]
-          )
-        ])
+  describe ServicesScope do
+    describe "#length" do
+      it "returns the number of services" do
+        expect(scope.length).to eq(10)
       end
     end
 
-    context "when init systems are different" do
-      it "treats the data as completely different" do
-        data_a = ServicesScope.new(
-          init_system: "sysvinit",
-          services: [service_a, service_b, service_c]
-        )
-        data_b = ServicesScope.new(
-          init_system: "systemd",
-          services: [service_a, service_b, service_c]
-        )
+    describe "#compare_with" do
+      let(:service_a) { Service.new(name: "a", state: "enabled") }
+      let(:service_b) { Service.new(name: "b", state: "enabled") }
+      let(:service_c) { Service.new(name: "c", state: "enabled") }
+      let(:service_d) { Service.new(name: "d", state: "enabled") }
+      let(:service_e) { Service.new(name: "e", state: "enabled") }
+      let(:service_f) { Service.new(name: "f", state: "enabled") }
 
-        comparison = data_a.compare_with(data_b)
+      context "when init systems are the same" do
+        it "returns correct result when service lists are equal" do
+          data_a = ServicesScope.new(
+            init_system: "systemd",
+            services:    [service_a, service_b, service_c]
+          )
+          data_b = ServicesScope.new(
+            init_system: "systemd",
+            services:    [service_a, service_b, service_c]
+          )
 
-        expect(comparison).to eq([data_a, data_b, nil, nil])
+          comparison = data_a.compare_with(data_b)
+          expect(comparison).to eq([nil, nil, nil, data_a])
+        end
+
+        it "returns correct result when service lists aren't equal and don't have common elements" do
+          data_a = ServicesScope.new(
+            init_system: "systemd",
+            services:    [service_a, service_b, service_c]
+          )
+          data_b = ServicesScope.new(
+            init_system: "systemd",
+            services:    [service_d, service_e, service_f]
+          )
+
+          comparison = data_a.compare_with(data_b)
+
+          expect(comparison).to eq([data_a, data_b, nil, nil])
+        end
+
+        it "returns correct result when service lists aren't equal but have common elements" do
+          data_a = ServicesScope.new(
+            init_system: "systemd",
+            services: [service_a, service_b, service_c, service_d]
+          )
+          data_b = ServicesScope.new(
+            init_system: "systemd",
+            services: [service_a, service_b, service_e, service_f]
+          )
+
+          comparison = data_a.compare_with(data_b)
+
+          expect(comparison).to eq([
+            ServicesScope.new(
+              init_system: "systemd",
+              services:    [service_c, service_d]
+            ),
+            ServicesScope.new(
+              init_system: "systemd",
+              services:    [service_e, service_f]
+            ),
+            nil,
+            ServicesScope.new(
+              init_system: "systemd",
+              services:    [service_a, service_b]
+            )
+          ])
+        end
+      end
+
+      context "when init systems are different" do
+        it "treats the data as completely different" do
+          data_a = ServicesScope.new(
+            init_system: "sysvinit",
+            services:    [service_a, service_b, service_c]
+          )
+          data_b = ServicesScope.new(
+            init_system: "systemd",
+            services:    [service_a, service_b, service_c]
+          )
+
+          comparison = data_a.compare_with(data_b)
+
+          expect(comparison).to eq([data_a, data_b, nil, nil])
+        end
       end
     end
   end
