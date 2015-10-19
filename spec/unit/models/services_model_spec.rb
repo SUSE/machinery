@@ -58,7 +58,7 @@ describe "services model" do
           expect(comparison).to eq([nil, nil, nil, data_a])
         end
 
-        it "returns correct result when service lists aren't equal and don't have common elements" do
+        it "returns correct result when lists aren't equal and don't have common elements" do
           data_a = ServicesScope.new(
             init_system: "systemd",
             services:    [service_a, service_b, service_c]
@@ -76,11 +76,11 @@ describe "services model" do
         it "returns correct result when service lists aren't equal but have common elements" do
           data_a = ServicesScope.new(
             init_system: "systemd",
-            services: [service_a, service_b, service_c, service_d]
+            services:    [service_a, service_b, service_c, service_d]
           )
           data_b = ServicesScope.new(
             init_system: "systemd",
-            services: [service_a, service_b, service_e, service_f]
+            services:    [service_a, service_b, service_e, service_f]
           )
 
           comparison = data_a.compare_with(data_b)
