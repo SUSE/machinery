@@ -470,6 +470,18 @@ describe Cli do
           expect(captured_machinery_output).
             to match(/^\/foo=bar/)
         end
+
+        context "when the inspected system was a docker container" do
+          let(:test_manifest) { create_test_description(scopes: ["docker_environment"]).to_json }
+
+          it "displays docker" do
+            run_command([
+              "show", "description1", "--verbose"
+            ])
+
+            expect(captured_machinery_output).to match(/Type of Inspected Container:\ndocker/)
+          end
+        end
       end
     end
 

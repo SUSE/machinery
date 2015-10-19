@@ -20,34 +20,15 @@ RSpec.describe "Inspection Details", type: :feature do
   initialize_system_description_factory_store
 
   let(:store) { system_description_factory_store }
-  let(:description) {
-    create_test_description(
-      store: store,
-      store_on_disk: true,
-      json: json
-    )
-  }
+  let(:description) { create_test_description(store: store, store_on_disk: true, scopes: scopes) }
+  let(:scopes) { [] }
 
   before(:each) do
     description
     Server.set :system_description_store, store
   end
 
-  context "when no filters where applied at the time of inspection" do
-    let(:json) { <<-EOF
-      {
-        "environment": {
-          "locale": "en_US.utf8"
-        },
-        "meta": {
-          "format_version": 5,
-          "filters": {
-            "inspect": []
-          }
-        }
-      }
-      EOF
-    }
+  context "when no filters were applied at the time of inspection" do
     it "displays all used filters" do
       visit("/description")
 
@@ -58,31 +39,32 @@ RSpec.describe "Inspection Details", type: :feature do
     end
   end
 
-  context "when filters where applied at the time of inspection" do
-    let(:json) { <<-EOF
-      {
-        "environment": {
-          "locale": "en_US.utf8"
-        },
-        "meta": {
-          "format_version": 5,
-          "filters": {
-            "inspect": [
-              "/unmaanged_files/files/name=/etc/passwd"
-            ]
-          }
-        }
-      }
-      EOF
-    }
+  context "when filters were applied at the time of inspection" do
+    before(:each) do
+      description.set_filter_definitions("inspect", Filter.new(["/foo=bar"]).to_array)
+      description.save
+    end
+
     it "displays all used filters" do
+
       visit("/description")
 
       click_on("(inspection details)")
 
       expect(find("#filters")).to have_content("Filters used during Inspection")
-      expect(find("#filters")).to have_content("/unmaanged_files/files/name=/etc/passwd")
+      expect(find("#filters")).to have_content("/foo=bar")
     end
   end
 
+  context "when the inspected system was a docker container" do
+    let(:scopes) { ["docker_environment"] }
+
+    it "displays docker in the inspection details" do
+      visit("/description")
+
+      click_on("(inspection details)")
+
+      expect(find("#container_type")).to have_content(/Type of Inspected Container docker/)
+    end
+  end
 end

@@ -166,7 +166,12 @@ module SystemDescriptionFactory
       "locale": "C"
     }
   EOF
-
+  EXAMPLE_SCOPES["docker_environment"] = <<-EOF.chomp
+    "environment": {
+      "locale": "C",
+      "system_type": "docker"
+    }
+  EOF
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
       "extracted": false,

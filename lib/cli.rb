@@ -774,6 +774,11 @@ class Cli
       inspected_filters = description.filter_definitions("inspect")
 
       if options[:verbose]
+        if description[:environment].system_type == "docker"
+          Machinery::Ui.puts "\nType of Inspected Container:"
+          Machinery::Ui.puts description[:environment].system_type
+        end
+
         if !inspected_filters.empty?
           Machinery::Ui.puts "\nThe following filters were applied during inspection:"
           Machinery::Ui.puts inspected_filters.join("\n") + "\n\n"

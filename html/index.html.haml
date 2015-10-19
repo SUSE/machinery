@@ -81,6 +81,20 @@
           = render_scope scope
 
         .hidden#inspection_details
+          - if @description[:environment].system_type == "docker"
+            #container_type
+              .row
+                .col-xs-1
+                .col-xs-11
+                  %h3 Type of Inspected Container
+
+              .row
+                .col-xs-1
+                .col-xs-11
+                  %ul
+                    %li
+                      = @description[:environment].system_type
+
           #filters
             .row
               .col-xs-1
