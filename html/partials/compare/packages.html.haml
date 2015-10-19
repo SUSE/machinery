@@ -11,23 +11,10 @@
       .col-xs-11
         %h2
           Packages
-          .scope-summary
-            - if @diff["packages"].only_in1
-              %span.summary-part
-                #{@description_a.name}: #{@diff["packages"].only_in1.length} packages
-            - if @diff["packages"].only_in2
-              %span.summary-part
-                #{@description_b.name}: #{@diff["packages"].only_in2.length} packages
-            - if @diff["packages"].changed
-              %span.summary-part
-                %a{ href: "#packages_changed" }
-                  changed
-                = ": #{@diff["packages"].changed.length} packages"
-            - if @diff["packages"].common
-              %span.summary-part
-                %a.show-common-elements{ href: "#packages_both" }<
-                  both
-                = ": #{@diff["packages"].common.length} packages"
+          = render_partial "compare/summary",
+            scope: "packages",
+            singular: "package",
+            plural: "packages"
     .row.scope_content.collapse.in
       .row
         .col-xs-1

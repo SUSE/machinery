@@ -11,23 +11,10 @@
       .col-xs-11
         %h2
           Users
-          .scope-summary
-            - if @diff["users"].only_in1
-              %span.summary-part
-                #{@description_a.name}: #{@diff["users"].only_in1.length} users
-            - if @diff["users"].only_in2
-              %span.summary-part
-                #{@description_b.name}: #{@diff["users"].only_in2.length} users
-            - if @diff["users"].changed
-              %span.summary-part
-                %a{ href: "#users_changed" }
-                  changed
-                = ": #{@diff["users"].changed.length} users"
-            - if @diff["users"].common
-              %span.summary-part
-                %a.show-common-elements{ href: "#users_both" }<
-                  both
-                = ": #{@diff["users"].common.length} users"
+          = render_partial "compare/summary",
+            scope: "users",
+            singular: "user",
+            plural: "users"
     .row.scope_content.collapse.in
       .row
         .col-xs-1

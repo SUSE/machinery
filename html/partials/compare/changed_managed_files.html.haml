@@ -11,25 +11,10 @@
       .col-xs-11
         %h2
           Changed Managed Files
-          .scope-summary
-            - if @diff["changed_managed_files"].only_in1
-              %span.summary-part
-                #{@description_a.name}:
-                #{safe_length(@diff["changed_managed_files"].only_in1, :files)} files
-            - if @diff["changed_managed_files"].only_in2
-              %span.summary-part
-                #{@description_b.name}:
-                #{safe_length(@diff["changed_managed_files"].only_in2, :files)} files
-            - if @diff["changed_managed_files"].changed
-              %span.summary-part
-                %a{ href: "#changed_managed_files_changed" }
-                  changed
-                = ": #{@diff["changed_managed_files"].changed.length} changed_managed_files"
-            - if @diff["changed_managed_files"].common
-              %span.summary-part
-                %a.show-common-elements{ href: "#changed_managed_files_both" }<
-                  both
-                = ": #{safe_length(@diff["changed_managed_files"].common, :files)} files"
+          = render_partial "compare/summary",
+            scope: "changed_managed_files",
+            singular: "file",
+            plural: "files"
     .row.scope_content.collapse.in
       .row
         .col-xs-1

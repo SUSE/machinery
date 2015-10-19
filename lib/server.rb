@@ -83,6 +83,10 @@ class Server < Sinatra::Base
       "<h3>In both with different attributes:</h3>"
     end
 
+    def pluralize_scope(object, singular, plural)
+      object.length.to_s + " " + Machinery.pluralize(object.length, singular, plural)
+    end
+
     def changed_elements(scope, opts)
       optional_attributes = opts[:optional_attributes] || []
 
