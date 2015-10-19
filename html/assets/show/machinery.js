@@ -47,12 +47,6 @@ $(document).ready(function () {
     $("#collapse-all").show();
   });
 
-  // Set up scope icon popovers
-  $("a[data-toggle]").popover({
-    trigger: "hover",
-    html: true
-  });
-
   // Set up inspection details popover
   $("a.inspection_details").popover({
     template: "<div class='popover inspection-details-popover' role='tooltip'>\
@@ -75,6 +69,12 @@ $(document).ready(function () {
     }
   });
   $('.inspection-details-popover .close').click(function() { $(".inspection_details").popover("hide") });
+
+  // Set up scope icon popovers
+  $("a[data-toggle]").popover({
+    trigger: "hover",
+    html: true
+  });
 
   // Set up file download links
   $(".file-download").click(function() {
