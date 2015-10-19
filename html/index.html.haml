@@ -16,6 +16,8 @@
     %script{ :src => "assets/bootstrap-popover.js" }
 
   %body{ "data-description" => @description.name }
+    - scopes = ["os", "packages", "patterns", "repositories", "users", "groups",
+       "services", "config_files", "changed_managed_files", "unmanaged_files"]
     #file-modal.modal.fade
       .modal-dialog.modal-lg
         .modal-content
@@ -66,9 +68,8 @@
             %span.scope-navigation
               %span.nav-bar-title
                 Scopes:
-              - ["os", "packages", "patterns", "repositories",
-                "users", "groups", "services", "config_files",
-                "changed_managed_files", "unmanaged_files"].each do |scope|
+
+              - scopes.each do |scope|
                 %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
                   "data-toggle"=>"popover", "data-content" => scope_help(scope),
                   :class => nav_class(scope) }
@@ -76,16 +77,8 @@
 
       #content_container
 
-        = render_scope "os"
-        = render_scope "packages"
-        = render_scope "patterns"
-        = render_scope "repositories"
-        = render_scope "users"
-        = render_scope "groups"
-        = render_scope "services"
-        = render_scope "config_files"
-        = render_scope "changed_managed_files"
-        = render_scope "unmanaged_files"
+        - scopes.each do |scope|
+          = render_scope scope
 
         .hidden#inspection_details
           #filters

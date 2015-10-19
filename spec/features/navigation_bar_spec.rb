@@ -21,6 +21,14 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
 
   let(:store) { system_description_factory_store }
 
+  def nav_scopes
+    all(".scope-navigation a.btn-sm:not(.disabled) span").map(&:text)
+  end
+
+  def content_scopes
+    all("#content_container a.btn-lg span").map(&:text)
+  end
+
   before(:each) do
     Server.set :system_description_store, store
   end
@@ -45,6 +53,12 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
       within(".scope-navigation") do
         expect(find_link("UF")[:class]).to include("disabled")
       end
+    end
+
+    it "displays in the same order as the scopes" do
+      visit("/name")
+
+      expect(nav_scopes).to eq(content_scopes)
     end
   end
 
@@ -85,6 +99,12 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
       within(".scope-navigation") do
         expect(find_link("S")[:class]).to include("disabled")
       end
+    end
+
+    it "displays in the same order as the scopes" do
+      visit("/compare/description_a/description_b")
+
+      expect(nav_scopes).to eq(content_scopes)
     end
   end
 end
