@@ -15,21 +15,21 @@
             - if @diff["unmanaged_files"].only_in1
               %span.summary-part
                 #{@description_a.name}:
-                #{safe_length(@diff["unmanaged_files"].only_in1, :files)} files
+                = pluralize_scope(@diff["unmanaged_files"].only_in1, "file", "files")
             - if @diff["unmanaged_files"].only_in2
               %span.summary-part
                 #{@description_b.name}:
-                #{safe_length(@diff["unmanaged_files"].only_in2, :files)} files
+                = pluralize_scope(@diff["unmanaged_files"].only_in2, "file", "files")
             - if @diff["unmanaged_files"].changed
               %span.summary-part
                 %a{ href: "#unmanaged_files_changed" }
                   changed
-                = ": #{@diff["unmanaged_files"].changed.length} files"
+                = ": #{pluralize_scope(@diff["unmanaged_files"].changed, "file", "files")}"
             - if @diff["unmanaged_files"].common
               %span.summary-part
                 %a.show-common-elements{ href: "#unmanaged_files_both" }<
                   both
-                = ": #{safe_length(@diff["unmanaged_files"].common, :files)} files"
+                = ": #{pluralize_scope(@diff["unmanaged_files"].common, "file", "files")}"
             - if diffable_unmanaged_files.length > 0
               %span.summary-part
                 %a#diff-unmanaged-files{ "data-toggle" => "modal",

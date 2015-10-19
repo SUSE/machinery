@@ -12,26 +12,26 @@
         %h2
           Services
           .scope-summary
-            - if @diff["services"].only_in1
+            - if @diff["services"].only_in1 && @diff["services"].only_in1.length > 0
               %span.summary-part
                 #{@description_a.name}:
-                #{safe_length(@diff["services"].only_in1, :services)} services
+                #{pluralize_scope(@diff["services"].only_in1, "service", "services")}
                 (#{@diff["services"].only_in1.init_system})
-            - if @diff["services"].only_in2
+            - if @diff["services"].only_in2 && @diff["services"].only_in2.length > 0
               %span.summary-part
                 #{@description_b.name}:
-                #{safe_length(@diff["services"].only_in2, :services)} services
+                #{pluralize_scope(@diff["services"].only_in2, "service", "services")}
                 (#{@diff["services"].only_in2.init_system})
-            - if @diff["services"].changed
+            - if @diff["services"].changed && @diff["services"].changed.length > 0
               %span.summary-part
                 %a{ href: "#services_changed" }
                   changed
-                = ": #{@diff["services"].changed.length} services"
-            - if @diff["services"].common
+                = ": #{pluralize_scope(@diff["services"].changed, "service", "services")}"
+            - if @diff["services"].common && @diff["services"].common.length > 0
               %span.summary-part
                 %a.show-common-elements{ href: "#services_both" }<
                   both
-                = ": #{safe_length(@diff["services"].common, :services)} services"
+                = ": #{pluralize_scope(@diff["services"].common, "service", "services")}"
     .row.scope_content.collapse.in
       .row
         .col-xs-1

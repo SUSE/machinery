@@ -30,6 +30,12 @@ describe "unmanaged_files model" do
   specify { expect(scope.files.first).to be_a(UnmanagedFile) }
 
   describe UnmanagedFilesScope do
+    describe "#length" do
+      it "returns the number of files" do
+        expect(scope.length).to eq(3)
+      end
+    end
+
     describe "#compare_with" do
       it "shows a warning when comparing unextracted with extracted files" do
         scope_a = UnmanagedFilesScope.new(extracted: false, files: UnmanagedFileList.new([]))

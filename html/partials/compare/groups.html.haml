@@ -11,23 +11,7 @@
       .col-xs-11
         %h2
           Groups
-          .scope-summary
-            - if @diff["groups"].only_in1
-              %span.summary-part
-                #{@description_a.name}: #{@diff["groups"].only_in1.length} groups
-            - if @diff["groups"].only_in2
-              %span.summary-part
-                #{@description_b.name}: #{@diff["groups"].only_in2.length} groups
-            - if @diff["groups"].changed
-              %span.summary-part
-                %a{ href: "#groups_changed" }
-                  changed
-                = ": #{@diff["groups"].changed.length} groups"
-            - if @diff["groups"].common
-              %span.summary-part
-                %a.show-common-elements{ href: "#groups_both" }<
-                  both
-                = ": #{@diff["groups"].common.length} groups"
+          = render_partial "compare/summary", scope: "groups", singular: "group", plural: "groups"
     .row.scope_content.collapse.in
       .row
         .col-xs-1

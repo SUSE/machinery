@@ -11,23 +11,10 @@
       .col-xs-11
         %h2
           Patterns
-          .scope-summary
-            - if @diff["patterns"].only_in1
-              %span.summary-part
-                #{@description_a.name}: #{@diff["patterns"].only_in1.length} patterns
-            - if @diff["patterns"].only_in2
-              %span.summary-part
-                #{@description_b.name}: #{@diff["patterns"].only_in2.length} patterns
-            - if @diff["patterns"].changed
-              %span.summary-part
-                %a{ href: "#patterns_changed" }
-                  changed
-                = ": #{@diff["patterns"].changed.length} patterns"
-            - if @diff["patterns"].common
-              %span.summary-part
-                %a.show-common-elements{ href: "#patterns_both" }<
-                  both
-                = ": #{@diff["patterns"].common.length} patterns"
+          = render_partial "compare/summary",
+            scope: "patterns",
+            singular: "pattern",
+            plural: "patterns"
     .row.scope_content.collapse.in
       .row
         .col-xs-1

@@ -32,6 +32,10 @@ class FileScope < Machinery::Object
     [only_self, only_other, changed, shared]
   end
 
+  def length
+    files.try(:length) || 0
+  end
+
   private
 
   def validate_attributes(other)

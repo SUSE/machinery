@@ -55,6 +55,10 @@ class ServicesScope < Machinery::Object
     end
   end
 
+  def length
+    services.try(:length) || 0
+  end
+
   private
 
   def service_list_to_scope(services)

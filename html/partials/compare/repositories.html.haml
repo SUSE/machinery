@@ -11,23 +11,10 @@
       .col-xs-11
         %h2
           Repositories
-          .scope-summary
-            - if @diff["repositories"].only_in1
-              %span.summary-part
-                #{@description_a.name}: #{@diff["repositories"].only_in1.length} repositories
-            - if @diff["repositories"].only_in2
-              %span.summary-part
-                #{@description_b.name}: #{@diff["repositories"].only_in2.length} repositories
-            - if @diff["repositories"].changed
-              %span.summary-part
-                %a{ href: "#repositories_changed" }
-                  changed
-                = ": #{@diff["repositories"].changed.length} repositories"
-            - if @diff["repositories"].common
-              %span.summary-part
-                %a.show-common-elements{ href: "#repositories_both" }<
-                  both
-                = ": #{@diff["repositories"].common.length} repositories"
+          = render_partial "compare/summary",
+            scope: "repositories",
+            singular: "repository",
+            plural: "repositories"
     .row.scope_content.collapse.in
       .row
         .col-xs-1
