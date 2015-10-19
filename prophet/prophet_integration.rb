@@ -78,7 +78,10 @@ Prophet.setup do |config|
     config.execution do
       log.info "Running tests ..."
 
-      system("cd ..; (bundle check || sudo bundle install) && rspec spec/integration --tag=ci")
+      system(
+        "cd ..; (bundle check || sudo bundle install) && rake rpm:build &&" \
+          " rspec spec/integration --tag=ci"
+      )
       config.success = ($? == 0)
 
       log.info "Tests are #{config.success ? "passing" : "failing"}."
