@@ -234,11 +234,11 @@ class Server < Sinatra::Base
       elsif @description_a[scope] || @description_b[scope]
         @meta[:uninspected] ||= Hash.new
 
-        if !@description_a[scope] && @description_b[scope]
+        if !@description_a[scope]
           @meta[:uninspected][@description_a.name] ||= Array.new
           @meta[:uninspected][@description_a.name] << scope
         end
-        if !@description_b[scope] && @description_a[scope]
+        if !@description_b[scope]
           @meta[:uninspected][@description_b.name] ||= Array.new
           @meta[:uninspected][@description_b.name] << scope
         end
