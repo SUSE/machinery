@@ -44,4 +44,21 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
       expect(page).to have_selector(".scope_content table")
     end
   end
+
+  it "expands a collapsed scope if both is clicked" do
+    # Note: this reload is a workaround for some poltergeist/phantomjs issue with scrolling to
+    # anchors
+    visit("/compare/opensuse131/opensuse132")
+
+    within("#groups_container") do
+      expect(page).to have_selector(".scope_content table")
+      find(".toggle").click
+      expect(page).to have_no_selector(".scope_content table")
+      expect(page).to have_no_selector(".hide-common-elements")
+
+      find(".show-common-elements").click
+      expect(page).to have_selector(".scope_content table")
+      expect(page).to have_selector(".hide-common-elements")
+    end
+  end
 end
