@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Show if description was result of a container inspection
+  (gh#SUSE/machinery#1495)
 * Disable nav bar buttons when scope has been excluded (gh#SUSE/machinery#1199)
 * Show details of elements with changed attributes for all scopes in
   comparison view
