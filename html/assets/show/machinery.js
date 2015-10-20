@@ -78,6 +78,7 @@ $(document).ready(function () {
 
   // Set up file download links
   $(".file-download").click(function() {
+    $("#file-modal .spinner").show();
     $("#file-modal-file-content").hide();
     $("#file-modal-error").hide();
 
@@ -94,8 +95,10 @@ $(document).ready(function () {
           $("#file-modal-file-content").val(res).show();
           $("#file-modal-file-content").scrollTop(0);
         }
+        $("#file-modal .spinner").hide();
       }, "text").
       error(function(res) {
+        $("#file-modal .spinner").hide();
         if(res.readyState == 0) {
           $("#file-modal-error").html("Could not download file content. Is the web server still running?").show();
         } else if(res.status == 406) {

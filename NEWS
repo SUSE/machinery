@@ -7,6 +7,7 @@
 * Disable nav bar buttons when scope has been excluded (gh#SUSE/machinery#1199)
 * Show details of elements with changed attributes for all scopes in
   comparison view
+* Show progress indicator while loading file content in HTML view
 
 ## Version 1.14.2 - Wed Oct 14 18:00:51 CEST 2015 - thardeck@suse.de
 

@@ -236,3 +236,14 @@ h1 {
 .hide-common-elements {
   text-decoration: underline;
 }
+
+.spinner {
+  background-image: url("file_loader.gif");
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+}
