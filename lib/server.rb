@@ -231,14 +231,14 @@ class Server < Sinatra::Base
     Inspector.all_scopes.each do |scope|
       if @description_a[scope] && @description_b[scope]
         @diff[scope] = Comparison.compare_scope(@description_a, @description_b, scope)
-      else
+      elsif @description_a[scope] || @description_b[scope]
         @meta[:uninspected] ||= Hash.new
 
-        if !@description_a[scope] && @description_b[scope]
+        if !@description_a[scope]
           @meta[:uninspected][@description_a.name] ||= Array.new
           @meta[:uninspected][@description_a.name] << scope
         end
-        if !@description_b[scope] && @description_a[scope]
+        if !@description_b[scope]
           @meta[:uninspected][@description_b.name] ||= Array.new
           @meta[:uninspected][@description_b.name] << scope
         end
