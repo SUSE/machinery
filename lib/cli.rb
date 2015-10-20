@@ -774,20 +774,23 @@ class Cli
       inspected_filters = description.filter_definitions("inspect")
 
       if options[:verbose]
+        details = ""
+
         if description[:environment].system_type == "docker"
-          Machinery::Ui.puts "\nType of Inspected Container:"
-          Machinery::Ui.puts description[:environment].system_type
+          details += "\n  Type of inspected container: #{description[:environment].system_type}\n"
         end
 
         if !inspected_filters.empty?
-          Machinery::Ui.puts "\nThe following filters were applied during inspection:"
-          Machinery::Ui.puts inspected_filters.join("\n") + "\n\n"
+          details += "\n  The following filters were applied during inspection:"
+          details += "\n    * " + inspected_filters.join("\n    * ") + "\n\n"
         end
 
         if !filter.empty?
-          Machinery::Ui.puts "\nThe following filters were applied before showing the description:"
-          Machinery::Ui.puts filter.to_array.join("\n") + "\n\n"
+          details += "\n  The following filters were applied before showing the description:"
+          details += "\n    * " + filter.to_array.join("\n    * ") + "\n\n"
         end
+
+        Machinery::Ui.puts "# Inspection details\n" + details unless details.empty?
       end
 
       task = ShowTask.new
