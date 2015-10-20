@@ -451,9 +451,9 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            to include("The following filters were applied before showing the description:")
+            to match(/  The following filters were applied before showing the description:/)
           expect(captured_machinery_output).
-            to match(/^\/unmanaged_files\/files\/name=.*$/)
+            to match(/^    \* \/unmanaged_files\/files\/name=.*$/)
         end
 
         it "shows the filters which are applied during inspection" do
@@ -466,9 +466,9 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            to include("The following filters were applied during inspection:")
+            to match(/^  The following filters were applied during inspection:/)
           expect(captured_machinery_output).
-            to match(/^\/foo=bar/)
+            to match(/^    \* \/foo=bar/)
         end
 
         context "when the inspected system was a docker container" do
@@ -479,7 +479,7 @@ describe Cli do
               "show", "description1", "--verbose"
             ])
 
-            expect(captured_machinery_output).to match(/Type of Inspected Container:\ndocker/)
+            expect(captured_machinery_output).to include("  Type of inspected container: docker")
           end
         end
       end
