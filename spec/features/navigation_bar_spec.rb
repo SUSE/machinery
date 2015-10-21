@@ -60,6 +60,20 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
 
       expect(nav_scopes).to eq(content_scopes)
     end
+
+    context "when hovered over a button" do
+      it "shows a help text" do
+        visit("/name")
+
+        within(".scope-navigation") do
+          link = find_link("OS")
+          help_title = Nokogiri::HTML(link["data-original-title"]).text
+          help_text = Nokogiri::HTML(link["data-content"]).text
+          link.hover
+          expect(find(".popover")).to have_content("#{help_title} #{help_text}")
+        end
+      end
+    end
   end
 
   context "when comparing two system descriptions" do
