@@ -85,7 +85,7 @@ $(document).ready(function () {
     var file = $(this);
     var scope = file.parents(".scope").data("scope");
     var description = $("body").data("description");
-    var url = "/descriptions/" + description + "/files/" + scope + file.text().trim();
+    var url = encodeURI("/descriptions/" + description + "/files/" + scope + file.text().trim());
 
     $("#file-modal-download-link").attr("href", url);
     $.get(url, function(res) {
