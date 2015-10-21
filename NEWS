@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Files containing special characters can now be downloaded
+  (gh#SUSE/machinery#1497)
 * Links to common elements work in HTML when all scopes are collapsed
   (gh#SUSE/machinery#1469)
 * Show if description was result of a container inspection
