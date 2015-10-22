@@ -71,7 +71,7 @@ $(document).ready(function () {
   $('.inspection-details-popover .close').click(function() { $(".inspection_details").popover("hide") });
 
   // Set up scope icon popovers
-  $("a[data-toggle]").popover({
+  $(".btn[data-toggle]").popover({
     trigger: "hover",
     html: true
   });
