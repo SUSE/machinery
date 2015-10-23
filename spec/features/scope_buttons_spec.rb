@@ -22,11 +22,14 @@ RSpec.describe "Scope Buttons", type: :feature do
   let(:store) { system_description_factory_store }
 
   before(:each) do
-    description
     Server.set :system_description_store, store
   end
 
-  context "when scrolling down" do
+  context "when scrolling down in show view" do
+    before(:each) do
+      description
+    end
+
     let(:description) {
       create_test_description(
         scopes:        ["os", "packages", "repositories", "services"],
@@ -40,9 +43,45 @@ RSpec.describe "Scope Buttons", type: :feature do
       visit("/name")
 
       within("#content_container") do
-        coordinates_before = get_position(".scope_logo_big:first-of-type")
+        coordinates_before = get_coordinates(".scope_logo_big:first-of-type")
         page.execute_script("window.scrollBy(0,10)")
-        coordinates_after = get_position(".scope_logo_big:first-of-type")
+        coordinates_after = get_coordinates(".scope_logo_big:first-of-type")
+        expect(coordinates_before[0]).to eq(coordinates_after[0])
+        expect(coordinates_before[1]).to eq(coordinates_after[1] + 10)
+      end
+    end
+  end
+
+  context "when scrolling down in compare view" do
+    before(:each) do
+      description_a
+      description_b
+    end
+
+    let(:description_a) {
+      create_test_description(
+        scopes:        ["os", "packages", "repositories"],
+        name:          "description_a",
+        store:         store,
+        store_on_disk: true
+      )
+    }
+    let(:description_b) {
+      create_test_description(
+        scopes:        ["os", "packages", "repositories", "services"],
+        name:          "description_b",
+        store:         store,
+        store_on_disk: true
+      )
+    }
+
+    it "also move down" do
+      visit("/compare/description_a/description_b")
+
+      within("#content_container") do
+        coordinates_before = get_coordinates(".scope_logo_big:first-of-type")
+        page.execute_script("window.scrollBy(0,10)")
+        coordinates_after = get_coordinates(".scope_logo_big:first-of-type")
         expect(coordinates_before[0]).to eq(coordinates_after[0])
         expect(coordinates_before[1]).to eq(coordinates_after[1] + 10)
       end
