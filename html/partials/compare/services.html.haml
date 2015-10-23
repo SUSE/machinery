@@ -4,8 +4,9 @@
   .scope#services_container
     .row
       .col-xs-1
-        %a.btn.btn-default.btn-lg{ :href => "##{scope}", :title => scope_title(scope),
-          "data-toggle"=>"popover", "data-content" => scope_help(scope) }
+        %a.btn.btn-default.btn-lg.scope_logo_big{ :href => "##{scope}",
+          :title => scope_title(scope), "data-toggle"=>"popover",
+          "data-content" => scope_help(scope) }
           %span= scope_initials(scope)
         %span.toggle{ title: "Collapse/Expand" }
       .col-xs-11
