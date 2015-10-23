@@ -47,3 +47,14 @@ Capybara.configure do |config|
 
   config.default_driver = :poltergeist
 end
+
+def get_position(selector)
+  pos = page.driver.evaluate_script <<-EOS
+    function() {
+      var elem1 = document.querySelector('#{selector}');
+      var rect1 = elem1.getBoundingClientRect();
+      return [rect1.left, rect1.top];
+    }();
+    EOS
+  pos
+end

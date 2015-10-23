@@ -50,13 +50,17 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
     # anchors
     visit("/compare/opensuse131/opensuse132")
 
+    within(".scope-navigation") do
+      find_link("G").click
+    end
+
     within("#groups_container") do
       expect(page).to have_selector(".scope_content table")
-      find(".toggle").click
+      find(".toggle").trigger("click")
       expect(page).to have_no_selector(".scope_content table")
       expect(page).to have_no_selector(".hide-common-elements")
 
-      find(".show-common-elements").click
+      find(".show-common-elements").trigger("click")
       expect(page).to have_selector(".scope_content table")
       expect(page).to have_selector(".hide-common-elements")
     end
