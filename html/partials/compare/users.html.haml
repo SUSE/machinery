@@ -34,11 +34,9 @@
           .col-xs-1
           .col-xs-11.table_container
             = changed
-            %ul.changed
-              - changed_elements("users",
-                  attributes: ["uid", "gid", "comment", "shell", "home"],
-                  key: "name").each do |change|
-                %li= change
+            = render_partial "compare/changes", changes: changed_elements("users",
+              key: "name",
+              attributes: ["uid", "gid", "comment", "shell", "home"])
       - if @diff["users"].common
         %a.both_anchor{ id: "users_both" }
         .row

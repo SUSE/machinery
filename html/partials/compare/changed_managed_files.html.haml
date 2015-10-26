@@ -36,9 +36,8 @@
           .col-xs-1
           .col-xs-11.table_container
             = changed
-            %ul.changed
-              - changed_elements("changed_managed_files", key: "name").each do |change|
-                %li= change
+            = render_partial "compare/changes", changes: changed_elements("changed_managed_files",
+              key: "name")
       - if safe_length(@diff["changed_managed_files"].common, :files) > 0
         %a.both_anchor{ id: "changed_managed_files_both" }
         .row

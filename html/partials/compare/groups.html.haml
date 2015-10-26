@@ -31,9 +31,7 @@
           .col-xs-1
           .col-xs-11.table_container
             = changed
-            %ul.changed
-              - changed_elements("groups", key: "name").each do |change|
-                %li= change
+            = render_partial "compare/changes", changes: changed_elements("groups", key: "name")
       - if @diff["groups"].common
         %a.both_anchor{ id: "groups_both" }
         .row

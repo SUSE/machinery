@@ -34,12 +34,10 @@
           .col-xs-1
           .col-xs-11.table_container
             = changed
-            %ul.changed
-              - changed_elements("patterns",
-                  key: "name",
-                  attributes: ["version"],
-                  optional_attributes: ["version", "release"]).each do |change|
-                %li= change
+            = render_partial "compare/changes", changes: changed_elements("patterns",
+              key: "name",
+              attributes: ["version"],
+              optional_attributes: ["version", "release"])
       - if @diff["patterns"].common
         %a.both_anchor{ id: "patterns_both" }
         .row
