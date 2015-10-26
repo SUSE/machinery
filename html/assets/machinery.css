@@ -76,6 +76,10 @@ a.both_anchor {
 }
 
 .scope th.small {
+  width: 8%;
+}
+
+.scope th.medium {
   width: 12%;
 }
 
