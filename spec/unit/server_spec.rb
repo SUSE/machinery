@@ -258,7 +258,7 @@ EOF
 
         @diff = {
           "files" => files_comparison,
-          "dirs" => dirs_comparison,
+          "dirs"  => dirs_comparison,
           "other" => other_comparison,
         }
       }
