@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.15.0 - Mon Oct 26 17:42:25 CET 2015 - thardeck@suse.de
+
 * No information is cut off in the HTML view
 * Files containing special characters can now be downloaded
   (gh#SUSE/machinery#1497)
