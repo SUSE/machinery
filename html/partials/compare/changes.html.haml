@@ -1,0 +1,8 @@
+%ul.changed
+  - changes.each do |change|
+    %li
+      = change[:id] + " " + change[:change]
+      - if change[:diffable]
+        %a.diff-unmanaged-files{ "data-toggle" => "modal",
+            "data-target" => "#diff-unmanaged-files", "data-file" => change[:id] }
+          (diff)

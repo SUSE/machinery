@@ -51,9 +51,7 @@
           .col-xs-1
           .col-xs-11.table_container
             = changed
-            %ul.changed
-              - changed_elements("services", key: "name").each do |change|
-                %li= change
+            = render_partial "compare/changes", changes: changed_elements("services", key: "name")
       - if safe_length(@diff["services"].common, :services) > 0
         %a.both_anchor{ id: "services_both" }
         .row

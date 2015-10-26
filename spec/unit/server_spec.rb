@@ -231,5 +231,79 @@ EOF
         expect(human_readable_attribute(file, "name")).to eq("/tmp/foo")
       end
     end
+
+    describe "#changed_elements" do
+      before(:each) {
+        files_comparison = Comparison.new
+        files_comparison.changed = [
+          [
+            UnmanagedFile.new(name: "/tmp/foo", size: 1, type: "file"),
+            UnmanagedFile.new(name: "/tmp/foo", size: 2, type: "file")
+          ]
+        ]
+        dirs_comparison = Comparison.new
+        dirs_comparison.changed = [
+          [
+            UnmanagedFile.new(name: "/tmp/foo/", files: 1, type: "dir"),
+            UnmanagedFile.new(name: "/tmp/foo/", files: 2, type: "dir")
+          ]
+        ]
+        other_comparison = Comparison.new
+        other_comparison.changed = [
+          [
+            Machinery::Object.new(name: "/tmp/foo", foo: 1),
+            Machinery::Object.new(name: "/tmp/foo", foo: 2)
+          ]
+        ]
+
+        @diff = {
+          "files" => files_comparison,
+          "dirs"  => dirs_comparison,
+          "other" => other_comparison,
+        }
+      }
+
+      it "processes files" do
+        changed_elements = changed_elements("files", key: "name")
+
+        expect(changed_elements).to eq(
+          [
+            {
+              id:       "/tmp/foo",
+              change:   "(size: 1 B ↔ 2 B)",
+              diffable: true
+            }
+          ]
+        )
+      end
+
+      it "processes dirs" do
+        changed_elements = changed_elements("dirs", key: "name")
+
+        expect(changed_elements).to eq(
+          [
+            {
+              id:       "/tmp/foo/",
+              change:   "(files: 1 ↔ 2)",
+              diffable: false
+            }
+          ]
+        )
+      end
+
+      it "processes other objects" do
+        changed_elements = changed_elements("other", key: "name")
+
+        expect(changed_elements).to eq(
+          [
+            {
+              id:       "/tmp/foo",
+              change:   "(foo: 1 ↔ 2)",
+              diffable: false
+            }
+          ]
+        )
+      end
+    end
   end
 end

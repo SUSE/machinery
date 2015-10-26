@@ -31,13 +31,10 @@
             %h4
               Diff Unmanaged Files
           .modal-body
-            .row
-              File
-              %select#diff-unmanaged-files-file
-                - diffable_unmanaged_files.each do |file|
-                  %option{ label: file, value: file }
             .row#diff-unmanaged-files-content{"style" => "display: none"}
-              Diff ('#{@description_a.name}' -> '#{@description_b.name}')
+              Diff for '
+              %span#diff-unmanaged-files-file>
+              ' ('#{@description_a.name}' -> '#{@description_b.name}')
               #diff-unmanaged-files-diff
             #diff-unmanaged-files-error{"style" => "display: none"}
             #diff-unmanaged-files-spinner{"style" => "display: none"}

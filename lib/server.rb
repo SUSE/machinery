@@ -116,7 +116,12 @@ class Server < Sinatra::Base
           end
         end
 
-        changed.push(change[0][opts[:key]] + " (" + changes.join(", ") + ")")
+        changed.push(
+          id:       change[0][opts[:key]],
+          change:   "(" + changes.join(", ") + ")",
+          diffable: change[0].is_a?(UnmanagedFile) && change[0].is_a?(UnmanagedFile) &&
+            change[0].file? && change[1].file?
+        )
       end
       changed
     end
@@ -130,18 +135,6 @@ class Server < Sinatra::Base
       end
 
       value.to_s
-    end
-
-    def diffable_unmanaged_files
-      return @diffable_unmanaged_files if @diffable_unmanaged_files
-
-      return [] if !@diff["unmanaged_files"].try(:only_in1).try(:files) ||
-          !@diff["unmanaged_files"].try(:only_in2).try(:files)
-
-      files_in_1 = @diff["unmanaged_files"].only_in1.files.select(&:file?).map(&:name)
-      files_in_2 = @diff["unmanaged_files"].only_in2.files.select(&:file?).map(&:name)
-
-      @diffable_unmanaged_files = files_in_1 & files_in_2
     end
 
     def diff_to_object(diff)
