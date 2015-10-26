@@ -117,8 +117,8 @@ class Server < Sinatra::Base
         end
 
         changed.push(
-          id: change[0][opts[:key]],
-          change: "(" + changes.join(", ") + ")",
+          id:       change[0][opts[:key]],
+          change:   "(" + changes.join(", ") + ")",
           diffable: change[0].is_a?(UnmanagedFile) && change[0].is_a?(UnmanagedFile) &&
             change[0].file? && change[1].file?
         )
