@@ -1,3 +1,23 @@
+function highlightCurrentScope() {
+  $(".scope-navigation a").removeClass("active");
+  current = $('.over-the-top:last');
+  if(current.length == 0) {
+    current = $('.scope_logo_big:first');
+  }
+  $(".scope-navigation a[href='#" + current.attr("id") + "']").addClass("active");
+}
+
+function setCurrentScopeState(anchor) {
+  var header_height =  $("#nav-bar").height() + 20;
+  var pos = anchor.offset();
+  var top_pos = $(this).scrollTop() + header_height;
+  if(top_pos >= pos.top) {
+    anchor.addClass("over-the-top");
+  } else {
+    anchor.removeClass("over-the-top");
+  }
+}
+
 $(document).ready(function () {
   // Set up filter
   $(".filterable").searcher({
@@ -24,6 +44,14 @@ $(document).ready(function () {
       } else if(top_pos <= pos.top && icon.hasClass("fixed")) {
         icon.removeClass("fixed");
       }
+    })
+  });
+
+  $('.scope_anchor').each(function(){
+    var anchor = $(this);
+    $(window).scroll(function() {
+      setCurrentScopeState(anchor);
+      highlightCurrentScope();
     })
   });
 
@@ -163,4 +191,10 @@ $(document).ready(function () {
       $this.attr('title', $this.text());
     }
   });
+
+  $('.scope_anchor').each(function(){
+    var anchor = $(this);
+    setCurrentScopeState(anchor);
+  });
+  highlightCurrentScope();
 });
