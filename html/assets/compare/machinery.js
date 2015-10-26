@@ -77,15 +77,18 @@ $(document).ready(function () {
   });
 
   // Unmanaged files diffs
-  $("#diff-unmanaged-files-file").prop("selectedIndex", -1)
-  $("#diff-unmanaged-files-file").change(function(){
+  $("#diff-unmanaged-files").on("show.bs.modal", function(e) {
+    var trigger = $(e.relatedTarget);
+
     $("#diff-unmanaged-files-content").hide();
     $("#diff-unmanaged-files-error").hide();
     $("#diff-unmanaged-files-spinner").show();
 
     var description1 = $("body").data("description-a");
     var description2 = $("body").data("description-b");
-    var url = "/compare/" + description1 + "/" + description2 + "/files/unmanaged_files" + $(this).val();
+    var url = "/compare/" + description1 + "/" + description2 + "/files/unmanaged_files" +
+      trigger.data("file");
+    $("#diff-unmanaged-files-file").text(trigger.data("file"));
     $.get(url, function(res) {
       $("#diff-unmanaged-files-spinner").hide();
         if(res.length === 0) {

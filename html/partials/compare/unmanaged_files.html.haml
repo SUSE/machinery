@@ -31,11 +31,6 @@
                 %a.show-common-elements{ href: "#unmanaged_files_both" }<
                   both
                 = ": #{pluralize_scope(@diff["unmanaged_files"].common, "file", "files")}"
-            - if diffable_unmanaged_files.length > 0
-              %span.summary-part
-                %a#diff-unmanaged-files{ "data-toggle" => "modal",
-                    "data-target" => "#diff-unmanaged-files" }
-                  Diff files
     .row.scope_content.collapse.in
       .row
         .col-xs-1
@@ -54,9 +49,8 @@
           .col-xs-1
           .col-xs-11.table_container
             = changed
-            %ul.changed
-              - changed_elements("unmanaged_files", key: "name").each do |change|
-                %li= change
+            = render_partial "compare/changes", changes: changed_elements("unmanaged_files",
+              key: "name")
       - if safe_length(@diff["unmanaged_files"].common, :files) > 0
         %a.both_anchor{ id: "unmanaged_files_both" }
         .row

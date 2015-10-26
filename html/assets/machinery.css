@@ -217,6 +217,10 @@ h1 {
   margin-bottom: 1em;
 }
 
+.diff-unmanaged-files {
+  padding-left: 10px;
+}
+
 .well .dismiss{
   margin: -14px;
 }

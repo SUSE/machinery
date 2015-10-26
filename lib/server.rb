@@ -137,18 +137,6 @@ class Server < Sinatra::Base
       value.to_s
     end
 
-    def diffable_unmanaged_files
-      return @diffable_unmanaged_files if @diffable_unmanaged_files
-
-      return [] if !@diff["unmanaged_files"].try(:only_in1).try(:files) ||
-          !@diff["unmanaged_files"].try(:only_in2).try(:files)
-
-      files_in_1 = @diff["unmanaged_files"].only_in1.files.select(&:file?).map(&:name)
-      files_in_2 = @diff["unmanaged_files"].only_in2.files.select(&:file?).map(&:name)
-
-      @diffable_unmanaged_files = files_in_1 & files_in_2
-    end
-
     def diff_to_object(diff)
       diff = Machinery.scrub(diff)
       lines = diff.lines[2..-1]
