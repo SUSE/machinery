@@ -27,6 +27,14 @@ $(document).ready(function () {
     })
   });
 
+  $('.scope_anchor').each(function(){
+    var anchor = $(this);
+    $(window).scroll(function() {
+      setCurrentScopeState(anchor);
+      highlightCurrentScope();
+    })
+  });
+
   // Hook up the toggle links
   $(".toggle").click(function(){
     $(this).closest(".scope").find(".scope_content").collapse("toggle");
@@ -163,4 +171,10 @@ $(document).ready(function () {
       $this.attr('title', $this.text());
     }
   });
+
+  $('.scope_anchor').each(function(){
+    var anchor = $(this);
+    setCurrentScopeState(anchor);
+  });
+  highlightCurrentScope();
 });

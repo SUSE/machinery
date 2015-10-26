@@ -17,38 +17,34 @@
             singular: "package",
             plural: "packages"
     .row.scope_content.collapse.in
-      .row
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["packages"].only_in1
-            = only_in_a
-            = render_partial "compare/package_list", list: @diff["packages"].only_in1
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["packages"].only_in2
-            = only_in_b
-            = render_partial "compare/package_list", list: @diff["packages"].only_in2
-      - if @diff["packages"].changed
-        %a.both_anchor{ id: "packages_changed" }
+      .col-md-12
         .row
-          .col-xs-1
-          .col-xs-11.table_container
-            = changed
-            = render_partial "compare/changes", changes: changed_elements("packages",
-              key: "name",
-              attributes: ["version", "vendor", "arch"],
-              optional_attributes: ["version", "release", "checksum"])
-      - if @diff["packages"].common
-        %a.both_anchor{ id: "packages_both" }
-        .row
-          .col-xs-1
-          .col-xs-2
-            %a.show-common-elements{ href: "#packages_both" }
-              Show common elements in packages
-            %a.hide-common-elements{ href: "#", style: "display: none" }
-              Hide common elements in packages
-        .row.scope_common_content.collapse
-          .col-xs-1
-          .col-xs-10.table_container
-            = in_both
-            = render_partial "compare/package_list", list: @diff["packages"].common
+          .col-md-6.table_container
+            - if @diff["packages"].only_in1
+              = only_in_a
+              = render_partial "compare/package_list", list: @diff["packages"].only_in1
+          .col-md-6.table_container
+            - if @diff["packages"].only_in2
+              = only_in_b
+              = render_partial "compare/package_list", list: @diff["packages"].only_in2
+        - if @diff["packages"].changed
+          %a.both_anchor{ id: "packages_changed" }
+          .row
+            .col-md-12.table_container
+              = changed
+              = render_partial "compare/changes", changes: changed_elements("packages",
+                key: "name",
+                attributes: ["version", "vendor", "arch"],
+                optional_attributes: ["version", "release", "checksum"])
+        - if @diff["packages"].common
+          %a.both_anchor{ id: "packages_both" }
+          .row
+            .col-md-12
+              %a.show-common-elements{ href: "#packages_both" }
+                Show common elements in packages
+              %a.hide-common-elements{ href: "#", style: "display: none" }
+                Hide common elements in packages
+          .row.scope_common_content.collapse
+            .col-md-12.table_container
+              = in_both
+              = render_partial "compare/package_list", list: @diff["packages"].common

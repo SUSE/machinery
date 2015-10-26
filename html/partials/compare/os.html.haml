@@ -13,20 +13,18 @@
           %h2
             Operating System
       .row.scope_content.collapse.in
-        .row
-          .col-xs-1
-          .col-xs-5.table_container
-            - if @diff["os"].only_in1
-              = only_in_a
-              = render_partial "compare/os_table", os: @diff["os"].only_in1
-          .col-xs-1
-          .col-xs-5.table_container
-            - if @diff["os"].only_in2
-              = only_in_b
-              = render_partial "compare/os_table", os: @diff["os"].only_in2
-        - if @diff["os"].common
-          .row.scope_common_content
-            .col-xs-1
-            .col-xs-11.table_container.collapse.in
-              = in_both
-              = render_partial "compare/os_table", os: @diff["os"].common
+        .col-md-12
+          .row
+            .col-md-6.table_container
+              - if @diff["os"].only_in1
+                = only_in_a
+                = render_partial "compare/os_table", os: @diff["os"].only_in1
+            .col-md-6.table_container
+              - if @diff["os"].only_in2
+                = only_in_b
+                = render_partial "compare/os_table", os: @diff["os"].only_in2
+          - if @diff["os"].common
+            .row.scope_common_content
+              .col-md-12.table_container.collapse.in
+                = in_both
+                = render_partial "compare/os_table", os: @diff["os"].common

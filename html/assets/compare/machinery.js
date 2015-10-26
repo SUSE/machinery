@@ -5,17 +5,11 @@ $(document).ready(function () {
   $("a.scope_anchor, a.both_anchor").css("height", header_height);
   $("a.scope_anchor, a.both_anchor").css("margin-top", -header_height);
 
-  $('.scope_logo_big').each(function(){
-    var icon = $(this);
+  $('.scope_anchor').each(function(){
+    var anchor = $(this);
     $(window).scroll(function() {
-      icon.removeClass('fixed');
-      var pos = icon.offset();
-      var top_pos = $(this).scrollTop() + header_height;
-      if(top_pos >= pos.top && icon.css('position') == 'static') {
-        icon.addClass('fixed').css("top", header_height);
-      } else if(top_pos <= pos.top && icon.hasClass('fixed')) {
-        icon.removeClass('fixed');
-      }
+      setCurrentScopeState(anchor);
+      highlightCurrentScope();
     })
   });
 
@@ -109,4 +103,10 @@ $(document).ready(function () {
         }
       });
   });
+
+  $('.scope_anchor').each(function(){
+    var anchor = $(this);
+    setCurrentScopeState(anchor);
+  });
+  highlightCurrentScope();
 });

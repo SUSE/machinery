@@ -20,18 +20,18 @@
                     %td.linenumber= line.new_line_number
                     %td
                       = line.content
-        .col-xs-1
-        .col-xs-11
+        .col-md-1
+        .col-md-11
           %table.table.table-striped.table-hover.table-condensed.files-table.filterable
             %thead
               %tr
                 %th Name
-                %th Package Name
-                %th Package Version
-                %th Changes
-                %th Mode
-                %th User
-                %th Group
+                %th.medium Package Name
+                %th.medium Package Version
+                %th.medium Changes
+                %th.small Mode
+                %th.small User
+                %th.small Group
             %tbody
               - config_files.files.each do |file|
                 %tr
