@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* No information is cut off in the HTML view
 * Files containing special characters can now be downloaded
   (gh#SUSE/machinery#1497)
 * Links to common elements work in HTML when all scopes are collapsed
