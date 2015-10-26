@@ -14,35 +14,31 @@
           Groups
           = render_partial "compare/summary", scope: "groups", singular: "group", plural: "groups"
     .row.scope_content.collapse.in
-      .row
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["groups"].only_in1
-            = only_in_a
-            = render_partial "compare/group_list", list: @diff["groups"].only_in1
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["groups"].only_in2
-            = only_in_b
-            = render_partial "compare/group_list", list: @diff["groups"].only_in2
-      - if @diff["groups"].changed
-        %a.both_anchor{ id: "groups_changed" }
+      .col-md-12
         .row
-          .col-xs-1
-          .col-xs-11.table_container
-            = changed
-            = render_partial "compare/changes", changes: changed_elements("groups", key: "name")
-      - if @diff["groups"].common
-        %a.both_anchor{ id: "groups_both" }
-        .row
-          .col-xs-1
-          .col-xs-2
-            %a.show-common-elements{ href: "#groups_both" }
-              Show common elements in groups
-            %a.hide-common-elements{ href: "#", style: "display: none" }
-              Hide common elements in groups
-        .row.scope_common_content.collapse
-          .col-xs-1
-          .col-xs-10.table_container
-            = in_both
-            = render_partial "compare/group_list", list: @diff["groups"].common
+          .col-md-6.table_container
+            - if @diff["groups"].only_in1
+              = only_in_a
+              = render_partial "compare/group_list", list: @diff["groups"].only_in1
+          .col-md-6.table_container
+            - if @diff["groups"].only_in2
+              = only_in_b
+              = render_partial "compare/group_list", list: @diff["groups"].only_in2
+        - if @diff["groups"].changed
+          %a.both_anchor{ id: "groups_changed" }
+          .row
+            .col-md-12.table_container
+              = changed
+              = render_partial "compare/changes", changes: changed_elements("groups", key: "name")
+        - if @diff["groups"].common
+          %a.both_anchor{ id: "groups_both" }
+          .row
+            .col-md-12
+              %a.show-common-elements{ href: "#groups_both" }
+                Show common elements in groups
+              %a.hide-common-elements{ href: "#", style: "display: none" }
+                Hide common elements in groups
+          .row.scope_common_content.collapse
+            .col-md-12.table_container
+              = in_both
+              = render_partial "compare/group_list", list: @diff["groups"].common

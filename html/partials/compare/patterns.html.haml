@@ -17,39 +17,35 @@
             singular: "pattern",
             plural: "patterns"
     .row.scope_content.collapse.in
-      .row
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["patterns"].only_in1
-            = only_in_a
-            = render_partial "compare/pattern_list", list: @diff["patterns"].only_in1
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["patterns"].only_in2
-            = only_in_b
-            = render_partial "compare/pattern_list", list: @diff["patterns"].only_in2
-      - if @diff["patterns"].changed
-        %a.both_anchor{ id: "patterns_changed" }
+      .col-md-12
         .row
-          .col-xs-1
-          .col-xs-11.table_container
-            = changed
-            = render_partial "compare/changes", changes: changed_elements("patterns",
-              key: "name",
-              attributes: ["version"],
-              optional_attributes: ["version", "release"])
-      - if @diff["patterns"].common
-        %a.both_anchor{ id: "patterns_both" }
-        .row
-          .col-xs-1
-          .col-xs-2
-            %a.show-common-elements{ href: "#patterns_both" }
-              Show common elements in patterns
-            %a.hide-common-elements{ href: "#", style: "display: none" }
-              Hide common elements in patterns
-        .row.scope_common_content.collapse
-          .col-xs-1
-          .col-xs-10.table_container
-            = in_both
-            = render_partial "compare/pattern_list", list: @diff["patterns"].common
+          .col-md-6.table_container
+            - if @diff["patterns"].only_in1
+              = only_in_a
+              = render_partial "compare/pattern_list", list: @diff["patterns"].only_in1
+          .col-md-6.table_container
+            - if @diff["patterns"].only_in2
+              = only_in_b
+              = render_partial "compare/pattern_list", list: @diff["patterns"].only_in2
+        - if @diff["patterns"].changed
+          %a.both_anchor{ id: "patterns_changed" }
+          .row
+            .col-md-12.table_container
+              = changed
+              = render_partial "compare/changes", changes: changed_elements("patterns",
+                key: "name",
+                attributes: ["version"],
+                optional_attributes: ["version", "release"])
+        - if @diff["patterns"].common
+          %a.both_anchor{ id: "patterns_both" }
+          .row
+            .col-md-12
+              %a.show-common-elements{ href: "#patterns_both" }
+                Show common elements in patterns
+              %a.hide-common-elements{ href: "#", style: "display: none" }
+                Hide common elements in patterns
+          .row.scope_common_content.collapse
+            .col-md-12.table_container
+              = in_both
+              = render_partial "compare/pattern_list", list: @diff["patterns"].common
 

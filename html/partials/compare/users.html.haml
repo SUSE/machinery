@@ -17,37 +17,33 @@
             singular: "user",
             plural: "users"
     .row.scope_content.collapse.in
-      .row
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["users"].only_in1
-            = only_in_a
-            = render_partial "compare/user_list", list: @diff["users"].only_in1
-        .col-xs-1
-        .col-xs-5.table_container
-          - if @diff["users"].only_in2
-            = only_in_b
-            = render_partial "compare/user_list", list: @diff["users"].only_in2
-      - if @diff["users"].changed
-        %a.both_anchor{ id: "users_changed" }
+      .col-md-12
         .row
-          .col-xs-1
-          .col-xs-11.table_container
-            = changed
-            = render_partial "compare/changes", changes: changed_elements("users",
-              key: "name",
-              attributes: ["uid", "gid", "comment", "shell", "home"])
-      - if @diff["users"].common
-        %a.both_anchor{ id: "users_both" }
-        .row
-          .col-xs-1
-          .col-xs-2
-            %a.show-common-elements{ href: "#users_both" }
-              Show common elements in users
-            %a.hide-common-elements{ href: "#", style: "display: none" }
-              Hide common elements in users
-        .row.scope_common_content.collapse
-          .col-xs-1
-          .col-xs-10.table_container
-            = in_both
-            = render_partial "compare/user_list", list: @diff["users"].common
+          .col-md-6.table_container
+            - if @diff["users"].only_in1
+              = only_in_a
+              = render_partial "compare/user_list", list: @diff["users"].only_in1
+          .col-md-6.table_container
+            - if @diff["users"].only_in2
+              = only_in_b
+              = render_partial "compare/user_list", list: @diff["users"].only_in2
+        - if @diff["users"].changed
+          %a.both_anchor{ id: "users_changed" }
+          .row
+            .col-md-12.table_container
+              = changed
+              = render_partial "compare/changes", changes: changed_elements("users",
+                key: "name",
+                attributes: ["uid", "gid", "comment", "shell", "home"])
+        - if @diff["users"].common
+          %a.both_anchor{ id: "users_both" }
+          .row
+            .col-md-12
+              %a.show-common-elements{ href: "#users_both" }
+                Show common elements in users
+              %a.hide-common-elements{ href: "#", style: "display: none" }
+                Hide common elements in users
+          .row.scope_common_content.collapse
+            .col-md-12.table_container
+              = in_both
+              = render_partial "compare/user_list", list: @diff["users"].common
