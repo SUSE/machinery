@@ -22,6 +22,7 @@ class HelperBuilder
   def initialize(helper_dir)
     @helper_dir = helper_dir
     @git_revision_file = File.join(helper_dir, "..", ".git_revision")
+    @go_version_file = File.join(helper_dir, "version.go")
   end
 
   def run_build
@@ -30,7 +31,7 @@ class HelperBuilder
     return false if !go_available?
 
     # handle changed branches (where go files are older than the helper)
-    if runs_in_git? && changed_revision?
+    if runs_in_git? && (changed_revision? || !File.exist?(@go_version_file))
       write_go_version_file
       if build_machinery_helper
         write_git_revision_file
@@ -56,7 +57,7 @@ package main
 
 const VERSION = "#{git_revision}"
     EOF
-    File.write(File.join(@helper_dir, "version.go"), file)
+    File.write(@go_version_file, file)
   end
 
   def build_machinery_helper

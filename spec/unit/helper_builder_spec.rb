@@ -97,6 +97,16 @@ describe HelperBuilder do
         expect(File.exist?(version_file)).to be(true)
       end
 
+      it "creates version.go if it got removed but .git_revision still exist" do
+        version_file = File.join(helper_dir, "version.go")
+        git_revision_file = File.join(helper_dir, "..", ".git_revision")
+        subject.write_git_revision_file
+        expect(File.exist?(git_revision_file)).to be(true)
+        expect(File.exist?(version_file)).to be(false)
+        expect(subject.run_build).to be(true)
+        expect(File.exist?(version_file)).to be(true)
+      end
+
       it "creates git revision file after successful build" do
         git_revision_file = File.join(helper_dir, "..", ".git_revision")
         expect(File.exist?(git_revision_file)).to be(false)
@@ -135,6 +145,7 @@ describe HelperBuilder do
       it "does not build go binary if source files are older than binary" do
         FileUtils.touch(File.join(helper_dir, "machinery-helper"))
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"), mtime: Time.now.to_i - 10)
+        FileUtils.touch(File.join(helper_dir, "version.go"), mtime: Time.now.to_i - 10)
         expect(subject).not_to receive(:run_go_build)
         expect(subject.run_build).to be(true)
       end
