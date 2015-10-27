@@ -31,7 +31,7 @@ class HelperBuilder
     return false if !go_available?
 
     # handle changed branches (where go files are older than the helper)
-    if runs_in_git? && changed_revision?
+    if runs_in_git? && (changed_revision? || !File.exist?(@go_version_file))
       write_go_version_file
       if build_machinery_helper
         write_git_revision_file
