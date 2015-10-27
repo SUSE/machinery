@@ -247,4 +247,10 @@ describe System do
       expect(system.arch).to eq(result)
     end
   end
+
+  describe "#rpm_database" do
+    it "returns a RpmDatabase object" do
+      expect(System.new.rpm_database).to be_a(RpmDatabase)
+    end
+  end
 end

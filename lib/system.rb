@@ -116,4 +116,8 @@ class System
   def locale
     @locale || "C"
   end
+
+  def rpm_database
+    @rpm_database ||= RpmDatabase.new(self)
+  end
 end

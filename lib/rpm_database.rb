@@ -15,7 +15,49 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-module ChangedRpmFilesHelper
+class RpmDatabase
+  class ChangedFile < Machinery::Object
+    attr_accessor :type
+
+    def initialize(type, attrs)
+      super(attrs)
+      @type = type
+    end
+
+    def config_file?
+      @type == "c"
+    end
+  end
+
+  def initialize(system)
+    @system = system
+  end
+
+  def changed_files
+    return @changed_files if @changed_files
+
+    out = @system.run_script("changed_files.sh", stdout: :capture)
+
+    @changed_files ||= out.split("\n").slice_before(/(.*):\z/).flat_map do |package, *files|
+      package_name, package_version = package.scan(/(.*)-([^-]*):/).first
+      files.map do |changed_file|
+        if changed_file =~ /\A(\/\S+) (.*)/
+          # There was an error retrieving the information about that file. Skip.
+        else
+          file, changes, type = parse_rpm_changes_line(changed_file)
+
+          ChangedFile.new(type,
+            name:            file,
+            package_name:    package_name,
+            package_version: package_version,
+            status:          "changed",
+            changes:         changes
+          )
+        end
+      end.compact
+    end.uniq
+  end
+
   def expected_tag?(character, position)
     if @rpm_changes[position] == character
       true
@@ -85,58 +127,58 @@ module ChangedRpmFilesHelper
 
     [path.join(":").chomp,
       {
-        mode: mode,
-        user: user,
+        mode:  mode,
+        user:  user,
         group: group,
-        type: type
+        type:  type
       }
     ]
   end
 
-  def get_link_target(system, link)
-    system.run_command(
+  def get_link_target(link)
+    @system.run_command(
       "find", link, "-prune", "-printf", "%l",
-      stdout: :capture,
+      stdout:     :capture,
       privileged: true
     ).strip
   end
 
   # get path data for list of files
   # cur_files is guaranteed to not exceed max command line length
-  def get_file_properties(system, cur_files)
+  def get_file_properties(cur_files)
     ret = {}
-    out = system.run_command(
+    out = @system.run_command(
       "stat", "--printf", "%a:%U:%G:%u:%g:%F:%n\\n",
       *cur_files,
       stdout: :capture
     )
     out.each_line do |l|
-      path, values = parse_stat_line(l)
-      ret[path] = values
-      ret[path][:target] = get_link_target(system, path) if values[:type] == "link"
+      path, values       = parse_stat_line(l)
+      ret[path]          = values
+      ret[path][:target] = get_link_target(path) if values[:type] == "link"
     end
     ret
   end
 
-  def get_path_data(system, paths)
-    ret = {}
+  def get_path_data(paths)
+    ret        = {}
     path_index = 0
     # arbitrary number for maximum command line length that should always work
-    max_len = 50000
-    cur_files = []
-    cur_len = 0
+    max_len    = 50000
+    cur_files  = []
+    cur_len    = 0
     while path_index < paths.size
       if cur_files.empty? || paths[path_index].size + cur_len + 1 < max_len
         cur_files << paths[path_index]
-        cur_len += paths[path_index].size + 1
+        cur_len    += paths[path_index].size + 1
         path_index += 1
       else
-        ret.merge!(get_file_properties(system, cur_files))
+        ret.merge!(get_file_properties(cur_files))
         cur_files.clear
         cur_len = 0
       end
     end
-    ret.merge!(get_file_properties(system, cur_files)) unless cur_files.empty?
+    ret.merge!(get_file_properties(cur_files)) unless cur_files.empty?
     ret
   end
 end
