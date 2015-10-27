@@ -10,4 +10,4 @@ and outputs the result in the
 
 Make sure that the official Go Development environment is installed.
 
-To build the helper binary just run `go build`.
+To build the helper binary just run `rake build`.
