@@ -18,11 +18,11 @@ option on the kernel command line.
 
 For SLES12 and openSUSE 13.2:
 
-  autoyast2=http://192.168.121.1:8000/autoinst.xml
+  autoyast2=http://<ip>:8000/autoinst.xml
 
 For SLES11:
 
-  autoyast=http://192.168.121.1:8000/autoinst.xml netsetup=dhcp
+  autoyast=http://<ip>:8000/autoinst.xml netsetup=dhcp
 
 ## Changing permissions of the AutoYaST export
 

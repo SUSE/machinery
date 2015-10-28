@@ -43,10 +43,9 @@ class Autoyast < Exporter
       output_dir
     )
     FileUtils.chmod(0600, File.join(output_dir, "unmanaged_files_#{@name}_excludes"))
-    FileUtils.cp(
-      File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"),
-      File.join(output_dir, "README.md")
-    )
+    readme = File.read(File.join(Machinery::ROOT, "export_helpers/autoyast_export_readme.md"))
+    readme.gsub!("<ip>", outgoing_ip)
+    File.write(File.join(output_dir, "README.md"), readme)
     Dir["#{@system_description.description_path}/*"].each do |content|
       FileUtils.cp_r(content, output_dir, preserve: true)
     end
@@ -99,6 +98,11 @@ class Autoyast < Exporter
     end
 
     builder.to_xml
+  end
+
+  def outgoing_ip
+    output = Cheetah.run("ip", "route", "get", "8.8.8.8", stdout: :capture)
+    output[/ src ([\d\.:]+)\s*$/, 1] || "<ip>"
   end
 
   private
