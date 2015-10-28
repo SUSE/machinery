@@ -149,5 +149,27 @@ EOF
       names = description.users.map(&:name)
       expect(names).to eq(names.sort)
     end
+
+    it "can deal with invalid utf-8 characters in /etc/passwd" do
+      expect(system).to receive(:read_file).with("/etc/passwd").
+        and_return("tux:x:100:100:invalid\255char:/home/tux:/bin/bash\n")
+      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
+
+      expected = UsersScope.new([
+        User.new(
+          name:     "tux",
+          password: "x",
+          uid:      100,
+          gid:      100,
+          comment:  "invalid�char",
+          home:     "/home/tux",
+          shell:    "/bin/bash"
+        )
+      ])
+
+      subject.inspect(filter)
+
+      expect(description.users).to eq(expected)
+    end
   end
 end
