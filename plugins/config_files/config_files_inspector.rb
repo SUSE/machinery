@@ -47,7 +47,11 @@ class ConfigFilesInspector < Inspector
     do_extract = options[:extract_changed_config_files]
     check_requirements(do_extract)
 
-    result = @system.rpm_database.changed_files.select(&:config_file?).map do |file|
+    count = 0
+    result = @system.rpm_database.changed_files do |chunk|
+      count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] != "c" }.count
+      Machinery::Ui.progress(" -> Found #{count} config #{Machinery::pluralize(count, "file")}...")
+    end.select(&:config_file?).map do |file|
       ConfigFile.new(file.attributes)
     end
 

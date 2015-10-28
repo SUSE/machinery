@@ -81,7 +81,11 @@ class ChangedManagedFilesInspector < Inspector
   end
 
   def changed_files
-    file_list = @system.rpm_database.changed_files.reject { |f| f.config_file? }.map do |file|
+    count = 0
+    file_list = @system.rpm_database.changed_files do |chunk|
+      count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
+      Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
+    end.reject { |f| f.config_file? }.map do |file|
       ChangedManagedFile.new(file.attributes)
     end
     amend_file_attributes(file_list)

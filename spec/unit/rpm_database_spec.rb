@@ -48,7 +48,7 @@ describe RpmDatabase do
 
   describe "#changed_files" do
     before(:each) do
-      allow(system).to receive(:run_script).and_return(changed_files_sh_result)
+      allow(system).to receive(:run_script_with_progress).and_return(changed_files_sh_result)
     end
 
     it "returns the list of files" do
@@ -65,7 +65,7 @@ describe RpmDatabase do
     end
 
     it "caches the result" do
-      expect(system).to receive(:run_script).and_return(changed_files_sh_result).once
+      expect(system).to receive(:run_script_with_progress).and_return(changed_files_sh_result).once
 
       subject.changed_files
       subject.changed_files

@@ -122,7 +122,7 @@ class System
     while inspect_thread.alive?
       sleep 0.1
       chunk = read_io.read
-      callback.call(chunk)
+      callback.call(chunk) if callback
     end
 
     output

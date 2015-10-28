@@ -33,10 +33,9 @@ class RpmDatabase
     @system = system
   end
 
-  def changed_files
+  def changed_files(&block)
     return @changed_files if @changed_files
-
-    out = @system.run_script("changed_files.sh", stdout: :capture)
+    out = @system.run_script_with_progress("changed_files.sh", &block)
 
     @changed_files ||= out.split("\n").slice_before(/(.*):\z/).flat_map do |package, *files|
       package_name, package_version = package.scan(/(.*)-([^-]*):/).first
