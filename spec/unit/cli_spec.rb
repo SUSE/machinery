@@ -554,6 +554,15 @@ describe Cli do
 
         run_command(["analyze", "description1", "--operation=config-file-diffs"])
       end
+
+      it "runs config-file-diffs by default" do
+        description = create_test_description(json: test_manifest)
+        expect_any_instance_of(AnalyzeConfigFileDiffsTask).to receive(:analyze).with(
+          description
+        )
+
+        run_command(["analyze", "description1"])
+      end
     end
   end
 
