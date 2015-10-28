@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Add current outgoing ip and export directory to Autoyast README.md during
+  export (gh#SUSE/machinery#1543)
 * Handle invalid utf-8 characters in /etc/passwd
 * Fix: "changed" link in compare view is visible while scope is collapsed but
   doesn't do anything (gh#SUSE/machinery#1555)
