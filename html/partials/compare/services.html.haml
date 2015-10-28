@@ -25,7 +25,7 @@
                 (#{@diff["services"].only_in2.init_system})
             - if @diff["services"].changed && @diff["services"].changed.length > 0
               %span.summary-part
-                %a{ href: "#services_changed" }
+                %a.show-changed-elements{ href: "#services_changed" }
                   changed
                 = ": #{pluralize_scope(@diff["services"].changed, "service", "services")}"
             - if @diff["services"].common && @diff["services"].common.length > 0

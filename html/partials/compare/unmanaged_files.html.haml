@@ -23,7 +23,7 @@
                 = pluralize_scope(@diff["unmanaged_files"].only_in2, "file", "files")
             - if @diff["unmanaged_files"].changed
               %span.summary-part
-                %a{ href: "#unmanaged_files_changed" }
+                %a.show-changed-elements{ href: "#unmanaged_files_changed" }
                   changed
                 = ": #{pluralize_scope(@diff["unmanaged_files"].changed, "file", "files")}"
             - if @diff["unmanaged_files"].common

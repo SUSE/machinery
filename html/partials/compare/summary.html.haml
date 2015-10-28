@@ -7,7 +7,7 @@
       #{@description_b.name}: #{pluralize_scope(@diff[scope].only_in2, singular, plural)}
   - if @diff[scope].changed && @diff[scope].changed.length > 0
     %span.summary-part
-      %a{ href: "#" + scope + "_changed" }
+      %a.show-changed-elements{ href: "#" + scope + "_changed" }
         changed
       = ": #{pluralize_scope(@diff[scope].changed, singular, plural)}"
   - if @diff[scope].common && @diff[scope].common.length > 0

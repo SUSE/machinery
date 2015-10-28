@@ -70,6 +70,18 @@ $(document).ready(function () {
     return false;
   });
 
+  $(".show-changed-elements").click(function(){
+    $scope = $(this).closest(".scope");
+    if ($scope.find(".toggle").hasClass("collapsed")){
+      $scope.find(".scope_content").collapse("show");
+      $scope.find(".toggle").removeClass("collapsed");
+    }
+    if ($(this).attr("href")){
+      $('html,body').animate({scrollTop: $($(this).attr("href")).offset().top}, 'slow');
+    }
+    return false;
+  });
+
   // Unmanaged files diffs
   $("#diff-unmanaged-files").on("show.bs.modal", function(e) {
     var trigger = $(e.relatedTarget);
