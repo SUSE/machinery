@@ -18,42 +18,97 @@
 require_relative "spec_helper"
 
 describe ChangedManagedFilesInspector do
-  let(:rpm_result) { File.read("spec/data/changed_managed_files/rpm_result") }
-  let(:stat_result) { File.read("spec/data/changed_managed_files/stat_result") }
-  let(:system) { double }
-  let(:description) {
-    SystemDescription.new("foo", SystemDescriptionStore.new)
+  let(:rpm_database) { double }
+
+  let(:system) {
+    double(
+      rpm_database: rpm_database,
+      check_requirement: true,
+      check_retrieve_files_dependencies: true
+    )
   }
+  let(:description) { SystemDescription.new("foo", SystemDescriptionStore.new) }
   let(:filter) { nil }
-  subject {
-    inspector = ChangedManagedFilesInspector.new(system, description)
 
-    allow(system).to receive(:check_requirement).at_least(:once)
-    allow(system).to receive(:run_script) do |*script, options|
-      expect(script.first).to eq("changed_files.sh")
-      options[:stdout].puts rpm_result
-    end
-
-    allow(system).to receive(:run_command).with("stat", "--printf",
-      "%a:%U:%G:%u:%g:%F:%n\\n", "/etc/iscsi/iscsid.conf",
-      "/etc/apache2/de:fault server.conf", "/etc/apache2/listen.conf",
-      "/usr/share/man/man1/time.1.gz", "/usr/bin/cron'tab",
-      anything).and_return(stat_result)
-    allow(system).to receive(:run_command).with("find", "/usr/bin/cron'tab", any_args).
-      and_return("/etc/fo'o")
-
-    inspector
-  }
+  subject { ChangedManagedFilesInspector.new(system, description) }
 
   describe "#inspect" do
-    silence_machinery_output
+    before(:each) do
+      allow(rpm_database).to receive(:changed_files).and_return(
+          [
+            RpmDatabase::ChangedFile.new("c",
+              name:            "/etc/config",
+              status:          "changed",
+              changes:         ["md5"],
+              package_name:    "zypper",
+              package_version: "1.6.311"
+            ),
+            RpmDatabase::ChangedFile.new("",
+              name:            "/etc/file",
+              status:          "changed",
+              changes:         ["deleted"],
+              package_name:    "zypper",
+              package_version: "1.6.311"
+            ),
+            RpmDatabase::ChangedFile.new("",
+              name:            "/etc/dir",
+              status:          "changed",
+              changes:         ["link_path"],
+              package_name:    "zypper",
+              package_version: "1.6.311"
+            ),
+            RpmDatabase::ChangedFile.new("",
+              name:            "/etc/documentation",
+              status:          "changed",
+              changes:         ["user"],
+              package_name:    "zypper",
+              package_version: "1.6.311"
+            ),
+            RpmDatabase::ChangedFile.new("",
+              name:            "/usr/share/man/man1/time.1.gz",
+              status:          "changed",
+              changes:         ["user"],
+              package_name:    "man",
+              package_version: "2"
+            ),
+          ]
+        )
+      allow(rpm_database).to receive(:get_path_data).and_return(
+          "/etc/file" => {
+            user: "root",
+            group: "root",
+            mode: "600",
+            type: "file"
+          },
+          "/etc/documentation" => {
+            user: "root",
+            group: "root",
+            mode: "600",
+            type: "file"
+          },
+          "/etc/dir" => {
+            user: "root",
+            group: "root",
+            mode: "600",
+            type: "dir"
+          },
+          "/usr/share/man/man1/time.1.gz" => {
+            user: "user",
+            group: "root",
+            mode: "600",
+            type: "file"
+          }
+        )
+    end
 
     context "with filters" do
       it "filters out the matching elements" do
         filter = Filter.new("/changed_managed_files/files/name=/usr/*")
+
         subject.inspect(filter)
         expect(description["changed_managed_files"].files.map(&:name)).
           to_not include("/usr/share/man/man1/time.1.gz")
+
         subject.inspect(nil)
         expect(description["changed_managed_files"].files.map(&:name)).
           to include("/usr/share/man/man1/time.1.gz")
@@ -66,75 +121,14 @@ describe ChangedManagedFilesInspector do
       end
 
       it "returns a list of all changed files" do
-        expected_result = ChangedManagedFilesScope.new(
-          extracted: false,
-          files: ChangedManagedFileList.new([
-            ChangedManagedFile.new(
-              name: "/etc/apache2/de:fault server.conf",
-              package_name: "hwinfo",
-              package_version: "15.50",
-              status: "changed",
-              changes: ["size", "md5", "time"],
-              user: "wwwrun",
-              group: "wwwrun",
-              mode: "400",
-              type: "file"
-            ),
-            ChangedManagedFile.new(
-              name: "/etc/apache2/listen.conf",
-              package_name: "hwinfo",
-              package_version: "15.50",
-              status: "changed",
-              changes: ["md5", "time"],
-              user: "root",
-              group: "root",
-              mode: "644",
-              type: "file"
-            ),
-            ChangedManagedFile.new(
-              name: "/etc/iscsi/iscsid.conf",
-              package_name: "zypper",
-              package_version: "1.6.311",
-              status: "changed",
-              changes: ["size", "mode", "md5", "user", "group", "time"],
-              user: "root",
-              group: "root",
-              mode: "6644",
-              type: "file"
-            ),
-            ChangedManagedFile.new(
-              name: "/opt/kde3/lib64/kde3/plugins/styles/plastik.la",
-              package_name: "kdelibs3-default-style",
-              package_version: "3.5.10",
-              status: "changed",
-              changes: ["deleted"]
-            ),
-            ChangedManagedFile.new(
-              name: "/usr/bin/cron'tab",
-              package_name: "cronie",
-              package_version: "1.4.8",
-              status: "changed",
-              changes: ["link_path", "group"],
-              user: "root",
-              group: "root",
-              mode: "755",
-              type: "link",
-              target: "/etc/fo'o"
-            ),
-            ChangedManagedFile.new(
-              name: "/usr/share/man/man1/time.1.gz",
-              package_name: "hwinfo",
-              package_version: "15.50",
-              status: "changed",
-              changes: ["replaced"],
-              user: "wwwrun",
-              group: "wwwrun",
-              mode: "400",
-              type: "file"
-            )
-          ])
-        )
-        expect(description["changed_managed_files"]).to eq(expected_result)
+        expected_result = [
+          "/etc/file",
+          "/etc/dir",
+          "/etc/documentation",
+          "/usr/share/man/man1/time.1.gz"
+        ]
+        expect(description["changed_managed_files"].files.map(&:name)).
+          to match_array(expected_result)
       end
 
       it "returns schema compliant data" do
