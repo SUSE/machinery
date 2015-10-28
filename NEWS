@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix: "changed" link in compare view is visible while scope is collapsed but
+  doesn't do anything (gh#SUSE/machinery#1555)
 
 ## Version 1.15.0 - Mon Oct 26 17:42:25 CET 2015 - thardeck@suse.de
 
