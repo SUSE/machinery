@@ -21,7 +21,8 @@ describe RpmDatabase do
   describe RpmDatabase::ChangedFile do
     describe "config_file?" do
       it "returns true for config files" do
-        file = RpmDatabase::ChangedFile.new("c",
+        file = RpmDatabase::ChangedFile.new(
+          "c",
           name:    "/etc/foo",
           status:  "changed",
           changes: ["md5"]
@@ -30,7 +31,8 @@ describe RpmDatabase do
       end
 
       it "returns false for non-config files" do
-        file = RpmDatabase::ChangedFile.new("",
+        file = RpmDatabase::ChangedFile.new(
+          "",
           name:    "/etc/foo",
           status:  "changed",
           changes: ["md5"]
@@ -42,8 +44,9 @@ describe RpmDatabase do
   end
 
   let(:system) { LocalSystem.new }
-  let(:changed_files_sh_result) { File.read(File.join(Machinery::ROOT,
-      "spec/data/rpm_database/changed_files_sh_result")) }
+  let(:changed_files_sh_result) {
+    File.read(File.join(Machinery::ROOT, "spec/data/rpm_database/changed_files_sh_result"))
+  }
   subject { RpmDatabase.new(system) }
 
   describe "#changed_files" do
@@ -52,9 +55,10 @@ describe RpmDatabase do
     end
 
     it "returns the list of files" do
-      expected = RpmDatabase::ChangedFile.new("",
+      expected = RpmDatabase::ChangedFile.new(
+        "",
         name:            "/etc/iscsi/iscsid.conf",
-        status:           "changed",
+        status:          "changed",
         changes:         ["size", "mode", "md5", "user", "group", "time"],
         package_name:    "zypper",
         package_version: "1.6.311"
@@ -87,9 +91,9 @@ describe RpmDatabase do
       line = "SM5DLUGTP  c /etc/pulse/client.conf"
       file, changes, flag = subject.parse_rpm_changes_line(line)
       expect(file).to eq("/etc/pulse/client.conf")
-      expect(changes).to match_array(
-          ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities"]
-        )
+      expect(changes).to match_array([
+        "size", "mode", "md5", "device_number", "link_path", "user", "group", "time", "capabilities"
+      ])
       expect(flag).to eq("c")
     end
 
@@ -98,8 +102,8 @@ describe RpmDatabase do
       file, changes, flag = subject.parse_rpm_changes_line(line)
       expect(file).to eq("/etc/pulse/client.conf")
       expect(changes).to match_array(
-          ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time"]
-        )
+        ["size", "mode", "md5", "device_number", "link_path", "user", "group", "time"]
+      )
       expect(flag).to eq("c")
     end
 
@@ -129,7 +133,7 @@ describe RpmDatabase do
 
     it "shows a warning when an rpm test could not be performed but still adds known tags" do
       line = "S.?......  c /etc/pulse/client.conf"
-      _, changes, _ = subject.parse_rpm_changes_line(line)
+      _, changes = subject.parse_rpm_changes_line(line)
       expect(changes).to match_array(["size"])
       expect(captured_machinery_output).to include("Warning: Could not perform all tests on "\
       "rpm changes for file '/etc/pulse/client.conf'.")
@@ -139,7 +143,7 @@ describe RpmDatabase do
       line = "..?......  c /etc/pulse/client.conf"
       expect(Machinery.logger).to receive(:warn).with("Could not perform all tests on "\
       "rpm changes for file '/etc/pulse/client.conf'.")
-      _, _, _ = subject.parse_rpm_changes_line(line)
+      subject.parse_rpm_changes_line(line)
     end
   end
 
@@ -147,61 +151,61 @@ describe RpmDatabase do
     it "parses directories" do
       line = "755:root:users:0:0:directory:/etc/named.d/"
       expect(subject.parse_stat_line(line)).to eq(
-          [
-            "/etc/named.d/",
-            {
-              mode: "755",
-              user: "root",
-              group: "users",
-              type: "dir"
-            }
-          ]
-        )
+        [
+          "/etc/named.d/",
+          {
+            mode:  "755",
+            user:  "root",
+            group: "users",
+            type:  "dir"
+          }
+        ]
+      )
     end
 
     it "parses files" do
       line = "640:root:shadow:0:15:regular file:/etc/shadow"
       expect(subject.parse_stat_line(line)).to eq(
-          [
-            "/etc/shadow",
-            {
-              mode: "640",
-              user: "root",
-              group: "shadow",
-              type: "file"
-            }
-          ]
-        )
+        [
+          "/etc/shadow",
+          {
+            mode:  "640",
+            user:  "root",
+            group: "shadow",
+            type:  "file"
+          }
+        ]
+      )
     end
 
     it "uses uid and gid if user and group are unknown" do
       line = "640:UNKNOWN:UNKNOWN:0:15:regular file:/etc/shadow"
       expect(subject.parse_stat_line(line)).to eq(
-          [
-            "/etc/shadow",
-            {
-              mode: "640",
-              user: "0",
-              group: "15",
-              type: "file"
-            }
-          ]
-        )
+        [
+          "/etc/shadow",
+          {
+            mode:  "640",
+            user:  "0",
+            group: "15",
+            type:  "file"
+          }
+        ]
+      )
     end
 
     it "parses links" do
       line = "777:root:root:0:0:symbolic link:/etc/mtab"
       expect(subject.parse_stat_line(line)).to eq(
-          [
-            "/etc/mtab",
-            {
-              mode: "777",
-              user: "root",
-              group: "root",
-              type: "link"
-            }
-          ]
-        )
+        [
+          "/etc/mtab",
+          {
+            mode:  "777",
+            user:  "root",
+            group: "root",
+            type:  "link"
+          }
+        ]
+      )
     end
   end
 

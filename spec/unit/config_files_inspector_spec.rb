@@ -24,8 +24,8 @@ describe ConfigFilesInspector do
     let(:rpm_database) { double }
     let(:system) {
       double(
-        rpm_database: rpm_database,
-        check_requirement: true,
+        rpm_database:                      rpm_database,
+        check_requirement:                 true,
         check_retrieve_files_dependencies: true
       )
     }
@@ -55,42 +55,48 @@ describe ConfigFilesInspector do
       before(:each) do
         allow(rpm_database).to receive(:changed_files).and_return(
           [
-            RpmDatabase::ChangedFile.new("c",
+            RpmDatabase::ChangedFile.new(
+              "c",
               name:            "/etc/config",
               status:          "changed",
               changes:         ["md5"],
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new("c",
+            RpmDatabase::ChangedFile.new(
+              "c",
               name:            "/etc/deleted_config",
               status:          "changed",
               changes:         ["deleted"],
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new("c",
+            RpmDatabase::ChangedFile.new(
+              "c",
               name:            "/etc/linked_config",
               status:          "changed",
               changes:         ["link_path"],
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new("c",
+            RpmDatabase::ChangedFile.new(
+              "c",
               name:            "/etc/config_directory",
               status:          "changed",
               changes:         ["user"],
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new("c",
+            RpmDatabase::ChangedFile.new(
+              "c",
               name:            "/usr/share/man/man1/time.1.gz",
               status:          "changed",
               changes:         ["user"],
               package_name:    "man",
               package_version: "2"
             ),
-            RpmDatabase::ChangedFile.new("",
+            RpmDatabase::ChangedFile.new(
+              "",
               name:            "/etc/other",
               status:          "changed",
               changes:         ["md5"],
@@ -101,22 +107,22 @@ describe ConfigFilesInspector do
         )
         allow(rpm_database).to receive(:get_path_data).and_return(
           "/etc/config" => {
-            user: "root",
+            user:  "root",
             group: "root",
-            mode: "600",
-            type: "file"
+            mode:  "600",
+            type:  "file"
           },
           "/etc/config_directory" => {
-            user: "root",
+            user:  "root",
             group: "root",
-            mode: "600",
-            type: "dir"
+            mode:  "600",
+            type:  "dir"
           },
           "/usr/share/man/man1/time.1.gz" => {
-            user: "user",
+            user:  "user",
             group: "root",
-            mode: "600",
-            type: "file"
+            mode:  "600",
+            type:  "file"
           }
         )
       end
@@ -173,9 +179,9 @@ describe ConfigFilesInspector do
         it "keep permissions on extracted config files dir" do
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(system).to receive(:retrieve_files).with(
-              extractable_paths,
-              config_file_directory
-            )
+            extractable_paths,
+            config_file_directory
+          )
           FileUtils.mkdir_p(config_file_directory)
           File.chmod(0750, config_file_directory)
           File.chmod(0750, store.description_path(name))
@@ -186,12 +192,12 @@ describe ConfigFilesInspector do
         end
         it "raises an error when requirements are not fulfilled" do
           allow_any_instance_of(ConfigFilesInspector).to receive(
-              :check_requirements
-            ).and_raise(Machinery::Errors::MissingRequirement)
+            :check_requirements
+          ).and_raise(Machinery::Errors::MissingRequirement)
 
           expect { inspector.inspect(filter) }.to raise_error(
-              Machinery::Errors::MissingRequirement
-            )
+            Machinery::Errors::MissingRequirement
+          )
         end
 
         it "removes config files on inspect without extraction" do
@@ -210,9 +216,9 @@ describe ConfigFilesInspector do
         it "returns schema compliant data" do
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(system).to receive(:retrieve_files).with(
-              extractable_paths,
-              config_file_directory
-            )
+            extractable_paths,
+            config_file_directory
+          )
 
           inspector.inspect(filter, extract_changed_config_files: true)
 
@@ -224,9 +230,9 @@ describe ConfigFilesInspector do
         it "returns sorted data" do
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(system).to receive(:retrieve_files).with(
-              extractable_paths,
-              config_file_directory
-            )
+            extractable_paths,
+            config_file_directory
+          )
 
           inspector.inspect(filter, extract_changed_config_files: true)
           names = description["config_files"].files.map(&:name)

@@ -45,7 +45,8 @@ class RpmDatabase
         else
           file, changes, type = parse_rpm_changes_line(changed_file)
 
-          ChangedFile.new(type,
+          ChangedFile.new(
+            type,
             name:            file,
             package_name:    package_name,
             package_version: package_version,
@@ -160,16 +161,16 @@ class RpmDatabase
   end
 
   def get_path_data(paths)
-    ret        = {}
+    ret = {}
     path_index = 0
     # arbitrary number for maximum command line length that should always work
-    max_len    = 50000
-    cur_files  = []
-    cur_len    = 0
+    max_len = 50000
+    cur_files = []
+    cur_len = 0
     while path_index < paths.size
       if cur_files.empty? || paths[path_index].size + cur_len + 1 < max_len
         cur_files << paths[path_index]
-        cur_len    += paths[path_index].size + 1
+        cur_len += paths[path_index].size + 1
         path_index += 1
       else
         ret.merge!(get_file_properties(cur_files))

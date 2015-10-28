@@ -22,8 +22,8 @@ describe ChangedManagedFilesInspector do
 
   let(:system) {
     double(
-      rpm_database: rpm_database,
-      check_requirement: true,
+      rpm_database:                      rpm_database,
+      check_requirement:                 true,
       check_retrieve_files_dependencies: true
     )
   }
@@ -35,70 +35,75 @@ describe ChangedManagedFilesInspector do
   describe "#inspect" do
     before(:each) do
       allow(rpm_database).to receive(:changed_files).and_return(
-          [
-            RpmDatabase::ChangedFile.new("c",
-              name:            "/etc/config",
-              status:          "changed",
-              changes:         ["md5"],
-              package_name:    "zypper",
-              package_version: "1.6.311"
-            ),
-            RpmDatabase::ChangedFile.new("",
-              name:            "/etc/file",
-              status:          "changed",
-              changes:         ["deleted"],
-              package_name:    "zypper",
-              package_version: "1.6.311"
-            ),
-            RpmDatabase::ChangedFile.new("",
-              name:            "/etc/dir",
-              status:          "changed",
-              changes:         ["link_path"],
-              package_name:    "zypper",
-              package_version: "1.6.311"
-            ),
-            RpmDatabase::ChangedFile.new("",
-              name:            "/etc/documentation",
-              status:          "changed",
-              changes:         ["user"],
-              package_name:    "zypper",
-              package_version: "1.6.311"
-            ),
-            RpmDatabase::ChangedFile.new("",
-              name:            "/usr/share/man/man1/time.1.gz",
-              status:          "changed",
-              changes:         ["user"],
-              package_name:    "man",
-              package_version: "2"
-            ),
-          ]
-        )
+        [
+          RpmDatabase::ChangedFile.new(
+            "c",
+            name:            "/etc/config",
+            status:          "changed",
+            changes:         ["md5"],
+            package_name:    "zypper",
+            package_version: "1.6.311"
+          ),
+          RpmDatabase::ChangedFile.new(
+            "",
+            name:            "/etc/file",
+            status:          "changed",
+            changes:         ["deleted"],
+            package_name:    "zypper",
+            package_version: "1.6.311"
+          ),
+          RpmDatabase::ChangedFile.new(
+            "",
+            name:            "/etc/dir",
+            status:          "changed",
+            changes:         ["link_path"],
+            package_name:    "zypper",
+            package_version: "1.6.311"
+          ),
+          RpmDatabase::ChangedFile.new(
+            "",
+            name:            "/etc/documentation",
+            status:          "changed",
+            changes:         ["user"],
+            package_name:    "zypper",
+            package_version: "1.6.311"
+          ),
+          RpmDatabase::ChangedFile.new(
+            "",
+            name:            "/usr/share/man/man1/time.1.gz",
+            status:          "changed",
+            changes:         ["user"],
+            package_name:    "man",
+            package_version: "2"
+          )
+        ]
+      )
       allow(rpm_database).to receive(:get_path_data).and_return(
-          "/etc/file" => {
-            user: "root",
-            group: "root",
-            mode: "600",
-            type: "file"
-          },
-          "/etc/documentation" => {
-            user: "root",
-            group: "root",
-            mode: "600",
-            type: "file"
-          },
-          "/etc/dir" => {
-            user: "root",
-            group: "root",
-            mode: "600",
-            type: "dir"
-          },
-          "/usr/share/man/man1/time.1.gz" => {
-            user: "user",
-            group: "root",
-            mode: "600",
-            type: "file"
-          }
-        )
+        "/etc/file" => {
+          user:  "root",
+          group: "root",
+          mode:  "600",
+          type:  "file"
+        },
+        "/etc/documentation" => {
+          user:  "root",
+          group: "root",
+          mode:  "600",
+          type:  "file"
+        },
+        "/etc/dir" => {
+          user:  "root",
+          group: "root",
+          mode:  "600",
+          type:  "dir"
+        },
+        "/usr/share/man/man1/time.1.gz" => {
+          user:  "user",
+          group: "root",
+          mode:  "600",
+          type:  "file"
+        }
+      )
     end
 
     context "with filters" do
