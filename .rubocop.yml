@@ -72,3 +72,8 @@ Style/SignalException:
 Style/NumericLiterals:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylenumericliterals
   Enabled: false
+
+Style/BlockDelimiters:
+  # {...} for multi-line blocks is desirable if the block is used as an object, e.g. in RSpec `let`
+  # blocks or with the RSpec `expect {...}.to ...` syntax.
+  Enabled: false
