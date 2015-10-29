@@ -357,10 +357,8 @@ class Cli
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
-    if @config.experimental_features
-      c.switch "html", required: false, negatable: false,
-        desc: "Open comparison in HTML format in your web browser."
-    end
+    c.switch "html", required: false, negatable: false,
+      desc: "Open comparison in HTML format in your web browser."
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
 

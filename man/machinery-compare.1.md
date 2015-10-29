@@ -3,7 +3,7 @@
 
 ### SYNOPSIS
 
-`machinery compare` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-all] NAME1 NAME2
+`machinery compare` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-all] [--html] NAME1 NAME2
 
 `machinery` help compare
 
@@ -39,6 +39,9 @@ be used to limit the output to the given scopes.
   * `--show-all` (optional):
     Show also common properties of the descriptions (not only the differences).
 
+  * `--html` (optional):
+    Shows the comparison of two system descriptions in the web browser.
+
 
 ### EXAMPLES
 
@@ -54,3 +57,7 @@ be used to limit the output to the given scopes.
     list:
 
     $ `machinery` compare earth moon --scope=changed-managed-files --show-all
+
+  * Compares system descriptions and shows the result in HTML format in your web browser:
+
+      $ machinery compare --html earth moon
