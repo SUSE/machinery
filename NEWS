@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* GConf XML files are no longer treated as binary files in HTML view
+  (gh#SUSE/machinery#1154)
 * Add current outgoing ip and export directory to Autoyast README.md during
   export (gh#SUSE/machinery#1543)
 * Handle invalid utf-8 characters in /etc/passwd
