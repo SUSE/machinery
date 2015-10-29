@@ -29,9 +29,9 @@ Metrics/LineLength:
     - https
 
 Style/AlignHash:
-  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylealignhash
-  EnforcedHashRocketStyle: table
-  EnforcedColonStyle: table
+  # Aligning hashes is a nightmare if done manually and not every editor is capable of doing it
+  # correctly automatically. Also the increased readability of aligned hashes is subjective.
+  Enabled: false
 
 Style/AlignParameters:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylealignparameters
