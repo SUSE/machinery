@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Handle invalid utf-8 characters in /etc/passwd
 * Fix: "changed" link in compare view is visible while scope is collapsed but
   doesn't do anything (gh#SUSE/machinery#1555)
 

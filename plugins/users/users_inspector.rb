@@ -39,6 +39,7 @@ class UsersInspector < Inspector
   private
 
   def parse_users(passwd, shadow)
+    passwd = Machinery.scrub(passwd)
     users = passwd.lines.map { |l| l.split(":").first }
 
     users.map do |user|
