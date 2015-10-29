@@ -39,7 +39,7 @@ module Machinery
       end
     end
 
-    control.to_f / ascii > 0.1 || binary.to_f / ascii > 0.05
+    control.to_f / ascii > 0.1 || binary.to_f / ascii > 0.2
   end
 
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in

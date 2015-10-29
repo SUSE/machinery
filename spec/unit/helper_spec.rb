@@ -85,6 +85,10 @@ describe Machinery do
       expect(Machinery::content_is_binary?(File.read(given_file("text_file")))).to be(false)
     end
 
+    it "detects simple text utf-8 files as non-binary" do
+      expect(Machinery::content_is_binary?(File.read(given_file("text2_file")))).to be(false)
+    end
+
     it "detects binary file as binary" do
       expect(Machinery::content_is_binary?(File.read(given_file("binary_file")))).to be(true)
     end
