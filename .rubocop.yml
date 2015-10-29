@@ -29,9 +29,9 @@ Metrics/LineLength:
     - https
 
 Style/AlignHash:
-  StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylealignhash
-  EnforcedHashRocketStyle: table
-  EnforcedColonStyle: table
+  # Aligning hashes is a nightmare if done manually and not every editor is capable of doing it
+  # correctly automatically. Also the increased readability of aligned hashes is subjective.
+  Enabled: false
 
 Style/AlignParameters:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylealignparameters
@@ -71,4 +71,9 @@ Style/SignalException:
 
 Style/NumericLiterals:
   StyleGuide: https://github.com/SUSE/style-guides/blob/master/Ruby.md#stylenumericliterals
+  Enabled: false
+
+Style/BlockDelimiters:
+  # {...} for multi-line blocks is desirable if the block is used as an object, e.g. in RSpec `let`
+  # blocks or with the RSpec `expect {...}.to ...` syntax.
   Enabled: false

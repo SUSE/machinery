@@ -27,24 +27,6 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-scope=$1
-package=$2 # for scope config-files only
-
-if [[ -z "$scope" || "$scope" != "config-files" && "$scope" != "changed-managed-files" ]]; then
-  echo "Error: Expect scope 'config-files' or 'changed-managed-files' as first argument." >&2
-  exit 1
-fi
-
-if [[ "$scope" == "changed-managed-files" && $# != 1 ]]; then
-  echo "Error: Expect no extra arguments after changed-managed-files " >&2
-  exit 1
-fi
-
-if [[ "$scope" == "config-files" && $# != 2 ]]; then
-  echo "Error: Expect one argument with package name after config-files" >&2
-  exit 1
-fi
-
 if [ $UID -ne "0" ]; then
    sudoprefix="sudo -n"
 fi
@@ -85,21 +67,11 @@ inspect_package () {
   fi
 
   if [ -n "$output" ]; then
-    if [ $scope == "changed-managed-files" ]; then
-      echo -e "$package:\\n$output";
-    else
-      echo -e "$output"
-    fi
+    echo -e "$package:\\n$output";
   fi
 }
 
-if [ $scope == "changed-managed-files" ]; then
-  for package in `rpm -qa --queryformat "%{NAME}-%{VERSION}\\n"`; do
-    inspect_package $package
-  done
-fi
-
-if [ $scope == "config-files" ]; then
+for package in `rpm -qa --queryformat "%{NAME}-%{VERSION}\\n"`; do
   inspect_package $package
-fi
+done
 

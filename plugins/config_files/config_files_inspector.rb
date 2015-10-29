@@ -16,8 +16,6 @@
 # you may find current contact information at www.suse.com
 
 class ConfigFilesInspector < Inspector
-  include ChangedRpmFilesHelper
-
   has_priority 80
   # checks if all required binaries are present
   def check_requirements(check_rsync)
@@ -27,47 +25,15 @@ class ConfigFilesInspector < Inspector
     @system.check_retrieve_files_dependencies if check_rsync
   end
 
-  # returns list of packages containing configfiles
-  def packages_with_config_files
-    # first determine packages that have config files at all
-    # rpm command provides lines with package names and subsequent
-    # lines with pathes of config files for that package
-    # e.g.
-    # apache2
-    # /etc/apache2/charset.conv
-    # /etc/apache2/default-server.conf
-    #
-    output = @system.run_command(
-      "rpm", "-qa", "--configfiles", "--queryformat",
-      "%{NAME}-%{VERSION}\n",
-      :stdout => :capture
-    )
-    # use leading slash to decide between lines containing package names
-    # and lines containing config files
-    chunks = output.split("\n").slice_before { |l| !l.start_with?("/") }
-    chunks.reject { |_pkg, *cfiles| cfiles.empty? }.map(&:first).uniq
-  end
-
   # returns a hash with entries for changed config files
   def config_file_changes(pkg)
-    out = @system.run_script("changed_files.sh", "--", "config-files", pkg, stdout: :capture)
-    parts = pkg.split("-")
-    package_name    = parts[0..-2].join("-")
-    package_version = parts.last
-
-    paths_and_changes = out.lines.map { |line| parse_rpm_changes_line(line) }
-    paths_and_changes.reject! do |path, changes, type|
-      # only consider config files and only those with changes
-      type != "c" || changes.empty?
-    end
-
-    paths_and_changes.map do |path, changes|
+    @system.changed_files.select(&:config_file?).map do |file|
       ConfigFile.new(
-        name:            path,
+        name:            file.path,
         package_name:    package_name,
         package_version: package_version,
         status:          "changed",
-        changes:         changes
+        changes:         file.changes
       )
     end.uniq
   end
@@ -82,12 +48,12 @@ class ConfigFilesInspector < Inspector
     check_requirements(do_extract)
 
     count = 0
-    result = packages_with_config_files.flat_map do |package|
-      files = config_file_changes(package)
-      count += files.length
+    files = @system.rpm_database.changed_files do |chunk|
+      count += chunk.lines.count { |l| !l.chomp.end_with?(":") && l.split(" ")[1] == "c" }
       Machinery::Ui.progress(" -> Found #{count} config #{Machinery::pluralize(count, "file")}...")
-
-      files
+    end
+    result = files.select(&:config_file?).map do |file|
+      ConfigFile.new(file.attributes)
     end
 
     if filter
@@ -96,7 +62,7 @@ class ConfigFilesInspector < Inspector
     end
 
     paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
-    path_data = get_path_data(@system, paths)
+    path_data = @system.rpm_database.get_path_data(paths)
     key_list = [:user, :group, :mode, :type, :target]
     result.each do |pkg|
       pname = pkg.name
