@@ -275,14 +275,13 @@ class Cli
   arg "NAME"
   command "analyze" do |c|
     c.flag [:operation, :o], type: String, required: false,
-      desc: "The analyze operation to perform, default is config-file-diffs", arg_name: "OPERATION"
+      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "config-file-diffs"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       description = SystemDescription.load(name, system_description_store)
-      operation = options[:operation] || "config-file-diffs"
 
-      case operation
+      case options[:operation]
         when "config-file-diffs"
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
