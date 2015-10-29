@@ -11,7 +11,7 @@ The export directory contains both the AutoYaST profile and additional data that
 is required during installation. This directory needs to be made available to
 the installer via network, e.g. by running:
 
-  cd /path/to/autoyast_export; python -m SimpleHTTPServer
+  cd <path>; python -m SimpleHTTPServer
 
 You can then point the installer to the profile by specifying the AutoYaST
 option on the kernel command line.
@@ -33,7 +33,7 @@ The installation via for example an HTTP server is only possible if all files
 and sub directories are readable by the HTTP server user.
 To make the export directory readable for all users run:
 
-  chmod -R a+rX /path/to/autoyast_export
+  chmod -R a+rX <path>
 
 ## Reference
 

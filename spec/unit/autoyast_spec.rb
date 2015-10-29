@@ -126,6 +126,12 @@ describe Autoyast do
       expect(file).to include("autoyast2=http://#{ip}:8000/autoinst.xml")
     end
 
+    it "adds the autoyast export path to the readme" do
+      file = File.read(File.join(@output_dir, "README.md"))
+      expect(file).to include("cd #{@output_dir}; python -m SimpleHTTPServer")
+      expect(file).to include("chmod -R a+rX #{@output_dir}")
+    end
+
     it "restricts permissions of all exported files and dirs to the user" do
       Dir.glob(File.join(@output_dir, "/*")).each do |entry|
         next if entry.end_with?("/README.md")
