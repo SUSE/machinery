@@ -30,7 +30,8 @@ module Machinery
     content.each_byte do |byte|
       case byte
       when 0...32
-        control += 1
+        # count control characters except of newlines and tabs
+        control += 1 unless [9, 10, 13].include?(byte)
       when 32...128
         ascii += 1
       else
