@@ -52,7 +52,15 @@ describe RpmDatabase do
   describe "#changed_files" do
     before(:each) do
       allow(system).to receive(:run_script_with_progress).and_return(changed_files_sh_result)
-      allow(system).to receive(:run_command).and_return("zypper-1.6.311-16.2.3.x86_64")
+      allow(system).to receive(:run_command).with("rpm", any_args).and_return(
+        "zypper-1.6.311-16.2.3.x86_64"
+      )
+      allow(system).to receive(:run_command).with("stat", any_args).and_return(
+        File.read(File.join(Machinery::ROOT, "spec/data/rpm_database/stat_result"))
+      )
+      allow(system).to receive(:run_command).with("find", any_args).and_return(
+        "/link_target"
+      )
     end
 
     it "returns the list of files" do
@@ -62,7 +70,11 @@ describe RpmDatabase do
         status:          "changed",
         changes:         ["size", "mode", "md5", "user", "group", "time"],
         package_name:    "zypper",
-        package_version: "1.6.311"
+        package_version: "1.6.311",
+        user: "root",
+        group: "root",
+        mode: "6644",
+        type: "file"
       )
 
       expect(subject.changed_files.first).to eq(expected)

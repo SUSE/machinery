@@ -48,6 +48,7 @@ describe ConfigFilesInspector do
         [
           "/etc/config",
           "/etc/linked_config",
+          "/etc/config_directory",
           "/usr/share/man/man1/time.1.gz"
         ]
       }

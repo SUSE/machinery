@@ -56,6 +56,16 @@ class RpmDatabase
       )
     end.compact.uniq
 
+    paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
+    path_data = get_path_data(paths)
+    result.each do |pkg|
+      next unless path_data[pkg.name]
+
+      path_data[pkg.name].each do |key, value|
+        pkg[key] = value
+      end
+    end
+
     @changed_files = result
   end
 

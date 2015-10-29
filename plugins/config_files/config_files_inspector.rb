@@ -61,16 +61,6 @@ class ConfigFilesInspector < Inspector
       result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
     end
 
-    paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
-    path_data = @system.rpm_database.get_path_data(paths)
-    key_list = [:user, :group, :mode, :type, :target]
-    result.each do |pkg|
-      pname = pkg.name
-      if path_data.has_key?(pname)
-        key_list.each { |k| pkg[k] = path_data[pname][k] if path_data[pname][k] }
-      end
-    end
-
     scope = ConfigFilesScope.new
     file_store = @description.scope_file_store("config_files")
     scope.scope_file_store = file_store
