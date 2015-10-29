@@ -86,9 +86,12 @@ describe Autoyast do
   end
 
   describe "#write" do
+    let(:ip) { "192.168.0.35" }
     before(:each) do
+      autoyast = Autoyast.new(description)
       @output_dir = given_directory
-      Autoyast.new(description).write(@output_dir)
+      allow(autoyast).to receive(:outgoing_ip).and_return(ip)
+      autoyast.write(@output_dir)
       expect(captured_machinery_output).to include(
         "Note: The permssions of the AutoYaST directory are restricted to be only" \
           " accessible by the current user. Further instructions are provided by the " \
@@ -117,6 +120,18 @@ describe Autoyast do
       expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
     end
 
+    it "adds the ip of the outgoing network to the readme" do
+      file = File.read(File.join(@output_dir, "README.md"))
+      expect(file).to include("autoyast=http://#{ip}:8000/autoinst.xml")
+      expect(file).to include("autoyast2=http://#{ip}:8000/autoinst.xml")
+    end
+
+    it "adds the autoyast export path to the readme" do
+      file = File.read(File.join(@output_dir, "README.md"))
+      expect(file).to include("cd #{@output_dir}; python -m SimpleHTTPServer")
+      expect(file).to include("chmod -R a+rX #{@output_dir}")
+    end
+
     it "restricts permissions of all exported files and dirs to the user" do
       Dir.glob(File.join(@output_dir, "/*")).each do |entry|
         next if entry.end_with?("/README.md")
@@ -134,6 +149,28 @@ describe Autoyast do
       autoyast = Autoyast.new(description)
 
       expect(autoyast.export_name).to eq("description-autoyast")
+    end
+  end
+
+  describe "#outgoing_ip" do
+    let(:autoyast) { Autoyast.new(description) }
+    let(:ip_route) {
+      "8.8.8.8 via 10.100.255.254 dev em1  src 10.100.2.35 \n    cache "
+    }
+    let(:ip_no_route) { "RTNETLINK answers: Network is unreachable " }
+
+    it "returns the current outgoing ip" do
+      expect(Cheetah).to receive(:run).with(
+        "ip", "route", "get", "8.8.8.8", stdout: :capture
+      ).and_return(ip_route)
+      expect(autoyast.outgoing_ip).to eq("10.100.2.35")
+    end
+
+    it "returns ip placeholder if no external route exists" do
+      expect(Cheetah).to receive(:run).with(
+        "ip", "route", "get", "8.8.8.8", stdout: :capture
+      ).and_return(ip_no_route)
+      expect(autoyast.outgoing_ip).to eq("<ip>")
     end
   end
 end
