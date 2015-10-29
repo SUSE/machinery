@@ -16,7 +16,6 @@
 # you may find current contact information at www.suse.com
 
 class ChangedManagedFilesInspector < Inspector
-  include ChangedRpmFilesHelper
   has_priority 90
 
   def initialize(system, description)
@@ -71,7 +70,7 @@ class ChangedManagedFilesInspector < Inspector
 
   def amend_file_attributes(changed_files)
     existing_files = changed_files.reject { |f| f.changes.nil? || f.changes.include?("deleted") }
-    file_attributes = get_path_data(@system, existing_files.map(&:name))
+    file_attributes = @system.rpm_database.get_path_data(existing_files.map(&:name))
     changed_files.map do |changed_file|
       if file_attributes[changed_file.name]
         ChangedManagedFile.new(changed_file.attributes.merge(file_attributes[changed_file.name]))
@@ -83,59 +82,13 @@ class ChangedManagedFilesInspector < Inspector
 
   def changed_files
     count = 0
-    list = run_script_with_progress("changed_files.sh", "--", "changed-managed-files") do |chunk|
+    files = @system.rpm_database.changed_files do |chunk|
       count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
       Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
     end
-
-    # The raw list lists each package followed by the changed files, e.g.
-    #
-    #   libpulse0-4.0.git.270.g9490a:
-    #   S.5......  c /etc/pulse/client.conf
-    #   ntp-4.2.6p5:
-    #   S.5......  c /etc/ntp.conf
-    #
-    # We map this to an array of files like this:
-    #
-    # [
-    #   {
-    #     name: "/etc/pulse/client.conf",
-    #     package_name: "libpulse0",
-    #     package_version: "4.0.git.270.g9490a"
-    #   },
-    #   ...
-    # ]
-    file_list = list.split("\n").slice_before(/(.*):\z/).flat_map do |package, *files|
-      package_name, package_version = package.scan(/(.*)-([^-]*):/).first
-      files.map do |changed_file|
-        if changed_file =~ /\A(\/\S+) (.*)/
-          ChangedManagedFile.new(
-            name:              $1,
-            package_name:      package_name,
-            package_version:   package_version,
-            status:            "error",
-            error_message:     $2
-          )
-        else
-          file, changes, flag = parse_rpm_changes_line(changed_file)
-
-          # Config files (flagged as 'c') are handled by the ConfigFilesInspector
-          next if flag == "c"
-
-          ChangedManagedFile.new(
-              name:              file,
-              package_name:      package_name,
-              package_version:   package_version,
-              status:            "changed",
-              changes:           changes
-          )
-        end
-        # Since errors are also recognized for config-files we have
-        # to filter them
-      end.compact.select { |item| item.changes }
-    end.uniq
-
-    amend_file_attributes(file_list)
+    result = files.reject(&:config_file?).map do |file|
+      ChangedManagedFile.new(file.attributes)
+    end
+    amend_file_attributes(result)
   end
-
 end

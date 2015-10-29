@@ -68,7 +68,6 @@ require_relative "list_task"
 require_relative "system_description_store"
 require_relative "logged_cheetah"
 require_relative "renderer_helper"
-require_relative "changed_rpm_files_helper"
 require_relative "export_task"
 require_relative "helper"
 require_relative "deploy_task"
@@ -110,6 +109,7 @@ require_relative "workload_mapper_dsl"
 require_relative "containerized_app"
 require_relative "move_task"
 require_relative "docker_system"
+require_relative "rpm_database"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

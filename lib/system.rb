@@ -102,6 +102,32 @@ class System
     run_command("bash", "-c", script, *args)
   end
 
+  # Runs the given script on the inspected machine asynchronously and calls the callback method
+  # periodically with new output when it occurs.
+  #
+  # Example:
+  #
+  #     count = 0
+  #     raw_list = run_script_with_progress("changed_managed_files.sh") do |chunk|
+  #       count += chunk.lines.count
+  #       Machinery::Ui.progress("Found #{count} changed files...")
+  #     end
+  def run_script_with_progress(*script, &callback)
+    output = ""
+    write_io = StringIO.new(output, "a")
+    read_io = StringIO.new(output, "r")
+
+    inspect_thread = Thread.new { run_script(*script, stdout: write_io) }
+
+    while inspect_thread.alive?
+      sleep 0.1
+      chunk = read_io.read
+      callback.call(chunk) if callback
+    end
+
+    output
+  end
+
   def has_command?(command)
     run_command("bash", "-c", "type -P #{command}", stdout: :capture)
     true
@@ -115,5 +141,9 @@ class System
 
   def locale
     @locale || "C"
+  end
+
+  def rpm_database
+    @rpm_database ||= RpmDatabase.new(self)
   end
 end
