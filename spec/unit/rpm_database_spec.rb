@@ -52,6 +52,7 @@ describe RpmDatabase do
   describe "#changed_files" do
     before(:each) do
       allow(system).to receive(:run_script_with_progress).and_return(changed_files_sh_result)
+      allow(system).to receive(:run_command).and_return("zypper-1.6.311-16.2.3.x86_64")
     end
 
     it "returns the list of files" do

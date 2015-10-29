@@ -37,25 +37,26 @@ class RpmDatabase
     return @changed_files if @changed_files
     out = @system.run_script_with_progress("changed_files.sh", &block)
 
-    @changed_files ||= out.split("\n").slice_before(/(.*):\z/).flat_map do |package, *files|
-      package_name, package_version = package.scan(/(.*)-([^-]*):/).first
-      files.map do |changed_file|
-        if changed_file =~ /\A(\/\S+) (.*)/
-          # There was an error retrieving the information about that file. Skip.
-        else
-          file, changes, type = parse_rpm_changes_line(changed_file)
+    result = out.each_line.map do |line|
+      line.chomp!
+      next unless line.match(/^[^ ]+[ ]+. \/.*$/)
 
-          ChangedFile.new(
-            type,
-            name:            file,
-            package_name:    package_name,
-            package_version: package_version,
-            status:          "changed",
-            changes:         changes
-          )
-        end
-      end.compact
-    end.uniq
+      file, changes, type = parse_rpm_changes_line(line)
+
+      package = @system.run_command("rpm", "-qf", file, stdout: :capture)
+      package_name, package_version = package.scan(/(.*)-([^-]*)-[^-]/).first
+
+      ChangedFile.new(
+        type,
+        name:            file,
+        package_name:    package_name,
+        package_version: package_version,
+        status:          "changed",
+        changes:         changes
+      )
+    end.compact.uniq
+
+    @changed_files = result
   end
 
   def expected_tag?(character, position)
