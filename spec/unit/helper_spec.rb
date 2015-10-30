@@ -23,50 +23,50 @@ describe Machinery do
   describe ".pluralize" do
     context "when pluralform is not given" do
       it "returns given singular text if the number is one" do
-        expect(Machinery::pluralize(1, "text")).to eq "text"
+        expect(Machinery.pluralize(1, "text")).to eq "text"
       end
       it "returns given plural text if the number is zero" do
-        expect(Machinery::pluralize(0, "text")).to eq "texts"
+        expect(Machinery.pluralize(0, "text")).to eq "texts"
       end
       it "returns given plural text if the number is more than one" do
-        expect(Machinery::pluralize(5, "text")).to eq "texts"
+        expect(Machinery.pluralize(5, "text")).to eq "texts"
       end
       it "replaces %d by the count" do
-        expect(Machinery::pluralize(5, "%d book")).to eq "5 books"
-        expect(Machinery::pluralize(1, "%d book")).to eq "1 book"
+        expect(Machinery.pluralize(5, "%d book")).to eq "5 books"
+        expect(Machinery.pluralize(1, "%d book")).to eq "1 book"
       end
     end
 
     context "when pluralform is given" do
       it "returns given singular text if the number is one" do
-        expect(Machinery::pluralize(1, "text", "texts")).to eq "text"
+        expect(Machinery.pluralize(1, "text", "texts")).to eq "text"
       end
       it "returns given plural text if the number is zero" do
-        expect(Machinery::pluralize(0, "text", "texts")).to eq "texts"
+        expect(Machinery.pluralize(0, "text", "texts")).to eq "texts"
       end
       it "returns given plural text if the number is more than one" do
-        expect(Machinery::pluralize(5, "text", "texts")).to eq "texts"
+        expect(Machinery.pluralize(5, "text", "texts")).to eq "texts"
       end
       it "replaces %d by the count" do
-        expect(Machinery::pluralize(5, "%d person", "%d people")).to eq "5 people"
-        expect(Machinery::pluralize(1, "%d person", "%d people")).to eq "1 person"
+        expect(Machinery.pluralize(5, "%d person", "%d people")).to eq "5 people"
+        expect(Machinery.pluralize(1, "%d person", "%d people")).to eq "1 person"
       end
     end
   end
 
   describe ".is_int?" do
     it "returns true if the string only consists numbers" do
-      expect(Machinery::is_int?("12345")).to be(true)
-      expect(Machinery::is_int?("1")).to be(true)
+      expect(Machinery.is_int?("12345")).to be(true)
+      expect(Machinery.is_int?("1")).to be(true)
     end
 
     it "returns false if the string consist any chars than numbers" do
-      expect(Machinery::is_int?(" 12345")).to be(false)
-      expect(Machinery::is_int?("12456 ")).to be(false)
-      expect(Machinery::is_int?("1a2")).to be(false)
-      expect(Machinery::is_int?("1 ")).to be(false)
-      expect(Machinery::is_int?(" 1")).to be(false)
-      expect(Machinery::is_int?("")).to be(false)
+      expect(Machinery.is_int?(" 12345")).to be(false)
+      expect(Machinery.is_int?("12456 ")).to be(false)
+      expect(Machinery.is_int?("1a2")).to be(false)
+      expect(Machinery.is_int?("1 ")).to be(false)
+      expect(Machinery.is_int?(" 1")).to be(false)
+      expect(Machinery.is_int?("")).to be(false)
     end
   end
 
@@ -74,15 +74,23 @@ describe Machinery do
     use_given_filesystem
 
     it "detects xml content as non-binary" do
-      expect(Machinery::content_is_binary?(File.read(given_file("xml_file")))).to be(false)
+      expect(Machinery.content_is_binary?(File.read(given_file("xml_file")))).to be(false)
+    end
+
+    it "detects xml content as non-binary with gconf files" do
+      expect(Machinery.content_is_binary?(File.read(given_file("xml2_file")))).to be(false)
     end
 
     it "detects text file as non-binary" do
-      expect(Machinery::content_is_binary?(File.read(given_file("text_file")))).to be(false)
+      expect(Machinery.content_is_binary?(File.read(given_file("text_file")))).to be(false)
+    end
+
+    it "detects simple text utf-8 files as non-binary" do
+      expect(Machinery.content_is_binary?(File.read(given_file("text2_file")))).to be(false)
     end
 
     it "detects binary file as binary" do
-      expect(Machinery::content_is_binary?(File.read(given_file("binary_file")))).to be(true)
+      expect(Machinery.content_is_binary?(File.read(given_file("binary_file")))).to be(true)
     end
   end
 
