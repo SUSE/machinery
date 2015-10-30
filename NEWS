@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix docker inspection when specifying a docker image with tag
+  (gh#SUSE/machinery#1491)
 * GConf XML files are no longer treated as binary files in HTML view
   (gh#SUSE/machinery#1154)
 * Add current outgoing ip and export directory to Autoyast README.md during
