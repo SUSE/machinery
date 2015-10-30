@@ -21,25 +21,13 @@ module Machinery
   end
 
   def self.content_is_binary?(content)
-    # Code by http://www.thecodingforums.com/threads/test-if-file-is-binary.843447/#post-4572282
-    # Modified by SUSE Linux GmbH
-    ascii = 0
-    control = 0
-    binary = 0
+    printable = 0
 
     content.each_byte do |byte|
-      case byte
-      when 0...32
-        # count control characters except of newlines and tabs
-        control += 1 unless [9, 10, 13].include?(byte)
-      when 32...128
-        ascii += 1
-      else
-        binary += 1
-      end
+      printable += 1 if [9, 10, 13].include?(byte) || (32..128).include?(byte)
     end
 
-    control.to_f / ascii > 0.1 || binary.to_f / ascii > 0.2
+    printable.to_f / content.size < 0.9
   end
 
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
