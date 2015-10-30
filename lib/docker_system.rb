@@ -124,12 +124,8 @@ class DockerSystem < System
   private
 
   def validate_image_name(image)
-    images = LoggedCheetah.run("docker", "images", stdout: :capture).split("\n")
-
-    if !images.find { |i| i.start_with?("#{image} ") || i.index(" #{image} ") }
-      raise Machinery::Errors::InspectionFailed.new(
-        "Unknown docker image: '#{image}'"
-      )
-    end
+    LoggedCheetah.run("docker", "inspect", image)
+  rescue
+    raise Machinery::Errors::InspectionFailed.new("Unknown docker image: '#{image}'")
   end
 end

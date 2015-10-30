@@ -24,11 +24,11 @@ describe DockerSystem do
   let(:false_container_id) { "0a0a0a0a0a0a" }
   let(:valid_container_id) { "076f46c1bef1" }
   let(:instance) { "12345" }
-  let(:images) { "076f46c1bef1 latest\nfoobar latest" }
   subject { DockerSystem.new(valid_container_id).tap(&:start) }
 
   before(:each) do
-    allow(LoggedCheetah).to receive(:run).with("docker", "images", any_args).and_return(images)
+    allow(LoggedCheetah).to receive(:run).with("docker", "inspect", false_container_id).and_raise
+    allow(LoggedCheetah).to receive(:run).with("docker", "inspect", valid_container_id)
     allow(LoggedCheetah).to receive(:run).with("docker", "run", any_args).and_return(instance)
     allow(subject).to receive(:stop)
   end
