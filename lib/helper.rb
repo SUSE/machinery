@@ -21,13 +21,7 @@ module Machinery
   end
 
   def self.content_is_binary?(content)
-    printable = 0
-
-    content.each_byte do |byte|
-      printable += 1 if [9, 10, 13].include?(byte) || (32..128).include?(byte)
-    end
-
-    printable.to_f / content.size < 0.9
+    !Cheetah.run("file", "-b", "-", stdout: :capture, stdin: content).include?(" text")
   end
 
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
