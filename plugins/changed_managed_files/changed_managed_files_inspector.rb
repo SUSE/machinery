@@ -68,27 +68,14 @@ class ChangedManagedFilesInspector < Inspector
 
   private
 
-  def amend_file_attributes(changed_files)
-    existing_files = changed_files.reject { |f| f.changes.nil? || f.changes.include?("deleted") }
-    file_attributes = @system.rpm_database.get_path_data(existing_files.map(&:name))
-    changed_files.map do |changed_file|
-      if file_attributes[changed_file.name]
-        ChangedManagedFile.new(changed_file.attributes.merge(file_attributes[changed_file.name]))
-      else
-        changed_file
-      end
-    end
-  end
-
   def changed_files
     count = 0
     files = @system.rpm_database.changed_files do |chunk|
       count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
       Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
     end
-    result = files.reject(&:config_file?).map do |file|
+    files.reject(&:config_file?).map do |file|
       ChangedManagedFile.new(file.attributes)
     end
-    amend_file_attributes(result)
   end
 end
