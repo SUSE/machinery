@@ -303,7 +303,7 @@ describe UnmanagedFilesInspector do
         end
         arch = File.join(cfdir, "files.tgz")
         expect(Cheetah).to receive(:run).with(
-          "tar", "tvf", arch,
+          "tar", "tvf", arch, "--quoting-style=literal",
           stdout: :capture
         ).and_return(File.read(test_file_path+"/tar_tvfz_FILES"))
         dlist.each do |d|
@@ -313,7 +313,7 @@ describe UnmanagedFilesInspector do
           expect(Cheetah).to receive(:run).with(
             "tar", "tvf",
             File.join(cfdir, "trees", base, File.basename(d) + ".tgz"),
-            stdout: :capture
+            "--quoting-style=literal", stdout: :capture
           ).and_return(File.read(test_file))
         end
       end

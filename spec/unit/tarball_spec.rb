@@ -24,7 +24,7 @@ describe Tarball do
         File.join(Machinery::ROOT, "spec/data/tarball/tarball.tar.gz")
       )
 
-      expect(tarball.list).to eq([
+      expect(tarball.list).to match_array([
         { path: "dir",         type: :dir,  size:  0, mode:  "755", user: "nobody", group: "users" },
         { path: "file",        type: :file, size: 10, mode:  "644", user: "nobody", group: "users" },
         { path: "hardlink",    type: :file, size:  0, mode:  "644", user: "nobody", group: "users" },
@@ -54,6 +54,7 @@ describe Tarball do
         { path: "perms-4100",  type: :file, size:  0, mode: "4100", user: "nobody", group: "users" },
         { path: "softlink",    type: :link, size:  0, mode:  "777", user: "nobody", group: "users" },
         { path: "s p a c e s", type: :file, size:  0, mode:  "644", user: "nobody", group: "users" },
+        { path: "\\", type: :dir, size:  0, mode:  "700", user: "nobody", group: "users" },
       ])
     end
   end
