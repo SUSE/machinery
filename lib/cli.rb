@@ -154,6 +154,16 @@ class Cli
     true
   end
 
+  def self.check_container_name!(image, name)
+    if image.include?("/") && name.include?("/")
+      raise Machinery::Errors::InvalidCommandLine.new(
+        "Error: System description name '#{name}' is invalid. By default Machinery" \
+          " uses the image name as description name if the parameter `--name` is not" \
+          " provided.\nIf the image name consist a slash the `--name=NAME` parameter" \
+          " is mandatory. Valid characters are 'a-zA-Z0-9_:.-'."
+      )
+    end
+  end
 
   on_error do |e|
     Cli.handle_error(e)
@@ -636,6 +646,8 @@ class Cli
       inspector_task = InspectTask.new
 
       name, scope_list, inspect_options, filter = parse_inspect_command_options(image, options)
+
+      check_container_name!(image, name)
 
       begin
         system.start
