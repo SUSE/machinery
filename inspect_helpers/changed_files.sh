@@ -43,18 +43,4 @@ package_contains_verify_script () {
   rpm --scripts -q $1 | grep "verify scriptlet" > /dev/null
 }
 
-check_output () {
-  # rpm returns 1 as exit code when modified config files are detected
-  # that's why we explicitly detect if sudo failed
-  regex="^sudo:.*password is required"
-  if [[ "$1" =~ $regex ]]; then
-    echo "$1" >&2
-    exit 1
-  fi
-}
-
-exec 4>&1
-output=`$sudoprefix rpm -Va --nodeps --nodigest --nosignature --nomtime $noscripts | tee \
-/dev/fd/4 2>&1 || true`
-
-check_output "$output"
+$sudoprefix rpm -Va --nodeps --nodigest --nosignature --nomtime $noscripts || true
