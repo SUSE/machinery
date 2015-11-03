@@ -35,15 +35,15 @@ class RpmDatabase
 
   def changed_files(&block)
     return @changed_files if @changed_files
-    out = @system.run_script_with_progress("changed_files.sh", &block)
 
+    out = @system.run_script_with_progress("changed_files.sh", &block)
     result = out.each_line.map do |line|
       line.chomp!
       next unless line.match(/^[^ ]+[ ]+. \/.*$/)
 
       file, changes, type = parse_rpm_changes_line(line)
 
-      package = @system.run_command("rpm", "-qf", file, stdout: :capture)
+      package = @system.run_command("rpm", "-qf", file, stdout: :capture).split.first
       package_name, package_version = package.scan(/(.*)-([^-]*)-[^-]/).first
 
       ChangedFile.new(
