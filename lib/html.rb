@@ -51,7 +51,7 @@ EOF
         rescue Errno::EADDRINUSE
           servefailed_error = <<-EOF.chomp
 Port #{Server.settings.port} is already in use.
-Stop the already running server on port #{Server.settings.port} or specify a new port by using --port option.
+You have to stop the already running server on port #{Server.settings.port} first or if you're serving a description with the `serve` command, you can also use the `--port` option.
 EOF
           raise Machinery::Errors::ServeFailed, servefailed_error
         rescue SocketError => e
