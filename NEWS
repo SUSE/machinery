@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* HTML comparison is now available without the experimental feature flag
 * Add error message to recommend using `--name` when a container with a slash is
   inspected (gh#SUSE/machinery#1490)
 * Fixed crash during inspection of a folder which contains special characters
