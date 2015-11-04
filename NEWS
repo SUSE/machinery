@@ -2,6 +2,8 @@
 
 * Add error message to recommend using `--name` when a container with a slash is
   inspected (gh#SUSE/machinery#1490)
+* Fixed crash during inspection of a folder which contains special characters
+  in its name (gh#SUSE/machinery#1580)
 * Speed up inspection of config and changed managed files
 * Fix docker inspection when specifying a docker image with tag
   (gh#SUSE/machinery#1491)
