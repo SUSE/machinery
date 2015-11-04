@@ -128,6 +128,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       package: "openSUSE_Tumbleweed"
   end
 
+  config.vm.define :machinery_leap do |machinery_leap|
+    machinery_leap.vm.box = "machinery_opensuse_leap_kvm"
+    machinery_leap.vm.network :private_network, network_name: "default"
+
+    machinery_leap.vm.provider :libvirt do |domain|
+      domain.memory = 1024
+      domain.cpus = 1
+      domain.nested = false
+      domain.volume_cache = 'none'
+    end
+
+    machinery_leap.vm.provision "machinery_rpm",
+      api: "https://api.opensuse.org",
+      project: "systemsmanagement:machinery",
+      package: "openSUSE_Leap_42.1"
+  end
+
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
