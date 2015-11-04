@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Add error message to recommend using `--name` when a container with a slash is
+  inspected (gh#SUSE/machinery#1490)
 * Speed up inspection of config and changed managed files
 * Fix docker inspection when specifying a docker image with tag
   (gh#SUSE/machinery#1491)
