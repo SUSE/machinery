@@ -187,7 +187,8 @@ class Cli
     if scopes
       if exclude_scopes
         # scope and exclude-scope
-        raise Machinery::Errors::InvalidCommandLine.new( "You cannot provide the --scope and --exclude-scope option at the same time.")
+        raise Machinery::Errors::InvalidCommandLine.new("You cannot provide the --scope and " \
+          "--exclude-scope option at the same time.")
       else
         # scope only
         scope_list = parse_scopes(scopes)
