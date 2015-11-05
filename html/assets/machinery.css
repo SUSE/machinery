@@ -223,6 +223,7 @@ h1 {
 
 .diff-unmanaged-files {
   padding-left: 10px;
+  cursor: pointer;
 }
 
 .well .dismiss{
