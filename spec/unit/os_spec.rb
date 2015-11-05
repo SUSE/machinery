@@ -79,7 +79,7 @@ describe Os do
   describe ".supported_host_systems" do
     it "provides classes of all operating systems which are supported" do
       expect(Os.supported_host_systems).to match_array(
-        [OsSles12, OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseTumbleweed]
+        [OsSles12, OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseTumbleweed, OsOpenSuseLeap]
       )
     end
   end

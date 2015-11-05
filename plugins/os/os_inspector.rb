@@ -94,6 +94,11 @@ class OsInspector < Inspector
       if result["pretty_name"] =~ /^openSUSE.*Tumbleweed/
         result["pretty_name"] = "openSUSE Tumbleweed"
       end
+
+      # remove Leap version from pretty name
+      if result["pretty_name"] =~ /^openSUSE.*Leap/
+        result["pretty_name"] = "openSUSE Leap"
+      end
     end
     # return pretty_name as name as it contains the actual full length
     # name instead of an abbreviation

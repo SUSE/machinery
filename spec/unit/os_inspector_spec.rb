@@ -167,6 +167,21 @@ describe OsInspector do
       expect(description.os).to be_a(OsOpenSuseTumbleweed)
     end
 
+    it "is able to recognize the openSUSE release Leap" do
+      FakeFS::FileSystem.clone("spec/data/os/openSUSELeap/etc/os-release",
+        "/etc/os-release")
+
+      expect(system).to receive(:arch).and_return("x86_64")
+
+      inspector.inspect(filter)
+
+      expect(description.os.name).to eq "openSUSE Leap"
+      expect(description.os.version).to eq("42.1")
+      expect(description.os.architecture).to eq "x86_64"
+      expect(inspector.summary).to include("openSUSE Leap")
+      expect(description.os).to be_a(OsOpenSuseLeap)
+    end
+
     it "returns data containing additional version information if available" do
       FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/os-release",
         "/etc/os-release")
