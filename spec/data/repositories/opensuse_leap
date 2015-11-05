@@ -1,0 +1,11 @@
+# Repositories [192.168.121.39] (2015-11-05 17:42:00)
+
+  * Main Repository (OSS)
+    URI: http://download.opensuse.org/distribution/leap/42.1/repo/oss/
+    Alias: download.opensuse.org-oss
+    Enabled: Yes
+    Refresh: Yes
+    Priority: 99
+    Package Manager: zypp
+
+
