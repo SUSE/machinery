@@ -454,7 +454,7 @@ image under the <code>/tmp/tux/</code> directory:</p>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery compare</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-all] NAME1 NAME2</p>
+<p><code>machinery compare</code> [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-all] [--html] NAME1 NAME2</p>
 
 <p><code>machinery</code> help compare</p>
 
@@ -480,6 +480,7 @@ See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more infor
 See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more information.</p></dd>
 <dt><code>--no-pager</code> (optional)</dt><dd><p>Do not pipe output into a pager.</p></dd>
 <dt><code>--show-all</code> (optional)</dt><dd><p>Show also common properties of the descriptions (not only the differences).</p></dd>
+<dt><code>--html</code> (optional)</dt><dd><p>Shows the comparison of two system descriptions in the web browser.</p></dd>
 </dl>
 
 
@@ -496,6 +497,9 @@ See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more infor
 list:</p>
 
 <p>$ <code>machinery</code> compare earth moon --scope=changed-managed-files --show-all</p></li>
+<li><p>Compares system descriptions and shows the result in HTML format in your web browser:</p>
+
+<p>  $ machinery compare --html earth moon</p></li>
 </ul>
 
 
@@ -835,7 +839,7 @@ via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root
 <li><p>When inspecting as non-root the user has to have the following command
 whitelist given in the sudoers file:</p>
 
-<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -V *,/bin/tar --create *</p></li>
+<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *</p></li>
 <li><p>To add a remote <code>machinery</code> user run as root:</p>
 
 <h1><code>useradd -m machinery -c "remote user for machinery"</code></h1>
