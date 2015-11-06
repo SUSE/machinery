@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* The error message "There is already a server with the same port running" has
+  been cleaned up and is no longer misleading (gh#SUSE/machinery#1541)
 * Add OpenSUSE Leap as supported system
 * HTML comparison is now available without the experimental feature flag
 * Add error message to recommend using `--name` when a container with a slash is
