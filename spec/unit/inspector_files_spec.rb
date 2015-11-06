@@ -22,7 +22,7 @@ describe ReferenceTestData do
     it "inspects a system with given IP-adress" do
       ip_adress = "192.168.121.102"
       expect(Cheetah).to receive(:run).with(
-        anything, "inspect", ip_adress, "-n", "referencetestdata", stdout: :capture
+        anything, "inspect", ip_adress, "-xn", "referencetestdata", stdout: :capture
       )
 
       subject.inspect(ip_adress)

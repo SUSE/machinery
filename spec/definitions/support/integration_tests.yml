@@ -6,6 +6,8 @@ inspect:
       "openSUSE_13_2:x86_64": minimal_test
     "openSUSE_13_1:x86_64":
       "openSUSE_13_1:x86_64": full_test
+    "leap:x86_64":
+      "leap:x86_64": full_test
   working:
     "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":

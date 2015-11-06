@@ -32,13 +32,13 @@ class ReferenceTestData
   end
 
   def inspect(ip_adress)
-    Cheetah.run(@machinery, "inspect", ip_adress, "-n", "referencetestdata", stdout: :capture)
+    Cheetah.run(@machinery, "inspect", ip_adress, "-xn", "referencetestdata", stdout: :capture)
   end
 
   def write(destination)
     Inspector.all_scopes.each do |inspector|
       output = Cheetah.run(
-        @machinery, "show", destination, "-s", inspector.gsub("_", "-"),
+        @machinery, "show", "-s", inspector.tr("_", "-"),
         "referencetestdata", stdout: :capture
       )
       File.write(file_path(inspector, destination), output)

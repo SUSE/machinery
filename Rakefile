@@ -181,10 +181,9 @@ desc "Build files in destination directory with scope information for integratio
 # Therefor it generates files with information of each scope.
 
 task :inspector_files, [:ip_adress, :destination] do |task, args|
-  ip_adress = args[:ip_adress]
-  distri = args[:destination]
-  CreateScopeInfoTestData.inspect_system(ip_adress)
-  CreateScopeInfoTestData.write_inspector_file(distri)
+  test_data = ReferenceTestData.new
+  test_data.inspect(args[:ip_adress])
+  test_data.write(args[:destination])
 end
 
 desc "Upgrade machinery unit/integration test descriptions"
