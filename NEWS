@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.16.0 - Fri Nov 06 14:20:47 CET 2015 - thardeck@suse.de
+
 * The error message "There is already a server with the same port running" has
   been cleaned up and is no longer misleading (gh#SUSE/machinery#1541)
 * Add OpenSUSE Leap as supported system
