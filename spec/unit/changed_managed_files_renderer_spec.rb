@@ -77,5 +77,23 @@ describe ChangedManagedFilesRenderer do
     it "prints errored files as a separate list" do
       expect(@output).to match(/Errors:\n.*\/usr\/sbin\/vlock-main/)
     end
+
+    context "when there are no changed managed files" do
+      let(:system_description) {
+        create_test_description(json: <<-EOF)
+          {
+            "changed_managed_files": {
+              "extracted": true,
+              "files": []
+            }
+          }
+        EOF
+      }
+
+      it "says shows a message when there are no changed managed files" do
+        expect(@output).to include("Files extracted: yes")
+        expect(@output).to include("There are no changed managed files.")
+      end
+    end
   end
 end
