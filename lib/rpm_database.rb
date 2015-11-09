@@ -132,7 +132,7 @@ class RpmDatabase
       "dir"
     when "symbolic link"
       "link"
-    when "regular file"
+    when /file$/
       "file"
     end
 

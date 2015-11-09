@@ -220,6 +220,22 @@ describe RpmDatabase do
         ]
       )
     end
+
+    it "is able to handle empty files" do
+      line = "644:root:root:0:0:regular empty file:/etc/postfix/virtual"
+      expect(subject.parse_stat_line(line)).to eq(
+        [
+          "/etc/postfix/virtual",
+          {
+            mode:  "644",
+            user:  "root",
+            group: "root",
+            type:  "file"
+          }
+        ]
+      )
+    end
+
   end
 
   describe "#get_link_target" do
