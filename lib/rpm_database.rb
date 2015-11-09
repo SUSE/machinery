@@ -122,7 +122,8 @@ class RpmDatabase
   end
 
   def parse_stat_line(line)
-    mode, user, group, uid, gid, type, *path = line.split(":")
+    mode, user, group, uid, gid, type, *path_line = line.split(":")
+    path = path_line.join(":").chomp
 
     user = uid if user == "UNKNOWN"
     group = gid if group == "UNKNOWN"
@@ -134,9 +135,13 @@ class RpmDatabase
       "link"
     when /file$/
       "file"
+    else
+      raise(
+        "The inspection failed because of the unknown type `#{type}` of file `#{path}`."
+      )
     end
 
-    [path.join(":").chomp,
+    [path,
       {
         mode:  mode,
         user:  user,

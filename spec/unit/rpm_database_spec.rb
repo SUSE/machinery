@@ -236,6 +236,12 @@ describe RpmDatabase do
       )
     end
 
+    it "raises error if the type is unknown" do
+      line = "644:root:root:0:0:unknown file type:/etc/somethingweird"
+      expect { subject.parse_stat_line(line) }.to raise_error(
+        /unknown file type.*\/etc\/somethingweird/
+      )
+    end
   end
 
   describe "#get_link_target" do
