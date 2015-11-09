@@ -99,6 +99,13 @@ class OsInspector < Inspector
       if result["pretty_name"] =~ /^openSUSE.*Leap/
         result["pretty_name"] = "openSUSE Leap"
       end
+
+      # converts SLES11 SP4 result to SP3 style
+      # the results are different because SP4 has an os-release
+      if result["pretty_name"] =~ /^SUSE Linux Enterprise Server 11 (SP\d)$/
+        result["pretty_name"] = "SUSE Linux Enterprise Server 11"
+        result["version"] = "11 #{$1}"
+      end
     end
     # return pretty_name as name as it contains the actual full length
     # name instead of an abbreviation
