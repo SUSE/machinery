@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.16.1 - Mon Nov 09 17:55:15 CET 2015 - thardeck@suse.de
+
 * Fix type recognition in case of empty files for config- and changed-managed-files
   inspectors (gh#SUSE/machinery#1612)
 
