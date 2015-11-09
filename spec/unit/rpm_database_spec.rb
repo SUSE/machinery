@@ -220,6 +220,28 @@ describe RpmDatabase do
         ]
       )
     end
+
+    it "is able to handle empty files" do
+      line = "644:root:root:0:0:regular empty file:/etc/postfix/virtual"
+      expect(subject.parse_stat_line(line)).to eq(
+        [
+          "/etc/postfix/virtual",
+          {
+            mode:  "644",
+            user:  "root",
+            group: "root",
+            type:  "file"
+          }
+        ]
+      )
+    end
+
+    it "raises error if the type is unknown" do
+      line = "644:root:root:0:0:unknown file type:/etc/somethingweird"
+      expect { subject.parse_stat_line(line) }.to raise_error(
+        /unknown file type.*\/etc\/somethingweird/
+      )
+    end
   end
 
   describe "#get_link_target" do
