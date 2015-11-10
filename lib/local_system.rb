@@ -132,7 +132,11 @@ EOF
     else
       cheetah_class = LoggedCheetah
     end
-    with_utf8_locale do
+
+    with_env(
+      "LANGUAGE" => "",
+      "LC_ALL" => locale
+    ) do
       cheetah_class.run(*args)
     end
   end

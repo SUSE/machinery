@@ -32,7 +32,6 @@ describe LocalSystem do
   describe "#run_command" do
     it "executes commands locally" do
       cmd = ["ls", "/tmp"]
-      expect(local_system).to receive(:with_utf8_locale).and_call_original
       expect(Cheetah).to receive(:run).with(*cmd)
 
       local_system.run_command(*cmd)
