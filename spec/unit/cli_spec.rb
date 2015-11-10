@@ -76,17 +76,12 @@ describe Cli do
       run_command(["inspect-container", "docker_image_foo"])
     end
 
-    it "calls .check_container_name and raises when the image and name consist slashes" do
-      expect(Cli).to receive(:check_container_name!).with("docker/foo", "docker/foo")
-      # unlike the real world raise doesn't stop the program flow in this CLI tests and
-      # it is not possible to check for a raise with `run_command`
-      # expect_any_instance_of(InspectTask).not_to receive(:inspect_system)
-
+    it "aborts if the image and name contains slashes" do
+      expect_any_instance_of(InspectTask).not_to receive(:inspect_system)
       run_command(["inspect-container", "docker/foo"])
     end
 
-    it "calls .check_container and continues if only the image consists slashes" do
-      expect(Cli).to receive(:check_container_name!).with("docker/foo", "docker_foo")
+    it "continues if only the image contains slashes" do
       expect_any_instance_of(InspectTask).to receive(:inspect_system).
         with(
           an_instance_of(SystemDescriptionStore),
@@ -103,7 +98,7 @@ describe Cli do
   end
 
   describe ".check_container_name!" do
-    it "raises error if image and name consist slashes" do
+    it "raises error if image and name contains slashes" do
       expect { Cli.check_container_name!("docker/foo", "docker/foo") }.to raise_error(
         Machinery::Errors::InvalidCommandLine,
         /Error: System description name 'docker\/foo' is invalid\. By default Machinery uses the image name as description name if the parameter `--name` is not provided\.\nIf the image name consist a slash the `--name=NAME` parameter is mandatory. Valid characters are 'a-zA-Z0-9_:\.-'\./
