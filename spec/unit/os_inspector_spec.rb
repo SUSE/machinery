@@ -182,6 +182,21 @@ describe OsInspector do
       expect(description.os).to be_a(OsOpenSuseLeap)
     end
 
+    it "is able to recognize SLES11SP4" do
+      FakeFS::FileSystem.clone("spec/data/os/SLES11SP4/etc/",
+        "/etc/")
+
+      expect(system).to receive(:arch).and_return("x86_64")
+
+      inspector.inspect(filter)
+
+      expect(description.os.name).to eq "SUSE Linux Enterprise Server 11"
+      expect(description.os.version).to eq("11 SP4")
+      expect(description.os.architecture).to eq "x86_64"
+      expect(inspector.summary).to include("SUSE Linux Enterprise Server 11")
+      expect(description.os).to be_a(OsSles11)
+    end
+
     it "returns data containing additional version information if available" do
       FakeFS::FileSystem.clone("spec/data/os/SLES12/etc/os-release",
         "/etc/os-release")
