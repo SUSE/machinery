@@ -43,7 +43,7 @@ class EnvironmentInspector < Inspector
     end
 
     all_locales = output.split
-    locale = ["en_US.utf8"].find { |l| all_locales.include?(l) }
+    locale = all_locales.find { |l| l.downcase.match(/en_us.utf.?8/) }
 
     locale || "C"
   end
