@@ -121,6 +121,14 @@ describe CompareTask do
       EOT
     }
 
+    let(:description5) {
+      create_test_description(json: <<-EOT, name: "name4")
+        {
+          "compare_task_foo": ["foo_data4"]
+        }
+      EOT
+    }
+
     let(:output_different) {
       <<-EOT
 # Foo
@@ -167,8 +175,6 @@ Common to both systems:
 
 Common to both systems:
   baz_data1
-
-Following scopes are identical in both descriptions: compare_task_foo,compare_task_bar,compare_task_baz
 EOT
     }
 
@@ -194,14 +200,11 @@ Only in 'name4':
     let(:output_missing_same) {
       <<-EOT
 Compared descriptions are identical.
-Following scope is identical in both descriptions: compare_task_bar
       EOT
     }
 
     let(:output_same_show_all_false) {
       "Compared descriptions are identical.\n" \
-      "Following scopes are identical in both descriptions: " \
-        "compare_task_foo,compare_task_bar,compare_task_baz\n"
     }
 
     def setup_renderers
@@ -242,6 +245,25 @@ Following scope is identical in both descriptions: compare_task_bar
 
         expect(captured_machinery_output.strip).to eq(output_missing.strip)
       end
+
+      it "produces correct output when one scope is identical but the rest not" do
+        output = <<-EOF
+# Foobar
+  Unable to compare, no data in 'name4'
+
+Following scope is identical in both descriptions: compare_task_foo
+EOF
+
+        subject.compare(
+          description4,
+          description5,
+          ["compare_task_foo", "compare_task_foobar"],
+          show_all: false
+        )
+
+        expect(captured_machinery_output.strip).to eq(output.strip)
+      end
+
     end
 
     describe "when the descriptions are the same" do
@@ -349,8 +371,7 @@ EOT
       output = CompareTask.new.render_comparison(system_description1,
         system_description2, ["os"])
 
-      expect(output).to include ("Compared descriptions are identical.\n")
-      expect(output).to include ("Following scope is identical in both descriptions: ")
+      expect(output).to include("Compared descriptions are identical.")
     end
   end
 
