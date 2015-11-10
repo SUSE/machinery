@@ -30,9 +30,9 @@ class UnmanagedFilesRenderer < Renderer
 
       if description["unmanaged_files"].files
         description["unmanaged_files"].files.each do |p|
-          if p.user && p.group
+          if description["unmanaged_files"].extracted
             item "#{p.name} (#{p.type})" do
-              puts "User/Group: #{p.user}:#{p.group}"
+              puts "User/Group: #{p.user}:#{p.group}" if p.user || p.group
               puts "Mode: #{p.mode}" if p.mode
               puts "Size: #{number_to_human_size(p.size)}" if p.size
               puts "Files: #{p.files}" if p.files

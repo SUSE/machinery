@@ -97,6 +97,28 @@ describe UnmanagedFilesRenderer do
     EOF
   }
 
+  let(:description_remote_dir) {
+    create_test_description(json: <<-EOF)
+    {
+      "unmanaged_files": {
+        "extracted": true,
+        "files": [
+          {
+            "name": "/mnt/unmanaged/remote-dir/",
+            "type": "remote_dir"
+          },
+          {
+            "name": "/etc/alternatives/awk",
+            "type": "link",
+            "user": "root",
+            "group": "root"
+          }
+        ]
+      }
+    }
+    EOF
+  }
+
   let(:empty_description) {
     create_test_description(json: <<-EOF)
     {
@@ -110,8 +132,11 @@ describe UnmanagedFilesRenderer do
   describe "#render" do
     it "prints a list of files without meta data if non exists" do
       actual_output = UnmanagedFilesRenderer.new.render(description_without_meta)
-      expect(actual_output).
-        to match(/\/boot\/backup_mbr\ \(file\)\n[^\n]+\/boot\/message\ \(file\)/)
+      expected_output = <<-EOF.chomp
+  * /boot/backup_mbr (file)
+  * /boot/message (file)
+EOF
+      expect(actual_output).to include(expected_output)
     end
 
     it "shows the extraction status" do
@@ -140,6 +165,17 @@ describe UnmanagedFilesRenderer do
       expect(actual_output).to include("User/Group: root:root")
       expect(actual_output).to include("Size: 11.7 KiB")
       expect(actual_output).to include("Files: 2")
+    end
+
+    it "prints a remote dir" do
+      actual_output = UnmanagedFilesRenderer.new.render(description_remote_dir)
+      expected_output = <<EOF.chomp
+  * /mnt/unmanaged/remote-dir/ (remote_dir)
+  
+  * /etc/alternatives/awk (link)
+    User/Group: root:root
+EOF
+      expect(actual_output).to include(expected_output)
     end
 
     context "when there are no changed managed files" do
