@@ -1,4 +1,4 @@
-- if changed_managed_files && changed_managed_files.files.length > 0
+- if changed_managed_files
   %div
     %a.scope_anchor{ id: "changed_managed_files" }
     .scope#changed_managed_files_container{ "data-scope" => "changed_managed_files" }
@@ -7,35 +7,41 @@
         :scope => "changed_managed_files",
         :title => "Changed Managed Files",
         :count => "#{count} #{Machinery.pluralize(count, "file")}"
-      .row.scope_content.collapse.in
-        .col-xs-1
-        .col-xs-11
-          %table.table.table-striped.table-hover.table-condensed.files-table.filterable
-            %thead
-              %tr
-                %th Name
-                %th Package Name
-                %th.medium Package Version
-                %th.medium Changes
-                %th.small Mode
-                %th.small User
-                %th.small Group
-            %tbody
-              - changed_managed_files.files.each do |file|
+      - if count == 0
+        .row.scope_content.collapse.in
+          .col-xs-1
+          .col-xs-11
+            There are no changed managed files.
+      - if count > 0
+        .row.scope_content.collapse.in
+          .col-xs-1
+          .col-xs-11
+            %table.table.table-striped.table-hover.table-condensed.files-table.filterable
+              %thead
                 %tr
-                  %td
-                    - if file.on_disk?
-                      %a.file-download{ href: "#" }
-                        = file.name
-                    - else
-                      %span
-                        = file.name
-                  %td= file.package_name
-                  %td= file.package_version
-                  %td
-                    = file.changes.join(",")
-                    - if file.error_message
-                      %span{ title: file.error_message } (details)
-                  %td= file.mode
-                  %td= file.user
-                  %td= file.group
+                  %th Name
+                  %th Package Name
+                  %th.medium Package Version
+                  %th.medium Changes
+                  %th.small Mode
+                  %th.small User
+                  %th.small Group
+              %tbody
+                - changed_managed_files.files.each do |file|
+                  %tr
+                    %td
+                      - if file.on_disk?
+                        %a.file-download{ href: "#" }
+                          = file.name
+                      - else
+                        %span
+                          = file.name
+                    %td= file.package_name
+                    %td= file.package_version
+                    %td
+                      = file.changes.join(",")
+                      - if file.error_message
+                        %span{ title: file.error_message } (details)
+                    %td= file.mode
+                    %td= file.user
+                    %td= file.group

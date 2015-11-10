@@ -109,21 +109,27 @@ module SystemDescriptionFactory
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
-    (["environment"] + options[:scopes] + options[:extracted_scopes]).uniq.each do |scope|
-      json_objects << EXAMPLE_SCOPES[scope]
+    (["environment"] + options[:scopes] + options[:extracted_scopes]).uniq.each do |example_scope|
+      json_objects << EXAMPLE_SCOPES[example_scope]
       if options[:add_scope_meta]
-        meta[scope] = {
-          modified: options[:modified],
-          hostname: options[:hostname]
-        }
+        JSON.parse(finalize_json(EXAMPLE_SCOPES[example_scope])).each_key do |scope|
+          meta[scope] = {
+            modified: options[:modified],
+            hostname: options[:hostname]
+          }
+        end
       end
     end
 
     json_objects << "\"meta\": #{JSON.pretty_generate(meta)}"
-    "{\n" + json_objects.join(",\n") + "\n}"
+    finalize_json(json_objects.join(",\n"))
   end
 
   private
+
+  def finalize_json(json)
+    "{\n" + json + "\n}"
+  end
 
   def build_description(name, store, options)
     json = create_test_description_json(options)
@@ -132,20 +138,22 @@ module SystemDescriptionFactory
     description = SystemDescription.from_hash(name, store, manifest.to_hash)
 
     options[:extracted_scopes].each do |extracted_scope|
-      description[extracted_scope].extracted = true
-      if options[:store_on_disk]
-        file_store = description.scope_file_store(extracted_scope)
-        file_store.create
-        description[extracted_scope].scope_file_store = file_store
+      JSON.parse(finalize_json(EXAMPLE_SCOPES[extracted_scope])).each_key do |scope|
+        description[scope].extracted = true
+        next unless options[:store_on_disk]
 
-        if extracted_scope == "unmanaged_files"
+        file_store = description.scope_file_store(scope)
+        file_store.create
+        description[scope].scope_file_store = file_store
+
+        if scope == "unmanaged_files"
           FileUtils.touch(File.join(file_store.path, "files.tgz"))
           FileUtils.mkdir_p(File.join(file_store.path, "trees", "etc"))
           FileUtils.touch(
             File.join(file_store.path, "trees", "etc", "tarball with spaces.tgz")
           )
         else
-          description[extracted_scope].files.each do |file|
+          description[scope].files.each do |file|
             next if !file.file? || file.deleted?
 
             file_name = File.join(file_store.path, file.name)
@@ -170,6 +178,12 @@ module SystemDescriptionFactory
     "environment": {
       "locale": "C",
       "system_type": "docker"
+    }
+  EOF
+  EXAMPLE_SCOPES["empty_changed_managed_files"] = <<-EOF.chomp
+    "changed_managed_files": {
+      "extracted": true,
+      "files": []
     }
   EOF
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp

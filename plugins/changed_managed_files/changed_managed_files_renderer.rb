@@ -31,6 +31,10 @@ class ChangedManagedFilesRenderer < Renderer
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
 
+      if files && files.empty?
+        puts "There are no changed managed files."
+      end
+
       if files && !files.empty?
         files.each do |p|
           item "#{p.name} (#{p.changes.join(", ")})"
