@@ -55,10 +55,6 @@ def with_c_locale(&block)
   with_env "LC_ALL" => "C", &block
 end
 
-def with_utf8_locale(&block)
-  with_env "LC_ALL" => "en_US.UTF-8", &block
-end
-
 def with_env(env)
   # ENV isn't a Hash, but a weird Hash-like object. Calling #to_hash on it
   # will copy its items into a newly created Hash instance. This approach

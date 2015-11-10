@@ -85,8 +85,7 @@ describe RemoteSystem do
 
       it "uses sudo when necessary" do
         expect(Cheetah).to receive(:run).with(
-          "ssh", any_args, "sudo", "-n", "LC_ALL=C",
-            "ls", "/tmp", privileged: true
+          "ssh", any_args, "sudo", "-n", "LANGUAGE=", "LC_ALL=C", "ls", "/tmp", privileged: true
         )
 
         remote_system.remote_user = "machinery"
