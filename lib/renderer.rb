@@ -254,7 +254,11 @@ class Renderer
 
   def print_indented(s)
     s.split("\n", -1).each do |line|
-      @buffer += " " * @indent + line + "\n"
+      if line.empty?
+        @buffer += "\n"
+      else
+        @buffer += " " * @indent + line + "\n"
+      end
     end
   end
 

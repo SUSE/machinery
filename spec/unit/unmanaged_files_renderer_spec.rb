@@ -171,7 +171,7 @@ EOF
       actual_output = UnmanagedFilesRenderer.new.render(description_remote_dir)
       expected_output = <<EOF.chomp
   * /mnt/unmanaged/remote-dir/ (remote_dir)
-  
+
   * /etc/alternatives/awk (link)
     User/Group: root:root
 EOF
