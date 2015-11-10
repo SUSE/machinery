@@ -101,7 +101,7 @@ describe Cli do
     it "raises error if image and name contains slashes" do
       expect { Cli.check_container_name!("docker/foo", "docker/foo") }.to raise_error(
         Machinery::Errors::InvalidCommandLine,
-        /Error: System description name 'docker\/foo' is invalid\. By default Machinery uses the image name as description name if the parameter `--name` is not provided\.\nIf the image name consist a slash the `--name=NAME` parameter is mandatory. Valid characters are 'a-zA-Z0-9_:\.-'\./
+        /Error: System description name 'docker\/foo' is invalid\. By default Machinery uses the image name as description name if the parameter `--name` is not provided\.\nIf the image name contains a slash the `--name=NAME` parameter is mandatory. Valid characters are 'a-zA-Z0-9_:\.-'\./
       )
     end
 
@@ -733,7 +733,7 @@ describe Cli do
       )
     end
 
-    it "raises an error if the scope consists illegal characters" do
+    it "raises an error if the scope contains illegal characters" do
       expect{
         Cli.parse_scopes("fd df,u*n")
       }.to raise_error(Machinery::Errors::UnknownScope,

@@ -159,7 +159,7 @@ class Cli
       raise Machinery::Errors::InvalidCommandLine.new(
         "Error: System description name '#{name}' is invalid. By default Machinery" \
           " uses the image name as description name if the parameter `--name` is not" \
-          " provided.\nIf the image name consist a slash the `--name=NAME` parameter" \
+          " provided.\nIf the image name contains a slash the `--name=NAME` parameter" \
           " is mandatory. Valid characters are 'a-zA-Z0-9_:.-'."
       )
     end
