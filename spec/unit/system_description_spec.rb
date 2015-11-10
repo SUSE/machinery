@@ -300,6 +300,20 @@ describe SystemDescription do
     end
   end
 
+  describe ".valid_name?" do
+    it "returns true for a valid name" do
+      expect(SystemDescription.valid_name?("valid_name")).to be(true)
+    end
+
+    it "returns false for hidden names" do
+      expect(SystemDescription.valid_name?(".invalid_name")).to be(false)
+    end
+
+    it "returns false for names with special characters" do
+      expect(SystemDescription.valid_name?("invalid_$name")).to be(false)
+    end
+  end
+
   describe ".validate_name" do
     it "accepts valid name" do
       expect {
