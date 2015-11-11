@@ -10,21 +10,24 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
-          %table.table.table-striped.table-hover.table-condensed.filterable
-            %thead
-              %tr
-                %th Name
-                %th.medium Version
-                %th.medium Release
-                %th.medium Arch
-                %th.medium Vendor
-                %th Checksum
-            %tbody
-              - packages.each do |package|
+          - if packages.length == 0
+            There are no packages.
+          - if packages.length > 0
+            %table.table.table-striped.table-hover.table-condensed.filterable
+              %thead
                 %tr
-                  %td= package.name
-                  %td= package.version
-                  %td= package.release
-                  %td= package.arch
-                  %td= package.vendor
-                  %td= package.checksum
+                  %th Name
+                  %th.medium Version
+                  %th.medium Release
+                  %th.medium Arch
+                  %th.medium Vendor
+                  %th Checksum
+              %tbody
+                - packages.each do |package|
+                  %tr
+                    %td= package.name
+                    %td= package.version
+                    %td= package.release
+                    %td= package.arch
+                    %td= package.vendor
+                    %td= package.checksum

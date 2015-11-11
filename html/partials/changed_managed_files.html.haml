@@ -7,15 +7,12 @@
         :scope => "changed_managed_files",
         :title => "Changed Managed Files",
         :count => "#{count} #{Machinery.pluralize(count, "file")}"
-      - if count == 0
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          - if count == 0
             There are no changed managed files.
-      - if count > 0
-        .row.scope_content.collapse.in
-          .col-xs-1
-          .col-xs-11
+          - if count > 0
             %table.table.table-striped.table-hover.table-condensed.files-table.filterable
               %thead
                 %tr

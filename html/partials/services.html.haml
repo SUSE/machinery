@@ -10,14 +10,17 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
-          %table.table.table-striped.table-hover.table-condensed.filterable
-            %thead
-              %tr
-                %th Name
-                %th.medium State
-            %tbody
-              - services.services.each do |service|
+          - if count == 0
+            There are no services.
+          - if count > 0
+            %table.table.table-striped.table-hover.table-condensed.filterable
+              %thead
                 %tr
-                  %td= service.name
-                  %td{ class: "#{services.init_system}_#{service.state}" }
-                    = service.state
+                  %th Name
+                  %th.medium State
+              %tbody
+                - services.services.each do |service|
+                  %tr
+                    %td= service.name
+                    %td{ class: "#{services.init_system}_#{service.state}" }
+                      = service.state

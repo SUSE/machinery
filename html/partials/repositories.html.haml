@@ -10,26 +10,29 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
-          %table.table.table-striped.table-hover.table-condensed.filterable
-            %thead
-              %tr
-                %th Name
-                %th Alias
-                %th.small Type
-                %th URL
-                %th.small Enabled
-                %th.small Autorefresh
-                %th.small GPG Check
-                %th.small Priority
-            %tbody
-              - repositories.each do |repo|
+          - if count == 0
+            There are no repositories.
+          - if count > 0
+            %table.table.table-striped.table-hover.table-condensed.filterable
+              %thead
                 %tr
-                  %td= repo.name
-                  %td= repo.alias
-                  %td= repo.type
-                  %td
-                    %a{ href: repo.url }= repo.url
-                  %td= repo.enabled
-                  %td= repo.autorefresh
-                  %td= repo.gpgcheck
-                  %td= repo.priority
+                  %th Name
+                  %th Alias
+                  %th.small Type
+                  %th URL
+                  %th.small Enabled
+                  %th.small Autorefresh
+                  %th.small GPG Check
+                  %th.small Priority
+              %tbody
+                - repositories.each do |repo|
+                  %tr
+                    %td= repo.name
+                    %td= repo.alias
+                    %td= repo.type
+                    %td
+                      %a{ href: repo.url }= repo.url
+                    %td= repo.enabled
+                    %td= repo.autorefresh
+                    %td= repo.gpgcheck
+                    %td= repo.priority
