@@ -19,6 +19,10 @@ class PatternsRenderer < Renderer
   def content(description)
     return unless description.patterns
 
+    if description.patterns.empty?
+      puts "There are no patterns."
+    end
+
     list do
       description.patterns.each do |p|
         item "#{p.name}"

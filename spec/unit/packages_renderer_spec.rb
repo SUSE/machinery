@@ -50,6 +50,16 @@ describe PackagesRenderer do
       expect(output).to include("bash-4.2-1.0.x86_64 (openSUSE)")
       expect(output).to include("kernel-desktop-3.7.10-1.0.i586 (openSUSE)")
     end
+
+    context "when there are no packages" do
+      let(:system_description) { create_test_description(scopes: ["empty_packages"]) }
+
+      it "shows a message" do
+        output = subject.render(system_description)
+
+        expect(output).to include("There are no packages.")
+      end
+    end
   end
 
   describe "#do_render_comparison" do

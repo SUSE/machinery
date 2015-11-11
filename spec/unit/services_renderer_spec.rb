@@ -98,5 +98,15 @@ EOF
 
       expect(output).to eq(expected_output_sysvinit)
     end
+
+    context "when there are no services" do
+      let(:system_description) { create_test_description(scopes: ["empty_services"]) }
+
+      it "shows a message" do
+        output = subject.render(system_description)
+
+        expect(output).to include("There are no services.")
+      end
+    end
   end
 end

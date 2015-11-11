@@ -21,7 +21,10 @@ class UnmanagedFilesRenderer < Renderer
 
     list do
       file_status = description["unmanaged_files"].extracted
-      if !file_status.nil?
+
+      if description["unmanaged_files"].files.empty?
+        puts "There are no unmanaged files."
+      elsif !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
 

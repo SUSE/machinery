@@ -182,7 +182,7 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": true,
+      "extracted": false,
       "files": []
     }
   EOF
@@ -245,6 +245,12 @@ module SystemDescriptionFactory
           "type": "dir"
         }
       ]
+    }
+  EOF
+  EXAMPLE_SCOPES["empty_config_files"] = <<-EOF.chomp
+    "config_files": {
+      "extracted": false,
+      "files": [ ]
     }
   EOF
   EXAMPLE_SCOPES["config_files"] = <<-EOF.chomp
@@ -331,6 +337,9 @@ module SystemDescriptionFactory
       "architecture": "x86_64"
     }
   EOF
+  EXAMPLE_SCOPES["empty_packages"] = <<-EOF.chomp
+    "packages": []
+  EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
     "packages": [
       {
@@ -387,6 +396,9 @@ module SystemDescriptionFactory
       }
     ]
   EOF
+  EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
+    "patterns": [ ]
+  EOF
   EXAMPLE_SCOPES["patterns"] = <<-EOF.chomp
     "patterns": [
       {
@@ -395,6 +407,9 @@ module SystemDescriptionFactory
         "release": "13.6.1"
       }
     ]
+  EOF
+  EXAMPLE_SCOPES["empty_repositories"] = <<-EOF.chomp
+    "repositories": [ ]
   EOF
   EXAMPLE_SCOPES["repositories"] = <<-EOF.chomp
     "repositories": [
@@ -536,6 +551,12 @@ module SystemDescriptionFactory
       }
     ]
   EOF
+  EXAMPLE_SCOPES["empty_services"] = <<-EOF.chomp
+    "services": {
+      "init_system": "systemd",
+      "services": [ ]
+    }
+  EOF
   EXAMPLE_SCOPES["services"] = <<-EOF.chomp
     "services": {
       "init_system": "systemd",
@@ -596,6 +617,12 @@ module SystemDescriptionFactory
           "state": "off"
         }
       ]
+    }
+  EOF
+  EXAMPLE_SCOPES["empty_unmanaged_files"] = <<-EOF.chomp
+    "unmanaged_files": {
+      "extracted": false,
+      "files": []
     }
   EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp

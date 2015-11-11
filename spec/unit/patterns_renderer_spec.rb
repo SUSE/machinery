@@ -44,5 +44,15 @@ describe PatternsRenderer do
       expect(output).to include("base\n")
       expect(output).to include("Minimal\n")
     end
+
+    context "when there are no patterns" do
+      let(:system_description) { create_test_description(scopes: ["empty_patterns"]) }
+
+      it "shows a message" do
+        output = subject.render(system_description)
+
+        expect(output).to include("There are no patterns.")
+      end
+    end
   end
 end

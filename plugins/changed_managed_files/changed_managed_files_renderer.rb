@@ -27,12 +27,11 @@ class ChangedManagedFilesRenderer < Renderer
 
     list do
       file_status = description["changed_managed_files"].extracted
-      if !file_status.nil?
-        puts "Files extracted: #{file_status ? "yes" : "no"}"
-      end
 
-      if files && files.empty?
+      if files.empty?
         puts "There are no changed managed files."
+      elsif !file_status.nil?
+        puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
 
       if files && !files.empty?

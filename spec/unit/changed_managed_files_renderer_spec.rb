@@ -79,19 +79,10 @@ describe ChangedManagedFilesRenderer do
     end
 
     context "when there are no changed managed files" do
-      let(:system_description) {
-        create_test_description(json: <<-EOF)
-          {
-            "changed_managed_files": {
-              "extracted": true,
-              "files": []
-            }
-          }
-        EOF
-      }
+      let(:system_description) { create_test_description(scopes: ["empty_changed_managed_files"]) }
 
-      it "says shows a message when there are no changed managed files" do
-        expect(@output).to include("Files extracted: yes")
+      it "shows a message" do
+        expect(@output).not_to match(/Files extracted: (yes|no)/)
         expect(@output).to include("There are no changed managed files.")
       end
     end

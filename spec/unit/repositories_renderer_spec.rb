@@ -22,7 +22,7 @@ describe RepositoriesRenderer do
     create_test_description(scopes: ["repositories"])
   }
 
-  describe "show" do
+  describe "#content" do
     it "prints a repository list" do
       output = RepositoriesRenderer.new.render(system_description)
 
@@ -86,18 +86,14 @@ EOT
       expect(output).to include(expected_output)
     end
 
-    it "prints an empty list" do
-      description = create_test_description(json: '{ "repositories": [] }')
+    context "when there are no repositories" do
+      let(:system_description) { create_test_description(scopes: ["empty_repositories"]) }
 
-      output = RepositoriesRenderer.new.render(description)
+      it "shows a message" do
+        output = RepositoriesRenderer.new.render(system_description)
 
-      expected_output = <<EOT
-# Repositories
-
-  System has no repositories
-
-EOT
-      expect(output).to eq(expected_output)
+        expect(output).to include("There are no repositories.")
+      end
     end
   end
 end

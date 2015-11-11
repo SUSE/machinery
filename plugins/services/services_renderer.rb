@@ -19,6 +19,10 @@ class ServicesRenderer < Renderer
   def content(description)
     return unless description["services"]
 
+    if description["services"].services.empty?
+      puts "There are no services."
+    end
+
     list do
       description["services"].services.each do |p|
         item "#{p.name}: #{p.state}"

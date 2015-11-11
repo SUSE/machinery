@@ -20,7 +20,7 @@ class RepositoriesRenderer < Renderer
     return unless description.repositories
 
     if description.repositories.empty?
-      puts "System has no repositories"
+      puts "There are no repositories."
     end
 
     list do

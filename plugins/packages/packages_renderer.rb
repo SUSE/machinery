@@ -23,6 +23,10 @@ class PackagesRenderer < Renderer
   def content(description)
     return unless description.packages
 
+    if description.packages.empty?
+      puts "There are no packages."
+    end
+
     list do
       description.packages.each do |p|
         item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{p.vendor})"
