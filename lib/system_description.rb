@@ -73,7 +73,7 @@ class SystemDescription < Machinery::Object
     end
 
     def valid_name?(name)
-      ! /^[\w\.:-]*$/.match(name).nil? && !name.start_with?(".")
+      !!/^[\w:-][\w\.:-]*$/.match(name)
     end
 
     def validate_name(name)
