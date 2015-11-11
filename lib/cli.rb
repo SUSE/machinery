@@ -155,7 +155,7 @@ class Cli
   end
 
   def self.check_container_name!(image, name)
-    if image == name && !SystemDescription.valid_name?(image)
+    if image == name && !SystemDescription.valid_name?(name)
       raise Machinery::Errors::InvalidCommandLine.new(
         "Error: System description name '#{name}' is invalid. By default Machinery" \
           " uses the image name as description name if the parameter `--name` is not" \
