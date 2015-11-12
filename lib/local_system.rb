@@ -84,7 +84,7 @@ You can install it by running `zypper install #{package}`.
       message = <<EOF
 You are running Machinery on a platform we do not explicitly support and test.
 It still could work very well. If you run into issues or would like to provide us feedback, you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new or write an email to machinery@lists.suse.com.
-Oficially supported operating systems are: '#{supported_oses}'
+Officially supported operating systems are: '#{supported_oses}'
 
 To disable this message in the machinery configuration use 'machinery config perform-support-check=false'
 EOF
