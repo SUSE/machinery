@@ -256,7 +256,9 @@
     Files: 1
 
   * /mnt/unmanaged/remote-dir/ (remote_dir)
+
   * /remote-dir/ (remote_dir)
+
   * /root/.bash_history (file)
     User/Group: root:root
     Mode: 600
