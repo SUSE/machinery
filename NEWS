@@ -1,8 +1,7 @@
 # Machinery Release Notes
 
 * Fix repository inspection on hosts that have a LANGUAGE variable set
-* Fix empty lists for changed managed files don't show in HTML view
-  (gh#SUSE/machinery#1615)
+* Empty scopes now display a message in HTML & CLI views (gh#SUSE/machinery#1615)
 * Fix SLES 11 SP4 os inspector output to be similar to SLES 11 SP3
 
 ## Version 1.16.1 - Mon Nov 09 17:55:15 CET 2015 - thardeck@suse.de

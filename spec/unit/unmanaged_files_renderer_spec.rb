@@ -142,10 +142,20 @@ describe UnmanagedFilesRenderer do
       expect(actual_output).to include("Files: 2")
     end
 
-    it "does not choke on missing file list" do
-      expect {
-        UnmanagedFilesRenderer.new.render(empty_description)
-      }.to_not raise_error
+    context "when there are no changed managed files" do
+      let(:system_description) { create_test_description(scopes: ["empty_unmanaged_files"]) }
+
+      it "does not raises an error" do
+        expect {
+          UnmanagedFilesRenderer.new.render(system_description)
+        }.to_not raise_error
+      end
+
+      it "shows a message" do
+        actual_output = UnmanagedFilesRenderer.new.render(system_description)
+        expect(actual_output).not_to match(/Files extracted: (yes|no)/)
+        expect(actual_output).to include("There are no unmanaged files.")
+      end
     end
   end
 end

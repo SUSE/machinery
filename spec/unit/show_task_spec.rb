@@ -54,7 +54,6 @@ describe ShowTask, "#show" do
     show_task.show(description_with_packages, [scope], Filter.new, no_pager: true)
 
     expect(captured_machinery_output).to_not include("requested scopes were not inspected")
-    expect(captured_machinery_output).to_not include("packages")
   end
 
   it "opens the system description in the web browser" do

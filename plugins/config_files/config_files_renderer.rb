@@ -31,10 +31,14 @@ class ConfigFilesRenderer < Renderer
 
     list do
       file_status = description["config_files"].extracted
-      if !file_status.nil?
+      files = description["config_files"].files
+
+      if files.empty?
+        puts "There are no config files."
+      elsif !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
-      files = description["config_files"].files
+
       if files
         files.each do |p|
           item_content = "#{p.name} (#{p.package_name}-#{p.package_version}, " \

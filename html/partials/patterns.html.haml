@@ -9,15 +9,18 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
-          %table.table.table-striped.table-hover.table-condensed.filterable
-            %thead
-              %tr
-                %th Name
-                %th.medium Version
-                %th.medium Release
-            %tbody
-              - patterns.each do |pattern|
+          - if patterns.length == 0
+            There are no patterns.
+          - if patterns.length > 0
+            %table.table.table-striped.table-hover.table-condensed.filterable
+              %thead
                 %tr
-                  %td= pattern.name
-                  %td= pattern.version
-                  %td= pattern.release
+                  %th Name
+                  %th.medium Version
+                  %th.medium Release
+              %tbody
+                - patterns.each do |pattern|
+                  %tr
+                    %td= pattern.name
+                    %td= pattern.version
+                    %td= pattern.release

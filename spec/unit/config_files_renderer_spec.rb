@@ -96,6 +96,25 @@ describe ConfigFilesRenderer do
       expect(output).to include("Files extracted: yes")
     end
 
+    context "when there are no config files" do
+      let(:store) { system_description_factory_store }
+
+      let(:system_description) {
+        create_test_description(
+          scopes: ["empty_config_files"],
+          store: store,
+          store_on_disk: true
+        )
+      }
+
+      it "shows a message" do
+        output = subject.render(system_description)
+
+        expect(output).not_to match(/Files extracted: (yes|no)/)
+        expect(output).to include("There are no config files.")
+      end
+    end
+
     context "with the --show-diff option" do
       context "when the diffs were not generated yet" do
         it "does not try to show a diff when the diffs were not generated yet" do
