@@ -82,7 +82,7 @@ class ConfigFilesRenderer < Renderer
     path = File.join(diffs_dir, name + ".diff")
 
     if File.exists?(path)
-      puts "Diff:\n#{File.read(path)}"
+      puts "Diff:\n#{File.read(path).chomp}"
     else
       Machinery::Ui.warn "Diff for #{name} was not found on disk."
     end
