@@ -1,0 +1,58 @@
+!!!
+%html
+  %head
+    %title
+      Machinery System Descriptions
+    %meta{ :charset => 'utf-8' }
+    %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
+    %script{ :src => "assets/jquery-2.1.1.min.js" }
+    %script{ :src => "assets/jquery.searcher.min.js" }
+    %script{ :src => "assets/machinery-base.js" }
+    %script{ :src => "assets/show/machinery.js" }
+    %script{ :src => "assets/bootstrap-tooltip.js" }
+    %script{ :src => "assets/bootstrap-popover.js" }
+
+  %body
+    .container-fluid
+      #nav-bar
+        .row
+          .col-xs-1
+          .col-xs-10
+            %h1
+              System Descriptions
+        .row
+          .filter-input.col-md-3.col-md-offset-1
+            %input.col-md-8#filter{ :placeholder => "Type to Filter" }
+            %a.btn.btn-default.btn-reset{ :href => "#", :title => "Reset Filter" }
+              %span Reset
+
+          .col-xs-6.nav-buttons
+            %small.pull-right.pad-top
+              created by
+              %a{ :href => "http://machinery-project.org", :target => "_blank" }
+                Machinery
+
+
+      #content_container
+        - if @all_descriptions.empty?
+          %p.col-md-5.col-md-offset-1
+            %strong
+              No system descriptions available on your machine.
+        - else
+          %table.table.table-striped.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th Last update
+                %th Scopes
+                %th Host
+            %tbody
+              - @all_descriptions.each do |key, value|
+                %tr
+                  %td
+                    %a{ :href => "/#{key}" }
+                      #{key}
+                  %td= value["date"]
+                  %td= value["scopes"].join(", ")
+                  %td= value["host"].join(", ")

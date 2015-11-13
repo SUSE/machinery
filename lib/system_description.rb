@@ -265,6 +265,16 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  def latest_update
+    attributes.keys.map { |scope| self[scope].meta.try(:[], "modified") }
+      .compact.map { |t| Time.parse(t) }.sort.last
+  end
+
+  def host
+    all_hosts = attributes.keys.map { |scope| self[scope].meta.try(:[], "hostname") }
+    all_hosts.uniq.compact
+  end
+
   def description_path
     @store.description_path(name)
   end
