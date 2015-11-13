@@ -6,7 +6,7 @@ touch /usr/local/magicapp/data/two
 touch /etc/magicapp.conf
 mkdir /var/lib/chroot_proc
 mount --bind /proc /var/lib/chroot_proc
-rpm -i /vagrant/SUSE-test-quote-char-and-umlauts.noarch.rpm || rpm -i /vagrant/RedHat-test-quote-char-and-umlauts.noarch.rpm
+rpm -i /vagrant/SUSE-test-data-files-1.0-1.noarch.rpm || rpm -i /vagrant/RedHat-test-data-files.noarch.rpm
 echo 42 > /opt/test-quote-char/test-dir-name-with-\'\ quote-char\ \'/unmanaged-file-with-\'\ quote\ \'
 mkdir /opt/test-quote-char/test-dir-name-with-\'\ quote-char\ \'/unmanaged-dir-with-\'\ quote\ \'
 ln -sf /opt/test-quote-char/target-with-quote\'-foo /opt/test-quote-char/link
@@ -62,3 +62,7 @@ mount -t nfs 127.0.0.1:/opt "/mnt/unmanaged/remote-dir/"
 # mount proc to an uncommon directory for unmanaged-file inspector tests
 mkdir -p "/mnt/uncommon-proc-mount"
 mount -t proc proc /mnt/uncommon-proc-mount
+
+# change content of /etc/stat-test/test.conf
+echo "My pretty changes!" > /etc/stat-test/test.conf
+
