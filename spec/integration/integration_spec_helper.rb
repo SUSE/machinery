@@ -76,7 +76,7 @@ def boxes
     "openSUSE_13_1:x86_64" => "opensuse131",
     "leap:x86_64" => "opensuse_leap",
     "sles12:x86_64" => "sles12",
-    "sles11:x86_64" => "sles11sp3",
+    "sles11:x86_64" => "sles11sp4",
     "rhel5" => "rhel5",
     "rhel6" => "rhel6",
     "docker:openSUSE_13_2" => "base_opensuse13.2"
