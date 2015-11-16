@@ -188,7 +188,7 @@ class OsOpenSuseTumbleweed < OsSuse
   end
 
   def self.buildable_systems
-    [OsOpenSuse13_2]
+    [OsOpenSuse13_2, OsOpenSuseTumbleweed, OsOpenSuseLeap]
   end
 end
 
@@ -202,7 +202,7 @@ class OsOpenSuseLeap < OsSuse
   end
 
   def self.buildable_systems
-    [OsOpenSuse13_2, OsOpenSuseLeap]
+    [OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseLeap, OsOpenSuseTumbleweed, OsSles12]
   end
 end
 
