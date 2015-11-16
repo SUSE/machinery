@@ -17,8 +17,10 @@ class SupportMatrix
 
   def merge_source(name)
     result = {}
+    merger = proc { |_, v1, v2| v1.is_a?(Hash) && v2.is_a?(Hash) ? v1.merge(v2, &merger) : v2 }
+
     path.each do |p|
-      result.merge!(YAML.load_file(File.join(p, "#{name}.yml")))
+      result.merge!(YAML.load_file(File.join(p, "#{name}.yml")), &merger)
     end
     result
   end
