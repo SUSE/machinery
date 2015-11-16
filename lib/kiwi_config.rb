@@ -194,6 +194,12 @@ EOF
     when OsSles11
       boot = "vmxboot/suse-SLES11"
       bootloader = "grub"
+    when OsOpenSuseTumbleweed
+      boot = "vmxboot/suse-tumbleweed"
+      bootloader = "grub2"
+    when OsOpenSuseLeap
+      boot = "vmxboot/suse-leap42.1"
+      bootloader = "grub2"
     else
       raise Machinery::Errors::ExportFailed.new(
         "Export is not possible because the operating system " \
