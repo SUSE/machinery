@@ -178,7 +178,7 @@ class OsOpenSuse13_2 < OsOpenSuse
   end
 end
 
-class OsOpenSuseTumbleweed < Os
+class OsOpenSuseTumbleweed < OsSuse
   def display_name
     "#{name} (#{architecture})"
   end
@@ -192,7 +192,7 @@ class OsOpenSuseTumbleweed < Os
   end
 end
 
-class OsOpenSuseLeap < Os
+class OsOpenSuseLeap < OsSuse
   def display_name
     "#{name} (#{architecture})"
   end
