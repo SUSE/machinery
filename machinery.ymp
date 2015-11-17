@@ -69,14 +69,6 @@ universal system description.</description>
   <!-- openSUSE Leap -->
   <group distversion="openSUSE Leap 42.1">
     <repositories>
-      <repository recommended="true">
-        <name>systemsmanagement:machinery</name>
-        <summary>Machinery systems management toolkit</summary>
-        <description>Machinery is a systems management toolkit for Linux. It supports configuration
-discovery, system validation, and service migration. It's based on the idea of a
-universal system description.</description>
-        <url>http://download.opensuse.org/repositories/systemsmanagement:/machinery/openSUSE_Leap_42.1/</url>
-      </repository>
       <repository recommended="false">
         <name>openSUSE Leap 42.1</name>
         <summary>Test setup for openSUSE Leap 42.1</summary>
@@ -100,14 +92,6 @@ universal system description.</description>
        See: https://bugzilla.suse.com/show_bug.cgi?id=948370 -->
   <group>
     <repositories>
-      <repository recommended="true">
-        <name>systemsmanagement:machinery</name>
-        <summary>Machinery systems management toolkit</summary>
-        <description>Machinery is a systems management toolkit for Linux. It supports configuration
-discovery, system validation, and service migration. It's based on the idea of a
-universal system description.</description>
-        <url>http://download.opensuse.org/repositories/systemsmanagement:/machinery/openSUSE_Tumbleweed/</url>
-      </repository>
       <repository recommended="false">
         <name>openSUSE:Factory</name>
         <summary>The next openSUSE distribution</summary>
