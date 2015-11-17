@@ -202,7 +202,7 @@ class OsOpenSuseLeap < OsSuse
   end
 
   def self.buildable_systems
-    [OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseLeap, OsOpenSuseTumbleweed, OsSles12]
+    [OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseLeap, OsOpenSuseTumbleweed, OsSles12, OsSles11]
   end
 end
 

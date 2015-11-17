@@ -7,7 +7,7 @@
 * Fix SLES 11 SP4 os inspector output to be similar to SLES 11 SP3
 * Fix Autoyast export on openSUSE Leap and Tumbleweed (gh#SUSE/machinery#1627)
 * Allow building of openSUSE Leap and Tumbleweed on openSUSE Leap and Tumbleweed
-* Allow building of SLES12 on openSUSE Leap
+* Allow building of SLES11 and SLES12 on openSUSE Leap
 
 ## Version 1.16.1 - Mon Nov 09 17:55:15 CET 2015 - thardeck@suse.de
 
