@@ -237,7 +237,7 @@ describe KiwiConfig do
       system_description_with_modified_files["changed_managed_files"]["files"] <<
         ChangedManagedFile.new(
           name: "/opt/test-quote-char/link",
-          package_name: "test-quote-char-and-umlauts",
+          package_name: "test-data-files",
           package_version: "1.0",
           status: "changed",
           changes: ["link_path"],

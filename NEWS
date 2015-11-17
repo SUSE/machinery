@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix Machinery failing to inspect changed config files in case of restrictive
+  permissions (gh#SUSE/machinery#1609)
 * Fix repository inspection on hosts that have a LANGUAGE variable set
 * Empty scopes now display a message in HTML & CLI views (gh#SUSE/machinery#1615)
 * Fix SLES 11 SP4 os inspector output to be similar to SLES 11 SP3

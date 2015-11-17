@@ -167,5 +167,18 @@ describe "machinery@Tumbleweed" do
         end
       end
     end
+
+    context "when the use of the stat command is required while running as a remote user" do
+      it "runs with privileged permissions" do
+        expect(
+          @machinery.run_command(
+            "#{machinery_command} inspect #{@subject_system.ip} --remote-user=machinery " \
+            "--scope=config-files --extract-files --show", as: "vagrant"
+          )
+        ).to succeed.and include_stdout(
+          "* /etc/stat-test/test.conf (test-data-files-1.0, size, md5)"
+        )
+      end
+    end
   end
 end

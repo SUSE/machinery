@@ -1,5 +1,5 @@
 #
-# spec file for package test-quote-char-and-umlauts
+# spec file for package test-data-files
 #
 # Copyright (c) 2013-2015 SUSE LLC
 #
@@ -12,32 +12,41 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-Name:		test-quote-char-and-umlauts
+Name:		test-data-files
 Version:	1.0
 Release:	1
 BuildArch:	noarch
 License:	GPL-3.0
-Summary:	Test package with quote character and umlauts in filenames
+Summary:	A test package what contains several files for testing Machinery
 Group:		Development
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
+
+
 %description
-Test package with quote character and umlauts in filenames
+A test package what contains several files for testing Machinery.
 
 %prep
 mkdir -p %{buildroot}"/opt/test-quote-char/test-dir-name-with-' quote-char '"
 touch %{buildroot}"/opt/test-quote-char/test-dir-name-with-' quote-char '/test-file-name-with-' quote-char '"
 touch %{buildroot}"/opt/test-quote-char/link"
 touch %{buildroot}"/opt/test-quote-char/target-with-quote'-foo"
-touch %{buildroot}"/etc/umlaut-äöü.conf"
-touch %{buildroot}"/usr/bin/umlaut-äöü"
+mkdir -p %{buildroot}"/etc"
+mkdir -p %{buildroot}"/usr/bin"
+LC_ALL=en_US.utf8
+mkdir -p %{buildroot}"/etc"
+echo "# umlaut conf" > %{buildroot}"/etc/umlaut-äöü.conf"
+mkdir -p %{buildroot}"/usr/bin"
+echo "#!/bin/bash\necho umlaut" > %{buildroot}"/usr/bin/umlaut-äöü"
+mkdir -p %{buildroot}"/etc/stat-test"
+touch %{buildroot}"/etc/stat-test/test.conf"
 
 %files
 %defattr(-,root,root)
 /opt/test-quote-char
-/usr/bin/umlaut-äöü
-%config /etc/umlaut-äöü.conf
-
+/usr/bin/umlaut-*
+%config /etc/umlaut*.conf
+%attr(600,root,root) /etc/stat-test
+%config /etc/stat-test/test.conf
 
 %changelog
-

@@ -104,7 +104,7 @@ trigger errors.
   * When inspecting as non-root the user has to have the following command
     whitelist given in the sudoers file:
 
-    machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *
+    machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *,/usr/bin/stat
 
   * To add a remote `machinery` user run as root:
 
