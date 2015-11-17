@@ -616,7 +616,7 @@ class Cli
         inspect_options
       )
 
-      Hint.print(:show_data, name: name)
+      Hint.print(:show_data, name: name) if options[:show] == false
 
       if !options["extract-files"] || Inspector.all_scopes.count != scope_list.count
         Hint.print(:do_complete_inspection, name: name, host: host)
