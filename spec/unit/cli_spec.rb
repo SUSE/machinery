@@ -451,6 +451,24 @@ describe Cli do
 
         run_command(["serve", "description1", "--port=3000", "--public"])
       end
+
+      it "prints a hint when --public is used" do
+        allow_any_instance_of(ServeHtmlTask).to receive(:serve)
+
+        run_command(["serve", "description1", "--port=3000", "--public"])
+
+        expect(captured_machinery_output).to include("The --public option makes ALL of your " \
+          "system descriptions publicly available. Take care if there are system descriptions " \
+          "that should not be read by others!")
+      end
+
+      it "does not print a hint when --public is not used" do
+        allow_any_instance_of(ServeHtmlTask).to receive(:serve)
+
+        run_command(["serve", "description1", "--port=3000"])
+
+        expect(captured_machinery_output).not_to include("publicly available")
+      end
     end
 
     describe "#show" do
