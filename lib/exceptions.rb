@@ -65,7 +65,14 @@ module Machinery
         end.compact.first || "<HOSTNAME>"
         formatted_scopes = Machinery::Ui.internal_scope_list_to_string(@scopes)
 
-        cmd = "#{Hint.program_name} inspect --extract-files --scope=#{formatted_scopes.delete(" ")}"
+        if @description["environment"]["system_type"] == "docker"
+          inspect_cmd = "inspect-container"
+        else
+          inspect_cmd = "inspect"
+        end
+
+        cmd = "#{Hint.program_name} #{inspect_cmd} --extract-files " \
+          "--scope=#{formatted_scopes.delete(" ")}"
         cmd += " --name='#{@description.name}'" if hostname != @description.name
         cmd += " #{hostname}"
 
