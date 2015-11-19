@@ -17,6 +17,10 @@
 
 # Represents the user under which Machinery is running.
 class CurrentUser
+  def username
+    ENV["USER"]
+  end
+
   def is_root?
     Process.euid == 0
   end

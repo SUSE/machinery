@@ -144,6 +144,20 @@ describe BuildTask do
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::BuildFailed, /i586/)
     end
+
+    it "shows an error when the current user does not have access to the image directory path" do
+      allow(LocalSystem).to receive(:validate_architecture)
+      allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+
+      user = CurrentUser.new.username
+
+      expect {
+        build_task.build(system_description, "/test")
+      }.to raise_error(
+        Machinery::Errors::BuildDirectoryCreateError,
+        /'\/test' because the user '#{user}'/
+      )
+    end
   end
 
   describe "#write_kiwi_wrapper" do
