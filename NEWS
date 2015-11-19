@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix crash when the user does not have enough permissions to create the image
+  directory for the `build` command (gh#SUSE/machinery#1667)
 * Fix Machinery failing to inspect changed config files in case of restrictive
   permissions (gh#SUSE/machinery#1609)
 * Remove hint for `show`, when `inspect` is run with `--show` option
