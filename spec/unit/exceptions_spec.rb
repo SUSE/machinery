@@ -46,6 +46,22 @@ describe Machinery::Errors::MissingExtractedFiles do
       )
   end
 
+  context "when analyzing a docker container" do
+    let(:scopes) { ["docker_environment", "config_files", "changed_managed_files"] }
+
+    it "adapts the output message with the correct inspect command" do
+      e = Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
+      expect(e.to_s).
+        to eq(
+          "The scope 'config-files' is part of the system description" \
+          " but the corresponding files weren't extracted during inspection.\n" \
+          "The files are required to continue with this command. " \
+          "Run `#{$0} inspect-container --extract-files --scope=config-files --name='#{name}' " \
+          "example.com` to extract them."
+        )
+    end
+  end
+
   it "shows an error with the --name parameter when the name and hostname differ" do
     e = Machinery::Errors::MissingExtractedFiles.new(description, scopes)
     expect(e.to_s).
