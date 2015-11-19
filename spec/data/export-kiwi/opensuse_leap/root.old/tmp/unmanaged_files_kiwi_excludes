@@ -1,0 +1,8 @@
+var/lib/rpm/*
+etc/passwd*
+etc/shadow*
+etc/group*
+etc/fstab
+lib/mkinitrd
+etc/udev/rules.d/70-persistent-net.rules
+etc/zypp/repos.d/*

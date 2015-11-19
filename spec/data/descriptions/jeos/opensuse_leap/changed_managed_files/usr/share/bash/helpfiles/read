@@ -1,0 +1,23 @@
+    One line is read from the standard input, or from file descriptor FD if the
+    -u option is supplied, and the first word is assigned to the first NAME,
+    the second word to the second NAME, and so on, with leftover words assigned
+    to the last NAME.  Only the characters found in $IFS are recognized as word
+    delimiters.  If no NAMEs are supplied, the line read is stored in the REPLY
+    variable.  If the -r option is given, this signifies `raw' input, and
+    backslash escaping is disabled.  The -d option causes read to continue
+    until the first character of DELIM is read, rather than newline.  If the -p
+    option is supplied, the string PROMPT is output without a trailing newline
+    before attempting to read.  If -a is supplied, the words read are assigned
+    to sequential indices of ARRAY, starting at zero.  If -e is supplied and
+    the shell is interactive, readline is used to obtain the line.  If -n is
+    supplied with a non-zero NCHARS argument, read returns after NCHARS
+    characters have been read.  The -s option causes input coming from a
+    terminal to not be echoed.
+    
+    The -t option causes read to time out and return failure if a complete line
+    of input is not read within TIMEOUT seconds.  If the TMOUT variable is set,
+    its value is the default timeout.  The return code is zero, unless end-of-file
+    is encountered, read times out, or an invalid file descriptor is supplied as
+    the argument to -u.
+# changed managed files test entry
+

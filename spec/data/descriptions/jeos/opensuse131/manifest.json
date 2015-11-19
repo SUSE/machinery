@@ -2872,8 +2872,8 @@
     "files": [
       {
         "name": "/etc/crontab",
-        "package_name": "cron",
-        "package_version": "4.1",
+        "package_name": "cronie",
+        "package_version": "1.4.8",
         "status": "changed",
         "changes": [
           "md5"
