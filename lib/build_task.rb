@@ -28,7 +28,12 @@ class BuildTask
     config = KiwiConfig.new(system_description, options)
     config.write(tmp_config_dir)
 
-    FileUtils.mkdir_p(output_path)
+    begin
+      FileUtils.mkdir_p(output_path)
+    rescue Errno::EACCES
+      raise Machinery::Errors::BuildDirectoryCreateError.new(output_path, CurrentUser.new.username)
+    end
+
     if tmp_image_dir.start_with?("/tmp/") && tmp_config_dir.start_with?("/tmp/")
       tmp_script = write_kiwi_wrapper(tmp_config_dir, tmp_image_dir,
         output_path, img_extension)

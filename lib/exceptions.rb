@@ -147,5 +147,16 @@ module Machinery
         @message = message
       end
     end
+    class BuildDirectoryCreateError < MachineryError
+      def initialize(directory, user)
+        @directory = directory
+        @user = user
+      end
+
+      def to_s
+        "Could not create build directory '#{@directory}' because the user '#{@user}' does not " \
+          "have sufficient permissions."
+      end
+    end
   end
 end
