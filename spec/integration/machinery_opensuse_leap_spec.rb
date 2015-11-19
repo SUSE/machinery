@@ -37,4 +37,32 @@ describe "machinery@leap" do
   include_examples "validate"
   include_examples "upgrade format"
   include_examples_for_platform(host)
+
+  describe "inspect ubuntu_1404" do
+    base = "ubuntu_1404"
+    username = "root"
+    password = "vagrant"
+
+    let(:inspect_options) {
+      "--remote-user=#{username}" if username != "root"
+    }
+    before(:all) do
+      @subject_system = start_system(
+        box: base,
+        username: username,
+        password: password
+      )
+      prepare_machinery_for_host(
+        @machinery,
+        @subject_system.ip,
+        username: username,
+        password: password
+      )
+    end
+
+    include_examples "inspect os", base
+    include_examples "inspect patterns", base
+    include_examples "inspect users", base
+    include_examples "inspect groups", base
+  end
 end

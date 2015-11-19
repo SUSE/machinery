@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+group :kvm do
+  gem "ruby-libvirt"
+  gem "veewee", "~> 0.4.5"
+  gem "fog", "~> 1.28.0"
+  gem "fog-aws", "= 0.1.0"
+  gem "fog-libvirt"
+  gem "fog-core", "~> 1.28.0"
+end

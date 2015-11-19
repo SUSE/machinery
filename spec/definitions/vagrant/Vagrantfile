@@ -111,6 +111,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     add_test_user(opensuse_leap)
   end
 
+  config.vm.define :ubuntu_1404 do |ubuntu|
+    ubuntu.vm.box = "base_ubuntu14.04_kvm"
+
+    ubuntu.vm.provider :libvirt do |domain|
+      domain.memory = 1024
+      domain.cpus = 1
+      domain.nested = false
+      domain.volume_cache = 'none'
+    end
+  end
+
   config.vm.define :machinery_Tumbleweed do |machinery_tumbleweed|
     machinery_tumbleweed.vm.box = "machinery_opensuse_tumbleweed_kvm"
     machinery_tumbleweed.vm.network :private_network, network_name: "default"
