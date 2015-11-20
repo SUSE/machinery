@@ -18,7 +18,7 @@
 shared_examples "analyze config file diffs" do |distribution|
   describe "--operation=config-file-diffs" do
     it "generates diffs for the changed config files" do
-      system_description_file = "spec/data/descriptions/#{distribution}-build/manifest.json"
+      system_description_file = "spec/data/descriptions/jeos/#{distribution}/manifest.json"
       system_description_dir = File.dirname(system_description_file)
 
       @machinery.inject_directory(
@@ -31,14 +31,14 @@ shared_examples "analyze config file diffs" do |distribution|
       measure("Analyze system description") do
         expect(
           @machinery.run_command(
-            "machinery analyze #{distribution}-build --operation=config-file-diffs",
+            "machinery analyze #{distribution} --operation=config-file-diffs",
             as: "vagrant"
           )
         ).to succeed
       end
 
       show_command = @machinery.run_command(
-        "machinery show #{distribution}-build --scope=config-files --show-diffs",
+        "machinery show #{distribution} --scope=config-files --show-diffs",
         as: "vagrant"
       )
 
