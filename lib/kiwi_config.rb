@@ -350,15 +350,11 @@ EOF
   end
 
   def enable_dhcp(output_location)
-    case @system_description.os
-      when OsSles11
-        write_dhcp_network_config(output_location, "eth0")
-      when OsSles12
-        write_dhcp_network_config(output_location, "lan0")
-        write_persistent_net_rules(output_location)
-      when OsOpenSuse13_1
-        write_dhcp_network_config(output_location, "lan0")
-        write_persistent_net_rules(output_location)
+    if @system_description.os.is_a?(OsSles11)
+      write_dhcp_network_config(output_location, "eth0")
+    else
+      write_dhcp_network_config(output_location, "lan0")
+      write_persistent_net_rules(output_location)
     end
     puts "DHCP in built image will be enabled for the first device"
   end
