@@ -35,7 +35,7 @@ describe ScopeFileAccessArchive do
 
   describe "#file_content" do
     let(:description) {
-      SystemDescription.load!("opensuse131-build",
+      SystemDescription.load!("opensuse_leap-build",
         SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
@@ -51,7 +51,7 @@ describe ScopeFileAccessArchive do
 
   describe "#has_file?" do
     let(:description) {
-      SystemDescription.load!("opensuse131-build",
+      SystemDescription.load!("opensuse_leap-build",
         SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
