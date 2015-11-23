@@ -191,15 +191,6 @@ describe ConfigFilesInspector do
           expect(inspector.summary).to include("Extracted 5 changed configuration files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
         end
-        it "raises an error when requirements are not fulfilled" do
-          allow_any_instance_of(ConfigFilesInspector).to receive(
-            :check_requirements
-          ).and_raise(Machinery::Errors::MissingRequirement)
-
-          expect { inspector.inspect(filter) }.to raise_error(
-            Machinery::Errors::MissingRequirement
-          )
-        end
 
         it "removes config files on inspect without extraction" do
           config_file_directory      = File.join(store.description_path(name), "config_files")
