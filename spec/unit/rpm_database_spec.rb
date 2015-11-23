@@ -87,6 +87,14 @@ describe RpmDatabase do
       subject.changed_files
       subject.changed_files
     end
+
+    it "checks the requirements on the system" do
+      expect(system).to receive(:check_requirement).with("rpm", "--version")
+      expect(system).to receive(:check_requirement).with("stat", "--version")
+      expect(system).to receive(:check_requirement).with("find", "--version")
+
+      subject.changed_files
+    end
   end
 
   describe "parse_rpm_changes_line" do

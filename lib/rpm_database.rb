@@ -35,6 +35,7 @@ class RpmDatabase
 
   def changed_files(&block)
     return @changed_files if @changed_files
+    check_requirements
 
     out = @system.run_script_with_progress("changed_files.sh", &block)
     result = out.each_line.map do |line|
@@ -197,5 +198,13 @@ class RpmDatabase
     end
     ret.merge!(get_file_properties(cur_files)) unless cur_files.empty?
     ret
+  end
+
+  private
+
+  def check_requirements
+    @system.check_requirement("rpm", "--version")
+    @system.check_requirement("stat", "--version")
+    @system.check_requirement("find", "--version")
   end
 end
