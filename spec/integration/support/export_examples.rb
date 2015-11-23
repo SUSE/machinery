@@ -22,13 +22,13 @@ shared_examples "export" do |base|
   end
 
   def read_kiwi_export_data(base, file)
-    File.read(File.join(Machinery::ROOT, "spec", "data", "export-kiwi", base, file))
+    File.read(File.join("spec", "data", "export-kiwi", base, file))
   end
 
   describe "export-kiwi" do
     it "creates a kiwi description #{base}" do
       @machinery.inject_directory(
-        File.join(Machinery::ROOT, "spec/data/descriptions/jeos/#{base}"),
+        File.join("spec/data/descriptions/jeos/", base),
         machinery_config[:machinery_dir],
         owner: machinery_config[:owner],
         group: machinery_config[:group]
@@ -74,7 +74,7 @@ shared_examples "export" do |base|
   describe "export-autoyast #{base}" do
     it "creates an autoyast profile" do
       @machinery.inject_directory(
-        File.join(Machinery::ROOT, "spec/data/descriptions/jeos/#{base}"),
+        File.join("spec/data/descriptions/jeos/", base),
         machinery_config[:machinery_dir],
         owner: machinery_config[:owner],
         group: machinery_config[:group]
