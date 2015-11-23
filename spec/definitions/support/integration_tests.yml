@@ -1,3 +1,39 @@
+CLI:
+  supported:
+    "openSUSE_13_2:x86_64":
+      "local": full_test
+    "openSUSE_13_1:x86_64":
+      "local": full_test
+    "leap:x86_64":
+      "local": full_test
+    "Tumbleweed:x86_64":
+      "local": full_test
+    "local":
+      "local": full_test
+validate:
+  supported:
+    "openSUSE_13_2:x86_64":
+       "local": full_test
+    "openSUSE_13_1:x86_64":
+       "local": full_test
+    "Tumbleweed:x86_64":
+      "local": full_test
+    "leap:x86_64":
+      "local": full_test
+    "local":
+      "local":
+"upgrade format":
+  supported:
+    "openSUSE_13_2:x86_64":
+       "local": full_test
+    "openSUSE_13_1:x86_64":
+       "local": full_test
+    "leap:x86_64":
+      "local": full_test
+    "Tumbleweed:x86_64":
+      "local": full_test
+    "local":
+      "local":
 inspect:
   supported:
     "local":
