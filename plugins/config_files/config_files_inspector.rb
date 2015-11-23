@@ -17,13 +17,6 @@
 
 class ConfigFilesInspector < Inspector
   has_priority 80
-  # checks if all required binaries are present
-  def check_requirements(check_rsync)
-    @system.check_requirement("rpm", "--version")
-    @system.check_requirement("stat", "--version")
-    @system.check_requirement("find", "--version")
-    @system.check_retrieve_files_dependencies if check_rsync
-  end
 
   # returns a hash with entries for changed config files
   def config_file_changes(pkg)
@@ -45,7 +38,7 @@ class ConfigFilesInspector < Inspector
 
   def inspect(filter, options = {})
     do_extract = options[:extract_changed_config_files]
-    check_requirements(do_extract)
+    system.check_retrieve_files_dependencies if do_extract
 
     count = 0
     files = @system.rpm_database.changed_files do |chunk|
