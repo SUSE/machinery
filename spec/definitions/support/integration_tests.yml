@@ -1,11 +1,85 @@
 inspect:
   supported:
     "local":
-      "openSUSE_13_1:x86_64": full_test
+      "leap:x86_64": acceptance_test
     "openSUSE_13_2:x86_64":
-      "openSUSE_13_2:x86_64": minimal_test
+      "openSUSE_13_2:x86_64": full_test
     "openSUSE_13_1:x86_64":
       "openSUSE_13_1:x86_64": full_test
+    "leap:x86_64":
+      "leap:x86_64": full_test
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+    "Tumbleweed:x86_64":
+      "Tumbleweed:x86_64": full_test
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+      "leap:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+      "leap:x86_64":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "leap:x86_64":
+    "leap:x86_64":
+      "Tumbleweed:x86_64":
+"inspect-container":
+  supported:
+    "local":
+      "docker:openSUSE_13_2": acceptance_test
+  working:
+    "local":
+      "docker:leap":
+build:
+  supported:
+    "leap:x86_64":
+      "leap:x86_64": full_test
+  working:
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64":
+    "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+      "leap:x86_64":
+    "leap:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+  unsupported:
+    "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "leap:x86_64":
+      "fedora":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_2:x86_64":
+      "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "leap:x86_64":
+      "fedora":
+    "Tumbleweed:x86_64":
+      "fedora":
+    "leap:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+export:
+  supported:
+    "local":
+      "leap:x86_64": acceptance_test
+    "openSUSE_13_2:x86_64":
+      "openSUSE_13_2:x86_64": full_test
+      "leap:x86_64":
+    "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64": full_test
+      "leap:x86_64":
     "leap:x86_64":
       "leap:x86_64": full_test
   working:
@@ -19,51 +93,8 @@ inspect:
       "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":
       "Tumbleweed:x86_64":
-"inspect-container":
-  supported:
-    "local":
-      "docker:openSUSE_13_2": minimal_test
-build:
-  supported:
-    "openSUSE_13_2:x86_64":
-      "openSUSE_13_2:x86_64":
-  working:
-    "openSUSE_13_2:x86_64":
-      "openSUSE_13_1:x86_64":
-    "openSUSE_13_1:x86_64":
-      "openSUSE_13_1:x86_64":
-    "Tumbleweed:x86_64":
-      "openSUSE_13_2:x86_64":
-      "openSUSE_13_1:x86_64":
-      "Tumbleweed:x86_64":
-  unsupported:
-    "openSUSE_13_2:x86_64":
-      "Tumbleweed:x86_64":
-      "Tumbleweed:arm":
-      "fedora":
-    "openSUSE_13_1:x86_64":
-      "openSUSE_13_2:x86_64":
-      "Tumbleweed:x86_64":
-      "Tumbleweed:arm":
-      "fedora":
-    "Tumbleweed:x86_64":
-      "fedora":
-export:
-  supported:
-    "local":
-      "openSUSE_13_2:x86_64": full_test
-    "openSUSE_13_2:x86_64":
-      "openSUSE_13_2:x86_64": acceptance_test
-    "openSUSE_13_1:x86_64":
-      "openSUSE_13_1:x86_64": full_test
-  working:
-    "openSUSE_13_2:x86_64":
-      "openSUSE_13_1:x86_64":
-      "Tumbleweed:x86_64":
-    "openSUSE_13_1:x86_64":
-      "openSUSE_13_2:x86_64":
-      "Tumbleweed:x86_64":
-    "Tumbleweed:x86_64":
+      "leap:x86_64":
+    "leap:x86_64":
       "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":
       "Tumbleweed:x86_64":
@@ -75,22 +106,34 @@ export:
       "Tumbleweed:arm":
       "fedora":
     "Tumbleweed:x86_64":
+      "Tumbleweed:arm":
+      "fedora":
+    "leap:x86_64":
       "Tumbleweed:arm":
       "fedora":
 analyze:
   supported:
     "openSUSE_13_2:x86_64":
-      "openSUSE_13_1:x86_64": acceptance_test
+      "openSUSE_13_2:x86_64": full_test
     "openSUSE_13_1:x86_64":
-      "openSUSE_13_1:x86_64":
+      "openSUSE_13_1:x86_64": full_test
+    "leap:x86_64":
+      "leap:x86_64": full_test
   working:
     "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":
       "Tumbleweed:x86_64":
+      "leap:x86_64":
     "openSUSE_13_1:x86_64":
       "openSUSE_13_2:x86_64":
       "Tumbleweed:x86_64":
+      "leap:x86_64":
     "Tumbleweed:x86_64":
+      "openSUSE_13_2:x86_64":
+      "openSUSE_13_1:x86_64":
+      "Tumbleweed:x86_64":
+      "leap:x86_64":
+    "leap:x86_64":
       "openSUSE_13_2:x86_64":
       "openSUSE_13_1:x86_64":
       "Tumbleweed:x86_64":

@@ -92,8 +92,7 @@ end
 
 def test_group_hierarchy
   {
-    "full" => %w(full_test minimal_test acceptance_test),
-    "minimal" => %w(minimal_test acceptance_test),
+    "full" => %w(full_test acceptance_test),
     "acceptance" => %w(acceptance_test)
   }
 end

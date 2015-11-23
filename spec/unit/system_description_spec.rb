@@ -571,7 +571,7 @@ describe SystemDescription do
 
   describe "#has_file?" do
     let(:system_description) {
-      SystemDescription.load!("opensuse131-build",
+      SystemDescription.load!("opensuse_leap-build",
         SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
