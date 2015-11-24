@@ -839,7 +839,7 @@ via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root
 <li><p>When inspecting as non-root the user has to have the following command
 whitelist given in the sudoers file:</p>
 
-<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *</p></li>
+<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *,/usr/bin/stat</p></li>
 <li><p>To add a remote <code>machinery</code> user run as root:</p>
 
 <h1><code>useradd -m machinery -c "remote user for machinery"</code></h1>
