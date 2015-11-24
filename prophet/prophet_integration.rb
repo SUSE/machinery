@@ -80,7 +80,7 @@ Prophet.setup do |config|
 
       system(
         "cd ..; (bundle check || sudo bundle install) && rake rpm:build &&" \
-          " rspec spec/integration --tag=ci"
+          "SPEC_OPTS='--tag ~matrix:pending' rake spec:integration:acceptance"
       )
       config.success = ($? == 0)
 
