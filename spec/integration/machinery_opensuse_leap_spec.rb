@@ -35,7 +35,7 @@ describe "machinery@leap" do
 
   include_examples_for_platform(host)
 
-  describe "inspect ubuntu_1404" do
+  describe "inspect ubuntu_1404", matrix: "pending" do
     base = "ubuntu_1404"
     username = "root"
     password = "vagrant"

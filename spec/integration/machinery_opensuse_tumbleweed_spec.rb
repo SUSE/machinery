@@ -100,7 +100,7 @@ describe "machinery@Tumbleweed" do
 
   include_examples_for_platform(host)
 
-  describe "inspect openSUSE Tumbleweed system" do
+  describe "inspect openSUSE Tumbleweed system", matrix: "pending" do
     before(:all) do
       @subject_system = start_system(
         box: "opensuse_tumbleweed", username: "machinery", password: "linux"

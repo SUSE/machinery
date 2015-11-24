@@ -17,7 +17,7 @@
 
 require_relative "integration_spec_helper"
 
-describe "match_machinery_show_scope matcher" do
+describe "match_machinery_show_scope matcher", matrix: "pending" do
   it "matches correct show output" do
     expected_output = <<-EOT
 # Services [192.168.122.238] (2014-05-02 13:35:46)
@@ -80,7 +80,7 @@ describe "match_machinery_show_scope matcher" do
   end
 end
 
-describe "match_scope matcher" do
+describe "match_scope matcher", matrix: "pending" do
   describe "matches scope as array" do
     it "with equal content" do
       expected_description = create_test_description(json: <<-EOT)
@@ -261,7 +261,7 @@ describe "match_scope matcher" do
   end
 end
 
-describe "include_file_scope matcher" do
+describe "include_file_scope matcher", matrix: "pending" do
   it "matches file scope with included subset of entries" do
     expected_description = create_test_description(json: <<-EOT)
     {
