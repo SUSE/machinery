@@ -37,6 +37,10 @@ shared_examples "inspect" do |base|
       )
     end
 
+    after(:all) do
+      @machinery.run_command("machinery", "remove", base, as: "vagrant")
+    end
+
     include_examples "inspect packages", base
     include_examples "inspect patterns", base
     include_examples "inspect repositories", base
