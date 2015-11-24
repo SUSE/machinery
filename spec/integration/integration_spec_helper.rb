@@ -122,6 +122,7 @@ def include_examples_for_platform(currently_running_on)
         guests.each do |guest, _test_group|
           include_examples test, "#{boxes[guest]}" if boxes[guest]
           include_examples "#{test} #{servers[guest]}" if servers[guest]
+          include_examples test if guest == "local"
         end
       end
     end

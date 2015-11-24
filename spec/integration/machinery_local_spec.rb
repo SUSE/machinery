@@ -43,7 +43,5 @@ describe "machinery@local", ci: true do
 
   host = machinery_host(metadata[:description])
 
-  include_examples "CLI"
-  include_examples "serve html"
   include_examples_for_platform(host)
 end

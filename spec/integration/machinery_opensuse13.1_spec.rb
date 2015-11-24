@@ -33,8 +33,5 @@ describe "machinery@openSUSE_13_1" do
     @machinery = start_system(box: "machinery_#{host}")
   end
 
-  include_examples "CLI"
-  include_examples "validate"
-  include_examples "upgrade format"
   include_examples_for_platform(host)
 end
