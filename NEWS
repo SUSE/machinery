@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.16.2 - Tue Nov 24 13:17:18 CET 2015 - thardeck@suse.de
+
 * Fix crash when the user does not have enough permissions to create the image
   directory for the `build` command (gh#SUSE/machinery#1667)
 * Fix wrong hint for docker containers while running `analyze` command
