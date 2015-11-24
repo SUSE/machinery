@@ -11,4 +11,5 @@
   * /var/lib/ca-certificates/pem (mode)
   * /var/lib/nfs/rpc_pipefs (mode)
   * /var/lock (mode)
+  * /var/run (link_path)
 

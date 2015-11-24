@@ -63,6 +63,9 @@ zypper -n --gpg-auto-import-keys ar --refresh --name "Main Repository (OSS)" htt
 zypper -n --gpg-auto-import-keys ar --refresh --name "Main Update Repository" http://download.opensuse.org/update/13.1/ download.opensuse.org-update
 zypper -n refresh
 
+# Make sure zypper is up to date
+zypper install -y zypper
+
 #======================================
 # Umount kernel filesystems
 #--------------------------------------
