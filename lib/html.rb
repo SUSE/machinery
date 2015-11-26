@@ -19,6 +19,11 @@ class Html
   # Creates a new thread running a sinatra webserver which serves the local system descriptions
   # The Thread object is returned so that the caller can `.join` it until it's finished.
   def self.run_server(system_description_store, opts, &block)
+    if opts[:public] && opts[:ip]
+      raise RuntimeError.new("It's only possible to use either an IP address or the 'public' " \
+        "flag bot not both.")
+    end
+
     Thread.new do
       Server.set :system_description_store, system_description_store
       Server.set :port, opts[:port] || Machinery::Config.new.http_server_port
@@ -26,20 +31,25 @@ class Html
       Server.set :public_folder, File.join(Machinery::ROOT, "html")
       Server.set :static_cache_control, "no-cache"
 
-      if opts[:ip] != "localhost" && opts[:ip] != "127.0.0.1"
-        if opts[:ip] == "0.0.0.0"
-          Machinery::Ui.puts <<EOF
+      if opts[:public]
+        opts[:ip] = "0.0.0.0"
+
+        Machinery::Ui.warn <<-EOF.chomp
 Warning:
-The server is listening on all configured IP addresses.
-This could lead to confidential data like passwords or private keys being readable by others.
+The --public option makes the HTTP server listen on all configured IP addresses. Everyone who has access to one of those IP addresses can access all of your system descriptions stored in '~/.machinery'. Be careful if there are sensible information (such as private keys) stored in one of your descriptions.
 EOF
-        else
-          Machinery::Ui.puts <<EOF
+      elsif opts[:ip] == "0.0.0.0"
+        Machinery::Ui.warn <<-EOF.chomp
 Warning:
-You specified an IP address other than '127.0.0.1', your server may be reachable from the network.
-This could lead to confidential data like passwords or private keys being readable by others.
+The server is listening on all configured IP addresses. Everyone who has access to one of those IP addresses can access all of your system descriptions stored in '~/.machinery'. Be careful if there are sensible information (such as private keys) stored in one of your descriptions.
 EOF
-        end
+      elsif opts[:ip] && opts[:ip] != "localhost" && opts[:ip] != "127.0.0.1"
+        Machinery::Ui.warn <<-EOF.chomp
+Warning:
+You specified an IP address other than '127.0.0.1', your server may be reachable from the network. Everyone who can access that network can access your system descriptions stored in '~/.machinery'. Be careful if there are sensible information (such as private keys) stored in one of your descriptions.
+EOF
+      elsif !opts[:ip]
+        opts[:ip] = "127.0.0.1"
       end
 
       begin

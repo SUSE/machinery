@@ -15,20 +15,13 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ServeHtmlTask
-  def serve(description, opts)
-    url = "http://127.0.0.1:#{opts[:port]}/#{CGI.escape(description.name)}"
+require_relative "spec_helper"
 
-    Machinery::Ui.use_pager = false
-    Machinery::Ui.puts <<EOF
-Trying to start a web server to serve all descriptions.
-The requested description can be accessed by using this URL: #{url}
-
-The web server can be closed with Ctrl+C.
-EOF
-
-    server = Html.run_server(description.store, port: opts[:port], public: opts[:public])
-
-    server.join
+describe Html do
+  context ".run_server" do
+    it "raises an exception when an IP and the `public` flag is provided" do
+      expect { Html.run_server(nil, ip: "127.0.0.1", port: 5000, public: true) }.to \
+        raise_error(RuntimeError)
+    end
   end
 end

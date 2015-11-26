@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Rephrase the startup messages and warn messages when starting the HTTP
+  server for compare, show, or serve system descriptions.
 
 ## Version 1.16.2 - Tue Nov 24 13:17:18 CET 2015 - thardeck@suse.de
 

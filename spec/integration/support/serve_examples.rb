@@ -74,6 +74,50 @@ shared_examples "serve html" do
       expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
     end
 
+    it "prints a warning when --public is used" do
+      cmd = "#{machinery_command} serve opensuse131 --port 5000 --public"
+      res = nil
+      Thread.new do
+        res = @machinery.run_command(cmd, stderr: :capture)
+      end
+
+      test_basic_html(5000)
+
+      @machinery.run_command("pkill -f 'machinery serve' --signal 15")
+
+      # wait until the process quits and writes the response of the program
+      # into 'res'
+      times = 0
+      while res.nil? && times < 10
+        times += 1
+        sleep(1)
+      end
+
+      expect(res.stderr).to include("--public")
+    end
+
+    it "does not print a warning when --public is not used" do
+      cmd = "#{machinery_command} serve opensuse131 --port 5000"
+      res = nil
+      Thread.new do
+        res = @machinery.run_command(cmd, stderr: :capture)
+      end
+
+      test_basic_html(5000)
+
+      @machinery.run_command("pkill -f 'machinery serve' --signal 15")
+
+      # wait until the process quits and writes the response of the program
+      # into 'res'
+      times = 0
+      while res.nil? && times < 10
+        times += 1
+        sleep(1)
+      end
+
+      expect(res.stderr).to be_empty
+    end
+
     it "makes the system description HTML available at the config-file port" do
       @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} config http-server-port=7500")
 
