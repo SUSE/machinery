@@ -21,7 +21,7 @@ class Migrate5To6 < Migration
   EOT
 
   def migrate
-    if @hash.has_key?("packages")
+    if @hash.key?("packages")
       @hash["packages"] = {
         "package_system" => "rpm",
         "packages" => @hash["packages"]

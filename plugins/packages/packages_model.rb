@@ -26,7 +26,7 @@ end
 class PackagesScope < Machinery::Object
   include Machinery::Scope
 
-  has_property :packages,  class: PackageList
+  has_property :packages, class: PackageList
 
   def compare_with(other)
     if self.package_system != other.package_system
@@ -54,6 +54,6 @@ class PackagesScope < Machinery::Object
   private
 
   def package_list_to_scope(packages)
-    self.class.new(package_system: package_system, packages: packages) if !packages.empty?
+    self.class.new(package_system: package_system, packages: packages) unless packages.empty?
   end
 end
