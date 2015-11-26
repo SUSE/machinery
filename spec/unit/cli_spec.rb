@@ -437,7 +437,7 @@ describe Cli do
       it "triggers the serve task" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-          description, "127.0.0.1", 3000
+          description, port: 3000, public: false
         )
 
         run_command(["serve", "description1", "--port=3000"])
@@ -446,28 +446,10 @@ describe Cli do
       it "checks if the --public option works" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-          description, "0.0.0.0", 3000
+          description, port: 3000, public: true
         )
 
         run_command(["serve", "description1", "--port=3000", "--public"])
-      end
-
-      it "prints a hint when --public is used" do
-        allow_any_instance_of(ServeHtmlTask).to receive(:serve)
-
-        run_command(["serve", "description1", "--port=3000", "--public"])
-
-        expect(captured_machinery_output).to include("The --public option makes ALL of your " \
-          "system descriptions publicly available. Take care if there are system descriptions " \
-          "that should not be read by others!")
-      end
-
-      it "does not print a hint when --public is not used" do
-        allow_any_instance_of(ServeHtmlTask).to receive(:serve)
-
-        run_command(["serve", "description1", "--port=3000"])
-
-        expect(captured_machinery_output).not_to include("publicly available")
       end
     end
 
