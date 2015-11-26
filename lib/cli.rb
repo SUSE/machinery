@@ -918,19 +918,9 @@ class Cli
           "or via the --port option.")
       end
 
-      if options[:public]
-        ip = "0.0.0.0"
-
-        Machinery::Ui.warn("The --public option makes ALL of your system descriptions publicly " \
-          "available. Take care if there are system descriptions that should not be read by " \
-          "others!\n\n")
-      else
-        ip = "127.0.0.1"
-      end
-
       description = SystemDescription.load(name, system_description_store)
       task = ServeHtmlTask.new
-      task.serve(description, ip, options[:port])
+      task.serve(description, port: options[:port], public: options[:public])
     end
   end
 
