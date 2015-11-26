@@ -38,7 +38,8 @@ EOF
   }
   let(:expected_packages) {
     PackagesScope.new(
-      [
+      package_system: "rpm",
+      packages: [
         Package.new(
           name: "rpm",
           version: "4.11.1",
@@ -91,7 +92,7 @@ EOF
   end
 
   it "returns sorted data" do
-    names = inspect_data.map(&:name)
+    names = inspect_data.packages.map(&:name)
     expect(names).to eq(names.sort)
   end
 end

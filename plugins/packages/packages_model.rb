@@ -19,22 +19,41 @@
 class Package < Machinery::Object
 end
 
-class PackagesScope < Machinery::Array
+class PackageList < Machinery::Array
+  has_elements class: Package
+end
+
+class PackagesScope < Machinery::Object
   include Machinery::Scope
 
-  has_elements class: Package
+  has_property :packages,  class: PackageList
 
   def compare_with(other)
-    only_self = self - other
-    only_other = other - self
-    common = self & other
-    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+    if self.package_system != other.package_system
+      [self, other, nil, nil]
+    else
+      only_self = self.packages - other.packages
+      only_other = other.packages - self.packages
+      common = self.packages & other.packages
+      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+      changed = nil if changed.empty?
 
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
+      [
+        package_list_to_scope(only_self),
+        package_list_to_scope(only_other),
+        changed,
+        package_list_to_scope(common)
+      ].map { |e| (e && !e.empty?) ? e : nil }
+    end
+  end
+
+  def length
+    packages.try(:length) || 0
+  end
+
+  private
+
+  def package_list_to_scope(packages)
+    self.class.new(package_system: package_system, packages: packages) if !packages.empty?
   end
 end

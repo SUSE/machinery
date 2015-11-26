@@ -26,11 +26,7 @@ describe ShowTask, "#show" do
     SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
   }
   let(:description_with_packages) {
-    create_test_description(json: <<-EOF)
-      {
-        "packages": []
-      }
-    EOF
+    create_test_description(scopes: ["empty_packages"])
   }
 
   it "runs the proper renderer when a scope is given" do

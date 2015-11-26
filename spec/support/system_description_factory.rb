@@ -105,7 +105,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 5
+      format_version: 6
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -338,63 +338,72 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["empty_packages"] = <<-EOF.chomp
-    "packages": []
+    "packages": {
+      "package_system": "rpm",
+      "packages": []
+    }
   EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
-    "packages": [
-      {
-        "name": "bash",
-        "version": "4.2",
-        "release": "68.1.5",
-        "arch": "x86_64",
-        "vendor": "openSUSE",
-        "checksum": "533e40ba8a5551204b528c047e45c169"
-      },
-      {
-        "name": "openSUSE-release-dvd",
-        "version": "13.1",
-        "release": "1.10",
-        "arch": "x86_64",
-        "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-        "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-      },
-      {
-        "name": "autofs",
-        "version": "5.0.9",
-        "release": "3.6",
-        "arch": "x86_64",
-        "vendor": "Packman",
-        "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-      }
-    ]
+    "packages": {
+      "package_system": "rpm",
+      "packages": [
+        {
+          "name": "bash",
+          "version": "4.2",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "openSUSE",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        },
+        {
+          "name": "openSUSE-release-dvd",
+          "version": "13.1",
+          "release": "1.10",
+          "arch": "x86_64",
+          "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+          "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+        },
+        {
+          "name": "autofs",
+          "version": "5.0.9",
+          "release": "3.6",
+          "arch": "x86_64",
+          "vendor": "Packman",
+          "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["packages2"] = <<-EOF.chomp
-    "packages": [
-      {
-        "name": "bash",
-        "version": "4.3",
-        "release": "68.1.5",
-        "arch": "x86_64",
-        "vendor": "openSUSE",
-        "checksum": "533e40ba8a5551204b528c047e45c169"
-      },
-      {
-        "name": "kernel-desktop",
-        "version": "3.7.10",
-        "release": "1.0",
-        "arch": "i586",
-        "vendor": "openSUSE",
-        "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
-      },
-      {
-        "name": "autofs",
-        "version": "5.0.9",
-        "release": "3.6",
-        "arch": "x86_64",
-        "vendor": "Packman",
-        "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-      }
-    ]
+    "packages": {
+      "package_system": "rpm",
+      "packages": [
+        {
+          "name": "bash",
+          "version": "4.3",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "openSUSE",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        },
+        {
+          "name": "kernel-desktop",
+          "version": "3.7.10",
+          "release": "1.0",
+          "arch": "i586",
+          "vendor": "openSUSE",
+          "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+        },
+        {
+          "name": "autofs",
+          "version": "5.0.9",
+          "release": "3.6",
+          "arch": "x86_64",
+          "vendor": "Packman",
+          "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
     "patterns": [ ]

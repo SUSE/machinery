@@ -46,10 +46,13 @@ class PackagesInspector < Inspector
       )
     end
 
-    @description.packages = PackagesScope.new(packages.sort_by(&:name))
+    @description.packages = PackagesScope.new(
+      package_system: "rpm",
+      packages: packages.sort_by(&:name)
+    )
   end
 
   def summary
-    "Found #{@description.packages.size} packages."
+    "Found #{@description.packages.length} packages."
   end
 end

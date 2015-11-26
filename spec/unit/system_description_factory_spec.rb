@@ -48,16 +48,19 @@ describe SystemDescriptionFactory do
     it "creates minimal description from JSON" do
       description = create_test_description(json: <<-EOT
         {
-          "packages": [
-            {
-              "name": "foo"
-            }
-          ]
+          "packages": {
+            "package_system": "rpm",
+            "packages": [
+              {
+                "name": "foo"
+              }
+            ]
+          }
         }
         EOT
       )
 
-      expect(description.packages.first.name).to eq("foo")
+      expect(description.packages.packages.first.name).to eq("foo")
     end
 
     it "creates description with example scope" do
