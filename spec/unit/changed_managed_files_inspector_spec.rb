@@ -18,11 +18,11 @@
 require_relative "spec_helper"
 
 describe ChangedManagedFilesInspector do
-  let(:rpm_database) { double }
+  let(:managed_files_database) { double }
 
   let(:system) {
     double(
-      rpm_database:                      rpm_database,
+      managed_files_database:                      managed_files_database,
       check_requirement:                 true,
       check_retrieve_files_dependencies: true
     )
@@ -34,7 +34,7 @@ describe ChangedManagedFilesInspector do
 
   describe "#inspect" do
     before(:each) do
-      allow(rpm_database).to receive(:changed_files).and_return(
+      allow(managed_files_database).to receive(:changed_files).and_return(
         [
           RpmDatabase::ChangedFile.new(
             "c",
@@ -78,7 +78,7 @@ describe ChangedManagedFilesInspector do
           )
         ]
       )
-      allow(rpm_database).to receive(:get_path_data).and_return(
+      allow(managed_files_database).to receive(:get_path_data).and_return(
         "/etc/file" => {
           user:  "root",
           group: "root",

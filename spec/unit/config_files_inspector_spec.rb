@@ -21,10 +21,10 @@ describe ConfigFilesInspector do
   initialize_system_description_factory_store
 
   describe ".inspect" do
-    let(:rpm_database) { double }
+    let(:managed_files_database) { double }
     let(:system) {
       double(
-        rpm_database:                      rpm_database,
+        managed_files_database:                      managed_files_database,
         check_requirement:                 true,
         check_retrieve_files_dependencies: true
       )
@@ -54,7 +54,7 @@ describe ConfigFilesInspector do
       }
 
       before(:each) do
-        allow(rpm_database).to receive(:changed_files).and_return(
+        allow(managed_files_database).to receive(:changed_files).and_return(
           [
             RpmDatabase::ChangedFile.new(
               "c",
@@ -106,7 +106,7 @@ describe ConfigFilesInspector do
             )
           ]
         )
-        allow(rpm_database).to receive(:get_path_data).and_return(
+        allow(managed_files_database).to receive(:get_path_data).and_return(
           "/etc/config" => {
             user:  "root",
             group: "root",
@@ -156,7 +156,7 @@ describe ConfigFilesInspector do
         end
 
         it "returns empty when no modified config files are there" do
-          expect(rpm_database).to receive(:changed_files).and_return([])
+          expect(managed_files_database).to receive(:changed_files).and_return([])
 
           inspector.inspect(filter)
           expected = ConfigFilesScope.new(

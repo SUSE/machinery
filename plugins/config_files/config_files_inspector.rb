@@ -41,7 +41,7 @@ class ConfigFilesInspector < Inspector
     system.check_retrieve_files_dependencies if do_extract
 
     count = 0
-    files = @system.rpm_database.changed_files do |chunk|
+    files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.count { |l| !l.chomp.end_with?(":") && l.split(" ")[1] == "c" }
       Machinery::Ui.progress(" -> Found #{count} config #{Machinery::pluralize(count, "file")}...")
     end
