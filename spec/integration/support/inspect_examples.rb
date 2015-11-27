@@ -62,7 +62,7 @@ shared_examples "inspect" do |base|
         ).to succeed.and not_include_stdout("To show the data of the system you just inspected run")
       end
 
-      it "will be shown when --show is used" do
+      it "will be shown when --show is not used" do
         expect(
           @machinery.run_command(
             "#{machinery_command} inspect #{@subject_system.ip} --scope=users --name=test",
