@@ -68,24 +68,6 @@ shared_examples "CLI" do
           )
         ).to fail.and include_stderr("The following scope is not supported: foobar")
       end
-
-      it "does not print a hint when --show is used" do
-        expect(
-          @machinery.run_command(
-            "sudo #{machinery_command} inspect localhost --scope=users --name=test --show",
-            as: "vagrant"
-          )
-        ).to succeed.and not_include_stdout("To show the data of the system you just inspected run")
-      end
-
-      it "does show a hint when --show is not used" do
-        expect(
-          @machinery.run_command(
-            "sudo #{machinery_command} inspect localhost --scope=users --name=test",
-            as: "vagrant"
-          )
-        ).to succeed.and include_stdout("To show the data of the system you just inspected run")
-      end
     end
 
     describe "build" do
