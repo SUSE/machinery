@@ -25,12 +25,6 @@ class Html
     end
 
     Thread.new do
-      Server.set :system_description_store, system_description_store
-      Server.set :port, opts[:port] || Machinery::Config.new.http_server_port
-      Server.set :bind, opts[:ip] || "localhost"
-      Server.set :public_folder, File.join(Machinery::ROOT, "html")
-      Server.set :static_cache_control, "no-cache"
-
       if opts[:public]
         opts[:ip] = "0.0.0.0"
 
@@ -51,6 +45,12 @@ EOF
       elsif !opts[:ip]
         opts[:ip] = "127.0.0.1"
       end
+
+      Server.set :system_description_store, system_description_store
+      Server.set :port, opts[:port] || Machinery::Config.new.http_server_port
+      Server.set :bind, opts[:ip]
+      Server.set :public_folder, File.join(Machinery::ROOT, "html")
+      Server.set :static_cache_control, "no-cache"
 
       begin
         setup_output_redirection
