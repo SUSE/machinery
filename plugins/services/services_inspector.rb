@@ -34,6 +34,11 @@ class ServicesInspector < Inspector
         init_system: "systemd",
         services: inspect_systemd_services
       )
+    elsif @system.has_command?("initctl")
+      result = ServicesScope.new(
+        init_system: "upstart",
+        services: inspect_upstart_services
+      )
     else
       result = ServicesScope.new(
         init_system: "sysvinit",
@@ -82,6 +87,24 @@ class ServicesInspector < Inspector
       services = parse_redhat_chkconfig
     rescue
       services = parse_suse_chkconfig
+    end
+
+    ServiceList.new(services.sort_by(&:name))
+  end
+
+  def inspect_upstart_services
+    output = @system.run_command("/sbin/initctl", "show-config", "-e", stdout: :capture)
+
+    servicelist = output.lines.map(&:chomp).slice_before { |l| !l.start_with?(" ") }
+    enabled, disabled = servicelist.partition do |s|
+      s.find { |e| e.start_with?("  start on runlevel", "  start on startup") }
+    end
+
+    services = enabled.map(&:first).each.map do |name|
+      Service.new(name: name, state: "enabled")
+    end
+    services += disabled.map(&:first).each.map do |name|
+      Service.new(name: name, state: "disabled")
     end
 
     ServiceList.new(services.sort_by(&:name))
