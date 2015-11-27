@@ -51,5 +51,25 @@ shared_examples "inspect" do |base|
     include_examples "inspect config files", base
     include_examples "inspect changed managed files", base
     include_examples "inspect unmanaged files", base
+
+    context "`show` hint" do
+      it "will not be shown when --show is used" do
+        expect(
+          @machinery.run_command(
+            "#{machinery_command} inspect #{@subject_system.ip} --scope=users --name=test --show",
+            as: "vagrant"
+          )
+        ).to succeed.and not_include_stdout("To show the data of the system you just inspected run")
+      end
+
+      it "will be shown when --show is not used" do
+        expect(
+          @machinery.run_command(
+            "#{machinery_command} inspect #{@subject_system.ip} --scope=users --name=test",
+            as: "vagrant"
+          )
+        ).to succeed.and include_stdout("To show the data of the system you just inspected run")
+      end
+    end
   end
 end
