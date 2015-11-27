@@ -68,6 +68,8 @@ EOF
     it "returns data about SysVinit services on a suse system when no systemd is present" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(false)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -91,9 +93,50 @@ EOF
       expect(inspector.summary).to eq("Found 3 services.")
     end
 
+    it "returns data about upstart services on a ubuntu system" do
+      initctl_ubuntu_output =
+        <<-EOF
+ufw
+  start on starting (job: networking, env:)
+  stop on runlevel (job:, env: [!023456])
+tty4
+  start on runlevel (job:, env: [23])
+  start on container (job:, env: CONTAINER=lxc-libvirt)
+  stop on runlevel (job:, env: [!23])
+hostname
+  start on startup (job:, env:)
+EOF
+
+      allow(system).to receive(:has_command?).
+        with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(true)
+      expect(system).to receive(:run_command).
+        with(
+          "/sbin/initctl",
+          "show-config",
+          "-e",
+          stdout: :capture
+        ).
+        and_return(initctl_ubuntu_output)
+      inspector.inspect(filter)
+
+      expect(description.services).to eq(ServicesScope.new(
+        init_system: "upstart",
+        services:  ServiceList.new([
+          Service.new(name: "hostname",   state: "enabled"),
+          Service.new(name: "tty4",       state: "enabled"),
+          Service.new(name: "ufw",        state: "disabled"),
+        ])
+      ))
+      expect(inspector.summary).to eq("Found 3 services.")
+    end
+
     it "raises an exception when requirements are not fulfilled" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(false)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -109,6 +152,8 @@ EOF
     it "returns data about SysVinit services on a redhat system" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(false)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version")
       expect(inspector).to receive(:parse_redhat_chkconfig).
