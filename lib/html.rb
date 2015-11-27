@@ -48,7 +48,7 @@ EOF
 
       Server.set :system_description_store, system_description_store
       Server.set :port, opts[:port] || Machinery::Config.new.http_server_port
-      Server.set :bind, opts[:ip] || "localhost"
+      Server.set :bind, opts[:ip]
       Server.set :public_folder, File.join(Machinery::ROOT, "html")
       Server.set :static_cache_control, "no-cache"
 
