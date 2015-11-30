@@ -1,7 +1,9 @@
 {
   "packages": {
-    "package_system": "rpm",
-    "packages": [
+    "_attributes": {
+      "package_system": "rpm"
+    },
+    "_elements": [
       {
         "name": "foo",
         "version": "1.0",

@@ -780,8 +780,10 @@
     }
   ],
   "packages": {
-    "package_system": "rpm",
-    "packages": [
+    "_attributes": {
+      "package_system": "rpm"
+    },
+    "_elements": [
       {
         "name": "DirectFB",
         "version": "1.6.3",

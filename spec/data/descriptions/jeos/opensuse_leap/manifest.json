@@ -9,8 +9,10 @@
     "architecture": "x86_64"
   },
   "packages": {
-    "package_system": "rpm",
-    "packages": [
+    "_attributes": {
+      "package_system": "rpm"
+    },
+    "_elements": [
       {
         "name": "aaa_base",
         "version": "13.2+git20140911.61c1681",
