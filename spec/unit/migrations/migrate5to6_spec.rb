@@ -50,6 +50,49 @@ describe Migrate5To6 do
             "checksum": "4db96ab66a6398ae27ee24eb793659dd"
           }
         ],
+        "changed_managed_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/etc/cron.daily/mdadm",
+              "package_name": "mdadm",
+              "package_version": "3.3",
+              "status": "changed",
+              "error_message": "foo error message",
+              "changes": [
+                "deleted"
+              ],
+              "type": "file"
+            }
+          ]
+        },
+        "config_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/etc/auto.master",
+              "package_name": "autofs",
+              "package_version": "5.0.7",
+              "status": "changed",
+              "changes": [
+                "md5"
+              ],
+              "user": "root",
+              "group": "root",
+              "mode": "644",
+              "type": "file"
+            }
+          ]
+        },
+        "unmanaged_files": {
+          "extracted": true,
+          "files": [
+            {
+              "name": "/boot/backup_mbr2",
+              "type": "file"
+            }
+          ]
+        },
         "meta": {
           "format_version": 5
         }
@@ -73,6 +116,23 @@ describe Migrate5To6 do
         package["name"]
       end
       expect(package_names).to eq(["aaa_base", "adjtimex", "autofs"])
+    end
+  end
+
+  ["changed_managed_files", "config_files", "unmanaged_files"].each do |scope|
+    describe scope do
+      it "moves the 'extracted' attribute" do
+        expect(description_hash[scope]["_attributes"]["extracted"]).to eq(true)
+      end
+      it "moves the 'files' array" do
+        expect(description_hash[scope]["_elements"].length).to eq(1)
+      end
+    end
+  end
+
+  ["changed_managed_files", "config_files"].each do |scope|
+    it "moves the 'changes' array" do
+      expect(description_hash[scope]["_elements"][0]["changes"]["_elements"].length).to eq(1)
     end
   end
 end

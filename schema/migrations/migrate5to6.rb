@@ -29,6 +29,28 @@ class Migrate5To6 < Migration
         "_elements" => @hash["packages"]
       }
     end
+    ["changed_managed_files", "config_files", "unmanaged_files"].each do |scope|
+      if @hash.key?(scope)
+        @hash[scope] = {
+          "_attributes" => {
+            "extracted" => @hash[scope]["extracted"]
+          },
+          "_elements" => @hash[scope]["files"]
+        }
+      end
+    end
+
+    ["changed_managed_files", "config_files"].each do |scope|
+      if @hash.key?(scope)
+        @hash[scope]["_elements"] = @hash[scope]["_elements"].map do |file|
+          file["changes"] = {
+            "_attributes" => {},
+            "_elements" => file["changes"]
+          }
+          file
+        end
+      end
+    end
 
     @hash
   end
