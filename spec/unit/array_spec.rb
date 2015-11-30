@@ -20,6 +20,7 @@ require_relative "spec_helper"
 describe Machinery::Array do
   class ArrayExampleObject < Machinery::Object; end
   class ArrayExampleArray < Machinery::Array
+    has_properties :foo, :bar
     has_elements class: ArrayExampleObject
   end
 
@@ -65,7 +66,6 @@ describe Machinery::Array do
       let(:array) {
         json_object = {
           "_attributes" => {
-            "foo" => "bar"
           },
           "_elements" => [
             1,
@@ -86,8 +86,15 @@ describe Machinery::Array do
         expect(array[2]).to eq(Machinery::Array.new([1]))
       end
 
-      it "makes the attributes available on the array object" do
-        expect(array.foo).to eq("bar")
+      it "raises errors on unknown attributes" do
+        expect {
+          Machinery::Array.from_json({
+            "_attributes" => {
+              foo: "bar"
+            },
+            "_elements" => []
+          })
+        }.to raise_error(/Unknown properties.*foo/)
       end
     end
   end
@@ -166,12 +173,11 @@ describe Machinery::Array do
     it "serializes all objects to native ruby objects" do
       embedded_array = ArrayExampleArray.new([json_element_a])
       embedded_object = Machinery::Object.new(json_element_b)
-      array = Machinery::Array.new([1, embedded_array, embedded_object], foo: "bar")
+      array = Machinery::Array.new([1, embedded_array, embedded_object])
 
       result = array.as_json
       expect(result).to eq(
         "_attributes" => {
-          foo: "bar"
         },
         "_elements" => [
           1,
@@ -197,6 +203,22 @@ describe Machinery::Array do
       expect(array).to be_a(ArrayExampleArray)
       expect(array.size).to eq(4)
       expect(array.all? { |element| element.is_a?(ArrayExampleObject) }).to be(true)
+    end
+
+    it "sets attributes" do
+      array = ArrayExampleArray.new
+
+      expect(array.foo).to be_nil
+      expect(array.bar).to be_nil
+      expect {
+        array.baz
+      }.to raise_error
+
+      array.foo = "foo"
+      array.bar = "bar"
+
+      expect(array.foo).to eq("foo")
+      expect(array.bar).to eq("bar")
     end
   end
 

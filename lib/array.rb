@@ -18,6 +18,17 @@
 module Machinery
   class Array
     class << self
+      attr_reader :attribute_keys
+
+      def initialize
+        @attribute_keys = {}
+        super
+      end
+
+      def has_properties(*keys)
+        @attribute_keys = keys.map(&:to_s)
+      end
+
       def has_elements(options)
         @element_class = options[:class]
       end
@@ -60,6 +71,13 @@ module Machinery
     attr_accessor :scope
 
     def initialize(elements = [], attributes = {})
+      @attribute_keys = self.class.attribute_keys || []
+
+      unknown_attributes = attributes.keys.map(&:to_s) - @attribute_keys
+      if unknown_attributes.length > 0
+        raise RuntimeError, "Unknown properties: #{unknown_attributes.join(",")}"
+      end
+
       @attributes = attributes
       @elements = self.class.convert_raw_array(elements)
     end
@@ -135,8 +153,12 @@ module Machinery
     end
 
     def method_missing(name, *args, &block)
-      if @attributes.key?(name.to_s)
-        @attributes[name.to_s]
+      name = name.to_s
+
+      if @attribute_keys.include?(name)
+        @attributes[name]
+      elsif name.end_with?("=") and @attribute_keys.include?(name[0..-2])
+        @attributes[name[0..-2]] = args.first
       else
         @elements.send(name, *args, &block)
       end
