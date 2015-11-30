@@ -21,22 +21,21 @@ require_relative "spec_helper"
 # tests.
 
 describe PackagesScope do
-
   it "keeps values" do
-    packages_scope = PackagesScope.new(packages: PackageList.new)
-    packages_scope.packages << Package.new(name: "PACK1", version: "1.0")
-    packages_scope.packages << Package.new(name: "PACK2", version: "2.1")
+    packages_scope = PackagesScope.new
+    packages_scope << Package.new(name: "PACK1", version: "1.0")
+    packages_scope << Package.new(name: "PACK2", version: "2.1")
 
-    expect(packages_scope.packages.size).to eq(2)
-    expect(packages_scope.packages[0].name).to eq("PACK1")
-    expect(packages_scope.packages[0].version).to eq("1.0")
-    expect(packages_scope.packages[1].name).to eq("PACK2")
-    expect(packages_scope.packages[1].version).to eq("2.1")
+    expect(packages_scope.size).to eq(2)
+    expect(packages_scope[0].name).to eq("PACK1")
+    expect(packages_scope[0].version).to eq("1.0")
+    expect(packages_scope[1].name).to eq("PACK2")
+    expect(packages_scope[1].version).to eq("2.1")
   end
 
   it "keeps meta data" do
     date = DateTime.now
-    packages_scope = PackagesScope.new(packages: PackageList.new)
+    packages_scope = PackagesScope.new
     packages_scope.set_metadata(date, "SOMEHOST")
 
     expect(packages_scope.meta.modified).to eq(date)
@@ -51,14 +50,14 @@ describe PackagesScope do
       @package4_1 = Package.new(name: "PACK4", version: "4.5.6")
       @package4_2 = Package.new(name: "PACK4", version: "4.5.7")
 
-      @packages_scope1 = PackagesScope.new(packages: PackageList.new)
-      @packages_scope1.packages << @package1 << @package2 << @package4_1
+      @packages_scope1 = PackagesScope.new
+      @packages_scope1 << @package1 << @package2 << @package4_1
 
-      @packages_scope2 = PackagesScope.new(packages: PackageList.new)
-      @packages_scope2.packages << @package1 << @package2 << @package4_1
+      @packages_scope2 = PackagesScope.new
+      @packages_scope2 << @package1 << @package2 << @package4_1
 
-      @packages_scope3 = PackagesScope.new(packages: PackageList.new)
-      @packages_scope3.packages << @package1 << @package3 << @package4_2
+      @packages_scope3 = PackagesScope.new
+      @packages_scope3 << @package1 << @package3 << @package4_2
     end
 
     it "equal objects" do
@@ -71,10 +70,10 @@ describe PackagesScope do
       expect(only_scope2).to be(nil)
       expect(changed).to be(nil)
 
-      expect(common.packages.size).to eq(3)
-      expect(common.packages[0]).to eq(@package1)
-      expect(common.packages[1]).to eq(@package2)
-      expect(common.packages[2]).to eq(@package4_1)
+      expect(common.size).to eq(3)
+      expect(common[0]).to eq(@package1)
+      expect(common[1]).to eq(@package2)
+      expect(common[2]).to eq(@package4_1)
     end
 
     it "unequal objects" do
@@ -83,19 +82,18 @@ describe PackagesScope do
 
       only_scope1, only_scope2, changed, common = @packages_scope1.compare_with(@packages_scope3)
 
-      expect(only_scope1.packages.size).to eq(1)
-      expect(only_scope1.packages[0]).to eq(@package2)
+      expect(only_scope1.size).to eq(1)
+      expect(only_scope1[0]).to eq(@package2)
 
-      expect(only_scope2.packages.size).to eq(1)
-      expect(only_scope2.packages[0]).to eq(@package3)
+      expect(only_scope2.size).to eq(1)
+      expect(only_scope2[0]).to eq(@package3)
 
-      expect(common.packages.size).to eq(1)
-      expect(common.packages[0]).to eq(@package1)
+      expect(common.size).to eq(1)
+      expect(common[0]).to eq(@package1)
 
       expect(changed.size).to eq(1)
       expect(changed[0][0]).to eq(@package4_1)
       expect(changed[0][1]).to eq(@package4_2)
     end
   end
-
 end
