@@ -247,7 +247,7 @@ EOF
 
     xml.packages(type: "bootstrap") do
       if @system_description.packages
-        @system_description.packages.packages.each do |package|
+        @system_description.packages.each do |package|
           next if filter.include?(package.name)
           xml.package(name: "#{package.name}")
         end

@@ -2,15 +2,23 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "required": [
-    "package_system",
-    "packages"
+    "_attributes",
+    "_elements"
   ],
   "properties": {
-    "package_system": {
-      "type": "string",
-      "minLength": 1
+    "_attributes": {
+      "type": "object",
+      "required": [
+        "package_system"
+      ],
+      "properties": {
+        "package_system": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     },
-    "packages": {
+    "_elements": {
       "type": "array",
       "items": {
         "type": "object",

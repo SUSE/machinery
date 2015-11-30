@@ -25,7 +25,7 @@ class PackagesInspector < Inspector
   def inspect(_filter, _options = {})
     @system.check_requirement("rpm", "--version")
 
-    packages = Array.new
+    packages = Machinery::Array.new
     rpm_data = @system.run_command(
       "rpm","-qa","--qf",
       "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{SIGMD5}$",
@@ -47,8 +47,8 @@ class PackagesInspector < Inspector
     end
 
     @description.packages = PackagesScope.new(
-      package_system: "rpm",
-      packages: packages.sort_by(&:name)
+      packages.sort_by(&:name),
+      package_system: "rpm"
     )
   end
 

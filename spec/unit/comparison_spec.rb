@@ -38,8 +38,7 @@ describe Comparison do
       let(:result) { subject.compare_scope(description1, description2, "packages") }
       let(:expected_only_in1) {
         PackagesScope.new(
-          package_system: "rpm",
-          packages: PackageList.new([
+          [
             Package.new(
               name: "openSUSE-release-dvd",
               version: "13.1",
@@ -48,13 +47,13 @@ describe Comparison do
               vendor: "SUSE LINUX Products GmbH, Nuernberg, Germany",
               checksum: "2a3d5b29179daa1e65e391d0a0c1442d"
             )
-          ])
+          ],
+          package_system: "rpm"
         )
       }
       let(:expected_only_in2) {
         PackagesScope.new(
-          package_system: "rpm",
-          packages: PackageList.new([
+          [
             Package.new(
               name: "kernel-desktop",
               version: "3.7.10",
@@ -63,13 +62,13 @@ describe Comparison do
               vendor: "openSUSE",
               checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
             )
-          ])
+          ],
+          package_system: "rpm"
         )
       }
       let(:expected_common) {
         PackagesScope.new(
-          package_system: "rpm",
-          packages: PackageList.new([
+          [
             Package.new(
               name: "autofs",
               version: "5.0.9",
@@ -78,7 +77,8 @@ describe Comparison do
               vendor: "Packman",
               checksum: "6d5d012b0e8d33cf93e216dfab6b174e"
             )
-          ])
+          ],
+          package_system: "rpm"
         )
       }
 

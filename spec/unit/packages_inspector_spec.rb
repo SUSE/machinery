@@ -38,8 +38,7 @@ EOF
   }
   let(:expected_packages) {
     PackagesScope.new(
-      package_system: "rpm",
-      packages: [
+      [
         Package.new(
           name: "rpm",
           version: "4.11.1",
@@ -56,7 +55,8 @@ EOF
           vendor: "openSUSE",
           checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
         )
-      ]
+      ],
+      package_system: "rpm"
     )
   }
   let(:rpm_command) {
@@ -92,7 +92,7 @@ EOF
   end
 
   it "returns sorted data" do
-    names = inspect_data.packages.map(&:name)
+    names = inspect_data.map(&:name)
     expect(names).to eq(names.sort)
   end
 end

@@ -339,14 +339,18 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_packages"] = <<-EOF.chomp
     "packages": {
-      "package_system": "rpm",
-      "packages": []
+      "_attributes": {
+        "package_system": "rpm"
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
     "packages": {
-      "package_system": "rpm",
-      "packages": [
+      "_attributes": {
+        "package_system": "rpm"
+      },
+      "_elements": [
         {
           "name": "bash",
           "version": "4.2",
@@ -376,8 +380,10 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["packages2"] = <<-EOF.chomp
     "packages": {
-      "package_system": "rpm",
-      "packages": [
+      "_attributes": {
+        "package_system": "rpm"
+      },
+      "_elements": [
         {
           "name": "bash",
           "version": "4.3",

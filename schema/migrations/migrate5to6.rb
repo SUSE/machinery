@@ -23,8 +23,10 @@ class Migrate5To6 < Migration
   def migrate
     if @hash.key?("packages")
       @hash["packages"] = {
-        "package_system" => "rpm",
-        "packages" => @hash["packages"]
+        "_attributes" => {
+          "package_system" => "rpm"
+        },
+        "_elements" => @hash["packages"]
       }
     end
 

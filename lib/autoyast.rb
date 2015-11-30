@@ -167,7 +167,7 @@ class Autoyast < Exporter
     return if !@system_description.packages
 
     xml.packages("config:type" => "list") do
-      @system_description.packages.packages.each do |package|
+      @system_description.packages.each do |package|
         xml.package package.name
       end
     end

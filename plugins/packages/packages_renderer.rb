@@ -23,12 +23,12 @@ class PackagesRenderer < Renderer
   def content(description)
     return unless description.packages
 
-    if description.packages.packages.empty?
+    if description.packages.empty?
       puts "There are no packages."
     end
 
     list do
-      description.packages.packages.each do |p|
+      description.packages.each do |p|
         item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{p.vendor})"
       end
     end
@@ -38,7 +38,7 @@ class PackagesRenderer < Renderer
   # architecture etc.
   def compare_content_only_in(description)
     list do
-      description.packages.packages.each do |p|
+      description.packages.each do |p|
         item "#{p.name}"
       end
     end

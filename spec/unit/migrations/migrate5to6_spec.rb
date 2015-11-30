@@ -65,11 +65,13 @@ describe Migrate5To6 do
 
   describe "packages" do
     it "adds the 'package_system' attribute" do
-      expect(description_hash["packages"]["package_system"]).to eq("rpm")
+      expect(description_hash["packages"]["_attributes"]["package_system"]).to eq("rpm")
     end
 
     it "moves the packages to packages" do
-      package_names = description_hash["packages"]["packages"].map { |package| package["name"] }
+      package_names = description_hash["packages"]["_elements"].map do |package|
+        package["name"]
+      end
       expect(package_names).to eq(["aaa_base", "adjtimex", "autofs"])
     end
   end

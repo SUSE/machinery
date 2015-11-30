@@ -380,8 +380,10 @@ EOT
       system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash",
                 "version": "4.2",
@@ -406,8 +408,10 @@ EOT
       system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash",
                 "version": "4.2",
@@ -438,8 +442,10 @@ EOT
       system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash",
                 "version": "4.2",
@@ -464,8 +470,10 @@ EOT
       system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash",
                 "version": "4.2",
@@ -494,6 +502,7 @@ In both with different attributes ('one' <> 'two'):
   * kernel (version: 3 <> 4)
 
 EOT
+
       output = CompareTask.new.render_comparison(system_description1,
         system_description2, ["packages"])
 

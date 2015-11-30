@@ -22,8 +22,10 @@ describe PackagesRenderer do
     create_test_description(json: <<-EOF)
       {
         "packages": {
-          "package_system": "rpm",
-          "packages": [
+          "_attributes": {
+            "package_system": "rpm"
+          },
+          "_elements": [
             {
               "name": "bash",
               "version": "4.2",
@@ -70,8 +72,10 @@ describe PackagesRenderer do
       create_test_description(json: <<-EOF, name: "description1")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash",
                 "version": "4.2",
@@ -121,8 +125,10 @@ describe PackagesRenderer do
       create_test_description(json: <<-EOF, name: "description2")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash2",
                 "version": "4.2",

@@ -25,10 +25,11 @@ describe "packages model" do
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.packages.first).to be_a(Package) }
+  specify { expect(scope.first).to be_a(Package) }
 
   it "has correct scope name" do
     expect(PackagesScope.new.scope_name).to eq("packages")
+
   end
 
   describe "#compare_with" do
@@ -36,8 +37,10 @@ describe "packages model" do
       create_test_description(json: <<-EOF, name: "description1")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash",
                 "version": "4.2",
@@ -95,8 +98,10 @@ describe "packages model" do
       create_test_description(json: <<-EOF, name: "description2")
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "bash2",
                 "version": "4.2",
@@ -153,11 +158,11 @@ describe "packages model" do
     let(:comparison) { description1.packages.compare_with(description2.packages) }
 
     it "detects packages only in description1" do
-      expect(comparison[0].packages.map(&:name)).to eq(["bash"])
+      expect(comparison[0].map(&:name)).to eq(["bash"])
     end
 
     it "detects packages only in description1" do
-      expect(comparison[1].packages.map(&:name)).to eq(["bash2"])
+      expect(comparison[1].map(&:name)).to eq(["bash2"])
     end
 
     it "detects changed packages" do
@@ -185,7 +190,7 @@ describe "packages model" do
     end
 
     it "detects packages in both" do
-      expect(comparison[3].packages.map(&:name)).to eq(["konsole"])
+      expect(comparison[3].map(&:name)).to eq(["konsole"])
     end
   end
 end
