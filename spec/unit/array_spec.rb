@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe Machinery::Array do
   class ArrayExampleObject < Machinery::Object; end
   class ArrayExampleArray < Machinery::Array
-    has_properties :foo, :bar
+    has_attributes :foo, :bar
     has_elements class: ArrayExampleObject
   end
 

@@ -22,7 +22,7 @@ end
 class PackagesScope < Machinery::Array
   include Machinery::Scope
 
-  has_properties :package_system
+  has_attributes :package_system
   has_elements class: Package
 
   def compare_with(other)

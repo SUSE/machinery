@@ -25,7 +25,7 @@ module Machinery
         super
       end
 
-      def has_properties(*keys)
+      def has_attributes(*keys)
         @attribute_keys = keys.map(&:to_s)
       end
 
