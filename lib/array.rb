@@ -30,7 +30,11 @@ module Machinery
           when ::Array
             Machinery::Array.from_json(element)
           when Hash
-            Machinery::Object.from_json(element)
+            if element.keys.sort == ["_attributes", "_elements"]
+              Machinery::Array.from_json(element)
+            else
+              Machinery::Object.from_json(element)
+            end
           else
             element
           end
@@ -44,14 +48,19 @@ module Machinery
       end
 
       def from_json(json_object)
-        new(json_object)
+        if json_object.is_a?(::Array)
+          new(json_object)
+        else
+          new(json_object["_elements"], json_object["_attributes"])
+        end
       end
     end
 
     attr_reader :elements
     attr_accessor :scope
 
-    def initialize(elements = [])
+    def initialize(elements = [], attributes = {})
+      @attributes = attributes
       @elements = self.class.convert_raw_array(elements)
     end
 
@@ -104,13 +113,16 @@ module Machinery
     end
 
     def as_json
-      @elements.map do |element|
-        if element.is_a?(Machinery::Array) || element.is_a?(Machinery::Object)
-          element.as_json
-        else
-          element
+      {
+        "_attributes" => @attributes,
+        "_elements" => @elements.map do |element|
+          if element.is_a?(Machinery::Array) || element.is_a?(Machinery::Object)
+            element.as_json
+          else
+            element
+          end
         end
-      end
+      }
     end
 
     def compare_with(other)
@@ -123,7 +135,11 @@ module Machinery
     end
 
     def method_missing(name, *args, &block)
-      @elements.send(name, *args, &block)
+      if @attributes.key?(name.to_s)
+        @attributes[name.to_s]
+      else
+        @elements.send(name, *args, &block)
+      end
     end
 
     def respond_to?(name, include_all = false)

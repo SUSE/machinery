@@ -91,13 +91,18 @@ describe Machinery::Object do
       json_object = {
         a: 1,
         b: {2 => "2"},
-        c: [3, "3"]
+        c: [3, "3"],
+        d: {
+          "_attributes" => {},
+          "_elements" => [ 1 ]
+        }
       }
 
       expected = Machinery::Object.new(
         a: 1,
         b: Machinery::Object.new(2 => "2"),
-        c: Machinery::Array.new([3, "3"])
+        c: Machinery::Array.new([3, "3"]),
+        d: Machinery::Array.new([1])
       )
       expect(Machinery::Object.from_json(json_object)).to eq(expected)
     end
@@ -131,8 +136,8 @@ describe Machinery::Object do
 
       result = object.as_json
       expected = {
-        "a" => ["a"],
-        "b" => {"b" => "b"},
+        "a" => { "_attributes" => {}, "_elements" => [ "a" ] },
+        "b" => { "b" => "b" },
         "c" => 1
       }
       expect(result).to eq(expected)
