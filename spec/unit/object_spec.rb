@@ -94,7 +94,7 @@ describe Machinery::Object do
         c: [3, "3"],
         d: {
           "_attributes" => {},
-          "_elements" => [ 1 ]
+          "_elements" => [1]
         }
       }
 
@@ -136,7 +136,7 @@ describe Machinery::Object do
 
       result = object.as_json
       expected = {
-        "a" => { "_attributes" => {}, "_elements" => [ "a" ] },
+        "a" => { "_attributes" => {}, "_elements" => ["a"] },
         "b" => { "b" => "b" },
         "c" => 1
       }

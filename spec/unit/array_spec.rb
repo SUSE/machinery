@@ -48,7 +48,7 @@ describe Machinery::Array do
       end
 
       it "uses generic classes when no element class is set" do
-        json_object = [1, {2 => "2"}, [3, "3"]]
+        json_object = [1, { 2 => "2" }, [3, "3"]]
 
         expected = Machinery::Array.new(
           [
@@ -72,7 +72,7 @@ describe Machinery::Array do
             2,
             {
               "_attributes" => {},
-              "_elements" => [ 1 ]
+              "_elements" => [1]
             }
           ]
         }
@@ -170,19 +170,17 @@ describe Machinery::Array do
 
       result = array.as_json
       expect(result).to eq(
-        {
-          "_attributes" => {
-            foo: "bar"
+        "_attributes" => {
+          foo: "bar"
+        },
+        "_elements" => [
+          1,
+          {
+            "_attributes" => {},
+            "_elements" => ["a" => 1]
           },
-          "_elements" => [
-            1,
-            {
-              "_attributes" => {},
-              "_elements" => [ "a" => 1 ]
-            },
-            { "b" => 2 }
-          ]
-        }
+          { "b" => 2 }
+        ]
       )
     end
   end
