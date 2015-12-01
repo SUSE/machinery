@@ -1,7 +1,9 @@
 {
   "unmanaged_files": {
-    "extracted": false,
-    "files": [
+    "_attributes": {
+      "extracted": false
+    },
+    "_elements": [
       {
         "name": "/boot/0xfcdaa824",
         "type": "file"
@@ -13,7 +15,7 @@
     ]
   },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "unmanaged_files": {
       "modified": "2014-08-27T18:00:17Z",
       "hostname": "10.122.166.77"

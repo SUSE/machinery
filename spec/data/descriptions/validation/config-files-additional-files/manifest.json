@@ -1,16 +1,22 @@
 {
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/default/grub",
         "package_name": "grub2",
         "package_version": "2.02~beta2",
         "status": "changed",
-        "changes": [
-          "mode",
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "mode",
+            "md5"
+          ]
+        },
         "user": "root",
         "group": "root",
         "mode": "600",
@@ -21,14 +27,18 @@
         "package_name": "ntp",
         "package_version": "4.2.6p5",
         "status": "changed",
-        "changes": [
-          "deleted"
-        ]
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "deleted"
+          ]
+        }
       }
     ]
   },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "config_files": {
       "modified": "2014-08-27T18:00:17Z",
       "hostname": "10.122.166.77"

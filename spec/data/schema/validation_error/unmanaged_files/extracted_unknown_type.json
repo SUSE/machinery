@@ -1,7 +1,9 @@
 {
   "unmanaged_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/boot/backup_mbr",
         "type": "fileomat",
@@ -13,7 +15,7 @@
     ]
   },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "unmanaged_files": {
       "modified": "2014-08-25T14:45:38Z",
       "hostname": "192.168.121.68"

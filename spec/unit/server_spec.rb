@@ -29,6 +29,7 @@ describe Server do
       scopes: ["os"]
     )
   }
+
   let(:description_b) {
     create_test_description(
       name: "description_b",
@@ -45,7 +46,7 @@ describe Server do
       scopes: ["os"]
     )
 
-    file = description.config_files.files.find { |f| f.name == "/etc/cron tab" }
+    file = description.config_files.find { |f| f.name == "/etc/cron tab" }
     File.write(description.config_files.file_path(file), "Other content")
 
     description

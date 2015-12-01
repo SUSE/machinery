@@ -111,11 +111,11 @@ describe ChangedManagedFilesInspector do
         filter = Filter.new("/changed_managed_files/files/name=/usr/*")
 
         subject.inspect(filter)
-        expect(description["changed_managed_files"].files.map(&:name)).
+        expect(description["changed_managed_files"].map(&:name)).
           to_not include("/usr/share/man/man1/time.1.gz")
 
         subject.inspect(nil)
-        expect(description["changed_managed_files"].files.map(&:name)).
+        expect(description["changed_managed_files"].map(&:name)).
           to include("/usr/share/man/man1/time.1.gz")
       end
     end
@@ -132,7 +132,7 @@ describe ChangedManagedFilesInspector do
           "/etc/documentation",
           "/usr/share/man/man1/time.1.gz"
         ]
-        expect(description["changed_managed_files"].files.map(&:name)).
+        expect(description["changed_managed_files"].map(&:name)).
           to match_array(expected_result)
       end
 
@@ -143,7 +143,7 @@ describe ChangedManagedFilesInspector do
       end
 
       it "returns sorted data" do
-        names = description["changed_managed_files"].files.map(&:name)
+        names = description["changed_managed_files"].map(&:name)
 
         expect(names).to eq(names.sort)
       end
