@@ -218,7 +218,7 @@ describe KiwiConfig do
     end
 
     it "raises an error if the systemd service state is unknown" do
-      system_description_with_systemd_services.services.services.first["state"] = "not_known"
+      system_description_with_systemd_services.services.first["state"] = "not_known"
       expect {
         KiwiConfig.new(system_description_with_systemd_services)
       }.to raise_error(Machinery::Errors::ExportFailed, /not_known/)

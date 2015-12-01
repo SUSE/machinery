@@ -2,7 +2,7 @@
   %div
     %a.scope_anchor{ id: "services" }
     .scope#services_container
-      - count = services.services.length
+      - count = services.elements.length
       = render_partial "scope_header",
         :scope => "services",
         :title => "Services",
@@ -19,7 +19,7 @@
                   %th Name
                   %th.medium State
               %tbody
-                - services.services.each do |service|
+                - services.each do |service|
                   %tr
                     %td= service.name
                     %td{ class: "#{services.init_system}_#{service.state}" }

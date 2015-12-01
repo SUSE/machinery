@@ -26,13 +26,13 @@ class ServicesInspector < Inspector
   def inspect(_filter, _options = {})
     if @description.environment.system_type == "docker"
       result = ServicesScope.new(
-        init_system: "none",
-        services: []
+        [],
+        init_system: "none"
       )
     elsif @system.has_command?("systemctl")
       result = ServicesScope.new(
-        init_system: "systemd",
-        services: inspect_systemd_services
+        inspect_systemd_services,
+        init_system: "systemd"
       )
     elsif @system.has_command?("initctl")
       result = ServicesScope.new(
@@ -41,8 +41,8 @@ class ServicesInspector < Inspector
       )
     else
       result = ServicesScope.new(
-        init_system: "sysvinit",
-        services: inspect_sysvinit_services
+        inspect_sysvinit_services,
+        init_system: "sysvinit"
       )
     end
 
@@ -50,7 +50,7 @@ class ServicesInspector < Inspector
   end
 
   def summary
-    "Found #{@description.services.services.length} services."
+    "Found #{@description.services.length} services."
   end
 
   private
@@ -73,7 +73,7 @@ class ServicesInspector < Inspector
       Service.new(name: name, state: state)
     end
 
-    ServiceList.new(services.sort_by(&:name))
+    services.sort_by(&:name)
   end
 
   def inspect_sysvinit_services
@@ -89,7 +89,7 @@ class ServicesInspector < Inspector
       services = parse_suse_chkconfig
     end
 
-    ServiceList.new(services.sort_by(&:name))
+    services.sort_by(&:name)
   end
 
   def inspect_upstart_services
@@ -120,7 +120,7 @@ class ServicesInspector < Inspector
       :stdout => :capture
     )
 
-    services = output.lines.map do |line|
+    output.lines.map do |line|
       name, state = line.split(/\s+/)
       Service.new(name: name, state: state)
     end

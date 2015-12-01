@@ -599,14 +599,18 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_services"] = <<-EOF.chomp
     "services": {
-      "init_system": "systemd",
-      "services": [ ]
+      "_attributes": {
+        "init_system": "systemd"
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["services"] = <<-EOF.chomp
     "services": {
-      "init_system": "systemd",
-      "services": [
+      "_attributes": {
+        "init_system": "systemd"
+      },
+      "_elements": [
         {
           "name": "sshd.service",
           "state": "enabled"
@@ -652,8 +656,10 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["services_sysvinit"] = <<-EOF.chomp
     "services": {
-      "init_system": "sysvinit",
-      "services": [
+      "_attributes": {
+        "init_system": "sysvinit"
+      },
+      "_elements": [
         {
           "name": "sshd",
           "state": "on"

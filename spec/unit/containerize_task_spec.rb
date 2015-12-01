@@ -27,8 +27,10 @@ describe ContainerizeTask do
     create_test_description(json: <<-EOF)
       {
         "services": {
-          "init_system": "systemd",
-          "services": [
+          "_attributes": {
+            "init_system": "systemd"
+          },
+          "_elements": [
             {
               "name": "mysql.service",
               "state": "enabled"

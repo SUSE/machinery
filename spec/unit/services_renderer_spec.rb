@@ -22,8 +22,10 @@ describe ServicesRenderer do
     create_test_description(json: <<-EOF)
       {
         "services": {
-          "init_system": "systemd",
-          "services": [
+          "_attributes": {
+            "init_system": "systemd"
+          },
+          "_elements": [
             {
               "name": "alsasound.service",
               "state": "static"
@@ -45,8 +47,10 @@ describe ServicesRenderer do
     create_test_description(json: <<-EOF)
       {
         "services": {
-          "init_system": "sysvinit",
-          "services": [
+          "_attributes": {
+            "init_system": "sysvinit"
+          },
+          "_elements": [
             {
               "name": "alsasound",
               "state": "on"

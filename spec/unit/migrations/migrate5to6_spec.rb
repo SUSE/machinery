@@ -93,6 +93,15 @@ describe Migrate5To6 do
             }
           ]
         },
+        "services": {
+          "init_system": "systemd",
+          "services": [
+            {
+              "name": "mysql.service",
+              "state": "enabled"
+            }
+          ]
+        },
         "meta": {
           "format_version": 5
         }
@@ -134,5 +143,10 @@ describe Migrate5To6 do
     it "moves the 'changes' array" do
       expect(description_hash[scope]["_elements"][0]["changes"]["_elements"].length).to eq(1)
     end
+  end
+
+  it "migrates the services scope" do
+    expect(description_hash["services"]["_elements"].first["name"]).to eq("mysql.service")
+    expect(description_hash["services"]["_attributes"]["init_system"]).to eq("systemd")
   end
 end

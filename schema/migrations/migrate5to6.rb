@@ -52,6 +52,15 @@ class Migrate5To6 < Migration
       end
     end
 
+    if @hash.key?("services")
+      @hash["services"] = {
+        "_attributes" => {
+          "init_system" => @hash["services"]["init_system"]
+        },
+        "_elements" => @hash["services"]["services"]
+      }
+    end
+
     @hash
   end
 end

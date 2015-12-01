@@ -55,12 +55,12 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
-        init_system: "systemd",
-        services:    ServiceList.new([
+        [
           Service.new(name: "alsasound.service", state: "static"),
           Service.new(name: "autofs.service",    state: "disabled"),
           Service.new(name: "syslog.socket",     state: "enabled")
-        ])
+        ],
+        init_system: "systemd"
       ))
       expect(inspector.summary).to eq("Found 3 services.")
     end
@@ -83,12 +83,12 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
-        init_system: "sysvinit",
-        services:    ServiceList.new([
+        [
           Service.new(name: "alsasound",   state: "on"),
           Service.new(name: "autofs",      state: "off"),
           Service.new(name: "boot.isapnp", state: "on"),
-        ])
+        ],
+        init_system: "sysvinit"
       ))
       expect(inspector.summary).to eq("Found 3 services.")
     end
@@ -164,11 +164,11 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
-        init_system: "sysvinit",
-        services: ServiceList.new([
+        [
           Service.new(name: "crond", state: "on"),
           Service.new(name: "dnsmasq", state: "off"),
-        ])
+        ],
+        init_system: "sysvinit"
       ))
       expect(inspector.summary).to eq("Found 2 services.")
     end

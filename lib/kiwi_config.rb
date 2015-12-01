@@ -306,7 +306,7 @@ EOF
 
       case init_system
         when "sysvinit"
-          @system_description["services"].services.each do |service|
+          @system_description["services"].each do |service|
             if service.state == "on"
               @sh << "chkconfig #{service.name} on\n"
             else
@@ -317,7 +317,7 @@ EOF
         when "systemd"
           # possible systemd service states:
           # http://www.freedesktop.org/software/systemd/man/systemctl.html#Unit%20File%20Commands
-          @system_description["services"].services.each do |service|
+          @system_description["services"].each do |service|
             case service.state
               when "enabled"
                 @sh << "systemctl enable #{service.name}\n"

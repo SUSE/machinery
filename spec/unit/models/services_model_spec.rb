@@ -25,8 +25,8 @@ describe "services model" do
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.services).to be_a(ServiceList) }
-  specify { expect(scope.services.first).to be_a(Service) }
+  specify { expect(scope).to be_a(ServicesScope) }
+  specify { expect(scope.first).to be_a(Service) }
 
   describe ServicesScope do
     describe "#length" do
@@ -46,12 +46,12 @@ describe "services model" do
       context "when init systems are the same" do
         it "returns correct result when service lists are equal" do
           data_a = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_a, service_b, service_c]
+            [service_a, service_b, service_c],
+            init_system: "systemd"
           )
           data_b = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_a, service_b, service_c]
+            [service_a, service_b, service_c],
+            init_system: "systemd"
           )
 
           comparison = data_a.compare_with(data_b)
@@ -60,12 +60,12 @@ describe "services model" do
 
         it "returns correct result when lists aren't equal and don't have common elements" do
           data_a = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_a, service_b, service_c]
+            [service_a, service_b, service_c],
+            init_system: "systemd"
           )
           data_b = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_d, service_e, service_f]
+            [service_d, service_e, service_f],
+            init_system: "systemd"
           )
 
           comparison = data_a.compare_with(data_b)
@@ -75,29 +75,29 @@ describe "services model" do
 
         it "returns correct result when service lists aren't equal but have common elements" do
           data_a = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_a, service_b, service_c, service_d]
+            [service_a, service_b, service_c, service_d],
+            init_system: "systemd"
           )
           data_b = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_a, service_b, service_e, service_f]
+            [service_a, service_b, service_e, service_f],
+            init_system: "systemd"
           )
 
           comparison = data_a.compare_with(data_b)
 
           expect(comparison).to eq([
             ServicesScope.new(
-              init_system: "systemd",
-              services:    [service_c, service_d]
+              [service_c, service_d],
+              init_system: "systemd"
             ),
             ServicesScope.new(
-              init_system: "systemd",
-              services:    [service_e, service_f]
+              [service_e, service_f],
+              init_system: "systemd"
             ),
             nil,
             ServicesScope.new(
-              init_system: "systemd",
-              services:    [service_a, service_b]
+              [service_a, service_b],
+              init_system: "systemd"
             )
           ])
         end
@@ -106,12 +106,12 @@ describe "services model" do
       context "when init systems are different" do
         it "treats the data as completely different" do
           data_a = ServicesScope.new(
-            init_system: "sysvinit",
-            services:    [service_a, service_b, service_c]
+            [service_a, service_b, service_c],
+            init_system: "sysvinit"
           )
           data_b = ServicesScope.new(
-            init_system: "systemd",
-            services:    [service_a, service_b, service_c]
+            [service_a, service_b, service_c],
+            init_system: "systemd"
           )
 
           comparison = data_a.compare_with(data_b)
