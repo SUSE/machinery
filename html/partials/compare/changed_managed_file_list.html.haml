@@ -1,6 +1,6 @@
 %p
   <strong>Files extracted:</strong> #{list.extracted ? "yes" : "no"}
-- if list.files
+- unless list.elements.empty?
   %table.table.table-striped.table-hover.table-condensed.files-table
     %thead
       %tr
@@ -12,7 +12,7 @@
         %th.small User
         %th.small Group
     %tbody
-      - list.files.each do |file|
+      - list.each do |file|
         %tr
           %td= file.name
           %td= file.package_name

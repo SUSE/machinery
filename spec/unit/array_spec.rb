@@ -288,6 +288,7 @@ describe Machinery::Array do
 
       comparison1 = a.compare_with(b)
       comparison2 = a.compare_with(c)
+      comparison3 = a.compare_with(a)
 
       expect(comparison1).to eq(
         [
@@ -303,6 +304,14 @@ describe Machinery::Array do
           ArrayExampleArray.new([], foo: "a", bar: "c"),
           nil,
           nil
+        ]
+      )
+      expect(comparison3).to eq(
+        [
+          nil,
+          nil,
+          nil,
+          ArrayExampleArray.new([], foo: "a", bar: "a")
         ]
       )
     end

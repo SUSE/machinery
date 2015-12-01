@@ -34,6 +34,6 @@ module ScopeFileAccessFlat
   end
 
   def has_file?(name)
-    return true if files.any? { |file| file.name == name }
+    return true if any? { |file| file.name == name }
   end
 end

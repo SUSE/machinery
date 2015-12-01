@@ -285,7 +285,7 @@ class SystemDescription < Machinery::Object
   def read_config(path, key)
     EXTRACTABLE_SCOPES.each do |scope|
       if scope_extracted?(scope)
-        file = self[scope].files.find { |f| f.name == path }
+        file = self[scope].find { |f| f.name == path }
         return parse_variable_assignment(file.content, key) if file
       end
     end

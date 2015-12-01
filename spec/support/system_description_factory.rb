@@ -153,7 +153,7 @@ module SystemDescriptionFactory
             File.join(file_store.path, "trees", "etc", "tarball with spaces.tgz")
           )
         else
-          description[scope].files.each do |file|
+          description[scope].each do |file|
             next if !file.file? || file.deleted?
 
             file_name = File.join(file_store.path, file.name)
@@ -182,29 +182,37 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": false,
-      "files": []
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/deleted changed managed",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": [
-            "deleted"
-          ]
+          "changes": {
+            "_attributes": {},
+            "_elements": ["deleted"]
+          }
         },
         {
           "name": "/usr/bin/replaced_by_link",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["link_path"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["link_path"]
+          },
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
@@ -216,7 +224,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["md5"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["md5"]
+          },
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -227,7 +238,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["md5", "size"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["md5", "size"]
+          },
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -238,7 +252,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["group"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["group"]
+          },
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -249,29 +266,37 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_config_files"] = <<-EOF.chomp
     "config_files": {
-      "extracted": false,
-      "files": [ ]
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["config_files"] = <<-EOF.chomp
     "config_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/deleted config",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": [
-            "deleted"
-          ]
+          "changes": {
+            "_attributes": {},
+            "_elements": ["deleted"]
+          }
         },
         {
           "name": "/etc/cron tab",
           "package_name": "cron",
           "package_version": "4.1",
           "status": "changed",
-          "changes": ["md5"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["md5"]
+          },
           "user": "root",
           "group": "root",
           "mode": "644",
@@ -282,7 +307,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["link_path"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["link_path"]
+          },
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
@@ -294,7 +322,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["group"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["group"]
+          },
           "user": "user",
           "group": "group",
           "mode": "755",
@@ -636,14 +667,18 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": false,
-      "files": []
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/unmanaged-file",
           "type": "file",

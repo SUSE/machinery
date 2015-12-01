@@ -69,13 +69,13 @@ class ConfigFilesInspector < Inspector
     end
 
     scope.extracted = !!do_extract
-    scope.files = ConfigFileList.new(result.sort_by(&:name))
+    scope += result.sort_by(&:name)
 
     @description["config_files"] = scope
   end
 
   def summary
     "#{@description.config_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.config_files.files.count} changed configuration files."
+      "#{@description.config_files.count} changed configuration files."
   end
 end

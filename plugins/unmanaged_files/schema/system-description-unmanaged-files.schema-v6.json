@@ -2,12 +2,23 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
 
   "type": "object",
-  "required": ["extracted", "files"],
+  "required": [
+    "_attributes",
+    "_elements"
+  ],
   "properties": {
-    "extracted": {
-      "type": "boolean"
+    "_attributes": {
+      "type": "object",
+      "required": [
+        "extracted"
+      ],
+      "properties": {
+        "extracted": {
+          "type": "boolean"
+        }
+      }
     },
-    "files": {
+    "_elements": {
       "oneOf": [
         {
           "type": "array",
@@ -18,8 +29,12 @@
           "minItems": 1,
           "items": {
             "anyOf": [
-              { "$ref": "#/definitions/file_extracted" },
-              { "$ref": "#/definitions/file_remote_dir" }
+              {
+                "$ref": "#/definitions/file_extracted"
+              },
+              {
+                "$ref": "#/definitions/file_remote_dir"
+              }
             ]
           }
         },
@@ -28,8 +43,12 @@
           "minItems": 1,
           "items": {
             "anyOf": [
-              { "$ref": "#/definitions/file_not_extracted" },
-              { "$ref": "#/definitions/file_remote_dir" }
+              {
+                "$ref": "#/definitions/file_not_extracted"
+              },
+              {
+                "$ref": "#/definitions/file_remote_dir"
+              }
             ]
           }
         }

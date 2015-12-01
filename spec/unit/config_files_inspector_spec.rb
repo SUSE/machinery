@@ -132,11 +132,11 @@ describe ConfigFilesInspector do
         it "filters out the matching elements" do
           filter = Filter.new("/config_files/files/name=/usr/*")
           inspector.inspect(filter)
-          expect(description.config_files.files.map(&:name)).
+          expect(description.config_files.map(&:name)).
             to_not include("/usr/share/man/man1/time.1.gz")
 
           inspector.inspect(nil)
-          expect(description.config_files.files.map(&:name)).
+          expect(description.config_files.map(&:name)).
             to include("/usr/share/man/man1/time.1.gz")
         end
       end
@@ -145,7 +145,7 @@ describe ConfigFilesInspector do
         it "returns data about modified config files when requirements are fulfilled" do
           inspector.inspect(filter)
 
-          expect(description["config_files"].files.map(&:name)).to eq([
+          expect(description["config_files"].map(&:name)).to eq([
             "/etc/config",
             "/etc/config_directory",
             "/etc/deleted_config",
@@ -160,8 +160,8 @@ describe ConfigFilesInspector do
 
           inspector.inspect(filter)
           expected = ConfigFilesScope.new(
-            extracted: false,
-            files:     ConfigFileList.new
+            [],
+            "extracted" => false
           )
           expect(description["config_files"]).to eq(expected)
         end
@@ -227,7 +227,7 @@ describe ConfigFilesInspector do
           )
 
           inspector.inspect(filter, extract_changed_config_files: true)
-          names = description["config_files"].files.map(&:name)
+          names = description["config_files"].map(&:name)
 
           expect(names).to eq(names.sort)
         end

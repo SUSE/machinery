@@ -2,7 +2,7 @@
   %div
     %a.scope_anchor{ id: "unmanaged_files" }
     .scope#unmanaged_files_container{ "data-scope" => "unmanaged_files" }
-      - count = unmanaged_files.files.length
+      - count = unmanaged_files.length
       = render_partial "scope_header",
         :scope => "unmanaged_files",
         :title => "Unmanaged Files",
@@ -19,7 +19,7 @@
                   %th Name
                   %th.medium Type
               %tbody
-                - unmanaged_files.files.each do |file|
+                - unmanaged_files.each do |file|
                   %tr
                     %td
                       - if file.on_disk?

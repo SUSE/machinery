@@ -98,8 +98,8 @@ class WorkloadMapper
         system_description.unmanaged_files.export_files_as_tarballs(dir)
         workloads.each do |workload, config|
           config.fetch("data", {}).each do |origin, destination|
-            file = system_description.unmanaged_files.files.find { |f| f.name == origin }
-            file ||= system_description.config_files.files.find { |f| f.name == origin }
+            file = system_description.unmanaged_files.find { |f| f.name == origin }
+            file ||= system_description.config_files.find { |f| f.name == origin }
             if file && file.directory?
               tgz_file = File.join(dir, "trees", "#{origin.chop}.tgz")
               output_path = File.join(path, workload, destination)

@@ -37,6 +37,8 @@ class PackagesRenderer < Renderer
   # In the comparison case we only want to show the package name, not all details like version,
   # architecture etc.
   def compare_content_only_in(description)
+    return if description.packages.empty?
+
     list do
       description.packages.each do |p|
         item "#{p.name}"

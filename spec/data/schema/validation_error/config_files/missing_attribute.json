@@ -1,7 +1,9 @@
 {
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": false
+    },
+    "_elements": [
       {
         "name": "/etc/default/grub",
         "package_name": "grub2",

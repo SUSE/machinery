@@ -1,7 +1,9 @@
 {
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/crontab",
         "package_name": "cronie",

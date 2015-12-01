@@ -26,8 +26,9 @@ describe "changed_managed_files model" do
   it_behaves_like "Scope"
   it_behaves_like "FileScope"
 
-  specify { expect(scope.files).to be_a(ChangedManagedFileList) }
-  specify { expect(scope.files.first).to be_a(ChangedManagedFile) }
+
+  specify { expect(scope).to be_a(ChangedManagedFilesScope) }
+  specify { expect(scope.first).to be_a(ChangedManagedFile) }
 
   it "has correct scope name" do
     expect(ChangedManagedFilesScope.new.scope_name).to eq("changed_managed_files")

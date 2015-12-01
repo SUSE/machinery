@@ -31,9 +31,9 @@ class ConfigFilesRenderer < Renderer
 
     list do
       file_status = description["config_files"].extracted
-      files = description["config_files"].files
+      files = description["config_files"]
 
-      if files.empty?
+      if files.elements.empty?
         puts "There are no config files."
       elsif !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"

@@ -46,8 +46,10 @@ describe AnalyzeConfigFileDiffsTask do
             "priority": 2
           }
         ], "config_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/etc/pam.d/login",
               "package_name": "login",
@@ -126,7 +128,10 @@ describe AnalyzeConfigFileDiffsTask do
             "priority": 2
           }
         ], "config_files": {
-          "extracted": true
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": []
         },
         "os": {
           "name": "SUSE Linux Enterprise Server 11",

@@ -25,8 +25,10 @@ describe ConfigFilesRenderer do
     create_test_description(json: <<-EOF, store_on_disk: true)
     {
       "config_files": {
-        "extracted": true,
-        "files": [
+        "_attributes": {
+          "extracted": true
+        },
+        "_elements": [
           {
             "name": "/etc/default/grub",
             "package_name": "grub2",

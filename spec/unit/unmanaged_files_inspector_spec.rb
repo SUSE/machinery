@@ -41,8 +41,7 @@ describe UnmanagedFilesInspector do
 
     let(:expected_data) {
       UnmanagedFilesScope.new(
-        extracted: false,
-        files: UnmanagedFileList.new([
+        [
           UnmanagedFile.new( name: "/etc/etc_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/etc/etc_myfile", type: "file" ),
           UnmanagedFile.new( name: "/homes/tux/", type: "remote_dir" ),
@@ -58,7 +57,8 @@ describe UnmanagedFilesInspector do
           UnmanagedFile.new( name: "/other_dir/", type: "dir" ),
           UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
-        ])
+        ],
+        "extracted" => false
       )
     }
 
@@ -94,13 +94,13 @@ describe UnmanagedFilesInspector do
           size: 1024, mode: "6644", user: "emil", group: "users" },
         { name: "/homes/tux/" },
       ]
-      files = expected_data.files.map do |os|
+      files = expected_data.map do |os|
         idx = new.find_index{ |h| h[:name] == os.name }
         os = UnmanagedFile.new(os.attributes.merge(new[idx])) if idx
       end
       UnmanagedFilesScope.new(
-        extracted: true,
-        files: UnmanagedFileList.new(files)
+        files,
+        "extracted" => true
       )
     }
 
@@ -287,7 +287,7 @@ describe UnmanagedFilesInspector do
         file_store = description.scope_file_store("unmanaged_files.tmp")
         file_store.create
         cfdir = file_store.path
-        dlist = expected_data.files.select{ |s| s.type=="dir" }
+        dlist = expected_data.select{ |s| s.type=="dir" }
         dlist.map!{ |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)
 
@@ -325,8 +325,8 @@ describe UnmanagedFilesInspector do
       subject.inspect(default_filter)
 
       expected = UnmanagedFilesScope.new(
-        extracted: false,
-        files: UnmanagedFileList.new
+        [],
+        "extracted" => false
       )
       expect(description["unmanaged_files"]).to eq(expected)
       expect(subject.summary).to include("Found 0 unmanaged files and trees")
@@ -339,14 +339,14 @@ describe UnmanagedFilesInspector do
 
       expect(description["unmanaged_files"]).to eq(expected_data)
       expect(subject.summary).
-        to include("Found #{expected_data.files.size} unmanaged files and trees")
+        to include("Found #{expected_data.size} unmanaged files and trees")
     end
 
     it "returns sorted data" do
       expect_inspect_unmanaged(system, true, false)
 
       subject.inspect(default_filter)
-      names = description["unmanaged_files"].files.map(&:name)
+      names = description["unmanaged_files"].map(&:name)
 
       expect(names).to eq(names.sort)
     end
@@ -356,7 +356,7 @@ describe UnmanagedFilesInspector do
 
       default_filter.add_element_filter_from_definition("/unmanaged_files/files/name=/usr/local/*")
       subject.inspect(default_filter)
-      names = description["unmanaged_files"].files.map(&:name)
+      names = description["unmanaged_files"].map(&:name)
 
       expect(names).to eq(names.sort)
     end
@@ -368,7 +368,7 @@ describe UnmanagedFilesInspector do
       default_filter.add_element_filter_from_definition(
         "/unmanaged_files/files/name=/etc/skel/.config")
       subject.inspect(default_filter)
-      names = description["unmanaged_files"].files.map(&:name)
+      names = description["unmanaged_files"].map(&:name)
 
       expect(names).to eq(names.sort)
     end
@@ -389,7 +389,7 @@ describe UnmanagedFilesInspector do
 
       expect(description["unmanaged_files"]).to eq(expected_data_meta)
       expect(subject.summary).
-        to include("Extracted #{expected_data.files.size} unmanaged files and trees")
+        to include("Extracted #{expected_data.size} unmanaged files and trees")
       cfdir = description.scope_file_store("unmanaged_files").path
       expect(File.stat(cfdir).mode.to_s(8)[-3..-1]).to eq("700")
     end
@@ -461,7 +461,7 @@ describe UnmanagedFilesInspector do
     expect_any_instance_of(MachineryHelper).to receive(:remove_helper)
     expect_any_instance_of(MachineryHelper).to receive(:has_compatible_version?).and_return(true)
     expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope|
-      scope.files = UnmanagedFileList.new
+      scope = UnmanagedFilesScope.new
     end
 
     inspector.inspect(Filter.from_default_definition("inspect"))

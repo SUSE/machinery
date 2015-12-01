@@ -261,7 +261,10 @@ describe SystemDescription do
       json = <<-EOF
         {
           "config_files": {
-            "extracted": true
+            "_attributes": {
+              "extracted": true
+            },
+            "_elements": []
           }
         }
       EOF
@@ -271,7 +274,10 @@ describe SystemDescription do
       json = <<-EOF
         {
           "config_files": {
-            "extracted": false
+            "_attributes": {
+              "extracted": false
+            },
+            "_elements": []
           }
         }
       EOF
@@ -585,8 +591,10 @@ describe SystemDescription do
       create_test_description(json: <<-EOF)
         {
           "config_files": {
-            "extracted": true,
-            "files": [
+            "_attributes": {
+              "extracted": true
+            },
+            "_elements": [
               {
                 "name": "/etc/my.cnf"
               }

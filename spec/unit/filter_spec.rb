@@ -75,11 +75,11 @@ describe Filter do
     end
 
     it "parses the filter definition" do
-      filters = Filter.new("/unmanaged_files/files/name=/home/alfred").element_filters
+      filters = Filter.new("/unmanaged_files/name=/home/alfred").element_filters
 
       expect(filters.keys.length).to eq(1)
-      expect(filters["/unmanaged_files/files/name"].path).to eq("/unmanaged_files/files/name")
-      expect(filters["/unmanaged_files/files/name"].matchers).
+      expect(filters["/unmanaged_files/name"].path).to eq("/unmanaged_files/name")
+      expect(filters["/unmanaged_files/name"].matchers).
         to eq(Filter::OPERATOR_EQUALS => ["/home/alfred"])
     end
   end
@@ -116,18 +116,18 @@ describe Filter do
   describe "#filter_for" do
     it "returns the correct filter" do
       filter = Filter.new([
-        "/unmanaged_files/files/name=/home/alfred",
-        "/unmanaged_files/files/name=/var/cache",
-        "/changed_managed_files/files/changes=md5,size"
+        "/unmanaged_files/name=/home/alfred",
+        "/unmanaged_files/name=/var/cache",
+        "/changed_managed_files/changes=md5,size"
       ])
 
-      element_filter = filter.element_filter_for("/unmanaged_files/files/name")
-      expect(element_filter.path).to eq("/unmanaged_files/files/name")
+      element_filter = filter.element_filter_for("/unmanaged_files/name")
+      expect(element_filter.path).to eq("/unmanaged_files/name")
       expect(element_filter.matchers).
         to eq(Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
 
-      element_filter = filter.element_filter_for("/changed_managed_files/files/changes")
-      expect(element_filter.path).to eq("/changed_managed_files/files/changes")
+      element_filter = filter.element_filter_for("/changed_managed_files/changes")
+      expect(element_filter.path).to eq("/changed_managed_files/changes")
       expect(element_filter.matchers).to eq(Filter::OPERATOR_EQUALS => [["md5", "size"]])
     end
   end
@@ -136,16 +136,16 @@ describe Filter do
     it "returns the relevant element filters" do
       filter = Filter.new([
         "/groups/name=root",
-        "/unmanaged_files/files/name=/home/alfred",
-        "/unmanaged_files/files/name=/var/cache",
-        "/unmanaged_files/files/changes=md5,size",
-        "/changed_managed_files/files/changes=md5,size"
+        "/unmanaged_files/name=/home/alfred",
+        "/unmanaged_files/name=/var/cache",
+        "/unmanaged_files/changes=md5,size",
+        "/changed_managed_files/changes=md5,size"
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/files/name", Filter::OPERATOR_EQUALS,
+        ElementFilter.new("/unmanaged_files/name", Filter::OPERATOR_EQUALS,
           ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/files/changes", Filter::OPERATOR_EQUALS,
+        ElementFilter.new("/unmanaged_files/changes", Filter::OPERATOR_EQUALS,
           [["md5", "size"]])
       ]
       expect(filter.element_filters_for_scope("unmanaged_files")).to eq(expected)
@@ -156,16 +156,16 @@ describe Filter do
     it "replaces existing element filters" do
       filter = Filter.new([
         "/groups/name=root",
-        "/unmanaged_files/files/name=/foo",
-        "/unmanaged_files/files/name=/bar",
-        "/unmanaged_files/files/changes=foo",
-        "/changed_managed_files/files/changes=md5,size"
+        "/unmanaged_files/name=/foo",
+        "/unmanaged_files/name=/bar",
+        "/unmanaged_files/changes=foo",
+        "/changed_managed_files/changes=md5,size"
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/files/name", Filter::OPERATOR_EQUALS,
+        ElementFilter.new("/unmanaged_files/name", Filter::OPERATOR_EQUALS,
           ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/files/changes", Filter::OPERATOR_EQUALS,
+        ElementFilter.new("/unmanaged_files/changes", Filter::OPERATOR_EQUALS,
           [["md5", "size"]])
       ]
       filter.set_element_filters_for_scope("unmanaged_files", expected)
@@ -177,9 +177,9 @@ describe Filter do
   describe "#matches?" do
     let(:filter) {
       Filter.new([
-          "/unmanaged_files/files/name=/home/alfred",
-          "/unmanaged_files/files/name=/var/cache",
-          "/changed_managed_files/files/changes=md5,size"
+          "/unmanaged_files/name=/home/alfred",
+          "/unmanaged_files/name=/var/cache",
+          "/changed_managed_files/changes=md5,size"
       ])
     }
 
@@ -188,8 +188,8 @@ describe Filter do
     end
 
     it "asks the proper filter if it matches" do
-      expect(filter.matches?("/unmanaged_files/files/name", "/var/cache")).to be(true)
-      expect(filter.matches?("/changed_managed_files/files/name", "/var/cache")).to be(false)
+      expect(filter.matches?("/unmanaged_files/name", "/var/cache")).to be(true)
+      expect(filter.matches?("/changed_managed_files/name", "/var/cache")).to be(false)
     end
   end
 
@@ -199,17 +199,17 @@ describe Filter do
     }
 
     def expect_file_scope_filter_change(scope, filter, before, after)
-      expect(description[scope].files.map(&:name)).to match_array(before)
+      expect(description[scope].map(&:name)).to match_array(before)
 
       filter.apply!(description)
 
-      expect(description[scope].files.map(&:name)).to match_array(after)
+      expect(description[scope].map(&:name)).to match_array(after)
     end
 
     it "filters simple elements" do
       expect_file_scope_filter_change(
         "unmanaged_files",
-        Filter.new("/unmanaged_files/files/name=/etc/unmanaged-file"),
+        Filter.new("/unmanaged_files/name=/etc/unmanaged-file"),
         [
           "/etc/unmanaged-file",
           "/etc/tarball with spaces/",
@@ -225,7 +225,7 @@ describe Filter do
     it "filters by array matches" do
       expect_file_scope_filter_change(
         "changed_managed_files",
-        Filter.new("/changed_managed_files/files/changes=md5,size"),
+        Filter.new("/changed_managed_files/changes=md5,size"),
         [
           "/etc/cron.d",
           "/etc/deleted changed managed",
@@ -245,7 +245,7 @@ describe Filter do
     it "removes multiple items when a wildcard is used" do
       expect_file_scope_filter_change(
         "changed_managed_files",
-        Filter.new("/changed_managed_files/files/name=/etc/c*"),
+        Filter.new("/changed_managed_files/name=/etc/c*"),
         [
           "/etc/cron.d",
           "/etc/deleted changed managed",
@@ -264,7 +264,7 @@ describe Filter do
       expect {
         expect_file_scope_filter_change(
           "changed_managed_files",
-          Filter.new(["/does/not/exist=/foo", "/changed_managed_files/files/name=/etc/c*"]),
+          Filter.new(["/does/not/exist=/foo", "/changed_managed_files/name=/etc/c*"]),
           [
             "/etc/cron.d",
             "/etc/deleted changed managed",
@@ -284,7 +284,7 @@ describe Filter do
       expect {
         expect_file_scope_filter_change(
           "changed_managed_files",
-          Filter.new(["/changed_managed_files/files/name=element_a,element_b"]),
+          Filter.new(["/changed_managed_files/name=element_a,element_b"]),
           [
             "/etc/deleted changed managed",
             "/etc/cron.d",
@@ -302,7 +302,7 @@ describe Filter do
         )
       }.to_not raise_error
       expected_output = <<-EOF .chomp
-Warning: Filter '/changed_managed_files/files/name=element_a,element_b' tries to match an array, but the according element is not an array.
+Warning: Filter '/changed_managed_files/name=element_a,element_b' tries to match an array, but the according element is not an array.
 EOF
       expect(captured_machinery_output).to include(expected_output)
     end

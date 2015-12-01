@@ -79,7 +79,10 @@ module Machinery
         raise RuntimeError, "Unknown properties: #{unknown_attributes.join(",")}"
       end
 
-      @attributes = attributes
+      @attributes = {}
+      attributes.each do |k, v|
+        @attributes[k.to_s] = v
+      end
       @elements = self.class.convert_raw_array(elements)
     end
 

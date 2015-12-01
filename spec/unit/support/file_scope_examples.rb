@@ -37,12 +37,12 @@ shared_examples "FileScope" do
   describe "#compare_with" do
     it "compares for equal objects" do
       a = scope.class.new(
-        extracted: true,
-        files: [file_a, file_b]
+        [file_a, file_b],
+        extracted: true
       )
       b = scope.class.new(
-        extracted: true,
-        files: [file_a, file_b]
+        [file_a, file_b],
+        extracted: true
       )
 
       comparison = a.compare_with(b)
@@ -51,34 +51,21 @@ shared_examples "FileScope" do
 
     it "works for differing objects" do
       a = scope.class.new(
-        extracted: true,
-        files: [file_a, file_b]
+        [file_a, file_b],
+        extracted: true
       )
       b = scope.class.new(
-        extracted: false,
-        files: [file_c, file_b]
+        [file_c, file_b],
+        extracted: false
       )
 
       comparison = a.compare_with(b)
       expect(comparison).to eq([
-        scope.class.new(extracted: true, files: [file_a]),
-        scope.class.new(extracted: false, files: [file_c]),
+        scope.class.new([file_a], extracted: true),
+        scope.class.new([file_c], extracted: false),
         nil,
-        scope.class.new(files: [file_b])
+        scope.class.new([file_b])
       ])
-    end
-
-    it "raises an error when there is an unknown attribute" do
-      a = scope.class.new(
-        foo: 1
-      )
-      b = scope.class.new(
-        foo: 1
-      )
-
-      expect {
-        a.compare_with(b)
-      }.to raise_error(Machinery::Errors::MachineryError, /attributes.*foo/)
     end
   end
 end

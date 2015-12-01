@@ -18,26 +18,10 @@
 class ConfigFile < Machinery::SystemFile
 end
 
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
-
-  def compare_with(other)
-    only_self = self - other
-    only_other = other - self
-    common = self & other
-    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
-
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
-  end
-end
-
 class ConfigFilesScope < FileScope
   include Machinery::Scope
   include ScopeFileAccessFlat
-  has_property :files, class: ConfigFileList
+
+  has_attributes :extracted
+  has_elements class: ConfigFile
 end
