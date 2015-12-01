@@ -101,7 +101,7 @@ class KiwiConfig < Exporter
       output_root_path = File.join(output_location, "root")
       FileUtils.mkdir_p(output_root_path)
 
-      @system_description[scope].files.each do |file|
+      @system_description[scope].each do |file|
         if file.deleted?
           @sh << "rm -rf '#{quote(file.name)}'\n"
         elsif file.directory?

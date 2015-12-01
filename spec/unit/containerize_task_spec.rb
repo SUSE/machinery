@@ -35,8 +35,10 @@ describe ContainerizeTask do
             }]
         },
         "config_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": false
+          },
+          "_elements": [
             {
               "name": "/etc/my.cnf"
             }

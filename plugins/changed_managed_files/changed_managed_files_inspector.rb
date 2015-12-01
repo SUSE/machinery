@@ -55,14 +55,14 @@ class ChangedManagedFilesInspector < Inspector
     end
 
     scope.extracted = !!options[:extract_changed_managed_files]
-    scope.files = ChangedManagedFileList.new(result.sort_by(&:name))
+    scope += result.sort_by(&:name)
 
     @description["changed_managed_files"] = scope
   end
 
   def summary
     "#{@description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.changed_managed_files.files.count} changed files."
+      "#{@description.changed_managed_files.count} changed files."
   end
 
   private

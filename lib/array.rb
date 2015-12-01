@@ -18,6 +18,17 @@
 module Machinery
   class Array
     class << self
+      attr_reader :attribute_keys
+
+      def initialize
+        @attribute_keys = {}
+        super
+      end
+
+      def has_attributes(*keys)
+        @attribute_keys = keys.map(&:to_s)
+      end
+
       def has_elements(options)
         @element_class = options[:class]
       end
@@ -30,7 +41,11 @@ module Machinery
           when ::Array
             Machinery::Array.from_json(element)
           when Hash
-            Machinery::Object.from_json(element)
+            if element.keys.sort == ["_attributes", "_elements"]
+              Machinery::Array.from_json(element)
+            else
+              Machinery::Object.from_json(element)
+            end
           else
             element
           end
@@ -44,14 +59,30 @@ module Machinery
       end
 
       def from_json(json_object)
-        new(json_object)
+        if json_object.is_a?(::Array)
+          new(json_object)
+        else
+          new(json_object["_elements"], json_object["_attributes"])
+        end
       end
     end
 
     attr_reader :elements
+    attr_accessor :attributes
     attr_accessor :scope
 
-    def initialize(elements = [])
+    def initialize(elements = [], attributes = {})
+      @attribute_keys = self.class.attribute_keys || []
+
+      unknown_attributes = attributes.keys.map(&:to_s) - @attribute_keys
+      if unknown_attributes.length > 0
+        raise RuntimeError, "Unknown properties: #{unknown_attributes.join(",")}"
+      end
+
+      @attributes = {}
+      attributes.each do |k, v|
+        @attributes[k.to_s] = v
+      end
       @elements = self.class.convert_raw_array(elements)
     end
 
@@ -67,7 +98,7 @@ module Machinery
     end
 
     def ==(other)
-      self.class == other.class && @elements == other.elements
+      self.class == other.class && @elements == other.elements && @attributes == other.attributes
     end
 
     # Various Array operators such as "-" and "&" use #eql? and #hash to compare
@@ -80,11 +111,11 @@ module Machinery
     end
 
     def -(other)
-      self.class.new(@elements - other.elements)
+      self.class.new(@elements - other.elements, @attributes)
     end
 
     def &(other)
-      self.class.new(@elements & other.elements)
+      self.class.new(@elements & other.elements, @attributes)
     end
 
     def push(element)
@@ -96,34 +127,60 @@ module Machinery
     end
 
     def +(array)
-      self.class.new(@elements + self.class.new(array).elements)
+      self.class.new(@elements + self.class.new(array).elements, @attributes)
     end
 
     def insert(index, *elements)
       @elements.insert(index, *self.class.new(elements).elements)
     end
 
+    def empty?
+      @elements.empty? && @attributes.empty?
+    end
+
     def as_json
-      @elements.map do |element|
-        if element.is_a?(Machinery::Array) || element.is_a?(Machinery::Object)
-          element.as_json
-        else
-          element
+      {
+        "_attributes" => @attributes,
+        "_elements" => @elements.map do |element|
+          if element.is_a?(Machinery::Array) || element.is_a?(Machinery::Object)
+            element.as_json
+          else
+            element
+          end
         end
-      end
+      }
     end
 
     def compare_with(other)
+      only_self = self.class.new(self.elements - other.elements)
+      only_other = self.class.new(other.elements - self.elements)
+      common = self.class.new(self.elements & other.elements)
+
+      if self.attributes == other.attributes
+        common.attributes = self.attributes
+      else
+        only_self.attributes = self.attributes
+        only_other.attributes = other.attributes
+      end
+
       [
-        self - other,
-        other - self,
+        only_self,
+        only_other,
         [],
-        self & other
+        common
       ].map { |e| e.empty? ? nil : e }
     end
 
     def method_missing(name, *args, &block)
-      @elements.send(name, *args, &block)
+      name = name.to_s
+
+      if @attribute_keys.include?(name)
+        @attributes[name]
+      elsif name.end_with?("=") and @attribute_keys.include?(name[0..-2])
+        @attributes[name[0..-2]] = args.first
+      else
+        @elements.send(name, *args, &block)
+      end
     end
 
     def respond_to?(name, include_all = false)

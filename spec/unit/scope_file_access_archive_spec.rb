@@ -40,7 +40,7 @@ describe ScopeFileAccessArchive do
     }
 
     it "returns the file content of a file stored in the files.tgz tar ball" do
-      system_file = description.unmanaged_files.files.find do |file|
+      system_file = description.unmanaged_files.find do |file|
         file.name == "/etc/magicapp.conf"
       end
       file_content = description.unmanaged_files.file_content(system_file)
@@ -91,7 +91,7 @@ describe ScopeFileAccessArchive do
     }
 
     it "returns false if a file is a text file" do
-      system_file = description.unmanaged_files.files.find do |file|
+      system_file = description.unmanaged_files.find do |file|
         file.name == "/etc/grub.conf"
       end
 
@@ -100,7 +100,7 @@ describe ScopeFileAccessArchive do
     end
 
     it "returns true if a file is a binary file" do
-      system_file = description.unmanaged_files.files.find do |file|
+      system_file = description.unmanaged_files.find do |file|
         file.name == "/var/lib/misc/random-seed"
       end
 
@@ -109,7 +109,7 @@ describe ScopeFileAccessArchive do
     end
 
     it "returns false if the file is empty" do
-      system_file = description.unmanaged_files.files.find do |file|
+      system_file = description.unmanaged_files.find do |file|
         file.name == "/root/.bash_history"
       end
 

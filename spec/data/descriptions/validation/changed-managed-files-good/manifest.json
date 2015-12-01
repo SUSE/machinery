@@ -1,15 +1,21 @@
 {
   "changed_managed_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/lib/mkinitrd/scripts/setup-done.sh",
         "package_name": "mkinitrd",
         "package_version": "2.4.2",
         "status": "changed",
-        "changes": [
-          "mode"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "mode"
+          ]
+        },
         "mode": "555",
         "user": "root",
         "group": "root",
@@ -20,9 +26,13 @@
         "package_name": "mkinitrd",
         "package_version": "2.4.2",
         "status": "changed",
-        "changes": [
-          "mode"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "mode"
+          ]
+        },
         "mode": "555",
         "user": "root",
         "group": "root",
@@ -33,9 +43,13 @@
         "package_name": "mkinitrd",
         "package_version": "2.4.2",
         "status": "changed",
-        "changes": [
-          "mode"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "mode"
+          ]
+        },
         "mode": "555",
         "user": "root",
         "group": "root",
@@ -46,9 +60,13 @@
         "package_name": "bash",
         "package_version": "3.2",
         "status": "changed",
-        "changes": [
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "md5"
+          ]
+        },
         "mode": "644",
         "user": "root",
         "group": "root",
@@ -59,18 +77,26 @@
         "package_name": "sles-release-DVD",
         "package_version": "11.3",
         "status": "changed",
-        "changes": [
-          "deleted"
-        ]
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "deleted"
+          ]
+        }
       },
       {
         "name": "/lib/libc-2.19.so",
         "package_name": "glibc-32bit",
         "package_version": "2.19",
         "status": "changed",
-        "changes": [
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "md5"
+          ]
+        },
         "mode": "644",
         "user": "root",
         "group": "root",
@@ -79,7 +105,7 @@
     ]
   },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "changed_managed_files": {
       "modified": "2014-08-27T18:00:17Z",
       "hostname": "10.122.166.77"

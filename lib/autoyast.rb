@@ -270,7 +270,7 @@ class Autoyast < Exporter
   def apply_changed_files(scope)
     return if !@system_description.scope_extracted?(scope)
 
-    @system_description[scope].files.each do |file|
+    @system_description[scope].each do |file|
       if file.deleted?
         @chroot_scripts << "rm -rf '#{quote(file.name)}'"
       elsif file.directory?

@@ -1,7 +1,9 @@
 {
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": false
+    },
+    "_elements": [
       {
         "name": "/etc/default/grub",
         "package_name": "grub2",
@@ -18,7 +20,7 @@
     ]
   },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "config_files": {
       "modified": "2014-08-25T14:45:38Z",
       "hostname": "192.168.121.68"

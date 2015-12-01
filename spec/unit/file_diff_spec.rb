@@ -41,7 +41,7 @@ describe FileDiff do
       store_on_disk: true,
       extracted_scopes: ["config_files"]
     )
-    file = description.config_files.files.select(&:file?).first
+    file = description.config_files.find(&:file?)
 
     File.write(
       File.join(description.description_path, "config_files", file.name),

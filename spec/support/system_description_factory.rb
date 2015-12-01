@@ -105,7 +105,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 5
+      format_version: 6
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -153,7 +153,7 @@ module SystemDescriptionFactory
             File.join(file_store.path, "trees", "etc", "tarball with spaces.tgz")
           )
         else
-          description[scope].files.each do |file|
+          description[scope].each do |file|
             next if !file.file? || file.deleted?
 
             file_name = File.join(file_store.path, file.name)
@@ -182,29 +182,37 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": false,
-      "files": []
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/deleted changed managed",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": [
-            "deleted"
-          ]
+          "changes": {
+            "_attributes": {},
+            "_elements": ["deleted"]
+          }
         },
         {
           "name": "/usr/bin/replaced_by_link",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["link_path"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["link_path"]
+          },
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
@@ -216,7 +224,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["md5"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["md5"]
+          },
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -227,7 +238,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["md5", "size"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["md5", "size"]
+          },
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -238,7 +252,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["group"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["group"]
+          },
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -249,29 +266,37 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_config_files"] = <<-EOF.chomp
     "config_files": {
-      "extracted": false,
-      "files": [ ]
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["config_files"] = <<-EOF.chomp
     "config_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/deleted config",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": [
-            "deleted"
-          ]
+          "changes": {
+            "_attributes": {},
+            "_elements": ["deleted"]
+          }
         },
         {
           "name": "/etc/cron tab",
           "package_name": "cron",
           "package_version": "4.1",
           "status": "changed",
-          "changes": ["md5"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["md5"]
+          },
           "user": "root",
           "group": "root",
           "mode": "644",
@@ -282,7 +307,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["link_path"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["link_path"]
+          },
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
@@ -294,7 +322,10 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": ["group"],
+          "changes": {
+            "_attributes": {},
+            "_elements": ["group"]
+          },
           "user": "user",
           "group": "group",
           "mode": "755",
@@ -338,63 +369,78 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["empty_packages"] = <<-EOF.chomp
-    "packages": []
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
+      },
+      "_elements": []
+    }
   EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
-    "packages": [
-      {
-        "name": "bash",
-        "version": "4.2",
-        "release": "68.1.5",
-        "arch": "x86_64",
-        "vendor": "openSUSE",
-        "checksum": "533e40ba8a5551204b528c047e45c169"
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
       },
-      {
-        "name": "openSUSE-release-dvd",
-        "version": "13.1",
-        "release": "1.10",
-        "arch": "x86_64",
-        "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-        "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-      },
-      {
-        "name": "autofs",
-        "version": "5.0.9",
-        "release": "3.6",
-        "arch": "x86_64",
-        "vendor": "Packman",
-        "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-      }
-    ]
+      "_elements": [
+        {
+          "name": "bash",
+          "version": "4.2",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "openSUSE",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        },
+        {
+          "name": "openSUSE-release-dvd",
+          "version": "13.1",
+          "release": "1.10",
+          "arch": "x86_64",
+          "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+          "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+        },
+        {
+          "name": "autofs",
+          "version": "5.0.9",
+          "release": "3.6",
+          "arch": "x86_64",
+          "vendor": "Packman",
+          "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["packages2"] = <<-EOF.chomp
-    "packages": [
-      {
-        "name": "bash",
-        "version": "4.3",
-        "release": "68.1.5",
-        "arch": "x86_64",
-        "vendor": "openSUSE",
-        "checksum": "533e40ba8a5551204b528c047e45c169"
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
       },
-      {
-        "name": "kernel-desktop",
-        "version": "3.7.10",
-        "release": "1.0",
-        "arch": "i586",
-        "vendor": "openSUSE",
-        "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
-      },
-      {
-        "name": "autofs",
-        "version": "5.0.9",
-        "release": "3.6",
-        "arch": "x86_64",
-        "vendor": "Packman",
-        "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-      }
-    ]
+      "_elements": [
+        {
+          "name": "bash",
+          "version": "4.3",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "openSUSE",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        },
+        {
+          "name": "kernel-desktop",
+          "version": "3.7.10",
+          "release": "1.0",
+          "arch": "i586",
+          "vendor": "openSUSE",
+          "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+        },
+        {
+          "name": "autofs",
+          "version": "5.0.9",
+          "release": "3.6",
+          "arch": "x86_64",
+          "vendor": "Packman",
+          "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
     "patterns": [ ]
@@ -621,14 +667,18 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": false,
-      "files": []
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/unmanaged-file",
           "type": "file",

@@ -145,7 +145,7 @@ EOF
 
       it "raises in case of missing package_version" do
         expected = <<EOF
-In scope config_files: The property #0 (files) did not contain a required property of 'package_version'.
+In scope config_files: The property #0 (_elements) did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -156,7 +156,7 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope config_files: The property #0 (files/status) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (_elements/status) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -167,7 +167,7 @@ EOF
 
       it "raises in case of a pattern mismatch" do
         expected = <<EOF
-In scope config_files: The property #0 (files/mode/changes) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (_elements/mode/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -178,7 +178,7 @@ EOF
 
       it "raises for a deleted file in case of an empty changes array" do
         expected = <<EOF
-In scope config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
+In scope config_files: The property #0 (_elements/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -193,7 +193,7 @@ EOF
 
       it "raises for extracted in case of unknown type" do
         expected = <<EOF
-In scope unmanaged_files: The property #0 (files) of type Array did not match any of the required schemas.
+In scope unmanaged_files: The property #0 (_elements) of type Array did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(

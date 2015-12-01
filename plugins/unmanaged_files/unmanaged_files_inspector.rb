@@ -271,9 +271,9 @@ class UnmanagedFilesInspector < Inspector
         )
       end
 
-      helper.run_helper(scope)
+      scope = helper.run_helper(scope)
 
-      scope.files.delete_if { |f| filter.matches?(f.name) }
+      scope.delete_if { |f| filter.matches?(f.name) }
 
       if do_extract
         mount_points = MountPoints.new(@system)
@@ -291,7 +291,7 @@ class UnmanagedFilesInspector < Inspector
           show_extraction_progress(files.count + count)
         end
 
-        scope.files = extract_tar_metadata(scope.files, file_store_tmp.path)
+        scope = extract_tar_metadata(scope, file_store_tmp.path)
         file_store_final.remove
         file_store_tmp.rename(file_store_final.store_name)
         scope.scope_file_store = file_store_final
@@ -426,8 +426,7 @@ class UnmanagedFilesInspector < Inspector
       excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
 
     scope.extracted = !!do_extract
-    scope.files = UnmanagedFileList.new(processed_files.sort_by(&:name))
-
+    scope += processed_files.sort_by(&:name)
     @description["unmanaged_files"] = scope
   end
 
@@ -477,7 +476,7 @@ class UnmanagedFilesInspector < Inspector
 
   def summary
     "#{@description.unmanaged_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.unmanaged_files.files.count} unmanaged files and trees."
+      "#{@description.unmanaged_files.count} unmanaged files and trees."
   end
 
   private
