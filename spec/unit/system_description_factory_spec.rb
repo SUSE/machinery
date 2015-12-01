@@ -49,8 +49,10 @@ describe SystemDescriptionFactory do
       description = create_test_description(json: <<-EOT
         {
           "packages": {
-            "package_system": "rpm",
-            "packages": [
+            "_attributes": {
+              "package_system": "rpm"
+            },
+            "_elements": [
               {
                 "name": "foo"
               }
@@ -60,7 +62,7 @@ describe SystemDescriptionFactory do
         EOT
       )
 
-      expect(description.packages.packages.first.name).to eq("foo")
+      expect(description.packages.first.name).to eq("foo")
     end
 
     it "creates description with example scope" do

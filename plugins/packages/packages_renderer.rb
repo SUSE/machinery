@@ -23,7 +23,7 @@ class PackagesRenderer < Renderer
   def content(description)
     return unless description.packages
 
-    if description.packages.empty?
+    if description.packages.elements.empty?
       puts "There are no packages."
     end
 
