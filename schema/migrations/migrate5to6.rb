@@ -61,6 +61,15 @@ class Migrate5To6 < Migration
       }
     end
 
+    ["users", "groups", "patterns"].each do |scope|
+      next unless @hash.key?(scope)
+
+      @hash[scope] = {
+        "_attributes" => {},
+        "_elements" => @hash[scope]
+      }
+    end
+
     @hash
   end
 end

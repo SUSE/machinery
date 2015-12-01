@@ -1,22 +1,38 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
 
-  "type": "array",
-  "items" : {
-    "type" : "object",
-    "required": ["name", "version", "release"],
-    "properties": {
-      "name": {
-        "type": "string",
-        "minLength": 1
-      },
-      "version": {
-        "type": "string",
-        "minLength": 1
-      },
-      "release": {
-        "type": "string",
-        "minLength": 1
+  "type": "object",
+  "required": [
+    "_attributes",
+    "_elements"
+  ],
+  "properties": {
+    "_attributes": {
+      "type": "object"
+    },
+    "_elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "version",
+          "release"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "release": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       }
     }
   }

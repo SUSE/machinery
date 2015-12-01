@@ -21,18 +21,21 @@ describe PatternsRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
       {
-        "patterns": [
-          {
-            "name": "base",
-            "version": "11",
-            "release": "38.44.33"
-          },
-          {
-            "name": "Minimal",
-            "version": "11",
-            "release": "38.44.33"
-          }
-        ]
+        "patterns": {
+          "_attributes": {},
+          "_elements": [
+            {
+              "name": "base",
+              "version": "11",
+              "release": "38.44.33"
+            },
+            {
+              "name": "Minimal",
+              "version": "11",
+              "release": "38.44.33"
+            }
+          ]
+        }
       }
     EOF
   }

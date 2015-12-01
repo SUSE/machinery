@@ -102,6 +102,36 @@ describe Migrate5To6 do
             }
           ]
         },
+        "users": [
+          {
+            "name": "the_element",
+            "password": "x",
+            "uid": 1,
+            "gid": 1,
+            "comment": "bin",
+            "home": "/bin",
+            "shell": "/bin/bash",
+            "encrypted_password": "*",
+            "last_changed_date": 16563
+          }
+        ],
+        "groups": [
+          {
+            "name": "the_element",
+            "password": "x",
+            "gid": 17,
+            "users": [
+
+            ]
+          }
+        ],
+        "patterns": [
+          {
+            "name": "the_element",
+            "version": "20141007",
+            "release": "2.1"
+          }
+        ],
         "meta": {
           "format_version": 5
         }
@@ -148,5 +178,11 @@ describe Migrate5To6 do
   it "migrates the services scope" do
     expect(description_hash["services"]["_elements"].first["name"]).to eq("mysql.service")
     expect(description_hash["services"]["_attributes"]["init_system"]).to eq("systemd")
+  end
+
+  ["users", "groups", "patterns"].each do |scope|
+    it "migrates #{scope}" do
+      expect(description_hash[scope]["_elements"].first["name"]).to eq("the_element")
+    end
   end
 end

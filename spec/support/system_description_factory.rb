@@ -335,17 +335,20 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["groups"] = <<-EOF.chomp
-    "groups": [
-      {
-        "name": "audio",
-        "password": "x",
-        "users": [
-          "tux",
-          "foo"
-        ],
-        "gid": 17
-      }
-    ]
+    "groups": {
+      "_attributes": {},
+      "_elements": [
+        {
+          "name": "audio",
+          "password": "x",
+          "users": [
+            "tux",
+            "foo"
+          ],
+          "gid": 17
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["os"] = <<-EOF.chomp
     "os": {
@@ -443,16 +446,22 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
-    "patterns": [ ]
+    "patterns": {
+      "_attributes": {},
+      "_elements": []
+    }
   EOF
   EXAMPLE_SCOPES["patterns"] = <<-EOF.chomp
-    "patterns": [
-      {
-        "name": "base",
-        "version": "13.1",
-        "release": "13.6.1"
-      }
-    ]
+    "patterns": {
+      "_attributes": {},
+      "_elements": [
+        {
+          "name": "base",
+          "version": "13.1",
+          "release": "13.6.1"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_repositories"] = <<-EOF.chomp
     "repositories": [ ]
@@ -551,51 +560,57 @@ module SystemDescriptionFactory
   EOF
 
   EXAMPLE_SCOPES["users"] = <<-EOF.chomp
-    "users": [
-      {
-        "name": "bin",
-        "password": "x",
-        "uid": 1,
-        "gid": 1,
-        "comment": "bin",
-        "home": "/bin",
-        "shell": "/bin/bash",
-        "encrypted_password": "*",
-        "last_changed_date": 16125
-      }
-    ]
+    "users": {
+      "_attributes": {},
+      "_elements": [
+        {
+          "name": "bin",
+          "password": "x",
+          "uid": 1,
+          "gid": 1,
+          "comment": "bin",
+          "home": "/bin",
+          "shell": "/bin/bash",
+          "encrypted_password": "*",
+          "last_changed_date": 16125
+        }
+      ]
+    }
   EOF
 
   EXAMPLE_SCOPES["users_with_passwords"] = <<-EOF.chomp
-    "users": [
-      {
-        "name": "root",
-        "password": "x",
-        "uid": 0,
-        "gid": 0,
-        "comment": "root",
-        "home": "/root",
-        "shell": "/bin/bash",
-        "encrypted_password": "$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.",
-        "last_changed_date": 16357
-      },
-      {
-        "name": "vagrant",
-        "password": "x",
-        "uid": 1000,
-        "gid": 100,
-        "comment": "",
-        "home": "/home/vagrant",
-        "shell": "/bin/bash",
-        "encrypted_password": "$6$6V/YKqrsHpkC$nSAsvrbcVE8kTI9D3Z7ubc1L/dBHXj47BlL5usy0JNINzXFDl3YXqF5QYjZLTo99BopLC5bdHYUvkUSBRC3a3/",
-        "last_changed_date": 16373,
-        "min_days": 0,
-        "max_days": 99999,
-        "warn_days": 7,
-        "disable_days": 30,
-        "disabled_date": 1234
-      }
-    ]
+    "users": {
+      "_attributes": {},
+      "_elements": [
+        {
+          "name": "root",
+          "password": "x",
+          "uid": 0,
+          "gid": 0,
+          "comment": "root",
+          "home": "/root",
+          "shell": "/bin/bash",
+          "encrypted_password": "$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.",
+          "last_changed_date": 16357
+        },
+        {
+          "name": "vagrant",
+          "password": "x",
+          "uid": 1000,
+          "gid": 100,
+          "comment": "",
+          "home": "/home/vagrant",
+          "shell": "/bin/bash",
+          "encrypted_password": "$6$6V/YKqrsHpkC$nSAsvrbcVE8kTI9D3Z7ubc1L/dBHXj47BlL5usy0JNINzXFDl3YXqF5QYjZLTo99BopLC5bdHYUvkUSBRC3a3/",
+          "last_changed_date": 16373,
+          "min_days": 0,
+          "max_days": 99999,
+          "warn_days": 7,
+          "disable_days": 30,
+          "disabled_date": 1234
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_services"] = <<-EOF.chomp
     "services": {
