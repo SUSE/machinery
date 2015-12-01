@@ -64,7 +64,7 @@ class FileValidator
   end
 
   def expected_files(scope)
-    changes_proc = ->(file) { file["changes"]}
+    changes_proc = ->(file) { file["changes"] }
     if @format_version == 1
       files = @json_hash[scope]
     elsif @format_version < 6

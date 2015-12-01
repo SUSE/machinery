@@ -51,7 +51,6 @@ class UnmanagedFilesScope < FileScope
     end
     changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
 
-
     if self.attributes == other.attributes
       common_attributes = self.attributes
     else

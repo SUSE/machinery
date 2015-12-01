@@ -42,7 +42,7 @@ class Migrate5To6 < Migration
 
     ["changed_managed_files", "config_files"].each do |scope|
       next unless @hash.key?(scope)
-      
+
       @hash[scope]["_elements"] = @hash[scope]["_elements"].map do |file|
         file["changes"] = {
           "_attributes" => {},
