@@ -23,8 +23,10 @@
     }
   ],
   "services": {
-    "init_system": "systemd",
-    "services": [
+    "_attributes": {
+      "init_system": "systemd"
+    },
+    "_elements": [
       {
         "name": "YaST2-Firstboot.service",
         "state": "enabled"

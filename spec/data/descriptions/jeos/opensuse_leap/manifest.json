@@ -2320,8 +2320,10 @@
     }
   ],
   "services": {
-    "init_system": "systemd",
-    "services": [
+    "_attributes": {
+      "init_system": "systemd"
+    },
+    "_elements": [
       {
         "name": "after-local.service",
         "state": "static"

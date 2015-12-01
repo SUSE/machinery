@@ -11,7 +11,10 @@
         "status": "changed",
         "changes": {
           "_attributes": {},
-          "_elements": ["mode"]
+          "_elements": [
+            "mode",
+            "md5"
+          ]
         },
         "user": "root",
         "group": "root",
