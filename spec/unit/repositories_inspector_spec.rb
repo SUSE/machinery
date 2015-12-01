@@ -61,56 +61,55 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
       EOF
     }
     let(:expected_repo_list) {
-      RepositoriesScope.new([
-        Repository.new(
-          alias: "nu_novell_com:SLES11-SP3-Pool",
-          name: "SLES11-SP3-Pool",
-          type: "rpm-md",
-          enabled: true,
-          autorefresh: true,
-          gpgcheck: true,
-          priority: 99,
-          url: "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials",
-          username: "d4c0246d79334fa59a9ffe625fffef1d",
-          password: "0a0918c876ef4a1d9c352e5c47421235",
-          package_manager: "zypp"
-        ),
-        Repository.new(
-          alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
-          name: "SLES12-Pool",
-          type: "rpm-md",
-          enabled: true,
-          autorefresh: false,
-          gpgcheck: true,
-          priority: 99,
-          url: "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e",
-          username: "SCC_d91435cca69a232114cf2e14aa830ad5",
-          password: "2fdcb7499fd46842",
-          package_manager: "zypp"
-        ),
-        Repository.new(
-          alias: "repo-oss",
-          name: "openSUSE-Oss",
-          type: "yast2",
-          enabled: true,
-          autorefresh: true,
-          gpgcheck: true,
-          priority: 22,
-          url: "http://download.opensuse.org/distribution/13.1/repo/oss/",
-          package_manager: "zypp"
-        ),
+      RepositoriesScope.new(
+        [
           Repository.new(
-          alias: "repo-update",
-          name: "openSUSE-Update",
-          type: "rpm-md",
-          enabled: false,
-          autorefresh: false,
-          gpgcheck: false,
-          priority: 47,
-          url: "http://download.opensuse.org/update/13.1/",
-          package_manager: "zypp"
-        )
-      ])
+            alias: "nu_novell_com:SLES11-SP3-Pool",
+            name: "SLES11-SP3-Pool",
+            type: "rpm-md",
+            enabled: true,
+            autorefresh: true,
+            gpgcheck: true,
+            priority: 99,
+            url: "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials",
+            username: "d4c0246d79334fa59a9ffe625fffef1d",
+            password: "0a0918c876ef4a1d9c352e5c47421235"
+          ),
+          Repository.new(
+            alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
+            name: "SLES12-Pool",
+            type: "rpm-md",
+            enabled: true,
+            autorefresh: false,
+            gpgcheck: true,
+            priority: 99,
+            url: "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e",
+            username: "SCC_d91435cca69a232114cf2e14aa830ad5",
+            password: "2fdcb7499fd46842"
+          ),
+          Repository.new(
+            alias: "repo-oss",
+            name: "openSUSE-Oss",
+            type: "yast2",
+            enabled: true,
+            autorefresh: true,
+            gpgcheck: true,
+            priority: 22,
+            url: "http://download.opensuse.org/distribution/13.1/repo/oss/"
+          ),
+            Repository.new(
+            alias: "repo-update",
+            name: "openSUSE-Update",
+            type: "rpm-md",
+            enabled: false,
+            autorefresh: false,
+            gpgcheck: false,
+            priority: 47,
+            url: "http://download.opensuse.org/update/13.1/"
+          )
+        ],
+        repository_system: "zypp"
+      )
     }
     let(:credentials_directories) { "NCCcredentials\nSCCcredentials\n" }
     let(:ncc_credentials) {
@@ -189,7 +188,7 @@ password=2fdcb7499fd46842
       ).and_return(scc_credentials)
 
       inspector.inspect(filter)
-      expect(description.repositories).to match_array(expected_repo_list)
+      expect(description.repositories).to eq(expected_repo_list)
       expect(inspector.summary).to include("Found 4 repositories")
     end
 
@@ -208,7 +207,7 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([]))
+      expect(description.repositories).to eq(RepositoriesScope.new([], :repository_system => "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -225,7 +224,7 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details_exit_6(system)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([]))
+      expect(description.repositories).to eq(RepositoriesScope.new([], :repository_system => "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -256,7 +255,7 @@ password=2fdcb7499fd46842
     let(:expected_yum_extractor_output) {
       output = <<-EOF
 "Loaded plugins: priorities"
-[{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "enabled": true, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "gpgcheck": true, "package_manager": "yum", "type": "rpm-md"}, {"name": "Red Hat Enterprise Linux 6Server - x86_64 - Source", "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/", "enabled": false, "alias": "rhel-source", "gpgcheck": true, "package_manager": "yum", "type": "rpm-md"}]
+[{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "enabled": true, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "gpgcheck": true, "type": "rpm-md"}, {"name": "Red Hat Enterprise Linux 6Server - x86_64 - Source", "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/", "enabled": false, "alias": "rhel-source", "gpgcheck": true, "type": "rpm-md"}]
 EOF
       output.chomp
     }
@@ -268,31 +267,32 @@ EOF
     }
 
     let(:unsupported_metalink_repo) {<<-EOF
-[{"package_manager": "yum", "name": "Fedora 21 - x86_64", "url": "", "enabled": true, "alias": "fedora", "gpgcheck": true, "type": "rpm-md"}]
+[{"name": "Fedora 21 - x86_64", "url": "", "enabled": true, "alias": "fedora", "gpgcheck": true, "type": "rpm-md"}]
 EOF
     }
 
     let(:expected_yum_repo_list) {
-      RepositoriesScope.new([
-        Repository.new(
-          name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
-          url: "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
-          enabled: true,
-          alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
-          gpgcheck: true,
-          type: "rpm-md",
-          package_manager: "yum"
-        ),
-        Repository.new(
-          name: "Red Hat Enterprise Linux 6Server - x86_64 - Source",
-          url: "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
-          enabled: false,
-          alias: "rhel-source",
-          gpgcheck: true,
-          type: "rpm-md",
-          package_manager: "yum"
-        )
-      ])
+      RepositoriesScope.new(
+        [
+          Repository.new(
+            name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+            url: "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+            enabled: true,
+            alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
+            gpgcheck: true,
+            type: "rpm-md"
+          ),
+          Repository.new(
+            name: "Red Hat Enterprise Linux 6Server - x86_64 - Source",
+            url: "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
+            enabled: false,
+            alias: "rhel-source",
+            gpgcheck: true,
+            type: "rpm-md"
+          )
+        ],
+        repository_system: "yum"
+      )
     }
 
     before(:each) do
@@ -304,7 +304,7 @@ EOF
       expect(system).to receive(:run_command).and_return(expected_yum_extractor_output)
 
       inspector.inspect(filter)
-      expect(description.repositories).to match_array(expected_yum_repo_list)
+      expect(description.repositories).to eq(expected_yum_repo_list)
       expect(inspector.summary).to include("Found 2 repositories")
     end
 

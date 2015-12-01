@@ -66,7 +66,7 @@ class RepositoriesInspector < Inspector
       result = parse_repositories_from_xml(xml, priorities, credentials)
     end
 
-    RepositoriesScope.new(result)
+    RepositoriesScope.new(result, repository_system: "zypp")
   end
 
   def inspect_yum_repositories
@@ -90,7 +90,8 @@ class RepositoriesInspector < Inspector
       )
     end
 
-    RepositoriesScope.new(repositories)
+    RepositoriesScope.new(repositories, repository_system: "yum")
+  end
   end
 
   def parse_priorities_from_details(details)
@@ -162,8 +163,7 @@ class RepositoriesInspector < Inspector
         enabled:     rep["enabled"] == "1",
         autorefresh: rep["autorefresh"] == "1",
         gpgcheck:    rep["gpgcheck"] == "1",
-        priority:    pri_value,
-        package_manager: "zypp"
+        priority:    pri_value
       )
       if username && password
         repository[:username] = username
