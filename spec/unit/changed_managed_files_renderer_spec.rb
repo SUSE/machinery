@@ -22,10 +22,8 @@ describe ChangedManagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "changed_managed_files": {
-        "_attributes": {
-          "extracted": false
-        },
-        "_elements": [
+        "extracted": false,
+        "files": [
           {
             "name": "/deleted/file",
             "package_name": "glibc",

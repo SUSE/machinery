@@ -186,7 +186,7 @@ task :upgrade_test_descriptions do
   # we don't want to upgrade format_vX, invalid-json, so we list the ones
   # we want to upgrade here
   descriptions = [
-    "opensuse_leap-build",
+    "opensuse131-build",
     "validation-error"
   ]
 

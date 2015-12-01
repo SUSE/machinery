@@ -22,7 +22,7 @@ module ScopeFileAccessArchive
     FileUtils.cp(File.join(scope_file_store.path, "files.tgz"), destination)
 
     target = File.join(destination, "trees")
-    self.select(&:directory?).each do |system_file|
+    files.select(&:directory?).each do |system_file|
       raise Machinery::Errors::FileUtilsError if !system_file.directory?
 
       tarball_target = File.join(target, File.dirname(system_file.name))
@@ -33,8 +33,8 @@ module ScopeFileAccessArchive
   end
 
   def has_file?(name)
-    return true if any? { |file| file.name == name }
-    if any? { |file| file.name == File.join(File.dirname(name), "") }
+    return true if files.any? { |file| file.name == name }
+    if files.any? { |file| file.name == File.join(File.dirname(name), "") }
       tgz_file = File.join(scope_file_store.path, "trees", "#{File.dirname(name)}.tgz")
       return Cheetah.run("tar", "ztf", tgz_file, stdout: :capture).split(/\n/).
         any? { |f| "/#{f}" == name }

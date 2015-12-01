@@ -48,16 +48,11 @@ describe SystemDescriptionFactory do
     it "creates minimal description from JSON" do
       description = create_test_description(json: <<-EOT
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
-            },
-            "_elements": [
-              {
-                "name": "foo"
-              }
-            ]
-          }
+          "packages": [
+            {
+              "name": "foo"
+            }
+          ]
         }
         EOT
       )

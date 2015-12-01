@@ -33,7 +33,7 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": 6
+        "format_version": 5
       }
     }'
   end
@@ -261,10 +261,7 @@ describe SystemDescription do
       json = <<-EOF
         {
           "config_files": {
-            "_attributes": {
-              "extracted": true
-            },
-            "_elements": []
+            "extracted": true
           }
         }
       EOF
@@ -274,10 +271,7 @@ describe SystemDescription do
       json = <<-EOF
         {
           "config_files": {
-            "_attributes": {
-              "extracted": false
-            },
-            "_elements": []
+            "extracted": false
           }
         }
       EOF
@@ -591,10 +585,8 @@ describe SystemDescription do
       create_test_description(json: <<-EOF)
         {
           "config_files": {
-            "_attributes": {
-              "extracted": true
-            },
-            "_elements": [
+            "extracted": true,
+            "files": [
               {
                 "name": "/etc/my.cnf"
               }

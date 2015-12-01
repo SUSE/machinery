@@ -9,9 +9,9 @@ describe ScopeFileAccessFlat do
     )
   }
   subject { description.config_files }
-  let(:dir) { subject.find(&:directory?) }
-  let(:link) { subject.find(&:link?) }
-  let(:file) { subject.find { |file| file.name == "/etc/cron tab" } }
+  let(:dir) { subject.files.find(&:directory?) }
+  let(:link) { subject.files.find(&:link?) }
+  let(:file) { subject.files.find { |file| file.name == "/etc/cron tab" } }
 
   describe ".file_path" do
     it "raises an exception for non-files" do
@@ -52,7 +52,7 @@ describe ScopeFileAccessFlat do
     }
 
     it "returns the file content of a file stored in a directory" do
-      system_file = description.config_files.find do |file|
+      system_file = description.config_files.files.find do |file|
         file.name == "/etc/crontab"
       end
 
@@ -62,7 +62,7 @@ describe ScopeFileAccessFlat do
 
     it "raises an error if the files were not extracted" do
       description["changed_managed_files"].extracted = false
-      system_file = description.config_files.find do |file|
+      system_file = description.config_files.files.find do |file|
         file.name == "/etc/crontab"
       end
 
@@ -81,7 +81,7 @@ describe ScopeFileAccessFlat do
     }
 
     it "returns false if a file is a text file" do
-      system_file = description.changed_managed_files.find do |file|
+      system_file = description.changed_managed_files.files.find do |file|
         file.name == "/lib/mkinitrd/scripts/setup-done.sh"
       end
 
@@ -90,7 +90,7 @@ describe ScopeFileAccessFlat do
     end
 
     it "returns true if a file is a binary file" do
-      system_file = description.changed_managed_files.find do |file|
+      system_file = description.changed_managed_files.files.find do |file|
         file.name == "/lib/libc-2.19.so"
       end
 
@@ -99,7 +99,7 @@ describe ScopeFileAccessFlat do
     end
 
     it "returns false if the file is empty" do
-      system_file = description.changed_managed_files.find do |file|
+      system_file = description.changed_managed_files.files.find do |file|
         file.name == "/lib/mkinitrd/scripts/empty.sh"
       end
 
@@ -108,7 +108,7 @@ describe ScopeFileAccessFlat do
     end
 
     it "tests an xml file if it is marked as binary or not" do
-      system_file = description.changed_managed_files.find do |file|
+      system_file = description.changed_managed_files.files.find do |file|
         file.name == "/lib/mkinitrd/scripts/test.xml"
       end
 

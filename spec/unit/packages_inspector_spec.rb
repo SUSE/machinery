@@ -55,8 +55,7 @@ EOF
           vendor: "openSUSE",
           checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
         )
-      ],
-      package_system: "rpm"
+      ]
     )
   }
   let(:rpm_command) {

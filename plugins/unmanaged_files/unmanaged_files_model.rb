@@ -19,21 +19,9 @@ class UnmanagedFile < Machinery::SystemFile
 end
 
 class UnmanagedFileList < Machinery::Array
-end
-
-class UnmanagedFilesScope < FileScope
-  include Machinery::Scope
-  include ScopeFileAccessArchive
-
-  has_attributes :extracted
   has_elements class: UnmanagedFile
 
   def compare_with(other)
-    if extracted != other.extracted
-      Machinery::Ui.warn("Warning: Comparing extracted with unextracted" \
-        " unmanaged files. Only common attributes are considered.")
-    end
-
     self_hash = elements.inject({}) { |hash, e| hash[e.name] = e; hash }
     other_hash = other.elements.inject({}) { |hash, e| hash[e.name] = e; hash }
 
@@ -51,18 +39,11 @@ class UnmanagedFilesScope < FileScope
     end
     changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
 
-    if self.attributes == other.attributes
-      common_attributes = self.attributes
-    else
-      only_self_attributes = self.attributes
-      only_other_attributes = other.attributes
-    end
-
     [
-      self.class.new(only_self, only_self_attributes || {}),
-      self.class.new(only_other, only_other_attributes || {}),
+      self.class.new(only_self),
+      self.class.new(only_other),
       changed,
-      self.class.new(both, common_attributes || {})
+      self.class.new(both)
     ].map { |e| e.empty? ? nil : e }
   end
 
@@ -73,5 +54,20 @@ class UnmanagedFilesScope < FileScope
     common_attributes.all? do |attribute|
       a[attribute] == b[attribute]
     end
+  end
+end
+
+class UnmanagedFilesScope < FileScope
+  include Machinery::Scope
+  include ScopeFileAccessArchive
+  has_property :files, class: UnmanagedFileList
+
+  def compare_with(other)
+    if extracted != other.extracted
+      Machinery::Ui.warn("Warning: Comparing extracted with unextracted" \
+        " unmanaged files. Only common attributes are considered.")
+    end
+
+    super
   end
 end

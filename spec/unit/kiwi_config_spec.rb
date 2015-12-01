@@ -234,7 +234,7 @@ describe KiwiConfig do
     end
 
     it "handles quotes in changed links" do
-      system_description_with_modified_files["changed_managed_files"] <<
+      system_description_with_modified_files["changed_managed_files"]["files"] <<
         ChangedManagedFile.new(
           name: "/opt/test-quote-char/link",
           package_name: "test-data-files",

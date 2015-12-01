@@ -38,20 +38,16 @@ describe WorkloadMapper do
             }]
         },
         "config_files": {
-          "_attributes": {
-            "extracted": true
-          },
-          "_elements": [
+          "extracted": true,
+          "files": [
             {
               "name": "/etc/my.cnf"
             }
           ]
         },
         "unmanaged_files": {
-          "_attributes": {
-            "extracted": true
-          },
-          "_elements": [
+          "extracted": true,
+          "files": [
             {
               "name": "/foo/bar/",
               "type": "dir",
@@ -155,24 +151,19 @@ describe WorkloadMapper do
     end
 
     context "when one of the required scopes was not extracted" do
-      let(:system_description) {
-        create_test_description(json: <<-EOF)
+      let(:system_description) { create_test_description(json: <<-EOF)
         {
           "services": {
             "init_system": "systemd",
             "services": []
           },
           "config_files": {
-            "_attributes": {
-              "extracted": false
-            },
-            "_elements": []
+            "extracted": false,
+            "files": []
           },
           "unmanaged_files": {
-            "_attributes": {
-              "extracted": false
-            },
-            "_elements": []
+            "extracted": false,
+            "files": []
           }
         }
       EOF

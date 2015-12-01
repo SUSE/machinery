@@ -147,7 +147,7 @@ class Renderer
   end
 
   def render_comparison_only_in(description)
-    return if !description[scope] || description[scope].elements.try(:empty?)
+    return if !description[scope]
 
     puts "Only in '#{description.name}':"
     indent { compare_content_only_in(description) }

@@ -15,19 +15,58 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class FileScope < Machinery::Array
+class FileScope < Machinery::Object
   def compare_with(other)
-    only_self, only_other, changed, common = super(other)
+    validate_attributes(other)
 
-    if only_self && only_other
-      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+    only_self = self.class.new
+    only_other = self.class.new
+    shared = self.class.new
+
+    compare_extracted(other, only_self, only_other, shared)
+    changed = compare_files(other, only_self, only_other, shared)
+
+    only_self = nil if only_self.empty?
+    only_other = nil if only_other.empty?
+    shared = nil if shared.empty?
+    [only_self, only_other, changed, shared]
+  end
+
+  def length
+    files.try(:length) || 0
+  end
+
+  private
+
+  def validate_attributes(other)
+    expected_attributes = ["extracted", "files"]
+    actual_attributes = (attributes.keys + other.attributes.keys).uniq.sort
+
+    if actual_attributes != expected_attributes
+      unsupported = actual_attributes - expected_attributes
+      raise Machinery::Errors::MachineryError.new(
+        "The following attributes are not covered by FileScope#compare_with: " +
+          unsupported.join(", ")
+      )
     end
+  end
 
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
+  def compare_extracted(other, only_self, only_other, shared)
+    if extracted == other.extracted
+      shared.extracted = extracted
+    else
+      only_self.extracted = extracted
+      only_other.extracted = other.extracted
+    end
+  end
+
+  def compare_files(other, only_self, only_other, shared)
+    own_files, other_files, changed, shared_files = files.compare_with(other.files)
+
+    only_self.files = own_files if own_files
+    only_other.files = other_files if other_files
+    shared.files = shared_files if shared_files
+
+    changed
   end
 end

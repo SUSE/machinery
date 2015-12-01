@@ -1,22 +1,16 @@
 {
   "config_files": {
-    "_attributes": {
-      "extracted": false
-    },
-    "_elements": [
+    "extracted": false,
+    "files": [
       {
         "name": "/etc/default/grub",
         "package_name": "grub2",
         "package_version": "2.02~beta2",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "mode",
-            "md5"
-          ]
-        },
+        "changes": [
+          "mode",
+          "md5"
+        ],
         "user": "root",
         "group": "root",
         "mode": "600",
@@ -27,13 +21,9 @@
         "package_name": "postfix",
         "package_version": "2.11.0",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "md5"
-          ]
-        },
+        "changes": [
+          "md5"
+        ],
         "user": "root",
         "group": "root",
         "mode": "644",
@@ -42,7 +32,7 @@
     ]
   },
   "meta": {
-    "format_version": 6,
+    "format_version": 5,
     "config_files": {
       "modified": "2014-08-27T18:00:17Z",
       "hostname": "10.122.166.77"
