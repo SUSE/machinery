@@ -51,7 +51,7 @@
               = changed
               = render_partial "compare/changes", changes: changed_elements("unmanaged_files",
                 key: "name")
-        - if @diff["unmanaged_files"].common.try(:length) || 0
+        - if @diff["unmanaged_files"].common
           %a.both_anchor{ id: "unmanaged_files_both" }
           .row
             .col-md-12
