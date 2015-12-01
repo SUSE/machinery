@@ -86,6 +86,27 @@ EOT
       expect(output).to include(expected_output)
     end
 
+    it "prints an apt repository list" do
+      output = RepositoriesRenderer.new.render(
+        create_test_description(scopes: ["apt_repositories"])
+      )
+
+      expected_output = <<EOT
+  * URI: http://de.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: main, restricted
+    Type: deb
+    Package Manager: apt
+
+  * URI: http://de.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: main, restricted
+    Type: deb-src
+    Package Manager: apt
+EOT
+      expect(output).to include(expected_output)
+    end
+
     context "when there are no repositories" do
       let(:system_description) { create_test_description(scopes: ["empty_repositories"]) }
 
