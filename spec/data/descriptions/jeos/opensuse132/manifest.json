@@ -1790,19 +1790,21 @@
       }
     ]
   },
-  "repositories": [
-    {
-      "alias": "download.opensuse.org-oss",
-      "name": "Main Repository (OSS)",
-      "type": "yast2",
-      "url": "http://download.opensuse.org/distribution/13.2/repo/oss/",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99,
-      "package_manager": "zypp"
-    }
-  ],
+  "repositories": {
+    "_attributes": { "repository_system": "zypp" },
+    "_elements": [
+      {
+        "alias": "download.opensuse.org-oss",
+        "name": "Main Repository (OSS)",
+        "type": "yast2",
+        "url": "http://download.opensuse.org/distribution/13.2/repo/oss/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      }
+    ]
+  },
   "users": {
     "_attributes": {
     },

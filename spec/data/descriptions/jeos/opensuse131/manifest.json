@@ -3112,30 +3112,31 @@
       }
     ]
   },
-  "repositories": [
-    {
-      "alias": "openSUSE_13.1_OSS",
-      "name": "openSUSE_13.1_OSS",
-      "type": "yast2",
-      "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99,
-      "package_manager": "zypp"
-    },
-    {
-      "alias": "openSUSE_13.1_Updates",
-      "name": "openSUSE_13.1_Updates",
-      "type": "rpm-md",
-      "url": "http://download.opensuse.org/update/13.1/",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99,
-      "package_manager": "zypp"
-    }
-  ],
+  "repositories": {
+    "_attributes": { "repository_system": "zypp" },
+    "_elements": [
+      {
+        "alias": "openSUSE_13.1_OSS",
+        "name": "openSUSE_13.1_OSS",
+        "type": "yast2",
+        "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      },
+      {
+        "alias": "openSUSE_13.1_Updates",
+        "name": "openSUSE_13.1_Updates",
+        "type": "rpm-md",
+        "url": "http://download.opensuse.org/update/13.1/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      }
+    ]
+  },
   "patterns": {
     "_attributes": {
     },
