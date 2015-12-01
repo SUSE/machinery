@@ -898,7 +898,7 @@ class Cli
         value = args[1]
       end
 
-      task = ConfigTask.new
+      task = ConfigTask.new(@config)
       task.config(key, value)
 
       if key == "hints" && (value == "false" || value == "off")
@@ -915,7 +915,7 @@ class Cli
   LONGDESC
   command "serve" do |c|
     c.flag [:port, :p], type: Integer, required: false,
-      default_value: Machinery::Config.new.http_server_port,
+      default_value: @config.http_server_port,
       desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
         2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
         arg_name: "PORT"
