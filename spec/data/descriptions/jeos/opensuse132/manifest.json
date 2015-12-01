@@ -1779,13 +1779,17 @@
       }
     ]
   },
-  "patterns": [
-    {
-      "name": "base",
-      "version": "20141007",
-      "release": "2.1"
-    }
-  ],
+  "patterns": {
+    "_attributes": {
+    },
+    "_elements": [
+      {
+        "name": "base",
+        "version": "20141007",
+        "release": "2.1"
+      }
+    ]
+  },
   "repositories": [
     {
       "alias": "download.opensuse.org-oss",
@@ -1799,546 +1803,554 @@
       "package_manager": "zypp"
     }
   ],
-  "users": [
-    {
-      "name": "+",
-      "password": "",
-      "uid": null,
-      "gid": null,
-      "comment": "",
-      "home": "",
-      "shell": ""
+  "users": {
+    "_attributes": {
     },
-    {
-      "name": "bin",
-      "password": "x",
-      "uid": 1,
-      "gid": 1,
-      "comment": "bin",
-      "home": "/bin",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
+    "_elements": [
+      {
+        "name": "+",
+        "password": "",
+        "uid": null,
+        "gid": null,
+        "comment": "",
+        "home": "",
+        "shell": ""
+      },
+      {
+        "name": "bin",
+        "password": "x",
+        "uid": 1,
+        "gid": 1,
+        "comment": "bin",
+        "home": "/bin",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "daemon",
+        "password": "x",
+        "uid": 2,
+        "gid": 2,
+        "comment": "Daemon",
+        "home": "/sbin",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "ftp",
+        "password": "x",
+        "uid": 40,
+        "gid": 49,
+        "comment": "FTP account",
+        "home": "/srv/ftp",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "games",
+        "password": "x",
+        "uid": 12,
+        "gid": 100,
+        "comment": "Games account",
+        "home": "/var/games",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "lp",
+        "password": "x",
+        "uid": 4,
+        "gid": 7,
+        "comment": "Printing daemon",
+        "home": "/var/spool/lpd",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "machinery",
+        "password": "x",
+        "uid": 1001,
+        "gid": 100,
+        "comment": "",
+        "home": "/home/machinery",
+        "shell": "/bin/bash",
+        "encrypted_password": "$6$qzOULUmL$TcKRtrw0i/Vi5vbPk9/I/u0fNEJfI0RBd//NLkNCHk4iT/5hCdAETAuOzNPzg5tYbjFmHPSfFjYqWtpxKSgua.",
+        "last_changed_date": 16597,
+        "min_days": 0,
+        "max_days": 99999,
+        "warn_days": 7
+      },
+      {
+        "name": "mail",
+        "password": "x",
+        "uid": 8,
+        "gid": 12,
+        "comment": "Mailer daemon",
+        "home": "/var/spool/clientmqueue",
+        "shell": "/bin/false",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "man",
+        "password": "x",
+        "uid": 13,
+        "gid": 62,
+        "comment": "Manual pages viewer",
+        "home": "/var/cache/man",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "messagebus",
+        "password": "x",
+        "uid": 499,
+        "gid": 497,
+        "comment": "User for D-Bus",
+        "home": "/run/dbus",
+        "shell": "/bin/false",
+        "encrypted_password": "!",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "news",
+        "password": "x",
+        "uid": 9,
+        "gid": 13,
+        "comment": "News system",
+        "home": "/etc/news",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "nobody",
+        "password": "x",
+        "uid": 65534,
+        "gid": 65533,
+        "comment": "nobody",
+        "home": "/var/lib/nobody",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "polkitd",
+        "password": "x",
+        "uid": 495,
+        "gid": 495,
+        "comment": "User for polkitd",
+        "home": "/var/lib/polkit",
+        "shell": "/sbin/nologin",
+        "encrypted_password": "!",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "root",
+        "password": "x",
+        "uid": 0,
+        "gid": 0,
+        "comment": "root",
+        "home": "/root",
+        "shell": "/bin/bash",
+        "encrypted_password": "78ym1LNe94VnE",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "rpc",
+        "password": "x",
+        "uid": 498,
+        "gid": 65534,
+        "comment": "user for rpcbind",
+        "home": "/var/lib/empty",
+        "shell": "/sbin/nologin",
+        "encrypted_password": "!",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "sshd",
+        "password": "x",
+        "uid": 497,
+        "gid": 496,
+        "comment": "SSH daemon",
+        "home": "/var/lib/sshd",
+        "shell": "/bin/false",
+        "encrypted_password": "!",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "statd",
+        "password": "x",
+        "uid": 496,
+        "gid": 65534,
+        "comment": "NFS statd daemon",
+        "home": "/var/lib/nfs",
+        "shell": "/sbin/nologin",
+        "encrypted_password": "!",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "uucp",
+        "password": "x",
+        "uid": 10,
+        "gid": 14,
+        "comment": "Unix-to-Unix CoPy system",
+        "home": "/etc/uucp",
+        "shell": "/bin/bash",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      },
+      {
+        "name": "vagrant",
+        "password": "x",
+        "uid": 1000,
+        "gid": 1000,
+        "comment": "",
+        "home": "/home/vagrant",
+        "shell": "/bin/bash",
+        "encrypted_password": "78ym1LNe94VnE",
+        "last_changed_date": 16563,
+        "min_days": 0,
+        "max_days": 99999,
+        "warn_days": 7
+      },
+      {
+        "name": "wwwrun",
+        "password": "x",
+        "uid": 30,
+        "gid": 8,
+        "comment": "WWW daemon apache",
+        "home": "/var/lib/wwwrun",
+        "shell": "/bin/false",
+        "encrypted_password": "*",
+        "last_changed_date": 16563
+      }
+    ]
+  },
+  "groups": {
+    "_attributes": {
     },
-    {
-      "name": "daemon",
-      "password": "x",
-      "uid": 2,
-      "gid": 2,
-      "comment": "Daemon",
-      "home": "/sbin",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "ftp",
-      "password": "x",
-      "uid": 40,
-      "gid": 49,
-      "comment": "FTP account",
-      "home": "/srv/ftp",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "games",
-      "password": "x",
-      "uid": 12,
-      "gid": 100,
-      "comment": "Games account",
-      "home": "/var/games",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "lp",
-      "password": "x",
-      "uid": 4,
-      "gid": 7,
-      "comment": "Printing daemon",
-      "home": "/var/spool/lpd",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "machinery",
-      "password": "x",
-      "uid": 1001,
-      "gid": 100,
-      "comment": "",
-      "home": "/home/machinery",
-      "shell": "/bin/bash",
-      "encrypted_password": "$6$qzOULUmL$TcKRtrw0i/Vi5vbPk9/I/u0fNEJfI0RBd//NLkNCHk4iT/5hCdAETAuOzNPzg5tYbjFmHPSfFjYqWtpxKSgua.",
-      "last_changed_date": 16597,
-      "min_days": 0,
-      "max_days": 99999,
-      "warn_days": 7
-    },
-    {
-      "name": "mail",
-      "password": "x",
-      "uid": 8,
-      "gid": 12,
-      "comment": "Mailer daemon",
-      "home": "/var/spool/clientmqueue",
-      "shell": "/bin/false",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "man",
-      "password": "x",
-      "uid": 13,
-      "gid": 62,
-      "comment": "Manual pages viewer",
-      "home": "/var/cache/man",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "messagebus",
-      "password": "x",
-      "uid": 499,
-      "gid": 497,
-      "comment": "User for D-Bus",
-      "home": "/run/dbus",
-      "shell": "/bin/false",
-      "encrypted_password": "!",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "news",
-      "password": "x",
-      "uid": 9,
-      "gid": 13,
-      "comment": "News system",
-      "home": "/etc/news",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "nobody",
-      "password": "x",
-      "uid": 65534,
-      "gid": 65533,
-      "comment": "nobody",
-      "home": "/var/lib/nobody",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "polkitd",
-      "password": "x",
-      "uid": 495,
-      "gid": 495,
-      "comment": "User for polkitd",
-      "home": "/var/lib/polkit",
-      "shell": "/sbin/nologin",
-      "encrypted_password": "!",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "root",
-      "password": "x",
-      "uid": 0,
-      "gid": 0,
-      "comment": "root",
-      "home": "/root",
-      "shell": "/bin/bash",
-      "encrypted_password": "78ym1LNe94VnE",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "rpc",
-      "password": "x",
-      "uid": 498,
-      "gid": 65534,
-      "comment": "user for rpcbind",
-      "home": "/var/lib/empty",
-      "shell": "/sbin/nologin",
-      "encrypted_password": "!",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "sshd",
-      "password": "x",
-      "uid": 497,
-      "gid": 496,
-      "comment": "SSH daemon",
-      "home": "/var/lib/sshd",
-      "shell": "/bin/false",
-      "encrypted_password": "!",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "statd",
-      "password": "x",
-      "uid": 496,
-      "gid": 65534,
-      "comment": "NFS statd daemon",
-      "home": "/var/lib/nfs",
-      "shell": "/sbin/nologin",
-      "encrypted_password": "!",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "uucp",
-      "password": "x",
-      "uid": 10,
-      "gid": 14,
-      "comment": "Unix-to-Unix CoPy system",
-      "home": "/etc/uucp",
-      "shell": "/bin/bash",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    },
-    {
-      "name": "vagrant",
-      "password": "x",
-      "uid": 1000,
-      "gid": 1000,
-      "comment": "",
-      "home": "/home/vagrant",
-      "shell": "/bin/bash",
-      "encrypted_password": "78ym1LNe94VnE",
-      "last_changed_date": 16563,
-      "min_days": 0,
-      "max_days": 99999,
-      "warn_days": 7
-    },
-    {
-      "name": "wwwrun",
-      "password": "x",
-      "uid": 30,
-      "gid": 8,
-      "comment": "WWW daemon apache",
-      "home": "/var/lib/wwwrun",
-      "shell": "/bin/false",
-      "encrypted_password": "*",
-      "last_changed_date": 16563
-    }
-  ],
-  "groups": [
-    {
-      "name": "+",
-      "password": "",
-      "gid": null,
-      "users": [
+    "_elements": [
+      {
+        "name": "+",
+        "password": "",
+        "gid": null,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "audio",
-      "password": "x",
-      "gid": 17,
-      "users": [
+        ]
+      },
+      {
+        "name": "audio",
+        "password": "x",
+        "gid": 17,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "bin",
-      "password": "x",
-      "gid": 1,
-      "users": [
-        "daemon"
-      ]
-    },
-    {
-      "name": "cdrom",
-      "password": "x",
-      "gid": 20,
-      "users": [
+        ]
+      },
+      {
+        "name": "bin",
+        "password": "x",
+        "gid": 1,
+        "users": [
+          "daemon"
+        ]
+      },
+      {
+        "name": "cdrom",
+        "password": "x",
+        "gid": 20,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "console",
-      "password": "x",
-      "gid": 21,
-      "users": [
+        ]
+      },
+      {
+        "name": "console",
+        "password": "x",
+        "gid": 21,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "daemon",
-      "password": "x",
-      "gid": 2,
-      "users": [
+        ]
+      },
+      {
+        "name": "daemon",
+        "password": "x",
+        "gid": 2,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "dialout",
-      "password": "x",
-      "gid": 16,
-      "users": [
+        ]
+      },
+      {
+        "name": "dialout",
+        "password": "x",
+        "gid": 16,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "disk",
-      "password": "x",
-      "gid": 6,
-      "users": [
+        ]
+      },
+      {
+        "name": "disk",
+        "password": "x",
+        "gid": 6,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "floppy",
-      "password": "x",
-      "gid": 19,
-      "users": [
+        ]
+      },
+      {
+        "name": "floppy",
+        "password": "x",
+        "gid": 19,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "ftp",
-      "password": "x",
-      "gid": 49,
-      "users": [
+        ]
+      },
+      {
+        "name": "ftp",
+        "password": "x",
+        "gid": 49,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "games",
-      "password": "x",
-      "gid": 40,
-      "users": [
+        ]
+      },
+      {
+        "name": "games",
+        "password": "x",
+        "gid": 40,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "kmem",
-      "password": "x",
-      "gid": 9,
-      "users": [
+        ]
+      },
+      {
+        "name": "kmem",
+        "password": "x",
+        "gid": 9,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "lock",
-      "password": "x",
-      "gid": 54,
-      "users": [
+        ]
+      },
+      {
+        "name": "lock",
+        "password": "x",
+        "gid": 54,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "lp",
-      "password": "x",
-      "gid": 7,
-      "users": [
+        ]
+      },
+      {
+        "name": "lp",
+        "password": "x",
+        "gid": 7,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "mail",
-      "password": "x",
-      "gid": 12,
-      "users": [
+        ]
+      },
+      {
+        "name": "mail",
+        "password": "x",
+        "gid": 12,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "man",
-      "password": "x",
-      "gid": 62,
-      "users": [
+        ]
+      },
+      {
+        "name": "man",
+        "password": "x",
+        "gid": 62,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "messagebus",
-      "password": "x",
-      "gid": 497,
-      "users": [
+        ]
+      },
+      {
+        "name": "messagebus",
+        "password": "x",
+        "gid": 497,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "modem",
-      "password": "x",
-      "gid": 43,
-      "users": [
+        ]
+      },
+      {
+        "name": "modem",
+        "password": "x",
+        "gid": 43,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "news",
-      "password": "x",
-      "gid": 13,
-      "users": [
+        ]
+      },
+      {
+        "name": "news",
+        "password": "x",
+        "gid": 13,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "nobody",
-      "password": "x",
-      "gid": 65533,
-      "users": [
+        ]
+      },
+      {
+        "name": "nobody",
+        "password": "x",
+        "gid": 65533,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "nogroup",
-      "password": "x",
-      "gid": 65534,
-      "users": [
-        "nobody"
-      ]
-    },
-    {
-      "name": "polkitd",
-      "password": "x",
-      "gid": 495,
-      "users": [
+        ]
+      },
+      {
+        "name": "nogroup",
+        "password": "x",
+        "gid": 65534,
+        "users": [
+          "nobody"
+        ]
+      },
+      {
+        "name": "polkitd",
+        "password": "x",
+        "gid": 495,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "public",
-      "password": "x",
-      "gid": 32,
-      "users": [
+        ]
+      },
+      {
+        "name": "public",
+        "password": "x",
+        "gid": 32,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "root",
-      "password": "x",
-      "gid": 0,
-      "users": [
+        ]
+      },
+      {
+        "name": "root",
+        "password": "x",
+        "gid": 0,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "shadow",
-      "password": "x",
-      "gid": 15,
-      "users": [
+        ]
+      },
+      {
+        "name": "shadow",
+        "password": "x",
+        "gid": 15,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "sshd",
-      "password": "x",
-      "gid": 496,
-      "users": [
+        ]
+      },
+      {
+        "name": "sshd",
+        "password": "x",
+        "gid": 496,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "sys",
-      "password": "x",
-      "gid": 3,
-      "users": [
+        ]
+      },
+      {
+        "name": "sys",
+        "password": "x",
+        "gid": 3,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "systemd-journal",
-      "password": "x",
-      "gid": 499,
-      "users": [
+        ]
+      },
+      {
+        "name": "systemd-journal",
+        "password": "x",
+        "gid": 499,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "tape",
-      "password": "x",
-      "gid": 498,
-      "users": [
+        ]
+      },
+      {
+        "name": "tape",
+        "password": "x",
+        "gid": 498,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "trusted",
-      "password": "x",
-      "gid": 42,
-      "users": [
+        ]
+      },
+      {
+        "name": "trusted",
+        "password": "x",
+        "gid": 42,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "tty",
-      "password": "x",
-      "gid": 5,
-      "users": [
+        ]
+      },
+      {
+        "name": "tty",
+        "password": "x",
+        "gid": 5,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "users",
-      "password": "x",
-      "gid": 100,
-      "users": [
+        ]
+      },
+      {
+        "name": "users",
+        "password": "x",
+        "gid": 100,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "utmp",
-      "password": "x",
-      "gid": 22,
-      "users": [
+        ]
+      },
+      {
+        "name": "utmp",
+        "password": "x",
+        "gid": 22,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "uucp",
-      "password": "x",
-      "gid": 14,
-      "users": [
+        ]
+      },
+      {
+        "name": "uucp",
+        "password": "x",
+        "gid": 14,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "vagrant",
-      "password": "x",
-      "gid": 1000,
-      "users": [
+        ]
+      },
+      {
+        "name": "vagrant",
+        "password": "x",
+        "gid": 1000,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "video",
-      "password": "x",
-      "gid": 33,
-      "users": [
+        ]
+      },
+      {
+        "name": "video",
+        "password": "x",
+        "gid": 33,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "wheel",
-      "password": "x",
-      "gid": 10,
-      "users": [
+        ]
+      },
+      {
+        "name": "wheel",
+        "password": "x",
+        "gid": 10,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "www",
-      "password": "x",
-      "gid": 8,
-      "users": [
+        ]
+      },
+      {
+        "name": "www",
+        "password": "x",
+        "gid": 8,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "xok",
-      "password": "x",
-      "gid": 41,
-      "users": [
+        ]
+      },
+      {
+        "name": "xok",
+        "password": "x",
+        "gid": 41,
+        "users": [
 
-      ]
-    }
-  ],
+        ]
+      }
+    ]
+  },
   "services": {
     "_attributes": {
       "init_system": "systemd"

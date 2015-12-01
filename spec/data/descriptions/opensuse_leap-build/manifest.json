@@ -1775,13 +1775,17 @@
       }
     ]
   },
-  "patterns": [
-    {
-      "name": "base",
-      "version": "20150918",
-      "release": "10.1"
-    }
-  ],
+  "patterns": {
+    "_attributes": {
+    },
+    "_elements": [
+      {
+        "name": "base",
+        "version": "20150918",
+        "release": "10.1"
+      }
+    ]
+  },
   "repositories": [
     {
       "alias": "download.opensuse.org-oss",
