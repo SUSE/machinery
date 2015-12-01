@@ -35,7 +35,7 @@ class RepositoriesRenderer < Renderer
           puts "Alias: #{p.alias}" if p.alias
           puts "Distribution: #{p.distribution}" if p.distribution
           puts "Components: #{p.components.join(", ")}" if p.components
-          puts "Enabled: #{p.enabled ? "Yes" : "No"}" if p.enabled != nil
+          puts "Enabled: #{p.enabled ? "Yes" : "No"}" if !p.enabled.nil?
           puts "Refresh: #{p.autorefresh ? "Yes" : "No"}" if p.autorefresh != nil
           puts "Priority: #{p.priority}" if p.priority != nil
           puts "Type: #{p.type}"

@@ -101,7 +101,7 @@ class RepositoriesInspector < Inspector
       content += "\n" + system.run_command(
         "bash", "-c", "cat /etc/apt/sources.list.d/*.list", stdout: :capture
       )
-    rescue Cheetah::ExecutionFailed => e
+    rescue Cheetah::ExecutionFailed
     end
 
     RepositoriesScope.new(

@@ -98,7 +98,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             priority: 22,
             url: "http://download.opensuse.org/distribution/13.1/repo/oss/"
           ),
-            Repository.new(
+          Repository.new(
             alias: "repo-update",
             name: "openSUSE-Update",
             type: "rpm-md",
@@ -208,7 +208,7 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([], :repository_system => "zypp"))
+      expect(description.repositories).to eq(RepositoriesScope.new([], repository_system: "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -225,7 +225,7 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details_exit_6(system)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([], :repository_system => "zypp"))
+      expect(description.repositories).to eq(RepositoriesScope.new([], repository_system: "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -406,7 +406,9 @@ EOF
     end
 
     it "inspects repos" do
-      expect(system).to receive(:read_file).with("/etc/apt/sources.list").and_return(cat_sources_list)
+      expect(system).to receive(:read_file).with(
+        "/etc/apt/sources.list"
+      ).and_return(cat_sources_list)
       expect(system).to receive(:run_command).with(
         "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
       ).and_return(cat_sources_list_d)
@@ -417,7 +419,9 @@ EOF
     end
 
     it "can handle an empty /etc/apt/sources.list.d/ directory" do
-      expect(system).to receive(:read_file).with("/etc/apt/sources.list").and_return(cat_sources_list)
+      expect(system).to receive(:read_file).with(
+        "/etc/apt/sources.list"
+      ).and_return(cat_sources_list)
       expect(system).to receive(:run_command).with(
         "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
       ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
