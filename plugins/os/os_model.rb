@@ -100,10 +100,6 @@ class OsUnknown < Os
   def self.canonical_name
     "Unknown OS"
   end
-
-  def self.can_run_machinery?
-    false
-  end
 end
 
 class OsSuse < Os
@@ -209,9 +205,5 @@ end
 class Rhel < Os
   def self.canonical_name
     "Red Hat Enterprise Linux Server"
-  end
-
-  def self.can_run_machinery?
-    false
   end
 end
