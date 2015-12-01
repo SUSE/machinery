@@ -69,7 +69,7 @@ class ChangedManagedFilesInspector < Inspector
 
   def changed_files
     count = 0
-    files = @system.rpm_database.changed_files do |chunk|
+    files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
       Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
     end
