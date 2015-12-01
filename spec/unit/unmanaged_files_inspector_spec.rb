@@ -354,7 +354,7 @@ describe UnmanagedFilesInspector do
     it "adheres to simple filters" do
       expect_inspect_unmanaged(system, true, false, ["/usr/local"])
 
-      default_filter.add_element_filter_from_definition("/unmanaged_files/files/name=/usr/local/*")
+      default_filter.add_element_filter_from_definition("/unmanaged_files/name=/usr/local/*")
       subject.inspect(default_filter)
       names = description["unmanaged_files"].map(&:name)
 
@@ -364,9 +364,9 @@ describe UnmanagedFilesInspector do
     it "adheres to more complex filters" do
       expect_inspect_unmanaged(system, true, false, ["/usr/local", "/etc/skel/.config"])
 
-      default_filter.add_element_filter_from_definition("/unmanaged_files/files/name=/usr/local/")
+      default_filter.add_element_filter_from_definition("/unmanaged_files/name=/usr/local/")
       default_filter.add_element_filter_from_definition(
-        "/unmanaged_files/files/name=/etc/skel/.config")
+        "/unmanaged_files/name=/etc/skel/.config")
       subject.inspect(default_filter)
       names = description["unmanaged_files"].map(&:name)
 

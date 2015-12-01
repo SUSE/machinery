@@ -336,7 +336,7 @@ describe Cli do
           expect(captured_machinery_output).
             to include("The following filters are applied during inspection:")
           expect(captured_machinery_output).
-            to match(/^\/unmanaged_files\/files\/name=.*$/)
+            to match(/^\/unmanaged_files\/name=.*$/)
         end
 
         it "shows skip-files filters during inspection" do
