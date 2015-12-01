@@ -6,5 +6,6 @@
     Enabled: Yes
     Refresh: Yes
     Priority: 99
+    Type: yast2
     Package Manager: zypp
 

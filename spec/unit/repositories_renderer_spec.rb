@@ -33,6 +33,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 1
+    Type: rpm-md
     Package Manager: zypp
 
   * openSUSE-13.1-1.7
@@ -41,6 +42,7 @@ describe RepositoriesRenderer do
     Enabled: No
     Refresh: No
     Priority: 2
+    Type: yast2
     Package Manager: zypp
 
   * repo_without_type
@@ -49,6 +51,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 3
+    Type: 
     Package Manager: zypp
 
   * disabled_repo
@@ -57,6 +60,7 @@ describe RepositoriesRenderer do
     Enabled: No
     Refresh: No
     Priority: 3
+    Type: 
     Package Manager: zypp
 
   * autorefresh_enabled
@@ -65,6 +69,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: Yes
     Priority: 2
+    Type: 
     Package Manager: zypp
 
   * dvd_entry
@@ -73,6 +78,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 2
+    Type: yast2
     Package Manager: zypp
 
   * NCC Repository
@@ -81,6 +87,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: Yes
     Priority: 2
+    Type: yast2
     Package Manager: zypp
 EOT
       expect(output).to include(expected_output)
