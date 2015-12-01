@@ -40,10 +40,6 @@ module Machinery
         description: "Enable experimental features. See " \
           "https://github.com/SUSE/machinery/wiki/Experimental-Features for more details"
       )
-      entry("perform_support_check",
-        default: true,
-        description: "Check whether the current platform is supported by Machinery"
-      )
       entry("http_server_port",
         default: 7585,
         description: "TCP port used by the HTTP server for the HTML view"
