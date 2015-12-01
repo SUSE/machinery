@@ -36,8 +36,8 @@ class ServicesInspector < Inspector
       )
     elsif @system.has_command?("initctl")
       result = ServicesScope.new(
-        init_system: "upstart",
-        services: inspect_upstart_services
+        inspect_upstart_services,
+        init_system: "upstart"
       )
     else
       result = ServicesScope.new(
@@ -107,7 +107,7 @@ class ServicesInspector < Inspector
       Service.new(name: name, state: "disabled")
     end
 
-    ServiceList.new(services.sort_by(&:name))
+    services.sort_by(&:name)
   end
 
   def parse_suse_chkconfig

@@ -122,12 +122,12 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to eq(ServicesScope.new(
-        init_system: "upstart",
-        services:  ServiceList.new([
+        [
           Service.new(name: "hostname",   state: "enabled"),
           Service.new(name: "tty4",       state: "enabled"),
           Service.new(name: "ufw",        state: "disabled"),
-        ])
+        ],
+        init_system: "upstart"
       ))
       expect(inspector.summary).to eq("Found 3 services.")
     end
