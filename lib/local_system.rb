@@ -77,21 +77,6 @@ You can install it by running `zypper install #{package}`.
       raise(Machinery::Errors::MissingRequirement.new(output))
     end
 
-    def validate_machinery_compatibility
-      return if !Machinery::Config.new.perform_support_check || os.can_run_machinery?
-
-      supported_oses = Os.supported_host_systems.map { |o| o.canonical_name }.sort.join(", ")
-      message = <<EOF
-You are running Machinery on a platform we do not explicitly support and test.
-It still could work very well. If you run into issues or would like to provide us feedback, you are welcome to file an issue at https://github.com/SUSE/machinery/issues/new or write an email to machinery@lists.suse.com.
-Officially supported operating systems are: '#{supported_oses}'
-
-To disable this message in the machinery configuration use 'machinery config perform-support-check=false'
-EOF
-
-      Machinery::Ui.warn message
-    end
-
     def validate_build_compatibility(system_description)
       if !os.can_build?(system_description.os)
         message = "Building '#{system_description.os.display_name}' is " \
