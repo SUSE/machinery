@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe RepositoriesInspector do
+  capture_machinery_output
   let(:system) {
     double
   }
@@ -231,9 +232,10 @@ password=2fdcb7499fd46842
     it "raise an error when requirements are not fulfilled" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
       allow(system).to receive(:has_command?).with("yum").and_return(false)
+      allow(system).to receive(:has_command?).with("apt").and_return(false)
 
       expect { inspector.inspect(filter) }.to raise_error(
-        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper' or 'yum'/
+        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper', 'yum' or 'apt'/
       )
     end
 
@@ -333,6 +335,130 @@ EOF
       expect { inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::InspectionFailed, /Yum repository baseurl is missing/
       )
+    end
+  end
+
+  describe "apt repositories" do
+    let(:cat_sources_list) {
+      output = <<-EOF
+## Also, please note that software in backports WILL NOT receive any review
+## or updates from the Ubuntu security team.
+deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
+# deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
+
+deb http://security.ubuntu.com/ubuntu trusty-security main   #testcomment
+deb-src   http://repo-with-spaces-and-tabs.com/ubuntu   trusty-security component1    component2
+EOF
+      output.chomp
+    }
+
+    let(:cat_sources_list_d) {
+      output = <<-EOF
+deb http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu trusty main
+# deb-src http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu trusty main
+deb http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu trusty/binary-$(ARCH)/
+EOF
+      output.chomp
+    }
+
+    let(:expected_apt_repo_list) {
+      RepositoriesScope.new(
+        [
+          Repository.new(
+            type: "deb",
+            url: "http://us.archive.ubuntu.com/ubuntu/",
+            distribution: "trusty-backports",
+            components: ["main", "restricted", "universe", "multiverse"]
+          ),
+          Repository.new(
+            type: "deb",
+            url: "http://security.ubuntu.com/ubuntu",
+            distribution: "trusty-security",
+            components: ["main"]
+          ),
+          Repository.new(
+            type: "deb-src",
+            url: "http://repo-with-spaces-and-tabs.com/ubuntu",
+            distribution: "trusty-security",
+            components: ["component1", "component2"]
+          ),
+          Repository.new(
+            type: "deb",
+            url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu",
+            distribution: "trusty",
+            components: ["main"]
+          ),
+          Repository.new(
+            type: "deb",
+            url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu",
+            distribution: "trusty/binary-$(ARCH)/",
+            components: []
+          )
+        ],
+        repository_system: "apt"
+      )
+    }
+
+    before(:each) do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("yum").and_return(false)
+      allow(system).to receive(:has_command?).with("apt").and_return(true)
+    end
+
+    it "inspects repos" do
+      expect(system).to receive(:read_file).with("/etc/apt/sources.list").and_return(cat_sources_list)
+      expect(system).to receive(:run_command).with(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
+      ).and_return(cat_sources_list_d)
+
+      inspector.inspect(filter)
+      expect(description.repositories).to eq(expected_apt_repo_list)
+      expect(inspector.summary).to include("Found 5 repositories")
+    end
+
+    it "can handle an empty /etc/apt/sources.list.d/ directory" do
+      expect(system).to receive(:read_file).with("/etc/apt/sources.list").and_return(cat_sources_list)
+      expect(system).to receive(:run_command).with(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
+      ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+
+      expect { inspector.inspect(filter) }.not_to raise_error
+      expect(inspector.summary).to include("Found 3 repositories")
+    end
+
+    it "shows a warning for each found rfc822 style repository but parses the rest" do
+      cat_sources_list_new = cat_sources_list
+      cat_sources_list_new += <<-EOF
+
+  Types: deb deb-src
+  URIs: http://example.com
+  Suites: stable testing
+  Sections: component1 component2
+  Description: short
+   long long long
+  [option1]: [option1-value]
+
+  Types: deb
+  URIs: http://another.example.com
+  Suites: experimental
+  Sections: component1 component2
+  Enabled: no
+  Description: short
+   long long long
+  [option1]: [option1-value]
+EOF
+      expect(system).to receive(:read_file).with(
+        "/etc/apt/sources.list"
+      ).and_return(cat_sources_list_new)
+      expect(system).to receive(:run_command).with(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
+      ).and_return(cat_sources_list_d)
+
+      inspector.inspect(filter)
+      expect(captured_machinery_output.scan(
+        /Warning: An unsupported rfc822 style repository was found, which will be ignored/
+      ).count).to eq(2)
+      expect(description.repositories).to eq(expected_apt_repo_list)
     end
   end
 end
