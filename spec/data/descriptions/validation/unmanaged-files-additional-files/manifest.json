@@ -1,7 +1,9 @@
 {
   "unmanaged_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/root/.ssh/",
         "type": "dir",

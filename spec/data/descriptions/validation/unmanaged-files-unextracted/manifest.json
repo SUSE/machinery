@@ -1,7 +1,9 @@
 {
   "unmanaged_files": {
-    "extracted": false,
-    "files": [
+    "_attributes": {
+      "extracted": false
+    },
+    "_elements": [
       {
         "name": "/boot/0xfcdaa824",
         "type": "file"

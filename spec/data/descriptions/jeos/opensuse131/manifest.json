@@ -2851,8 +2851,10 @@
     ]
   },
   "unmanaged_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/unmanaged-file",
         "type": "file",
@@ -2873,16 +2875,22 @@
     ]
   },
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/crontab",
         "package_name": "cronie",
         "package_version": "1.4.8",
         "status": "changed",
-        "changes": [
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "md5"
+          ]
+        },
         "user": "root",
         "group": "root",
         "mode": "644",
@@ -3058,25 +3066,35 @@
     }
   ],
   "changed_managed_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/usr/share/bash/helpfiles/cd",
         "package_name": "bash",
         "package_version": "3.2",
         "status": "changed",
-        "changes": [
-          "deleted"
-        ]
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "deleted"
+          ]
+        }
       },
       {
         "name": "/usr/share/bash/helpfiles/read",
         "package_name": "bash",
         "package_version": "3.2",
         "status": "changed",
-        "changes": [
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "md5"
+          ]
+        },
         "mode": "644",
         "user": "root",
         "group": "root",

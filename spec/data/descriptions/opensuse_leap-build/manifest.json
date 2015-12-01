@@ -2365,17 +2365,23 @@
     ]
   },
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/crontab",
         "package_name": "cronie",
         "package_version": "1.4.11",
         "status": "changed",
-        "changes": [
-          "size",
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "size",
+            "md5"
+          ]
+        },
         "user": "root",
         "group": "root",
         "mode": "600",
@@ -2386,20 +2392,28 @@
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": [
-          "deleted"
-        ]
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "deleted"
+          ]
+        }
       },
       {
         "name": "/etc/postfix/TLS_LICENSE",
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": [
-          "mode",
-          "user",
-          "group"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "mode",
+            "user",
+            "group"
+          ]
+        },
         "user": "bin",
         "group": "users",
         "mode": "666",
@@ -2410,9 +2424,13 @@
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": [
-          "link_path"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "link_path"
+          ]
+        },
         "user": "root",
         "group": "root",
         "mode": "777",
@@ -2422,29 +2440,39 @@
     ]
   },
   "changed_managed_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/usr/share/doc/packages/rsync/NEWS",
         "package_name": "rsync",
         "package_version": "3.1.0",
         "status": "changed",
-        "changes": [
-          "deleted"
-        ]
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "deleted"
+          ]
+        }
       },
       {
         "name": "/usr/share/doc/packages/rsync/README",
         "package_name": "rsync",
         "package_version": "3.1.0",
         "status": "changed",
-        "changes": [
-          "size",
-          "mode",
-          "md5",
-          "user",
-          "group"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "size",
+            "mode",
+            "md5",
+            "user",
+            "group"
+          ]
+        },
         "mode": "664",
         "user": "bin",
         "group": "wheel",
@@ -2455,9 +2483,13 @@
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": [
-          "link_path"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "link_path"
+          ]
+        },
         "mode": "777",
         "user": "root",
         "group": "root",
@@ -2467,8 +2499,10 @@
     ]
   },
   "unmanaged_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/magicapp.conf",
         "type": "file",

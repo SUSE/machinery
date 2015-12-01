@@ -1,15 +1,21 @@
 {
   "changed_managed_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/lib/mkinitrd/scripts/setup-done.sh",
         "package_name": "mkinitrd",
         "package_version": "2.4.2",
         "status": "changed",
-        "changes": [
-          "mode"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "mode"
+          ]
+        },
         "mode": "555",
         "user": "root",
         "group": "root",
@@ -20,9 +26,13 @@
         "package_name": "bash",
         "package_version": "3.2",
         "status": "changed",
-        "changes": [
-          "md5"
-        ],
+        "changes": {
+          "_attributes": {
+          },
+          "_elements": [
+            "md5"
+          ]
+        },
         "mode": "644",
         "user": "root",
         "group": "root",
