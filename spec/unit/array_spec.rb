@@ -88,12 +88,12 @@ describe Machinery::Array do
 
       it "raises errors on unknown attributes" do
         expect {
-          Machinery::Array.from_json({
+          Machinery::Array.from_json(
             "_attributes" => {
               foo: "bar"
             },
             "_elements" => []
-          })
+          )
         }.to raise_error(/Unknown properties.*foo/)
       end
     end

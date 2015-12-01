@@ -287,8 +287,8 @@ describe UnmanagedFilesInspector do
         file_store = description.scope_file_store("unmanaged_files.tmp")
         file_store.create
         cfdir = file_store.path
-        dlist = expected_data.select{ |s| s.type=="dir" }
-        dlist.map!{ |s| s.name[0..-2] }
+        dlist = expected_data.select { |s| s.type == "dir" }
+        dlist.map! { |s| s.name[0..-2] }
         expect(system).to receive(:create_archive)
 
         dlist.each do |dir|
@@ -461,7 +461,7 @@ describe UnmanagedFilesInspector do
     expect_any_instance_of(MachineryHelper).to receive(:remove_helper)
     expect_any_instance_of(MachineryHelper).to receive(:has_compatible_version?).and_return(true)
     expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope|
-      scope = UnmanagedFilesScope.new
+      UnmanagedFilesScope.new
     end
 
     inspector.inspect(Filter.from_default_definition("inspect"))

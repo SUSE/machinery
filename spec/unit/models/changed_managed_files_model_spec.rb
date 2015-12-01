@@ -26,7 +26,6 @@ describe "changed_managed_files model" do
   it_behaves_like "Scope"
   it_behaves_like "FileScope"
 
-
   specify { expect(scope).to be_a(ChangedManagedFilesScope) }
   specify { expect(scope.first).to be_a(ChangedManagedFile) }
 
