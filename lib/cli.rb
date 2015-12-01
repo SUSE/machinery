@@ -78,6 +78,7 @@ class Cli
   def self.buildable_distributions
     distribution_string = ""
     Os.supported_host_systems.each do |distribution|
+      next if distribution.buildable_systems.empty?
       distribution_string += "* #{distribution.canonical_name}\n\n"
       distribution_string += distribution.buildable_systems.map(&:canonical_name).join(", ")
       distribution_string += "\n\n"
