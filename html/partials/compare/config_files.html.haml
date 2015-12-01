@@ -20,11 +20,11 @@
       .col-md-12
         .row
           .col-xs-6.table_container
-            - if safe_length(@diff["config_files"].only_in1, :files) > 0
+            - if @diff["config_files"].only_in1
               = only_in_a
               = render_partial "compare/config_file_list", list: @diff["config_files"].only_in1
           .col-xs-6.table_container
-            - if safe_length(@diff["config_files"].only_in2, :files) > 0
+            - if @diff["config_files"].only_in2
               = only_in_b
               = render_partial "compare/config_file_list", list: @diff["config_files"].only_in2
         - if @diff["config_files"].changed
@@ -34,7 +34,7 @@
               = changed
               = render_partial "compare/changes", changes: changed_elements("config_files",
                 key: "name")
-        - if safe_length(@diff["config_files"].common, :files) > 0
+        - if @diff["config_files"].common
           %a.both_anchor{ id: "config_files_both" }
           .row
             .col-xs-12

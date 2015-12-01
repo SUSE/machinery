@@ -4,7 +4,7 @@
       %th Name
       %th.medium State
   %tbody
-    - list.services.each do |service|
+    - list.each do |service|
       %tr
         %td= service.name
         %td{ class: "#{list.init_system}_#{service.state}" }

@@ -9,7 +9,7 @@
       %th.medium.visible-lg Checksum
       %th.tiny.hidden-lg
   %tbody
-    - list.packages.each do |package|
+    - list.each do |package|
       %tr
         %td= package.name
         %td= package.version
