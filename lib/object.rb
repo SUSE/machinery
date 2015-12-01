@@ -32,11 +32,7 @@ module Machinery
           when ::Array
             Machinery::Array.from_json(value)
           when Hash
-            if value.keys.sort == ["_attributes", "_elements"]
-              Machinery::Array.from_json(value)
-            else
-              Machinery::Object.from_json(value)
-            end
+            Machinery::Object.from_json(value)
           else
             value
           end

@@ -379,49 +379,39 @@ EOT
     it "shows that a package has been added to a list" do
       system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
-            },
-            "_elements": [
-              {
-                "name": "bash",
-                "version": "4.2",
-                "release": "68.1.5",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-              },
-              {
-                "name": "kernel",
-                "version": "3",
-                "release": "1",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
-              }
-            ]
-          }
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             },
+             {
+               "name": "kernel",
+               "version": "3",
+               "release": "1",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
+             }
+           ]
         }
       EOT
 
       system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
-            },
-            "_elements": [
-              {
-                "name": "bash",
-                "version": "4.2",
-                "release": "68.1.5",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-              }
-            ]
-          }
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             }
+           ]
         }
       EOT
 
@@ -441,57 +431,47 @@ EOT
     it "shows that a package has been changed in a list" do
       system_description1 = create_test_description(json: <<-EOT, name: "one")
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
-            },
-            "_elements": [
-              {
-                "name": "bash",
-                "version": "4.2",
-                "release": "68.1.5",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-              },
-              {
-                "name": "kernel",
-                "version": "3",
-                "release": "1",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
-              }
-            ]
-          }
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             },
+             {
+               "name": "kernel",
+               "version": "3",
+               "release": "1",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
+             }
+           ]
         }
       EOT
 
       system_description2 = create_test_description(json: <<-EOT, name: "two")
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
-            },
-            "_elements": [
-              {
-                "name": "bash",
-                "version": "4.2",
-                "release": "68.1.5",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-              },
-              {
-                "name": "kernel",
-                "version": "4",
-                "release": "1",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
-              }
-            ]
-          }
+          "packages": [
+             {
+               "name": "bash",
+               "version": "4.2",
+               "release": "68.1.5",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+             },
+             {
+               "name": "kernel",
+               "version": "4",
+               "release": "1",
+               "arch": "x86_64",
+               "vendor": "openSUSE",
+               "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
+             }
+           ]
         }
       EOT
 
@@ -502,7 +482,6 @@ In both with different attributes ('one' <> 'two'):
   * kernel (version: 3 <> 4)
 
 EOT
-
       output = CompareTask.new.render_comparison(system_description1,
         system_description2, ["packages"])
 

@@ -22,10 +22,8 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "_attributes": {
-          "extracted": false
-        },
-        "_elements": [
+        "extracted": false,
+        "files": [
           {
             "name": "/boot/backup_mbr",
             "type": "file"
@@ -44,10 +42,8 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "_attributes": {
-          "extracted": true
-        },
-        "_elements": [
+        "extracted": true,
+        "files": [
           {
             "name": "/usr/include/asm",
             "type": "link",
@@ -64,10 +60,8 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "_attributes": {
-          "extracted": true
-        },
-        "_elements": [
+        "extracted": true,
+        "files": [
           {
             "name": "/etc/iscsi/",
             "type": "dir",
@@ -87,10 +81,8 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "_attributes": {
-          "extracted": true
-        },
-        "_elements": [
+        "extracted": true,
+        "files": [
           {
             "name": "/etc/modprobe.d/50-ipv6.conf",
             "type": "file",
@@ -109,10 +101,8 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "_attributes": {
-          "extracted": true
-        },
-        "_elements": [
+        "extracted": true,
+        "files": [
           {
             "name": "/mnt/unmanaged/remote-dir/",
             "type": "remote_dir"
@@ -133,10 +123,7 @@ describe UnmanagedFilesRenderer do
     create_test_description(json: <<-EOF)
     {
       "unmanaged_files": {
-        "_attributes": {
-          "extracted": true
-        },
-        "_elements": []
+        "extracted": true
       }
     }
     EOF

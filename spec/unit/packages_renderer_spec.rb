@@ -21,29 +21,24 @@ describe PackagesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
       {
-        "packages": {
-          "_attributes": {
-            "package_system": "rpm"
+        "packages": [
+          {
+            "name": "bash",
+            "version": "4.2",
+            "release": "1.0",
+            "arch": "x86_64",
+            "vendor": "openSUSE",
+            "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
           },
-          "_elements": [
-            {
-              "name": "bash",
-              "version": "4.2",
-              "release": "1.0",
-              "arch": "x86_64",
-              "vendor": "openSUSE",
-              "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
-            },
-            {
-              "name": "kernel-desktop",
-              "version": "3.7.10",
-              "release": "1.0",
-              "arch": "i586",
-              "vendor": "openSUSE",
-              "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
-            }
-          ]
-        }
+          {
+            "name": "kernel-desktop",
+            "version": "3.7.10",
+            "release": "1.0",
+            "arch": "i586",
+            "vendor": "openSUSE",
+            "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+          }
+        ]
       }
     EOF
   }
@@ -71,106 +66,96 @@ describe PackagesRenderer do
     let(:description1) {
       create_test_description(json: <<-EOF, name: "description1")
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
+          "packages": [
+            {
+              "name": "bash",
+              "version": "4.2",
+              "release": "1.0",
+              "arch": "x86_64",
+              "vendor": "openSUSE",
+              "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
             },
-            "_elements": [
-              {
-                "name": "bash",
-                "version": "4.2",
-                "release": "1.0",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
-              },
-              {
-                "name": "kernel-desktop",
-                "version": "3.7.10",
-                "release": "1.0",
-                "arch": "i586",
-                "vendor": "openSUSE",
-                "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
-              },
-              {
-                "name": "autofs",
-                "version": "5.0.9",
-                "release": "3.6",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-              },
-              {
-                "name": "btrfsprogs",
-                "version": "3.16",
-                "release": "4.1",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "db96018161193aaa42ee8cd1234247f9"
-              },
-              {
-                "name": "cpio",
-                "version": "2.11",
-                "release": "26.182",
-                "arch": "x86_64",
-                "vendor": "SUSE LLC <https://www.suse.com/>",
-                "checksum": "091d486ab725d7542933b74f9b3204e4"
-              }
-            ]
-          }
+            {
+              "name": "kernel-desktop",
+              "version": "3.7.10",
+              "release": "1.0",
+              "arch": "i586",
+              "vendor": "openSUSE",
+              "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+            },
+            {
+              "name": "autofs",
+              "version": "5.0.9",
+              "release": "3.6",
+              "arch": "x86_64",
+              "vendor": "openSUSE",
+              "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+            },
+            {
+              "name": "btrfsprogs",
+              "version": "3.16",
+              "release": "4.1",
+              "arch": "x86_64",
+              "vendor": "openSUSE",
+              "checksum": "db96018161193aaa42ee8cd1234247f9"
+            },
+            {
+              "name": "cpio",
+              "version": "2.11",
+              "release": "26.182",
+              "arch": "x86_64",
+              "vendor": "SUSE LLC <https://www.suse.com/>",
+              "checksum": "091d486ab725d7542933b74f9b3204e4"
+            }
+          ]
         }
       EOF
     }
     let(:description2) {
       create_test_description(json: <<-EOF, name: "description2")
         {
-          "packages": {
-            "_attributes": {
-              "package_system": "rpm"
+          "packages": [
+            {
+              "name": "bash2",
+              "version": "4.2",
+              "release": "1.0",
+              "arch": "x86_64",
+              "vendor": "openSUSE",
+              "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
             },
-            "_elements": [
-              {
-                "name": "bash2",
-                "version": "4.2",
-                "release": "1.0",
-                "arch": "x86_64",
-                "vendor": "openSUSE",
-                "checksum": "7dfdd742a9b7d60c75bf4844d294716d"
-              },
-              {
-                "name": "kernel-desktop",
-                "version": "3.7.11",
-                "release": "1.0",
-                "arch": "i586",
-                "vendor": "openSUSE",
-                "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
-              },
-              {
-                "name": "autofs",
-                "version": "5.0.9",
-                "release": "3.6",
-                "arch": "x86_64",
-                "vendor": "Packman",
-                "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-              },
-              {
-                "name": "btrfsprogs",
-                "version": "3.18",
-                "release": "4.1",
-                "arch": "x86_64",
-                "vendor": "Packman",
-                "checksum": "db96018161193aaa42ee8cd1234247f9"
-              },
-              {
-                "name": "cpio",
-                "version": "2.11",
-                "release": "26.184",
-                "arch": "x86_64",
-                "vendor": "SUSE LLC <https://www.suse.com/>",
-                "checksum": "091d486ab725d7542933b74f9b3204e4"
-              }
-            ]
-          }
+            {
+              "name": "kernel-desktop",
+              "version": "3.7.11",
+              "release": "1.0",
+              "arch": "i586",
+              "vendor": "openSUSE",
+              "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+            },
+            {
+              "name": "autofs",
+              "version": "5.0.9",
+              "release": "3.6",
+              "arch": "x86_64",
+              "vendor": "Packman",
+              "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+            },
+            {
+              "name": "btrfsprogs",
+              "version": "3.18",
+              "release": "4.1",
+              "arch": "x86_64",
+              "vendor": "Packman",
+              "checksum": "db96018161193aaa42ee8cd1234247f9"
+            },
+            {
+              "name": "cpio",
+              "version": "2.11",
+              "release": "26.184",
+              "arch": "x86_64",
+              "vendor": "SUSE LLC <https://www.suse.com/>",
+              "checksum": "091d486ab725d7542933b74f9b3204e4"
+            }
+          ]
         }
       EOF
     }

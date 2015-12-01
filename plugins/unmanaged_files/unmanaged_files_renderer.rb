@@ -22,14 +22,14 @@ class UnmanagedFilesRenderer < Renderer
     list do
       file_status = description["unmanaged_files"].extracted
 
-      if description["unmanaged_files"].elements.empty?
+      if description["unmanaged_files"].files.empty?
         puts "There are no unmanaged files."
       elsif !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end
 
-      if description["unmanaged_files"]
-        description["unmanaged_files"].each do |p|
+      if description["unmanaged_files"].files
+        description["unmanaged_files"].files.each do |p|
           if description["unmanaged_files"].extracted
             item "#{p.name} (#{p.type})" do
               puts "User/Group: #{p.user}:#{p.group}" if p.user || p.group

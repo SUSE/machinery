@@ -48,7 +48,7 @@
     ]
   },
   "meta": {
-    "format_version": 6,
+    "format_version": 5,
     "repositories": {
       "modified": "2014-08-29T11:10:03Z",
       "hostname": "192.168.121.56"

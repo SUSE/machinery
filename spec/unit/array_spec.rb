@@ -20,7 +20,6 @@ require_relative "spec_helper"
 describe Machinery::Array do
   class ArrayExampleObject < Machinery::Object; end
   class ArrayExampleArray < Machinery::Array
-    has_attributes :foo, :bar
     has_elements class: ArrayExampleObject
   end
 
@@ -36,66 +35,28 @@ describe Machinery::Array do
   }
 
   describe "#from_json" do
-    describe "plain arrays" do
-      it "delegates to specialized class when the element class is set" do
-        json_object = [
-          { a: 1 },
-          { b: 2 }
-        ]
+    it "delegates to specialized class when the element class is set" do
+      json_object = [
+        { a: 1 },
+        { b: 2 }
+      ]
 
-        array = ArrayExampleArray.from_json(json_object)
-        expect(array[0]).to eq(ArrayExampleObject.new(a: 1))
-        expect(array[1]).to eq(ArrayExampleObject.new(b: 2))
-      end
-
-      it "uses generic classes when no element class is set" do
-        json_object = [1, { 2 => "2" }, [3, "3"]]
-
-        expected = Machinery::Array.new(
-          [
-            1,
-            Machinery::Object.new(2 => "2"),
-            Machinery::Array.new([3, "3"])
-          ]
-        )
-        expect(Machinery::Array.from_json(json_object)).to eq(expected)
-      end
+      array = ArrayExampleArray.from_json(json_object)
+      expect(array[0]).to eq(ArrayExampleObject.new(a: 1))
+      expect(array[1]).to eq(ArrayExampleObject.new(b: 2))
     end
 
-    describe "complex arrays" do
-      let(:array) {
-        json_object = {
-          "_attributes" => {
-          },
-          "_elements" => [
-            1,
-            2,
-            {
-              "_attributes" => {},
-              "_elements" => [1]
-            }
-          ]
-        }
+    it "uses generic classes when no element class is set" do
+      json_object = [1, {2 => "2"}, [3, "3"]]
 
-        Machinery::Array.from_json(json_object)
-      }
-
-      it "makes the elements available as the payload" do
-        expect(array.first).to eq(1)
-        expect(array[1]).to eq(2)
-        expect(array[2]).to eq(Machinery::Array.new([1]))
-      end
-
-      it "raises errors on unknown attributes" do
-        expect {
-          Machinery::Array.from_json(
-            "_attributes" => {
-              foo: "bar"
-            },
-            "_elements" => []
-          )
-        }.to raise_error(/Unknown properties.*foo/)
-      end
+      expected = Machinery::Array.new(
+        [
+          1,
+          Machinery::Object.new(2 => "2"),
+          Machinery::Array.new([3, "3"])
+        ]
+      )
+      expect(Machinery::Array.from_json(json_object)).to eq(expected)
     end
   end
 
@@ -176,18 +137,7 @@ describe Machinery::Array do
       array = Machinery::Array.new([1, embedded_array, embedded_object])
 
       result = array.as_json
-      expect(result).to eq(
-        "_attributes" => {
-        },
-        "_elements" => [
-          1,
-          {
-            "_attributes" => {},
-            "_elements" => ["a" => 1]
-          },
-          { "b" => 2 }
-        ]
-      )
+      expect(result).to eq([1, ["a" => 1], { "b" => 2 }])
     end
   end
 
@@ -203,22 +153,6 @@ describe Machinery::Array do
       expect(array).to be_a(ArrayExampleArray)
       expect(array.size).to eq(4)
       expect(array.all? { |element| element.is_a?(ArrayExampleObject) }).to be(true)
-    end
-
-    it "sets attributes" do
-      array = ArrayExampleArray.new
-
-      expect(array.foo).to be_nil
-      expect(array.bar).to be_nil
-      expect {
-        array.baz
-      }.to raise_error
-
-      array.foo = "foo"
-      array.bar = "bar"
-
-      expect(array.foo).to eq("foo")
-      expect(array.bar).to eq("bar")
     end
   end
 
@@ -279,41 +213,6 @@ describe Machinery::Array do
       expect(comparison1).to eq([nil, Machinery::Array.new(["a", "b", "c"]), nil, nil])
       expect(comparison2).to eq([Machinery::Array.new(["a", "b", "c"]), nil, nil, nil])
       expect(comparison3).to eq([nil, nil, nil, nil])
-    end
-
-    it "compares the attributes as well" do
-      a = ArrayExampleArray.new([], foo: "a", bar: "a")
-      b = ArrayExampleArray.new([], foo: "b", bar: "b")
-      c = ArrayExampleArray.new([], foo: "a", bar: "c")
-
-      comparison1 = a.compare_with(b)
-      comparison2 = a.compare_with(c)
-      comparison3 = a.compare_with(a)
-
-      expect(comparison1).to eq(
-        [
-          ArrayExampleArray.new([], foo: "a", bar: "a"),
-          ArrayExampleArray.new([], foo: "b", bar: "b"),
-          nil,
-          nil
-        ]
-      )
-      expect(comparison2).to eq(
-        [
-          ArrayExampleArray.new([], foo: "a", bar: "a"),
-          ArrayExampleArray.new([], foo: "a", bar: "c"),
-          nil,
-          nil
-        ]
-      )
-      expect(comparison3).to eq(
-        [
-          nil,
-          nil,
-          nil,
-          ArrayExampleArray.new([], foo: "a", bar: "a")
-        ]
-      )
     end
   end
 

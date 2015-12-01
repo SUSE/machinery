@@ -26,8 +26,8 @@ describe "unmanaged_files model" do
   it_behaves_like "Scope"
   it_behaves_like "FileScope"
 
-  specify { expect(scope).to be_a(UnmanagedFilesScope) }
-  specify { expect(scope.first).to be_a(UnmanagedFile) }
+  specify { expect(scope.files).to be_a(UnmanagedFileList) }
+  specify { expect(scope.files.first).to be_a(UnmanagedFile) }
 
   describe UnmanagedFilesScope do
     describe "#length" do
@@ -38,16 +38,16 @@ describe "unmanaged_files model" do
 
     describe "#compare_with" do
       it "shows a warning when comparing unextracted with extracted files" do
-        scope_a = UnmanagedFilesScope.new([], extracted: false)
-        scope_b = UnmanagedFilesScope.new([], extracted: true)
+        scope_a = UnmanagedFilesScope.new(extracted: false, files: UnmanagedFileList.new([]))
+        scope_b = UnmanagedFilesScope.new(extracted: true, files: UnmanagedFileList.new([]))
         expect(Machinery::Ui).to receive(:warn)
 
         scope_a.compare_with(scope_b)
       end
 
       it "doesn't show a warning when comparing extracted with extracted files" do
-        scope_a = UnmanagedFilesScope.new([], extracted: true)
-        scope_b = UnmanagedFilesScope.new([], extracted: true)
+        scope_a = UnmanagedFilesScope.new(extracted: true, files: UnmanagedFileList.new([]))
+        scope_b = UnmanagedFilesScope.new(extracted: true, files: UnmanagedFileList.new([]))
         expect(Machinery::Ui).to_not receive(:warn)
 
         scope_a.compare_with(scope_b)
@@ -55,38 +55,38 @@ describe "unmanaged_files model" do
     end
   end
 
-  describe UnmanagedFilesScope do
+  describe UnmanagedFileList do
     describe "#compare_with" do
       it "only compares common properties" do
-        scope = UnmanagedFilesScope.new([
+        list = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/foo",
             b:    2
           )
         ])
-        scope_equal = UnmanagedFilesScope.new([
+        list_equal = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/foo",
             b:    2,
             c:    3
           )
         ])
-        scope_changed = UnmanagedFilesScope.new([
+        list_changed = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/foo",
             b:    3
           )
         ])
-        scope_different = UnmanagedFilesScope.new([
+        list_different = UnmanagedFileList.new([
           UnmanagedFile.new(
             name: "/bar",
             b:    2
           )
         ])
 
-        expect(scope.compare_with(scope_equal)).to eq([nil, nil, nil, scope])
-        expect(scope.compare_with(scope_different)).to eq([scope, scope_different, nil, nil])
-        expect(scope.compare_with(scope_changed)).to eq([
+        expect(list.compare_with(list_equal)).to eq([nil, nil, nil, list])
+        expect(list.compare_with(list_different)).to eq([list, list_different, nil, nil])
+        expect(list.compare_with(list_changed)).to eq([
           nil,
           nil,
           [

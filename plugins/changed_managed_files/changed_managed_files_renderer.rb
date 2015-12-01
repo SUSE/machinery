@@ -19,8 +19,8 @@ class ChangedManagedFilesRenderer < Renderer
   def content(description)
     return unless description["changed_managed_files"]
 
-    if description["changed_managed_files"]
-      files, errors = description["changed_managed_files"].partition do |file|
+    if description["changed_managed_files"].files
+      files, errors = description["changed_managed_files"].files.partition do |file|
         file.status != "error"
       end
     end

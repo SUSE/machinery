@@ -21,24 +21,24 @@
 # Filters are usually created by passing a filter definition string to the
 # constructor, e.g.
 #
-#   filter = Filter.new("/unmanaged_files/name=/opt")
+#   filter = Filter.new("/unmanaged_files/files/name=/opt")
 #
 # Existing filters can be extended by amending the definition:
 #
-#   filter.add_element_filter_from_definition("/unmanaged_files/name=/srv")
+#   filter.add_element_filter_from_definition("/unmanaged_files/files/name=/srv")
 #
 # or by adding ElementFilters directly:
 #
-#   element_filter = ElementFilter.new("/unmanaged_files/name", ["/opt", "/srv"])
+#   element_filter = ElementFilter.new("/unmanaged_files/files/name", ["/opt", "/srv"])
 #   filter.add_element_filter(element_filter)
 #
 #
 # The actual filtering can be done by passing values to Filter#matches?
 #
-#   filter = Filter.new("/unmanaged_files/name=/opt*")
-#   filter.matches?("/unmanaged_files/name", "/opt/foo")
+#   filter = Filter.new("/unmanaged_files/files/name=/opt*")
+#   filter.matches?("/unmanaged_files/files/name", "/opt/foo")
 #   => true
-#   filter.matches?("/unmanaged_files/name", "/srv/bar")
+#   filter.matches?("/unmanaged_files/files/name", "/srv/bar")
 #   => false
 #
 # More details about how the filter work can be found at

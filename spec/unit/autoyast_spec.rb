@@ -45,7 +45,7 @@ describe Autoyast do
 
   describe "#profile" do
     it "handles quotes in changed links" do
-      description["changed_managed_files"] <<
+      description["changed_managed_files"]["files"] <<
         ChangedManagedFile.new(
           name: "/opt/test-quote-char/link",
           package_name: "test-data-files",

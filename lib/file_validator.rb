@@ -56,22 +56,16 @@ class FileValidator
   def scope_extracted?(scope)
     if @format_version == 1
       @json_hash[scope] && ScopeFileStore.new(@base_path, scope.to_s).path
-    elsif @format_version < 6
-      @json_hash[scope] && @json_hash[scope]["extracted"]
     else
-      @json_hash[scope] && @json_hash[scope]["_attributes"]["extracted"]
+      @json_hash[scope] && @json_hash[scope]["extracted"]
     end
   end
 
   def expected_files(scope)
-    changes_proc = ->(file) { file["changes"] }
     if @format_version == 1
       files = @json_hash[scope]
-    elsif @format_version < 6
-      files = @json_hash[scope]["files"]
     else
-      changes_proc = ->(file) { file["changes"]["_elements"]}
-      files = @json_hash[scope]["_elements"]
+      files = @json_hash[scope]["files"]
     end
 
     if scope == "unmanaged_files"
@@ -85,8 +79,8 @@ class FileValidator
       expected_files += tree_tarballs
     else
       expected_files = files.reject do |file|
-        changes_proc.call(file).include?("deleted") || (file["type"] && file["type"] != "file")
-      end.map { |file| file["name"] }
+          file["changes"].include?("deleted") || (file["type"] && file["type"] != "file")
+        end.map { |file| file["name"] }
     end
 
     store_base_path = ScopeFileStore.new(@base_path, scope.to_s).path

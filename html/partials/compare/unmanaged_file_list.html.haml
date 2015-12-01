@@ -1,14 +1,14 @@
 - if !list.extracted.nil?
   %p
     <strong>Files extracted:</strong> #{list.extracted ? "yes" : "no"}
-- unless list.elements.empty?
+- if list.files
   %table.table.table-striped.table-hover.table-condensed.files-table
     %thead
       %tr
         %th Name
         %th.small Type
     %tbody
-      - list.each do |file|
+      - list.files.each do |file|
         %tr
           %td= file.name
           %td= file.type

@@ -18,10 +18,26 @@
 class ChangedManagedFile < Machinery::SystemFile
 end
 
+class ChangedManagedFileList < Machinery::Array
+  has_elements class: ChangedManagedFile
+
+  def compare_with(other)
+    only_self = self - other
+    only_other = other - self
+    common = self & other
+    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+
+    [
+      only_self,
+      only_other,
+      changed,
+      common
+    ].map { |e| (e && !e.empty?) ? e : nil }
+  end
+end
+
 class ChangedManagedFilesScope < FileScope
   include Machinery::Scope
   include ScopeFileAccessFlat
-
-  has_attributes :extracted
-  has_elements class: ChangedManagedFile
+  has_property :files, class: ChangedManagedFileList
 end
