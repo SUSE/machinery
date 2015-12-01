@@ -18,6 +18,7 @@
 class Migrate5To6 < Migration
   desc <<-EOT
     Schema version 6 adds support for Ubuntu 14.04 systems.
+    There are now three types of repositories: zypper, yum and apt
   EOT
 
   def migrate
@@ -27,6 +28,16 @@ class Migrate5To6 < Migration
           "package_system" => "rpm"
         },
         "_elements" => @hash["packages"]
+      }
+    end
+    if @hash.key?("repositories")
+      @hash["repositories"] = {
+        "_attributes" => {
+          "repository_system" => @hash["repositories"].first["package_manager"]
+        },
+        "_elements" => @hash["repositories"].map do |repository|
+          repository.delete_if { |key, _| key == "package_manager" }
+        end
       }
     end
     ["changed_managed_files", "config_files", "unmanaged_files"].each do |scope|

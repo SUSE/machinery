@@ -132,6 +132,50 @@ describe Migrate5To6 do
             "release": "2.1"
           }
         ],
+        "repositories": [
+          {
+            "package_manager": "zypp",
+            "alias": "download.opensuse.org-oss",
+            "name": "download.opensuse.org-oss",
+            "type": "yast2",
+            "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+            "enabled": true,
+            "autorefresh": true,
+            "gpgcheck": true,
+            "priority": 99
+          },
+          {
+            "package_manager": "zypp",
+            "alias": "download.opensuse.org-update",
+            "name": "download.opensuse.org-update",
+            "type": "rpm-md",
+            "url": "http://download.opensuse.org/update/13.1/",
+            "enabled": true,
+            "autorefresh": true,
+            "gpgcheck": true,
+            "priority": 99
+          }
+        ],
+        "meta": {
+          "format_version": 5
+        }
+      }
+    EOT
+  }
+  let(:description_yum_hash) {
+    JSON.parse(<<-EOT)
+      {
+        "repositories": [
+          {
+            "package_manager": "yum",
+            "name": "Red Hat Enterprise Linux 6Server - x86_64 - Source",
+            "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
+            "enabled": false,
+            "alias": "rhel-source",
+            "gpgcheck": true,
+            "type": "rpm-md"
+          },
+        ],
         "meta": {
           "format_version": 5
         }
@@ -155,6 +199,23 @@ describe Migrate5To6 do
         package["name"]
       end
       expect(package_names).to eq(["aaa_base", "adjtimex", "autofs"])
+    end
+  end
+
+  describe "repositories" do
+    it "adds the 'repository_system' attribute" do
+      expect(description_hash["repositories"]["_attributes"]["repository_system"]).to eq("zypp")
+    end
+
+    it "moves the repositories to repositories" do
+      repository_names = description_hash["repositories"]["_elements"].map do |repository|
+        repository["name"]
+      end
+      expect(repository_names).to eq(["download.opensuse.org-oss", "download.opensuse.org-update"])
+    end
+
+    it "removes the package_manager type" do
+      expect(description_hash["repositories"]["_elements"].first["package_manager"]).to be(nil)
     end
   end
 
