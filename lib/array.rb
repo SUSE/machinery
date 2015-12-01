@@ -135,7 +135,7 @@ module Machinery
     end
 
     def empty?
-      @elements.empty? && @attributes.empty?
+      @elements.empty?
     end
 
     def as_json
@@ -166,9 +166,9 @@ module Machinery
       [
         only_self,
         only_other,
-        [],
+        Machinery::Array.new,
         common
-      ].map { |e| e.empty? ? nil : e }
+      ].map { |e| (e.empty? && (e.is_a?(Machinery::Array) && e.attributes.empty?)) ? nil : e }
     end
 
     def method_missing(name, *args, &block)
