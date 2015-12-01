@@ -19,12 +19,12 @@ class ServicesRenderer < Renderer
   def content(description)
     return unless description["services"]
 
-    if description["services"].services.empty?
+    if description["services"].elements.empty?
       puts "There are no services."
     end
 
     list do
-      description["services"].services.each do |p|
+      description["services"].each do |p|
         item "#{p.name}: #{p.state}"
       end
     end

@@ -52,6 +52,24 @@ class Migrate5To6 < Migration
       end
     end
 
+    if @hash.key?("services")
+      @hash["services"] = {
+        "_attributes" => {
+          "init_system" => @hash["services"]["init_system"]
+        },
+        "_elements" => @hash["services"]["services"]
+      }
+    end
+
+    ["users", "groups", "patterns"].each do |scope|
+      next unless @hash.key?(scope)
+
+      @hash[scope] = {
+        "_attributes" => {},
+        "_elements" => @hash[scope]
+      }
+    end
+
     @hash
   end
 end

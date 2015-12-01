@@ -28,21 +28,19 @@ class Service < Machinery::Object
   end
 end
 
-class ServiceList < Machinery::Array
-  has_elements class: Service
-end
-
-class ServicesScope < Machinery::Object
+class ServicesScope < Machinery::Array
   include Machinery::Scope
-  has_property :services, class: ServiceList
+
+  has_attributes :init_system
+  has_elements class: Service
 
   def compare_with(other)
     if self.init_system != other.init_system
       [self, other, nil, nil]
     else
-      only_self = self.services - other.services
-      only_other = other.services - self.services
-      common = self.services & other.services
+      only_self = self - other
+      only_other = other - self
+      common = self & other
       changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
       changed = nil if changed.empty?
 
@@ -51,17 +49,13 @@ class ServicesScope < Machinery::Object
         service_list_to_scope(only_other),
         changed,
         service_list_to_scope(common)
-      ]
+      ].map { |e| (e && !e.empty?) ? e : nil }
     end
-  end
-
-  def length
-    services.try(:length) || 0
   end
 
   private
 
   def service_list_to_scope(services)
-    self.class.new(init_system: init_system, services: services) if !services.empty?
+    self.class.new(services, init_system: init_system) unless services.elements.empty?
   end
 end

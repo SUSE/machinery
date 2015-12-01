@@ -230,7 +230,7 @@ class Autoyast < Exporter
 
     xml.send("services-manager") do
       xml.services("config:type" => "list") do
-        @system_description.services.services.each do |service|
+        @system_description.services.each do |service|
           name = service.name
           if @system_description.services.init_system == "systemd"
             # Yast can only handle services right now

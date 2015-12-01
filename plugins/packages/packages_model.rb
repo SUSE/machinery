@@ -47,6 +47,6 @@ class PackagesScope < Machinery::Array
   private
 
   def package_list_to_scope(packages)
-    self.class.new(packages, package_system: package_system) unless packages.empty?
+    self.class.new(packages, package_system: package_system) unless packages.elements.empty?
   end
 end

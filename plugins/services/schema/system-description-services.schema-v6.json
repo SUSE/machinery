@@ -2,13 +2,24 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
 
   "type": "object",
-  "required": ["init_system", "services"],
+  "required": [
+    "_attributes",
+    "_elements"
+  ],
   "properties": {
-    "init_system": {
-      "type": "string",
-      "minLength": 1
+    "_attributes": {
+      "type": "object",
+      "required": [
+        "init_system"
+      ],
+      "properties": {
+        "init_system": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     },
-    "services": {
+    "_elements": {
       "type": "array",
       "items": {
         "type": "object",

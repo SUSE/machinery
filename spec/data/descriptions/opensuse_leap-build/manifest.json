@@ -1775,13 +1775,17 @@
       }
     ]
   },
-  "patterns": [
-    {
-      "name": "base",
-      "version": "20150918",
-      "release": "10.1"
-    }
-  ],
+  "patterns": {
+    "_attributes": {
+    },
+    "_elements": [
+      {
+        "name": "base",
+        "version": "20150918",
+        "release": "10.1"
+      }
+    ]
+  },
   "repositories": [
     {
       "alias": "download.opensuse.org-oss",
@@ -1796,8 +1800,10 @@
     }
   ],
   "services": {
-    "init_system": "systemd",
-    "services": [
+    "_attributes": {
+      "init_system": "systemd"
+    },
+    "_elements": [
       {
         "name": "after-local.service",
         "state": "static"

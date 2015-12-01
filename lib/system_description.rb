@@ -270,7 +270,7 @@ class SystemDescription < Machinery::Object
   end
 
   def runs_service?(name)
-    self["services"].services.any? { |service| service.name == "#{name}.service" }
+    self["services"].any? { |service| service.name == "#{name}.service" }
   end
 
   def has_file?(name)
