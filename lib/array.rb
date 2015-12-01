@@ -68,6 +68,7 @@ module Machinery
     end
 
     attr_reader :elements
+    attr_accessor :attributes
     attr_accessor :scope
 
     def initialize(elements = [], attributes = {})
@@ -130,6 +131,10 @@ module Machinery
       @elements.insert(index, *self.class.new(elements).elements)
     end
 
+    def empty?
+      @elements.empty? && @attributes.empty?
+    end
+
     def as_json
       {
         "_attributes" => @attributes,
@@ -144,11 +149,22 @@ module Machinery
     end
 
     def compare_with(other)
+      only_self = self - other
+      only_other = other - self
+      common = self & other
+
+      if self.attributes == other.attributes
+        common.attributes = self.attributes
+      else
+        only_self.attributes = self.attributes
+        only_other.attributes = other.attributes
+      end
+
       [
-        self - other,
-        other - self,
+        only_self,
+        only_other,
         [],
-        self & other
+        common
       ].map { |e| e.empty? ? nil : e }
     end
 

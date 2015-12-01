@@ -280,6 +280,23 @@ describe Machinery::Array do
       expect(comparison2).to eq([Machinery::Array.new(["a", "b", "c"]), nil, nil, nil])
       expect(comparison3).to eq([nil, nil, nil, nil])
     end
+
+    it "compares the attributes as well" do
+      a = ArrayExampleArray.new([], foo: "a", bar: "a")
+      b = ArrayExampleArray.new([], foo: "b", bar: "b")
+      c = ArrayExampleArray.new([], foo: "a", bar: "c")
+
+      comparison1 = a.compare_with(b)
+
+      expect(comparison1).to eq(
+        [
+          ArrayExampleArray.new([], foo: "a", bar: "a"),
+          ArrayExampleArray.new([], foo: "b", bar: "b"),
+          nil,
+          nil
+        ]
+      )
+    end
   end
 
   describe "#scope=" do
