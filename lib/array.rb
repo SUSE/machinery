@@ -95,7 +95,7 @@ module Machinery
     end
 
     def ==(other)
-      self.class == other.class && @elements == other.elements
+      self.class == other.class && @elements == other.elements && @attributes == other.attributes
     end
 
     # Various Array operators such as "-" and "&" use #eql? and #hash to compare
@@ -108,11 +108,11 @@ module Machinery
     end
 
     def -(other)
-      self.class.new(@elements - other.elements)
+      self.class.new(@elements - other.elements, @attributes)
     end
 
     def &(other)
-      self.class.new(@elements & other.elements)
+      self.class.new(@elements & other.elements, @attributes)
     end
 
     def push(element)
@@ -124,7 +124,7 @@ module Machinery
     end
 
     def +(array)
-      self.class.new(@elements + self.class.new(array).elements)
+      self.class.new(@elements + self.class.new(array).elements, @attributes)
     end
 
     def insert(index, *elements)
@@ -149,9 +149,9 @@ module Machinery
     end
 
     def compare_with(other)
-      only_self = self - other
-      only_other = other - self
-      common = self & other
+      only_self = self.class.new(self.elements - other.elements)
+      only_other = self.class.new(other.elements - self.elements)
+      common = self.class.new(self.elements & other.elements)
 
       if self.attributes == other.attributes
         common.attributes = self.attributes

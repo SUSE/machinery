@@ -287,11 +287,20 @@ describe Machinery::Array do
       c = ArrayExampleArray.new([], foo: "a", bar: "c")
 
       comparison1 = a.compare_with(b)
+      comparison2 = a.compare_with(c)
 
       expect(comparison1).to eq(
         [
           ArrayExampleArray.new([], foo: "a", bar: "a"),
           ArrayExampleArray.new([], foo: "b", bar: "b"),
+          nil,
+          nil
+        ]
+      )
+      expect(comparison2).to eq(
+        [
+          ArrayExampleArray.new([], foo: "a", bar: "a"),
+          ArrayExampleArray.new([], foo: "a", bar: "c"),
           nil,
           nil
         ]
