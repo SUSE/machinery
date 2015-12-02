@@ -938,7 +938,9 @@ class Cli
         description = SystemDescription.load(args[0], system_description_store)
       end
       task = ServeHtmlTask.new
-      task.serve(system_description_store, description, port: options[:port], public: options[:public])
+      task.serve(
+        system_description_store, description, port: options[:port], public: options[:public]
+      )
     end
   end
 
