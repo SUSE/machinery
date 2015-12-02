@@ -111,6 +111,19 @@ class OsSuse < Os
   def kiwi_bootloader
     "grub2"
   end
+
+  def kiwi_boot
+    os_version = version.match(/(\d+)+\.?(\d+)?/)
+    os_id = case name
+            when /SUSE Linux Enterprise Server/
+              "SLES#{os_version[1]}"
+            when /SUSE Linux Enterprise Desktop/
+              "SLED#{os_version[1]}"
+            when /openSUSE/
+              "#{os_version[1]}.#{os_version[2]}"
+    end
+    "vmxboot/suse-#{os_id}"
+  end
 end
 
 class OsSles11 < OsSuse
@@ -131,10 +144,6 @@ class OsSles11 < OsSuse
   def kiwi_bootloader
     "grub"
   end
-
-  def kiwi_boot
-    "vmxboot/suse-SLES11"
-  end
 end
 
 class OsSles12 < OsSuse
@@ -152,10 +161,6 @@ class OsSles12 < OsSuse
 
   def display_name
     "#{name} (#{architecture})"
-  end
-
-  def kiwi_boot
-    "vmxboot/suse-SLES12"
   end
 end
 
@@ -175,10 +180,6 @@ class OsOpenSuse13_1 < OsOpenSuse
   def self.buildable_systems
     [OsSles11, OsOpenSuse13_1]
   end
-
-  def kiwi_boot
-    "vmxboot/suse-13.1"
-  end
 end
 
 class OsOpenSuse13_2 < OsOpenSuse
@@ -188,10 +189,6 @@ class OsOpenSuse13_2 < OsOpenSuse
 
   def self.buildable_systems
     [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
-  end
-
-  def kiwi_boot
-    "vmxboot/suse-13.2"
   end
 end
 
