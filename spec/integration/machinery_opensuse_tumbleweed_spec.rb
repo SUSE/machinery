@@ -36,8 +36,7 @@ describe "machinery@Tumbleweed" do
           /URI: http:\/\/download\.opensuse\.org\/tumbleweed\/repo\/oss\/$/,
           /Alias: download\.opensuse\.org-oss$/,
           /Refresh: Yes$/,
-          /Priority: 99$/,
-          /Package Manager: zypp$/
+          /Priority: 99$/
         ],
       "services" =>
         [
