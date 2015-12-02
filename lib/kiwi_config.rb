@@ -181,26 +181,8 @@ suseSetupProduct
 suseImportBuildKey
 suseConfig
 EOF
-    case @system_description.os
-    when OsOpenSuse13_2
-      boot = "vmxboot/suse-13.2"
-      bootloader = "grub2"
-    when OsOpenSuse13_1
-      boot = "vmxboot/suse-13.1"
-      bootloader = "grub2"
-    when OsSles12
-      boot = "vmxboot/suse-SLES12"
-      bootloader = "grub2"
-    when OsSles11
-      boot = "vmxboot/suse-SLES11"
-      bootloader = "grub"
-    when OsOpenSuseTumbleweed
-      boot = "vmxboot/suse-tumbleweed"
-      bootloader = "grub2"
-    when OsOpenSuseLeap
-      boot = "vmxboot/suse-leap42.1"
-      bootloader = "grub2"
-    else
+
+    unless @system_description.os.class.ancestors.include?(OsSuse)
       raise Machinery::Errors::ExportFailed.new(
         "Export is not possible because the operating system " \
         "'#{@system_description.os.display_name}' is not supported."
@@ -218,8 +200,12 @@ EOF
         xml.preferences do
           xml.packagemanager "zypper"
           xml.version "0.0.1"
-          xml.type_(image: "vmx", filesystem: "ext3", installiso: "true",
-                   boot: boot, format: "qcow2", bootloader: bootloader)
+          xml.type_(image: "vmx",
+                    filesystem: "ext3",
+                    installiso: "true",
+                    boot: @system_description.os.kiwi_boot,
+                    format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
+                   )
         end
 
         xml.users(group: "root") do

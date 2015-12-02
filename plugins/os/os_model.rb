@@ -110,6 +110,10 @@ class OsSuse < Os
   def can_be_exported?
     true
   end
+
+  def kiwi_bootloader
+    "grub2"
+  end
 end
 
 class OsSles11 < OsSuse
@@ -125,6 +129,14 @@ class OsSles11 < OsSuse
     version =~ /11 (.*)/
     sp = $1
     "#{name} #{sp} (#{architecture})"
+  end
+
+  def kiwi_bootloader
+    "grub"
+  end
+
+  def kiwi_boot
+    "vmxboot/suse-SLES11"
   end
 end
 
@@ -144,6 +156,10 @@ class OsSles12 < OsSuse
   def display_name
     "#{name} (#{architecture})"
   end
+
+  def kiwi_boot
+    "vmxboot/suse-SLES12"
+  end
 end
 
 class OsOpenSuse < OsSuse
@@ -162,6 +178,10 @@ class OsOpenSuse13_1 < OsOpenSuse
   def self.buildable_systems
     [OsSles11, OsOpenSuse13_1]
   end
+
+  def kiwi_boot
+    "vmxboot/suse-13.1"
+  end
 end
 
 class OsOpenSuse13_2 < OsOpenSuse
@@ -171,6 +191,10 @@ class OsOpenSuse13_2 < OsOpenSuse
 
   def self.buildable_systems
     [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
+  end
+
+  def kiwi_boot
+    "vmxboot/suse-13.2"
   end
 end
 
@@ -186,6 +210,10 @@ class OsOpenSuseTumbleweed < OsSuse
   def self.buildable_systems
     [OsOpenSuse13_2, OsOpenSuseTumbleweed, OsOpenSuseLeap]
   end
+
+  def kiwi_boot
+    "vmxboot/suse-tumbleweed"
+  end
 end
 
 class OsOpenSuseLeap < OsSuse
@@ -199,6 +227,10 @@ class OsOpenSuseLeap < OsSuse
 
   def self.buildable_systems
     [OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseLeap, OsOpenSuseTumbleweed, OsSles12, OsSles11]
+  end
+
+  def kiwi_boot
+    "vmxboot/suse-leap42.1"
   end
 end
 
