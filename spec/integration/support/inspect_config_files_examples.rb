@@ -65,7 +65,7 @@ EOF
         }
       end
 
-      expected_config_files = description.config_files.files.select(&:file?).map(&:name)
+      expected_config_files = description.config_files.select(&:file?).map(&:name)
       expect(actual_config_files).to match_array(expected_config_files)
 
       # test file content
