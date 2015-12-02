@@ -250,7 +250,7 @@ describe Migrate5To6 do
 
   it "migrates groups" do
     expect(description_hash["groups"]["_elements"].first["name"]).to eq("the_element")
-    expect(description_hash["groups"]["_elements"].first["users"]["_elements"])
-      .to eq(["foo", "bar"])
+    expect(description_hash["groups"]["_elements"].first["users"]["_elements"]).
+      to eq(["foo", "bar"])
   end
 end
