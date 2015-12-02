@@ -38,7 +38,7 @@ class RepositoriesRenderer < Renderer
           puts "Enabled: #{p.enabled ? "Yes" : "No"}" if !p.enabled.nil?
           puts "Refresh: #{p.autorefresh ? "Yes" : "No"}" if p.autorefresh != nil
           puts "Priority: #{p.priority}" if p.priority != nil
-          puts "Type: #{p.type}"
+          puts "Type: #{p.type || "N/A"}"
         end
       end
     end

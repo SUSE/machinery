@@ -49,7 +49,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 3
-    Type: 
+    Type: N/A
 
   * disabled_repo
     URI: http://disabled-repo
@@ -57,7 +57,7 @@ describe RepositoriesRenderer do
     Enabled: No
     Refresh: No
     Priority: 3
-    Type: 
+    Type: N/A
 
   * autorefresh_enabled
     URI: http://autorefreshed-repo
@@ -65,7 +65,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: Yes
     Priority: 2
-    Type: 
+    Type: N/A
 
   * dvd_entry
     URI: dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
