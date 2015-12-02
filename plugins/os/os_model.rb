@@ -75,10 +75,6 @@ class Os < Machinery::Object
     self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
   end
 
-  def can_be_analyzed?
-    false
-  end
-
   def can_be_exported?
     false
   end
@@ -103,10 +99,6 @@ class OsUnknown < Os
 end
 
 class OsSuse < Os
-  def can_be_analyzed?
-    true
-  end
-
   def can_be_exported?
     true
   end

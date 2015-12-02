@@ -154,9 +154,12 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_analysis_compatibility
-    if !os.can_be_analyzed?
-      raise Machinery::Errors::AnalysisFailed.new("Analysis of operating " +
-        "system '#{os.display_name}' is not supported.")
+    Zypper.isolated(arch: os.architecture) do |zypper|
+      major, minor, patch = zypper.version
+      if major <= 1 && minor <= 11 && patch < 4
+        raise Machinery::Errors::AnalysisFailed.new("Analyzing command requires zypper 1.11.4 " \
+          "or grater to be installed.")
+      end
     end
   end
 

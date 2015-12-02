@@ -414,34 +414,80 @@ describe SystemDescription do
   end
 
   describe "#validate_analysis_compatibility" do
-    it "accepts a supported os" do
-      json = <<-EOF
-        {
-          "os": {
-            "name": "openSUSE 13.1 (Bottle)",
-            "version": "13.1 (Bottle)"
-          }
-        }
-      EOF
-      description = create_test_description(name: "name", json: json)
-      expect {
-        description.validate_analysis_compatibility
-      }.to_not raise_error
+    context "within a suse distro" do
+      before do
+        allow_any_instance_of(OsOpenSuse13_1).to receive(:architecture).and_return("x86_64")
+      end
+
+      context "with no zypper installed" do
+        before do
+          allow_any_instance_of(Zypper).to receive(:version).and_return(nil)
+        end
+
+        it "raises an error" do
+          json = <<-EOF
+            {
+              "os": {
+                "name": "openSUSE 13.1 (Bottle)",
+                "version": "13.1 (Bottle)"
+              }
+            }
+          EOF
+          description = create_test_description(name: "name", json: json)
+          expect {
+            description.validate_analysis_compatibility
+          }.to raise_error
+        end
+      end
+
+      context "with zypper version older than 1.11.4" do
+        before do
+          allow_any_instance_of(Zypper).to receive(:version).and_return([0, 0, 0])
+        end
+
+        it "raises an error" do
+          json = <<-EOF
+            {
+              "os": {
+                "name": "openSUSE 13.1 (Bottle)",
+                "version": "13.1 (Bottle)"
+              }
+            }
+          EOF
+          description = create_test_description(name: "name", json: json)
+          expect {
+            description.validate_analysis_compatibility
+          }.to raise_error
+        end
+      end
+
     end
 
-    it "rejects an unsupported os" do
-      json = <<-EOF
-      {
-        "os": {
-          "name": "OS Which Will Never Exist",
-          "version": "6.6"
-        }
-      }
-      EOF
-      description = create_test_description(name: "name", json: json)
-      expect {
-        description.validate_analysis_compatibility
-      }.to raise_error(Machinery::Errors::AnalysisFailed)
+    context "within an unkown distro" do
+      before do
+        allow_any_instance_of(OsUnknown).to receive(:architecture).and_return("x86_64")
+      end
+
+      context "with a valid zypper version" do
+        before do
+          allow_any_instance_of(Zypper).to receive(:version).and_return([1, 11, 14])
+        end
+
+        it "doesn't raise" do
+          json = <<-EOF
+            {
+              "os": {
+                "name": "OS Which Will Never Exist",
+                "version": "6.6"
+              }
+            }
+          EOF
+          description = create_test_description(name: "name", json: json)
+          expect {
+            description.validate_analysis_compatibility
+          }.to_not raise_error
+        end
+      end
     end
   end
 
