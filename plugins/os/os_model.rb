@@ -36,6 +36,11 @@ class Os < Machinery::Object
         return os
       end
     end
+    if os_name.match(/SUSE Linux|openSUSE/)
+      os = OsSuse.new
+      os.name = os_name
+      return os
+    end
     os = OsUnknown.new
     os.name = os_name
     os
