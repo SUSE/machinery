@@ -39,7 +39,6 @@ class RepositoriesRenderer < Renderer
           puts "Refresh: #{p.autorefresh ? "Yes" : "No"}" if p.autorefresh != nil
           puts "Priority: #{p.priority}" if p.priority != nil
           puts "Type: #{p.type}"
-          puts "Package Manager: #{description.repositories.repository_system}"
         end
       end
     end

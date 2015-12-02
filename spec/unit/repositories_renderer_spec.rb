@@ -34,7 +34,6 @@ describe RepositoriesRenderer do
     Refresh: No
     Priority: 1
     Type: rpm-md
-    Package Manager: zypp
 
   * openSUSE-13.1-1.7
     URI: cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
@@ -43,7 +42,6 @@ describe RepositoriesRenderer do
     Refresh: No
     Priority: 2
     Type: yast2
-    Package Manager: zypp
 
   * repo_without_type
     URI: http://repo-without-type
@@ -52,7 +50,6 @@ describe RepositoriesRenderer do
     Refresh: No
     Priority: 3
     Type: 
-    Package Manager: zypp
 
   * disabled_repo
     URI: http://disabled-repo
@@ -61,7 +58,6 @@ describe RepositoriesRenderer do
     Refresh: No
     Priority: 3
     Type: 
-    Package Manager: zypp
 
   * autorefresh_enabled
     URI: http://autorefreshed-repo
@@ -70,7 +66,6 @@ describe RepositoriesRenderer do
     Refresh: Yes
     Priority: 2
     Type: 
-    Package Manager: zypp
 
   * dvd_entry
     URI: dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
@@ -79,7 +74,6 @@ describe RepositoriesRenderer do
     Refresh: No
     Priority: 2
     Type: yast2
-    Package Manager: zypp
 
   * NCC Repository
     URI: https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials
@@ -88,7 +82,6 @@ describe RepositoriesRenderer do
     Refresh: Yes
     Priority: 2
     Type: yast2
-    Package Manager: zypp
 EOT
       expect(output).to include(expected_output)
     end
@@ -103,13 +96,11 @@ EOT
     Distribution: trusty
     Components: main, restricted
     Type: deb
-    Package Manager: apt
 
   * URI: http://de.archive.ubuntu.com/ubuntu/
     Distribution: trusty
     Components: main, restricted
     Type: deb-src
-    Package Manager: apt
 EOT
       expect(output).to include(expected_output)
     end
