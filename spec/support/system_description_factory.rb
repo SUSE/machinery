@@ -341,10 +341,13 @@ module SystemDescriptionFactory
         {
           "name": "audio",
           "password": "x",
-          "users": [
-            "tux",
-            "foo"
-          ],
+          "users": {
+            "_attributes": {},
+            "_elements": [
+              "tux",
+              "foo"
+            ]
+          },
           "gid": 17
         }
       ]
