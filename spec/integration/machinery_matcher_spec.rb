@@ -86,8 +86,10 @@ describe "match_scope matcher", matrix: "pending" do
       expected_description = create_test_description(json: <<-EOT)
       {
         "unmanaged_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/boot/backup_mbr",
               "user": "root"
@@ -104,8 +106,10 @@ describe "match_scope matcher", matrix: "pending" do
       actual_description = create_test_description(json: <<-EOT)
       {
         "unmanaged_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/boot/backup_mbr",
               "user": "root"
@@ -132,8 +136,10 @@ describe "match_scope matcher", matrix: "pending" do
       expected_description = create_test_description(json: <<-EOT)
       {
         "unmanaged_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/boot/backup_mbr",
               "user": "nobody"
@@ -150,8 +156,10 @@ describe "match_scope matcher", matrix: "pending" do
       actual_description = create_test_description(json: <<-EOT)
       {
         "unmanaged_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/boot/backup_mbr",
               "user": "root"
@@ -178,8 +186,10 @@ describe "match_scope matcher", matrix: "pending" do
       expected_description = create_test_description(json: <<-EOT)
       {
         "unmanaged_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/boot/backup_mbr"
             },
@@ -194,8 +204,10 @@ describe "match_scope matcher", matrix: "pending" do
       actual_description = create_test_description(json: <<-EOT)
       {
         "unmanaged_files": {
-          "extracted": true,
-          "files": [
+          "_attributes": {
+            "extracted": true
+          },
+          "_elements": [
             {
               "name": "/boot/backup_mbr"
             }
@@ -266,8 +278,10 @@ describe "include_file_scope matcher", matrix: "pending" do
     expected_description = create_test_description(json: <<-EOT)
     {
       "unmanaged_files": {
-        "extracted": true,
-        "files": [
+        "_attributes": {
+          "extracted": true
+        },
+        "_elements": [
           {
             "name": "/boot/grub/default",
             "user": "root"
@@ -280,8 +294,10 @@ describe "include_file_scope matcher", matrix: "pending" do
     actual_description = create_test_description(json: <<-EOT)
     {
       "unmanaged_files": {
-        "extracted": true,
-        "files": [
+        "_attributes": {
+          "extracted": true
+        },
+        "_elements": [
           {
             "name": "/boot/backup_mbr",
             "user": "root"
@@ -303,8 +319,10 @@ describe "include_file_scope matcher", matrix: "pending" do
     expected_description = create_test_description(json: <<-EOT)
     {
       "unmanaged_files": {
-        "extracted": true,
-        "files": [
+        "_attributes": {
+          "extracted": true
+        },
+        "_elements": [
           {
             "name": "/boot/backup_mbr",
             "user": "nobody"
@@ -321,8 +339,10 @@ describe "include_file_scope matcher", matrix: "pending" do
     actual_description = create_test_description(json: <<-EOT)
     {
       "unmanaged_files": {
-        "extracted": true,
-        "files": [
+        "_attributes": {
+          "extracted": true
+        },
+        "_elements": [
           {
             "name": "/boot/backup_mbr",
             "user": "root"

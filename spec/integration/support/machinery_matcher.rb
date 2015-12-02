@@ -59,7 +59,7 @@ RSpec::Matchers.define :include_file_scope do |expected, scope|
         "Only use it with file scopes."
     end
 
-    expected[scope].files.all? { |e| actual[scope].files.include?(e) }
+    expected[scope].all? { |e| actual[scope].include?(e) }
   end
 
   failure_message do |actual|
