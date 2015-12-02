@@ -484,19 +484,25 @@ module SystemDescriptionFactory
           "url": "http://de.archive.ubuntu.com/ubuntu/",
           "type": "deb",
           "distribution": "trusty",
-          "components": [
-            "main",
-            "restricted"
-          ]
+          "components": {
+            "_attributes": {},
+            "_elements": [
+              "main",
+              "restricted"
+            ]
+          }
         },
         {
           "url": "http://de.archive.ubuntu.com/ubuntu/",
           "type": "deb-src",
           "distribution": "trusty",
-          "components": [
-            "main",
-            "restricted"
-          ]
+          "components": {
+            "_attributes": {},
+            "_elements": [
+              "main",
+              "restricted"
+            ]
+          }
         }
       ]
     }
