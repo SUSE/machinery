@@ -118,7 +118,7 @@ describe Cli do
     it "triggers the serve task" do
       allow(Cli).to receive(:system_description_store).and_return(store)
       expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-        store, description, "127.0.0.1", 3000
+        store, description, port: 3000, public: false
       )
 
       run_command(["serve", "description", "--port=3000"])
@@ -127,7 +127,7 @@ describe Cli do
     it "checks if the --public option works" do
       allow(Cli).to receive(:system_description_store).and_return(store)
       expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-        store, description, "0.0.0.0", 3000
+        store, description, port: 3000, public: true
       )
 
       run_command(["serve", "description", "--port=3000", "--public"])
@@ -136,7 +136,7 @@ describe Cli do
     it "works without system description" do
       allow(Cli).to receive(:system_description_store).and_return(store)
       expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-        store, nil, "127.0.0.1", 3000
+        store, nil, port: 3000, public: false
       )
 
       run_command(["serve", "--port=3000"])

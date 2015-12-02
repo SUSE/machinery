@@ -16,9 +16,9 @@
 # you may find current contact information at www.suse.com
 
 class ServeHtmlTask
-  def serve(system_description_store, description, ip, port)
+  def serve(system_description_store, description, opts)
     if description
-      url = "http://#{ip}:#{port}/#{CGI.escape(description.name)}"
+      url = "http://127.0.01:#{opts[:port]}/#{CGI.escape(description.name)}"
       Machinery::Ui.use_pager = false
       Machinery::Ui.puts <<EOF
 Trying to start a web server for the description on #{url}
@@ -26,7 +26,7 @@ Trying to start a web server for the description on #{url}
 The web server can be closed with Ctrl+C.
 EOF
     else
-      url = "http://#{ip}:#{port}/"
+      url = "http://127.0.0.1:#{opts[:port]}/"
       Machinery::Ui.use_pager = false
       Machinery::Ui.puts <<EOF
 Trying to start a web server for serving all system descriptions on #{url}
@@ -35,7 +35,7 @@ The web server can be closed with Ctrl+C.
 EOF
     end
 
-    server = Html.run_server(system_description_store, port: port, ip: ip)
+    server = Html.run_server(system_description_store, port: opts[:port], public: opts[:public])
 
     server.join
   end

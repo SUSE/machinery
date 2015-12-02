@@ -932,19 +932,13 @@ class Cli
           "or via the --port option.")
       end
 
-      if options[:public]
-        ip = "0.0.0.0"
-      else
-        ip = "127.0.0.1"
-      end
-
       if args.empty?
         description = nil
       else
         description = SystemDescription.load(args[0], system_description_store)
       end
       task = ServeHtmlTask.new
-      task.serve(system_description_store, description, ip, options[:port])
+      task.serve(system_description_store, description, port: options[:port], public: options[:public])
     end
   end
 
