@@ -68,6 +68,16 @@ describe DpkgDatabase do
     end
   end
 
+  describe "#parse_changes_line" do
+    it "checks if a file was deleted although it was reported as changed by dpkg" do
+      expect(system).to receive(:run_command).with("ls", "/etc/sudoers").
+        and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+
+      _file, changes, _type = subject.parse_changes_line("??5?????? c /etc/sudoers")
+      expect(changes).to match_array(["deleted"])
+    end
+  end
+
   it "checks the requirements on the system", :skip_before do
     expect(system).to receive(:check_requirement).with("dpkg", "--version")
     expect(system).to receive(:check_requirement).with("stat", "--version")
@@ -80,8 +90,10 @@ describe DpkgDatabase do
 
   it "caches the result" do
     expect(subject).to receive(:managed_files_list).and_return(changed_files_result).once
+    allow(system).to receive(:run_command).with("ls", any_args)
 
     subject.changed_files
     subject.changed_files
   end
+
 end

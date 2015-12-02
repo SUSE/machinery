@@ -45,6 +45,21 @@ class DpkgDatabase < ManagedFilesDatabase
     # This method is a no-op for DpkgDatabase.
   end
 
+  def parse_changes_line(line)
+    file, changes, type = super(line)
+
+    # dpkg doesn't report deleted files as deleted but reports md5sum changes instead
+    if changes.include?("md5")
+      begin
+        @system.run_command("ls", file)
+      rescue Cheetah::ExecutionFailed
+        changes = Machinery::Array.new(["deleted"])
+      end
+    end
+
+    [file, changes, type]
+  end
+
   def check_requirements
     @system.check_requirement("dpkg", "--version")
     @system.check_requirement("stat", "--version")
