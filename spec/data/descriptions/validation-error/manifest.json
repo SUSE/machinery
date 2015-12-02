@@ -1,8 +1,10 @@
 {
   "repositories": {
-    "_attributes": {
-      "repository_system": "zypp"
-    },
+    "_attributes": [
+      {
+        "repository_system": "zypp"
+      }
+    ],
     "_elements": [
       {
         "alias": "download.opensuse.org-non-oss",
