@@ -9,13 +9,10 @@
         "package_name": "grub2",
         "package_version": "2.00",
         "status": "changed",
-        "changes": {
-          "_attributes": {},
-          "_elements": [
-            "mode",
-            "md5"
-          ]
-        },
+        "changes": [
+          "mode",
+          "md5"
+        ],
         "user": "root",
         "group": "root",
         "mode": "900",
