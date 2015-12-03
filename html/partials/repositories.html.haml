@@ -22,10 +22,4 @@
                 - repositories.each do |repo|
                   %tr
                     - repo.attributes.each do |key, value|
-                      %td
-                        - if key == "url"
-                          %a{ href: value }= value
-                        - elsif value.is_a?(Machinery::Array)
-                          = value.join(", ")
-                        - else
-                          = value
+                      %td= render_attribute(key, value)
