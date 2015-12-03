@@ -221,6 +221,34 @@ EOF
       end
     end
 
+    describe "#render_attribute" do
+      let(:key) { "foo" }
+      subject { render_attribute(key, value) }
+
+      context "if hash contains a url" do
+        let(:key) { "url" }
+        let(:value) { "http://example.com/" }
+
+        it {
+          is_expected.to eq(
+            "<a href='http://example.com/'>http://example.com/</a>"
+          )
+        }
+      end
+
+      context "if hash contains an array" do
+        let(:value) { Machinery::Array.new(["a", "b"]) }
+
+        it { is_expected.to eq("a, b") }
+      end
+
+      context "if hash contains anything else" do
+        let(:value) { "string" }
+
+        it { is_expected.to eq("string") }
+      end
+    end
+
     describe "#human_attribute" do
       let(:file) { UnmanagedFile.new(name: "/tmp/foo", size: 1234567) }
 

@@ -25,6 +25,7 @@ end
 class RepositoriesScope < Machinery::Array
   include Machinery::Scope
 
+  has_attributes :repository_system
   has_elements class: Repository
 
   def compare_with(other)

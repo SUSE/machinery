@@ -1,0 +1,103 @@
+# Repositories [192.168.121.137] (2015-12-01 13:17:27)
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: main, restricted
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: main, restricted
+    Type: deb-src
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-updates
+    Components: main, restricted
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-updates
+    Components: main, restricted
+    Type: deb-src
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: universe
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: universe
+    Type: deb-src
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-updates
+    Components: universe
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-updates
+    Components: universe
+    Type: deb-src
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: multiverse
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: multiverse
+    Type: deb-src
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-updates
+    Components: multiverse
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-updates
+    Components: multiverse
+    Type: deb-src
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-backports
+    Components: main, restricted, universe, multiverse
+    Type: deb
+
+  * URI: http://us.archive.ubuntu.com/ubuntu/
+    Distribution: trusty-backports
+    Components: main, restricted, universe, multiverse
+    Type: deb-src
+
+  * URI: http://security.ubuntu.com/ubuntu
+    Distribution: trusty-security
+    Components: main, restricted
+    Type: deb
+
+  * URI: http://security.ubuntu.com/ubuntu
+    Distribution: trusty-security
+    Components: main, restricted
+    Type: deb-src
+
+  * URI: http://security.ubuntu.com/ubuntu
+    Distribution: trusty-security
+    Components: universe
+    Type: deb
+
+  * URI: http://security.ubuntu.com/ubuntu
+    Distribution: trusty-security
+    Components: universe
+    Type: deb-src
+
+  * URI: http://security.ubuntu.com/ubuntu
+    Distribution: trusty-security
+    Components: multiverse
+    Type: deb
+
+  * URI: http://security.ubuntu.com/ubuntu
+    Distribution: trusty-security
+    Components: multiverse
+    Type: deb-src
+
+

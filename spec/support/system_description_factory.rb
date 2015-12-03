@@ -341,10 +341,13 @@ module SystemDescriptionFactory
         {
           "name": "audio",
           "password": "x",
-          "users": [
-            "tux",
-            "foo"
-          ],
+          "users": {
+            "_attributes": {},
+            "_elements": [
+              "tux",
+              "foo"
+            ]
+          },
           "gid": 17
         }
       ]
@@ -464,99 +467,134 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["empty_repositories"] = <<-EOF.chomp
-    "repositories": [ ]
+    "repositories": {
+      "_attributes": {
+        "repository_system": "zypp"
+      },
+      "_elements": []
+    }
+  EOF
+  EXAMPLE_SCOPES["apt_repositories"] = <<-EOF.chomp
+    "repositories": {
+      "_attributes": {
+        "repository_system": "apt"
+      },
+      "_elements": [
+        {
+          "url": "http://de.archive.ubuntu.com/ubuntu/",
+          "type": "deb",
+          "distribution": "trusty",
+          "components": {
+            "_attributes": {},
+            "_elements": [
+              "main",
+              "restricted"
+            ]
+          }
+        },
+        {
+          "url": "http://de.archive.ubuntu.com/ubuntu/",
+          "type": "deb-src",
+          "distribution": "trusty",
+          "components": {
+            "_attributes": {},
+            "_elements": [
+              "main",
+              "restricted"
+            ]
+          }
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["repositories"] = <<-EOF.chomp
-    "repositories": [
-      {
-        "alias": "nodejs_alias",
-        "name": "nodejs",
-        "type": "rpm-md",
-        "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 1,
-        "package_manager": "zypp"
+    "repositories": {
+      "_attributes": {
+        "repository_system": "zypp"
       },
-      {
-        "alias": "openSUSE-13.1-1.7_alias",
-        "name": "openSUSE-13.1-1.7",
-        "type": "yast2",
-        "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
-        "enabled": false,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "repo_without_type_alias",
-        "name": "repo_without_type",
-        "type": null,
-        "url": "http://repo-without-type",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 3,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "disabled_repo_alias",
-        "name": "disabled_repo",
-        "type": null,
-        "url": "http://disabled-repo",
-        "enabled": false,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 3,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "autorefresh_enabled_alias",
-        "name": "autorefresh_enabled",
-        "type": null,
-        "url": "http://autorefreshed-repo",
-        "enabled": true,
-        "autorefresh": true,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "dvd_entry_alias",
-        "name": "dvd_entry",
-        "type": "yast2",
-        "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "NCCRepo",
-        "name": "NCC Repository",
-        "type": "yast2",
-        "url": "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
-        "enabled": true,
-        "autorefresh": true,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "Alias With Spaces",
-        "name": "nodejs",
-        "type": "rpm-md",
-        "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 1,
-        "package_manager": "zypp"
-      }
-    ]
+      "_elements": [
+        {
+          "alias": "nodejs_alias",
+          "name": "nodejs",
+          "type": "rpm-md",
+          "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 1
+        },
+        {
+          "alias": "openSUSE-13.1-1.7_alias",
+          "name": "openSUSE-13.1-1.7",
+          "type": "yast2",
+          "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+          "enabled": false,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "repo_without_type_alias",
+          "name": "repo_without_type",
+          "type": null,
+          "url": "http://repo-without-type",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 3
+        },
+        {
+          "alias": "disabled_repo_alias",
+          "name": "disabled_repo",
+          "type": null,
+          "url": "http://disabled-repo",
+          "enabled": false,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 3
+        },
+        {
+          "alias": "autorefresh_enabled_alias",
+          "name": "autorefresh_enabled",
+          "type": null,
+          "url": "http://autorefreshed-repo",
+          "enabled": true,
+          "autorefresh": true,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "dvd_entry_alias",
+          "name": "dvd_entry",
+          "type": "yast2",
+          "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "NCCRepo",
+          "name": "NCC Repository",
+          "type": "yast2",
+          "url": "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
+          "enabled": true,
+          "autorefresh": true,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "Alias With Spaces",
+          "name": "nodejs",
+          "type": "rpm-md",
+          "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 1
+        }
+      ]
+    }
   EOF
 
   EXAMPLE_SCOPES["users"] = <<-EOF.chomp

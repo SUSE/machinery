@@ -68,7 +68,7 @@ EOF
         actual_managed_files_list.grep(/^#{element}.+/).any? || element == "."
       }
 
-      expected_managed_files = description.changed_managed_files.files.select(&:file?).map(&:name)
+      expected_managed_files = description.changed_managed_files.select(&:file?).map(&:name)
       expect(actual_managed_files).to match_array(expected_managed_files)
 
       # test file content

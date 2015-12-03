@@ -271,8 +271,7 @@ class UnmanagedFilesInspector < Inspector
         )
       end
 
-      scope = helper.run_helper(scope)
-
+      helper.run_helper(scope)
       scope.delete_if { |f| filter.matches?(f.name) }
 
       if do_extract
@@ -282,12 +281,12 @@ class UnmanagedFilesInspector < Inspector
         file_store_tmp.remove
         file_store_tmp.create
 
-        files = scope.files.select { |f| f.file? || f.link? }.map(&:name)
+        files = scope.select { |f| f.file? || f.link? }.map(&:name)
         scope.retrieve_files_from_system_as_archive(@system, files, [])
         show_extraction_progress(files.count)
 
         scope.retrieve_trees_from_system_as_archive(@system,
-          scope.files.select(&:directory?).map(&:name), excluded_trees) do |count|
+          scope.select(&:directory?).map(&:name), excluded_trees) do |count|
           show_extraction_progress(files.count + count)
         end
 

@@ -16,23 +16,10 @@
             %table.table.table-striped.table-hover.table-condensed.filterable
               %thead
                 %tr
-                  %th Name
-                  %th Alias
-                  %th.small Type
-                  %th URL
-                  %th.small Enabled
-                  %th.small Autorefresh
-                  %th.small GPG Check
-                  %th.small Priority
+                  - repositories.first.attributes.keys.each do |header|
+                    %th= header.capitalize
               %tbody
                 - repositories.each do |repo|
                   %tr
-                    %td= repo.name
-                    %td= repo.alias
-                    %td= repo.type
-                    %td
-                      %a{ href: repo.url }= repo.url
-                    %td= repo.enabled
-                    %td= repo.autorefresh
-                    %td= repo.gpgcheck
-                    %td= repo.priority
+                    - repo.attributes.each do |key, value|
+                      %td= render_attribute(key, value)

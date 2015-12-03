@@ -86,7 +86,7 @@ describe MachineryHelper do
         and_return(json)
 
       scope = UnmanagedFilesScope.new
-      scope = helper.run_helper(scope)
+      helper.run_helper(scope)
 
       expect(scope.first.name).to eq("/opt/magic/file")
       expect(scope.count).to eq(2)

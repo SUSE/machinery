@@ -121,7 +121,8 @@ describe Migrate5To6 do
             "password": "x",
             "gid": 17,
             "users": [
-
+              "foo",
+              "bar"
             ]
           }
         ],
@@ -131,6 +132,50 @@ describe Migrate5To6 do
             "version": "20141007",
             "release": "2.1"
           }
+        ],
+        "repositories": [
+          {
+            "package_manager": "zypp",
+            "alias": "download.opensuse.org-oss",
+            "name": "download.opensuse.org-oss",
+            "type": "yast2",
+            "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+            "enabled": true,
+            "autorefresh": true,
+            "gpgcheck": true,
+            "priority": 99
+          },
+          {
+            "package_manager": "zypp",
+            "alias": "download.opensuse.org-update",
+            "name": "download.opensuse.org-update",
+            "type": "rpm-md",
+            "url": "http://download.opensuse.org/update/13.1/",
+            "enabled": true,
+            "autorefresh": true,
+            "gpgcheck": true,
+            "priority": 99
+          }
+        ],
+        "meta": {
+          "format_version": 5
+        }
+      }
+    EOT
+  }
+  let(:description_yum_hash) {
+    JSON.parse(<<-EOT)
+      {
+        "repositories": [
+          {
+            "package_manager": "yum",
+            "name": "Red Hat Enterprise Linux 6Server - x86_64 - Source",
+            "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
+            "enabled": false,
+            "alias": "rhel-source",
+            "gpgcheck": true,
+            "type": "rpm-md"
+          },
         ],
         "meta": {
           "format_version": 5
@@ -158,6 +203,23 @@ describe Migrate5To6 do
     end
   end
 
+  describe "repositories" do
+    it "adds the 'repository_system' attribute" do
+      expect(description_hash["repositories"]["_attributes"]["repository_system"]).to eq("zypp")
+    end
+
+    it "moves the repositories to repositories" do
+      repository_names = description_hash["repositories"]["_elements"].map do |repository|
+        repository["name"]
+      end
+      expect(repository_names).to eq(["download.opensuse.org-oss", "download.opensuse.org-update"])
+    end
+
+    it "removes the package_manager type" do
+      expect(description_hash["repositories"]["_elements"].first["package_manager"]).to be(nil)
+    end
+  end
+
   ["changed_managed_files", "config_files", "unmanaged_files"].each do |scope|
     describe scope do
       it "moves the 'extracted' attribute" do
@@ -180,9 +242,15 @@ describe Migrate5To6 do
     expect(description_hash["services"]["_attributes"]["init_system"]).to eq("systemd")
   end
 
-  ["users", "groups", "patterns"].each do |scope|
+  ["users", "patterns"].each do |scope|
     it "migrates #{scope}" do
       expect(description_hash[scope]["_elements"].first["name"]).to eq("the_element")
     end
+  end
+
+  it "migrates groups" do
+    expect(description_hash["groups"]["_elements"].first["name"]).to eq("the_element")
+    expect(description_hash["groups"]["_elements"].first["users"]["_elements"]).
+      to eq(["foo", "bar"])
   end
 end

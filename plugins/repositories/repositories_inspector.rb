@@ -27,9 +27,11 @@ class RepositoriesInspector < Inspector
       @description.repositories = inspect_zypp_repositories
     elsif system.has_command?("yum")
       @description.repositories = inspect_yum_repositories
+    elsif system.has_command?("apt")
+      @description.repositories = inspect_apt_repositories
     else
       raise Machinery::Errors::MissingRequirement.new(
-        "Need either the binary 'zypper' or 'yum' to be available on the inspected system."
+        "Need either the binary 'zypper', 'yum' or 'apt' to be available on the inspected system."
       )
     end
   end
@@ -66,7 +68,7 @@ class RepositoriesInspector < Inspector
       result = parse_repositories_from_xml(xml, priorities, credentials)
     end
 
-    RepositoriesScope.new(result)
+    RepositoriesScope.new(result, repository_system: "zypp")
   end
 
   def inspect_yum_repositories
@@ -90,7 +92,42 @@ class RepositoriesInspector < Inspector
       )
     end
 
-    RepositoriesScope.new(repositories)
+    RepositoriesScope.new(repositories, repository_system: "yum")
+  end
+
+  def inspect_apt_repositories
+    content = system.read_file("/etc/apt/sources.list")
+    begin
+      content += "\n" + system.run_command(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", stdout: :capture
+      )
+    rescue Cheetah::ExecutionFailed
+    end
+
+    RepositoriesScope.new(
+      parse_apt_repositories(content), repository_system: "apt"
+    )
+  end
+
+  def parse_apt_repositories(content)
+    repositories = []
+    content.each_line do |line|
+      if line =~ /^\s*(deb|deb-src)\s+(\S+)\s+(\S+)(\s+\S[^#]*\S)?(\s*|\s*#.*)$/
+        repositories << Repository.new(
+          type: $1,
+          url: $2,
+          distribution: $3,
+          components: $4 ? $4.strip.split(" ") : []
+        )
+      else
+        if line =~ /Types: deb/
+          Machinery::Ui.warn(
+            "Warning: An unsupported rfc822 style repository was found, which will be ignored."
+          )
+        end
+      end
+    end
+    repositories
   end
 
   def parse_priorities_from_details(details)
@@ -162,8 +199,7 @@ class RepositoriesInspector < Inspector
         enabled:     rep["enabled"] == "1",
         autorefresh: rep["autorefresh"] == "1",
         gpgcheck:    rep["gpgcheck"] == "1",
-        priority:    pri_value,
-        package_manager: "zypp"
+        priority:    pri_value
       )
       if username && password
         repository[:username] = username
