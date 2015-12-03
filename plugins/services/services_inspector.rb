@@ -36,7 +36,7 @@ class ServicesInspector < Inspector
       )
     elsif @system.has_command?("initctl")
       result = ServicesScope.new(
-        inspect_upstart_services,
+        inspect_ubuntu_services,
         init_system: "upstart"
       )
     else
@@ -92,22 +92,70 @@ class ServicesInspector < Inspector
     services.sort_by(&:name)
   end
 
-  def inspect_upstart_services
-    output = @system.run_command("/sbin/initctl", "show-config", "-e", stdout: :capture)
+  def inspect_ubuntu_services
+    # Ubuntu is managing its services using upstart but also has some
+    # services still not handled by that. Therefor we need to scan upstart
+    # and sysV to determine all services and their bootup state
+    services = parse_ubuntu_upstart
+    parse_ubuntu_sysv.each do |service|
+      services << service unless services.find { |s| s.name == service.name }
+    end
 
-    servicelist = output.lines.map(&:chomp).slice_before { |l| !l.start_with?(" ") }
+    services.sort_by(&:name)
+  end
+
+  def parse_ubuntu_upstart
+    initctl_output = @system.run_command("/sbin/initctl", "show-config", "-e", stdout: :capture)
+
+    servicelist = initctl_output.lines.map(&:chomp).slice_before { |l| !l.start_with?(" ") }
     enabled, disabled = servicelist.partition do |s|
       s.find { |e| e.start_with?("  start on runlevel", "  start on startup") }
     end
 
     services = enabled.map(&:first).each.map do |name|
-      Service.new(name: name, state: "enabled")
+      Service.new(name: name, state: "enabled", legacy_sysv: false)
     end
     services += disabled.map(&:first).each.map do |name|
-      Service.new(name: name, state: "disabled")
+      Service.new(name: name, state: "disabled", legacy_sysv: false)
+    end
+  end
+
+  def parse_ubuntu_sysv
+    # Get all sysV services
+    out, err = @system.run_command(
+      "/usr/sbin/service",
+      "--status-all",
+      stdout: :capture, stderr: :capture)
+    services_output = out + err
+
+    sysv_all = services_output.each_line.map { |line|
+      line.chomp.sub(/^.*\]../, "")
+    }
+
+    # Get all enabled sysV services - default in ubuntu1404 is runlevel 2
+    # and runlevels 3,4 and 5 are considered to be identical to 2.
+    runlevels = ["2", "S"]
+    find_output = runlevels.each.map do |runlevel|
+      @system.run_command(
+        "/usr/bin/find",
+        "/etc/rc#{runlevel}.d",
+        "-name",
+        "S\*",
+        stdout: :capture).split
     end
 
-    services.sort_by(&:name)
+    sysv_enabled = find_output.flatten.map { |line|
+      line.chomp.sub(/^\/etc\/rc.\.d\/.../, "")
+    }.uniq
+    sysv_disabled = sysv_all - sysv_enabled
+
+    services = sysv_enabled.map.each do |name|
+      Service.new(name: name, state: "enabled", legacy_sysv: true)
+    end
+
+    services + sysv_disabled.map.each do |name|
+      Service.new(name: name, state: "disabled", legacy_sysv: true)
+    end
   end
 
   def parse_suse_chkconfig
