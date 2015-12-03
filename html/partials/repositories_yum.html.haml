@@ -1,0 +1,19 @@
+%table.table.table-striped.table-hover.table-condensed.filterable
+  %thead
+    %tr
+      %th Name
+      %th Alias
+      %th.small Type
+      %th URL
+      %th.small Enabled
+      %th.small GPG Check
+  %tbody
+    - repositories.each do |repo|
+      %tr
+        %td= repo.name
+        %td= repo.alias
+        %td= repo.type
+        %td
+          %a{ href: repo.url }= repo.url
+        %td= repo.enabled
+        %td= repo.gpgcheck
