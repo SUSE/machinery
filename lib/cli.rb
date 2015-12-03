@@ -663,8 +663,7 @@ class Cli
         system.stop
       end
 
-
-      Hint.print(:show_data, name: name)
+      Hint.print(:show_data, name: name) unless options[:show]
 
       if !options["extract-files"] || Inspector.all_scopes.count != scope_list.count
         Hint.print(:do_complete_inspection, name: name, docker_container: image)
