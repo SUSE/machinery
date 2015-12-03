@@ -111,10 +111,45 @@ hostname
   start on startup (job:, env:)
 EOF
 
+      service_ubuntu_output =
+        <<-EOF
+ [ + ]  apparmor
+ [ + ]  ntp
+ [ - ]  ssh
+ [ - ]  rsync
+EOF
+
+      service_ubuntu_error =
+        <<-EOF
+ [ ? ]  console-setup
+EOF
+
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
         with("initctl").and_return(true)
+      expect(system).to receive(:run_command).
+        with(
+          "/usr/sbin/service",
+          "--status-all",
+          stdout: :capture, stderr: :capture
+        ).
+        and_return([service_ubuntu_output, service_ubuntu_error])
+
+      [2, "S"].map do |runlevel|
+        expect(system).to receive(:run_command).
+          with(
+            "/usr/bin/find",
+            "/etc/rc#{runlevel}.d",
+            "-name",
+            "S*",
+            stdout: :capture
+          ).
+          and_return(
+            "/etc/rc#{runlevel}.d/S23ntp\n/etc/rc#{runlevel}.d/S20rsync\n"
+          )
+      end
+
       expect(system).to receive(:run_command).
         with(
           "/sbin/initctl",
@@ -128,14 +163,18 @@ EOF
       expect(description.services).to eq(
         ServicesScope.new(
           [
-            Service.new(name: "hostname",   state: "enabled"),
-            Service.new(name: "tty4",       state: "enabled"),
-            Service.new(name: "ufw",        state: "disabled"),
-          ],
-          init_system: "upstart"
+            Service.new(name: "apparmor",       state: "disabled",      legacy_sysv: true),
+            Service.new(name: "console-setup",  state: "disabled",      legacy_sysv: true),
+            Service.new(name: "hostname",       state: "enabled",      legacy_sysv: false),
+            Service.new(name: "ntp",            state: "enabled",      legacy_sysv: true),
+            Service.new(name: "rsync",          state: "enabled",      legacy_sysv: true),
+            Service.new(name: "ssh",            state: "disabled",      legacy_sysv: true),
+            Service.new(name: "tty4",           state: "enabled",      legacy_sysv: false),
+            Service.new(name: "ufw",            state: "disabled",      legacy_sysv: false)
+          ], init_system: "upstart"
         )
       )
-      expect(inspector.summary).to eq("Found 3 services.")
+      expect(inspector.summary).to eq("Found 8 services.")
     end
 
     it "raises an exception when requirements are not fulfilled" do
