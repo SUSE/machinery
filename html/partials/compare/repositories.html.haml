@@ -22,11 +22,15 @@
           .col-md-6.table_container
             - if @diff["repositories"].only_in1
               = only_in_a
-              = render_partial "compare/repository_list", list: @diff["repositories"].only_in1
+              - repo_system = @diff["repositories"].only_in1.repository_system
+              = render_partial "compare/repository_list_#{repo_system}",
+                list: @diff["repositories"].only_in1
           .col-md-6.table_container
             - if @diff["repositories"].only_in2
               = only_in_b
-              = render_partial "compare/repository_list", list: @diff["repositories"].only_in2
+              - repo_system = @diff["repositories"].only_in2.repository_system
+              = render_partial "compare/repository_list_#{repo_system}",
+                list: @diff["repositories"].only_in2
         - if @diff["repositories"].changed
           %a.both_anchor{ id: "repositories_changed" }
           .row
@@ -47,4 +51,6 @@
           .row.scope_common_content.collapse
             .col-md-12.table_container
               = in_both
-              = render_partial "compare/repository_list", list: @diff["repositories"].common
+              - repo_system = @diff["repositories"].common.repository_system
+              = render_partial "compare/repository_list_#{repo_system}",
+                list: @diff["repositories"].common
