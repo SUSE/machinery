@@ -15,28 +15,29 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ServeHtmlTask
-  def serve(system_description_store, description, opts)
-    if description
-      url = "http://127.0.01:#{opts[:port]}/#{CGI.escape(description.name)}"
-      Machinery::Ui.use_pager = false
-      Machinery::Ui.puts <<EOF
-Trying to start a web server for the description on #{url}
+require_relative "feature_spec_helper"
 
-The web server can be closed with Ctrl+C.
-EOF
-    else
-      url = "http://127.0.0.1:#{opts[:port]}/"
-      Machinery::Ui.use_pager = false
-      Machinery::Ui.puts <<EOF
-Trying to start a web server for serving all system descriptions on #{url}
+RSpec::Steps.steps "Showing the landing page", type: :feature do
+  before(:all) do
+    Server.set :system_description_store, SystemDescriptionStore.new(
+      File.join(Machinery::ROOT, "spec/data/descriptions/jeos/")
+    )
+  end
 
-The web server can be closed with Ctrl+C.
-EOF
+  it "opens the landing page" do
+    visit("/")
+    expect(page.status_code).to eq(200)
+  end
+
+  it "shows the table with all system descriptions" do
+    within("#content_container") do
+      find("th", text: "Last update")
     end
+  end
 
-    server = Html.run_server(system_description_store, port: opts[:port], public: opts[:public])
-
-    server.join
+  it "shows the table with system description opensuse131" do
+    within("#content_container") do
+      find("td", text: "opensuse131")
+    end
   end
 end

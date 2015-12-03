@@ -688,10 +688,26 @@ class Cli
       desc: "Display additional information about origin of scopes"
     c.switch :short, required: false, negatable: false,
       desc: "List only description names"
+    c.switch :html, required: false, negatable: false,
+      desc: "Open all system description in HTML format in your web browser."
 
     c.action do |global_options,options,args|
+      if options[:html]
+        begin
+          check_port_validity(@config.http_server_port)
+        rescue Machinery::Errors::ServerPortError => e
+          raise Machinery::Errors::InvalidCommandLine.new(e.message + " The port can be " \
+            "specified in the 'http_server_port' section of the configuration file.")
+        end
+      end
+
+      opts = {
+        ip: "127.0.0.1",
+        port: @config.http_server_port
+      }.merge(options)
+
       task = ListTask.new
-      task.list(system_description_store, args, options)
+      task.list(system_description_store, args, opts)
     end
   end
 
@@ -897,7 +913,7 @@ class Cli
   long_desc <<-LONGDESC
     Starts a web server which serves an HTML view for the given system description.
   LONGDESC
-  arg "NAME"
+  arg "NAME", [:optional]
   command "serve" do |c|
     c.flag [:port, :p], type: Integer, required: false,
       default_value: Machinery::Config.new.http_server_port,
@@ -908,8 +924,6 @@ class Cli
       desc: "Makes the server reachable from all IP addresses."
 
     c.action do |_global_options, options, args|
-      name = shift_arg(args, "NAME")
-
       begin
         check_port_validity(options[:port])
       rescue Machinery::Errors::ServerPortError => e
@@ -918,9 +932,15 @@ class Cli
           "or via the --port option.")
       end
 
-      description = SystemDescription.load(name, system_description_store)
+      if args.empty?
+        description = nil
+      else
+        description = SystemDescription.load(args[0], system_description_store)
+      end
       task = ServeHtmlTask.new
-      task.serve(description, port: options[:port], public: options[:public])
+      task.serve(
+        system_description_store, description, port: options[:port], public: options[:public]
+      )
     end
   end
 

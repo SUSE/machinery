@@ -110,6 +110,40 @@ describe Cli do
     end
   end
 
+  describe "#serve" do
+    initialize_system_description_factory_store
+    let(:store) { system_description_factory_store }
+    let(:description) { create_test_description(scopes: ["os"], store: store, store_on_disk: true) }
+
+    it "triggers the serve task" do
+      allow(Cli).to receive(:system_description_store).and_return(store)
+      expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+        store, description, port: 3000, public: false
+      )
+
+      run_command(["serve", "description", "--port=3000"])
+    end
+
+    it "checks if the --public option works" do
+      allow(Cli).to receive(:system_description_store).and_return(store)
+      expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+        store, description, port: 3000, public: true
+      )
+
+      run_command(["serve", "description", "--port=3000", "--public"])
+    end
+
+    it "works without system description" do
+      allow(Cli).to receive(:system_description_store).and_return(store)
+      expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+        store, nil, port: 3000, public: false
+      )
+
+      run_command(["serve", "--port=3000"])
+    end
+
+  end
+
   context "machinery test directory" do
     include_context "machinery test directory"
 
@@ -433,26 +467,6 @@ describe Cli do
       end
     end
 
-    describe "#serve" do
-      it "triggers the serve task" do
-        description = create_test_description(json: test_manifest)
-        expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-          description, port: 3000, public: false
-        )
-
-        run_command(["serve", "description1", "--port=3000"])
-      end
-
-      it "checks if the --public option works" do
-        description = create_test_description(json: test_manifest)
-        expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-          description, port: 3000, public: true
-        )
-
-        run_command(["serve", "description1", "--port=3000", "--public"])
-      end
-    end
-
     describe "#show" do
       it "triggers the show task for packages when scope packages is specified" do
         description = create_test_description(json: test_manifest)
@@ -620,6 +634,13 @@ describe Cli do
       expect_any_instance_of(ListTask).to receive(:list).
         with(an_instance_of(SystemDescriptionStore), anything, anything)
       run_command(["list"])
+    end
+
+    it "triggers the list task with --html switch" do
+      expect_any_instance_of(ListTask).to receive(:list) do |_instance, _store, _description, options|
+        expect(options[:html]).to eq(true)
+      end
+      run_command(["list", "--html"])
     end
   end
 

@@ -108,6 +108,18 @@ EOF
     end
   end
 
+  describe "list" do
+    describe "GET /" do
+      it "returns the page" do
+        get "/"
+
+        expect(last_response).to be_ok
+        expect(last_response.body).
+          to include("System Descriptions")
+      end
+    end
+  end
+
   describe Server::Helpers do
     include Server::Helpers
 

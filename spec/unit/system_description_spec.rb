@@ -75,6 +75,37 @@ describe SystemDescription do
     end
   end
 
+  context "meta data methods" do
+    let(:date) { "2014-02-07T14:04:45Z" }
+    let(:hostname) { "example.com" }
+    let(:name) { "example" }
+    let(:date_human) { Time.parse(date) }
+    let(:system_description) {
+      create_test_description(
+        scopes: ["packages", "repositories"], modified: date, hostname: hostname,
+        name: name, store: SystemDescriptionStore.new
+      )
+    }
+
+    describe "#host" do
+      it "returns the inspected host system" do
+        expect(system_description.host).to eq(["example.com"])
+      end
+
+      it "returns two different hosts" do
+        system_description.packages.meta.hostname = "foo"
+        expect(system_description.host).to match_array(["foo", "example.com"])
+      end
+    end
+
+    describe "#latest_update" do
+      it "returns the latest update of the system description" do
+        system_description.packages.meta.modified = "2014-02-06T14:04:45Z"
+        expect(system_description.latest_update).to eq(date_human)
+      end
+    end
+  end
+
   describe ".from_hash" do
     it "raises SystemDescriptionError if json input does not start with a hash" do
       class SystemDescriptionFooConfig < Machinery::Object; end
