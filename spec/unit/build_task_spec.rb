@@ -49,6 +49,7 @@ describe BuildTask do
     end
 
     it "calls the kiwi wrapper script with sudo to build the image" do
+      expect(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
       expect(Cheetah).to receive(:run) { |*cmd_array|
@@ -62,6 +63,7 @@ describe BuildTask do
     end
 
     it "handles execution errors gracefully" do
+      expect(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
       expect(Cheetah).to receive(:run) { |*cmd_array|

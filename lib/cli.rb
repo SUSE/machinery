@@ -75,17 +75,6 @@ class Cli
     end
   end
 
-  def self.buildable_distributions
-    distribution_string = ""
-    Os.supported_host_systems.each do |distribution|
-      next if distribution.buildable_systems.empty?
-      distribution_string += "* #{distribution.canonical_name}\n\n"
-      distribution_string += distribution.buildable_systems.map(&:canonical_name).join(", ")
-      distribution_string += "\n\n"
-    end
-    distribution_string
-  end
-
   def self.handle_error(e)
     Machinery::Ui.kill_pager
 
@@ -313,10 +302,6 @@ class Cli
   long_desc <<-LONGDESC
     Build image from a given system description and store it to the given
     location.
-
-    The following combinations of build hosts and targets are supported:
-
-    #{buildable_distributions}
   LONGDESC
   arg "NAME"
   command "build" do |c|

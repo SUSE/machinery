@@ -187,37 +187,4 @@ EOF
       }.to raise_error(Machinery::Errors::MissingRequirement, output)
     end
   end
-
-  describe ".validate_build_compatibility" do
-    before(:each) do
-      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
-    end
-
-    it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do
-      # system which is unsupported to build on sle12 host
-      system_description = create_test_description(json: <<-EOF)
-        {
-          "os": {
-          "name": "SUSE Linux Enterprise Server 11"
-          }
-        }
-        EOF
-
-      expect { LocalSystem.validate_build_compatibility(system_description) }.to raise_error(Machinery::Errors::BuildFailed, /#{system_description.os.name}/)
-    end
-
-    it "doesn't raise if host and image builds a valid combination" do
-      # system which is supported to build on sle12 host
-      system_description = create_test_description(json: <<-EOF)
-        {
-          "os": {
-          "name": "SUSE Linux Enterprise Server 12",
-          "architecture": "x86_64"
-          }
-        }
-        EOF
-
-      expect { LocalSystem.validate_build_compatibility(system_description) }.not_to raise_error
-    end
-  end
 end

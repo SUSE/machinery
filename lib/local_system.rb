@@ -77,19 +77,6 @@ You can install it by running `zypper install #{package}`.
       raise(Machinery::Errors::MissingRequirement.new(output))
     end
 
-    def validate_build_compatibility(system_description)
-      if !os.can_build?(system_description.os)
-        message = "Building '#{system_description.os.display_name}' is " \
-          "not supported on this distribution.\n" \
-          "Check the 'BUILD SUPPORT MATRIX' by running `#{Hint.program_name} build --help` for " \
-          "further information which build targets are supported.\n" \
-          "You are only able to build the architecture you are running " \
-          "(#{LocalSystem.os.architecture})."
-
-        raise(Machinery::Errors::BuildFailed.new(message))
-      end
-    end
-
     def matches_architecture?(arch)
       os.architecture == arch
     end

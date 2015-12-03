@@ -491,35 +491,35 @@ describe SystemDescription do
     end
   end
 
-  describe "#validate_export_compatibility" do
-    it "accepts a supported os" do
-      json = <<-EOF
-        {
-          "os": {
-            "name": "openSUSE 13.1 (Bottle)",
-            "version": "13.1 (Bottle)"
-          }
-        }
-      EOF
-      description = create_test_description(name: "name", json: json)
-      expect {
-        description.validate_export_compatibility
-      }.to_not raise_error
+  describe "#validate_build_compatibility" do
+    let(:description) { create_test_description(scopes: ["os"]) }
+
+    context "when kiwi has the vmxboot template for the required os" do
+      before do
+        allow(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
+          and_return("config.sh  config.xml  images.sh  root")
+      end
+
+      it "doesn't raise an error" do
+        expect {
+          description.validate_build_compatibility
+        }.to_not raise_error
+      end
     end
 
-    it "rejects an unsupported os" do
-      json = <<-EOF
-      {
-        "os": {
-          "name": "OS Which Will Never Exist",
-          "version": "6.6"
-        }
-      }
-      EOF
-      description = create_test_description(name: "name", json: json)
-      expect {
-        description.validate_export_compatibility
-      }.to raise_error(Machinery::Errors::ExportFailed)
+    context "when kiwi doesn't have the vmxboot template for the required os" do
+      before do
+        allow(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
+          and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+      end
+
+      it "raises an error" do
+        expect {
+          description.validate_build_compatibility
+        }.to raise_error(Machinery::Errors::BuildFailed, "The execution of the build script failed. Building of operating system " \
+        "'openSUSE 13.1 (x86_64)' can't be accomplished because the kiwi template file in " \
+        "`/usr/share/kiwi/image/vmxboot/suse-13.1` does not exist.")
+      end
     end
   end
 

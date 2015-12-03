@@ -56,10 +56,6 @@ class Os < Machinery::Object
     "os"
   end
 
-  def self.buildable_systems
-    []
-  end
-
   def self.module_dependencies
     {}
   end
@@ -74,14 +70,6 @@ class Os < Machinery::Object
 
   def can_run_machinery?
     self.class.can_run_machinery?
-  end
-
-  def can_build?(os)
-    self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
-  end
-
-  def can_be_exported?
-    false
   end
 
   def module_required_by_package(package)
@@ -104,10 +92,6 @@ class OsUnknown < Os
 end
 
 class OsSuse < Os
-  def can_be_exported?
-    true
-  end
-
   def kiwi_bootloader
     "grub2"
   end
@@ -151,10 +135,6 @@ class OsSles12 < OsSuse
     "SUSE Linux Enterprise Server 12"
   end
 
-  def self.buildable_systems
-    [OsSles12]
-  end
-
   def self.module_dependencies
     { "python-glanceclient" => "Public Cloud Module" }
   end
@@ -176,19 +156,11 @@ class OsOpenSuse13_1 < OsOpenSuse
   def self.canonical_name
     "openSUSE 13.1 (Bottle)"
   end
-
-  def self.buildable_systems
-    [OsSles11, OsOpenSuse13_1]
-  end
 end
 
 class OsOpenSuse13_2 < OsOpenSuse
   def self.canonical_name
     "openSUSE 13.2 (Harlequin)"
-  end
-
-  def self.buildable_systems
-    [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
   end
 end
 
@@ -199,10 +171,6 @@ class OsOpenSuseTumbleweed < OsSuse
 
   def self.canonical_name
     "openSUSE Tumbleweed"
-  end
-
-  def self.buildable_systems
-    [OsOpenSuse13_2, OsOpenSuseTumbleweed, OsOpenSuseLeap]
   end
 
   def kiwi_boot
@@ -217,10 +185,6 @@ class OsOpenSuseLeap < OsSuse
 
   def self.canonical_name
     "openSUSE Leap"
-  end
-
-  def self.buildable_systems
-    [OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseLeap, OsOpenSuseTumbleweed, OsSles12, OsSles11]
   end
 
   def kiwi_boot

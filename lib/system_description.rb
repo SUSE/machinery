@@ -163,10 +163,19 @@ class SystemDescription < Machinery::Object
     end
   end
 
-  def validate_export_compatibility
-    if !os.can_be_exported?
-      raise Machinery::Errors::ExportFailed.new("Export of operating " +
-        "system '#{os.display_name}' is not supported.")
+  def validate_build_compatibility
+    kiwi_template_path = "/usr/share/kiwi/image/#{os.kiwi_boot}"
+    unless os.architecture == "x86_64"
+      raise Machinery::Errors::BuildFailed.new("The execution of the build script failed. Building of operating " \
+        "system '#{os.display_name}' can't be accomplished because the architecture " \
+        "`#{os.architecture}` is not supported.")
+    end
+    begin
+      Cheetah.run("sudo", "ls", kiwi_template_path)
+    rescue Cheetah::ExecutionFailed
+      raise Machinery::Errors::BuildFailed.new("The execution of the build script failed. Building of operating " \
+        "system '#{os.display_name}' can't be accomplished because the kiwi template file in " \
+        "`#{kiwi_template_path}` does not exist.")
     end
   end
 
