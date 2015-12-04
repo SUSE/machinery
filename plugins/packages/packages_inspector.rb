@@ -28,6 +28,7 @@ class PackagesInspector < Inspector
     if @system.has_command?("rpm")
       inspect_rpm
     elsif @system.has_command?("dpkg")
+      @system.check_requirement("apt-cache", "--version")
       inspect_dpkg
     end
 
