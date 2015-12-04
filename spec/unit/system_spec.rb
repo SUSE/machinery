@@ -181,6 +181,23 @@ describe System do
     end
   end
 
+  describe "#run_command_with_progress" do
+    it "calls the callback with the output" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_command) do |_command, options|
+        options[:stdout].puts("output1")
+        options[:stdout].puts("output2")
+      end
+
+      callback_buffer = ""
+      system.run_command_with_progress("command") do |chunk|
+        callback_buffer << chunk
+      end
+
+      expect(callback_buffer).to eq("output1\noutput2\n")
+    end
+  end
+
   describe "#has_command" do
     it "returns true if the system has the command" do
       system = LocalSystem.new

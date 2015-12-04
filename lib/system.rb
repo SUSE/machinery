@@ -136,6 +136,30 @@ class System
     output
   end
 
+  def run_command_with_progress(*command, &callback)
+    output = ""
+    error = ""
+    write_io = StringIO.new(output, "a")
+    error_io = StringIO.new(error, "a")
+    read_io = StringIO.new(output, "r")
+
+    inspect_thread = Thread.new do
+      run_command(*command, stdout: write_io, stderr: error_io)
+    end
+
+    while inspect_thread.alive?
+      sleep 0.1
+      chunk = read_io.read
+      callback.call(chunk) if callback
+    end
+
+    if error.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    end
+
+    output
+  end
+
   def has_command?(command)
     run_command("bash", "-c", "type -P #{command}", stdout: :capture)
     true
