@@ -163,26 +163,6 @@ describe Migrate5To6 do
       }
     EOT
   }
-  let(:description_yum_hash) {
-    JSON.parse(<<-EOT)
-      {
-        "repositories": [
-          {
-            "package_manager": "yum",
-            "name": "Red Hat Enterprise Linux 6Server - x86_64 - Source",
-            "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
-            "enabled": false,
-            "alias": "rhel-source",
-            "gpgcheck": true,
-            "type": "rpm-md"
-          },
-        ],
-        "meta": {
-          "format_version": 5
-        }
-      }
-    EOT
-  }
   let(:description_base) { system_description_factory_store.description_path("description") }
 
   before(:each) do
@@ -217,6 +197,64 @@ describe Migrate5To6 do
 
     it "removes the package_manager type" do
       expect(description_hash["repositories"]["_elements"].first["package_manager"]).to be(nil)
+    end
+
+    context "when repositories empty" do
+      let(:description_hash) {
+        JSON.parse(<<-EOT)
+          {
+            "repositories": [],
+            "meta": {
+              "format_version": 5
+            }
+          }
+        EOT
+      }
+
+      it "sets repository_system to zypp " do
+        expect(description_hash["repositories"]["_attributes"]["repository_system"]).to eq("zypp")
+      end
+    end
+
+    context "when repositories base on yum" do
+      let(:description_hash) {
+        JSON.parse(<<-EOT)
+          {
+            "repositories": [
+              {
+                "package_manager": "yum",
+                "name": "Red Hat Enterprise Linux 6Server - x86_64 - Source",
+                "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
+                "enabled": false,
+                "alias": "rhel-source",
+                "gpgcheck": true,
+                "type": "rpm-md"
+              }
+            ],
+            "meta": {
+              "format_version": 5
+            }
+          }
+        EOT
+      }
+
+      it "has the attribute yum" do
+        expect(description_hash["repositories"]["_attributes"]["repository_system"]).to eq("yum")
+      end
+
+      it "adds an empty gpgkey array" do
+        expect(description_hash["repositories"]["_elements"].first["gpgkey"]).to eq([])
+      end
+
+      it "adds an empty mirrorlist string" do
+        expect(description_hash["repositories"]["_elements"].first["mirrorlist"]).to eq("")
+      end
+
+      it "converts the url string to an array" do
+        expect(description_hash["repositories"]["_elements"].first["url"]).to eq(
+          ["ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/"]
+        )
+      end
     end
   end
 

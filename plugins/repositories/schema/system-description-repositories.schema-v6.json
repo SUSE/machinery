@@ -76,11 +76,14 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["alias", "name", "url", "type", "enabled", "gpgcheck"],
+            "required": ["alias", "name", "url", "type", "enabled", "gpgcheck", "gpgkey", "mirrorlist"],
             "properties": {
               "alias": {
                 "type": "string",
                 "minLength": 1
+              },
+              "mirrorlist": {
+                "type": "string"
               },
               "name": {
                 "type": "string",
@@ -90,15 +93,50 @@
                 "enum": ["rpm-md", null]
               },
               "url": {
-                "type": "string",
-                "format": "uri",
-                "minLength": 1
+                "type": "object",
+                "required": [
+                  "_attributes",
+                  "_elements"
+                ],
+                "properties": {
+                  "_attributes": {
+                    "type": "object"
+                  },
+                  "_elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "url",
+                      "minLength": 1
+                    }
+                  }
+                }
               },
               "enabled": {
                 "type": "boolean"
               },
               "gpgcheck": {
                 "type": "boolean"
+              },
+              "gpgkey": {
+                "type": "object",
+                "required": [
+                  "_attributes",
+                  "_elements"
+                ],
+                "properties": {
+                  "_attributes": {
+                    "type": "object"
+                  },
+                  "_elements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "url",
+                      "minLength": 1
+                    }
+                  }
+                }
               }
             }
           }

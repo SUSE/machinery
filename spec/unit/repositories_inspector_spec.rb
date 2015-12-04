@@ -257,7 +257,7 @@ password=2fdcb7499fd46842
     let(:expected_yum_extractor_output) {
       output = <<-EOF
 "Loaded plugins: priorities"
-[{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "enabled": true, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "gpgcheck": true, "type": "rpm-md"}, {"name": "Red Hat Enterprise Linux 6Server - x86_64 - Source", "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/", "enabled": false, "alias": "rhel-source", "gpgcheck": true, "type": "rpm-md"}]
+[{"name": "CentOS-6Server - Base", "url": [], "gpgkey": ["http://mirror.centos.org/centos/RPM-GPG-KEY-centos4"], "enabled": true, "alias": "base", "mirrorlist": "http://mirrorlist.centos.org/?release=6Server&arch=x86_64&repo=os", "gpgcheck": true, "type": "rpm-md"},{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": ["http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/"], "gpgkey": [], "enabled": false, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "mirrorlist": "", "gpgcheck": false, "type": "rpm-md"}]
 EOF
       output.chomp
     }
@@ -268,28 +268,27 @@ output
 EOF
     }
 
-    let(:unsupported_metalink_repo) {<<-EOF
-[{"name": "Fedora 21 - x86_64", "url": "", "enabled": true, "alias": "fedora", "gpgcheck": true, "type": "rpm-md"}]
-EOF
-    }
-
     let(:expected_yum_repo_list) {
       RepositoriesScope.new(
         [
           Repository.new(
-            name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
-            url: "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+            name: "CentOS-6Server - Base",
+            url: [],
+            mirrorlist: "http://mirrorlist.centos.org/?release=6Server&arch=x86_64&repo=os",
             enabled: true,
-            alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
+            alias: "base",
             gpgcheck: true,
+            gpgkey: ["http://mirror.centos.org/centos/RPM-GPG-KEY-centos4"],
             type: "rpm-md"
           ),
           Repository.new(
-            name: "Red Hat Enterprise Linux 6Server - x86_64 - Source",
-            url: "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
+            name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+            url: ["http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/"],
+            mirrorlist: "",
             enabled: false,
-            alias: "rhel-source",
-            gpgcheck: true,
+            alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
+            gpgcheck: false,
+            gpgkey: [],
             type: "rpm-md"
           )
         ],
@@ -325,15 +324,6 @@ EOF
 
       expect { inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed:\nSome error/
-      )
-    end
-
-    # We don't support Yum Metalink repositories atm
-    it "throws an Machinery AnalysisFailed error when the url is empty" do
-      expect(system).to receive(:run_command).and_return(unsupported_metalink_repo)
-
-      expect { inspector.inspect(filter) }.to raise_error(
-        Machinery::Errors::InspectionFailed, /Yum repository baseurl is missing/
       )
     end
   end

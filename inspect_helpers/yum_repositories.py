@@ -32,11 +32,16 @@ for repo in yb.repos.sort():
   repo_dict["name"] = repo.name
   repo_dict["type"] = "rpm-md"
   if repo.baseurl:
-    repo_dict["url"] = repo.baseurl[0]
+    repo_dict["url"] = repo.baseurl
   else:
-    repo_dict["url"] = ""
+    repo_dict["url"] = []
+  if repo.mirrorlist:
+    repo_dict["mirrorlist"] = repo.mirrorlist
+  else:
+    repo_dict["mirrorlist"] = ""
   repo_dict["enabled"] = repo.enabled
   repo_dict["gpgcheck"] = repo.gpgcheck
+  repo_dict["gpgkey"] = repo.gpgkey
   repositories.append(repo_dict)
 
 print(json.dumps(repositories))
