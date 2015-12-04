@@ -40,8 +40,7 @@
             "minLength": 1
           },
           "release": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           },
           "arch": {
             "type": "string",
