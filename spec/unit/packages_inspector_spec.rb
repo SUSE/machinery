@@ -114,6 +114,7 @@ Desired=Unknown/Install/Remove/Purge/Hold
 +++-======================================================-================================-================================-==================================================================================================================
 ii  accountsservice:amd64                                  0:0.6.35-foo-0ubuntu7.2          amd64                            query and manipulate user account information
 ii  adduser                                                3.113+nmu3ubuntu3                all                              add and remove users and groups
+un  udev                                                   3.113+nmu3ubuntu3                all                              add and remove users and groups
 EOF
     }
     let(:apt_cache_output) {
