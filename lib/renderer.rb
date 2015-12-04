@@ -208,7 +208,7 @@ class Renderer
     print_indented "#{s}"
   end
 
-  def list(name = nil, &block)
+  def list(name = nil, options = {}, &block)
     unless block_given?
       raise InvalidStructureError.new(
         "'list' was called without a block"
@@ -216,7 +216,6 @@ class Renderer
     end
 
     @stack << :list
-
 
     if name && !name.empty?
       print_indented "#{name}:"
@@ -226,7 +225,7 @@ class Renderer
     else
       block.call
     end
-    @buffer += "\n" unless @buffer.end_with?("\n\n")
+    @buffer += "\n" unless @buffer.end_with?("\n\n") unless options[:sublist]
 
     @stack.pop
   end
