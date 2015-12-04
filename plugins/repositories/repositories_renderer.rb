@@ -31,7 +31,16 @@ class RepositoriesRenderer < Renderer
           item_name = "URI: #{p.url}"
         end
         item "#{item_name}" do
-          puts "URI: #{p.url}" if p.name
+          if p.url.is_a?(Machinery::Array)
+            list "URI", sublist: true do
+              p.url.each do |url|
+                item url
+              end
+            end
+          else
+            puts "URI: #{p.url}" if p.name
+          end
+          puts "Mirrorlist: #{!p.mirrorlist.empty? ? p.mirrorlist : "N/A"}" if p.mirrorlist
           puts "Alias: #{p.alias}" if p.alias
           puts "Distribution: #{p.distribution}" if p.distribution
           puts "Components: #{p.components.join(", ")}" if p.components

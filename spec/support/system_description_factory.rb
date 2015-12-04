@@ -596,7 +596,39 @@ module SystemDescriptionFactory
       ]
     }
   EOF
-
+  EXAMPLE_SCOPES["yum_repositories"] = <<-EOF.chomp
+    "repositories": {
+      "_attributes": {
+        "repository_system": "yum"
+      },
+      "_elements": [
+        {
+          "name": "CentOS-6Server - Base",
+          "url": {
+            "_attributes": {
+            },
+            "_elements": [
+              "http://mirror.centos.org/centos/centos4/os/x86_64/",
+              "http://mirror2.centos.org/centos/centos4/os/x86_64/"
+            ]
+          },
+          "gpgkey": {
+            "_attributes": {
+            },
+            "_elements": [
+              "http://mirror.centos.org/centos/RPM-GPG-KEY-centos4",
+              "http://mirror2.centos.org/centos/RPM-GPG-KEY-centos4"
+            ]
+          },
+          "enabled": true,
+          "alias": "base",
+          "mirrorlist": "",
+          "gpgcheck": true,
+          "type": "rpm-md"
+        }
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["users"] = <<-EOF.chomp
     "users": {
       "_attributes": {},
