@@ -23,8 +23,24 @@ class PackagesInspector < Inspector
   end
 
   def inspect(_filter, _options = {})
-    @system.check_requirement("rpm", "--version")
+    @system.check_requirement(["rpm", "dpkg"], "--version")
 
+    if @system.has_command?("rpm")
+      inspect_rpm
+    elsif @system.has_command?("dpkg")
+      inspect_dpkg
+    end
+
+    @description
+  end
+
+  def summary
+    "Found #{@description.packages.length} packages."
+  end
+
+  private
+
+  def inspect_rpm
     packages = Machinery::Array.new
     rpm_data = @system.run_command(
       "rpm","-qa","--qf",
@@ -52,7 +68,49 @@ class PackagesInspector < Inspector
     )
   end
 
-  def summary
-    "Found #{@description.packages.length} packages."
+  def inspect_dpkg
+    dpkg_data = @system.run_command(
+      "dpkg", "-l", stdout: :capture
+    )
+
+    lines = dpkg_data.lines.reject { |line| !line.start_with?("ii") }
+
+    packages = lines.map do |line|
+      name, version, arch = line.split[1..3]
+      version_segments = version.split("-")
+      release = version_segments.pop if version_segments.length > 1
+      version = version_segments.join("-")
+
+      Package.new(
+        name: name,
+        version: version,
+        release: release,
+        arch: arch
+      )
+    end
+
+    packages.each_slice(100) do |packages_slice|
+      apt_cache_output = @system.run_command(
+        "apt-cache",
+        "show",
+        *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
+        stdout: :capture
+      )
+
+      packages_slice.each do |package|
+        name = Regexp.escape(package.name.sub(/:[^:]+$/, ""))
+        apt_cache_output =~
+          /Package: #{name}.*?MD5sum: (\w+).*?Origin: (\w+)/m
+
+        package.checksum = $1
+        package.vendor = $2
+        package.release ||= ""
+      end
+    end
+
+    @description.packages = PackagesScope.new(
+      packages.sort_by(&:name),
+      package_system: "dpkg"
+    )
   end
 end
