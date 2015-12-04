@@ -74,7 +74,7 @@ class PackagesInspector < Inspector
       "dpkg", "-l", stdout: :capture
     )
 
-    lines = dpkg_data.lines.reject { |line| !line.start_with?("ii") }
+    lines = dpkg_data.lines.reject { |line| !line.start_with?("ii ") }
 
     packages = lines.map do |line|
       name, version, arch = line.split[1..3]
@@ -101,7 +101,7 @@ class PackagesInspector < Inspector
       packages_slice.each do |package|
         name = Regexp.escape(package.name.sub(/:[^:]+$/, ""))
         apt_cache_output =~
-          /Package: #{name}.*?MD5sum: (\w+).*?Origin: (\w+)/m
+          /Package: #{name}\n.*?MD5sum: (\w+).*?Origin: (\w+)/m
 
         package.checksum = $1
         package.vendor = $2
