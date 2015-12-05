@@ -20,7 +20,11 @@ class UnmanagedFilesInspector < Inspector
 
   # checks if all required binaries are present
   def check_requirements(check_tar)
-    @system.check_requirement("rpm", "--version")
+    if !@system.has_command?("rpm") && !@system.has_command?("dpkg")
+      raise Machinery::Errors::MissingRequirement.new(
+        "Need either 'rpm' or 'dpkg' as binary available on the inspected system."
+      )
+    end
     @system.check_requirement("sed", "--version")
     @system.check_requirement("cat", "--version")
     @system.check_requirement("find", "--version")
@@ -34,6 +38,7 @@ class UnmanagedFilesInspector < Inspector
       ["sed", "s/^\\(.\\)[^/]* /\\1 /"],
       :stdout => :capture
     )
+
     files = {}
     dirh = {}
     links = {}
@@ -79,7 +84,38 @@ class UnmanagedFilesInspector < Inspector
       end
     end
     Machinery.logger.debug "extract_rpm_database files:#{files.size} dirs:#{dirh.size}"
+
     [files, dirh]
+  end
+
+  def extract_dpkg_database
+    out = @system.run_script_with_progress("dpkg_unmanaged_files.sh")
+    parsed_data = parse_dpkg_package_files_output(out)
+
+    files = parsed_data[:files]
+    dirh = parsed_data[:directories]
+
+    [files, dirh]
+  end
+
+  def parse_dpkg_package_files_output(data)
+    result = { files: {}, directories: {}, links: {} }
+
+    data.each_line do |line|
+      data_splitted = line.split(" ")
+      type = data_splitted[0]
+      value = data_splitted[1] # file path, directory path, or link name
+
+      if type == "-" # file
+        result[:files][value] = ""
+      elsif type == "d" and value != "/." # directory
+        result[:directories][value] = true
+      elsif type == "l" # link
+        result[:links][value] = data_splitted[3]
+      end
+    end
+
+    result
   end
 
   def check_consistency(files, dirh)
@@ -219,6 +255,8 @@ class UnmanagedFilesInspector < Inspector
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(do_extract)
 
+    determine_package_manager
+
     scope = UnmanagedFilesScope.new
 
     file_store_tmp = @description.scope_file_store("unmanaged_files.tmp")
@@ -241,6 +279,14 @@ class UnmanagedFilesInspector < Inspector
         scope)
     else
       run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
+    end
+  end
+
+  def determine_package_manager
+    if @system.has_command?("rpm")
+      @package_manager = "rpm"
+    elsif @system.has_command?("dpkg")
+      @package_manager = "dpkg"
     end
   end
 
@@ -309,7 +355,11 @@ class UnmanagedFilesInspector < Inspector
   def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
 
-    rpm_files, rpm_dirs = extract_rpm_database
+    if @package_manager == "rpm"
+      inspected_files, inspected_dirs = extract_rpm_database
+    elsif @package_manager == "dpkg"
+      inspected_files, inspected_dirs = extract_dpkg_database
+    end
 
     # Btrfs subvolumes and local mounts need to be inspected separately because
     # they are not part of the `get_find_data` return data
@@ -371,7 +421,7 @@ class UnmanagedFilesInspector < Inspector
           file_filter.matches?("/" + dir)
         end
       end
-      managed, unmanaged = dirs.keys.partition{ |d| rpm_dirs.has_key?(find_dir + d) }
+      managed, unmanaged = dirs.keys.partition{ |d| inspected_dirs.has_key?(find_dir + d) }
 
       # unmanaged dirs lead to removal of files and dirs below that dir
       while !unmanaged.empty?
@@ -407,7 +457,7 @@ class UnmanagedFilesInspector < Inspector
       dirs_todo.push(*managed)
 
       # unmanaged files are simply stored
-      managed, unmanaged = files.keys.partition{ |d| rpm_files.has_key?(find_dir + d) }
+      managed, unmanaged = files.keys.partition{ |d| inspected_files.has_key?(find_dir + d) }
       links = unmanaged.reject { |d| files[d].empty? }
       unmanaged.map!{ |d| find_dir + d }
       unmanaged_files.push(*unmanaged)
