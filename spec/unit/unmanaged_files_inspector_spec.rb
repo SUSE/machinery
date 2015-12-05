@@ -114,9 +114,7 @@ describe UnmanagedFilesInspector do
 
 
     def expect_requirements(system)
-      expect(system).to receive(:check_requirement).with(
-        "rpm", "--version"
-      )
+      allow(system).to receive(:has_command?).and_return(true)
       expect(system).to receive(:check_requirement).with(
         "sed", "--version"
       )
@@ -321,7 +319,6 @@ describe UnmanagedFilesInspector do
 
     it "returns empty when no unmanaged files are there" do
       expect_inspect_unmanaged(system, false, false)
-
       subject.inspect(default_filter)
 
       expected = UnmanagedFilesScope.new(
@@ -374,9 +371,7 @@ describe UnmanagedFilesInspector do
     end
 
     it "raise an error when requirements are not fulfilled" do
-      expect(system).to receive(:check_requirement).with(
-        "rpm", "--version"
-      ).and_raise(Machinery::Errors::MissingRequirement)
+      allow(system).to receive(:has_command?).and_return(false)
 
       expect { subject.inspect(default_filter) }.to raise_error(
         Machinery::Errors::MissingRequirement)
@@ -437,7 +432,7 @@ describe UnmanagedFilesInspector do
       let(:description) { SystemDescription.new("systemname", SystemDescriptionStore.new) }
       let(:helper) { MachineryHelper.new(description) }
 
-      it "doesn't use the helper when a remote user != roote is used" do
+      it "doesn't use the helper when a remote user != root is used" do
         expect(system).to receive(:remote_user).and_return("machinery)")
         expected = "Using traditional inspection because only 'root' is supported as remote user"
         allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
@@ -451,6 +446,7 @@ describe UnmanagedFilesInspector do
 
   it "runs helper" do
     system = double(arch: "x86_64")
+    allow(system).to receive(:has_command?).and_return(true)
     allow(system).to receive(:check_requirement)
 
     description = SystemDescription.new("systemname", SystemDescriptionStore.new)
@@ -465,5 +461,100 @@ describe UnmanagedFilesInspector do
     end
 
     inspector.inspect(Filter.from_default_definition("inspect"))
+  end
+
+  describe "#check_requirements" do
+    it "fails when the binaries rpm and dpkg were not found on the remote system" do
+      allow(system).to receive(:has_command?).and_return(false)
+
+      description = SystemDescription.new("systemname", SystemDescriptionStore.new)
+      inspector = UnmanagedFilesInspector.new(system, description)
+
+      expect { inspector.check_requirements(nil) }.to raise_error(
+        Machinery::Errors::MissingRequirement, "Need either 'rpm' or 'dpkg' as binary " \
+          "available on the inspected system."
+      )
+    end
+  end
+
+  context "dpkg" do
+    describe "#parse_dpkg_package_files_output" do
+      it "parses the output of dpkg_unmanaged_files.sh and converts it to a hash" do
+        data = <<-EOF.chomp
+- /usr/share/man/man1/ld.gold.1.gz
+d /usr/bin
+- /usr/bin/gprof
+l /usr/share/doc/krb5-locales/CHANGES.gz -> /usr/share/doc/krb5-locales/changelog.gz
+EOF
+        expected = {
+          files: {
+            "/usr/share/man/man1/ld.gold.1.gz" => "",
+            "/usr/bin/gprof" => ""
+          },
+          directories: {
+            "/usr/bin" => true
+          },
+          links: {
+            "/usr/share/doc/krb5-locales/CHANGES.gz" => "/usr/share/doc/krb5-locales/changelog.gz"
+          }
+        }
+
+        description = SystemDescription.new("systemname", SystemDescriptionStore.new)
+        inspector = UnmanagedFilesInspector.new(system, description)
+
+        expect(inspector.parse_dpkg_package_files_output(data)).to eq(expected)
+      end
+
+      it "ignores the root path directory /." do
+        data = <<-EOF.chomp
+d /.
+d /usr/share
+- /usr/share/test.gz
+EOF
+        expected = {
+          files: {
+            "/usr/share/test.gz" => ""
+          },
+          directories: {
+            "/usr/share" => true
+          },
+          links: {
+          }
+        }
+
+        description = SystemDescription.new("systemname", SystemDescriptionStore.new)
+        inspector = UnmanagedFilesInspector.new(system, description)
+
+        expect(inspector.parse_dpkg_package_files_output(data)).to eq(expected)
+      end
+    end
+
+    describe "#extract_dpkg_database" do
+      it "returns an array with unmanaged files and directories" do
+        data = {
+          files: {
+            "/home/test/abc.yml" => ""
+          },
+          directories: {
+            "/home" => true,
+            "/home/test" => true
+          },
+          links: {}
+        }
+
+        expected_data = [data[:files], data[:directories]]
+
+        allow(system).to receive(:run_script_with_progress).and_return("")
+
+        allow_any_instance_of(UnmanagedFilesInspector).to receive(
+          :parse_dpkg_package_files_output
+        ).and_return(data)
+
+        description = SystemDescription.new("systemname", SystemDescriptionStore.new)
+        inspector = UnmanagedFilesInspector.new(system, description)
+
+        expect(inspector.extract_dpkg_database).to eq(expected_data)
+      end
+    end
   end
 end
