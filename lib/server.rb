@@ -87,16 +87,6 @@ class Server < Sinatra::Base
       object.length.to_s + " " + Machinery.pluralize(object.length, singular, plural)
     end
 
-    def render_attribute(key, value)
-      if key == "url"
-        "<a href='#{value}'>#{value}</a>"
-      elsif value.is_a?(Machinery::Array)
-        value.join(", ")
-      else
-        value.to_s
-      end
-    end
-
     def changed_elements(scope, opts)
       optional_attributes = opts[:optional_attributes] || []
 

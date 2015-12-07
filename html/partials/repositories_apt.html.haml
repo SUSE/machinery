@@ -1,0 +1,15 @@
+%table.table.table-striped.table-hover.table-condensed.filterable
+  %thead
+    %tr
+      %th.small Type
+      %th URL
+      %th Distribution
+      %th Components
+  %tbody
+    - repositories.each do |repo|
+      %tr
+        %td= repo.type
+        %td
+          %a{ href: repo.url }= repo.url
+        %td= repo.distribution
+        %td= repo.components.join(", ")

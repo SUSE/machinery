@@ -13,13 +13,4 @@
           - if count == 0
             There are no repositories.
           - if count > 0
-            %table.table.table-striped.table-hover.table-condensed.filterable
-              %thead
-                %tr
-                  - repositories.first.attributes.keys.each do |header|
-                    %th= header.capitalize
-              %tbody
-                - repositories.each do |repo|
-                  %tr
-                    - repo.attributes.each do |key, value|
-                      %td= render_attribute(key, value)
+            = render_partial "repositories_#{repositories.repository_system}", repositories: repositories
