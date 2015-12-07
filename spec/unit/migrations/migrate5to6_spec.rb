@@ -199,7 +199,7 @@ describe Migrate5To6 do
       expect(description_hash["repositories"]["_elements"].first["package_manager"]).to be(nil)
     end
 
-    context "when repositories empty" do
+    context "when there are no repositories" do
       let(:description_hash) {
         JSON.parse(<<-EOT)
           {
@@ -216,7 +216,7 @@ describe Migrate5To6 do
       end
     end
 
-    context "when repositories base on yum" do
+    context "when repositories are yum based" do
       let(:description_hash) {
         JSON.parse(<<-EOT)
           {
