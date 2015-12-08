@@ -60,6 +60,16 @@ class BarBazRenderer < Renderer
     list "" do
       item("Item of a list with empty string")
     end
+
+    list("Title", sublist: true) do
+      item("item of sublist with title")
+      item("item2 of sublist with title")
+    end
+
+    list(nil, sublist: true) do
+      item("item of sublist with nil")
+      item("item2 of sublist with nil")
+    end
   end
 
   def display_name
@@ -205,6 +215,12 @@ Common to both systems:
   * Item of a list with nil string
 
   * Item of a list with empty string
+
+  Title:
+    * item of sublist with title
+    * item2 of sublist with title
+  * item of sublist with nil
+  * item2 of sublist with nil
 
 EOF
       expect(renderer.render(description)).to eq(expected)

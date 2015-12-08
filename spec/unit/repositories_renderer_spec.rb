@@ -105,6 +105,24 @@ EOT
       expect(output).to include(expected_output)
     end
 
+    it "prints a yum repository list" do
+      output = RepositoriesRenderer.new.render(
+        create_test_description(scopes: ["yum_repositories"])
+      )
+
+      expected_output = <<EOT
+  * CentOS-6Server - Base
+    URI:
+      * http://mirror.centos.org/centos/centos4/os/x86_64/
+      * http://mirror2.centos.org/centos/centos4/os/x86_64/
+    Mirrorlist: N/A
+    Alias: base
+    Enabled: Yes
+    Type: rpm-md
+EOT
+      expect(output).to include(expected_output)
+    end
+
     context "when there are no repositories" do
       let(:system_description) { create_test_description(scopes: ["empty_repositories"]) }
 

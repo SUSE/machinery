@@ -30,16 +30,30 @@ class Migrate5To6 < Migration
         "_elements" => @hash["packages"]
       }
     end
+
     if @hash.key?("repositories")
+      if @hash["repositories"].first
+        repository_system = @hash["repositories"].first["package_manager"]
+      else
+        repository_system = "zypp"
+      end
+
       @hash["repositories"] = {
         "_attributes" => {
-          "repository_system" => @hash["repositories"].first["package_manager"]
+          "repository_system" => repository_system
         },
         "_elements" => @hash["repositories"].map do |repository|
-          repository.delete_if { |key, _| key == "package_manager" }
+          repository.delete("package_manager")
+          if repository_system == "yum"
+            repository["gpgkey"] = []
+            repository["mirrorlist"] = ""
+            repository["url"] = [repository["url"]]
+          end
+          repository
         end
       }
     end
+
     ["changed_managed_files", "config_files", "unmanaged_files"].each do |scope|
       next unless @hash.key?(scope)
 
