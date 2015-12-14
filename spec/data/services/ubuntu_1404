@@ -1,5 +1,6 @@
-# Services [192.168.121.150] (2015-11-27 12:47:28)
+# Services [192.168.121.50] (2015-12-02 14:20:13)
 
+  * apparmor: enabled
   * bootmisc.sh: disabled
   * checkfs.sh: disabled
   * checkroot-bootclean.sh: disabled
@@ -12,9 +13,11 @@
   * cron: enabled
   * dbus: disabled
   * dmesg: enabled
+  * dns-clean: enabled
   * failsafe: disabled
   * flush-early-job-log: disabled
   * friendly-recovery: disabled
+  * grub-common: enabled
   * gssd: disabled
   * gssd-mounting: disabled
   * hostname: enabled
@@ -23,6 +26,7 @@
   * idmapd: disabled
   * idmapd-mounting: disabled
   * irqbalance: enabled
+  * killprocs: disabled
   * kmod: enabled
   * mountall: enabled
   * mountall-bootclean.sh: disabled
@@ -45,6 +49,8 @@
   * network-interface-container: disabled
   * network-interface-security: disabled
   * networking: enabled
+  * ntp: enabled
+  * ondemand: enabled
   * passwd: disabled
   * plymouth: disabled
   * plymouth-log: disabled
@@ -54,20 +60,25 @@
   * plymouth-stop: disabled
   * plymouth-upstart-bridge: enabled
   * portmap-wait: disabled
+  * pppd-dns: enabled
   * procps: disabled
   * rc: enabled
   * rc-sysinit: disabled
+  * rc.local: enabled
   * rcS: enabled
   * resolvconf: disabled
   * rpcbind: disabled
   * rpcbind-boot: disabled
+  * rsync: enabled
   * rsyslog: disabled
+  * sendsigs: disabled
   * setvtrgb: disabled
   * shutdown: disabled
   * ssh: enabled
   * startpar-bridge: disabled
   * statd: disabled
   * statd-mounting: disabled
+  * sudo: disabled
   * systemd-logind: disabled
   * tty1: disabled
   * tty2: enabled
@@ -81,9 +92,13 @@
   * udevmonitor: enabled
   * udevtrigger: enabled
   * ufw: disabled
+  * umountfs: disabled
+  * umountnfs.sh: disabled
+  * umountroot: disabled
   * upstart-file-bridge: disabled
   * upstart-socket-bridge: disabled
   * upstart-udev-bridge: disabled
+  * urandom: enabled
   * ureadahead: disabled
   * ureadahead-other: disabled
   * wait-for-state: disabled
