@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Remove hint for `show`, when `inspect-container` is run with `--show` option
 * Rephrase the startup messages and warn messages when starting the HTTP
   server for compare, show, or serve system descriptions.
 
