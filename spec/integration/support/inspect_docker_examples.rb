@@ -73,7 +73,7 @@ shared_examples "inspect-container" do |container|
       include_examples("inspect-container simple scope", scope, container)
     end
 
-    it "`show hint` will not be shown when --show is used" do
+    it "does not show the 'show' hint when --show is used" do
       expect(
         @machinery.run_command(
           "#{machinery_command} inspect-container machinerytool/#{container} --scope=os " \
@@ -83,7 +83,7 @@ shared_examples "inspect-container" do |container|
       ).to succeed.and not_include_stdout("To show the data of the system you just inspected run")
     end
 
-    it "`show hint` will be shown when --show is not used" do
+    it "shows the 'show' hint when --show is not used" do
       expect(
         @machinery.run_command(
           "#{machinery_command} inspect-container machinerytool/#{container} --scope=os " \
