@@ -45,6 +45,22 @@ describe PatternsInspector do
     EOF
   }
 
+  let(:tasksel_output) {
+    <<-EOF
+u server        Basic Ubuntu server
+i openssh-server        OpenSSH server
+i dns-server    DNS server
+u lamp-server   LAMP server
+i mail-server   Mail server
+u postgresql-server     PostgreSQL database
+i print-server  Print server
+i samba-server  Samba file server
+u tomcat-server Tomcat Java server
+u cloud-image   Ubuntu Cloud Image (instance)
+u virt-host     Virtual Machine host
+EOF
+  }
+
   let(:patterns_inspector) { PatternsInspector.new(system, description) }
   let(:system) {
     double(
@@ -55,11 +71,12 @@ describe PatternsInspector do
   }
 
   describe "#inspect" do
-    before(:each) do
-      allow(system).to receive(:has_command?).with("zypper").and_return(true)
-    end
+#    before(:each) do
+#      allow(system).to receive(:has_command?).with("zypper").and_return(true)
+#    end
 
-    it "parses the patterns list into a Hash" do
+    it "parses the patterns list into a Hash on a zypper based OS" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(true)
       expect(system).to receive(:run_command).
         with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
         and_return(zypper_output)
@@ -77,7 +94,26 @@ describe PatternsInspector do
       expect(patterns_inspector.summary).to include("Found 2 patterns")
     end
 
+    it "parses the patterns list into a Hash on a tasksel based OS" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("tasksel").and_return(true)
+      expect(system).to receive(:run_command).
+        with("tasksel", "--list-tasks", stdout: :capture).
+        and_return(tasksel_output)
+      patterns_inspector.inspect(filter)
+
+      expect(description.patterns.size).to eql(5)
+      expect(description.patterns.first).to eql(
+        Pattern.new(
+          name: "dns-server"
+        )
+      )
+
+      expect(patterns_inspector.summary).to include("Found 5 patterns")
+    end
+
     it "returns an empty array when there are no patterns installed" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(true)
       expect(system).to receive(:run_command).and_return("")
 
       patterns_inspector.inspect(filter)
@@ -85,6 +121,7 @@ describe PatternsInspector do
     end
 
     it "returns sorted data" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(true)
       expect(system).to receive(:run_command).and_return(zypper_output)
 
       patterns_inspector.inspect(filter)
@@ -93,6 +130,7 @@ describe PatternsInspector do
     end
 
     it "raises an error if zypper is locked" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(true)
       expect(system).to receive(:run_command).
         with("zypper", "-xq", "--no-refresh", "patterns", "-i",
           stdout: :capture).
@@ -103,8 +141,9 @@ describe PatternsInspector do
         Machinery::Errors::ZypperFailed, /Zypper is locked./)
     end
 
-    it "returns an empty array when no zypper is installed and shows an unsupported message" do
+    it "returns an empty array when no zypper and no tasksel is installed and shows an unsupported message" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("tasksel").and_return(false)
 
       summary = patterns_inspector.inspect(filter)
       expect(summary).to eq("Patterns are not supported on this system.")
