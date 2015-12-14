@@ -80,7 +80,7 @@ shared_examples "inspect-container" do |container|
             "--name=test --show",
           as: "vagrant"
         )
-      ).to succeed.and not_include_stdout("To show the data of the system you just inspected run")
+      ).to succeed.and not_include_stdout("Hint: To show")
     end
 
     it "shows the 'show' hint when --show is not used" do
@@ -90,7 +90,7 @@ shared_examples "inspect-container" do |container|
             "--name=test",
           as: "vagrant"
         )
-      ).to succeed.and include_stdout("To show the data of the system you just inspected run")
+      ).to succeed.and include_stdout("Hint: To show")
     end
 
     context "--scope=config-files" do
