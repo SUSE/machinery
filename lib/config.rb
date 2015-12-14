@@ -45,5 +45,9 @@ module Machinery
         description: "TCP port used by the HTTP server for the HTML view"
       )
     end
+
+    def deprecated_entries
+      ["perform_support_check"]
+    end
   end
 end

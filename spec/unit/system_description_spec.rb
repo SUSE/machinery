@@ -496,7 +496,8 @@ describe SystemDescription do
 
     context "when kiwi has the vmxboot template for the required os" do
       before do
-        allow(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
+        allow(Cheetah).to receive(:run).
+          with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
           and_return("config.sh  config.xml  images.sh  root")
       end
 
@@ -509,16 +510,18 @@ describe SystemDescription do
 
     context "when kiwi doesn't have the vmxboot template for the required os" do
       before do
-        allow(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
+        allow(Cheetah).to receive(:run).
+          with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
           and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
       end
 
       it "raises an error" do
         expect {
           description.validate_build_compatibility
-        }.to raise_error(Machinery::Errors::BuildFailed, "The execution of the build script failed. Building of operating system " \
-        "'openSUSE 13.1 (x86_64)' can't be accomplished because the kiwi template file in " \
-        "`/usr/share/kiwi/image/vmxboot/suse-13.1` does not exist.")
+        }.to raise_error(Machinery::Errors::BuildFailed, "The execution of the build script " \
+        "failed. Building of operating system 'openSUSE 13.1 (x86_64)' can't be accomplished " \
+        "because the kiwi template file in `/usr/share/kiwi/image/vmxboot/suse-13.1` " \
+        "does not exist.")
       end
     end
   end
