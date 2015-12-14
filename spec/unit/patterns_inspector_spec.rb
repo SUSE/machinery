@@ -71,9 +71,6 @@ EOF
   }
 
   describe "#inspect" do
-#    before(:each) do
-#      allow(system).to receive(:has_command?).with("zypper").and_return(true)
-#    end
 
     it "parses the patterns list into a Hash on a zypper based OS" do
       allow(system).to receive(:has_command?).with("zypper").and_return(true)
@@ -141,7 +138,7 @@ EOF
         Machinery::Errors::ZypperFailed, /Zypper is locked./)
     end
 
-    it "returns an empty array when no zypper and no tasksel is installed and shows an unsupported message" do
+    it "returns an empty array when no zypper or tasksel is installed and shows an unsupported message" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
       allow(system).to receive(:has_command?).with("tasksel").and_return(false)
 
