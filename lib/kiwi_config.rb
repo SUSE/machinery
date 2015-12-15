@@ -182,7 +182,7 @@ suseImportBuildKey
 suseConfig
 EOF
 
-    unless @system_description.os.class.ancestors.include?(OsSuse)
+    unless @system_description.os.is_a?(OsSuse)
       raise Machinery::Errors::ExportFailed.new(
         "Export is not possible because the operating system " \
         "'#{@system_description.os.display_name}' is not supported."
@@ -200,12 +200,13 @@ EOF
         xml.preferences do
           xml.packagemanager "zypper"
           xml.version "0.0.1"
-          xml.type_(image: "vmx",
-                    filesystem: "ext3",
-                    installiso: "true",
-                    boot: @system_description.os.kiwi_boot,
-                    format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
-                   )
+          xml.type_(
+            image: "vmx",
+            filesystem: "ext3",
+            installiso: "true",
+            boot: @system_description.os.kiwi_boot,
+            format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
+          )
         end
 
         xml.users(group: "root") do
