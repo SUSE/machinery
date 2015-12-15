@@ -38,4 +38,10 @@ describe Os do
       expect(OsSles12.new.scope_name).to eq("os")
     end
   end
+
+  describe "#kiwi_boot" do
+    it "finds the kiwi boot in a SUSE system" do
+      expect(scope.kiwi_boot).to eq("vmxboot/suse-13.1")
+    end
+  end
 end

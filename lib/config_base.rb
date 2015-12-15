@@ -32,6 +32,7 @@ class ConfigBase
   abstract_method :default_config_files
 
   abstract_method :define_entries
+  abstract_method :deprecated_entries
 
   def entry(key, parameters = {})
     key = normalize_key(key)
@@ -53,17 +54,22 @@ class ConfigBase
   end
 
   def set(key, value, options = {auto_save: true} )
-    key = normalize_key(key)
-    ensure_config_exists(key)
+    if deprecated?(key)
+      @entries.delete(key)
+    else
+      key = normalize_key(key)
+      ensure_config_exists(key)
 
-    # Check if data type is correct. true and false are not of the same type which makes the check complex
-    if value.class != @entries[key][:value].class &&
-      !(boolean?(value) && boolean?(@entries[key][:value]))
-      raise Machinery::Errors::MachineryError,
-        "The value '#{value}' for configuration key '#{key}' is of an invalid data type."
+      # Check if data type is correct. true and false are not of the same type which makes the
+      # check complex
+      if value.class != @entries[key][:value].class &&
+          !(boolean?(value) && boolean?(@entries[key][:value]))
+        raise Machinery::Errors::MachineryError,
+          "The value '#{value}' for configuration key '#{key}' is of an invalid data type."
+      end
+
+      @entries[key][:value] = value
     end
-
-    @entries[key][:value] = value
 
     save if options[:auto_save]
   end
@@ -77,7 +83,7 @@ class ConfigBase
   def save
     config_table_stripped = {}
     @entries.each do |key,value|
-      config_table_stripped[key] = value[:value]
+      config_table_stripped[key] = value[:value] unless deprecated?(key)
     end
 
     FileUtils.mkdir_p(File.dirname(file))
@@ -94,6 +100,8 @@ class ConfigBase
     content = read_config_file(file) || []
 
     content.each do |key, value|
+      next if deprecated?(key)
+
       begin
         set(key, value, :auto_save => false )
       rescue => e
@@ -128,5 +136,9 @@ class ConfigBase
 
   def unnormalize_key(key)
     key.gsub("_", "-")
+  end
+
+  def deprecated?(key)
+    deprecated_entries.include?(key)
   end
 end

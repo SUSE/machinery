@@ -36,6 +36,11 @@ class Os < Machinery::Object
         return os
       end
     end
+    if os_name.match(/SUSE Linux|openSUSE/)
+      os = OsSuse.new
+      os.name = os_name
+      return os
+    end
     os = OsUnknown.new
     os.name = os_name
     os
@@ -49,10 +54,6 @@ class Os < Machinery::Object
 
   def scope_name
     "os"
-  end
-
-  def self.buildable_systems
-    []
   end
 
   def self.module_dependencies
@@ -69,18 +70,6 @@ class Os < Machinery::Object
 
   def can_run_machinery?
     self.class.can_run_machinery?
-  end
-
-  def can_build?(os)
-    self.class.buildable_systems.include?(os.class) && os.architecture == "x86_64"
-  end
-
-  def can_be_analyzed?
-    false
-  end
-
-  def can_be_exported?
-    false
   end
 
   def module_required_by_package(package)
@@ -100,19 +89,24 @@ class OsUnknown < Os
   def self.canonical_name
     "Unknown OS"
   end
-
-  def self.can_run_machinery?
-    false
-  end
 end
 
 class OsSuse < Os
-  def can_be_analyzed?
-    true
+  def kiwi_bootloader
+    "grub2"
   end
 
-  def can_be_exported?
-    true
+  def kiwi_boot
+    os_version = version.match(/(\d+)+\.?(\d+)?/)
+    os_id = case name
+            when /SUSE Linux Enterprise Server/
+              "SLES#{os_version[1]}"
+            when /SUSE Linux Enterprise Desktop/
+              "SLED#{os_version[1]}"
+            when /openSUSE/
+              "#{os_version[1]}.#{os_version[2]}"
+    end
+    "vmxboot/suse-#{os_id}"
   end
 end
 
@@ -130,15 +124,15 @@ class OsSles11 < OsSuse
     sp = $1
     "#{name} #{sp} (#{architecture})"
   end
+
+  def kiwi_bootloader
+    "grub"
+  end
 end
 
 class OsSles12 < OsSuse
   def self.canonical_name
     "SUSE Linux Enterprise Server 12"
-  end
-
-  def self.buildable_systems
-    [OsSles12]
   end
 
   def self.module_dependencies
@@ -162,19 +156,11 @@ class OsOpenSuse13_1 < OsOpenSuse
   def self.canonical_name
     "openSUSE 13.1 (Bottle)"
   end
-
-  def self.buildable_systems
-    [OsSles11, OsOpenSuse13_1]
-  end
 end
 
 class OsOpenSuse13_2 < OsOpenSuse
   def self.canonical_name
     "openSUSE 13.2 (Harlequin)"
-  end
-
-  def self.buildable_systems
-    [OsSles11, OsOpenSuse13_1, OsOpenSuse13_2]
   end
 end
 
@@ -187,8 +173,8 @@ class OsOpenSuseTumbleweed < OsSuse
     "openSUSE Tumbleweed"
   end
 
-  def self.buildable_systems
-    [OsOpenSuse13_2, OsOpenSuseTumbleweed, OsOpenSuseLeap]
+  def kiwi_boot
+    "vmxboot/suse-tumbleweed"
   end
 end
 
@@ -201,17 +187,13 @@ class OsOpenSuseLeap < OsSuse
     "openSUSE Leap"
   end
 
-  def self.buildable_systems
-    [OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseLeap, OsOpenSuseTumbleweed, OsSles12, OsSles11]
+  def kiwi_boot
+    "vmxboot/suse-leap42.1"
   end
 end
 
 class Rhel < Os
   def self.canonical_name
     "Red Hat Enterprise Linux Server"
-  end
-
-  def self.can_run_machinery?
-    false
   end
 end

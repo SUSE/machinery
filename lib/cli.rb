@@ -75,16 +75,6 @@ class Cli
     end
   end
 
-  def self.buildable_distributions
-    distribution_string = ""
-    Os.supported_host_systems.each do |distribution|
-      distribution_string += "* #{distribution.canonical_name}\n\n"
-      distribution_string += distribution.buildable_systems.map(&:canonical_name).join(", ")
-      distribution_string += "\n\n"
-    end
-    distribution_string
-  end
-
   def self.handle_error(e)
     Machinery::Ui.kill_pager
 
@@ -312,10 +302,6 @@ class Cli
   long_desc <<-LONGDESC
     Build image from a given system description and store it to the given
     location.
-
-    The following combinations of build hosts and targets are supported:
-
-    #{buildable_distributions}
   LONGDESC
   arg "NAME"
   command "build" do |c|
@@ -898,7 +884,7 @@ class Cli
         value = args[1]
       end
 
-      task = ConfigTask.new
+      task = ConfigTask.new(@config)
       task.config(key, value)
 
       if key == "hints" && (value == "false" || value == "off")
@@ -915,7 +901,7 @@ class Cli
   LONGDESC
   command "serve" do |c|
     c.flag [:port, :p], type: Integer, required: false,
-      default_value: Machinery::Config.new.http_server_port,
+      default_value: @config.http_server_port,
       desc: "Listen on port PORT. Ports can be selected in a range between 2-65535. Ports between
         2 and 1023 can only be chosen when `machinery` will be executed as `root` user.",
         arg_name: "PORT"

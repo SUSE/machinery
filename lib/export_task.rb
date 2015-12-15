@@ -22,7 +22,6 @@ class ExportTask
 
   def export(output_dir, options)
     @exporter.system_description.assert_scopes("os")
-    @exporter.system_description.validate_export_compatibility
 
     ["unmanaged_files", "changed_managed_files", "config_files"].each do |scope|
       if @exporter.system_description[scope] &&
