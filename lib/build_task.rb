@@ -18,8 +18,8 @@
 class BuildTask
   def build(system_description, output_path, options = {})
     LocalSystem.validate_architecture("x86_64")
-    system_description.validate_build_compatibility
     LocalSystem.validate_existence_of_packages(["kiwi", "kiwi-desc-vmxboot"])
+    system_description.validate_build_compatibility
 
     tmp_config_dir = Dir.mktmpdir("machinery-config", "/tmp")
     tmp_image_dir = Dir.mktmpdir("machinery-image", "/tmp")
