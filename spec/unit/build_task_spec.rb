@@ -49,7 +49,6 @@ describe BuildTask do
     end
 
     it "calls the kiwi wrapper script with sudo to build the image" do
-      expect(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
       expect(Cheetah).to receive(:run) { |*cmd_array|
@@ -63,7 +62,6 @@ describe BuildTask do
     end
 
     it "handles execution errors gracefully" do
-      expect(Cheetah).to receive(:run).with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
       expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
       expect(Cheetah).to receive(:run) { |*cmd_array|
@@ -137,14 +135,6 @@ describe BuildTask do
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::UnsupportedArchitecture,
         /operation is not supported on architecture 'i586'/)
-    end
-
-    it "shows an error when the system description's architecture is not supported" do
-      allow(LocalSystem).to receive(:validate_architecture)
-      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
-      expect {
-        build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::Errors::BuildFailed, /i586/)
     end
 
     it "shows an error when the current user does not have access to the image directory path" do

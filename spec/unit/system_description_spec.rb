@@ -510,9 +510,8 @@ describe SystemDescription do
 
     context "when kiwi doesn't have the vmxboot template for the required os" do
       before do
-        allow(Cheetah).to receive(:run).
-          with("sudo", "ls", "/usr/share/kiwi/image/vmxboot/suse-13.1").
-          and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+        allow(Dir).to receive(:exist?).with("/usr/share/kiwi/image/vmxboot/suse-13.1").
+          and_return(false)
       end
 
       it "raises an error" do
