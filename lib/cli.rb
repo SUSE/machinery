@@ -688,7 +688,7 @@ class Cli
     c.switch :short, required: false, negatable: false,
       desc: "List only description names"
     c.switch :html, required: false, negatable: false,
-      desc: "Open all system description in HTML format in your web browser."
+      desc: "Open overview of all system descriptions in HTML format in your web browser"
 
     c.action do |global_options,options,args|
       if options[:html]
