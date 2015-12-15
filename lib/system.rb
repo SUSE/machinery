@@ -102,62 +102,23 @@ class System
     run_command("bash", "-c", script, *args)
   end
 
-  # Runs the given script on the inspected machine asynchronously and calls the callback method
+  # Runs the given command on the inspected machine asynchronously and calls the callback method
   # periodically with new output when it occurs.
   #
   # Example:
   #
   #     count = 0
-  #     raw_list = run_script_with_progress("changed_managed_files.sh") do |chunk|
+  #     raw_list = run_command_with_progress("time_consuming_command") do |chunk|
   #       count += chunk.lines.count
   #       Machinery::Ui.progress("Found #{count} changed files...")
   #     end
+  #
   def run_script_with_progress(*script, &callback)
-    output = ""
-    error = ""
-    write_io = StringIO.new(output, "a")
-    error_io = StringIO.new(error, "a")
-    read_io = StringIO.new(output, "r")
-
-    inspect_thread = Thread.new do
-      run_script(*script, stdout: write_io, stderr: error_io)
-    end
-
-    while inspect_thread.alive?
-      sleep 0.1
-      chunk = read_io.read
-      callback.call(chunk) if callback
-    end
-
-    if error.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    end
-
-    output
+    run_with_progress(*script, :script, &callback)
   end
 
   def run_command_with_progress(*command, &callback)
-    output = ""
-    error = ""
-    write_io = StringIO.new(output, "a")
-    error_io = StringIO.new(error, "a")
-    read_io = StringIO.new(output, "r")
-
-    inspect_thread = Thread.new do
-      run_command(*command, stdout: write_io, stderr: error_io)
-    end
-
-    while inspect_thread.alive?
-      sleep 0.1
-      chunk = read_io.read
-      callback.call(chunk) if callback
-    end
-
-    if error.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    end
-
-    output
+    run_with_progress(*command, :command, &callback)
   end
 
   def has_command?(command)
@@ -189,5 +150,35 @@ class System
         )
       end
     end
+  end
+
+  private
+
+  def run_with_progress(*command, type, &callback)
+    output = ""
+    error = ""
+    write_io = StringIO.new(output, "a")
+    error_io = StringIO.new(error, "a")
+    read_io = StringIO.new(output, "r")
+
+    inspect_thread = Thread.new do
+      if type == :script
+        run_script(*command, stdout: write_io, stderr: error_io)
+      else
+        run_command(*command, stdout: write_io, stderr: error_io)
+      end
+    end
+
+    while inspect_thread.alive?
+      sleep 0.1
+      chunk = read_io.read
+      callback.call(chunk) if callback
+    end
+
+    if error.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    end
+
+    output
   end
 end
