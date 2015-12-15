@@ -54,7 +54,7 @@ class ConfigBase
   end
 
   def set(key, value, options = {auto_save: true} )
-    if deprecated_entries.include?(key)
+    if deprecated?(key)
       @entries.delete(key)
     else
       key = normalize_key(key)
@@ -83,7 +83,7 @@ class ConfigBase
   def save
     config_table_stripped = {}
     @entries.each do |key,value|
-      config_table_stripped[key] = value[:value] unless deprecated_entries.include?(key)
+      config_table_stripped[key] = value[:value] unless deprecated?(key)
     end
 
     FileUtils.mkdir_p(File.dirname(file))
@@ -100,7 +100,7 @@ class ConfigBase
     content = read_config_file(file) || []
 
     content.each do |key, value|
-      next if deprecated_entries.include?(key)
+      next if deprecated?(key)
 
       begin
         set(key, value, :auto_save => false )
@@ -136,5 +136,9 @@ class ConfigBase
 
   def unnormalize_key(key)
     key.gsub("_", "-")
+  end
+
+  def deprecated?(key)
+    deprecated_entries.include?(key)
   end
 end
