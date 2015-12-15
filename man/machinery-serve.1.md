@@ -40,6 +40,6 @@ overview of all descriptions is served.
 
     $ `machinery` serve
 
-  * Make the sserver available to other machines on the network on port 3000:
+  * Make the server available to other machines on the network on port 3000:
 
     $ `machinery` serve --public --port 3000
