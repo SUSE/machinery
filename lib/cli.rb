@@ -908,11 +908,11 @@ class Cli
     end
   end
 
-  desc "Start a webserver serving an HTML view of a system description"
+  desc "Start a web server for viewing system descriptions"
   long_desc <<-LONGDESC
-    Starts a web server which serves an HTML view for the given system description.
+    Starts a web server which serves an HTML view of all system descriptions and
+    an overview page listing all descriptions.
   LONGDESC
-  arg "NAME", [:optional]
   command "serve" do |c|
     c.flag [:port, :p], type: Integer, required: false,
       default_value: Machinery::Config.new.http_server_port,
@@ -931,14 +931,9 @@ class Cli
           "or via the --port option.")
       end
 
-      if args.empty?
-        description = nil
-      else
-        description = SystemDescription.load(args[0], system_description_store)
-      end
       task = ServeHtmlTask.new
       task.serve(
-        system_description_store, description, port: options[:port], public: options[:public]
+        system_description_store, port: options[:port], public: options[:public]
       )
     end
   end

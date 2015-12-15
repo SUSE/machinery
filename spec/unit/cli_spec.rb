@@ -113,35 +113,24 @@ describe Cli do
   describe "#serve" do
     initialize_system_description_factory_store
     let(:store) { system_description_factory_store }
-    let(:description) { create_test_description(scopes: ["os"], store: store, store_on_disk: true) }
 
     it "triggers the serve task" do
       allow(Cli).to receive(:system_description_store).and_return(store)
       expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-        store, description, port: 3000, public: false
-      )
-
-      run_command(["serve", "description", "--port=3000"])
-    end
-
-    it "checks if the --public option works" do
-      allow(Cli).to receive(:system_description_store).and_return(store)
-      expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-        store, description, port: 3000, public: true
-      )
-
-      run_command(["serve", "description", "--port=3000", "--public"])
-    end
-
-    it "works without system description" do
-      allow(Cli).to receive(:system_description_store).and_return(store)
-      expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
-        store, nil, port: 3000, public: false
+        store, port: 3000, public: false
       )
 
       run_command(["serve", "--port=3000"])
     end
 
+    it "checks if the --public option works" do
+      allow(Cli).to receive(:system_description_store).and_return(store)
+      expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
+        store, port: 3000, public: true
+      )
+
+      run_command(["serve", "--port=3000", "--public"])
+    end
   end
 
   context "machinery test directory" do
