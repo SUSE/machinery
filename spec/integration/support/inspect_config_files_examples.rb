@@ -27,7 +27,13 @@ shared_examples "inspect config files" do |base|
             "--scope=config-files --extract-files",
           as: "vagrant"
         )
-        expect(inspect_command).to succeed
+        if base == "ubuntu_1404"
+          expect(inspect_command).to succeed.with_stderr.
+            and include_stderr("Relevant changes might not be caught")
+        else
+          expect(inspect_command).to succeed
+        end
+
         @machinery_output = inspect_command.stdout
       end
 

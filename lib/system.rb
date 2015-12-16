@@ -113,27 +113,11 @@ class System
   #       Machinery::Ui.progress("Found #{count} changed files...")
   #     end
   def run_script_with_progress(*script, &callback)
-    output = ""
-    error = ""
-    write_io = StringIO.new(output, "a")
-    error_io = StringIO.new(error, "a")
-    read_io = StringIO.new(output, "r")
+    run_with_progress(*script, :script, &callback)
+  end
 
-    inspect_thread = Thread.new do
-      run_script(*script, stdout: write_io, stderr: error_io)
-    end
-
-    while inspect_thread.alive?
-      sleep 0.1
-      chunk = read_io.read
-      callback.call(chunk) if callback
-    end
-
-    if error.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    end
-
-    output
+  def run_command_with_progress(*command, &callback)
+    run_with_progress(*command, :command, &callback)
   end
 
   def has_command?(command)
@@ -165,5 +149,35 @@ class System
         )
       end
     end
+  end
+
+  private
+
+  def run_with_progress(*command, type, &callback)
+    output = ""
+    error = ""
+    write_io = StringIO.new(output, "a")
+    error_io = StringIO.new(error, "a")
+    read_io = StringIO.new(output, "r")
+
+    inspect_thread = Thread.new do
+      if type == :script
+        run_script(*command, stdout: write_io, stderr: error_io)
+      else
+        run_command(*command, stdout: write_io, stderr: error_io)
+      end
+    end
+
+    while inspect_thread.alive?
+      sleep 0.1
+      chunk = read_io.read
+      callback.call(chunk) if callback
+    end
+
+    if error.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    end
+
+    output
   end
 end

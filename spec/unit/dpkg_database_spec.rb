@@ -47,7 +47,7 @@ describe DpkgDatabase do
 
   describe "#managed_files_list" do
     it "returns the output of dpkg --verify" do
-      expect(system).to receive(:run_command).and_return(changed_files_result)
+      expect(system).to receive(:run_command_with_progress).and_return(changed_files_result)
 
       expect(subject.managed_files_list).to eq(changed_files_result)
     end
