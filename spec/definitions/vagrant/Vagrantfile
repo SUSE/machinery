@@ -2,14 +2,30 @@ require_relative "machinery_rpm_provisioner"
 
 VAGRANTFILE_API_VERSION = "2"
 
-def inject_test_data(base)
+def inject_common_test_data(base)
   prepare_test_environment_script = File.read(
-    File.expand_path("../../provision.sh", __FILE__)
+    File.expand_path("../../provision_common.sh", __FILE__)
   )
 
   base.vm.provision "shell", inline: prepare_test_environment_script
-  base.vm.provision "shell",
-    inline: "cd /; tar xf /vagrant/unmanaged_files.tgz"
+end
+
+def inject_rpm_test_data(base)
+  prepare_test_environment_script = File.read(
+    File.expand_path("../../provision_rpm.sh", __FILE__)
+  )
+
+  base.vm.provision "shell", inline: prepare_test_environment_script
+  inject_common_test_data(base)
+end
+
+def inject_dpkg_test_data(base)
+  prepare_test_environment_script = File.read(
+    File.expand_path("../../provision_dpkg.sh", __FILE__)
+  )
+
+  base.vm.provision "shell", inline: prepare_test_environment_script
+  inject_common_test_data(base)
 end
 
 def add_test_user(base)
@@ -31,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.volume_cache = 'none'
     end
 
-    inject_test_data(opensuse131)
+    inject_rpm_test_data(opensuse131)
     add_test_user(opensuse131)
   end
 
@@ -62,7 +78,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.volume_cache = 'none'
     end
 
-    inject_test_data(opensuse132)
+    inject_rpm_test_data(opensuse132)
     add_test_user(opensuse132)
   end
 
@@ -93,7 +109,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.volume_cache = 'none'
     end
 
-    inject_test_data(opensuse_tumbleweed)
+    inject_rpm_test_data(opensuse_tumbleweed)
     add_test_user(opensuse_tumbleweed)
   end
 
@@ -107,7 +123,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.volume_cache = 'none'
     end
 
-    inject_test_data(opensuse_leap)
+    inject_rpm_test_data(opensuse_leap)
     add_test_user(opensuse_leap)
   end
 
@@ -120,6 +136,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       domain.nested = false
       domain.volume_cache = 'none'
     end
+
+    inject_dpkg_test_data(ubuntu)
+    add_test_user(ubuntu)
   end
 
   config.vm.define :machinery_Tumbleweed do |machinery_tumbleweed|
