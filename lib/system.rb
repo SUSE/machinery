@@ -102,17 +102,16 @@ class System
     run_command("bash", "-c", script, *args)
   end
 
-  # Runs the given command on the inspected machine asynchronously and calls the callback method
+  # Runs the given script on the inspected machine asynchronously and calls the callback method
   # periodically with new output when it occurs.
   #
   # Example:
   #
   #     count = 0
-  #     raw_list = run_command_with_progress("time_consuming_command") do |chunk|
+  #     raw_list = run_script_with_progress("changed_managed_files.sh") do |chunk|
   #       count += chunk.lines.count
   #       Machinery::Ui.progress("Found #{count} changed files...")
   #     end
-  #
   def run_script_with_progress(*script, &callback)
     run_with_progress(*script, :script, &callback)
   end
