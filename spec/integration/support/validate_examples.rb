@@ -20,7 +20,7 @@ shared_examples "validate" do
     it "validates a system description against JSON schemas" do
       expected = <<EOF
 In scope repositories: The property (_attributes) of type Hash did not match any of the required schemas.
-In scope services: The property #4 (_elements/state) was not of a minimum string length of 1.
+In scope services: The property #4 (_elements/state/_attributes/init_system) of type Hash did not match any of the required schemas.
 EOF
       system_description_file = "spec/data/descriptions/validation-error/manifest.json"
       system_description_dir = File.dirname(system_description_file)
