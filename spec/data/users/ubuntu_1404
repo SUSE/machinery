@@ -1,5 +1,6 @@
 # Users [192.168.121.253] (2015-11-17 11:17:05)
 
+  * + (N/A, uid: N/A, gid: N/A, shell: )
   * backup (backup, uid: 34, gid: 34, shell: /usr/sbin/nologin)
   * bin (bin, uid: 2, gid: 2, shell: /usr/sbin/nologin)
   * daemon (daemon, uid: 1, gid: 1, shell: /usr/sbin/nologin)
@@ -9,6 +10,7 @@
   * libuuid (N/A, uid: 100, gid: 101, shell: )
   * list (Mailing List Manager, uid: 38, gid: 38, shell: /usr/sbin/nologin)
   * lp (lp, uid: 7, gid: 7, shell: /usr/sbin/nologin)
+  * machinery (N/A, uid: 1001, gid: 1001, shell: )
   * mail (mail, uid: 8, gid: 8, shell: /usr/sbin/nologin)
   * man (man, uid: 6, gid: 12, shell: /usr/sbin/nologin)
   * messagebus (N/A, uid: 102, gid: 106, shell: /bin/false)
