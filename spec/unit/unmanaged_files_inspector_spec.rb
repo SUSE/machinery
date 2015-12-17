@@ -114,16 +114,8 @@ describe UnmanagedFilesInspector do
 
 
     def expect_requirements(system)
-      allow(system).to receive(:has_command?).and_return(true)
-      expect(system).to receive(:check_requirement).with(
-        "sed", "--version"
-      )
-      expect(system).to receive(:check_requirement).with(
-        "cat", "--version"
-      )
-      expect(system).to receive(:check_requirement).with(
-        "find", "--version"
-      )
+      allow(system).to receive(:check_requirement).and_return(true)
+      allow(system).to receive(:has_command?).with("rpm").and_return(true)
     end
 
     def expect_rpm_qa(system)
@@ -371,10 +363,10 @@ describe UnmanagedFilesInspector do
     end
 
     it "raise an error when requirements are not fulfilled" do
-      allow(system).to receive(:has_command?).and_return(false)
+      exception = Exception.new
+      allow(system).to receive(:check_requirement).and_raise(exception)
 
-      expect { subject.inspect(default_filter) }.to raise_error(
-        Machinery::Errors::MissingRequirement)
+      expect { subject.inspect(default_filter) }.to raise_error(exception)
     end
 
     it "extracts unmanaged files" do
@@ -461,20 +453,6 @@ describe UnmanagedFilesInspector do
     end
 
     inspector.inspect(Filter.from_default_definition("inspect"))
-  end
-
-  describe "#check_requirements" do
-    it "fails when the binaries rpm and dpkg were not found on the remote system" do
-      allow(system).to receive(:has_command?).and_return(false)
-
-      description = SystemDescription.new("systemname", SystemDescriptionStore.new)
-      inspector = UnmanagedFilesInspector.new(system, description)
-
-      expect { inspector.check_requirements(nil) }.to raise_error(
-        Machinery::Errors::MissingRequirement, "Need either 'rpm' or 'dpkg' as binary " \
-          "available on the inspected system."
-      )
-    end
   end
 
   context "dpkg" do

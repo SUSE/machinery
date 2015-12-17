@@ -20,11 +20,7 @@ class UnmanagedFilesInspector < Inspector
 
   # checks if all required binaries are present
   def check_requirements(check_tar)
-    if !@system.has_command?("rpm") && !@system.has_command?("dpkg")
-      raise Machinery::Errors::MissingRequirement.new(
-        "Need either 'rpm' or 'dpkg' as binary available on the inspected system."
-      )
-    end
+    @system.check_requirement(["rpm", "dpkg"], "--version")
     @system.check_requirement("sed", "--version")
     @system.check_requirement("cat", "--version")
     @system.check_requirement("find", "--version")
