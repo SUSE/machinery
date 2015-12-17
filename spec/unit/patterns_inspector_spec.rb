@@ -113,8 +113,13 @@ EOF
         expect(system).to receive(:run_command).
           with("zypper", "-xq", "--no-refresh", "patterns", "-i",
             stdout: :capture).
-          and_raise(Cheetah::ExecutionFailed.new(
-            nil, nil, "System management is locked by the application with pid 5480 (zypper).", nil)
+          and_raise(
+            Cheetah::ExecutionFailed.new(
+              nil, 
+              nil, 
+              "System management is locked by the application with pid 5480 (zypper).", 
+              nil
+            )
           )
         expect { patterns_inspector.inspect(filter) }.to raise_error(
           Machinery::Errors::ZypperFailed, /Zypper is locked./)
