@@ -1,5 +1,6 @@
 # Groups [192.168.121.253] (2015-11-17 11:19:12)
 
+  * + (gid: N/A)
   * adm (gid: 4, users: syslog,vagrant)
   * admin (gid: 999, users: vagrant)
   * audio (gid: 29)
@@ -22,6 +23,7 @@
   * list (gid: 38)
   * lp (gid: 7)
   * lpadmin (gid: 110, users: vagrant)
+  * machinery (gid: 1001)
   * mail (gid: 8)
   * man (gid: 12)
   * messagebus (gid: 106)

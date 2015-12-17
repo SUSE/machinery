@@ -1,10 +1,5 @@
 # Changed configuration files [192.168.121.140] (2015-12-04 15:08:44)
 
   Files extracted: yes
-  * /etc/chatscripts/gprs (ppp-2.4.5-5.1ubuntu2.2, deleted)
-  * /etc/chatscripts/pap (ppp-2.4.5-5.1ubuntu2.2, deleted)
   * /etc/crontab (cron-3.0pl1-124ubuntu2, md5)
-  * /etc/fuse.conf (fuse-2.9.2-4ubuntu4.14.04.1, md5)
-  * /etc/stat-test/test.conf (test-data-files-1.0-1, md5)
   * /etc/sudoers (sudo-1.8.9p5-1ubuntu1.2, md5)
-  * /etc/sudoers.d/README (sudo-1.8.9p5-1ubuntu1.2, md5)
