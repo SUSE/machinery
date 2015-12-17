@@ -35,6 +35,7 @@
 
 
       #content_container
+        = render_partial "landing_page/alert"
         - if @all_descriptions.empty?
           %p.col-md-5.col-md-offset-1
             %strong

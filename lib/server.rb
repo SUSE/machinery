@@ -221,24 +221,29 @@ class Server < Sinatra::Base
 
     descriptions.each do |name|
       scopes = []
-      system_description = SystemDescription.load(
-        name, settings.system_description_store, skip_validation: true
-      )
-      @all_descriptions[name] = Hash.new
-      @all_descriptions[name]["date"] = system_description.latest_update
-      @all_descriptions[name]["host"] = system_description.host
-      system_description.scopes.each do |scope|
-        entry = Machinery::Ui.internal_scope_list_to_string(scope)
-        if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
-          if system_description.scope_extracted?(scope)
-            entry += " (extracted)"
-          else
-            entry += " (not extracted)"
+      begin
+        system_description = SystemDescription.load(
+          name, settings.system_description_store, skip_validation: true
+        )
+        @all_descriptions[name] = Hash.new
+        @all_descriptions[name]["date"] = system_description.latest_update
+        @all_descriptions[name]["host"] = system_description.host
+        system_description.scopes.each do |scope|
+          entry = Machinery::Ui.internal_scope_list_to_string(scope)
+          if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+            if system_description.scope_extracted?(scope)
+              entry += " (extracted)"
+            else
+              entry += " (not extracted)"
+            end
           end
+          scopes << entry
         end
-        scopes << entry
+        @all_descriptions[name]["scopes"] = scopes
+      rescue Machinery::Errors::SystemDescriptionIncompatible => e
+        @errors ||= Array.new
+        @errors.push(e)
       end
-      @all_descriptions[name]["scopes"] = scopes
     end
 
     haml File.read(File.join(Machinery::ROOT, "html/landing_page.html.haml"))
