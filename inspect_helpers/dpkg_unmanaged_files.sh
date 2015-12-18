@@ -17,18 +17,18 @@
 # you may find current contact information at www.suse.com
 
 for i in $(dpkg --get-selections | grep -v deinstall | awk '{print $1}'); do
-  for f in $(dpkg -L $i); do
+  while read f; do
     TYPE=""
     LINK=""
-    if [ -f $f ]; then
+    if [ -f "$f" ]; then
       TYPE="-"
-    elif [ -d $f ]; then
+    elif [ -d "$f" ]; then
       TYPE="d"
-    elif [ -L $f ]; then
+    elif [ -L "$f" ]; then
       TYPE="l"
-      LINK=" -> $(readlink -f $f)"
+      LINK=" -> $(readlink -f "$f")"
     fi
 
     echo "$TYPE $f$LINK"
-  done
+  done <<< "$(dpkg -L $i)"
 done

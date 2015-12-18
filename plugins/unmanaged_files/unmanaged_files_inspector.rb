@@ -87,7 +87,6 @@ class UnmanagedFilesInspector < Inspector
   def extract_dpkg_database
     out = @system.run_script_with_progress("dpkg_unmanaged_files.sh")
     parsed_data = parse_dpkg_package_files_output(out)
-
     files = parsed_data[:files]
     dirh = parsed_data[:directories]
 
@@ -98,16 +97,15 @@ class UnmanagedFilesInspector < Inspector
     result = { files: {}, directories: {}, links: {} }
 
     data.each_line do |line|
-      data_splitted = line.split(" ")
-      type = data_splitted[0]
-      value = data_splitted[1] # file path, directory path, or link name
+      type, value = line.chomp.split(" ", 2)
 
       if type == "-" # file
         result[:files][value] = ""
       elsif type == "d" and value != "/." # directory
         result[:directories][value] = true
       elsif type == "l" # link
-        result[:links][value] = data_splitted[3]
+        pair = value.split(" -> ", 2)
+        result[:links][pair[0]] = pair[1]
       end
     end
 
