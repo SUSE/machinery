@@ -81,6 +81,10 @@ describe Machinery do
       expect(Machinery.content_is_binary?(File.read(given_file("xml2_file")))).to be(false)
     end
 
+    it "detects xml content as non-binary with arabic gconf files" do
+      expect(Machinery.content_is_binary?(File.read(given_file("xml3_file")))).to be(false)
+    end
+
     it "detects text file as non-binary" do
       expect(Machinery.content_is_binary?(File.read(given_file("text_file")))).to be(false)
     end
