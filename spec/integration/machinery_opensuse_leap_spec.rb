@@ -66,6 +66,6 @@ describe "machinery@leap" do
     include_examples "inspect packages", base
     include_examples "inspect config files", base
     include_examples "inspect changed managed files", base
-    include_examples "inspect unmanaged files", base
+    include_examples "inspect unmanaged files", base, skip_remote_mounts_test = true
   end
 end
