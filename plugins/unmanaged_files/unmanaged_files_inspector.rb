@@ -101,7 +101,7 @@ class UnmanagedFilesInspector < Inspector
 
       if type == "-" # file
         result[:files][value] = ""
-      elsif type == "d" and value != "/." # directory
+      elsif type == "d" && value != "/." # directory
         result[:directories][value] = true
       elsif type == "l" # link
         pair = value.split(" -> ", 2)
@@ -415,7 +415,7 @@ class UnmanagedFilesInspector < Inspector
           file_filter.matches?("/" + dir)
         end
       end
-      managed, unmanaged = dirs.keys.partition{ |d| inspected_dirs.has_key?(find_dir + d) }
+      managed, unmanaged = dirs.keys.partition { |d| inspected_dirs.key?(find_dir + d) }
 
       # unmanaged dirs lead to removal of files and dirs below that dir
       while !unmanaged.empty?
@@ -451,7 +451,7 @@ class UnmanagedFilesInspector < Inspector
       dirs_todo.push(*managed)
 
       # unmanaged files are simply stored
-      managed, unmanaged = files.keys.partition{ |d| inspected_files.has_key?(find_dir + d) }
+      managed, unmanaged = files.keys.partition { |d| inspected_files.key?(find_dir + d) }
       links = unmanaged.reject { |d| files[d].empty? }
       unmanaged.map!{ |d| find_dir + d }
       unmanaged_files.push(*unmanaged)

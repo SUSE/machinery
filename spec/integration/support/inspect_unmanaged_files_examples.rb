@@ -84,7 +84,7 @@ shared_examples "inspect unmanaged files" do |base, skip_remote_mounts_test|
         and include_stdout(link_example)
     end
 
-    if !skip_remote_mounts_test
+    unless skip_remote_mounts_test
       describe "remote file system filtering for unmanaged-files inspector" do
         let(:remote_file_system_tree_path) { "/remote-dir/" }
         let(:remote_file_system_sub_tree_path) { "/mnt/unmanaged/remote-dir/" }
