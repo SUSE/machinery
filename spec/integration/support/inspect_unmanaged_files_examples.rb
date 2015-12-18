@@ -24,7 +24,9 @@ shared_examples "inspect unmanaged files" do |base, skip_remote_mounts_test|
         "/var/log/sa",
         "/root/.local",
         "/etc/ssh",
-        "/var/log/mcelog"
+        "/var/log/mcelog",
+        "/var/lib/dpkg",
+        "/var/lib/apt"
       ]
     }
 
