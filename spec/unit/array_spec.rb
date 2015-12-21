@@ -97,6 +97,51 @@ describe Machinery::Array do
         }.to raise_error(/Unknown properties.*foo/)
       end
     end
+
+    describe "conditional element classes" do
+      before(:each) do
+        stub_const("TestElementClass", Class.new(Machinery::Object))
+        stub_const("TestOtherElementClass", Class.new(Machinery::Object))
+        stub_const(
+          "TestArrayClass", Class.new(Machinery::Array) do
+            has_attributes :foo
+            has_elements class: TestElementClass, if: { foo: "bar" }
+            has_elements class: TestOtherElementClass, if: { foo: "baz" }
+          end
+        )
+      end
+
+      it "parses into the right class if the condition is met" do
+        elements = [
+          { a: 1 },
+          { b: 2 }
+        ]
+
+        array = TestArrayClass.new(elements, foo: "bar")
+        expect(array.first).to be_a(TestElementClass)
+      end
+
+      it "parses into the right class if another condition is met" do
+        elements = [
+          { a: 1 },
+          { b: 2 }
+        ]
+
+        array = TestArrayClass.new(elements, foo: "baz")
+        expect(array.first).to be_a(TestOtherElementClass)
+      end
+
+      it "parses into the generic class if the condition is not met" do
+        elements = [
+          { a: 1 },
+          { b: 2 }
+        ]
+
+        array = TestArrayClass.new(elements, foo: "qux")
+        expect(array.first).to_not be_a(TestElementClass)
+        expect(array.first).to_not be_a(TestOtherElementClass)
+      end
+    end
   end
 
   describe "#to_s" do

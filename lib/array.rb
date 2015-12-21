@@ -18,39 +18,15 @@
 module Machinery
   class Array
     class << self
-      attr_reader :attribute_keys
+      attr_reader :attribute_keys, :element_classes
 
       def has_attributes(*keys)
         @attribute_keys = keys.map(&:to_s)
       end
 
       def has_elements(options)
-        @element_class = options[:class]
-      end
-
-      def convert_element(element)
-        if @element_class
-          element.is_a?(@element_class) ? element : @element_class.from_json(element)
-        else
-          case element
-          when ::Array
-            Machinery::Array.from_json(element)
-          when Hash
-            if element.keys.sort == ["_attributes", "_elements"]
-              Machinery::Array.from_json(element)
-            else
-              Machinery::Object.from_json(element)
-            end
-          else
-            element
-          end
-        end
-      end
-
-      def convert_raw_array(array)
-        array.map do |element|
-          convert_element(element)
-        end
+        @element_classes ||= []
+        @element_classes << options
       end
 
       def from_json(json_object)
@@ -78,7 +54,40 @@ module Machinery
       attributes.each do |k, v|
         @attributes[k.to_s] = v
       end
-      @elements = self.class.convert_raw_array(elements)
+      @elements = convert_raw_array(elements)
+    end
+
+    def convert_element(element)
+      (self.class.element_classes || []).each do |definition|
+        condition = definition[:if]
+        klass = definition[:class]
+        if condition
+          next if condition.any? do |key, value|
+            @attributes[key.to_s] != value
+          end
+        end
+
+        return element.is_a?(klass) ? element : klass.from_json(element)
+      end
+
+      case element
+      when ::Array
+        Machinery::Array.from_json(element)
+      when Hash
+        if element.keys.sort == ["_attributes", "_elements"]
+          Machinery::Array.from_json(element)
+        else
+          Machinery::Object.from_json(element)
+        end
+      else
+        element
+      end
+    end
+
+    def convert_raw_array(array)
+      array.map do |element|
+        convert_element(element)
+      end
     end
 
     def scope=(scope)
@@ -114,11 +123,11 @@ module Machinery
     end
 
     def push(element)
-      @elements.push(self.class.convert_element(element))
+      @elements.push(convert_element(element))
     end
 
     def <<(element)
-      @elements << self.class.convert_element(element)
+      @elements << convert_element(element)
     end
 
     def +(array)
