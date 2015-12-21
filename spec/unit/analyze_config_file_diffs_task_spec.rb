@@ -106,28 +106,33 @@ describe AnalyzeConfigFileDiffsTask do
   let(:no_online_repo_description) {
     description = create_test_description(json: <<-EOF, store_on_disk: true)
       {
-        "repositories": [
-          {
-            "alias": "repo-debug",
-            "name": "openSUSE-13.1-Debug",
-            "type": null,
-            "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
-            "enabled": false,
-            "autorefresh": true,
-            "gpgcheck": true,
-            "priority": 98
+        "repositories": {
+          "_attributes": {
+            "repository_system": "zypp"
           },
-          {
-            "alias": "dvd_entry_alias",
-            "name": "dvd_entry",
-            "type": "yast2",
-            "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
-            "enabled": true,
-            "autorefresh": false,
-            "gpgcheck": true,
-            "priority": 2
-          }
-        ], "config_files": {
+          "_elements": [
+            {
+              "alias": "repo-debug",
+              "name": "openSUSE-13.1-Debug",
+              "type": null,
+              "url": "http://download.opensuse.org/debug/distribution/13.1/repo/oss/",
+              "enabled": false,
+              "autorefresh": true,
+              "gpgcheck": true,
+              "priority": 98
+            },
+            {
+              "alias": "dvd_entry_alias",
+              "name": "dvd_entry",
+              "type": "yast2",
+              "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+              "enabled": true,
+              "autorefresh": false,
+              "gpgcheck": true,
+              "priority": 2
+            }
+          ]
+        }, "config_files": {
           "_attributes": {
             "extracted": true
           },
