@@ -18,15 +18,20 @@
 module Machinery
   class Array
     class << self
-      attr_reader :attribute_keys, :element_classes
-
       def has_attributes(*keys)
         @attribute_keys = keys.map(&:to_s)
       end
 
+      def attribute_keys
+        @attribute_keys || []
+      end
+
       def has_elements(options)
+        element_classes << options
+      end
+
+      def element_classes
         @element_classes ||= []
-        @element_classes << options
       end
 
       def from_json(json_object)
@@ -43,9 +48,7 @@ module Machinery
     attr_accessor :scope
 
     def initialize(elements = [], attributes = {})
-      @attribute_keys = self.class.attribute_keys || []
-
-      unknown_attributes = attributes.keys.map(&:to_s) - @attribute_keys
+      unknown_attributes = attributes.keys.map(&:to_s) - self.class.attribute_keys
       if unknown_attributes.length > 0
         raise RuntimeError, "Unknown properties: #{unknown_attributes.join(",")}"
       end
@@ -58,7 +61,7 @@ module Machinery
     end
 
     def convert_element(element)
-      (self.class.element_classes || []).each do |definition|
+      self.class.element_classes.each do |definition|
         condition = definition[:if]
         klass = definition[:class]
         if condition
@@ -178,9 +181,9 @@ module Machinery
     def method_missing(name, *args, &block)
       name = name.to_s
 
-      if @attribute_keys.include?(name)
+      if self.class.attribute_keys.include?(name)
         @attributes[name]
-      elsif name.end_with?("=") and @attribute_keys.include?(name[0..-2])
+      elsif name.end_with?("=") and self.class.attribute_keys.include?(name[0..-2])
         @attributes[name[0..-2]] = args.first
       else
         @elements.send(name, *args, &block)
