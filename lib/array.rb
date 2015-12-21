@@ -20,11 +20,6 @@ module Machinery
     class << self
       attr_reader :attribute_keys
 
-      def initialize
-        @attribute_keys = {}
-        super
-      end
-
       def has_attributes(*keys)
         @attribute_keys = keys.map(&:to_s)
       end
