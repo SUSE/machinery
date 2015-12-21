@@ -22,6 +22,10 @@ module Machinery
 
   def self.content_is_binary?(content)
     !Cheetah.run("file", "-b", "-", stdout: :capture, stdin: content).include?(" text")
+  # newer versions of file exit != 0 when some ELF files are sliced
+  # the file type is still provided besides the exit code
+  rescue Cheetah::ExecutionFailed => e
+    !e.stdout.include?(" text")
   end
 
   # Implementation of String#scrub for Ruby < 2.1. Assumes the string is in
