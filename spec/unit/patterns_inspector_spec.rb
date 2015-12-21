@@ -129,6 +129,7 @@ EOF
     context "on a tasksel based OS" do
       before(:each) do
         allow(system).to receive(:has_command?).with("zypper").and_return(false)
+        allow(system).to receive(:has_command?).with("dpkg").and_return(true)
         allow(system).to receive(:has_command?).with("tasksel").and_return(true)
       end
 
@@ -149,12 +150,22 @@ EOF
       end
     end
 
-    it "returns an empty array when no zypper or tasksel is installed and shows an unsupported message" do
+    it "returns an empty array when no tasksel is installed on a deb based system and shows an informational message" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(true)
       allow(system).to receive(:has_command?).with("tasksel").and_return(false)
 
-      summary = patterns_inspector.inspect(filter)
-      expect(summary).to eq("Patterns are not supported on this system.")
+      patterns_inspector.inspect(filter)
+      expect(patterns_inspector.summary).to eq("For a patterns inspection please install the package tasksel on the inspected system.")
+      expect(description.patterns).to eql(PatternsScope.new)
+    end
+
+    it "returns an empty array when no zypper or tasksel is installed and shows an unsupported message" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(false)
+
+      patterns_inspector.inspect(filter)
+      expect(patterns_inspector.summary).to eq("Patterns are not supported on this system.")
       expect(description.patterns).to eql(PatternsScope.new)
     end
   end
