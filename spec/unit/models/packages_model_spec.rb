@@ -25,7 +25,8 @@ describe "packages model" do
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.first).to be_a(Package) }
+  specify { expect(scope.first).to be_a(RpmPackage) }
+
 
   it "has correct scope name" do
     expect(PackagesScope.new.scope_name).to eq("packages")
@@ -169,7 +170,7 @@ describe "packages model" do
       expect(comparison[2].length).to eq(4)
       expect(comparison[2].first).to eq(
         [
-          Package.new(
+          RpmPackage.new(
             name: "kernel-desktop",
             version: "3.7.10",
             release: "1.0",
@@ -177,7 +178,7 @@ describe "packages model" do
             vendor: "openSUSE",
             checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
           ),
-          Package.new(
+          RpmPackage.new(
             name: "kernel-desktop",
             version: "3.7.11",
             release: "1.0",

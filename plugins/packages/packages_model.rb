@@ -19,11 +19,18 @@
 class Package < Machinery::Object
 end
 
+class RpmPackage < Package
+end
+
+class DpkgPackage < Package
+end
+
 class PackagesScope < Machinery::Array
   include Machinery::Scope
 
   has_attributes :package_system
-  has_elements class: Package
+  has_elements class: DpkgPackage, if: { package_system: "dpkg" }
+  has_elements class: RpmPackage, if: { package_system: "rpm" }
 
   def compare_with(other)
     if self.package_system != other.package_system

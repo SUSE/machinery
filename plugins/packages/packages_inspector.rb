@@ -53,7 +53,7 @@ class PackagesInspector < Inspector
     rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
       name =~ /^gpg-pubkey$/
     end.each do |name, version, release, arch, vendor, checksum|
-      packages << Package.new(
+      packages << RpmPackage.new(
         :name     => name,
         :version  => version,
         :release  => release,
@@ -82,7 +82,7 @@ class PackagesInspector < Inspector
       release = version_segments.pop if version_segments.length > 1
       version = version_segments.join("-")
 
-      Package.new(
+      DpkgPackage.new(
         name: name,
         version: version,
         release: release,
