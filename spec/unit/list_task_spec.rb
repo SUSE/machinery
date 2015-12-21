@@ -220,18 +220,11 @@ foo
       end
 
       context "with old data format" do
-        let(:expected_output) {
-          <<-EOF
-needs to be upgraded.
-
-          EOF
-        }
-
         context "using the long option" do
           it "marks descriptions" do
             system_description_with_old_data_format.save
             list_task.list(store, [])
-            expect(captured_machinery_output).to include(expected_output)
+            expect(captured_machinery_output).to include("needs to be upgraded")
           end
         end
 
@@ -239,7 +232,7 @@ needs to be upgraded.
           it "marks descriptions" do
             system_description_with_old_data_format.save
             list_task.list(store, [], short: true)
-            expect(captured_machinery_output).to include(expected_output)
+            expect(captured_machinery_output).to include("needs to be upgraded")
           end
         end
       end

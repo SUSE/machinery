@@ -31,16 +31,7 @@ class ListTask
         begin
           system_description = SystemDescription.load(name, store, skip_validation: true)
         rescue Machinery::Errors::SystemDescriptionIncompatible => e
-          if !e.format_version
-            show_error("#{name}: incompatible format version. Can not be upgraded.\n", options)
-          elsif e.format_version < SystemDescription::CURRENT_FORMAT_VERSION
-            show_error("#{name}: format version #{e.format_version}, " \
-              "needs to be upgraded.", options)
-            has_incompatible_version = true
-          else
-            show_error("#{name}: format version #{e.format_version}. " \
-              "Please upgrade Machinery to the latest version.", options)
-          end
+          show_error("#{e}\n", options)
           next
         rescue Machinery::Errors::SystemDescriptionNotFound
           show_error(
