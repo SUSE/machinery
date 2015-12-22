@@ -44,17 +44,16 @@ built image. The list of filters is shown at the beginning of the build.
 
 ### PREREQUISITES
 
-  * The `build` command requires the packages `kiwi` and `kiwi-desc-vmbxoot`.
+  * The `build` command requires the packages `kiwi` and `kiwi-desc-vmxboot`.
+
+  * The necessary vmxboot template for the machinery being built must be
+    installed (i.e. if you want to build an openSUSE Leap machine then the
+    template `/usr/share/kiwi/image/vmxboot/suse-leap42.1` is required)
 
   * All repositories in the system description must be accessible from the
     build machine on which `machinery build` is called.
 
-### BUILD SUPPORT MATRIX
-
-Machinery only supports building x86_64 images on x86_64 systems.
-
-To see the list of supported combinations of build hosts and targets run
-`machinery build --help`.
+  * Machinery can only build x86_64 images on x86_64 systems at the moment.
 
 ### EXAMPLES
 
