@@ -98,65 +98,6 @@ describe LocalSystem do
     end
   end
 
-  describe ".validate_machinery_compatibility" do
-    context "on hosts that can run machinery" do
-      it "shows no warning" do
-        allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
-
-        LocalSystem.validate_machinery_compatibility
-
-        expect(captured_machinery_stderr).to eq ""
-      end
-    end
-
-    context "on hosts that can not run machinery" do
-      before(:each) do
-        allow(LocalSystem).to receive(:os).and_return(OsSles11.new)
-      end
-
-      context "when plattform_support_check is enabled" do
-        before(:each) do
-          allow(Machinery::Config).to receive(:new).and_return(
-            double(perform_support_check: true)
-          )
-        end
-
-        it "shows a warning" do
-          LocalSystem.validate_machinery_compatibility
-
-          expect(captured_machinery_stderr).to include("platform we do not explicitly support")
-        end
-
-        it "lists all supported operating systems if the host is not supported" do
-          LocalSystem.validate_machinery_compatibility
-
-          expect(captured_machinery_stderr).to include(
-            "openSUSE 13.2 (Harlequin)", "SUSE Linux Enterprise Server 12"
-          )
-        end
-
-        it "shows how to turn off the warning" do
-          LocalSystem.validate_machinery_compatibility
-
-          expect(captured_machinery_stderr).to include(
-            "'machinery config perform-support-check=false'"
-          )
-        end
-      end
-
-      context "when plattform_support_check is disabled" do
-        it "shows no warning" do
-          allow(Machinery::Config).to receive(:new).and_return(
-            double(perform_support_check: false)
-          )
-          LocalSystem.validate_machinery_compatibility
-
-          expect(captured_machinery_stderr).to eq("")
-        end
-      end
-    end
-  end
-
   describe ".matches_architecture?" do
     it "returns false if the architecture does not match" do
       allow_any_instance_of(Os).to receive(:architecture).and_return("different_arch")
@@ -244,39 +185,6 @@ EOF
       expect {
         LocalSystem.validate_existence_of_packages(package)
       }.to raise_error(Machinery::Errors::MissingRequirement, output)
-    end
-  end
-
-  describe ".validate_build_compatibility" do
-    before(:each) do
-      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
-    end
-
-    it "raises an Machinery::UnsupportedHostForImageError error if the host for image build combination is unsupported" do
-      # system which is unsupported to build on sle12 host
-      system_description = create_test_description(json: <<-EOF)
-        {
-          "os": {
-          "name": "SUSE Linux Enterprise Server 11"
-          }
-        }
-        EOF
-
-      expect { LocalSystem.validate_build_compatibility(system_description) }.to raise_error(Machinery::Errors::BuildFailed, /#{system_description.os.name}/)
-    end
-
-    it "doesn't raise if host and image builds a valid combination" do
-      # system which is supported to build on sle12 host
-      system_description = create_test_description(json: <<-EOF)
-        {
-          "os": {
-          "name": "SUSE Linux Enterprise Server 12",
-          "architecture": "x86_64"
-          }
-        }
-        EOF
-
-      expect { LocalSystem.validate_build_compatibility(system_description) }.not_to raise_error
     end
   end
 end

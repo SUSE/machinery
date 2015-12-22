@@ -73,6 +73,26 @@ shared_examples "inspect-container" do |container|
       include_examples("inspect-container simple scope", scope, container)
     end
 
+    it "does not show the 'show' hint when --show is used" do
+      expect(
+        @machinery.run_command(
+          "#{machinery_command} inspect-container machinerytool/#{container} --scope=os " \
+            "--name=test --show",
+          as: "vagrant"
+        )
+      ).to succeed.and not_include_stdout("Hint: To show")
+    end
+
+    it "shows the 'show' hint when --show is not used" do
+      expect(
+        @machinery.run_command(
+          "#{machinery_command} inspect-container machinerytool/#{container} --scope=os " \
+            "--name=test",
+          as: "vagrant"
+        )
+      ).to succeed.and include_stdout("Hint: To show")
+    end
+
     context "--scope=config-files" do
       it "extracts the files" do
         ls_command = @machinery.run_command(

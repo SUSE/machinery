@@ -3,8 +3,7 @@
 
 ### SYNOPSIS
 
-`machinery list`
-    [NAME[,NAME2[,NAME3]]]
+`machinery list` [OPTIONS] [NAME[,NAME2[,NAME3]]]
 
 `machinery` help list
 
@@ -24,6 +23,9 @@ scopes for each system.
     Currently displays [HOSTNAME] and (DATE).
   * `--short` (optional):
     List only descripton names.
+  * `--html` (optional):
+    Run a web server and open the list of system descriptions in HTML format in
+    your web browser using the `xdg-open` command.
 
 
 ### EXAMPLES
@@ -43,3 +45,7 @@ scopes for each system.
   * Lists all available system description names without any additional details:
 
     $ `machinery` list --short
+
+  * Opens HTML view of list of all available system descriptions in web browser:
+
+    $ `machinery` list --html

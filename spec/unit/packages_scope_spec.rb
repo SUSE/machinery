@@ -21,6 +21,7 @@ require_relative "spec_helper"
 # tests.
 
 describe PackagesScope do
+
   it "keeps values" do
     packages_scope = PackagesScope.new
     packages_scope << Package.new(name: "PACK1", version: "1.0")
@@ -96,4 +97,5 @@ describe PackagesScope do
       expect(changed[0][1]).to eq(@package4_2)
     end
   end
+
 end

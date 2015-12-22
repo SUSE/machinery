@@ -154,16 +154,21 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_analysis_compatibility
-    if !os.can_be_analyzed?
-      raise Machinery::Errors::AnalysisFailed.new("Analysis of operating " +
-        "system '#{os.display_name}' is not supported.")
+    Zypper.isolated(arch: os.architecture) do |zypper|
+      major, minor, patch = zypper.version
+      if major <= 1 && minor <= 11 && patch < 4
+        raise Machinery::Errors::AnalysisFailed.new("Analyzing command requires zypper 1.11.4 " \
+          "or grater to be installed.")
+      end
     end
   end
 
-  def validate_export_compatibility
-    if !os.can_be_exported?
-      raise Machinery::Errors::ExportFailed.new("Export of operating " +
-        "system '#{os.display_name}' is not supported.")
+  def validate_build_compatibility
+    kiwi_template_path = "/usr/share/kiwi/image/#{os.kiwi_boot}"
+    unless Dir.exist?(kiwi_template_path)
+      raise Machinery::Errors::BuildFailed.new("The execution of the build script failed. " \
+        "Building of operating system '#{os.display_name}' can't be accomplished because the " \
+        "kiwi template file in `#{kiwi_template_path}` does not exist.")
     end
   end
 
@@ -263,6 +268,16 @@ class SystemDescription < Machinery::Object
       e.header = "Error validating description '#{@name}'"
       raise e
     end
+  end
+
+  def latest_update
+    attributes.keys.map { |scope| self[scope].meta.try(:[], "modified") }
+      .compact.map { |t| Time.parse(t) }.sort.last
+  end
+
+  def host
+    all_hosts = attributes.keys.map { |scope| self[scope].meta.try(:[], "hostname") }
+    all_hosts.uniq.compact
   end
 
   def description_path

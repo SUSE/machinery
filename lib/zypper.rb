@@ -80,6 +80,12 @@ class Zypper
     xml.xpath("//localfile/@path").to_s
   end
 
+  def version
+    version = call_zypper "--version", stdout: :capture
+    found = version.match(/zypper (\d+)\.(\d+)\.(\d+)/)
+    [found[1].to_i, found[2].to_i, found[3].to_i] if found
+  end
+
   private
 
   def call_zypper(*args)

@@ -57,7 +57,7 @@ shared_examples "serve html" do
     end
 
     it "makes the system description HTML and extracted files available at the specified port" do
-      cmd = "#{machinery_command} serve opensuse131 --port 5000"
+      cmd = "#{machinery_command} serve --port 5000"
       Thread.new do
         @machinery.run_command(cmd)
       end
@@ -75,7 +75,7 @@ shared_examples "serve html" do
     end
 
     it "prints a warning when --public is used" do
-      cmd = "#{machinery_command} serve opensuse131 --port 5000 --public"
+      cmd = "#{machinery_command} serve --port 5000 --public"
       res = nil
       Thread.new do
         res = @machinery.run_command(cmd, stderr: :capture)
@@ -97,7 +97,7 @@ shared_examples "serve html" do
     end
 
     it "does not print a warning when --public is not used" do
-      cmd = "#{machinery_command} serve opensuse131 --port 5000"
+      cmd = "#{machinery_command} serve --port 5000"
       res = nil
       Thread.new do
         res = @machinery.run_command(cmd, stderr: :capture)
@@ -121,7 +121,7 @@ shared_examples "serve html" do
     it "makes the system description HTML available at the config-file port" do
       @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{machinery_command} config http-server-port=7500")
 
-      cmd = "#{machinery_command} serve opensuse131"
+      cmd = "#{machinery_command} serve"
 
       Thread.new do
         @machinery.run_command("MACHINERY_CONFIG_FILE=#{config_tmp_file} #{cmd}")
@@ -132,7 +132,7 @@ shared_examples "serve html" do
     end
 
     it "makes sure a port can't be used twice" do
-      cmd = "#{machinery_command} serve --port 5000 opensuse131"
+      cmd = "#{machinery_command} serve --port 5000"
       Thread.new do
         @machinery.run_command(cmd)
       end

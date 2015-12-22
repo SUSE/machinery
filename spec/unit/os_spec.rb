@@ -18,42 +18,12 @@
 require_relative "spec_helper"
 
 describe Os do
-
-  it "returns list of Os sub classes it can build" do
-    buildable = OsSles12.buildable_systems
-
-    expect(buildable).to be_a(Array)
-    buildable.each do |target_os|
-      expect(target_os < Os).to be true
-    end
-  end
-
-  it "SLES 12 can build SLES 12" do
-    expect(OsSles12.buildable_systems).to include OsSles12
-  end
-
   it "returns if SLES 12 can run machinery from class" do
     expect(OsSles12.can_run_machinery?).to be(true)
   end
 
   it "returns if SLES 12 can run machinery from object" do
     expect(OsSles12.new.can_run_machinery?).to be(true)
-  end
-
-  it "returns if SLES 12 can build SLES 11 and SLES 12" do
-    os = OsSles12.new(architecture: "x86_64")
-
-    expect(os.can_build?(OsSles12.new(architecture: "x86_64"))).to be(true)
-    expect(os.can_build?(OsSles11.new(architecture: "x86_64"))).to be(false)
-    expect(os.can_build?(OsSles12.new(architecture: "i586"))).to be(false)
-  end
-
-  it "returns if SLES 11 can build SLES 11 and SLES 12" do
-    os = OsSles11.new(architecture: "x86_64")
-
-    expect(os.can_build?(OsSles12.new(architecture: "x86_64"))).to be(false)
-    expect(os.can_build?(OsSles12.new(architecture: "x86_64"))).to be(false)
-    expect(os.can_build?(OsSles12.new(architecture: "i586"))).to be(false)
   end
 
   it "returns a canonical name from the class" do
@@ -73,14 +43,6 @@ describe Os do
     it "returns nil if no module is required for a package" do
       os = OsSles11.new
       expect(os.module_required_by_package("python-glanceclient")).to eq(nil)
-    end
-  end
-
-  describe ".supported_host_systems" do
-    it "provides classes of all operating systems which are supported" do
-      expect(Os.supported_host_systems).to match_array(
-        [OsSles12, OsOpenSuse13_1, OsOpenSuse13_2, OsOpenSuseTumbleweed, OsOpenSuseLeap]
-      )
     end
   end
 
