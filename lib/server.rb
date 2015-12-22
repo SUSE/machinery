@@ -87,6 +87,11 @@ class Server < Sinatra::Base
       object.length.to_s + " " + Machinery.pluralize(object.length, singular, plural)
     end
 
+    def repository_changes
+      klass = @diff["repositories"].changed.first.first.class
+      changed_elements("repositories", attributes: klass.attributes, key: klass.key)
+    end
+
     def changed_elements(scope, opts)
       optional_attributes = opts[:optional_attributes] || []
 
