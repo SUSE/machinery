@@ -127,7 +127,7 @@ shared_examples "CLI" do
 
     describe "serve" do
       it "fails when a port is invalid" do
-        expect(@machinery.run_command("#{machinery_command} serve description1 --port 1",
+        expect(@machinery.run_command("#{machinery_command} serve --port 1",
           as: "vagrant")).to fail.and include_stderr(
             "A valid port can be in a range between 2 and 65535."
           )

@@ -24,17 +24,12 @@ For more information, [visit our website](http://machinery-project.org/).
 
 ## Installation
 
-The easiest way to install Machinery is as an RPM from our
-[homepage](http://machinery-project.org) with the one-click-installer for SUSE
-systems.
+Machinery runs on most Linux distributions. Install it by following one of these methods:
 
-Please refer to our
-[Quick Start Guide](https://github.com/SUSE/machinery/wiki/Quick-Start-Guide) if you want
-to know, how you can install Machinery on SUSE or Non-SUSE Distributions.
-
-Machinery is tested and supported on [openSUSE13.1](http://en.opensuse.org/Portal:13.1), [openSUSE13.2](http://en.opensuse.org/Portal:13.2), [openSUSE Leap](https://en.opensuse.org/Portal:Leap), and SLES12.
-It will run on other openSUSE versions and Linux distributions, but there is less testing there. 
-
+* via the one click installer on [Machinery's homepage](http://machinery-project.org) (for openSUSE systems)
+* [on the command line](https://github.com/SUSE/machinery/wiki/Installation-on-SUSE-Distributions) with zypper on all SUSE distributions
+* [as a Ruby gem](https://github.com/SUSE/machinery/wiki/Installation-on-Other-Distributions) on all distributions which have the gem tool
+* [from sources](https://github.com/SUSE/machinery/wiki/Installation-From-Sources)
 
 ## Usage
 
@@ -90,9 +85,9 @@ codebase or test the latest development changes.
   5. **Done!**
 
      You can now start using Machinery by running `bin/machinery`.
-     
+
   6. **Contribute**
- 
+
      Now that you have Machinery running from git on your machine you are ready to hack. If you would like to get some overview of architecture and design of Machinery have a look at our [Developer Documentation](https://github.com/SUSE/machinery/tree/master/docs).
 
      We are happy if you share your changes with us as pull requests. Read the [Contribution Guidelines](https://github.com/SUSE/machinery/blob/master/CONTRIBUTING.md#machinery-contribution-guidelines) for details how to do that.

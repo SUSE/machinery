@@ -29,7 +29,6 @@ describe Server do
       scopes: ["os"]
     )
   }
-
   let(:description_b) {
     create_test_description(
       name: "description_b",
@@ -105,6 +104,18 @@ describe Server do
   </ul>
 </div>
 EOF
+      end
+    end
+  end
+
+  describe "list" do
+    describe "GET /" do
+      it "returns the page" do
+        get "/"
+
+        expect(last_response).to be_ok
+        expect(last_response.body).
+          to include("System Descriptions")
       end
     end
   end

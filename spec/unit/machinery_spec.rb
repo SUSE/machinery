@@ -18,11 +18,13 @@
 require_relative "spec_helper"
 
 describe "machinery" do
+  include GivenFilesystemSpecHelpers
+  use_given_filesystem
+
   it "logs to the logfile in MACHINERY_LOG_FILE" do
-    log_file = "/tmp/machinery_log_format_test.log"
-    `MACHINERY_LOG_FILE=#{log_file} machinery --version`
+    log_file = given_dummy_file
+    `MACHINERY_LOG_FILE=#{log_file} #{File.join(Machinery::ROOT, "bin", "machinery")} --version`
     logged_line = File.readlines(log_file).last
-    FileUtils.rm(log_file)
 
     # Example of expected log line:
     #

@@ -38,6 +38,7 @@ describe BuildTask do
       with("machinery-config", "/tmp").and_return(tmp_config_dir)
     allow(Dir).to receive(:mktmpdir).
       with("machinery-image", "/tmp").and_return(tmp_image_dir)
+    allow_any_instance_of(SystemDescription).to receive(:validate_build_compatibility)
 
     FileUtils.touch(File.join(output_path, image_file))
   }
@@ -135,14 +136,6 @@ describe BuildTask do
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::UnsupportedArchitecture,
         /operation is not supported on architecture 'i586'/)
-    end
-
-    it "shows an error when the system description's architecture is not supported" do
-      allow(LocalSystem).to receive(:validate_architecture)
-      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
-      expect {
-        build_task.build(system_description, output_path)
-      }.to raise_error(Machinery::Errors::BuildFailed, /i586/)
     end
 
     it "shows an error when the current user does not have access to the image directory path" do

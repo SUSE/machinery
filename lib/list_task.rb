@@ -17,77 +17,100 @@
 
 class ListTask
   def list(store, system_descriptions, options = {})
-    if system_descriptions.empty?
-      descriptions = store.list
+    if options[:html]
+      list_html(store, options)
     else
-      descriptions = system_descriptions.sort
-    end
-    has_incompatible_version = false
-
-    descriptions.each do |name|
-      begin
-        system_description = SystemDescription.load(name, store, skip_validation: true)
-      rescue Machinery::Errors::SystemDescriptionIncompatible => e
-        if !e.format_version
-          show_error("#{name}: incompatible format version. Can not be upgraded.\n", options)
-        elsif e.format_version < SystemDescription::CURRENT_FORMAT_VERSION
-          show_error("#{name}: format version #{e.format_version}, " \
-            "needs to be upgraded.", options)
-          has_incompatible_version = true
-        else
-          show_error("#{name}: format version #{e.format_version}. " \
-            "Please upgrade Machinery to the latest version.", options)
-        end
-        next
-      rescue Machinery::Errors::SystemDescriptionNotFound
-        show_error("#{name}: Couldn't find a system description with the name '#{name}'.", options)
-        next
-      rescue Machinery::Errors::SystemDescriptionValidationFailed
-        show_error("#{name}: This description is broken. Use " \
-          "`#{Hint.program_name} validate #{name}` to see the error message.", options)
-        next
-      rescue Machinery::Errors::SystemDescriptionError
-        show_error("#{name}: This description is broken.", options)
-        next
-      end
-
-      if options[:short]
-        Machinery::Ui.puts name
+      if system_descriptions.empty?
+        descriptions = store.list
       else
-        scopes = []
+        descriptions = system_descriptions.sort
+      end
+      has_incompatible_version = false
 
-        system_description.scopes.each do |scope|
-          entry = Machinery::Ui.internal_scope_list_to_string(scope)
-          if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
-            if system_description.scope_extracted?(scope)
-              entry += " (extracted)"
-            else
-              entry += " (not extracted)"
-            end
-          end
-
-          if options[:verbose]
-            meta = system_description[scope].meta
-            if meta
-              time = Time.parse(meta.modified).getlocal
-              date = time.strftime "%Y-%m-%d %H:%M:%S"
-              hostname = meta.hostname
-            else
-              date = "unknown"
-              hostname = "Unknown hostname"
-            end
-            entry += "\n      Host: [#{hostname}]"
-            entry += "\n      Date: (#{date})"
-          end
-
-          scopes << entry
+      descriptions.each do |name|
+        begin
+          system_description = SystemDescription.load(name, store, skip_validation: true)
+        rescue Machinery::Errors::SystemDescriptionIncompatible => e
+          show_error("#{e}\n", options)
+          next
+        rescue Machinery::Errors::SystemDescriptionNotFound
+          show_error(
+            "#{name}: Couldn't find a system description with the name '#{name}'.", options
+          )
+          next
+        rescue Machinery::Errors::SystemDescriptionValidationFailed
+          show_error("#{name}: This description is broken. Use " \
+            "`#{Hint.program_name} validate #{name}` to see the error message.", options)
+          next
+        rescue Machinery::Errors::SystemDescriptionError
+          show_error("#{name}: This description is broken.", options)
+          next
         end
 
-        Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n"
-      end
-    end
+        if options[:short]
+          Machinery::Ui.puts name
+        else
+          scopes = []
 
-    Hint.print(:upgrade_system_description) if has_incompatible_version
+          system_description.scopes.each do |scope|
+            entry = Machinery::Ui.internal_scope_list_to_string(scope)
+            if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+              if system_description.scope_extracted?(scope)
+                entry += " (extracted)"
+              else
+                entry += " (not extracted)"
+              end
+            end
+
+            if options[:verbose]
+              meta = system_description[scope].meta
+              if meta
+                time = Time.parse(meta.modified).getlocal
+                date = time.strftime "%Y-%m-%d %H:%M:%S"
+                hostname = meta.hostname
+              else
+                date = "unknown"
+                hostname = "Unknown hostname"
+              end
+              entry += "\n      Host: [#{hostname}]"
+              entry += "\n      Date: (#{date})"
+            end
+
+            scopes << entry
+          end
+
+          Machinery::Ui.puts " #{name}:\n   * " + scopes .join("\n   * ") + "\n"
+        end
+      end
+
+      Hint.print(:upgrade_system_description) if has_incompatible_version
+    end
+  end
+
+  def list_html(store, options)
+    begin
+      LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+
+      url = "http://#{options[:ip]}:#{options[:port]}/"
+
+      Machinery::Ui.use_pager = false
+      Machinery::Ui.puts <<EOF
+Trying to start a web server for serving the descriptions on #{url}.
+
+The server can be closed with Ctrl+C.
+EOF
+
+      server = Html.run_server(store, port: options[:port], ip: options[:ip]) do
+        LoggedCheetah.run("xdg-open", url)
+      end
+
+      server.join # Wait until the user cancelled the blocking webserver
+    rescue Cheetah::ExecutionFailed => e
+      raise Machinery::Errors::OpenInBrowserFailed.new(
+        "Could not open system descriptions in the web browser.\n" \
+          "Error: #{e}\n"
+      )
+    end
   end
 
   private

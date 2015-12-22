@@ -26,7 +26,6 @@ begin
     end
   end
 
-  LocalSystem.validate_machinery_compatibility
   Machinery.initialize_logger(ENV["MACHINERY_LOG_FILE"] || Machinery::DEFAULT_LOG_FILE)
   command_log = "Executing (Version #{Machinery::VERSION}) '#{$PROGRAM_NAME} #{ARGV.join(" ")}'"
   command_log += " (store: #{ENV["MACHINERY_DIR"]})" if ENV["MACHINERY_DIR"]

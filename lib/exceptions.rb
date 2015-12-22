@@ -46,9 +46,15 @@ module Machinery
       end
 
       def to_s
-        "The system description '#{@name}' has an incompatible data " \
-        "format and can not be read.\n" \
-        "Try '#{Hint.program_name} upgrade-format #{name}' to upgrade it to the current version.\n"
+        if !@format_version
+          "#{@name}: incompatible format version. Can not be upgraded."
+        elsif @format_version < SystemDescription::CURRENT_FORMAT_VERSION
+          "#{@name}: format version #{@format_version}, needs to be upgraded. " \
+          "Try '#{Hint.program_name} upgrade-format #{name}' to upgrade it to the current version."
+        else
+          "#{@name}: format version #{@format_version}. " \
+            "Please upgrade Machinery to the latest version."
+        end
       end
     end
 

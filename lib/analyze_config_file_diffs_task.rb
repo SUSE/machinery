@@ -18,6 +18,7 @@
 class AnalyzeConfigFileDiffsTask
   def analyze(description)
     description.assert_scopes("os")
+    LocalSystem.validate_existence_of_packages(["zypper"])
     description.validate_analysis_compatibility
     description.assert_scopes(
       "repositories",

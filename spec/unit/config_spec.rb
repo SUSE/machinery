@@ -65,6 +65,28 @@ describe Machinery::Config do
     end
   end
 
+  it "warns with an invalid key" do
+    config_file_path = File.join(given_directory, "machinery.config")
+    config_keys = { "an-invalid-key" => true }
+
+    File.write(config_file_path, YAML.dump(config_keys))
+
+    expect(Machinery::Ui).to receive(:warn).with(/Unknown configuration key: an_invalid_key/)
+    Machinery::Config.new(config_file_path)
+  end
+
+  it "does not warn with a deprecated key" do
+    config_file_path = File.join(given_directory, "machinery.config")
+    config_keys = { "deprecated_key" => true }
+    allow_any_instance_of(Machinery::Config).to receive(:deprecated_entries).
+      and_return(["deprecated_key"])
+
+    File.write(config_file_path, YAML.dump(config_keys))
+
+    expect(Machinery::Ui).not_to receive(:warn)
+    Machinery::Config.new(config_file_path)
+  end
+
   describe "#get" do
     it "returns the default value" do
       subject.entry("configkey", default: "configvalue", description: "configtext")
