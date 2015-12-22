@@ -41,7 +41,7 @@ EOF
     let(:expected_packages) {
       PackagesScope.new(
         [
-          Package.new(
+          RpmPackage.new(
             name: "rpm",
             version: "4.11.1",
             release: "6.5.1",
@@ -49,7 +49,7 @@ EOF
             vendor: "openSUSE",
             checksum: "7dfdd742a9b7d60c75bf4844d294716d"
           ),
-          Package.new(
+          RpmPackage.new(
             name: "zypper",
             version: "1.9.16",
             release: "22.2",
@@ -220,7 +220,7 @@ EOF
     it "inspects the packages" do
       expected = PackagesScope.new(
         [
-          Package.new(
+          DpkgPackage.new(
             name: "accountsservice:amd64",
             version: "0:0.6.35-foo",
             release: "0ubuntu7.2",
@@ -228,7 +228,7 @@ EOF
             checksum: "e44935e8ff4d5c086500d4e956e0e852",
             vendor: "Ubuntu"
           ),
-          Package.new(
+          DpkgPackage.new(
             name: "adduser",
             version: "3.113+nmu3ubuntu3",
             release: "",
