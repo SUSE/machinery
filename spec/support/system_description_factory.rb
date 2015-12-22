@@ -507,6 +507,35 @@ module SystemDescriptionFactory
       ]
     }
   EOF
+  EXAMPLE_SCOPES["zypp_repositories"] = <<-EOF.chomp
+    "repositories": {
+      "_attributes": {
+        "repository_system": "zypp"
+      },
+      "_elements": [
+        {
+          "alias": "nodejs_alias",
+          "name": "nodejs",
+          "type": "rpm-md",
+          "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 1
+        },
+        {
+          "alias": "openSUSE-13.1-1.7_alias",
+          "name": "openSUSE-13.1-1.7",
+          "type": "rpm-md",
+          "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+          "enabled": false,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 2
+        }
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["repositories"] = <<-EOF.chomp
     "repositories": {
       "_attributes": {

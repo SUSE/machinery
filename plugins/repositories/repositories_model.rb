@@ -22,23 +22,65 @@ class Repository < Machinery::Object
   end
 end
 
+class ZyppRepository < Repository
+  class << self
+    def key
+      "alias"
+    end
+
+    def attributes
+      ["name", "url", "type", "enabled", "autorefresh", "gpgcheck", "priority", "gpgkey"]
+    end
+  end
+end
+
+class YumRepository < Repository
+  class << self
+    def key
+      "alias"
+    end
+
+    def attributes
+      ["name", "url", "type", "enabled", "gpgcheck", "priority", "mirrorlist", "gpgkey"]
+    end
+  end
+end
+
+class AptRepository < Repository
+  class << self
+    def key
+      "url"
+    end
+
+    def attributes
+      ["url", "type", "distribution", "components"]
+    end
+  end
+end
+
 class RepositoriesScope < Machinery::Array
   include Machinery::Scope
 
   has_attributes :repository_system
-  has_elements class: Repository
+  has_elements class: ZyppRepository, if: { repository_system: "zypp" }
+  has_elements class: YumRepository, if: { repository_system: "yum" }
+  has_elements class: AptRepository, if: { repository_system: "apt" }
 
   def compare_with(other)
-    only_self = self - other
-    only_other = other - self
-    common = self & other
-    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :alias)
+    if self.repository_system != other.repository_system
+      [self, other, nil, nil]
+    else
+      only_self = self - other
+      only_other = other - self
+      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :alias)
+      common = self & other
 
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
+      [
+        only_self,
+        only_other,
+        changed,
+        common
+      ].map { |e| (e && !e.empty?) ? e : nil }
+    end
   end
 end

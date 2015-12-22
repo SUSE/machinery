@@ -5,8 +5,10 @@
       %th Alias
       %th.small Type
       %th URL
+      %th Mirrorlist
       %th.small Enabled
       %th.small GPG Check
+      %th GPG Keys
   %tbody
     - repositories.each do |repo|
       %tr
@@ -14,6 +16,15 @@
         %td= repo.alias
         %td= repo.type
         %td
-          %a{ href: repo.url }= repo.url
+          - repo.url.each do |url|
+            %a{ href: url }= url
+            %br
+        %td
+          - unless repo.mirrorlist.empty?
+            %a{ href: repo.mirrorlist }= repo.mirrorlist
         %td= repo.enabled
         %td= repo.gpgcheck
+        %td
+          - repo.gpgkey.each do |url|
+            %a{ href: url }= url
+            %br

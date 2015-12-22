@@ -64,7 +64,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
     let(:expected_repo_list) {
       RepositoriesScope.new(
         [
-          Repository.new(
+          ZyppRepository.new(
             alias: "nu_novell_com:SLES11-SP3-Pool",
             name: "SLES11-SP3-Pool",
             type: "rpm-md",
@@ -76,7 +76,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             username: "d4c0246d79334fa59a9ffe625fffef1d",
             password: "0a0918c876ef4a1d9c352e5c47421235"
           ),
-          Repository.new(
+          ZyppRepository.new(
             alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
             name: "SLES12-Pool",
             type: "rpm-md",
@@ -88,7 +88,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             username: "SCC_d91435cca69a232114cf2e14aa830ad5",
             password: "2fdcb7499fd46842"
           ),
-          Repository.new(
+          ZyppRepository.new(
             alias: "repo-oss",
             name: "openSUSE-Oss",
             type: "yast2",
@@ -98,7 +98,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             priority: 22,
             url: "http://download.opensuse.org/distribution/13.1/repo/oss/"
           ),
-          Repository.new(
+          ZyppRepository.new(
             alias: "repo-update",
             name: "openSUSE-Update",
             type: "rpm-md",
@@ -271,7 +271,7 @@ EOF
     let(:expected_yum_repo_list) {
       RepositoriesScope.new(
         [
-          Repository.new(
+          YumRepository.new(
             name: "CentOS-6Server - Base",
             url: [],
             mirrorlist: "http://mirrorlist.centos.org/?release=6Server&arch=x86_64&repo=os",
@@ -281,7 +281,7 @@ EOF
             gpgkey: ["http://mirror.centos.org/centos/RPM-GPG-KEY-centos4"],
             type: "rpm-md"
           ),
-          Repository.new(
+          YumRepository.new(
             name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
             url: ["http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/"],
             mirrorlist: "",
@@ -354,31 +354,31 @@ EOF
     let(:expected_apt_repo_list) {
       RepositoriesScope.new(
         [
-          Repository.new(
+          AptRepository.new(
             type: "deb",
             url: "http://us.archive.ubuntu.com/ubuntu/",
             distribution: "trusty-backports",
             components: ["main", "restricted", "universe", "multiverse"]
           ),
-          Repository.new(
+          AptRepository.new(
             type: "deb",
             url: "http://security.ubuntu.com/ubuntu",
             distribution: "trusty-security",
             components: ["main"]
           ),
-          Repository.new(
+          AptRepository.new(
             type: "deb-src",
             url: "http://repo-with-spaces-and-tabs.com/ubuntu",
             distribution: "trusty-security",
             components: ["component1", "component2"]
           ),
-          Repository.new(
+          AptRepository.new(
             type: "deb",
             url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu",
             distribution: "trusty",
             components: ["main"]
           ),
-          Repository.new(
+          AptRepository.new(
             type: "deb",
             url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu",
             distribution: "trusty/binary-$(ARCH)/",

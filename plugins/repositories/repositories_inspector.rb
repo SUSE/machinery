@@ -76,7 +76,7 @@ class RepositoriesInspector < Inspector
     begin
       repositories = JSON.parse(system.run_command(
         "bash", "-c", "python", stdin: script, stdout: :capture
-      ).split("\n").last).map { |element| Repository.new(element) }
+      ).split("\n").last).map { |element| YumRepository.new(element) }
     rescue JSON::ParserError
       raise Machinery::Errors::InspectionFailed.new("Extraction of YUM repositories failed.")
     rescue Cheetah::ExecutionFailed => e
@@ -106,7 +106,7 @@ class RepositoriesInspector < Inspector
     repositories = []
     content.each_line do |line|
       if line =~ /^\s*(deb|deb-src)\s+(\S+)\s+(\S+)(\s+\S[^#]*\S)?(\s*|\s*#.*)$/
-        repositories << Repository.new(
+        repositories << AptRepository.new(
           type: $1,
           url: $2,
           distribution: $3,
@@ -184,7 +184,7 @@ class RepositoriesInspector < Inspector
         password = credentials[cred_value][:password]
       end
 
-      repository = Repository.new(
+      repository = ZyppRepository.new(
         alias:       rep["alias"],
         name:        rep["name"],
         type:        rep["type"],
