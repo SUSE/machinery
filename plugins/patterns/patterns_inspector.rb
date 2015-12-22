@@ -26,13 +26,20 @@ class PatternsInspector < Inspector
     if @system.has_command?("zypper")
       @patterns_supported = true
       inspect_with_zypper
-    elsif @system.has_command?("tasksel")
-      @patterns_supported = true
-      inspect_with_tasksel
+    elsif @system.has_command?("dpkg")
+      if @system.has_command?("tasksel")
+        @patterns_supported = true
+        inspect_with_tasksel
+      else
+        @patterns_supported = false
+        @status = "For a patterns inspection please install the package tasksel " \
+          "on the inspected system."
+        @description.patterns = PatternsScope.new
+      end
     else
       @patterns_supported = false
+      @status = "Patterns are not supported on this system."
       @description.patterns = PatternsScope.new
-      "Patterns are not supported on this system."
     end
   end
 
@@ -40,7 +47,7 @@ class PatternsInspector < Inspector
     if @patterns_supported
       "Found #{@description.patterns.count} patterns."
     else
-      "Patterns are not supported on this system."
+      @status
     end
   end
 
