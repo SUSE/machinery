@@ -32,7 +32,8 @@ class PatternsInspector < Inspector
         inspect_with_tasksel
       else
         @patterns_supported = false
-        @status = "For a patterns inspection please install the package tasksel on the inspected system."
+        @status = "For a patterns inspection please install the package tasksel " \
+          "on the inspected system."
         @description.patterns = PatternsScope.new
       end
     else
