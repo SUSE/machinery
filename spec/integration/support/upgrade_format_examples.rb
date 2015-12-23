@@ -27,7 +27,7 @@ shared_examples "upgrade format" do
 
       expect(
         @machinery.run_command("machinery show format_v1", as: "vagrant")
-      ).to fail.and include_stderr("incompatible data format")
+      ).to fail.and include_stderr("needs to be upgraded")
 
       expect(
         @machinery.run_command("machinery upgrade-format format_v1", as: "vagrant")
