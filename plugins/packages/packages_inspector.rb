@@ -103,8 +103,8 @@ class PackagesInspector < Inspector
         apt_cache_output =~
           /Package: #{name}\n.*?MD5sum: (\w+).*?Origin: (\w+)/m
 
-        package.checksum = $1
-        package.vendor = $2
+        package.checksum = $1 || ""
+        package.vendor = $2 || ""
         package.release ||= ""
       end
     end
