@@ -1,4 +1,4 @@
-# Services [192.168.121.50] (2015-12-02 14:20:13)
+# Services [192.168.121.195] (2015-12-23 12:09:53)
 
   * apparmor: enabled
   * bootmisc.sh: disabled
@@ -13,10 +13,8 @@
   * cron: enabled
   * dbus: disabled
   * dmesg: enabled
-  * dns-clean: enabled
   * failsafe: disabled
   * flush-early-job-log: disabled
-  * friendly-recovery: disabled
   * grub-common: enabled
   * gssd: disabled
   * gssd-mounting: disabled
@@ -60,7 +58,6 @@
   * plymouth-stop: disabled
   * plymouth-upstart-bridge: enabled
   * portmap-wait: disabled
-  * pppd-dns: enabled
   * procps: disabled
   * rc: enabled
   * rc-sysinit: disabled
@@ -102,3 +99,5 @@
   * ureadahead: disabled
   * ureadahead-other: disabled
   * wait-for-state: disabled
+
+

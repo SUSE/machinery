@@ -1,8 +1,8 @@
 Veewee::Session.declare(
   cpu_count: "1",
   memory_size: "512",
-  disk_size: "12288",
-  disk_format: "VDI",
+  disk_size: "2048",
+  disk_format: "qcow2",
   hostiocache: "off",
   os_type_id: "Ubuntu_64",
   iso_file: "ubuntu-14.04.3-server-amd64.iso",

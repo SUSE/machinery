@@ -1,4 +1,4 @@
-# Unmanaged files [192.168.121.75] (2015-12-18 10:52:19)
+# Unmanaged files [192.168.121.167] (2016-01-04 14:58:46)
 
   Files extracted: yes
   * /bin/mt (link)
@@ -65,37 +65,25 @@
   * /etc/alternatives/builtins.7.gz (link)
     User/Group: root:root
 
-  * /etc/alternatives/c++ (link)
-    User/Group: root:root
-
-  * /etc/alternatives/c++.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/c89 (link)
-    User/Group: root:root
-
-  * /etc/alternatives/c89.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/c99 (link)
-    User/Group: root:root
-
-  * /etc/alternatives/c99.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/cc (link)
-    User/Group: root:root
-
-  * /etc/alternatives/cc.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/cpp (link)
-    User/Group: root:root
-
   * /etc/alternatives/editor (link)
     User/Group: root:root
 
   * /etc/alternatives/editor.1.gz (link)
+    User/Group: root:root
+
+  * /etc/alternatives/editor.fr.1.gz (link)
+    User/Group: root:root
+
+  * /etc/alternatives/editor.it.1.gz (link)
+    User/Group: root:root
+
+  * /etc/alternatives/editor.ja.1.gz (link)
+    User/Group: root:root
+
+  * /etc/alternatives/editor.pl.1.gz (link)
+    User/Group: root:root
+
+  * /etc/alternatives/editor.ru.1.gz (link)
     User/Group: root:root
 
   * /etc/alternatives/ex (link)
@@ -117,33 +105,6 @@
     User/Group: root:root
 
   * /etc/alternatives/ex.ru.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/faked.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/faked.es.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/faked.fr.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/faked.sv.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/fakeroot (link)
-    User/Group: root:root
-
-  * /etc/alternatives/fakeroot.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/fakeroot.es.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/fakeroot.fr.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/fakeroot.sv.1.gz (link)
     User/Group: root:root
 
   * /etc/alternatives/from (link)
@@ -257,12 +218,6 @@
   * /etc/alternatives/pager.1.gz (link)
     User/Group: root:root
 
-  * /etc/alternatives/pico (link)
-    User/Group: root:root
-
-  * /etc/alternatives/pico.1.gz (link)
-    User/Group: root:root
-
   * /etc/alternatives/rcp (link)
     User/Group: root:root
 
@@ -294,9 +249,6 @@
     User/Group: root:root
 
   * /etc/alternatives/rview (link)
-    User/Group: root:root
-
-  * /etc/alternatives/rvim (link)
     User/Group: root:root
 
   * /etc/alternatives/telnet (link)
@@ -363,12 +315,6 @@
     User/Group: root:root
 
   * /etc/alternatives/view.ru.1.gz (link)
-    User/Group: root:root
-
-  * /etc/alternatives/vim (link)
-    User/Group: root:root
-
-  * /etc/alternatives/vimdiff (link)
     User/Group: root:root
 
   * /etc/alternatives/vtrgb (link)
@@ -462,7 +408,7 @@
   * /etc/apt/sources.list (file)
     User/Group: root:root
     Mode: 644
-    Size: 3.2 KiB
+    Size: 132 B
 
   * /etc/apt/sources.list~ (file)
     User/Group: root:root
@@ -481,21 +427,6 @@
     User/Group: root:root
     Mode: 644
     Size: 7.6 KiB
-
-  * /etc/chatscripts/gprs (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 950 B
-
-  * /etc/chatscripts/pap (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 653 B
-
-  * /etc/chatscripts/provider (file)
-    User/Group: root:dip
-    Mode: 640
-    Size: 656 B
 
   * /etc/console-setup/Lat15-VGA16.psf (file)
     User/Group: root:root
@@ -516,6 +447,11 @@
     User/Group: root:root
     Mode: 644
     Size: 2 KiB
+
+  * /etc/default/crda (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 549 B
 
   * /etc/default/grub (file)
     User/Group: root:root
@@ -546,9 +482,6 @@
     User/Group: root:root
     Mode: 644
     Size: 48 B
-
-  * /etc/dkms/template-dkms-mkdsc (link)
-    User/Group: root:root
 
   * /etc/dpkg/origins/default (link)
     User/Group: root:root
@@ -637,12 +570,18 @@
   * /etc/ld.so.cache (file)
     User/Group: root:root
     Mode: 644
-    Size: 20.5 KiB
+    Size: 16.8 KiB
 
   * /etc/ld.so.conf (file)
     User/Group: root:root
     Mode: 644
     Size: 34 B
+
+  * /etc/libnl-3/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 2.6 KiB
+    Files: 3
 
   * /etc/localtime (file)
     User/Group: root:root
@@ -746,21 +685,6 @@
     Mode: 644
     Size: 350 B
 
-  * /etc/ppp/chap-secrets (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 80 B
-
-  * /etc/ppp/pap-secrets (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 1.6 KiB
-
-  * /etc/ppp/peers/provider (file)
-    User/Group: root:dip
-    Mode: 640
-    Size: 1.1 KiB
-
   * /etc/profile (file)
     User/Group: root:root
     Mode: 644
@@ -813,12 +737,6 @@
   * /etc/rc1.d/S30killprocs (link)
     User/Group: root:root
 
-  * /etc/rc1.d/S70dns-clean (link)
-    User/Group: root:root
-
-  * /etc/rc1.d/S70pppd-dns (link)
-    User/Group: root:root
-
   * /etc/rc1.d/S90single (link)
     User/Group: root:root
 
@@ -826,12 +744,6 @@
     User/Group: root:root
 
   * /etc/rc2.d/S23ntp (link)
-    User/Group: root:root
-
-  * /etc/rc2.d/S70dns-clean (link)
-    User/Group: root:root
-
-  * /etc/rc2.d/S70pppd-dns (link)
     User/Group: root:root
 
   * /etc/rc2.d/S99grub-common (link)
@@ -849,12 +761,6 @@
   * /etc/rc3.d/S23ntp (link)
     User/Group: root:root
 
-  * /etc/rc3.d/S70dns-clean (link)
-    User/Group: root:root
-
-  * /etc/rc3.d/S70pppd-dns (link)
-    User/Group: root:root
-
   * /etc/rc3.d/S99grub-common (link)
     User/Group: root:root
 
@@ -870,12 +776,6 @@
   * /etc/rc4.d/S23ntp (link)
     User/Group: root:root
 
-  * /etc/rc4.d/S70dns-clean (link)
-    User/Group: root:root
-
-  * /etc/rc4.d/S70pppd-dns (link)
-    User/Group: root:root
-
   * /etc/rc4.d/S99grub-common (link)
     User/Group: root:root
 
@@ -889,12 +789,6 @@
     User/Group: root:root
 
   * /etc/rc5.d/S23ntp (link)
-    User/Group: root:root
-
-  * /etc/rc5.d/S70dns-clean (link)
-    User/Group: root:root
-
-  * /etc/rc5.d/S70pppd-dns (link)
     User/Group: root:root
 
   * /etc/rc5.d/S99grub-common (link)
@@ -2555,7 +2449,7 @@
   * /etc/timezone (file)
     User/Group: root:root
     Mode: 644
-    Size: 8 B
+    Size: 4 B
 
   * /etc/udev/rules.d/70-persistent-net.rules/ (dir)
     User/Group: root:root
@@ -2634,33 +2528,27 @@
   * /home/machinery/ (dir)
     User/Group: machinery:machinery
     Mode: 755
-    Size: 5.4 KiB
+    Size: 5.2 KiB
     Files: 8
 
   * /home/vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
-    Size: 6.1 KiB
+    Size: 6.2 KiB
     Files: 17
 
   * /initrd.img (link)
     User/Group: root:root
 
-  * /lib/cpp (link)
-    User/Group: root:root
-
-  * /lib/modules/3.19.0-25-generic/build (link)
-    User/Group: root:root
-
   * /lib/modules/3.19.0-25-generic/modules.alias (file)
     User/Group: root:root
     Mode: 644
-    Size: 971.2 KiB
+    Size: 52.3 KiB
 
   * /lib/modules/3.19.0-25-generic/modules.alias.bin (file)
     User/Group: root:root
     Mode: 644
-    Size: 958.9 KiB
+    Size: 62.4 KiB
 
   * /lib/modules/3.19.0-25-generic/modules.builtin.bin (file)
     User/Group: root:root
@@ -2670,17 +2558,17 @@
   * /lib/modules/3.19.0-25-generic/modules.dep (file)
     User/Group: root:root
     Mode: 644
-    Size: 416.4 KiB
+    Size: 58 KiB
 
   * /lib/modules/3.19.0-25-generic/modules.dep.bin (file)
     User/Group: root:root
     Mode: 644
-    Size: 603.3 KiB
+    Size: 86.1 KiB
 
   * /lib/modules/3.19.0-25-generic/modules.devname (file)
     User/Group: root:root
     Mode: 644
-    Size: 263 B
+    Size: 182 B
 
   * /lib/modules/3.19.0-25-generic/modules.softdep (file)
     User/Group: root:root
@@ -2690,12 +2578,12 @@
   * /lib/modules/3.19.0-25-generic/modules.symbols (file)
     User/Group: root:root
     Mode: 644
-    Size: 453.7 KiB
+    Size: 139 KiB
 
   * /lib/modules/3.19.0-25-generic/modules.symbols.bin (file)
     User/Group: root:root
     Mode: 644
-    Size: 559.3 KiB
+    Size: 165 KiB
 
   * /lib/plymouth/themes/text.plymouth (link)
     User/Group: root:root
@@ -2705,8 +2593,11 @@
     Mode: 644
     Size: 205 B
 
-  * /lib/recovery-mode/recovery-mode (link)
+  * /lib/recovery-mode/ (dir)
     User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 2
 
   * /lib/udev/hwdb.bin (file)
     User/Group: root:root
@@ -2762,18 +2653,6 @@
   * /usr/bin/awk (link)
     User/Group: root:root
 
-  * /usr/bin/c++ (link)
-    User/Group: root:root
-
-  * /usr/bin/c89 (link)
-    User/Group: root:root
-
-  * /usr/bin/c99 (link)
-    User/Group: root:root
-
-  * /usr/bin/cc (link)
-    User/Group: root:root
-
   * /usr/bin/crontab_link_target (file)
     User/Group: root:crontab
     Mode: 2755
@@ -2783,9 +2662,6 @@
     User/Group: root:root
 
   * /usr/bin/ex (link)
-    User/Group: root:root
-
-  * /usr/bin/fakeroot (link)
     User/Group: root:root
 
   * /usr/bin/from (link)
@@ -2833,9 +2709,6 @@
   * /usr/bin/pager (link)
     User/Group: root:root
 
-  * /usr/bin/pico (link)
-    User/Group: root:root
-
   * /usr/bin/pod2latex.bundled (file)
     User/Group: root:root
     Mode: 755
@@ -2856,9 +2729,6 @@
   * /usr/bin/rview (link)
     User/Group: root:root
 
-  * /usr/bin/rvim (link)
-    User/Group: root:root
-
   * /usr/bin/telnet (link)
     User/Group: root:root
 
@@ -2877,19 +2747,10 @@
   * /usr/bin/view (link)
     User/Group: root:root
 
-  * /usr/bin/vim (link)
-    User/Group: root:root
-
-  * /usr/bin/vimdiff (link)
-    User/Group: root:root
-
   * /usr/bin/w (link)
     User/Group: root:root
 
   * /usr/bin/write (link)
-    User/Group: root:root
-
-  * /usr/include/c++/4.8.4 (link)
     User/Group: root:root
 
   * /usr/lib/gcc/x86_64-linux-gnu/4.8.4 (link)
@@ -6385,18 +6246,18 @@
     User/Group: root:root
     Mode: 755
     Size: 3.1 MiB
-    Files: 167
+    Files: 166
 
   * /usr/lib/python3.4/asyncio/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 312.4 KiB
-    Files: 23
+    Size: 246.7 KiB
+    Files: 21
 
   * /usr/lib/python3.4/collections/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 46.2 KiB
+    Size: 45.4 KiB
     Files: 4
 
   * /usr/lib/python3.4/concurrent/__pycache__/ (dir)
@@ -6414,7 +6275,7 @@
   * /usr/lib/python3.4/ctypes/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 31.8 KiB
+    Size: 31.9 KiB
     Files: 5
 
   * /usr/lib/python3.4/curses/__pycache__/ (dir)
@@ -6426,25 +6287,25 @@
   * /usr/lib/python3.4/dbm/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 12.3 KiB
+    Size: 11.7 KiB
     Files: 5
 
   * /usr/lib/python3.4/distutils/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 269.2 KiB
+    Size: 269.1 KiB
     Files: 28
 
   * /usr/lib/python3.4/distutils/command/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 172.8 KiB
+    Size: 172.9 KiB
     Files: 24
 
   * /usr/lib/python3.4/email/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 290 KiB
+    Size: 288.8 KiB
     Files: 21
 
   * /usr/lib/python3.4/email/mime/__pycache__/ (dir)
@@ -6468,19 +6329,19 @@
   * /usr/lib/python3.4/http/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 143.5 KiB
+    Size: 142.4 KiB
     Files: 6
 
   * /usr/lib/python3.4/idlelib/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 530.6 KiB
-    Files: 60
+    Size: 506.8 KiB
+    Files: 61
 
   * /usr/lib/python3.4/importlib/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 90.6 KiB
+    Size: 90.1 KiB
     Files: 6
 
   * /usr/lib/python3.4/json/__pycache__/ (dir)
@@ -6492,7 +6353,7 @@
   * /usr/lib/python3.4/lib2to3/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 96.8 KiB
+    Size: 97.1 KiB
     Files: 12
 
   * /usr/lib/python3.4/lib2to3/fixes/__pycache__/ (dir)
@@ -6510,7 +6371,7 @@
   * /usr/lib/python3.4/logging/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 128.9 KiB
+    Size: 128.7 KiB
     Files: 4
 
   * /usr/lib/python3.4/multiprocessing/__pycache__/ (dir)
@@ -6528,61 +6389,61 @@
   * /usr/lib/python3.4/plat-x86_64-linux-gnu/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 56 KiB
+    Size: 55.8 KiB
     Files: 6
 
   * /usr/lib/python3.4/pydoc_data/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 363.3 KiB
+    Size: 346.9 KiB
     Files: 3
 
   * /usr/lib/python3.4/sqlite3/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 4.8 KiB
+    Size: 4.7 KiB
     Files: 4
 
   * /usr/lib/python3.4/test/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 57.5 KiB
+    Size: 57.2 KiB
     Files: 4
 
   * /usr/lib/python3.4/test/support/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 65.7 KiB
+    Size: 63 KiB
     Files: 2
 
   * /usr/lib/python3.4/tkinter/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 382.7 KiB
+    Size: 382 KiB
     Files: 16
 
   * /usr/lib/python3.4/unittest/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 166 KiB
+    Size: 165.5 KiB
     Files: 12
 
   * /usr/lib/python3.4/urllib/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 114.9 KiB
+    Size: 117.1 KiB
     Files: 7
 
   * /usr/lib/python3.4/venv/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 16.8 KiB
+    Size: 16 KiB
     Files: 3
 
   * /usr/lib/python3.4/wsgiref/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 51.4 KiB
+    Size: 51.3 KiB
     Files: 7
 
   * /usr/lib/python3.4/xml/__pycache__/ (dir)
@@ -6594,7 +6455,7 @@
   * /usr/lib/python3.4/xml/dom/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 127.1 KiB
+    Size: 127 KiB
     Files: 9
 
   * /usr/lib/python3.4/xml/etree/__pycache__/ (dir)
@@ -6618,7 +6479,7 @@
   * /usr/lib/python3.4/xmlrpc/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 66.6 KiB
+    Size: 66.3 KiB
     Files: 4
 
   * /usr/lib/python3/dist-packages/CommandNotFound/__pycache__/ (dir)
@@ -6633,7 +6494,7 @@
   * /usr/lib/python3/dist-packages/DistUpgrade/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 399.4 KiB
+    Size: 399.3 KiB
     Files: 38
 
   * /usr/lib/python3/dist-packages/DistUpgrade/janitor (link)
@@ -6753,9 +6614,6 @@
   * /usr/lib/ssl/private (link)
     User/Group: root:root
 
-  * /usr/lib/x86_64-linux-gnu/libfakeroot/libfakeroot-0.so (link)
-    User/Group: root:root
-
   * /usr/local/ (dir)
     User/Group: root:root
     Mode: 755
@@ -6832,22 +6690,7 @@
     Size: 14.4 KiB
     Files: 6
 
-  * /usr/share/doc/cpp-4.8 (link)
-    User/Group: root:root
-
   * /usr/share/doc/debconf-i18n (link)
-    User/Group: root:root
-
-  * /usr/share/doc/g++ (link)
-    User/Group: root:root
-
-  * /usr/share/doc/g++-4.8 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/gcc (link)
-    User/Group: root:root
-
-  * /usr/share/doc/gcc-4.8 (link)
     User/Group: root:root
 
   * /usr/share/doc/grub-pc (link)
@@ -6868,22 +6711,7 @@
   * /usr/share/doc/krb5-locales/CHANGES.gz (link)
     User/Group: root:root
 
-  * /usr/share/doc/libasan0 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libatomic1 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libgcc-4.8-dev (link)
-    User/Group: root:root
-
   * /usr/share/doc/libgcc1 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libgomp1 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libitm1 (link)
     User/Group: root:root
 
   * /usr/share/doc/libjson0 (link)
@@ -6898,37 +6726,13 @@
   * /usr/share/doc/libnih-dbus1 (link)
     User/Group: root:root
 
-  * /usr/share/doc/libpython2.7 (link)
-    User/Group: root:root
-
   * /usr/share/doc/libpython2.7-stdlib (link)
     User/Group: root:root
 
   * /usr/share/doc/libpython3.4-stdlib (link)
     User/Group: root:root
 
-  * /usr/share/doc/libquadmath0 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libreadline-gplv2-dev (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libssl-dev/changelog.gz (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libstdc++-4.8-dev (link)
-    User/Group: root:root
-
   * /usr/share/doc/libstdc++6 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libtinfo-dev (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libtsan0 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/manpages-dev (link)
     User/Group: root:root
 
   * /usr/share/doc/module-init-tools (link)
@@ -6952,9 +6756,6 @@
   * /usr/share/doc/tcpd (link)
     User/Group: root:root
 
-  * /usr/share/doc/vim (link)
-    User/Group: root:root
-
   * /usr/share/doc/vim-tiny (link)
     User/Group: root:root
 
@@ -6967,7 +6768,7 @@
   * /usr/share/info/dir (file)
     User/Group: root:root
     Mode: 644
-    Size: 10.9 KiB
+    Size: 10.8 KiB
 
   * /usr/share/info/dir.old (file)
     User/Group: root:root
@@ -6980,25 +6781,16 @@
   * /usr/share/man/de/man8/aptitude.8.gz (link)
     User/Group: root:root
 
-  * /usr/share/man/es/man1/faked.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/es/man1/fakeroot.1.gz (link)
-    User/Group: root:root
-
   * /usr/share/man/es/man8/aptitude.8.gz (link)
     User/Group: root:root
 
   * /usr/share/man/fi/man8/aptitude.8.gz (link)
     User/Group: root:root
 
+  * /usr/share/man/fr/man1/editor.1.gz (link)
+    User/Group: root:root
+
   * /usr/share/man/fr/man1/ex.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/fr/man1/faked.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/fr/man1/fakeroot.1.gz (link)
     User/Group: root:root
 
   * /usr/share/man/fr/man1/vi.1.gz (link)
@@ -7013,6 +6805,9 @@
   * /usr/share/man/gl/man8/aptitude.8.gz (link)
     User/Group: root:root
 
+  * /usr/share/man/it/man1/editor.1.gz (link)
+    User/Group: root:root
+
   * /usr/share/man/it/man1/ex.1.gz (link)
     User/Group: root:root
 
@@ -7023,6 +6818,9 @@
     User/Group: root:root
 
   * /usr/share/man/it/man8/aptitude.8.gz (link)
+    User/Group: root:root
+
+  * /usr/share/man/ja/man1/editor.1.gz (link)
     User/Group: root:root
 
   * /usr/share/man/ja/man1/ex.1.gz (link)
@@ -7040,28 +6838,10 @@
   * /usr/share/man/man1/awk.1.gz (link)
     User/Group: root:root
 
-  * /usr/share/man/man1/c++.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/man1/c89.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/man1/c99.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/man1/cc.1.gz (link)
-    User/Group: root:root
-
   * /usr/share/man/man1/editor.1.gz (link)
     User/Group: root:root
 
   * /usr/share/man/man1/ex.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/man1/faked.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/man1/fakeroot.1.gz (link)
     User/Group: root:root
 
   * /usr/share/man/man1/from.1.gz (link)
@@ -7118,9 +6898,6 @@
   * /usr/share/man/man1/pager.1.gz (link)
     User/Group: root:root
 
-  * /usr/share/man/man1/pico.1.gz (link)
-    User/Group: root:root
-
   * /usr/share/man/man1/pod2latex.bundled.1.gz (file)
     User/Group: root:root
     Mode: 644
@@ -7171,6 +6948,9 @@
   * /usr/share/man/man8/traceroute6.8.gz (link)
     User/Group: root:root
 
+  * /usr/share/man/pl/man1/editor.1.gz (link)
+    User/Group: root:root
+
   * /usr/share/man/pl/man1/ex.1.gz (link)
     User/Group: root:root
 
@@ -7183,6 +6963,9 @@
   * /usr/share/man/pl/man8/aptitude.8.gz (link)
     User/Group: root:root
 
+  * /usr/share/man/ru/man1/editor.1.gz (link)
+    User/Group: root:root
+
   * /usr/share/man/ru/man1/ex.1.gz (link)
     User/Group: root:root
 
@@ -7190,12 +6973,6 @@
     User/Group: root:root
 
   * /usr/share/man/ru/man1/view.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/sv/man1/faked.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/sv/man1/fakeroot.1.gz (link)
     User/Group: root:root
 
   * /usr/share/mime/XMLnamespaces (file)
@@ -7392,942 +7169,59 @@
     Size: 31.1 KiB
     Files: 6
 
-  * /usr/share/recovery-mode (link)
-    User/Group: root:root
-
-  * /usr/share/vim/addons/doc/tags (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.9 KiB
-
-  * /usr/share/vim/vim74/doc/help.txt.vim-tiny (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.3 KiB
-
-  * /usr/share/vim/vim74/doc/tags.vim-tiny (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 30 B
-
   * /usr/share/vim/vimfiles (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/Documentation (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/alpha (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/arc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/arm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/arm64 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/avr32 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/blackfin (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/c6x (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/cris (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/frv (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/hexagon (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/ia64 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/m32r (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/m68k (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/metag (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/microblaze (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/mips (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/mn10300 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/nios2 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/openrisc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/parisc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/powerpc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/s390 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/score (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/sh (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/sparc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/tile (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/um (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/unicore32 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/boot (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/crypto (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/ia32 (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/include/asm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/include/uapi (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/kernel/acpi (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/kernel/apic (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/kernel/cpu (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/kernel/kprobes (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/kvm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/lguest (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/lib (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/math-emu (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/mm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/net (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/oprofile (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/pci (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/platform (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/power (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/realmode (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/um (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/vdso (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/video (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/x86/xen (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/arch/xtensa (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/block (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/crypto (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/drivers (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/firmware (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/fs (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/acpi (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/asm-generic (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/clocksource (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/crypto (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/drm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/dt-bindings (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/keys (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/kvm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/linux (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/math-emu (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/media (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/memory (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/misc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/net (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/pcmcia (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/ras (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/rdma (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/rxrpc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/scsi (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/soc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/sound (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/target (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/trace (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/uapi (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/video (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/include/xen (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/init (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/ipc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/bpf (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/debug (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/events (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/gcov (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/irq (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/locking (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/power (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/printk (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/rcu (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/sched (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/time (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/kernel/trace (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/lib (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/mm (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/net (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/samples (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/scripts/coccinelle (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/scripts/dtc (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/scripts/ksymoops (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/scripts/package (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/scripts/rt-tester (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/scripts/tracing (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/security (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/sound (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/tools (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/ubuntu (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/usr (link)
-    User/Group: root:root
-
-  * /usr/src/linux-headers-3.19.0-25-generic/virt (link)
     User/Group: root:root
 
   * /vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
-    Size: 119.2 KiB
-    Files: 20
+    Size: 45.6 KiB
+    Files: 6
 
-  * /var/cache/apt/archives/apparmor_2.8.95~2430-0ubuntu5.3_amd64.deb (file)
+  * /var/cache/apt/archives/libevent-2.0-5_2.0.21-stable-1ubuntu1_amd64.deb (file)
     User/Group: root:root
     Mode: 644
-    Size: 311.7 KiB
-
-  * /var/cache/apt/archives/bash-completion_1%3a2.1-4ubuntu0.1_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 150.5 KiB
-
-  * /var/cache/apt/archives/bind9-host_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 45.3 KiB
-
-  * /var/cache/apt/archives/binutils_2.24-5ubuntu14_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 2 MiB
-
-  * /var/cache/apt/archives/biosdevname_0.4.1-0ubuntu6.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 19.8 KiB
-
-  * /var/cache/apt/archives/bsdutils_1%3a2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 33 KiB
-
-  * /var/cache/apt/archives/build-essential_11.6ubuntu6_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 4.7 KiB
-
-  * /var/cache/apt/archives/cpp-4.8_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 4.4 MiB
-
-  * /var/cache/apt/archives/cpp_4%3a4.8.2-1ubuntu6_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 26.8 KiB
-
-  * /var/cache/apt/archives/dkms_2.2.0.3-1.1ubuntu5.14.04.5_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 63.9 KiB
-
-  * /var/cache/apt/archives/dnsutils_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 94.7 KiB
-
-  * /var/cache/apt/archives/dpkg-dev_1.17.5ubuntu5.4_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 709.3 KiB
-
-  * /var/cache/apt/archives/e2fslibs_1.42.9-3ubuntu1.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 178.2 KiB
-
-  * /var/cache/apt/archives/e2fsprogs_1.42.9-3ubuntu1.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 651.1 KiB
-
-  * /var/cache/apt/archives/fakeroot_1.20-3ubuntu2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 53.7 KiB
-
-  * /var/cache/apt/archives/g++-4.8_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 14.3 MiB
-
-  * /var/cache/apt/archives/g++_4%3a4.8.2-1ubuntu6_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.5 KiB
-
-  * /var/cache/apt/archives/gcc-4.8_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 4.8 MiB
-
-  * /var/cache/apt/archives/gcc_4%3a4.8.2-1ubuntu6_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 5 KiB
-
-  * /var/cache/apt/archives/irqbalance_1.0.6-2ubuntu0.14.04.4_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 29.9 KiB
-
-  * /var/cache/apt/archives/keyutils_1.5.6-1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 32.8 KiB
-
-  * /var/cache/apt/archives/krb5-locales_1.12+dfsg-2ubuntu5.2_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 13.2 KiB
-
-  * /var/cache/apt/archives/libalgorithm-diff-perl_1.19.02-3_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 48.8 KiB
-
-  * /var/cache/apt/archives/libalgorithm-diff-xs-perl_0.04-2build4_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 12.3 KiB
-
-  * /var/cache/apt/archives/libalgorithm-merge-perl_0.08-2_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 12.4 KiB
-
-  * /var/cache/apt/archives/libapparmor-perl_2.8.95~2430-0ubuntu5.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 26.1 KiB
-
-  * /var/cache/apt/archives/libapparmor1_2.8.95~2430-0ubuntu5.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 24.9 KiB
-
-  * /var/cache/apt/archives/libasan0_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 61.6 KiB
-
-  * /var/cache/apt/archives/libatomic1_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 8.4 KiB
-
-  * /var/cache/apt/archives/libbind9-90_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 21.6 KiB
-
-  * /var/cache/apt/archives/libblkid1_2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 61.1 KiB
-
-  * /var/cache/apt/archives/libc-dev-bin_2.19-0ubuntu6.6_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 67.3 KiB
-
-  * /var/cache/apt/archives/libc6-dev_2.19-0ubuntu6.6_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.8 MiB
-
-  * /var/cache/apt/archives/libcgmanager0_0.24-0ubuntu7.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 28.3 KiB
-
-  * /var/cache/apt/archives/libcloog-isl4_0.18.2-1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 56.2 KiB
-
-  * /var/cache/apt/archives/libcomerr2_1.42.9-3ubuntu1.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 61.4 KiB
-
-  * /var/cache/apt/archives/libdns100_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 628.6 KiB
-
-  * /var/cache/apt/archives/libdpkg-perl_1.17.5ubuntu5.4_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 174.7 KiB
-
-  * /var/cache/apt/archives/libevent-2.0-5_2.0.21-stable-1ubuntu1.14.04.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 123.2 KiB
-
-  * /var/cache/apt/archives/libexpat1_2.1.0-4ubuntu1.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 69.4 KiB
-
-  * /var/cache/apt/archives/libfakeroot_1.20-3ubuntu2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 24.8 KiB
-
-  * /var/cache/apt/archives/libffi6_3.1~rc1+r3.0.13-12ubuntu0.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 17.1 KiB
-
-  * /var/cache/apt/archives/libfile-fcntllock-perl_0.14-2build1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 15.6 KiB
-
-  * /var/cache/apt/archives/libgcc-4.8-dev_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.6 MiB
-
-  * /var/cache/apt/archives/libgmp10_2%3a5.1.3+dfsg-1ubuntu1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 213.2 KiB
-
-  * /var/cache/apt/archives/libgomp1_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 22.6 KiB
-
-  * /var/cache/apt/archives/libgpm2_1.20.4-6.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 16.1 KiB
-
-  * /var/cache/apt/archives/libgssapi-krb5-2_1.12+dfsg-2ubuntu5.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 111.1 KiB
+    Size: 122.8 KiB
 
   * /var/cache/apt/archives/libgssglue1_0.4-2ubuntu1_amd64.deb (file)
     User/Group: root:root
     Mode: 644
     Size: 19.2 KiB
 
-  * /var/cache/apt/archives/libisc95_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 144.3 KiB
-
-  * /var/cache/apt/archives/libisccc90_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 15.3 KiB
-
-  * /var/cache/apt/archives/libisccfg90_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 35.3 KiB
-
-  * /var/cache/apt/archives/libisl10_0.12.2-1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 409.4 KiB
-
-  * /var/cache/apt/archives/libitm1_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 27.9 KiB
-
-  * /var/cache/apt/archives/libk5crypto3_1.12+dfsg-2ubuntu5.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 77.6 KiB
-
-  * /var/cache/apt/archives/libkrb5-3_1.12+dfsg-2ubuntu5.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 256.2 KiB
-
-  * /var/cache/apt/archives/libkrb5support0_1.12+dfsg-2ubuntu5.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 30 KiB
-
-  * /var/cache/apt/archives/libldap-2.4-2_2.4.31-1+nmu2ubuntu8.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 149.8 KiB
-
-  * /var/cache/apt/archives/liblwres90_1%3a9.9.5.dfsg-3ubuntu0.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 32.1 KiB
-
-  * /var/cache/apt/archives/libmount1_2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 58.8 KiB
-
-  * /var/cache/apt/archives/libmpc3_1.0.1-1ubuntu1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 37.5 KiB
-
-  * /var/cache/apt/archives/libmpfr4_3.1.2-1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 197.9 KiB
-
   * /var/cache/apt/archives/libnfsidmap2_0.25-5_amd64.deb (file)
     User/Group: root:root
     Mode: 644
     Size: 31.4 KiB
-
-  * /var/cache/apt/archives/libpam-systemd_204-5ubuntu20.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 24.9 KiB
-
-  * /var/cache/apt/archives/libpng12-0_1.2.50-1ubuntu2.14.04.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 115.3 KiB
-
-  * /var/cache/apt/archives/libpython2.7_2.7.6-8ubuntu0.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1014.3 KiB
-
-  * /var/cache/apt/archives/libpython3.4-minimal_3.4.3-1ubuntu1~14.04.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 450.7 KiB
-
-  * /var/cache/apt/archives/libpython3.4-stdlib_3.4.3-1ubuntu1~14.04.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.9 MiB
-
-  * /var/cache/apt/archives/libquadmath0_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 123 KiB
-
-  * /var/cache/apt/archives/libreadline-gplv2-dev_5.2+dfsg-2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 176.3 KiB
-
-  * /var/cache/apt/archives/libss2_1.42.9-3ubuntu1.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 65.5 KiB
-
-  * /var/cache/apt/archives/libssl-dev_1.0.1f-1ubuntu2.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1 MiB
-
-  * /var/cache/apt/archives/libssl-doc_1.0.1f-1ubuntu2.15_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 943.5 KiB
-
-  * /var/cache/apt/archives/libstdc++-4.8-dev_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1 MiB
-
-  * /var/cache/apt/archives/libsystemd-daemon0_204-5ubuntu20.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 9.7 KiB
-
-  * /var/cache/apt/archives/libsystemd-login0_204-5ubuntu20.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 26.3 KiB
-
-  * /var/cache/apt/archives/libtinfo-dev_5.9+20140118-1ubuntu1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 74.5 KiB
 
   * /var/cache/apt/archives/libtirpc1_0.2.2-5ubuntu2_amd64.deb (file)
     User/Group: root:root
     Mode: 644
     Size: 69.6 KiB
 
-  * /var/cache/apt/archives/libtsan0_4.8.4-2ubuntu1~14.04_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 92.5 KiB
-
-  * /var/cache/apt/archives/libudev1_204-5ubuntu20.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 32.6 KiB
-
-  * /var/cache/apt/archives/libuuid1_2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 10.6 KiB
-
-  * /var/cache/apt/archives/libxml2_2.9.1+dfsg1-3ubuntu4.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 557.4 KiB
-
-  * /var/cache/apt/archives/libyaml-0-2_0.1.4-3ubuntu3.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 46.9 KiB
-
-  * /var/cache/apt/archives/libyaml-dev_0.1.4-3ubuntu3.1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 54.6 KiB
-
-  * /var/cache/apt/archives/linux-firmware_1.127.18_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 23.3 MiB
-
-  * /var/cache/apt/archives/linux-libc-dev_3.13.0-68.111_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 751.1 KiB
-
   * /var/cache/apt/archives/lock (file)
     User/Group: root:root
     Mode: 640
     Size: 0 B
 
-  * /var/cache/apt/archives/lshw_02.16-2ubuntu1.3_amd64.deb (file)
+  * /var/cache/apt/archives/nfs-common_1%3a1.2.8-6ubuntu1_amd64.deb (file)
     User/Group: root:root
     Mode: 644
-    Size: 219.1 KiB
+    Size: 178 KiB
 
-  * /var/cache/apt/archives/make_3.81-8.2ubuntu3_amd64.deb (file)
+  * /var/cache/apt/archives/rpcbind_0.2.1-2ubuntu1_amd64.deb (file)
     User/Group: root:root
     Mode: 644
-    Size: 116.5 KiB
-
-  * /var/cache/apt/archives/manpages-dev_3.54-1ubuntu1_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.7 MiB
-
-  * /var/cache/apt/archives/mount_2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 111.7 KiB
-
-  * /var/cache/apt/archives/nfs-common_1%3a1.2.8-6ubuntu1.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 176.5 KiB
-
-  * /var/cache/apt/archives/ntpdate_1%3a4.2.6.p5+dfsg-3ubuntu2.14.04.5_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 55.7 KiB
-
-  * /var/cache/apt/archives/patch_2.7.1-4ubuntu2.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 84.3 KiB
-
-  * /var/cache/apt/archives/python3-distupgrade_1%3a0.220.8_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 101.3 KiB
-
-  * /var/cache/apt/archives/python3-gdbm_3.4.3-1~14.04.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 11.9 KiB
-
-  * /var/cache/apt/archives/python3-update-manager_1%3a0.196.14_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 30.8 KiB
-
-  * /var/cache/apt/archives/python3.4-minimal_3.4.3-1ubuntu1~14.04.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 1.2 MiB
-
-  * /var/cache/apt/archives/python3.4_3.4.3-1ubuntu1~14.04.3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 173.3 KiB
-
-  * /var/cache/apt/archives/rpcbind_0.2.1-2ubuntu2.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 36.2 KiB
-
-  * /var/cache/apt/archives/sudo_1.8.9p5-1ubuntu1.2_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 333.7 KiB
-
-  * /var/cache/apt/archives/systemd-services_204-5ubuntu20.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 192.3 KiB
-
-  * /var/cache/apt/archives/tzdata_2015g-0ubuntu0.14.04_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 159.8 KiB
-
-  * /var/cache/apt/archives/ubuntu-release-upgrader-core_1%3a0.220.8_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 22.5 KiB
-
-  * /var/cache/apt/archives/udev_204-5ubuntu20.15_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 718.1 KiB
-
-  * /var/cache/apt/archives/update-manager-core_1%3a0.196.14_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 5.1 KiB
-
-  * /var/cache/apt/archives/util-linux_2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 447.7 KiB
-
-  * /var/cache/apt/archives/uuid-runtime_2.20.1-5.1ubuntu20.7_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 12 KiB
-
-  * /var/cache/apt/archives/vim-runtime_2%3a7.4.052-1ubuntu3_all.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 4.7 MiB
-
-  * /var/cache/apt/archives/vim_2%3a7.4.052-1ubuntu3_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 933.2 KiB
-
-  * /var/cache/apt/archives/zlib1g-dev_1%3a1.2.8.dfsg-1ubuntu1_amd64.deb (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 179.1 KiB
+    Size: 36.1 KiB
 
   * /var/cache/apt/pkgcache.bin (file)
     User/Group: root:root
     Mode: 644
-    Size: 41.8 MiB
+    Size: 8.1 MiB
 
   * /var/cache/apt/srcpkgcache.bin (file)
     User/Group: root:root
     Mode: 644
-    Size: 41.8 MiB
+    Size: 8 MiB
 
   * /var/cache/debconf/config.dat (file)
     User/Group: root:root
@@ -8357,7 +7251,7 @@
   * /var/cache/ldconfig/ (dir)
     User/Group: root:root
     Mode: 700
-    Size: 13 KiB
+    Size: 11.8 KiB
     Files: 2
 
   * /var/cache/man/CACHEDIR.TAG (file)
@@ -8422,19 +7316,19 @@
   * /var/cache/man/da/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 14.5 KiB
+    Size: 14.4 KiB
     Files: 6
 
   * /var/cache/man/de/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 25.3 KiB
+    Size: 22.2 KiB
     Files: 7
 
   * /var/cache/man/es/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 21.1 KiB
+    Size: 17.7 KiB
     Files: 6
 
   * /var/cache/man/fi/ (dir)
@@ -8446,7 +7340,7 @@
   * /var/cache/man/fr/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 26.2 KiB
+    Size: 22.8 KiB
     Files: 6
 
   * /var/cache/man/gl/ (dir)
@@ -8470,18 +7364,18 @@
   * /var/cache/man/index.db (file)
     User/Group: man:root
     Mode: 644
-    Size: 758 KiB
+    Size: 248.8 KiB
 
   * /var/cache/man/it/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 21.7 KiB
+    Size: 20.1 KiB
     Files: 6
 
   * /var/cache/man/ja/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 23.3 KiB
+    Size: 20.9 KiB
     Files: 6
 
   * /var/cache/man/ko/ (dir)
@@ -8493,13 +7387,13 @@
   * /var/cache/man/nl/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 13.8 KiB
+    Size: 13.1 KiB
     Files: 6
 
   * /var/cache/man/pl/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 20.9 KiB
+    Size: 18.6 KiB
     Files: 6
 
   * /var/cache/man/pt/ (dir)
@@ -8529,7 +7423,7 @@
   * /var/cache/man/sv/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 17.9 KiB
+    Size: 15 KiB
     Files: 6
 
   * /var/cache/man/tr/ (dir)
@@ -8541,7 +7435,7 @@
   * /var/cache/man/zh_CN/ (dir)
     User/Group: man:root
     Mode: 2755
-    Size: 15.5 KiB
+    Size: 15.4 KiB
     Files: 6
 
   * /var/cache/man/zh_TW/ (dir)
@@ -8564,7 +7458,7 @@
   * /var/lib/dhcp/dhclient.eth0.leases (file)
     User/Group: root:root
     Mode: 644
-    Size: 526 B
+    Size: 527 B
 
   * /var/lib/initramfs-tools/3.19.0-25-generic (file)
     User/Group: root:root
@@ -8736,16 +7630,6 @@
     Mode: 600
     Size: 512 B
 
-  * /var/lib/ureadahead/boot.pack (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 320 B
-
-  * /var/lib/ureadahead/pack (file)
-    User/Group: root:root
-    Mode: 600
-    Size: 319.5 KiB
-
   * /var/lib/xml-core/catalog (file)
     User/Group: root:root
     Mode: 644
@@ -8759,27 +7643,27 @@
   * /var/log/alternatives.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 22.1 KiB
+    Size: 15.6 KiB
 
   * /var/log/apt/history.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 21.8 KiB
+    Size: 16.7 KiB
 
   * /var/log/apt/term.log (file)
     User/Group: root:adm
     Mode: 640
-    Size: 38.3 KiB
+    Size: 7.6 KiB
 
   * /var/log/auth.log (file)
     User/Group: syslog:adm
     Mode: 640
-    Size: 563.7 KiB
+    Size: 309.1 KiB
 
   * /var/log/boot.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 3.4 KiB
+    Size: 3.2 KiB
 
   * /var/log/bootstrap.log (file)
     User/Group: root:root
@@ -8794,19 +7678,14 @@
   * /var/log/dmesg (file)
     User/Group: root:adm
     Mode: 640
-    Size: 31.5 KiB
+    Size: 30.6 KiB
 
   * /var/log/dmesg.0 (file)
     User/Group: root:adm
     Mode: 640
-    Size: 28.7 KiB
+    Size: 30.9 KiB
 
   * /var/log/dmesg.1.gz (file)
-    User/Group: root:adm
-    Mode: 640
-    Size: 8.4 KiB
-
-  * /var/log/dmesg.2.gz (file)
     User/Group: root:adm
     Mode: 640
     Size: 59 B
@@ -8814,7 +7693,7 @@
   * /var/log/dpkg.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 461.3 KiB
+    Size: 380.4 KiB
 
   * /var/log/faillog (file)
     User/Group: root:root
@@ -8840,7 +7719,7 @@
   * /var/log/kern.log (file)
     User/Group: syslog:adm
     Mode: 640
-    Size: 93.8 KiB
+    Size: 99 KiB
 
   * /var/log/lastlog (file)
     User/Group: root:utmp
@@ -8850,12 +7729,12 @@
   * /var/log/syslog (file)
     User/Group: syslog:adm
     Mode: 640
-    Size: 107.9 KiB
+    Size: 117.6 KiB
 
   * /var/log/udev (file)
     User/Group: root:root
     Mode: 644
-    Size: 153.2 KiB
+    Size: 145.4 KiB
 
   * /var/log/upstart/console-setup.log (file)
     User/Group: root:root
@@ -8870,7 +7749,7 @@
   * /var/log/upstart/gssd.log (file)
     User/Group: root:root
     Mode: 640
-    Size: 227 B
+    Size: 226 B
 
   * /var/log/upstart/kmod.log (file)
     User/Group: root:root
@@ -8880,7 +7759,7 @@
   * /var/log/upstart/mountall.log (file)
     User/Group: root:root
     Mode: 640
-    Size: 527 B
+    Size: 523 B
 
   * /var/log/upstart/network-interface-eth0.log (file)
     User/Group: root:root
@@ -8915,22 +7794,17 @@
   * /var/log/upstart/systemd-logind.log (file)
     User/Group: root:root
     Mode: 640
-    Size: 36.1 KiB
+    Size: 21.1 KiB
 
   * /var/log/upstart/ureadahead-other.log (file)
     User/Group: root:root
     Mode: 640
     Size: 138 B
 
-  * /var/log/upstart/ureadahead.log (file)
-    User/Group: root:root
-    Mode: 640
-    Size: 192.9 KiB
-
   * /var/log/wtmp (file)
     User/Group: root:utmp
     Mode: 664
-    Size: 15.4 KiB
+    Size: 14.6 KiB
 
   * /var/mail/ (dir)
     User/Group: root:mail
