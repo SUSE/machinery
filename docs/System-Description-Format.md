@@ -29,26 +29,34 @@ A simplified example of the manifest can look like this:
 ```json
 {
   "environment": {
-    "locale": "en_US.utf8"
+    "locale": "en_US.utf8",
+    "system_type": "remote"
   },
   "os": {
     "name": "openSUSE 13.1 (Bottle)",
     "version": "13.1 (Bottle)",
     "architecture": "x86_64"
   },
-  "packages": [
-    {
-      "name": "aaa_base",
-      "version": "13.1"
+  "packages": {
+    "_attributes": {
+      "package_system": "rpm"
     },
-    {
-      "name": "zypper",
-      "version": "1.9.16"
-    }
-  ],
+    "_elements": [
+      {
+        "name": "aaa_base",
+        "version": "13.1"
+      },
+      {
+        "name": "zypper",
+        "version": "1.9.16"
+      }
+    ]
+  },
   "config_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/etc/ntp.conf",
         "package_name": "ntp",
@@ -65,7 +73,7 @@ A simplified example of the manifest can look like this:
     ]
   },
   "meta": {
-    "format_version": 4,
+    "format_version": 6,
     "os": {
       "modified": "2014-08-22T14:34:59Z",
       "hostname": "host.example.org"
@@ -97,12 +105,14 @@ specifying a scope name on the command line `-` is used as separator of words.
 
 ### environment
 
-This hidden scope in the system description contains the information about the locale of the target system.
+This hidden scope in the system description contains the information about the
+type and the locale of the target system.
 
 JSON Example:
 ```json
 "environment": {
-  "locale": "en_US.utf8"
+  "locale": "en_US.utf8",
+  "system_type": "docker"
 }
 ```
 
@@ -113,7 +123,7 @@ The global scope contains a meta object that holds this information about the in
 JSON Example:
 ```json
 "meta": {
-    "format_version": 4,
+    "format_version": 6,
     "services": {
       "modified": "2014-09-09T08:27:51Z",
       "hostname": "192.168.121.109"
@@ -160,8 +170,10 @@ config_files/
 JSON Example:
 ```json
 "config_files": {
-  "extracted": true,
-  "files": [
+  "_attributes": {
+    "extracted": true
+  },
+  "_elements": [
     {
       "name": "/etc/crontab",
       "package_name": "cronie",
@@ -199,20 +211,20 @@ JSON Example:
 
 #### Common information for every file
 
-The top level structure looks like this:
+The attributes of the config_files array are:
 
-| item            | description                          | type                       | 
+| item            | description                          | type                       |
 |-----------------|--------------------------------------|----------------------------|
-| extracted       | tells whether the files were extracted or not | boolean           | 
-| files           | the list of config files             | array                      | 
+| extracted       | tells whether the files were extracted or not | boolean           |
 
-The items within the files array look like this:
+The items look like this:
 
-| item            | description                          | type                       | 
+| item            | description                          | type                       |
 |-----------------|--------------------------------------|----------------------------|
-| name            | config filename                      | string                     | 
-| package_name    | packagename config file comes from   | string                     | 
-| package_version | version of package                   | string                     | 
+| name            | config filename                      | string                     |
+| package_name    | packagename config file comes from   | string                     |
+| package_version | version of package                   | string                     |
+| type            | type of the element (file,dir,link)  | string                     |
 
 
 in case of errors we also store those:
@@ -226,9 +238,9 @@ in case of errors we also store those:
 
 If something got changed for a config file, the changes are stored within this scope as well, however it also is stored what is changed and how:
 
-| item            | description                          | type                       | 
+| item            | description                          | type                       |
 |-----------------|--------------------------------------|----------------------------|
-| status          | set to "changed" | enum - (changed)           | 
+| status          | set to "changed" | enum - (changed)           |
 
 #### Information on changed files - modification
 
@@ -272,8 +284,10 @@ changed_managed_files/
 JSON Example
 ```json
 "changed_managed_files": {
-  "extracted": true,
-  "files": [
+  "_attributes": {
+    "extracted": true
+  },
+  "_elements": [
     {
       "name": "/etc/crontab",
       "package_name": "cronie",
@@ -311,12 +325,11 @@ JSON Example
 
 #### Common information for every file
 
-The top level structure looks like this:
+The attributes of the changed_managed_files array are:
 
-| item            | description                          | type                       | 
+| item            | description                          | type                       |
 |-----------------|--------------------------------------|----------------------------|
-| extracted       | tells whether the files were extracted or not | boolean           | 
-| files           | the list of changed managed files    | array                      | 
+| extracted       | tells whether the files were extracted or not | boolean           |
 
 The items within the files array look like this:
 
@@ -325,6 +338,7 @@ The items within the files array look like this:
 | name            | name of file | string |
 | package name    | package name file originates from | string |
 | package_version | version of package | string |
+| type            | type of the element (file,dir,link)  | string                     |
 
 in case of errors we also store those:
 
@@ -337,7 +351,7 @@ in case of errors we also store those:
 
 If something got changed for a config file, the changes are stored within this scope as well, however it also is stored what is changed and how:
 
-| item   | description | type  | 
+| item   | description | type  |
 |--------|-------------|-------|
 | status | set to "changed" | enum - (changed)  |
 
@@ -425,8 +439,10 @@ unmanaged_files/
 JSON Example:
 ```json
   "unmanaged_files": {
-    "extracted": true,
-    "files": [
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
       {
         "name": "/boot/backup_mbr",
         "type": "file",
@@ -447,12 +463,11 @@ JSON Example:
   }
 ```
 
-The top level structure looks like this:
+The attributes of the unmanaged_files array are:
 
-| item            | description                          | type                       | 
+| item            | description                          | type                       |
 |-----------------|--------------------------------------|----------------------------|
-| extracted       | tells whether the files were extracted or not | boolean           | 
-| files           | the list of unmanaged files             | array                      | 
+| extracted       | tells whether the files were extracted or not | boolean           |
 
 The items within the files array look like this:
 
@@ -473,7 +488,7 @@ When files get extracted however, we save much more information on them, for all
 | user  | file owner  | string |
 | group | file group  | string |
 
-The the depending on the file type again different information 
+The the depending on the file type again different information
 when extracted file type is file:
 
 | item | description | type           |
@@ -523,7 +538,8 @@ The users scope stores all user related information.
 
 JSON Example:
 ```json
-"users": [
+"users": {
+  "_elements": [
     {
       "name": "+",
       "password": "",
@@ -544,7 +560,8 @@ JSON Example:
       "encrypted_password": "*",
       "last_changed_date": 16266
     }
-]
+  ]
+}
 ```
 
 
@@ -573,24 +590,26 @@ in it.
 
 JSON Example:
 ```json
-  "groups": [
-    {
-      "name": "+",
-      "password": "",
-      "gid": null,
-      "users": [
+  "groups": {
+    "_elements": [
+      {
+        "name": "+",
+        "password": "",
+        "gid": null,
+        "users": [
 
-      ]
-    },
-    {
-      "name": "audio",
-      "password": "x",
-      "gid": 17,
-      "users": [
+        ]
+      },
+      {
+        "name": "audio",
+        "password": "x",
+        "gid": 17,
+        "users": [
 
-      ]
-    }
-]
+        ]
+      }
+    ]
+  }
 ```
 
 
@@ -605,39 +624,80 @@ JSON Example:
 
 JSON Example:
 ```json
-  "repositories": [
-    {
-      "alias": "SLE-12-SLP",
-      "name": "SLE-12-SLP",
-      "type": "yast2",
-      "url": "http://dist.suse.de/install/SLP/SLE-12-Server-Beta10/x86_64/DVD1/",
-      "enabled": true,
-      "autorefresh": false,
-      "gpgcheck": true,
-      "priority": 99,
-      "package_manager": "zypp"
-    }
-  ]
+  "repositories": {
+    "_attributes": {
+      "repository_system": "zypp"
+    },
+    "_elements": [
+      {
+        "alias": "download.opensuse.org-oss",
+        "name": "Main Repository (OSS)",
+        "type": "yast2",
+        "url": "http://download.opensuse.org/distribution/leap/42.1/repo/oss/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      }
+    ]
+  }
 ```
 
-Here all information for repositories configured in the inspected system get stored. The repo alias, it repo name, its url, type, if it is enabled and if autorefresh is on, if the gpg key is checked for it, the repository priority and the package manager (zypp or yum).
+The attributes of the repositories array are:
+
+| item            | description                          | type                       |
+|-----------------|--------------------------------------|----------------------------|
+| repository_system | The repository manager - zypp, yum or apt | enum            |
+
+Here all information for repositories configured in the inspected system get stored. The repo
+alias, it repo name, its url, type, if it is enabled and if autorefresh is on, if the gpg key is
+checked for it and the repository priority.
+
+"zypp" repositories have these attributes:
 
 | item        | description | type                |
 |-------------|-------------|---------------------|
 | alias       | repo alias  | string              |
 | name        | repository alias | string              |
-| type        | repository type, e.g. yast2 | enum                |
+| type        | repository type - yast2, rpm-md, plaindir | enum                |
 | url         | repository URL | uri formated string |
 | enabled     | 1 if the repository is enabled            | boolean             |
-| autorefresh | 1 if the repository gets refreshed automatically on every zypper run            | boolean             |
 | gpgcheck    | 1 if the key for the repository si checked            | boolean             |
+| item        | description | type                |
+| autorefresh | 1 if the repository gets refreshed automatically on every zypper run            | boolean             |
 | priority    | repo priority - defines in which order repositories are used            | integer             |
+
+"yum" repositories have these attributes:
+
+| item        | description | type                |
+|-------------|-------------|---------------------|
+| alias       | repo alias  | string              |
+| name        | repository alias | string              |
+| type        | repository type - rpm-md, null | enum                |
+| url         | array of URLs | array |
+| enabled     | 1 if the repository is enabled            | boolean             |
+| mirrorlist    | URL of list of mirror servers for the repository | string |
+| gpgcheck    | 1 if the key for the repository si checked            | boolean             |
+| gpgkey    | List of GPG keys associated with that repository | array |
+
+"apt" repositories have these attributes:
+
+| item        | description | type                |
+|-------------|-------------|---------------------|
+| url | repository URL | uri formated string |
+| distribution | Distribution the repository provides  | string |
+| type | repository type - deb, deb-src | enum |
+| components | Areas that are used (e.g. main, contrib, ...) | array |
 
 ### packages
 
 JSON Example:
 ```json
-"packages": [
+"packages": {
+  "_attributes": {
+    "package_system": "rpm"
+  },
+  "_elements": [
     {
       "name": "SUSEConnect",
       "version": "0.2.4",
@@ -654,8 +714,17 @@ JSON Example:
       "vendor": "SUSE LLC <https://www.suse.com/>",
       "checksum": "6a017ef4c19bee596efaf9a249291292"
     }
-]
+  ]
+}
 ```
+
+The attributes of the packages array are:
+
+| item            | description                          | type                       |
+|-----------------|--------------------------------------|----------------------------|
+| package_system | The package manager - rpm, dpkg | enum           |
+
+The attributes of the elements are:
 
 | item     | description                           | type       |
 |----------|---------------------------------------|------------|
@@ -671,17 +740,21 @@ JSON Example:
 
 JSON Example:
 ```json
-  "patterns": [
-    {
-      "name": "Minimal",
-      "version": "12",
-      "release": "44.1"
-    },
-    {
-      "name": "base",
-      "version": "12",
-      "release": "44.1"
-    }
+  "patterns": {
+    "_elements": [
+      {
+        "name": "Minimal",
+        "version": "12",
+        "release": "44.1"
+      },
+      {
+        "name": "base",
+        "version": "12",
+        "release": "44.1"
+      }
+
+    ]
+  }
 ```
 
 | item    | description     | type   |
@@ -696,8 +769,12 @@ Information about service run configuation is stored in the service scope. There
 
 * systemv - The traditional linux init system, services are started via scripts that get executed on bootup
 * systemd - A new init system that works with binary and handles inter service dependencies better for a faster startup. Read more about it on the [systemd homepage](http://www.freedesktop.org/wiki/Software/systemd/)
+* upstart - Upstart is an event-based replacement for the /sbin/init daemon which handles
+  starting of tasks and services during boot, stopping them during shutdown and supervising them
+  while the system is running. ([upstart homepage](http://upstart.ubuntu.com/))
 
-For both a list of configured services with their state is saved. This state can be:
+
+For all a list of configured services with their state is saved. This state can be:
 
 * enabled - service gets started on boot
 * disabled - service is not started
@@ -705,13 +782,15 @@ For both a list of configured services with their state is saved. This state can
 For systemd there are two additional states defined:
 
 * static - service is enabled by other service depending on it
-* masked - service is disabled and can not even manually be started 
+* masked - service is disabled and can not even manually be started
 
 JSON Example:
 ```json
   "services": {
-    "init_system": "systemd",
-    "services": [
+    "_attributes": {
+      "init_system": "systemd"
+    },
+    "_elements": [
       {
         "name": "SuSEfirewall2.service",
         "state": "enabled"
@@ -720,18 +799,30 @@ JSON Example:
         "name": "SuSEfirewall2_init.service",
         "state": "disabled"
       }
-]
+    ]
+  }
 ```
 
-| item        | description          | type   | 
-|-------------|----------------------|--------|
-| init_system | the init system used | string | 
-| services    | list of services     | array  |
+The attributes of the services array are:
 
-| item  | description  | type   | 
+| item        | description          | type   |
+|-------------|----------------------|--------|
+| init_system | the init system used - systemd, sysvinit, upstart | enum |
+
+
+The attributes of the service elements are:
+
+
+| item  | description  | type   |
 |-------|--------------|--------|
-| name  | service name | string | 
-| state | service state| array  | 
+| name  | service name | string |
+| state | service state| array  |
+
+In case of the `upstart` init_system there is an additional attribute:
+
+| item  | description  | type   |
+|-------|--------------|--------|
+| legacy_sysv  | Indicates whether the service is managed by sysvinit instead of upstart | boolean |
 
 ## Versioning
 
@@ -773,3 +864,10 @@ version of Machinery.
 ### Version 5
 
 * Schema version 5 adds the hidden scope [environment](#environment) in the description, which saves the locale of the target system.
+
+### Version 6
+
+* Schema version 6 adds support for Ubuntu 14.04 systems
+* There are now three types of repositories: zypper, yum and apt
+* There are now three types of init systems: sysvinit, systemd and upstart
+* All JSON arrays are converted to the attribute-enriched machinery arrays
