@@ -39,7 +39,7 @@ describe PackagesRenderer do
               "version": "3.7.10",
               "release": "1.0",
               "arch": "i586",
-              "vendor": "openSUSE",
+              "vendor": "",
               "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
             }
           ]
@@ -53,7 +53,7 @@ describe PackagesRenderer do
       output = PackagesRenderer.new.render(system_description)
 
       expect(output).to include("bash-4.2-1.0.x86_64 (openSUSE)")
-      expect(output).to include("kernel-desktop-3.7.10-1.0.i586 (openSUSE)")
+      expect(output).to include("kernel-desktop-3.7.10-1.0.i586 (N/A)")
     end
 
     context "when there are no packages" do

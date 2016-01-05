@@ -29,7 +29,8 @@ class PackagesRenderer < Renderer
 
     list do
       description.packages.each do |p|
-        item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{p.vendor})"
+        vendor = !p.vendor.empty? ? p.vendor : "N/A"
+        item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{vendor})"
       end
     end
   end
