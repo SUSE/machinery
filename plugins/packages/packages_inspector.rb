@@ -89,7 +89,6 @@ class PackagesInspector < Inspector
         arch: arch
       )
     end
-
     packages.each_slice(100) do |packages_slice|
       apt_cache_output = @system.run_command(
         "apt-cache",
@@ -98,13 +97,22 @@ class PackagesInspector < Inspector
         stdout: :capture
       )
 
-      packages_slice.each do |package|
-        name = Regexp.escape(package.name.sub(/:[^:]+$/, ""))
-        apt_cache_output =~
-          /Package: #{name}\n.*?MD5sum: (\w+).*?Origin: (\w+)/m
+      apt_cache_elements = Hash[
+        *apt_cache_output.split("\n\n").flat_map do |element|
+          name = element[/Package: (\w+)$/, 1]
+          [name, element]
+        end
+      ]
 
-        package.checksum = $1
-        package.vendor = $2
+      packages_slice.each do |package|
+        name = package.name.sub(/:[^:]+$/, "")
+        apt_cache_element = apt_cache_elements[name]
+        if apt_cache_element
+          checksum = apt_cache_element[/MD5sum: (\w+)\n/, 1]
+          vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
+        end
+        package.checksum = checksum || ""
+        package.vendor = vendor || ""
         package.release ||= ""
       end
     end

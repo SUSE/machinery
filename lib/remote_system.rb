@@ -83,7 +83,7 @@ class RemoteSystem < System
     ].compact.flatten
     cheetah_class.run(*cmds)
   rescue Cheetah::ExecutionFailed => e
-    if e.stderr.include?("password is required")
+    if e.stderr && e.stderr.include?("password is required")
       raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
     else
       raise e

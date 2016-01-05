@@ -1,8 +1,11 @@
-# Changed managed files [192.168.121.77] (2015-12-04 16:25:26)
+# Changed managed files [192.168.121.112] (2015-12-22 17:56:54)
 
   Files extracted: yes
+  * /boot/System.map-3.19.0-25-generic (md5)
+  * /boot/vmlinuz-3.19.0-25-generic (md5)
   * /lib/udev/rules.d/75-persistent-net-generator.rules (deleted)
   * /usr/bin/umlaut-äöü (md5)
   * /usr/share/info/sed.info.gz (md5)
   * /usr/share/man/man1/sed.1.gz (deleted)
+
 

@@ -120,20 +120,18 @@ EOF
     let(:apt_cache_output) {
       <<EOF
 Package: accountsservice
-Priority: standard
-Section: gnome
+Status: install ok installed
+Priority: optional
+Section: admin
 Installed-Size: 428
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-Original-Maintainer: Alessio Treglia <alessio@debian.org>
 Architecture: amd64
-Version: 0:0.6.35-foo-0ubuntu7.2
+Version: 0.6.35-foo-0ubuntu7.2
 Depends: dbus, libaccountsservice0 (= 0.6.35-0ubuntu7.2), libc6 (>= 2.4), libgcr-base-3-1 (>= 3.8.0), libglib2.0-0 (>= 2.37.3), libpam0g (>= 0.99.7.1), libpolkit-gobject-1-0 (>= 0.99)
 Suggests: gnome-control-center
-Filename: pool/main/a/accountsservice/accountsservice_0.6.35-0ubuntu7.2_amd64.deb
-Size: 60388
-MD5sum: e44935e8ff4d5c086500d4e956e0e852
-SHA1: e38b1479bfb605c2ff18befe8f97ce206fe46269
-SHA256: 668e02bce93ac1d3ab63d70569b3d60b803ad67333151bf4bb007acdcd717cce
+Conffiles:
+ /etc/dbus-1/system.d/org.freedesktop.Accounts.conf 06247d62052029ead7d9ec1ef9457f42
+ /etc/pam.d/accountsservice a9d93f9b24383a48cc01743d8185aa98
 Description-en: query and manipulate user account information
  The AccountService project provides a set of D-Bus
  interfaces for querying and manipulating user account
@@ -141,10 +139,7 @@ Description-en: query and manipulate user account information
  based on the useradd, usermod and userdel commands.
 Description-md5: 8aeed0a03c7cd494f0c4b8d977483d7e
 Homepage: http://cgit.freedesktop.org/accountsservice/
-Bugs: https://bugs.launchpad.net/ubuntu/+filebug
-Origin: Ubuntu
-Supported: 5y
-Task: standard, kubuntu-active, kubuntu-active, mythbuntu-frontend, mythbuntu-desktop, mythbuntu-backend-slave, mythbuntu-backend-master
+Original-Maintainer: Alessio Treglia <alessio@debian.org>
 
 Package: adduser
 Priority: required
@@ -193,6 +188,7 @@ Task: minimal
 
 EOF
     }
+
     let(:expected_packages) {
       PackagesScope.new(
         [
@@ -225,8 +221,8 @@ EOF
             version: "0:0.6.35-foo",
             release: "0ubuntu7.2",
             arch: "amd64",
-            checksum: "e44935e8ff4d5c086500d4e956e0e852",
-            vendor: "Ubuntu"
+            checksum: "",
+            vendor: ""
           ),
           DpkgPackage.new(
             name: "adduser",
