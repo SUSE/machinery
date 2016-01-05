@@ -120,7 +120,7 @@ class RepositoriesInspector < Inspector
         end
       end
     end
-    repositories
+    repositories.uniq
   end
 
   def parse_priorities_from_details(details)
