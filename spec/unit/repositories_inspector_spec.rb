@@ -347,6 +347,7 @@ EOF
 deb http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu trusty main
 # deb-src http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu trusty main
 deb http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu trusty/binary-$(ARCH)/
+deb-src   http://repo-with-spaces-and-tabs.com/ubuntu   trusty-security component1    component2
 EOF
       output.chomp
     }
