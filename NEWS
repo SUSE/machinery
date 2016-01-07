@@ -7,6 +7,7 @@
 * Remove hint for `show`, when `inspect-container` is run with `--show` option
 * Rephrase the startup messages and warn messages when starting the HTTP
   server for compare, show, or serve system descriptions
+* Changed `serve` command to always list all system descriptions
 
 ## Version 1.16.2 - Tue Nov 24 13:17:18 CET 2015 - thardeck@suse.de
 
