@@ -3,7 +3,6 @@
 
   "type": "object",
   "required": [
-    "_attributes",
     "_elements"
   ],
   "oneOf": [

@@ -309,7 +309,6 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["groups"] = <<-EOF.chomp
     "groups": {
-      "_attributes": {},
       "_elements": [
         {
           "name": "audio",
@@ -420,13 +419,11 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
     "patterns": {
-      "_attributes": {},
       "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["patterns"] = <<-EOF.chomp
     "patterns": {
-      "_attributes": {},
       "_elements": [
         {
           "name": "base",
@@ -635,7 +632,6 @@ module SystemDescriptionFactory
 
   EXAMPLE_SCOPES["users_with_passwords"] = <<-EOF.chomp
     "users": {
-      "_attributes": {},
       "_elements": [
         {
           "name": "root",
