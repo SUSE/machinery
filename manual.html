@@ -427,18 +427,15 @@ built image. The list of filters is shown at the beginning of the build.</p>
 <h3 id="PREREQUISITES">PREREQUISITES</h3>
 
 <ul>
-<li><p>The <code>build</code> command requires the packages <code>kiwi</code> and <code>kiwi-desc-vmbxoot</code>.</p></li>
+<li><p>The <code>build</code> command requires the packages <code>kiwi</code> and <code>kiwi-desc-vmxboot</code>.</p></li>
+<li><p>The necessary vmxboot template for the machinery being built must be
+installed (i.e. if you want to build an openSUSE Leap machine then the
+template <code>/usr/share/kiwi/image/vmxboot/suse-leap42.1</code> is required)</p></li>
 <li><p>All repositories in the system description must be accessible from the
 build machine on which <code>machinery build</code> is called.</p></li>
+<li><p>Machinery can only build x86_64 images on x86_64 systems at the moment.</p></li>
 </ul>
 
-
-<h3 id="BUILD-SUPPORT-MATRIX">BUILD SUPPORT MATRIX</h3>
-
-<p>Machinery only supports building x86_64 images on x86_64 systems.</p>
-
-<p>To see the list of supported combinations of build hosts and targets run
-<code>machinery build --help</code>.</p>
 
 <h3 id="EXAMPLES">EXAMPLES</h3>
 
@@ -974,8 +971,7 @@ by adding an '@' before the path, e.g.</p>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery list</code>
-    [NAME[,NAME2[,NAME3]]]</p>
+<p><code>machinery list</code> [OPTIONS] [NAME[,NAME2[,NAME3]]]</p>
 
 <p><code>machinery</code> help list</p>
 
@@ -992,6 +988,8 @@ scopes for each system.</p>
 <dt><code>--verbose</code> (optional)</dt><dd>Print additional information about the origin of scopes.
 Currently displays [HOSTNAME] and (DATE).</dd>
 <dt><code>--short</code> (optional)</dt><dd>List only descripton names.</dd>
+<dt><code>--html</code> (optional)</dt><dd>Run a web server and open the list of system descriptions in HTML format in
+your web browser using the <code>xdg-open</code> command.</dd>
 </dl>
 
 
@@ -1010,6 +1008,9 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 <dt>Lists all available system description names without any additional details:</dt><dd><p></p>
 
 <p>$ <code>machinery</code> list --short</p></dd>
+<dt>Opens HTML view of list of all available system descriptions in web browser:</dt><dd><p></p>
+
+<p>$ <code>machinery</code> list --html</p></dd>
 </dl>
 
 
@@ -1096,32 +1097,30 @@ Currently displays [HOSTNAME] and (DATE).</dd>
 </dl>
 
 
-<h2 id="serve-Serve-A-System-Description-Using-A-Web-Server">serve — Serve A System Description Using A Web Server</h2>
+<h2 id="serve-Serve-System-Descriptions-Using-A-Web-Server">serve — Serve System Descriptions Using A Web Server</h2>
 
 <h3 id="SYNOPSIS">SYNOPSIS</h3>
 
-<p><code>machinery serve</code> [-p PORT | --port=PORT] [--public] NAME</p>
+<p><code>machinery serve</code> [-p PORT | --port=PORT] [--public]</p>
 
 <p><code>machinery</code> help serve</p>
 
 <h3 id="DESCRIPTION">DESCRIPTION</h3>
 
-<p>The <code>serve</code> command spawns a web server and serves a stored system description on
-it.
-By default the description is available from http://127.0.0.1:7585 but both the
+<p>The <code>serve</code> command spawns a web server to view system descriptions as an HTML
+view.</p>
+
+<p>By default the server is available from http://127.0.0.1:7585 but both the
 IP address and the port can be configured using the according options.</p>
 
-<h3 id="ARGUMENTS">ARGUMENTS</h3>
-
-<dl>
-<dt><code>NAME</code> (required)</dt><dd>Use specified system description.</dd>
-</dl>
-
+<p>Specific descriptions are available from http://127.0.0.1:7585/NAME, where NAME
+is the name of the system description. If no name is specified in the URL an
+overview of all descriptions is served.</p>
 
 <h3 id="OPTIONS">OPTIONS</h3>
 
 <dl>
-<dt><code>-p PORT</code>, <code>--port=PORT</code> (optional)</dt><dd><p>Specify the port on which the web server will serve the system description: Default: 7585</p>
+<dt><code>-p PORT</code>, <code>--port=PORT</code> (optional)</dt><dd><p>Specify the port on which the web server will serve the HTML view: Default: 7585</p>
 
 <p>Ports can be selected in a range between 2-65535. Ports between 2 and 1023 can only be
 chosen when <code>machinery</code> will be executed as <code>root</code> user.</p></dd>
@@ -1133,12 +1132,12 @@ the server will only listen on the localhost IP address 127.0.0.1</p></dd>
 <h3 id="EXAMPLES">EXAMPLES</h3>
 
 <dl>
-<dt>Serve the system description taken from the last inspection, saved as <code>earth</code>:</dt><dd><p></p>
+<dt>Start the server with default options:</dt><dd><p></p>
 
-<p>$ <code>machinery</code> serve earth</p></dd>
-<dt>Make the system description available to other machines on the network on port 3000:</dt><dd><p></p>
+<p>$ <code>machinery</code> serve</p></dd>
+<dt>Make the server available to other machines on the network on port 3000:</dt><dd><p></p>
 
-<p>$ <code>machinery</code> serve earth --public --port 3000</p></dd>
+<p>$ <code>machinery</code> serve --public --port 3000</p></dd>
 </dl>
 
 
