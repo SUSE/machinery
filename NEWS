@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.16.3 - Thu Jan 07 17:57:27 CET 2016 - thardeck@suse.de
+
 * Remove concept of "supported systems" in favor of letting Machinery run
   everywhere. Whether a system can be built, exported, etc will be validated
   from its related task by checking if the propper tooling is installed
