@@ -1,5 +1,9 @@
 # Machinery Release Notes
 
+* Remove concept of "supported systems" in favor of letting Machinery run
+  everywhere. Whether a system can be built, exported, etc will be validated
+  from its related task by checking if the propper tooling is installed.
+  (Fixes bnc#959558)
 * Remove hint for `show`, when `inspect-container` is run with `--show` option
 * Rephrase the startup messages and warn messages when starting the HTTP
   server for compare, show, or serve system descriptions.
