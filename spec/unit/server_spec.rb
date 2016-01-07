@@ -109,13 +109,35 @@ EOF
   end
 
   describe "list" do
-    describe "GET /" do
-      it "returns the page" do
-        get "/"
+    context "good descriptions" do
+      describe "GET /" do
+        it "returns the page" do
+          get "/"
 
-        expect(last_response).to be_ok
-        expect(last_response.body).
-          to include("System Descriptions")
+          expect(last_response).to be_ok
+          expect(last_response.body).
+            to include("System Descriptions")
+        end
+      end
+    end
+
+    context "bad description" do
+      before(:each) do
+        store_raw_description("abc", <<-EOT
+            {
+              x
+            }
+          EOT
+        )
+      end
+
+      describe "GET /" do
+        it "returns the page" do
+          get "/"
+
+          expect(last_response).to be_ok
+          expect(last_response.body).to include("System Descriptions")
+        end
       end
     end
   end

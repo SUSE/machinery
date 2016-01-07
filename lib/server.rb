@@ -245,7 +245,8 @@ class Server < Sinatra::Base
           scopes << entry
         end
         @all_descriptions[name]["scopes"] = scopes
-      rescue Machinery::Errors::SystemDescriptionIncompatible => e
+      rescue Machinery::Errors::SystemDescriptionIncompatible,
+             Machinery::Errors::SystemDescriptionError => e
         @errors ||= Array.new
         @errors.push(e)
       end
