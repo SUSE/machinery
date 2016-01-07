@@ -65,18 +65,6 @@ class Migrate5To6 < Migration
       }
     end
 
-    ["changed_managed_files", "config_files"].each do |scope|
-      next unless @hash.key?(scope)
-
-      @hash[scope]["_elements"] = @hash[scope]["_elements"].map do |file|
-        file["changes"] = {
-          "_attributes" => {},
-          "_elements" => file["changes"]
-        }
-        file
-      end
-    end
-
     if @hash.key?("services")
       @hash["services"] = {
         "_attributes" => {
@@ -99,14 +87,7 @@ class Migrate5To6 < Migration
       @hash["groups"] = {
         "_attributes" => {
         },
-        "_elements" => @hash["groups"].map do |group|
-          group["users"] = {
-            "_attributes" => {},
-            "_elements" => group["users"]
-          }
-
-          group
-        end
+        "_elements" => @hash["groups"]
       }
     end
 

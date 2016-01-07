@@ -55,7 +55,7 @@ describe Machinery::Array do
           [
             1,
             Machinery::Object.new(2 => "2"),
-            Machinery::Array.new([3, "3"])
+            [3, "3"]
           ]
         )
         expect(Machinery::Array.from_json(json_object)).to eq(expected)
@@ -218,7 +218,7 @@ describe Machinery::Array do
     it "serializes all objects to native ruby objects" do
       embedded_array = ArrayExampleArray.new([json_element_a])
       embedded_object = Machinery::Object.new(json_element_b)
-      array = Machinery::Array.new([1, embedded_array, embedded_object])
+      array = Machinery::Array.new([1, embedded_array, embedded_object, ["foo"]])
 
       result = array.as_json
       expect(result).to eq(
@@ -230,7 +230,8 @@ describe Machinery::Array do
             "_attributes" => {},
             "_elements" => ["a" => 1]
           },
-          { "b" => 2 }
+          { "b" => 2 },
+          ["foo"]
         ]
       )
     end

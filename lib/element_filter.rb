@@ -50,6 +50,8 @@ class ElementFilter
           value_array = value.elements
 
           (value_array - Array(matcher)).empty? && (Array(matcher) - value_array).empty?
+        when ::Array
+          (value - Array(matcher)).empty? && (Array(matcher) - value).empty?
         when String
           if matcher.is_a?(Array)
             exception = Machinery::Errors::ElementFilterTypeMismatch.new

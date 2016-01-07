@@ -64,7 +64,7 @@ class ManagedFilesDatabase
       )
     end.compact.uniq
 
-    paths = result.reject { |f| f.changes == Machinery::Array.new(["deleted"]) }.map(&:name)
+    paths = result.reject { |f| f.changes == ["deleted"] }.map(&:name)
     path_data = get_path_data(paths)
     result.each do |pkg|
       next unless path_data[pkg.name]

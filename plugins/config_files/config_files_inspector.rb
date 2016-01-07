@@ -62,7 +62,7 @@ class ConfigFilesInspector < Inspector
     if do_extract
       file_store.create
       extracted_paths = result.reject do |file|
-        file.changes == Machinery::Array.new(["deleted"]) ||
+        file.changes == ["deleted"] ||
         file.link? || file.directory?
       end.map(&:name)
       scope.retrieve_files_from_system(@system, extracted_paths)

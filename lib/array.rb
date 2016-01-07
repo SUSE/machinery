@@ -71,10 +71,8 @@ module Machinery
       end
 
       case element
-      when ::Array
-        Machinery::Array.from_json(element)
       when Hash
-        if element.keys.sort == ["_attributes", "_elements"]
+        if element.keys.include?("_elements")
           Machinery::Array.from_json(element)
         else
           Machinery::Object.from_json(element)

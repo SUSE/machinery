@@ -93,23 +93,11 @@
                 "enum": ["rpm-md", null]
               },
               "url": {
-                "type": "object",
-                "required": [
-                  "_attributes",
-                  "_elements"
-                ],
-                "properties": {
-                  "_attributes": {
-                    "type": "object"
-                  },
-                  "_elements": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "url",
-                      "minLength": 1
-                    }
-                  }
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "url",
+                  "minLength": 1
                 }
               },
               "enabled": {
@@ -119,23 +107,11 @@
                 "type": "boolean"
               },
               "gpgkey": {
-                "type": "object",
-                "required": [
-                  "_attributes",
-                  "_elements"
-                ],
-                "properties": {
-                  "_attributes": {
-                    "type": "object"
-                  },
-                  "_elements": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "url",
-                      "minLength": 1
-                    }
-                  }
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "url",
+                  "minLength": 1
                 }
               }
             }
@@ -175,22 +151,10 @@
                 "minLength": 1
               },
               "components": {
-                "type": "object",
-                "required": [
-                  "_attributes",
-                  "_elements"
-                ],
-                "properties": {
-                  "_attributes": {
-                    "type": "object"
-                  },
-                  "_elements": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "minLength": 1
-                    }
-                  }
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
                 }
               }
             }

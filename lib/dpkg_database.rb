@@ -53,7 +53,7 @@ class DpkgDatabase < ManagedFilesDatabase
       begin
         @system.run_command("ls", file)
       rescue Cheetah::ExecutionFailed
-        changes = Machinery::Array.new(["deleted"])
+        changes = ["deleted"]
       end
     end
 

@@ -31,7 +31,7 @@ class RepositoriesRenderer < Renderer
           item_name = "URI: #{p.url}"
         end
         item "#{item_name}" do
-          if p.url.is_a?(Machinery::Array)
+          if p.url.is_a?(Array)
             list "URI", sublist: true do
               p.url.each do |url|
                 item url

@@ -70,7 +70,7 @@ class FileValidator
     elsif @format_version < 6
       files = @json_hash[scope]["files"]
     else
-      changes_proc = ->(file) { file["changes"]["_elements"]}
+      changes_proc = ->(file) { file["changes"]}
       files = @json_hash[scope]["_elements"]
     end
 

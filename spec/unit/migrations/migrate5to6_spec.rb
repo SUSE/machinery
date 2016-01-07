@@ -271,7 +271,7 @@ describe Migrate5To6 do
 
   ["changed_managed_files", "config_files"].each do |scope|
     it "moves the 'changes' array" do
-      expect(description_hash[scope]["_elements"][0]["changes"]["_elements"].length).to eq(1)
+      expect(description_hash[scope]["_elements"][0]["changes"].length).to eq(1)
     end
   end
 
@@ -288,7 +288,6 @@ describe Migrate5To6 do
 
   it "migrates groups" do
     expect(description_hash["groups"]["_elements"].first["name"]).to eq("the_element")
-    expect(description_hash["groups"]["_elements"].first["users"]["_elements"]).
-      to eq(["foo", "bar"])
+    expect(description_hash["groups"]["_elements"].first["users"]).to eq(["foo", "bar"])
   end
 end

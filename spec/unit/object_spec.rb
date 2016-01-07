@@ -101,7 +101,7 @@ describe Machinery::Object do
       expected = Machinery::Object.new(
         a: 1,
         b: Machinery::Object.new(2 => "2"),
-        c: Machinery::Array.new([3, "3"]),
+        c: [3, "3"],
         d: Machinery::Array.new([1])
       )
       expect(Machinery::Object.from_json(json_object)).to eq(expected)

@@ -69,35 +69,23 @@
       "required": ["changes", "mode", "user", "group", "type"],
       "properties": {
         "changes": {
-          "type": "object",
-          "required": [
-            "_attributes",
-            "_elements"
-          ],
-          "properties": {
-            "_attributes": {
-              "type": "object"
-            },
-            "_elements": {
-              "type": "array",
-              "items": {
-                "enum": [
-                  "size",
-                  "mode",
-                  "md5",
-                  "device_number",
-                  "link_path",
-                  "user",
-                  "group",
-                  "time",
-                  "capabilities",
-                  "replaced",
-                  "other_rpm_changes"
-                ]
-              },
-              "minItems": 1
-            }
-          }
+          "type": "array",
+          "items": {
+            "enum": [
+              "size",
+              "mode",
+              "md5",
+              "device_number",
+              "link_path",
+              "user",
+              "group",
+              "time",
+              "capabilities",
+              "replaced",
+              "other_rpm_changes"
+            ]
+          },
+          "minItems": 1
         },
         "mode": {
           "type": "string",
@@ -120,35 +108,23 @@
       "required": ["target", "changes", "mode", "user", "group", "type"],
       "properties": {
         "changes": {
-          "type": "object",
-          "required": [
-            "_attributes",
-            "_elements"
-          ],
-          "properties": {
-            "_attributes": {
-              "type": "object"
-            },
-            "_elements": {
-              "type": "array",
-              "items": {
-                "enum": [
-                  "size",
-                  "mode",
-                  "md5",
-                  "device_number",
-                  "link_path",
-                  "user",
-                  "group",
-                  "time",
-                  "capabilities",
-                  "replaced",
-                  "other_rpm_changes"
-                ]
-              },
-              "minItems": 1
-            }
-          }
+          "type": "array",
+          "items": {
+            "enum": [
+              "size",
+              "mode",
+              "md5",
+              "device_number",
+              "link_path",
+              "user",
+              "group",
+              "time",
+              "capabilities",
+              "replaced",
+              "other_rpm_changes"
+            ]
+          },
+          "minItems": 1
         },
         "mode": {
           "type": "string",
@@ -174,19 +150,7 @@
       "required": ["changes"],
       "properties": {
         "changes": {
-          "type": "object",
-          "required": [
-            "_attributes",
-            "_elements"
-          ],
-          "properties": {
-            "_attributes": {
-              "type": "object"
-            },
-            "_elements": {
-              "enum": [["deleted"]]
-            }
-          }
+          "enum": [["deleted"]]
         }
       }
     },

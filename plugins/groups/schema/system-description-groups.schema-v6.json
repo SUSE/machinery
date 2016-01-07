@@ -36,22 +36,10 @@
             "minimum": 0
           },
           "users": {
-            "type": "object",
-            "required": [
-              "_attributes",
-              "_elements"
-            ],
-            "properties": {
-              "_attributes": {
-                "type": "object"
-              },
-              "_elements": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
-                }
-              }
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
             }
           }
         }
