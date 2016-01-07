@@ -1,5 +1,7 @@
 # Machinery RPM Changelog
 
+* increase nokogiri requirement to >= 1.6.1
+* tracking bug (bnc#961011)
 
 ## Version 1.16.2 - Tue Nov 24 13:17:18 CET 2015 - thardeck@suse.de
 
