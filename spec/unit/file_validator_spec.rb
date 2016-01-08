@@ -51,6 +51,7 @@ EOT
 
       it "validates valid description" do
         expect {
+
           SystemDescription.load!("config-files-good", @store)
         }.to_not raise_error
       end

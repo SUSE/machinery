@@ -9,13 +9,9 @@
         "package_name": "bash",
         "package_version": "3.2",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "md5"
-          ]
-        },
+        "changes": [
+          "md5"
+        ],
         "mode": "644",
         "user": "root",
         "group": "root",
@@ -26,13 +22,9 @@
         "package_name": "sles-release-DVD",
         "package_version": "11.3",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "deleted"
-          ]
-        }
+        "changes": [
+          "deleted"
+        ]
       }
     ]
   },

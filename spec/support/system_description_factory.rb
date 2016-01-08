@@ -199,20 +199,14 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["deleted"]
-          }
+          "changes": ["deleted"]
         },
         {
           "name": "/usr/bin/replaced_by_link",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["link_path"]
-          },
+          "changes": ["link_path"],
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
@@ -224,10 +218,7 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["md5"]
-          },
+          "changes": ["md5"],
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -238,10 +229,7 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["md5", "size"]
-          },
+          "changes": ["md5", "size"],
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -252,10 +240,7 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["group"]
-          },
+          "changes": ["group"],
           "user": "user",
           "group": "group",
           "mode": "644",
@@ -283,20 +268,14 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["deleted"]
-          }
+          "changes": ["deleted"]
         },
         {
           "name": "/etc/cron tab",
           "package_name": "cron",
           "package_version": "4.1",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["md5"]
-          },
+          "changes": ["md5"],
           "user": "root",
           "group": "root",
           "mode": "644",
@@ -307,10 +286,7 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["link_path"]
-          },
+          "changes": ["link_path"],
           "type": "link",
           "target": "/tmp/foo",
           "user": "root",
@@ -322,10 +298,7 @@ module SystemDescriptionFactory
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": {
-            "_attributes": {},
-            "_elements": ["group"]
-          },
+          "changes": ["group"],
           "user": "user",
           "group": "group",
           "mode": "755",
@@ -341,13 +314,10 @@ module SystemDescriptionFactory
         {
           "name": "audio",
           "password": "x",
-          "users": {
-            "_attributes": {},
-            "_elements": [
-              "tux",
-              "foo"
-            ]
-          },
+          "users": [
+            "tux",
+            "foo"
+          ],
           "gid": 17
         }
       ]
@@ -484,25 +454,19 @@ module SystemDescriptionFactory
           "url": "http://de.archive.ubuntu.com/ubuntu/",
           "type": "deb",
           "distribution": "trusty",
-          "components": {
-            "_attributes": {},
-            "_elements": [
-              "main",
-              "restricted"
-            ]
-          }
+          "components": [
+            "main",
+            "restricted"
+          ]
         },
         {
           "url": "http://de.archive.ubuntu.com/ubuntu/",
           "type": "deb-src",
           "distribution": "trusty",
-          "components": {
-            "_attributes": {},
-            "_elements": [
-              "main",
-              "restricted"
-            ]
-          }
+          "components": [
+            "main",
+            "restricted"
+          ]
         }
       ]
     }
@@ -633,22 +597,14 @@ module SystemDescriptionFactory
       "_elements": [
         {
           "name": "CentOS-6Server - Base",
-          "url": {
-            "_attributes": {
-            },
-            "_elements": [
-              "http://mirror.centos.org/centos/centos4/os/x86_64/",
-              "http://mirror2.centos.org/centos/centos4/os/x86_64/"
-            ]
-          },
-          "gpgkey": {
-            "_attributes": {
-            },
-            "_elements": [
-              "http://mirror.centos.org/centos/RPM-GPG-KEY-centos4",
-              "http://mirror2.centos.org/centos/RPM-GPG-KEY-centos4"
-            ]
-          },
+          "url": [
+            "http://mirror.centos.org/centos/centos4/os/x86_64/",
+            "http://mirror2.centos.org/centos/centos4/os/x86_64/"
+          ],
+          "gpgkey": [
+            "http://mirror.centos.org/centos/RPM-GPG-KEY-centos4",
+            "http://mirror2.centos.org/centos/RPM-GPG-KEY-centos4"
+          ],
           "enabled": true,
           "alias": "base",
           "mirrorlist": "",

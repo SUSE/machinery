@@ -2384,14 +2384,10 @@
         "package_name": "cronie",
         "package_version": "1.4.11",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "size",
-            "md5"
-          ]
-        },
+        "changes": [
+          "size",
+          "md5"
+        ],
         "user": "root",
         "group": "root",
         "mode": "600",
@@ -2402,28 +2398,20 @@
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "deleted"
-          ]
-        }
+        "changes": [
+          "deleted"
+        ]
       },
       {
         "name": "/etc/postfix/TLS_LICENSE",
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "mode",
-            "user",
-            "group"
-          ]
-        },
+        "changes": [
+          "mode",
+          "user",
+          "group"
+        ],
         "user": "bin",
         "group": "users",
         "mode": "666",
@@ -2434,13 +2422,9 @@
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "link_path"
-          ]
-        },
+        "changes": [
+          "link_path"
+        ],
         "user": "root",
         "group": "root",
         "mode": "777",
@@ -2459,30 +2443,22 @@
         "package_name": "rsync",
         "package_version": "3.1.0",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "deleted"
-          ]
-        }
+        "changes": [
+          "deleted"
+        ]
       },
       {
         "name": "/usr/share/doc/packages/rsync/README",
         "package_name": "rsync",
         "package_version": "3.1.0",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "size",
-            "mode",
-            "md5",
-            "user",
-            "group"
-          ]
-        },
+        "changes": [
+          "size",
+          "mode",
+          "md5",
+          "user",
+          "group"
+        ],
         "mode": "664",
         "user": "bin",
         "group": "wheel",
@@ -2493,13 +2469,9 @@
         "package_name": "postfix",
         "package_version": "2.11.6",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "link_path"
-          ]
-        },
+        "changes": [
+          "link_path"
+        ],
         "mode": "777",
         "user": "root",
         "group": "root",

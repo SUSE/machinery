@@ -2045,469 +2045,313 @@
         "name": "+",
         "password": "",
         "gid": null,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "audio",
         "password": "x",
         "gid": 17,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "bin",
         "password": "x",
         "gid": 1,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
-            "daemon"
-          ]
-        }
+        "users": [
+          "daemon"
+        ]
       },
       {
         "name": "cdrom",
         "password": "x",
         "gid": 20,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "console",
         "password": "x",
         "gid": 21,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "daemon",
         "password": "x",
         "gid": 2,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "dialout",
         "password": "x",
         "gid": 16,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "disk",
         "password": "x",
         "gid": 6,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "floppy",
         "password": "x",
         "gid": 19,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "ftp",
         "password": "x",
         "gid": 49,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "games",
         "password": "x",
         "gid": 40,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "kmem",
         "password": "x",
         "gid": 9,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "lock",
         "password": "x",
         "gid": 54,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "lp",
         "password": "x",
         "gid": 7,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "mail",
         "password": "x",
         "gid": 12,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "man",
         "password": "x",
         "gid": 62,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "messagebus",
         "password": "x",
         "gid": 497,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "modem",
         "password": "x",
         "gid": 43,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "news",
         "password": "x",
         "gid": 13,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "nobody",
         "password": "x",
         "gid": 65533,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "nogroup",
         "password": "x",
         "gid": 65534,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
-            "nobody"
-          ]
-        }
+        "users": [
+          "nobody"
+        ]
       },
       {
         "name": "polkitd",
         "password": "x",
         "gid": 495,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "public",
         "password": "x",
         "gid": 32,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "root",
         "password": "x",
         "gid": 0,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "shadow",
         "password": "x",
         "gid": 15,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "sshd",
         "password": "x",
         "gid": 496,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "sys",
         "password": "x",
         "gid": 3,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "systemd-journal",
         "password": "x",
         "gid": 499,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "tape",
         "password": "x",
         "gid": 498,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "trusted",
         "password": "x",
         "gid": 42,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "tty",
         "password": "x",
         "gid": 5,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "users",
         "password": "x",
         "gid": 100,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "utmp",
         "password": "x",
         "gid": 22,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "uucp",
         "password": "x",
         "gid": 14,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "vagrant",
         "password": "x",
         "gid": 1000,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "video",
         "password": "x",
         "gid": 33,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "wheel",
         "password": "x",
         "gid": 10,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "www",
         "password": "x",
         "gid": 8,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       },
       {
         "name": "xok",
         "password": "x",
         "gid": 41,
-        "users": {
-          "_attributes": {
-          },
-          "_elements": [
+        "users": [
 
-          ]
-        }
+        ]
       }
     ]
   },
@@ -3052,13 +2896,9 @@
         "package_name": "cronie",
         "package_version": "1.4.12",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "md5"
-          ]
-        },
+        "changes": [
+          "md5"
+        ],
         "user": "root",
         "group": "root",
         "mode": "644",
@@ -3076,26 +2916,18 @@
         "package_name": "bash",
         "package_version": "4.2",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "deleted"
-          ]
-        }
+        "changes": [
+          "deleted"
+        ]
       },
       {
         "name": "/usr/share/bash/helpfiles/read",
         "package_name": "bash",
         "package_version": "4.2",
         "status": "changed",
-        "changes": {
-          "_attributes": {
-          },
-          "_elements": [
-            "md5"
-          ]
-        },
+        "changes": [
+          "md5"
+        ],
         "mode": "644",
         "user": "root",
         "group": "root",
