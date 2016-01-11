@@ -40,20 +40,20 @@ class SpecTemplate
       case operator
         when "!="
           [
-            { :name => name, :operator => "<", :version => version },
-            { :name => name, :operator => ">", :version => version }
+            { name: name, operator: "<", version: version },
+            { name: name, operator: ">", version: version }
           ]
         when "~>"
           if version.to_s.split(".").size > 1
             [
-              { :name => name, :operator => ">=", :version => version },
-              { :name => name, :operator => "<", :version => version.bump }
+              { name: name, operator: ">=", version: version },
+              { name: name, operator: "<", version: version.bump }
             ]
           else
-            { :name => name }
+            { name: name }
           end
         else
-          { :name => name, :operator => operator, :version => version }
+          { name: name, operator: operator, version: version }
       end
     end
   end
