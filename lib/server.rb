@@ -191,7 +191,7 @@ class Server < Sinatra::Base
           original_line_number += 1
         end
 
-        entry
+        Machinery::Object.new entry
       end
 
       diff_object
