@@ -1,8 +1,16 @@
 # Machinery Release Notes
 
+
+## Version 1.16.3 - Thu Jan 07 17:57:27 CET 2016 - thardeck@suse.de
+
+* Remove concept of "supported systems" in favor of letting Machinery run
+  everywhere. Whether a system can be built, exported, etc will be validated
+  from its related task by checking if the propper tooling is installed
+  (Fixes bnc#959558)
 * Remove hint for `show`, when `inspect-container` is run with `--show` option
 * Rephrase the startup messages and warn messages when starting the HTTP
-  server for compare, show, or serve system descriptions.
+  server for compare, show, or serve system descriptions
+* Change `serve` command to always list all system descriptions
 
 ## Version 1.16.2 - Tue Nov 24 13:17:18 CET 2015 - thardeck@suse.de
 
