@@ -47,7 +47,7 @@ class SpecTemplate
           if version.to_s.split(".").size > 1
             [
               { :name => name, :operator => ">=", :version => version },
-              { :name => name, :operator => "<=", :version => version.bump }
+              { :name => name, :operator => "<", :version => version.bump }
             ]
           else
             { :name => name }
