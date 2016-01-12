@@ -54,7 +54,7 @@ describe SpecTemplate do
       expect(template.build_requires).to include(
         {
           name: "gli",
-          operator: "<=",
+          operator: "<",
           version: Gem::Version.new("2.12.0")
         }
       )
