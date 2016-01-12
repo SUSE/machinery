@@ -1,6 +1,6 @@
 # Machinery RPM Changelog
 
-* reduce version restrictions for gems to the major version
+* reduce version restrictions for gems to the major version (bnc#961176)
 
 ## Version 1.16.3 - Thu Jan 07 17:57:27 CET 2016 - thardeck@suse.de
 
