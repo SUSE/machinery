@@ -1,6 +1,32 @@
 # Unmanaged files [192.168.121.137] (2014-11-25 18:21:52)
 
   Files extracted: yes
+  * /boot/grub2/bootpart.cfg (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 95 B
+
+  * /boot/grub2/i386-pc/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 3.1 MiB
+    Files: 513
+
+  * /boot/initrd.vmx (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 49.4 MiB
+
+  * /boot/linux.vmx (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 4.8 MiB
+
+  * /boot/unicode.pf2 (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 1.4 MiB
+
   * /etc/.pwd.lock (file)
     User/Group: root:root
     Mode: 600

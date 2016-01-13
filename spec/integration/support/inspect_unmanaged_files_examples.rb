@@ -21,6 +21,7 @@ shared_examples "inspect unmanaged files" do |base|
       [
         "/var/lib/logrotate.status",
         "/var/spool/cron/lastrun/cron.daily",
+        "/boot/0x*",
         "/var/log/sa",
         "/root/.local",
         "/etc/ssh",
