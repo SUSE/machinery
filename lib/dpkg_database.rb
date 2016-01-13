@@ -24,7 +24,7 @@ class DpkgDatabase < ManagedFilesDatabase
     Machinery.logger.warn(message)
     Machinery::Ui.warn("Warning: #{message}")
 
-    @system.run_command_with_progress("dpkg", "--verify", &block)
+    @system.run_command_with_progress("dpkg", "--verify", privileged: true, &block)
   end
 
   def package_for_file_path(file)
