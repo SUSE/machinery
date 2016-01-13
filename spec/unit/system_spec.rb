@@ -179,6 +179,12 @@ describe System do
 
       expect(callback_buffer).to eq("output1\noutput2\n")
     end
+
+    it "passes options to run_script" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_script).with("script", hash_including(:privileged))
+      system.run_script("script", privileged: true)
+    end
   end
 
   describe "#run_command_with_progress" do
@@ -195,6 +201,13 @@ describe System do
       end
 
       expect(callback_buffer).to eq("output1\noutput2\n")
+    end
+
+    it "passes options to run_command" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_command).
+        with("command", "parameter", hash_including(:privileged))
+      system.run_command_with_progress("command", "parameter", privileged: true)
     end
   end
 

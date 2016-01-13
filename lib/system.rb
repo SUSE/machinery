@@ -160,11 +160,15 @@ class System
     error_io = StringIO.new(error, "a")
     read_io = StringIO.new(output, "r")
 
+    options = command.last.is_a?(Hash) ? command.pop : {}
+    options[:stdout] = write_io
+    options[:stderr] = error_io
+
     inspect_thread = Thread.new do
       if type == :script
-        run_script(*command, stdout: write_io, stderr: error_io)
+        run_script(*command, options)
       else
-        run_command(*command, stdout: write_io, stderr: error_io)
+        run_command(*command, options)
       end
     end
 
