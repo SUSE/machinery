@@ -17,6 +17,71 @@ Machinery and its components/plugins, not by any external code.
 
 JSON serialization is used to store and exchange the system configuration.
 
+
+
+### Data Structures
+
+The machinery data model knows two data structures: Arrays and Objects.
+
+Objects hold a set of key-value pairs and the ruby object is a one-to-one mapping of the
+according JSON representation.
+
+```
+  "os": {
+    "name": "openSUSE 13.2 (Harlequin)",
+    "version": "13.2 (Harlequin)",
+    "architecture": "x86_64"
+  }
+```
+
+would be mapped to an ruby object which behaves like this, for example:
+
+```
+  os["name"] # => "openSUSE 13.2 (Harlequin)"
+  os.version # => "13.2 (Harlequin)"
+```
+
+Arrays on the other hand are not just a collection of elements (of an arbitrary type) but can also
+have attributes defined on the list itself. This can be used to specify whether a list of
+packages contains RPM or DEB packages, for example.
+
+The notation for these arrays is a JSON object containing two elements, an attribute JSON object
+and an array containing the elements:
+
+```
+  "packages": {
+    "_attributes": {
+      "package_system": "rpm"
+    },
+    "_elements": [
+      {
+        "name": "acl",
+        "version": "2.2.52",
+        "release": "6.4"
+      }
+    ]
+  }
+```
+
+The according `packages` array would then wrap the elements:
+
+```
+  packages.length # => 1
+  packages.first.name # => "acl"
+```
+
+and also have accessors defined for the attributes:
+
+```
+  packages.package_system # => "rpm"
+```
+
+If an Array does not have any attributes the "_attributes" object can be omitted. The "_elements"
+array on the other hand has to be set even if it is empty in order to distinguish Objects from
+Arrays.
+
+Array elements and Object values can be either primitive values or Arrays or Objects again.
+
 ### Structure
 
 At the top level, the data consists of a JSON object. Each key in this object
@@ -31,30 +96,40 @@ For example, a JSON document describing software configuration may look like thi
 
 ```json
 {
-  "repositories": [
-    {
-      "alias": "YaST:Head",
-      "name": "YaST:Head",
-      "type": "rpm-md",
-      "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99
+  "repositories": {
+    "_attributes": {
+      "repository_system": "zypp"
     },
-    ...
-  ],
-  "packages": [
-    {
-      "name": "kernel-default",
-      "version": "3.0.101",
-      "release": "0.35.1",
-      "arch": "x86_64",
-      "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-      "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+    "_elements": [
+      {
+        "alias": "YaST:Head",
+        "name": "YaST:Head",
+        "type": "rpm-md",
+        "url": "http://download.opensuse.org/repositories/YaST:/Head/openSUSE_12.3/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      },
+      ...
+    ]
+  },
+  "packages": {
+    "_attributes": {
+      "package_system": "rpm"
     },
-    ...
-  ],
+    "_elements": [
+      {
+        "name": "kernel-default",
+        "version": "3.0.101",
+        "release": "0.35.1",
+        "arch": "x86_64",
+        "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+        "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+      },
+      ...
+    ]
+  },
 
   "meta": {
     "format_version": 2,
@@ -82,6 +157,7 @@ deserialization. There are, however, two general rules:
      specified in the documentation (“unknown properties”). Data in such
      properties is simply ignored and carried through as opaque. This ensures
      future extensibility.
+
 
 ### Versioning
 
@@ -163,12 +239,18 @@ See for example the definition of the packages scope:
 class Package < Machinery::Object
 end
 
-class PackageList < Machinery::Array
-  has_elements class: Package
+class RpmPackage < Package
 end
 
-class PackagesScope < Machinery::Scope
-  contains PackageList
+class DpkgPackage < Package
+end
+
+class PackagesScope < Machinery::Array
+  include Machinery::Scope
+
+  has_attributes :package_system
+  has_elements class: DpkgPackage, if: { package_system: "dpkg" }
+  has_elements class: RpmPackage, if: { package_system: "rpm" }
 end
 ```
 

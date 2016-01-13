@@ -43,6 +43,7 @@ module Machinery
     attr_accessor :scope
 
     def initialize(elements = [], attributes = {})
+      attributes ||= {}
       @attribute_keys = self.class.attribute_keys || []
 
       unknown_attributes = attributes.keys.map(&:to_s) - @attribute_keys
@@ -141,16 +142,18 @@ module Machinery
     end
 
     def as_json
-      {
-        "_attributes" => @attributes,
-        "_elements" => @elements.map do |element|
-          if element.is_a?(Machinery::Array) || element.is_a?(Machinery::Object)
-            element.as_json
-          else
-            element
-          end
+      object = {}
+
+      object["_attributes"] = @attributes unless @attributes.empty?
+      object["_elements"] = @elements.map do |element|
+        if element.is_a?(Machinery::Array) || element.is_a?(Machinery::Object)
+          element.as_json
+        else
+          element
         end
-      }
+      end
+
+      object
     end
 
     def compare_with(other)

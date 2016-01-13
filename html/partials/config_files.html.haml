@@ -20,11 +20,11 @@
                     #{file.diff.additions} additions & #{file.diff.deletions} deletions
                   %table.diff
                     - file.diff.lines.each do |line|
-                      %tr{ class: line.type }
-                        %td.active.linenumber= line.original_line_number
-                        %td.linenumber= line.new_line_number
+                      %tr{ class: line[:type] }
+                        %td.active.linenumber= line[:original_line_number]
+                        %td.linenumber= line[:new_line_number]
                         %td
-                          = line.content
+                          = line[:content]
             .col-md-1
             .col-md-11
               %table.table.table-striped.table-hover.table-condensed.files-table.filterable

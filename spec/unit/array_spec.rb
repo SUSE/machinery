@@ -222,12 +222,9 @@ describe Machinery::Array do
 
       result = array.as_json
       expect(result).to eq(
-        "_attributes" => {
-        },
         "_elements" => [
           1,
           {
-            "_attributes" => {},
             "_elements" => ["a" => 1]
           },
           { "b" => 2 },

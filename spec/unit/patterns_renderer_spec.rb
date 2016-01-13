@@ -22,7 +22,6 @@ describe PatternsRenderer do
     create_test_description(json: <<-EOF)
       {
         "patterns": {
-          "_attributes": {},
           "_elements": [
             {
               "name": "base",
