@@ -26,12 +26,14 @@ describe Os do
     expect(OsSles12.new.can_run_machinery?).to be(true)
   end
 
-  it "returns a canonical name from the class" do
-    expect(OsSles12.canonical_name).to eq "SUSE Linux Enterprise Server 12"
-  end
-
   it "returns a canonical name from the object" do
     expect(OsSles12.new.canonical_name).to eq "SUSE Linux Enterprise Server 12"
+  end
+
+  it "returns a canoncial name for every Os class" do
+    ObjectSpace.each_object(::Class).select { |klass| klass < Os }.each do |klass|
+      expect { klass.canonical_name }.not_to raise_error
+    end
   end
 
   describe "#module_required_by_package" do
