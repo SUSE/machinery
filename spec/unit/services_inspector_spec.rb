@@ -128,6 +128,8 @@ EOF
         with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
         with("initctl").and_return(true)
+      allow(system).to receive(:has_command?).
+        with("chkconfig").and_return(false)
       expect(system).to receive(:run_command).
         with(
           "/usr/sbin/service",
@@ -192,6 +194,34 @@ EOF
       expect {
         inspector.inspect(filter)
       }.to raise_error(Machinery::Errors::MissingRequirement)
+    end
+
+    it "returns data about Upstart services on a rhel6 system" do
+      allow(system).to receive(:has_command?).
+        with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(true)
+      allow(system).to receive(:has_command?).
+        with("chkconfig").and_return(true)
+      allow(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--version")
+      expect(inspector).to receive(:parse_redhat_chkconfig).
+        and_return([
+          Service.new(name: "crond", state: "on"),
+          Service.new(name: "dnsmasq", state: "off")])
+
+      inspector.inspect(filter)
+
+      expect(description.services).to eq(
+        ServicesScope.new(
+          [
+            Service.new(name: "crond", state: "on"),
+            Service.new(name: "dnsmasq", state: "off"),
+          ],
+          init_system: "upstart"
+        )
+      )
+      expect(inspector.summary).to eq("Found 2 services.")
     end
 
     it "returns data about SysVinit services on a redhat system" do
