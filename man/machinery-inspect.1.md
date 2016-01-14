@@ -102,9 +102,16 @@ trigger errors.
     * `tar`
 
   * When inspecting as non-root the user has to have the following command
-    whitelist given in the sudoers file:
+    whitelist given in the sudoers file.
 
-    machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va \*,/bin/tar --create \*,/usr/bin/stat
+    * On rpm based systems, like SUSE or Red Hat:
+
+      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va \*,/bin/tar --create \*,/usr/bin/stat
+
+    * On dpkg based systems, like Debian or Ubuntu:
+
+      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg
+
 
   * To add a remote `machinery` user run as root:
 
