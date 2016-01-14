@@ -17,9 +17,9 @@
 
 class DpkgDatabase < ManagedFilesDatabase
   def managed_files_list(&block)
-    message = "The inspection of config-files and changed-managed files is not "\
-     "accurate on Ubuntu systems: Only content changes to a subset of files can "\
-     "be detected. Relevant changes might not be caught."
+    message = "The list of changed config and managed files is not complete on dpkg systems."\
+     "The reason for this is missing verifcation data:" \
+     " https://github.com/SUSE/machinery/wiki/Ubuntu-Inspection"
 
     Machinery.logger.warn(message)
     Machinery::Ui.warn("Warning: #{message}")
