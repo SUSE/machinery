@@ -1,8 +1,3 @@
-# check lib/os.rb for the distribution names
-"openSUSE 13.2 (Harlequin)":
-  - openSUSE-release-dvd
-"openSUSE 13.1 (Bottle)":
-  - openSUSE-release-dvd
-"SUSE Linux Enterprise Server 12":
-  - sle-sdk-release-DVD
-  - sles-release-DVD
+- openSUSE-release-dvd
+- sle-sdk-release-DVD
+- sles-release-DVD
