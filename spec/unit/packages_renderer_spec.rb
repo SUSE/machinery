@@ -41,6 +41,14 @@ describe PackagesRenderer do
               "arch": "i586",
               "vendor": "",
               "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+            },
+            {
+              "name": "adduser",
+              "version": "3.113+nmu3ubuntu3",
+              "release": "",
+              "arch": "all",
+              "vendor": "Ubuntu",
+              "checksum": "98c532cd738cfce59d448ed96ea5c8e7"
             }
           ]
         }
@@ -54,6 +62,7 @@ describe PackagesRenderer do
 
       expect(output).to include("bash-4.2-1.0.x86_64 (openSUSE)")
       expect(output).to include("kernel-desktop-3.7.10-1.0.i586 (N/A)")
+      expect(output).to include("adduser-3.113+nmu3ubuntu3.all (Ubuntu)")
     end
 
     context "when there are no packages" do
