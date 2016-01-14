@@ -3,6 +3,7 @@
 * The unmanaged-files scope filter will not include "/boot" by default anymore.
   In order to have the same behavior as before run:
   `machinery inspect --skip-files=/boot`
+* Fix crash during image build on SLES12 SP1 (gh#SUSE/machinery#1828)
 
 ## Version 1.16.3 - Thu Jan 07 17:57:27 CET 2016 - thardeck@suse.de
 
