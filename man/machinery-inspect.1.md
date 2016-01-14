@@ -108,7 +108,7 @@ trigger errors.
 
       machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va \*,/bin/tar --create \*,/usr/bin/stat
 
-    * On deb based systems, like Debian or Ubuntu:
+    * On dpkg based systems, like Debian or Ubuntu:
 
       machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg
 
