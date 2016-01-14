@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.16.4 - Thu Jan 14 18:35:47 CET 2016 - thardeck@suse.de
+
 * The unmanaged-files scope filter will not include "/boot" by default anymore.
   In order to have the same behavior as before run:
   `machinery inspect --skip-files=/boot`
