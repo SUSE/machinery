@@ -22,10 +22,6 @@ $(document).ready(function () {
     }
   });
 
-  $(".dismiss").click(function(){
-    $(this).closest(".scope").hide();
-  });
-
   // Hook up the toggle links
   $(".toggle").click(function(){
     $(this).closest(".scope").find(".scope_content").collapse("toggle");
