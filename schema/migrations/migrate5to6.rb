@@ -72,6 +72,12 @@ class Migrate5To6 < Migration
         },
         "_elements" => @hash["services"]["services"]
       }
+
+      if @hash.key?("os") && @hash["os"]["name"] == "Red Hat Enterprise Linux Server" &&
+          @hash["os"]["version"].start_with?("6.")
+
+        @hash["services"]["_attributes"]["init_system"] = "upstart"
+      end
     end
 
     ["users", "patterns"].each do |scope|
