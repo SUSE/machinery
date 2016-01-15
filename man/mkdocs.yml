@@ -1,0 +1,28 @@
+site_name: Machinery Documentation
+pages:
+- Welcome: index.md
+- Home:
+  - General: machinery_main_general.1.md
+  - Scopes: machinery_main_scopes.1.md
+  - "Use cases": machinery_main_usecases.1.md
+  - "Footer": machinery_footer.1.md
+- Commands:
+  - Analyze: machinery-analyze.1.md
+  - Build: machinery-build.1.md
+  - Compare: machinery-compare.1.md
+  - Config: machinery-config.1.md
+  - Copy: machinery-copy.1.md
+  - Deploy: machinery-deploy.1.md
+  - Export AutoYaST: machinery-export-autoyast.1.md
+  - Export Kiwi: machinery-export-kiwi.1.md
+  - Inspect: machinery-inspect.1.md
+  - Inspect Docker: machinery-inspect-docker.1.md
+  - List: machinery-list.1.md
+  - Man: machinery-man.1.md
+  - Move: machinery-move.1.md
+  - Remove: machinery-remove.1.md
+  - Serve: machinery-serve.1.md
+  - Show: machinery-show.1.md
+  - Upgrade Format: machinery-upgrade-format.1.md
+  - Validate: machinery-validate.1.md
+theme_dir: 'custom_theme'

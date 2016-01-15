@@ -1,14 +1,4 @@
 # Machinery — A Systems Management Toolkit for Linux
-<!--
-
-General procedure:
-
-1. Add the short description of a new command into the COMMANDS section
-2. Copy the subcommand-template.1.md to machinery-SUBCOMMAND.1.md
-3. Insert your description in your machinery-SUBCOMMAND.1.md file
-
--->
-
 
 ## SYNOPSIS
 
@@ -121,4 +111,3 @@ For example, if you are only interested in the installed packages, limit the
 scope to `packages`. This will output only the requested information.
 
 Machinery supports the following scopes:
-
