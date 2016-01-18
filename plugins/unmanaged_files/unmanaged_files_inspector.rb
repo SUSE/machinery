@@ -294,7 +294,7 @@ class UnmanagedFilesInspector < Inspector
       Machinery::Ui.puts(
         "Note: Using traditional inspection because only 'root' is supported as remote user."
       )
-    elsif @package_manager == "rpm"
+    elsif ["rpm", "dpkg"].include?(@package_manager)
       return true
     end
 
