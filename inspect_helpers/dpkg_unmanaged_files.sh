@@ -16,19 +16,32 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-for i in $(dpkg --get-selections | grep -v deinstall | awk '{print $1}'); do
-  while read f; do
-    TYPE=""
-    LINK=""
-    if [ -f "$f" ]; then
-      TYPE="-"
-    elif [ -d "$f" ]; then
-      TYPE="d"
-    elif [ -L "$f" ]; then
-      TYPE="l"
-      LINK=" -> $(readlink -f "$f")"
-    fi
+if [ $UID -ne "0" ]; then
+   sudoprefix="sudo -n"
+fi
 
-    echo "$TYPE $f$LINK"
-  done <<< "$(dpkg -L $i)"
+for i in $($sudoprefix dpkg --get-selections | grep -v deinstall | awk '{print $1}'); do
+  while read f; do
+    type=""
+    link=""
+    path=${f#*:}
+    case "$f" in
+      directory:*)
+        type="d"
+        ;;
+      symbolic\ link:*)
+        type="l"
+        link=" -> $($sudoprefix readlink "$path")"
+        ;;
+      regular*\ file:*)
+        type="-"
+        ;;
+      *)
+        ;;
+    esac
+    echo "$type $path$link"
+  done <<< "$($sudoprefix dpkg -L $i | \
+    sed -e 's/^package diverts others to: //' \
+        -e 's/^diverted by .* to: //' \
+        -e 's/^locally diverted to: //' | xargs -n100 -d'\n' $sudoprefix stat -c "%F:%n")"
 done
