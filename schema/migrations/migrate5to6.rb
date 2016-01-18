@@ -77,6 +77,8 @@ class Migrate5To6 < Migration
           @hash["os"]["version"].start_with?("6.")
 
         @hash["services"]["_attributes"]["init_system"] = "upstart"
+
+        @hash["services"]["_elements"].each { |service| service["legacy_sysv"] = true }
       end
     end
 
