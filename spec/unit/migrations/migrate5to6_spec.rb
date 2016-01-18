@@ -318,6 +318,7 @@ describe Migrate5To6 do
 
     it "migrates the services scope" do
       expect(description_hash["services"]["_elements"].first["name"]).to eq("mysql.service")
+      expect(description_hash["services"]["_elements"].first["legacy_sysv"]).to eq(true)
       expect(description_hash["services"]["_attributes"]["init_system"]).to eq("upstart")
     end
   end
