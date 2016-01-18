@@ -290,4 +290,36 @@ describe Migrate5To6 do
     expect(description_hash["groups"]["_elements"].first["name"]).to eq("the_element")
     expect(description_hash["groups"]["_elements"].first["users"]).to eq(["foo", "bar"])
   end
+
+  context "rhel6" do
+    let(:description_hash) {
+      JSON.parse(<<-EOT)
+        {
+          "services": {
+            "init_system": "systemd",
+            "services": [
+              {
+                "name": "mysql.service",
+                "state": "enabled"
+              }
+            ]
+          },
+          "os": {
+            "name": "Red Hat Enterprise Linux Server",
+            "version": "6.5 (Santiago)",
+            "architecture": "x86_64"
+          },
+          "meta": {
+            "format_version": 5
+          }
+        }
+      EOT
+    }
+
+    it "migrates the services scope" do
+      expect(description_hash["services"]["_elements"].first["name"]).to eq("mysql.service")
+      expect(description_hash["services"]["_attributes"]["init_system"]).to eq("upstart")
+    end
+  end
+
 end

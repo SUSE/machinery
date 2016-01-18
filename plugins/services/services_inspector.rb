@@ -24,29 +24,24 @@ class ServicesInspector < Inspector
   end
 
   def inspect(_filter, _options = {})
-    if @description.environment.system_type == "docker"
-      result = ServicesScope.new(
-        [],
-        init_system: "none"
-      )
-    elsif @system.has_command?("systemctl")
-      result = ServicesScope.new(
-        inspect_systemd_services,
-        init_system: "systemd"
-      )
-    elsif @system.has_command?("initctl")
-      result = ServicesScope.new(
-        inspect_ubuntu_services,
-        init_system: "upstart"
-      )
-    else
-      result = ServicesScope.new(
-        inspect_sysvinit_services,
-        init_system: "sysvinit"
-      )
-    end
+    services, init_system =
+      case
+      when @description.environment.system_type == "docker"
+        then [[], "none"]
+      when @system.has_command?("systemctl")
+        then [inspect_systemd_services, "systemd"]
+      when @system.has_command?("initctl") && @system.has_command?("chkconfig")
+        then [parse_redhat_chkconfig, "upstart"]
+      when @system.has_command?("initctl") && !@system.has_command?("chkconfig")
+        then [inspect_ubuntu_services, "upstart"]
+      else
+        [inspect_sysvinit_services, "sysvinit"]
+      end
 
-    @description.services = result
+    @description.services = ServicesScope.new(
+      services,
+      init_system: init_system
+    )
   end
 
   def summary
