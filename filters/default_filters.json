@@ -19,6 +19,7 @@
     "/unmanaged_files/name=/etc/init.d/rc4.d",
     "/unmanaged_files/name=/etc/init.d/rc5.d",
     "/unmanaged_files/name=/etc/init.d/rc6.d",
-    "/unmanaged_files/name=/etc/init.d/rcS.d"
+    "/unmanaged_files/name=/etc/init.d/rcS.d",
+    "/unmanaged_files/name=/var/lib/dpkg"
   ]
 }
