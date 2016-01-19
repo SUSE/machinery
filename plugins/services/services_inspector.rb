@@ -38,7 +38,6 @@ class ServicesInspector < Inspector
         [inspect_sysvinit_services, "sysvinit"]
       end
 
-
     @description.services = ServicesScope.new(
       services,
       init_system: init_system

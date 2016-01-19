@@ -27,6 +27,18 @@ describe ServicesInspector do
   let(:filter) { nil }
   subject(:inspector) { ServicesInspector.new(system, description) }
 
+  let(:chkconfig_redhat_output) {
+    <<-EOF
+crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
+dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
+
+xinetd based services:
+        chargen-dgram:  off
+        chargen-stream: on
+        eklogin:        off
+EOF
+  }
+
   describe "#inspect" do
     let(:systemctl_list_unit_files_output) {
       <<-EOF
@@ -196,13 +208,6 @@ EOF
       }.to raise_error(Machinery::Errors::MissingRequirement)
     end
 
-    let(:rhel_chkconfig_list_output) {
-      <<-EOF
-crond           0:off   1:off   2:on    3:on    4:on    5:on    6:off
-firstboot       0:off   1:off   2:off   3:off    4:off   5:on    6:off
-EOF
-    }
-
     it "returns data about Upstart services on a rhel6 system" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
@@ -216,20 +221,23 @@ EOF
       allow(system).to receive(:run_command).
         with("/sbin/runlevel", stdout: :capture).and_return("N 3")
       allow(system).to receive(:run_command).
-        with("/sbin/chkconfig", "--list", stdout: :capture).and_return(rhel_chkconfig_list_output)
+        with("/sbin/chkconfig", "--list", stdout: :capture).and_return(chkconfig_redhat_output)
 
       inspector.inspect(filter)
 
-      expect(description.services).to eq(
+      expect(description.services).to match_array(
         ServicesScope.new(
           [
             Service.new(name: "crond", state: "on", legacy_sysv: true),
-            Service.new(name: "firstboot", state: "off", legacy_sysv: true)
+            Service.new(name: "dnsmasq", state: "off", legacy_sysv: true),
+            Service.new(name: "chargen-dgram", state: "off", legacy_sysv: true),
+            Service.new(name: "chargen-stream", state: "on", legacy_sysv: true),
+            Service.new(name: "eklogin", state: "off", legacy_sysv: true)
           ],
           init_system: "upstart"
         )
       )
-      expect(inspector.summary).to eq("Found 2 services.")
+      expect(inspector.summary).to eq("Found 5 services.")
     end
 
     it "returns data about SysVinit services on a redhat system" do
@@ -239,23 +247,27 @@ EOF
         with("initctl").and_return(false)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version")
-      expect(inspector).to receive(:parse_redhat_chkconfig).
-        and_return([
-          Service.new(name: "crond", state: "on"),
-          Service.new(name: "dnsmasq", state: "off")])
+      allow(system).to receive(:check_requirement).with("/sbin/runlevel").and_return(true)
+      allow(system).to receive(:run_command).
+        with("/sbin/runlevel", stdout: :capture).and_return("N 3")
+      allow(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--list", stdout: :capture).and_return(chkconfig_redhat_output)
 
       inspector.inspect(filter)
 
-      expect(description.services).to eq(
+      expect(description.services).to match_array(
         ServicesScope.new(
           [
             Service.new(name: "crond", state: "on"),
             Service.new(name: "dnsmasq", state: "off"),
+            Service.new(name: "chargen-dgram", state: "off"),
+            Service.new(name: "chargen-stream", state: "on"),
+            Service.new(name: "eklogin", state: "off")
           ],
           init_system: "sysvinit"
         )
       )
-      expect(inspector.summary).to eq("Found 2 services.")
+      expect(inspector.summary).to eq("Found 5 services.")
     end
   end
 
@@ -314,17 +326,6 @@ EOF
 
   describe "parse_redhat_chkconfig" do
     it "returns data about SysVinit services on a redhat system" do
-      chkconfig_redhat_output =
-        <<-EOF
-crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
-dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
-
-xinetd based services:
-        chargen-dgram:  off
-        chargen-stream: on
-        eklogin:        off
-EOF
-
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).
