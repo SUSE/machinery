@@ -110,7 +110,7 @@ trigger errors.
 
     * On dpkg based systems, like Debian or Ubuntu:
 
-      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg
+      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg,/usr/bin/readlink
 
 
   * To add a remote `machinery` user run as root:
