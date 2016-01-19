@@ -31,7 +31,7 @@ class ServicesInspector < Inspector
       when @system.has_command?("systemctl")
         then [inspect_systemd_services, "systemd"]
       when @system.has_command?("initctl") && @system.has_command?("chkconfig")
-        then [parse_redhat_chkconfig, "upstart"]
+        then [parse_redhat_chkconfig.map { |s| s["legacy_sysv"] = true; s }, "upstart"]
       when @system.has_command?("initctl") && !@system.has_command?("chkconfig")
         then [inspect_ubuntu_services, "upstart"]
       else
