@@ -92,8 +92,8 @@ trigger errors.
 
   * The system to be inspected needs to have the following commands:
 
-    * `rpm`
-    * `zypper` or `yum`
+    * `rpm` or `dpkg`
+    * `zypper`, `yum` or `apt-cache`
     * `rsync`
     * `chkconfig`
     * `cat`
