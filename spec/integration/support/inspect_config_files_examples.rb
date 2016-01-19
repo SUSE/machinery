@@ -29,7 +29,7 @@ shared_examples "inspect config files" do |base|
         )
         if base == "ubuntu_1404"
           expect(inspect_command).to succeed.with_stderr.
-            and include_stderr("Relevant changes might not be caught")
+            and include_stderr("The list of changed config and managed files is not complete")
         else
           expect(inspect_command).to succeed
         end
