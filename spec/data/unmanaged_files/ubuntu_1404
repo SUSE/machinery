@@ -10,9 +10,6 @@
   * /bin/netcat (link)
     User/Group: root:root
 
-  * /bin/sh.distrib (link)
-    User/Group: root:root
-
   * /etc/.pwd.lock (file)
     User/Group: root:root
     Mode: 600
@@ -420,8 +417,6 @@
     Mode: 644
     Size: 12 KiB
 
-  * /etc/blkid.tab (link)
-    User/Group: root:root
 
   * /etc/ca-certificates.conf (file)
     User/Group: root:root
@@ -2709,11 +2704,6 @@
   * /usr/bin/pager (link)
     User/Group: root:root
 
-  * /usr/bin/pod2latex.bundled (file)
-    User/Group: root:root
-    Mode: 755
-    Size: 10.1 KiB
-
   * /usr/bin/rcp (link)
     User/Group: root:root
 
@@ -2753,19 +2743,10 @@
   * /usr/bin/write (link)
     User/Group: root:root
 
-  * /usr/lib/gcc/x86_64-linux-gnu/4.8.4 (link)
-    User/Group: root:root
-
-  * /usr/lib/gcc/x86_64-linux-gnu/4.9.1 (link)
-    User/Group: root:root
-
   * /usr/lib/locale/locale-archive (file)
     User/Group: root:root
     Mode: 644
     Size: 2.8 MiB
-
-  * /usr/lib/perl/5.18 (link)
-    User/Group: root:root
 
   * /usr/lib/python2.7/BaseHTTPServer.pyc (file)
     User/Group: root:root
@@ -6488,17 +6469,11 @@
     Size: 14 KiB
     Files: 4
 
-  * /usr/lib/python3/dist-packages/DistUpgrade/NvidiaDetector (link)
-    User/Group: root:root
-
   * /usr/lib/python3/dist-packages/DistUpgrade/__pycache__/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 399.3 KiB
     Files: 38
-
-  * /usr/lib/python3/dist-packages/DistUpgrade/janitor (link)
-    User/Group: root:root
 
   * /usr/lib/python3/dist-packages/LanguageSelector/__pycache__/ (dir)
     User/Group: root:root
@@ -6608,12 +6583,6 @@
     Size: 130.3 KiB
     Files: 9
 
-  * /usr/lib/ssl/certs (link)
-    User/Group: root:root
-
-  * /usr/lib/ssl/private (link)
-    User/Group: root:root
-
   * /usr/local/ (dir)
     User/Group: root:root
     Mode: 755
@@ -6689,81 +6658,6 @@
     Mode: 755
     Size: 14.4 KiB
     Files: 6
-
-  * /usr/share/doc/debconf-i18n (link)
-    User/Group: root:root
-
-  * /usr/share/doc/grub-pc (link)
-    User/Group: root:root
-
-  * /usr/share/doc/grub-pc-bin (link)
-    User/Group: root:root
-
-  * /usr/share/doc/grub2-common (link)
-    User/Group: root:root
-
-  * /usr/share/doc/klibc-utils (link)
-    User/Group: root:root
-
-  * /usr/share/doc/kmod (link)
-    User/Group: root:root
-
-  * /usr/share/doc/krb5-locales/CHANGES.gz (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libgcc1 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libjson0 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libncurses5 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libncursesw5 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libnih-dbus1 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libpython2.7-stdlib (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libpython3.4-stdlib (link)
-    User/Group: root:root
-
-  * /usr/share/doc/libstdc++6 (link)
-    User/Group: root:root
-
-  * /usr/share/doc/module-init-tools (link)
-    User/Group: root:root
-
-  * /usr/share/doc/openssh-server (link)
-    User/Group: root:root
-
-  * /usr/share/doc/openssh-sftp-server (link)
-    User/Group: root:root
-
-  * /usr/share/doc/openssl/changelog.gz (link)
-    User/Group: root:root
-
-  * /usr/share/doc/perl-base (link)
-    User/Group: root:root
-
-  * /usr/share/doc/python2.7/python-policy.html (link)
-    User/Group: root:root
-
-  * /usr/share/doc/tcpd (link)
-    User/Group: root:root
-
-  * /usr/share/doc/vim-tiny (link)
-    User/Group: root:root
-
-  * /usr/share/groff/current (link)
-    User/Group: root:root
-
-  * /usr/share/groff/site-tmac (link)
-    User/Group: root:root
 
   * /usr/share/info/dir (file)
     User/Group: root:root
@@ -6898,11 +6792,6 @@
   * /usr/share/man/man1/pager.1.gz (link)
     User/Group: root:root
 
-  * /usr/share/man/man1/pod2latex.bundled.1.gz (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 3.4 KiB
-
   * /usr/share/man/man1/rcp.1.gz (link)
     User/Group: root:root
 
@@ -6913,9 +6802,6 @@
     User/Group: root:root
 
   * /usr/share/man/man1/rsh.1.gz (link)
-    User/Group: root:root
-
-  * /usr/share/man/man1/sh.distrib.1.gz (link)
     User/Group: root:root
 
   * /usr/share/man/man1/telnet.1.gz (link)
@@ -7101,12 +6987,6 @@
     Size: 2.8 KiB
     Files: 2
 
-  * /usr/share/misc/magic (link)
-    User/Group: root:root
-
-  * /usr/share/perl/5.18 (link)
-    User/Group: root:root
-
   * /usr/share/python/debpython/__init__.pyc (file)
     User/Group: root:root
     Mode: 644
@@ -7168,9 +7048,6 @@
     Mode: 755
     Size: 31.1 KiB
     Files: 6
-
-  * /usr/share/vim/vimfiles (link)
-    User/Group: root:root
 
   * /vagrant/ (dir)
     User/Group: vagrant:vagrant
