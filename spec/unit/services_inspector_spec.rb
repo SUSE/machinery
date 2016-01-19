@@ -196,6 +196,13 @@ EOF
       }.to raise_error(Machinery::Errors::MissingRequirement)
     end
 
+    let(:rhel_chkconfig_list_output) {
+      <<-EOF
+crond           0:off   1:off   2:on    3:on    4:on    5:on    6:off
+firstboot       0:off   1:off   2:off   3:off    4:off   5:on    6:off
+EOF
+    }
+
     it "returns data about Upstart services on a rhel6 system" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
@@ -205,18 +212,19 @@ EOF
         with("chkconfig").and_return(true)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version")
-      expect(inspector).to receive(:parse_redhat_chkconfig).
-        and_return([
-          Service.new(name: "crond", state: "on"),
-          Service.new(name: "dnsmasq", state: "off")])
+      allow(system).to receive(:check_requirement).with("/sbin/runlevel").and_return(true)
+      allow(system).to receive(:run_command).
+        with("/sbin/runlevel", stdout: :capture).and_return("N 3")
+      allow(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--list", stdout: :capture).and_return(rhel_chkconfig_list_output)
 
       inspector.inspect(filter)
 
       expect(description.services).to eq(
         ServicesScope.new(
           [
-            Service.new(name: "crond", state: "on"),
-            Service.new(name: "dnsmasq", state: "off"),
+            Service.new(name: "crond", state: "on", legacy_sysv: true),
+            Service.new(name: "firstboot", state: "off", legacy_sysv: true)
           ],
           init_system: "upstart"
         )
