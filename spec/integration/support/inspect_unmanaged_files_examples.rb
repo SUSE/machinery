@@ -21,6 +21,7 @@ shared_examples "inspect unmanaged files" do |base, skip_remote_mounts_test|
       [
         "/var/lib/logrotate.status",
         "/var/spool/cron/lastrun/cron.daily",
+        "/boot/0x*",
         "/var/log/sa",
         "/root/.local",
         "/etc/ssh",

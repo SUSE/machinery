@@ -92,6 +92,10 @@ class OsUnknown < Os
 end
 
 class OsSuse < Os
+  def self.canonical_name
+    "SUSE OS"
+  end
+
   def kiwi_bootloader
     "grub2"
   end

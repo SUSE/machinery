@@ -17,3 +17,9 @@ function setCurrentScopeState(anchor) {
     anchor.removeClass("over-the-top");
   }
 }
+
+$(document).ready(function () {
+  $(".dismiss").click(function(){
+    $(this).closest(".scope").hide();
+  });
+})

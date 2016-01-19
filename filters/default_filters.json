@@ -11,7 +11,6 @@
     "/unmanaged_files/name=/var/lib/rpm",
     "/unmanaged_files/name=/.snapshots",
     "/unmanaged_files/name=/proc",
-    "/unmanaged_files/name=/boot",
     "/unmanaged_files/name=/etc/init.d/boot.d",
     "/unmanaged_files/name=/etc/init.d/rc0.d",
     "/unmanaged_files/name=/etc/init.d/rc1.d",

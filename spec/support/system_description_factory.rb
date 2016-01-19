@@ -62,6 +62,7 @@ module SystemDescriptionFactory
   # +hostname+: Hostname of the inspected host.
   # +add_scope_meta+: Add meta data for each scope if true.
   # +filters+: Add filter information to the meta section
+  # +format_version+: Define the format version for the system description
   def create_test_description(options = {})
     options = {
         name: "description",
@@ -105,7 +106,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: 6
+      format_version: options.fetch(:format_version, 6)
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
