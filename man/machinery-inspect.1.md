@@ -95,7 +95,7 @@ trigger errors.
     * `rpm` or `dpkg`
     * `zypper`, `yum` or `apt-cache`
     * `rsync`
-    * `chkconfig`
+    * `chkconfig` or `systemctl`
     * `cat`
     * `sed`
     * `find`
