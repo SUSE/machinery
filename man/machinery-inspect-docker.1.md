@@ -89,7 +89,6 @@ trigger errors.
     * `rpm`
     * `zypper` or `yum`
     * `rsync`
-    * `chkconfig`
     * `cat`
     * `sed`
     * `find`
