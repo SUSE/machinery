@@ -32,7 +32,6 @@ RSpec.describe "Alert Message", type: :feature do
 
     let(:description) {
       create_test_description(
-        scopes:        ["os", "packages", "repositories", "services"],
         name:          "name",
         store:         store,
         store_on_disk: true,
