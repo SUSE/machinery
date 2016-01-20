@@ -263,43 +263,5 @@ describe RemoteSystem do
         remote_system.remove_file("/tmp/foo")
       end
     end
-
-    describe "#get_cmd_options" do
-      it "returns nothing when no port and no ssh key was set" do
-        expect(rsys.get_cmd_options).to eq([])
-      end
-
-      it "returns the -p option with its value for ssh" do
-        expect(rsys_port.get_cmd_options(:ssh)).to eq(["-p", "5000"])
-      end
-
-      it "returns the -p option with its value for scp" do
-        expect(rsys_port.get_cmd_options(:scp)).to eq(["-P", "5000"])
-      end
-
-      it "returns the -i option with its value" do
-        expect(rsys_key.get_cmd_options(:ssh)).to eq(["-i", "/tmp/private_ssh_key"])
-      end
-
-      it "raises an exception when no :ssh and no :scp flag was set" do
-        expect { rsys_port.get_cmd_options }.to raise_error(Machinery::Errors::MachineryError)
-      end
-    end
-
-    describe "#build_basic_ssh_command" do
-      it "returns a valid command for ssh" do
-        expect(rsys_port_and_key.build_basic_ssh_command).to eq(
-          ["ssh", "-p", "5000", "-i", "/tmp/private_ssh_key"]
-        )
-      end
-    end
-
-    describe "#build_basic_scp_command" do
-      it "returns a valid command for scp" do
-        expect(rsys_port_and_key.build_basic_scp_command).to eq(
-          ["scp", "-P", "5000", "-i", "/tmp/private_ssh_key"]
-        )
-      end
-    end
   end
 end

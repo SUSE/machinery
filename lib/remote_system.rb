@@ -16,16 +16,23 @@
 # you may find current contact information at www.suse.com
 
 class RemoteSystem < System
-  attr_accessor :host
-  attr_accessor :remote_user
+  attr_reader :host, :remote_user, :ssh_port, :ssh_identity_file
 
   def type
     "remote"
   end
 
-  def initialize(host, remote_user = "root")
+  def initialize(host, opts = {})
+    options = {
+      remote_user: "root",
+      ssh_port: nil,
+      ssh_identity_file: nil
+    }.merge(opts)
+
     @host = host
-    @remote_user = remote_user
+    @remote_user = options[:remote_user]
+    @ssh_port = options[:ssh_port]
+    @ssh_identity_file = options[:ssh_identity_file]
 
     connect
   end
@@ -78,9 +85,10 @@ class RemoteSystem < System
 
     sudo = ["sudo", "-n"] if options[:privileged] && remote_user != "root"
     cmds = [
-      "ssh", "#{remote_user}@#{host}", "-o", "LogLevel=ERROR", sudo, "LANGUAGE=",
-      "LC_ALL=#{locale}", *piped_args, options
+      *build_command(:ssh), "#{remote_user}@#{host}", "-o", \
+      "LogLevel=ERROR", sudo, "LANGUAGE=", "LC_ALL=#{locale}", *piped_args, options
     ].compact.flatten
+
     cheetah_class.run(*cmds)
   rescue Cheetah::ExecutionFailed => e
     if e.stderr && e.stderr.include?("password is required")
@@ -93,7 +101,8 @@ class RemoteSystem < System
   # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def connect
-    LoggedCheetah.run "ssh", "-q", "-o", "BatchMode=yes", "#{remote_user}@#{host}", ":"
+    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+      "#{remote_user}@#{host}", ":")
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
       "Could not establish SSH connection to host '#{host}'. Please make sure that " \
@@ -117,7 +126,7 @@ class RemoteSystem < System
 
     cmd = [
       "rsync",
-      "-e", "ssh",
+      "-e", build_command(:ssh).join(" "),
       "--chmod=go-rwx",
       "--files-from=-",
       "--rsync-path=#{rsync_path}",
@@ -153,7 +162,7 @@ class RemoteSystem < System
     destination = "#{remote_user}@#{host}:#{destination}"
 
     cmd = [
-      "scp",
+      *build_command(:scp),
       source,
       destination
     ]
@@ -174,5 +183,29 @@ class RemoteSystem < System
     raise Machinery::Errors::RemoveFileFailed.new(
       "Could not remove file '#{file}' on host '#{host}'.\nError: #{e}"
     )
+  end
+
+  private
+
+  def build_command(name)
+    raise Machinery::Errors::MachineryError.new("You must set one of these flags in " \
+      "build_command: :ssh or :scp") unless [:ssh, :scp].include?(name)
+
+    command = [name.to_s]
+
+    if name == :ssh && @ssh_port
+      command.push("-p")
+      command.push(@ssh_port.to_s)
+    elsif name == :scp && @ssh_port
+      command.push("-P")
+      command.push(@ssh_port.to_s)
+    end
+
+    if @ssh_identity_file
+      command.push("-i")
+      command.push(@ssh_identity_file)
+    end
+
+    command
   end
 end

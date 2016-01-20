@@ -33,9 +33,9 @@ class System
 
   attr_writer :locale
 
-  def self.for(host, remote_user = "root")
+  def self.for(host, opts = {})
     if host && host != "localhost"
-      RemoteSystem.new(host, remote_user)
+      RemoteSystem.new(host, opts)
     else
       LocalSystem.new
     end

@@ -30,20 +30,20 @@ module Machinery
         default: true,
         description: "Show hints about usage of Machinery in the context of the commands ran by" \
           " the user"
-      )
+           )
       entry("remote-user",
         default: "root",
         description: "Defines the user which is used to access the inspected system via SSH"
-      )
+           )
       entry("experimental-features",
         default: false,
         description: "Enable experimental features. See " \
           "https://github.com/SUSE/machinery/wiki/Experimental-Features for more details"
-      )
+           )
       entry("http_server_port",
         default: 7585,
         description: "TCP port used by the HTTP server for the HTML view"
-      )
+           )
     end
 
     def deprecated_entries
