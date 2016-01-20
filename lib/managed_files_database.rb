@@ -48,7 +48,7 @@ class ManagedFilesDatabase
 
     result = managed_files_list(&block).each_line.map do |line|
       line.chomp!
-      next unless line.match(/^[^ ]+[ ]+. \/.*$/)
+      next unless line =~ /^[^ ]+[ ]+. \/.*$/
 
       file, changes, type = parse_changes_line(line)
 

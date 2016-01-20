@@ -110,7 +110,7 @@ class ServicesInspector < Inspector
     services = enabled.map(&:first).each.map do |name|
       Service.new(name: name, state: "enabled", legacy_sysv: false)
     end
-    services += disabled.map(&:first).each.map do |name|
+    services + disabled.map(&:first).each.map do |name|
       Service.new(name: name, state: "disabled", legacy_sysv: false)
     end
   end

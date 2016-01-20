@@ -112,12 +112,10 @@ class RepositoriesInspector < Inspector
           distribution: $3,
           components: $4 ? $4.strip.split(" ") : []
         )
-      else
-        if line =~ /Types: deb/
-          Machinery::Ui.warn(
-            "Warning: An unsupported rfc822 style repository was found, which will be ignored."
-          )
-        end
+      elsif line =~ /Types: deb/
+        Machinery::Ui.warn(
+          "Warning: An unsupported rfc822 style repository was found, which will be ignored."
+        )
       end
     end
     repositories.uniq

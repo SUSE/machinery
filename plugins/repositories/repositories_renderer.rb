@@ -25,20 +25,20 @@ class RepositoriesRenderer < Renderer
 
     list do
       description.repositories.each do |p|
-        if p.name
-          item_name = p.name
+        item_name = if p.name
+          p.name
         else
-          item_name = "URI: #{p.url}"
+          "URI: #{p.url}"
         end
-        item "#{item_name}" do
+        item item_name do
           if p.url.is_a?(Array)
             list "URI", sublist: true do
               p.url.each do |url|
                 item url
               end
             end
-          else
-            puts "URI: #{p.url}" if p.name
+          elsif p.name
+            puts "URI: #{p.url}"
           end
           puts "Mirrorlist: #{!p.mirrorlist.empty? ? p.mirrorlist : "N/A"}" if p.mirrorlist
           puts "Alias: #{p.alias}" if p.alias

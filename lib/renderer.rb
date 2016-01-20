@@ -225,7 +225,7 @@ class Renderer
     else
       block.call
     end
-    @buffer += "\n" unless @buffer.end_with?("\n\n") unless options[:sublist]
+    @buffer += "\n" unless @buffer.end_with?("\n\n") || options[:sublist]
 
     @stack.pop
   end
