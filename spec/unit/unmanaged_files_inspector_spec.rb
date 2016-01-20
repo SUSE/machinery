@@ -467,13 +467,11 @@ EOF
         expected = {
           files: {
             "/usr/share/man/man1/ld.gold.1.gz" => "",
-            "/usr/bin/gprof" => ""
+            "/usr/bin/gprof" => "",
+            "/usr/share/doc/krb5-locales/CHANGES.gz" => "/usr/share/doc/krb5-locales/changelog.gz"
           },
           directories: {
             "/usr/bin" => true
-          },
-          links: {
-            "/usr/share/doc/krb5-locales/CHANGES.gz" => "/usr/share/doc/krb5-locales/changelog.gz"
           }
         }
 
@@ -495,8 +493,6 @@ EOF
           },
           directories: {
             "/usr/share" => true
-          },
-          links: {
           }
         }
 
@@ -516,8 +512,7 @@ EOF
           directories: {
             "/home" => true,
             "/home/test" => true
-          },
-          links: {}
+          }
         }
 
         expected_data = [data[:files], data[:directories]]

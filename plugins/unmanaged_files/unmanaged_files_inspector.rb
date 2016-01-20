@@ -94,7 +94,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def parse_dpkg_package_files_output(data)
-    result = { files: {}, directories: {}, links: {} }
+    result = { files: {}, directories: {} }
 
     data.each_line do |line|
       type, value = line.chomp.split(" ", 2)
@@ -105,7 +105,7 @@ class UnmanagedFilesInspector < Inspector
         result[:directories][value] = true
       elsif type == "l" # link
         pair = value.split(" -> ", 2)
-        result[:links][pair[0]] = pair[1]
+        result[:files][pair[0]] = pair[1]
       end
     end
 
