@@ -36,7 +36,7 @@ describe FilterOptionParser do
         )
 
         expect(filter.to_array).to match_array([
-          "/unmanaged_files/name=/foo"
+                                                 "/unmanaged_files/name=/foo"
         ])
       end
 
@@ -50,8 +50,8 @@ EOF
         filter = subject.parse("inspect", "exclude" => "@#{exclude_file}")
 
         expect(filter.to_array).to match_array([
-          "/changed_managed_files/change=md5,size",
-          "/changed_managed_files/name=/bar"
+                                                 "/changed_managed_files/change=md5,size",
+                                                 "/changed_managed_files/name=/bar"
         ])
       end
     end
@@ -62,9 +62,9 @@ EOF
         File.write(exclude_file, "/foo/bar\n/baz \n")
         filter = subject.parse("inspect", "skip-files" => "/foo,@#{exclude_file}")
         expect(filter.to_array).to match_array([
-          "/unmanaged_files/name=/foo",
-          "/unmanaged_files/name=/foo/bar",
-          "/unmanaged_files/name=/baz"
+                                                 "/unmanaged_files/name=/foo",
+                                                 "/unmanaged_files/name=/foo/bar",
+                                                 "/unmanaged_files/name=/baz"
         ])
       end
 
@@ -78,8 +78,8 @@ EOF
         filter = subject.parse("inspect", "skip-files" => "/foo,/bar")
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/name=/foo",
-          "/unmanaged_files/name=/bar"
+                                        "/unmanaged_files/name=/foo",
+                                        "/unmanaged_files/name=/bar"
         ])
       end
 
@@ -90,9 +90,9 @@ EOF
         )
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/name=/foo",
-          "/unmanaged_files/name=/bar",
-          "/unmanaged_files/name=/file,with_comma"
+                                         "/unmanaged_files/name=/foo",
+                                         "/unmanaged_files/name=/bar",
+                                         "/unmanaged_files/name=/file,with_comma"
         ])
       end
 
@@ -100,8 +100,8 @@ EOF
         filter = subject.parse("inspect", "skip-files" => "\\@file_with_at,/foo")
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/name=@file_with_at",
-          "/unmanaged_files/name=/foo"
+                                         "/unmanaged_files/name=@file_with_at",
+                                         "/unmanaged_files/name=/foo"
         ])
       end
 
@@ -125,8 +125,8 @@ EOF
         filter = subject.parse("inspect", "skip-files" => "@#{exclude_file}")
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/name=/foo",
-          "/unmanaged_files/name=/bar"
+                                         "/unmanaged_files/name=/foo",
+                                         "/unmanaged_files/name=/bar"
         ])
       end
     end

@@ -177,9 +177,9 @@ describe Filter do
   describe "#matches?" do
     let(:filter) {
       Filter.new([
-        "/unmanaged_files/name=/home/alfred",
-        "/unmanaged_files/name=/var/cache",
-        "/changed_managed_files/changes=md5,size"
+                   "/unmanaged_files/name=/home/alfred",
+                   "/unmanaged_files/name=/var/cache",
+                   "/changed_managed_files/changes=md5,size"
       ])
     }
 
