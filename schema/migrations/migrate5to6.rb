@@ -86,15 +86,12 @@ class Migrate5To6 < Migration
       next unless @hash.key?(scope)
 
       @hash[scope] = {
-        "_attributes" => {},
         "_elements" => @hash[scope]
       }
     end
 
     if @hash.key?("groups")
       @hash["groups"] = {
-        "_attributes" => {
-        },
         "_elements" => @hash["groups"]
       }
     end
