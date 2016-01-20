@@ -94,7 +94,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def parse_dpkg_package_files_output(data)
-    result = { files: {}, directories: {}, links: {} }
+    result = { files: {}, directories: {} }
 
     data.each_line do |line|
       type, value = line.chomp.split(" ", 2)
