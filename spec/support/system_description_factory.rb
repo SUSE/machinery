@@ -106,7 +106,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: options.fetch(:format_version, 5)
+      format_version: options.fetch(:format_version, 6)
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -154,7 +154,7 @@ module SystemDescriptionFactory
             File.join(file_store.path, "trees", "etc", "tarball with spaces.tgz")
           )
         else
-          description[scope].files.each do |file|
+          description[scope].each do |file|
             next if !file.file? || file.deleted?
 
             file_name = File.join(file_store.path, file.name)
@@ -183,22 +183,24 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": false,
-      "files": []
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["changed_managed_files"] = <<-EOF.chomp
     "changed_managed_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/deleted changed managed",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": [
-            "deleted"
-          ]
+          "changes": ["deleted"]
         },
         {
           "name": "/usr/bin/replaced_by_link",
@@ -250,22 +252,24 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_config_files"] = <<-EOF.chomp
     "config_files": {
-      "extracted": false,
-      "files": [ ]
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["config_files"] = <<-EOF.chomp
     "config_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/deleted config",
           "package_name": "mdadm",
           "package_version": "3.3",
           "status": "changed",
-          "changes": [
-            "deleted"
-          ]
+          "changes": ["deleted"]
         },
         {
           "name": "/etc/cron tab",
@@ -305,17 +309,19 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["groups"] = <<-EOF.chomp
-    "groups": [
-      {
-        "name": "audio",
-        "password": "x",
-        "users": [
-          "tux",
-          "foo"
-        ],
-        "gid": 17
-      }
-    ]
+    "groups": {
+      "_elements": [
+        {
+          "name": "audio",
+          "password": "x",
+          "users": [
+            "tux",
+            "foo"
+          ],
+          "gid": 17
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["os"] = <<-EOF.chomp
     "os": {
@@ -339,229 +345,339 @@ module SystemDescriptionFactory
     }
   EOF
   EXAMPLE_SCOPES["empty_packages"] = <<-EOF.chomp
-    "packages": []
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
+      },
+      "_elements": []
+    }
   EOF
   EXAMPLE_SCOPES["packages"] = <<-EOF.chomp
-    "packages": [
-      {
-        "name": "bash",
-        "version": "4.2",
-        "release": "68.1.5",
-        "arch": "x86_64",
-        "vendor": "openSUSE",
-        "checksum": "533e40ba8a5551204b528c047e45c169"
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
       },
-      {
-        "name": "openSUSE-release-dvd",
-        "version": "13.1",
-        "release": "1.10",
-        "arch": "x86_64",
-        "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
-        "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
-      },
-      {
-        "name": "autofs",
-        "version": "5.0.9",
-        "release": "3.6",
-        "arch": "x86_64",
-        "vendor": "Packman",
-        "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-      }
-    ]
+      "_elements": [
+        {
+          "name": "bash",
+          "version": "4.2",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "openSUSE",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        },
+        {
+          "name": "openSUSE-release-dvd",
+          "version": "13.1",
+          "release": "1.10",
+          "arch": "x86_64",
+          "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+          "checksum": "2a3d5b29179daa1e65e391d0a0c1442d"
+        },
+        {
+          "name": "autofs",
+          "version": "5.0.9",
+          "release": "3.6",
+          "arch": "x86_64",
+          "vendor": "Packman",
+          "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["packages2"] = <<-EOF.chomp
-    "packages": [
-      {
-        "name": "bash",
-        "version": "4.3",
-        "release": "68.1.5",
-        "arch": "x86_64",
-        "vendor": "openSUSE",
-        "checksum": "533e40ba8a5551204b528c047e45c169"
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
       },
-      {
-        "name": "kernel-desktop",
-        "version": "3.7.10",
-        "release": "1.0",
-        "arch": "i586",
-        "vendor": "openSUSE",
-        "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
-      },
-      {
-        "name": "autofs",
-        "version": "5.0.9",
-        "release": "3.6",
-        "arch": "x86_64",
-        "vendor": "Packman",
-        "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
-      }
-    ]
+      "_elements": [
+        {
+          "name": "bash",
+          "version": "4.3",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "openSUSE",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        },
+        {
+          "name": "kernel-desktop",
+          "version": "3.7.10",
+          "release": "1.0",
+          "arch": "i586",
+          "vendor": "openSUSE",
+          "checksum": "4a87f6b9ceae5d40a411fe52d0f17050"
+        },
+        {
+          "name": "autofs",
+          "version": "5.0.9",
+          "release": "3.6",
+          "arch": "x86_64",
+          "vendor": "Packman",
+          "checksum": "6d5d012b0e8d33cf93e216dfab6b174e"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
-    "patterns": [ ]
+    "patterns": {
+      "_elements": []
+    }
   EOF
   EXAMPLE_SCOPES["patterns"] = <<-EOF.chomp
-    "patterns": [
-      {
-        "name": "base",
-        "version": "13.1",
-        "release": "13.6.1"
-      }
-    ]
+    "patterns": {
+      "_elements": [
+        {
+          "name": "base",
+          "version": "13.1",
+          "release": "13.6.1"
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_repositories"] = <<-EOF.chomp
-    "repositories": [ ]
+    "repositories": {
+      "_attributes": {
+        "repository_system": "zypp"
+      },
+      "_elements": []
+    }
+  EOF
+  EXAMPLE_SCOPES["apt_repositories"] = <<-EOF.chomp
+    "repositories": {
+      "_attributes": {
+        "repository_system": "apt"
+      },
+      "_elements": [
+        {
+          "url": "http://de.archive.ubuntu.com/ubuntu/",
+          "type": "deb",
+          "distribution": "trusty",
+          "components": [
+            "main",
+            "restricted"
+          ]
+        },
+        {
+          "url": "http://de.archive.ubuntu.com/ubuntu/",
+          "type": "deb-src",
+          "distribution": "trusty",
+          "components": [
+            "main",
+            "restricted"
+          ]
+        }
+      ]
+    }
+  EOF
+  EXAMPLE_SCOPES["zypp_repositories"] = <<-EOF.chomp
+    "repositories": {
+      "_attributes": {
+        "repository_system": "zypp"
+      },
+      "_elements": [
+        {
+          "alias": "nodejs_alias",
+          "name": "nodejs",
+          "type": "rpm-md",
+          "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 1
+        },
+        {
+          "alias": "openSUSE-13.1-1.7_alias",
+          "name": "openSUSE-13.1-1.7",
+          "type": "rpm-md",
+          "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+          "enabled": false,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 2
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["repositories"] = <<-EOF.chomp
-    "repositories": [
-      {
-        "alias": "nodejs_alias",
-        "name": "nodejs",
-        "type": "rpm-md",
-        "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 1,
-        "package_manager": "zypp"
+    "repositories": {
+      "_attributes": {
+        "repository_system": "zypp"
       },
-      {
-        "alias": "openSUSE-13.1-1.7_alias",
-        "name": "openSUSE-13.1-1.7",
-        "type": "yast2",
-        "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
-        "enabled": false,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "repo_without_type_alias",
-        "name": "repo_without_type",
-        "type": null,
-        "url": "http://repo-without-type",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 3,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "disabled_repo_alias",
-        "name": "disabled_repo",
-        "type": null,
-        "url": "http://disabled-repo",
-        "enabled": false,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 3,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "autorefresh_enabled_alias",
-        "name": "autorefresh_enabled",
-        "type": null,
-        "url": "http://autorefreshed-repo",
-        "enabled": true,
-        "autorefresh": true,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "dvd_entry_alias",
-        "name": "dvd_entry",
-        "type": "yast2",
-        "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "NCCRepo",
-        "name": "NCC Repository",
-        "type": "yast2",
-        "url": "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
-        "enabled": true,
-        "autorefresh": true,
-        "gpgcheck": true,
-        "priority": 2,
-        "package_manager": "zypp"
-      },
-      {
-        "alias": "Alias With Spaces",
-        "name": "nodejs",
-        "type": "rpm-md",
-        "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
-        "enabled": true,
-        "autorefresh": false,
-        "gpgcheck": true,
-        "priority": 1,
-        "package_manager": "zypp"
-      }
-    ]
+      "_elements": [
+        {
+          "alias": "nodejs_alias",
+          "name": "nodejs",
+          "type": "rpm-md",
+          "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 1
+        },
+        {
+          "alias": "openSUSE-13.1-1.7_alias",
+          "name": "openSUSE-13.1-1.7",
+          "type": "yast2",
+          "url": "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+          "enabled": false,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "repo_without_type_alias",
+          "name": "repo_without_type",
+          "type": null,
+          "url": "http://repo-without-type",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 3
+        },
+        {
+          "alias": "disabled_repo_alias",
+          "name": "disabled_repo",
+          "type": null,
+          "url": "http://disabled-repo",
+          "enabled": false,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 3
+        },
+        {
+          "alias": "autorefresh_enabled_alias",
+          "name": "autorefresh_enabled",
+          "type": null,
+          "url": "http://autorefreshed-repo",
+          "enabled": true,
+          "autorefresh": true,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "dvd_entry_alias",
+          "name": "dvd_entry",
+          "type": "yast2",
+          "url": "dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "NCCRepo",
+          "name": "NCC Repository",
+          "type": "yast2",
+          "url": "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials",
+          "enabled": true,
+          "autorefresh": true,
+          "gpgcheck": true,
+          "priority": 2
+        },
+        {
+          "alias": "Alias With Spaces",
+          "name": "nodejs",
+          "type": "rpm-md",
+          "url": "http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 1
+        }
+      ]
+    }
   EOF
-
+  EXAMPLE_SCOPES["yum_repositories"] = <<-EOF.chomp
+    "repositories": {
+      "_attributes": {
+        "repository_system": "yum"
+      },
+      "_elements": [
+        {
+          "name": "CentOS-6Server - Base",
+          "url": [
+            "http://mirror.centos.org/centos/centos4/os/x86_64/",
+            "http://mirror2.centos.org/centos/centos4/os/x86_64/"
+          ],
+          "gpgkey": [
+            "http://mirror.centos.org/centos/RPM-GPG-KEY-centos4",
+            "http://mirror2.centos.org/centos/RPM-GPG-KEY-centos4"
+          ],
+          "enabled": true,
+          "alias": "base",
+          "mirrorlist": "",
+          "gpgcheck": true,
+          "type": "rpm-md"
+        }
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["users"] = <<-EOF.chomp
-    "users": [
-      {
-        "name": "bin",
-        "password": "x",
-        "uid": 1,
-        "gid": 1,
-        "comment": "bin",
-        "home": "/bin",
-        "shell": "/bin/bash",
-        "encrypted_password": "*",
-        "last_changed_date": 16125
-      }
-    ]
+    "users": {
+      "_attributes": {},
+      "_elements": [
+        {
+          "name": "bin",
+          "password": "x",
+          "uid": 1,
+          "gid": 1,
+          "comment": "bin",
+          "home": "/bin",
+          "shell": "/bin/bash",
+          "encrypted_password": "*",
+          "last_changed_date": 16125
+        }
+      ]
+    }
   EOF
 
   EXAMPLE_SCOPES["users_with_passwords"] = <<-EOF.chomp
-    "users": [
-      {
-        "name": "root",
-        "password": "x",
-        "uid": 0,
-        "gid": 0,
-        "comment": "root",
-        "home": "/root",
-        "shell": "/bin/bash",
-        "encrypted_password": "$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.",
-        "last_changed_date": 16357
-      },
-      {
-        "name": "vagrant",
-        "password": "x",
-        "uid": 1000,
-        "gid": 100,
-        "comment": "",
-        "home": "/home/vagrant",
-        "shell": "/bin/bash",
-        "encrypted_password": "$6$6V/YKqrsHpkC$nSAsvrbcVE8kTI9D3Z7ubc1L/dBHXj47BlL5usy0JNINzXFDl3YXqF5QYjZLTo99BopLC5bdHYUvkUSBRC3a3/",
-        "last_changed_date": 16373,
-        "min_days": 0,
-        "max_days": 99999,
-        "warn_days": 7,
-        "disable_days": 30,
-        "disabled_date": 1234
-      }
-    ]
+    "users": {
+      "_elements": [
+        {
+          "name": "root",
+          "password": "x",
+          "uid": 0,
+          "gid": 0,
+          "comment": "root",
+          "home": "/root",
+          "shell": "/bin/bash",
+          "encrypted_password": "$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.",
+          "last_changed_date": 16357
+        },
+        {
+          "name": "vagrant",
+          "password": "x",
+          "uid": 1000,
+          "gid": 100,
+          "comment": "",
+          "home": "/home/vagrant",
+          "shell": "/bin/bash",
+          "encrypted_password": "$6$6V/YKqrsHpkC$nSAsvrbcVE8kTI9D3Z7ubc1L/dBHXj47BlL5usy0JNINzXFDl3YXqF5QYjZLTo99BopLC5bdHYUvkUSBRC3a3/",
+          "last_changed_date": 16373,
+          "min_days": 0,
+          "max_days": 99999,
+          "warn_days": 7,
+          "disable_days": 30,
+          "disabled_date": 1234
+        }
+      ]
+    }
   EOF
   EXAMPLE_SCOPES["empty_services"] = <<-EOF.chomp
     "services": {
-      "init_system": "systemd",
-      "services": [ ]
+      "_attributes": {
+        "init_system": "systemd"
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["services"] = <<-EOF.chomp
     "services": {
-      "init_system": "systemd",
-      "services": [
+      "_attributes": {
+        "init_system": "systemd"
+      },
+      "_elements": [
         {
           "name": "sshd.service",
           "state": "enabled"
@@ -607,8 +723,10 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["services_sysvinit"] = <<-EOF.chomp
     "services": {
-      "init_system": "sysvinit",
-      "services": [
+      "_attributes": {
+        "init_system": "sysvinit"
+      },
+      "_elements": [
         {
           "name": "sshd",
           "state": "on"
@@ -622,14 +740,18 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["empty_unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": false,
-      "files": []
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": []
     }
   EOF
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
-      "extracted": false,
-      "files": [
+      "_attributes": {
+        "extracted": false
+      },
+      "_elements": [
         {
           "name": "/etc/unmanaged-file",
           "type": "file",

@@ -39,5 +39,7 @@ end
 class ConfigFilesScope < FileScope
   include Machinery::Scope
   include ScopeFileAccessFlat
-  has_property :files, class: ConfigFileList
+
+  has_attributes :extracted
+  has_elements class: ConfigFile
 end

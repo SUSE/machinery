@@ -113,27 +113,11 @@ class System
   #       Machinery::Ui.progress("Found #{count} changed files...")
   #     end
   def run_script_with_progress(*script, &callback)
-    output = ""
-    error = ""
-    write_io = StringIO.new(output, "a")
-    error_io = StringIO.new(error, "a")
-    read_io = StringIO.new(output, "r")
+    run_with_progress(*script, :script, &callback)
+  end
 
-    inspect_thread = Thread.new do
-      run_script(*script, stdout: write_io, stderr: error_io)
-    end
-
-    while inspect_thread.alive?
-      sleep 0.1
-      chunk = read_io.read
-      callback.call(chunk) if callback
-    end
-
-    if error.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    end
-
-    output
+  def run_command_with_progress(*command, &callback)
+    run_with_progress(*command, :command, &callback)
   end
 
   def has_command?(command)
@@ -151,7 +135,51 @@ class System
     @locale || "C"
   end
 
-  def rpm_database
-    @rpm_database ||= RpmDatabase.new(self)
+  def managed_files_database
+    if @managed_files_database
+      return @managed_files_database
+    elsif has_command?("rpm")
+      @managed_files_database = RpmDatabase.new(self)
+    elsif has_command?("dpkg")
+      @managed_files_database = DpkgDatabase.new(self)
+    else
+      raise Machinery::Errors::MissingRequirement.new(
+        "Need binary 'rpm' or 'dpkg' to be available on the inspected system."
+      )
+    end
+  end
+
+  private
+
+  def run_with_progress(*command, type, &callback)
+    output = ""
+    error = ""
+    write_io = StringIO.new(output, "a")
+    error_io = StringIO.new(error, "a")
+    read_io = StringIO.new(output, "r")
+
+    options = command.last.is_a?(Hash) ? command.pop : {}
+    options[:stdout] = write_io
+    options[:stderr] = error_io
+
+    inspect_thread = Thread.new do
+      if type == :script
+        run_script(*command, options)
+      else
+        run_command(*command, options)
+      end
+    end
+
+    while inspect_thread.alive?
+      sleep 0.1
+      chunk = read_io.read
+      callback.call(chunk) if callback
+    end
+
+    if error.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    end
+
+    output
   end
 end

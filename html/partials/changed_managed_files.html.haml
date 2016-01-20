@@ -2,7 +2,7 @@
   %div
     %a.scope_anchor{ id: "changed_managed_files" }
     .scope#changed_managed_files_container{ "data-scope" => "changed_managed_files" }
-      - count = changed_managed_files.files.length
+      - count = changed_managed_files.length
       = render_partial "scope_header",
         :scope => "changed_managed_files",
         :title => "Changed Managed Files",
@@ -24,7 +24,7 @@
                   %th.small User
                   %th.small Group
               %tbody
-                - changed_managed_files.files.each do |file|
+                - changed_managed_files.each do |file|
                   %tr
                     %td
                       - if file.on_disk?

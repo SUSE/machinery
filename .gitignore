@@ -11,3 +11,4 @@ import_state.yaml
 .vagrant
 
 .git_revision
+.byebug_history

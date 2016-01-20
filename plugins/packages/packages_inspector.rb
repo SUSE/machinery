@@ -23,9 +23,26 @@ class PackagesInspector < Inspector
   end
 
   def inspect(_filter, _options = {})
-    @system.check_requirement("rpm", "--version")
+    @system.check_requirement(["rpm", "dpkg"], "--version")
 
-    packages = Array.new
+    if @system.has_command?("rpm")
+      inspect_rpm
+    elsif @system.has_command?("dpkg")
+      @system.check_requirement("apt-cache", "--version")
+      inspect_dpkg
+    end
+
+    @description
+  end
+
+  def summary
+    "Found #{@description.packages.length} packages."
+  end
+
+  private
+
+  def inspect_rpm
+    packages = Machinery::Array.new
     rpm_data = @system.run_command(
       "rpm","-qa","--qf",
       "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{SIGMD5}$",
@@ -36,7 +53,7 @@ class PackagesInspector < Inspector
     rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
       name =~ /^gpg-pubkey$/
     end.each do |name, version, release, arch, vendor, checksum|
-      packages << Package.new(
+      packages << RpmPackage.new(
         :name     => name,
         :version  => version,
         :release  => release,
@@ -46,10 +63,63 @@ class PackagesInspector < Inspector
       )
     end
 
-    @description.packages = PackagesScope.new(packages.sort_by(&:name))
+    @description.packages = PackagesScope.new(
+      packages.sort_by(&:name),
+      package_system: "rpm"
+    )
   end
 
-  def summary
-    "Found #{@description.packages.size} packages."
+  def inspect_dpkg
+    dpkg_data = @system.run_command(
+      "dpkg", "-l", stdout: :capture
+    )
+
+    lines = dpkg_data.lines.reject { |line| !line.start_with?("ii ") }
+
+    packages = lines.map do |line|
+      name, version, arch = line.split[1..3]
+      version_segments = version.split("-")
+      release = version_segments.pop if version_segments.length > 1
+      version = version_segments.join("-")
+
+      DpkgPackage.new(
+        name: name,
+        version: version,
+        release: release,
+        arch: arch
+      )
+    end
+    packages.each_slice(100) do |packages_slice|
+      apt_cache_output = @system.run_command(
+        "apt-cache",
+        "show",
+        *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
+        stdout: :capture
+      )
+
+      apt_cache_elements = Hash[
+        *apt_cache_output.split("\n\n").flat_map do |element|
+          name = element[/Package: (\w+)$/, 1]
+          [name, element]
+        end
+      ]
+
+      packages_slice.each do |package|
+        name = package.name.sub(/:[^:]+$/, "")
+        apt_cache_element = apt_cache_elements[name]
+        if apt_cache_element
+          checksum = apt_cache_element[/MD5sum: (\w+)\n/, 1]
+          vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
+        end
+        package.checksum = checksum || ""
+        package.vendor = vendor || ""
+        package.release ||= ""
+      end
+    end
+
+    @description.packages = PackagesScope.new(
+      packages.sort_by(&:name),
+      package_system: "dpkg"
+    )
   end
 end

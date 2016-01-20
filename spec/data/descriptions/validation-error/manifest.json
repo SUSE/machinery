@@ -1,30 +1,35 @@
 {
-  "repositories": [
-    {
-      "alias": "download.opensuse.org-non-oss",
-      "name": "Main Repository (NON-OSS)",
-      "type": "yast2",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99,
-      "package_manager": "zypp"
+  "repositories": {
+    "_attributes": {
+      "repository_system": "zypp"
     },
-    {
-      "alias": "download.opensuse.org-oss",
-      "name": "Main Repository (OSS)",
-      "type": "yast2",
-      "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
-      "enabled": true,
-      "autorefresh": true,
-      "gpgcheck": true,
-      "priority": 99,
-      "package_manager": "zypp"
-    }
-  ],
+    "_elements": [
+      {
+        "alias": "download.opensuse.org-non-oss",
+        "name": "Main Repository (NON-OSS)",
+        "type": "yast2",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      },
+      {
+        "alias": "download.opensuse.org-oss",
+        "name": "Main Repository (OSS)",
+        "type": "yast2",
+        "url": "http://download.opensuse.org/distribution/13.1/repo/oss/",
+        "enabled": true,
+        "autorefresh": true,
+        "gpgcheck": true,
+        "priority": 99
+      }
+    ]
+  },
   "services": {
-    "init_system": "systemd",
-    "services": [
+    "_attributes": {
+      "init_system": "systemd"
+    },
+    "_elements": [
       {
         "name": "YaST2-Firstboot.service",
         "state": "enabled"
@@ -48,7 +53,7 @@
     ]
   },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "repositories": {
       "modified": "2014-08-29T11:10:03Z",
       "hostname": "192.168.121.56"

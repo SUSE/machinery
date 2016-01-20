@@ -18,96 +18,96 @@
 package main
 
 import (
-  "testing"
-  "reflect"
-  "os"
-  "time"
-  "github.com/nowk/go-fakefileinfo"
+	"github.com/nowk/go-fakefileinfo"
+	"os"
+	"reflect"
+	"testing"
+	"time"
 )
 
 func doTestParseRpmLine(t *testing.T, line string, expectedFileType string, expectedFileName string, expectedLinkTarget string) {
-  fileType, fileName, linkTarget := parseRpmLine(line)
+	fileType, fileName, linkTarget := parseRpmLine(line)
 
-  if fileType != expectedFileType {
-    t.Errorf("parseRpmLine('%s') file type = '%s', want '%s'", line, fileType, expectedFileType)
-  }
-  if fileName != expectedFileName {
-    t.Errorf("parseRpmLine('%s') file name = '%s', want '%s'", line, fileName, expectedFileName)
-  }
-  if linkTarget != expectedLinkTarget {
-    t.Errorf("parseRpmLine('%s') file type = '%s', want '%s'", line, linkTarget, expectedLinkTarget)
-  }
+	if fileType != expectedFileType {
+		t.Errorf("parseRpmLine('%s') file type = '%s', want '%s'", line, fileType, expectedFileType)
+	}
+	if fileName != expectedFileName {
+		t.Errorf("parseRpmLine('%s') file name = '%s', want '%s'", line, fileName, expectedFileName)
+	}
+	if linkTarget != expectedLinkTarget {
+		t.Errorf("parseRpmLine('%s') file type = '%s', want '%s'", line, linkTarget, expectedLinkTarget)
+	}
 }
 
 func TestParseRpmLineFile(t *testing.T) {
-  line := "-rw-r--r--    1 root    root                 18234080 Mar 31 11:40 /usr/lib64/libruby2.0-static.a"
+	line := "-rw-r--r--    1 root    root                 18234080 Mar 31 11:40 /usr/lib64/libruby2.0-static.a"
 
-  expectedFileType := "-"
-  expectedFileName := "/usr/lib64/libruby2.0-static.a"
-  expectedLinkTarget := ""
+	expectedFileType := "-"
+	expectedFileName := "/usr/lib64/libruby2.0-static.a"
+	expectedLinkTarget := ""
 
-  doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
+	doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
 }
 
 func TestParseRpmLineDir(t *testing.T) {
-  line := "drwxr-xr-x    2 root    root                        0 Mar 31 11:45 /usr/include/ruby-2.0.0/x86_64-linux/ruby"
+	line := "drwxr-xr-x    2 root    root                        0 Mar 31 11:45 /usr/include/ruby-2.0.0/x86_64-linux/ruby"
 
-  expectedFileType := "d"
-  expectedFileName := "/usr/include/ruby-2.0.0/x86_64-linux/ruby"
-  expectedLinkTarget := ""
+	expectedFileType := "d"
+	expectedFileName := "/usr/include/ruby-2.0.0/x86_64-linux/ruby"
+	expectedLinkTarget := ""
 
-  doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
+	doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
 }
 
 func TestParseRpmLineLink(t *testing.T) {
-  line := "lrwxrwxrwx    1 root    root                       19 Mar 31 11:45 /usr/lib64/libruby2.0.so -> libruby2.0.so.2.0.0"
+	line := "lrwxrwxrwx    1 root    root                       19 Mar 31 11:45 /usr/lib64/libruby2.0.so -> libruby2.0.so.2.0.0"
 
-  expectedFileType := "l"
-  expectedFileName := "/usr/lib64/libruby2.0.so"
-  expectedLinkTarget := "libruby2.0.so.2.0.0"
+	expectedFileType := "l"
+	expectedFileName := "/usr/lib64/libruby2.0.so"
+	expectedLinkTarget := "libruby2.0.so.2.0.0"
 
-  doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
+	doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
 }
 
 func TestParseRpmLineFileSpaces(t *testing.T) {
-  line := "-rw-r--r--    1 root    root                    61749 Jun 26 01:56 /usr/share/kde4/templates/kipiplugins_photolayoutseditor/data/templates/a4/h/Flipping Tux Black.ple"
+	line := "-rw-r--r--    1 root    root                    61749 Jun 26 01:56 /usr/share/kde4/templates/kipiplugins_photolayoutseditor/data/templates/a4/h/Flipping Tux Black.ple"
 
-  expectedFileType := "-"
-  expectedFileName := "/usr/share/kde4/templates/kipiplugins_photolayoutseditor/data/templates/a4/h/Flipping Tux Black.ple"
-  expectedLinkTarget := ""
+	expectedFileType := "-"
+	expectedFileName := "/usr/share/kde4/templates/kipiplugins_photolayoutseditor/data/templates/a4/h/Flipping Tux Black.ple"
+	expectedLinkTarget := ""
 
-  doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
+	doTestParseRpmLine(t, line, expectedFileType, expectedFileName, expectedLinkTarget)
 }
 
 func TestAddImplicitlyManagedDirs(t *testing.T) {
-  filesOriginal := map[string]string{
-    "/abc/def/ghf/somefile": "",
-    "/zzz": "/abc/def",
-  }
-  dirsOriginal := map[string]bool{
-    "/abc/def": true,
-  }
-  dirsExpected := map[string]bool{
-    "/abc": false,
-    "/abc/def": true,
-    "/abc/def/ghf": false,
-    "/zzz": false,
-  }
+	filesOriginal := map[string]string{
+		"/abc/def/ghf/somefile": "",
+		"/zzz":                  "/abc/def",
+	}
+	dirsOriginal := map[string]bool{
+		"/abc/def": true,
+	}
+	dirsExpected := map[string]bool{
+		"/abc":         false,
+		"/abc/def":     true,
+		"/abc/def/ghf": false,
+		"/zzz":         false,
+	}
 
-  dirs := dirsOriginal
+	dirs := dirsOriginal
 
-  addImplicitlyManagedDirs(dirs, filesOriginal)
+	addImplicitlyManagedDirs(dirs, filesOriginal)
 
-  if !reflect.DeepEqual(dirs, dirsExpected) {
-    t.Errorf("addImplicitlyManagedDirs('%v') = '%v', want '%v'", dirsOriginal, dirs, dirsExpected)
-  }
+	if !reflect.DeepEqual(dirs, dirsExpected) {
+		t.Errorf("addImplicitlyManagedDirs('%v') = '%v', want '%v'", dirsOriginal, dirs, dirsExpected)
+	}
 }
 
 func TestAssembleJSON(t *testing.T) {
-  unmanagedFilesMap := map[string]string{
-    "name": "/usr/share/go_rulez", "type":"file",
-  }
-  want := `{
+	unmanagedFilesMap := map[string]string{
+		"name": "/usr/share/go_rulez", "type": "file",
+	}
+	want := `{
    "extracted": false,
    "files": {
      "name": "/usr/share/go_rulez",
@@ -115,78 +115,78 @@ func TestAssembleJSON(t *testing.T) {
    }
  }`
 
-  json := assembleJSON(unmanagedFilesMap)
-  if !reflect.DeepEqual(json, want) {
-    t.Errorf("assembleJSON() = '%v', want '%v'", json, want)
-  }
+	json := assembleJSON(unmanagedFilesMap)
+	if !reflect.DeepEqual(json, want) {
+		t.Errorf("assembleJSON() = '%v', want '%v'", json, want)
+	}
 }
 
 func TestRespectManagedDirsInUnmanagedDirs(t *testing.T) {
-  unmanagedFiles := make(map[string]string)
-  wantUnmanagedFiles := make(map[string]string)
+	unmanagedFiles := make(map[string]string)
+	wantUnmanagedFiles := make(map[string]string)
 
-  /*
-  We mock the readDir method and return following directory structure:
-   /
-   /managed_dir/
-   /managed_dir/unmanaged_dir/
-   /managed_dir/unmanaged_dir/managed_dir/
-  */
-  readDir = func(dir string) ([]os.FileInfo, error) {
-    dirs := make([]os.FileInfo, 0, 1)
-    var fi os.FileInfo
-    switch dir {
-    case "/":
-      fi = fakefileinfo.New("managed_dir", int64(123), os.ModeType, time.Now(), true, nil)
-    case "/managed_dir/":
-      fi = fakefileinfo.New("unmanaged_dir", int64(123), os.ModeType, time.Now(), true, nil)
-    case "/managed_dir/unmanaged_dir/":
-      fi = fakefileinfo.New("managed_dir", int64(123), os.ModeType, time.Now(), true, nil)
-    }
-    dirs = append (dirs, fi)
-    return dirs, nil
-  }
+	/*
+	  We mock the readDir method and return following directory structure:
+	   /
+	   /managed_dir/
+	   /managed_dir/unmanaged_dir/
+	   /managed_dir/unmanaged_dir/managed_dir/
+	*/
+	readDir = func(dir string) ([]os.FileInfo, error) {
+		dirs := make([]os.FileInfo, 0, 1)
+		var fi os.FileInfo
+		switch dir {
+		case "/":
+			fi = fakefileinfo.New("managed_dir", int64(123), os.ModeType, time.Now(), true, nil)
+		case "/managed_dir/":
+			fi = fakefileinfo.New("unmanaged_dir", int64(123), os.ModeType, time.Now(), true, nil)
+		case "/managed_dir/unmanaged_dir/":
+			fi = fakefileinfo.New("managed_dir", int64(123), os.ModeType, time.Now(), true, nil)
+		}
+		dirs = append(dirs, fi)
+		return dirs, nil
+	}
 
-  rpmFiles := make(map[string]string)
-  ignoreList := make(map[string]bool)
+	rpmFiles := make(map[string]string)
+	ignoreList := make(map[string]bool)
 
-  rpmDirs := map[string]bool{
-    "/managed_dir": true,
-    "/managed_dir/unmanaged_dir/managed_dir": true,
-  }
+	rpmDirs := map[string]bool{
+		"/managed_dir":                           true,
+		"/managed_dir/unmanaged_dir/managed_dir": true,
+	}
 
-  findUnmanagedFiles("/", rpmFiles, rpmDirs, unmanagedFiles, ignoreList)
+	findUnmanagedFiles("/", rpmFiles, rpmDirs, unmanagedFiles, ignoreList)
 
-  if !reflect.DeepEqual(unmanagedFiles, wantUnmanagedFiles) {
-    t.Errorf("findUnmanagedFiles() = '%v', want '%v'", unmanagedFiles, wantUnmanagedFiles)
-  }
+	if !reflect.DeepEqual(unmanagedFiles, wantUnmanagedFiles) {
+		t.Errorf("findUnmanagedFiles() = '%v', want '%v'", unmanagedFiles, wantUnmanagedFiles)
+	}
 }
 
 func TestHasManagedDirs(t *testing.T) {
-  rpmDirs := map[string]bool{
-    "/managed_dir": true,
-    "/managed_dir/unmanaged_dir/sub_dir/managed_dir": true,
-  }
+	rpmDirs := map[string]bool{
+		"/managed_dir":                                   true,
+		"/managed_dir/unmanaged_dir/sub_dir/managed_dir": true,
+	}
 
-  hasDirs := hasManagedDirs("/managed_dir/unmanaged_dir", rpmDirs)
-  want := true
+	hasDirs := hasManagedDirs("/managed_dir/unmanaged_dir", rpmDirs)
+	want := true
 
-  if hasDirs != want {
-    t.Errorf("hasManagedDirs() = '%v', want '%v'", hasDirs, want)
-  }
+	if hasDirs != want {
+		t.Errorf("hasManagedDirs() = '%v', want '%v'", hasDirs, want)
+	}
 
 }
 
 func TestSubdirIsNotAccidentallyConsideredManaged(t *testing.T) {
-  rpmDirs := map[string]bool{
-    "/usr": true,
-    "/usr/foobar": true,
-  }
+	rpmDirs := map[string]bool{
+		"/usr":        true,
+		"/usr/foobar": true,
+	}
 
-  hasDirs := hasManagedDirs("/usr/foo", rpmDirs)
-  want := false
+	hasDirs := hasManagedDirs("/usr/foo", rpmDirs)
+	want := false
 
-  if hasDirs != want {
-    t.Errorf("hasManagedDirs() = '%v', want '%v'", hasDirs, want)
-  }
+	if hasDirs != want {
+		t.Errorf("hasManagedDirs() = '%v', want '%v'", hasDirs, want)
+	}
 }

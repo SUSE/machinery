@@ -26,10 +26,20 @@ class PatternsInspector < Inspector
     if @system.has_command?("zypper")
       @patterns_supported = true
       inspect_with_zypper
+    elsif @system.has_command?("dpkg")
+      if @system.has_command?("tasksel")
+        @patterns_supported = true
+        inspect_with_tasksel
+      else
+        @patterns_supported = false
+        @status = "For a patterns inspection please install the package tasksel " \
+          "on the inspected system."
+        @description.patterns = PatternsScope.new
+      end
     else
       @patterns_supported = false
+      @status = "Patterns are not supported on this system."
       @description.patterns = PatternsScope.new
-      "Patterns are not supported on this system."
     end
   end
 
@@ -37,7 +47,7 @@ class PatternsInspector < Inspector
     if @patterns_supported
       "Found #{@description.patterns.count} patterns."
     else
-      "Patterns are not supported on this system."
+      @status
     end
   end
 
@@ -69,6 +79,20 @@ class PatternsInspector < Inspector
         name: pattern["name"],
         version: pattern["version"],
         release: pattern["release"]
+      )
+    end.uniq.sort_by(&:name)
+
+    @description.patterns = PatternsScope.new(patterns)
+  end
+
+  def inspect_with_tasksel
+    tasksel_out = @system.run_command("tasksel", "--list-tasks", stdout: :capture)
+    tasklist = tasksel_out.lines.map(&:chomp)
+    installed = tasklist.select { |line| line.start_with?("i") }
+    installed.map! { |l| l.split[1] }
+    patterns = installed.map do |pattern|
+      Pattern.new(
+        name: pattern
       )
     end.uniq.sort_by(&:name)
 

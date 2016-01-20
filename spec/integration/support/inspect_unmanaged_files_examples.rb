@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "inspect unmanaged files" do |base|
+shared_examples "inspect unmanaged files" do |base, skip_remote_mounts_test|
   describe "--scope=unmanaged-files" do
     let(:ignore_list) {
       [
@@ -25,7 +25,11 @@ shared_examples "inspect unmanaged files" do |base|
         "/var/log/sa",
         "/root/.local",
         "/etc/ssh",
-        "/var/log/mcelog"
+        "/var/log/mcelog",
+        "/var/lib/dpkg",
+        "/var/lib/apt",
+        "/var/lib/ureadahead",
+        "/var/log/upstart"
       ]
     }
 
@@ -83,35 +87,45 @@ shared_examples "inspect unmanaged files" do |base|
         and include_stdout(link_example)
     end
 
-    describe "remote file system filtering for unmanaged-files inspector" do
-      let(:remote_file_system_tree_path) { "/remote-dir/" }
-      let(:remote_file_system_sub_tree_path) { "/mnt/unmanaged/remote-dir/" }
+    unless skip_remote_mounts_test
+      describe "remote file system filtering for unmanaged-files inspector" do
+        let(:remote_file_system_tree_path) { "/remote-dir/" }
+        let(:remote_file_system_sub_tree_path) { "/mnt/unmanaged/remote-dir/" }
 
-      it "does not extract unmanaged directories which are remote file systems" do
-        expect(
-          @machinery.run_command(
-            "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; " \
-            "find -type f", as: "vagrant"
-          )
-        ).to succeed.and not_include_stdout("./#{remote_file_system_tree_path}.tgz")
-      end
+        it "does not extract unmanaged directories which are remote file systems" do
+          expect(
+            @machinery.run_command(
+              "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees; " \
+              "find -type f", as: "vagrant"
+            )
+          ).to succeed.and not_include_stdout("./#{remote_file_system_tree_path}.tgz")
+        end
 
-      it "lists remote fs directories as 'remote_dir'" do
-        expect(
-          @machinery.run_command(
-            "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
-            as: "vagrant"
-          )
-        ).to succeed.and include_stdout("* #{remote_file_system_tree_path} (remote_dir)")
-      end
+        it "lists remote fs directories as 'remote_dir'" do
+          expect(
+            @machinery.run_command(
+              "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
+              as: "vagrant"
+            )
+          ).to succeed.and include_stdout("* #{remote_file_system_tree_path} (remote_dir)")
+        end
 
-      it "also shows remote fs which are mounted in a sub directory of a tree" do
-        expect(
-          @machinery.run_command(
-            "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
-            as: "vagrant"
-          )
-        ).to succeed.and include_stdout("* #{remote_file_system_sub_tree_path} (remote_dir)")
+        it "also shows remote fs which are mounted in a sub directory of a tree" do
+          expect(
+            @machinery.run_command(
+              "#{machinery_command} show #{@subject_system.ip} --scope=unmanaged-files",
+              as: "vagrant"
+            )
+          ).to succeed.and include_stdout("* #{remote_file_system_sub_tree_path} (remote_dir)")
+        end
+
+        it "does not extract remote mounts" do
+          list = @machinery.run_command(
+            "tar tfv #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/mnt/unmanaged.tgz;",
+            as: "vagrant", stdout: :capture
+          ).stdout.split("\n")
+          expect(list.length).to eq(1)
+        end
       end
     end
 
@@ -186,23 +200,25 @@ shared_examples "inspect unmanaged files" do |base|
       FileUtils.rm_r(tmp_dir)
       expected_md5sums = parse_md5sums(expected_output)
 
-      md5_command = @machinery.run_command(
-        "cd /tmp; tar -xf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/srv/test.tgz;" \
-          " md5sum /tmp/srv/test/*",
-        as: "vagrant"
-      )
+      # we've to distinguish between Ubuntu and SUSE/Red Hat tests because the /srv direcory is
+      # unmanaged in Ubuntu
+      if base == "ubuntu_1404"
+        md5_command = @machinery.run_command(
+          "cd /tmp; tar -xf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/srv.tgz;" \
+            " md5sum /tmp/srv/test/*",
+          as: "vagrant"
+        )
+      else
+        md5_command = @machinery.run_command(
+          "cd /tmp; tar -xf #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/srv/test.tgz;" \
+            " md5sum /tmp/srv/test/*",
+          as: "vagrant"
+        )
+      end
       expect(md5_command).to succeed
       actual_md5sums = parse_md5sums(md5_command.stdout)
 
       expect(actual_md5sums).to match_array(expected_md5sums)
-    end
-
-    it "does not extract remote mounts" do
-      list = @machinery.run_command(
-        "tar tfv #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/unmanaged_files/trees/mnt/unmanaged.tgz;",
-        as: "vagrant", stdout: :capture
-      ).stdout.split("\n")
-      expect(list.length).to eq(1)
     end
 
     it "can deal with spaces and quotes in file names" do

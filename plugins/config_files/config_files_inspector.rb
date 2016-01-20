@@ -41,7 +41,7 @@ class ConfigFilesInspector < Inspector
     system.check_retrieve_files_dependencies if do_extract
 
     count = 0
-    files = @system.rpm_database.changed_files do |chunk|
+    files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.count { |l| !l.chomp.end_with?(":") && l.split(" ")[1] == "c" }
       Machinery::Ui.progress(" -> Found #{count} config #{Machinery::pluralize(count, "file")}...")
     end
@@ -62,20 +62,20 @@ class ConfigFilesInspector < Inspector
     if do_extract
       file_store.create
       extracted_paths = result.reject do |file|
-        file.changes == Machinery::Array.new(["deleted"]) ||
+        file.changes == ["deleted"] ||
         file.link? || file.directory?
       end.map(&:name)
       scope.retrieve_files_from_system(@system, extracted_paths)
     end
 
     scope.extracted = !!do_extract
-    scope.files = ConfigFileList.new(result.sort_by(&:name))
+    scope += result.sort_by(&:name)
 
     @description["config_files"] = scope
   end
 
   def summary
     "#{@description.config_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.config_files.files.count} changed configuration files."
+      "#{@description.config_files.count} changed configuration files."
   end
 end

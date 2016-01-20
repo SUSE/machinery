@@ -37,8 +37,8 @@ describe "machinery@leap" do
 
   describe "inspect ubuntu_1404", matrix: "pending" do
     base = "ubuntu_1404"
-    username = "root"
-    password = "vagrant"
+    username = "machinery"
+    password = "linux"
 
     let(:inspect_options) {
       "--remote-user=#{username}" if username != "root"
@@ -61,5 +61,11 @@ describe "machinery@leap" do
     include_examples "inspect patterns", base
     include_examples "inspect users", base
     include_examples "inspect groups", base
+    include_examples "inspect services", base
+    include_examples "inspect repositories", base
+    include_examples "inspect packages", base
+    include_examples "inspect config files", base
+    include_examples "inspect changed managed files", base
+    include_examples "inspect unmanaged files", base, true
   end
 end

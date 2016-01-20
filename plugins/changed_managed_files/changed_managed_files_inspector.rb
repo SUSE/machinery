@@ -55,21 +55,21 @@ class ChangedManagedFilesInspector < Inspector
     end
 
     scope.extracted = !!options[:extract_changed_managed_files]
-    scope.files = ChangedManagedFileList.new(result.sort_by(&:name))
+    scope += result.sort_by(&:name)
 
     @description["changed_managed_files"] = scope
   end
 
   def summary
     "#{@description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.changed_managed_files.files.count} changed files."
+      "#{@description.changed_managed_files.count} changed files."
   end
 
   private
 
   def changed_files
     count = 0
-    files = @system.rpm_database.changed_files do |chunk|
+    files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
       Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
     end

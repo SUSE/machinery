@@ -32,26 +32,26 @@ describe FilterOptionParser do
       it "handles simple filter definitions" do
         filter = subject.parse(
           "inspect",
-          "exclude" => "/unmanaged_files/files/name=/foo"
+          "exclude" => "/unmanaged_files/name=/foo"
         )
 
         expect(filter.to_array).to match_array([
-          "/unmanaged_files/files/name=/foo"
+                                                 "/unmanaged_files/name=/foo"
         ])
       end
 
       it "reads filter from a filter definition file" do
         exclude_file = given_dummy_file("exclude_file")
         File.write(exclude_file, <<EOF)
-/changed_managed_files/files/change=md5,size
-/changed_managed_files/files/name=/bar
+/changed_managed_files/change=md5,size
+/changed_managed_files/name=/bar
 EOF
 
         filter = subject.parse("inspect", "exclude" => "@#{exclude_file}")
 
         expect(filter.to_array).to match_array([
-          "/changed_managed_files/files/change=md5,size",
-          "/changed_managed_files/files/name=/bar"
+                                                 "/changed_managed_files/change=md5,size",
+                                                 "/changed_managed_files/name=/bar"
         ])
       end
     end
@@ -62,24 +62,24 @@ EOF
         File.write(exclude_file, "/foo/bar\n/baz \n")
         filter = subject.parse("inspect", "skip-files" => "/foo,@#{exclude_file}")
         expect(filter.to_array).to match_array([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/foo/bar",
-          "/unmanaged_files/files/name=/baz"
+                                                 "/unmanaged_files/name=/foo",
+                                                 "/unmanaged_files/name=/foo/bar",
+                                                 "/unmanaged_files/name=/baz"
         ])
       end
 
       it "handles simple excludes" do
         filter = subject.parse("inspect", "skip-files" => "/foo")
 
-        expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
+        expect(filter.to_array).to eq(["/unmanaged_files/name=/foo"])
       end
 
       it "handles lists of excludes" do
         filter = subject.parse("inspect", "skip-files" => "/foo,/bar")
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/bar"
+                                        "/unmanaged_files/name=/foo",
+                                        "/unmanaged_files/name=/bar"
         ])
       end
 
@@ -90,9 +90,9 @@ EOF
         )
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/bar",
-          "/unmanaged_files/files/name=/file,with_comma"
+                                         "/unmanaged_files/name=/foo",
+                                         "/unmanaged_files/name=/bar",
+                                         "/unmanaged_files/name=/file,with_comma"
         ])
       end
 
@@ -100,8 +100,8 @@ EOF
         filter = subject.parse("inspect", "skip-files" => "\\@file_with_at,/foo")
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=@file_with_at",
-          "/unmanaged_files/files/name=/foo"
+                                         "/unmanaged_files/name=@file_with_at",
+                                         "/unmanaged_files/name=/foo"
         ])
       end
 
@@ -116,7 +116,7 @@ EOF
         File.write(exclude_file, "/foo")
 
         filter = subject.parse("inspect", "skip-files" => "@/foo/../#{exclude_file}")
-        expect(filter.to_array).to eq(["/unmanaged_files/files/name=/foo"])
+        expect(filter.to_array).to eq(["/unmanaged_files/name=/foo"])
       end
 
       it "ignores empty filters" do
@@ -125,8 +125,8 @@ EOF
         filter = subject.parse("inspect", "skip-files" => "@#{exclude_file}")
 
         expect(filter.to_array).to eq([
-          "/unmanaged_files/files/name=/foo",
-          "/unmanaged_files/files/name=/bar"
+                                         "/unmanaged_files/name=/foo",
+                                         "/unmanaged_files/name=/bar"
         ])
       end
     end

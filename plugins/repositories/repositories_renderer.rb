@@ -25,13 +25,29 @@ class RepositoriesRenderer < Renderer
 
     list do
       description.repositories.each do |p|
-        item "#{p.name}" do
-          puts "URI: #{p.url}"
-          puts "Alias: #{p.alias}"
-          puts "Enabled: #{p.enabled ? "Yes" : "No"}"
-          puts "Refresh: #{p.autorefresh ? "Yes" : "No"}" if p.autorefresh != nil
-          puts "Priority: #{p.priority}" if p.priority != nil
-          puts "Package Manager: #{p.package_manager}"
+        item_name = if p.name
+          p.name
+        else
+          "URI: #{p.url}"
+        end
+        item item_name do
+          if p.url.is_a?(Array)
+            list "URI", sublist: true do
+              p.url.each do |url|
+                item url
+              end
+            end
+          elsif p.name
+            puts "URI: #{p.url}"
+          end
+          puts "Mirrorlist: #{!p.mirrorlist.empty? ? p.mirrorlist : "N/A"}" if p.mirrorlist
+          puts "Alias: #{p.alias}" if p.alias
+          puts "Distribution: #{p.distribution}" if p.distribution
+          puts "Components: #{p.components.join(", ")}" if p.components
+          puts "Enabled: #{p.enabled ? "Yes" : "No"}" unless p.enabled.nil?
+          puts "Refresh: #{p.autorefresh ? "Yes" : "No"}" unless p.autorefresh.nil?
+          puts "Priority: #{p.priority}" unless p.priority.nil?
+          puts "Type: #{p.type || "N/A"}"
         end
       end
     end

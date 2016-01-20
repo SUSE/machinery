@@ -20,7 +20,7 @@ class UnmanagedFilesInspector < Inspector
 
   # checks if all required binaries are present
   def check_requirements(check_tar)
-    @system.check_requirement("rpm", "--version")
+    @system.check_requirement(["rpm", "dpkg"], "--version")
     @system.check_requirement("sed", "--version")
     @system.check_requirement("cat", "--version")
     @system.check_requirement("find", "--version")
@@ -34,6 +34,7 @@ class UnmanagedFilesInspector < Inspector
       ["sed", "s/^\\(.\\)[^/]* /\\1 /"],
       :stdout => :capture
     )
+
     files = {}
     dirh = {}
     links = {}
@@ -79,7 +80,36 @@ class UnmanagedFilesInspector < Inspector
       end
     end
     Machinery.logger.debug "extract_rpm_database files:#{files.size} dirs:#{dirh.size}"
+
     [files, dirh]
+  end
+
+  def extract_dpkg_database
+    out = @system.run_script_with_progress("dpkg_unmanaged_files.sh")
+    parsed_data = parse_dpkg_package_files_output(out)
+    files = parsed_data[:files]
+    dirh = parsed_data[:directories]
+
+    [files, dirh]
+  end
+
+  def parse_dpkg_package_files_output(data)
+    result = { files: {}, directories: {} }
+
+    data.each_line do |line|
+      type, value = line.chomp.split(" ", 2)
+
+      if type == "-" # file
+        result[:files][value] = ""
+      elsif type == "d" && value != "/." # directory
+        result[:directories][value] = true
+      elsif type == "l" # link
+        pair = value.split(" -> ", 2)
+        result[:files][pair[0]] = pair[1]
+      end
+    end
+
+    result
   end
 
   def check_consistency(files, dirh)
@@ -219,6 +249,8 @@ class UnmanagedFilesInspector < Inspector
     do_extract = options && options[:extract_unmanaged_files]
     check_requirements(do_extract)
 
+    determine_package_manager
+
     scope = UnmanagedFilesScope.new
 
     file_store_tmp = @description.scope_file_store("unmanaged_files.tmp")
@@ -226,8 +258,8 @@ class UnmanagedFilesInspector < Inspector
 
     scope.scope_file_store = file_store_tmp
 
-    file_filter = filter.element_filter_for("/unmanaged_files/files/name").dup if filter
-    file_filter ||= ElementFilter.new("/unmanaged_files/files/name")
+    file_filter = filter.element_filter_for("/unmanaged_files/name").dup if filter
+    file_filter ||= ElementFilter.new("/unmanaged_files/name")
     file_filter.add_matchers("=", @description.store.base_path)
 
     # Add a recursive pendant to each ignored element
@@ -244,6 +276,14 @@ class UnmanagedFilesInspector < Inspector
     end
   end
 
+  def determine_package_manager
+    if @system.has_command?("rpm")
+      @package_manager = "rpm"
+    elsif @system.has_command?("dpkg")
+      @package_manager = "dpkg"
+    end
+  end
+
   def helper_usable?(helper)
     if !helper.can_help?
       Machinery::Ui.puts(
@@ -254,7 +294,7 @@ class UnmanagedFilesInspector < Inspector
       Machinery::Ui.puts(
         "Note: Using traditional inspection because only 'root' is supported as remote user."
       )
-    else
+    elsif @package_manager == "rpm"
       return true
     end
 
@@ -272,8 +312,7 @@ class UnmanagedFilesInspector < Inspector
       end
 
       helper.run_helper(scope)
-
-      scope.files.delete_if { |f| filter.matches?(f.name) }
+      scope.delete_if { |f| filter.matches?(f.name) }
 
       if do_extract
         mount_points = MountPoints.new(@system)
@@ -282,16 +321,16 @@ class UnmanagedFilesInspector < Inspector
         file_store_tmp.remove
         file_store_tmp.create
 
-        files = scope.files.select { |f| f.file? || f.link? }.map(&:name)
+        files = scope.select { |f| f.file? || f.link? }.map(&:name)
         scope.retrieve_files_from_system_as_archive(@system, files, [])
         show_extraction_progress(files.count)
 
         scope.retrieve_trees_from_system_as_archive(@system,
-          scope.files.select(&:directory?).map(&:name), excluded_trees) do |count|
+          scope.select(&:directory?).map(&:name), excluded_trees) do |count|
           show_extraction_progress(files.count + count)
         end
 
-        scope.files = extract_tar_metadata(scope.files, file_store_tmp.path)
+        scope = extract_tar_metadata(scope, file_store_tmp.path)
         file_store_final.remove
         file_store_tmp.rename(file_store_final.store_name)
         scope.scope_file_store = file_store_final
@@ -310,7 +349,11 @@ class UnmanagedFilesInspector < Inspector
   def run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     mount_points = MountPoints.new(@system)
 
-    rpm_files, rpm_dirs = extract_rpm_database
+    if @package_manager == "rpm"
+      inspected_files, inspected_dirs = extract_rpm_database
+    elsif @package_manager == "dpkg"
+      inspected_files, inspected_dirs = extract_dpkg_database
+    end
 
     # Btrfs subvolumes and local mounts need to be inspected separately because
     # they are not part of the `get_find_data` return data
@@ -372,7 +415,7 @@ class UnmanagedFilesInspector < Inspector
           file_filter.matches?("/" + dir)
         end
       end
-      managed, unmanaged = dirs.keys.partition{ |d| rpm_dirs.has_key?(find_dir + d) }
+      managed, unmanaged = dirs.keys.partition { |d| inspected_dirs.key?(find_dir + d) }
 
       # unmanaged dirs lead to removal of files and dirs below that dir
       while !unmanaged.empty?
@@ -408,7 +451,7 @@ class UnmanagedFilesInspector < Inspector
       dirs_todo.push(*managed)
 
       # unmanaged files are simply stored
-      managed, unmanaged = files.keys.partition{ |d| rpm_files.has_key?(find_dir + d) }
+      managed, unmanaged = files.keys.partition { |d| inspected_files.key?(find_dir + d) }
       links = unmanaged.reject { |d| files[d].empty? }
       unmanaged.map!{ |d| find_dir + d }
       unmanaged_files.push(*unmanaged)
@@ -426,8 +469,7 @@ class UnmanagedFilesInspector < Inspector
       excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
 
     scope.extracted = !!do_extract
-    scope.files = UnmanagedFileList.new(processed_files.sort_by(&:name))
-
+    scope += processed_files.sort_by(&:name)
     @description["unmanaged_files"] = scope
   end
 
@@ -477,7 +519,7 @@ class UnmanagedFilesInspector < Inspector
 
   def summary
     "#{@description.unmanaged_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.unmanaged_files.files.count} unmanaged files and trees."
+      "#{@description.unmanaged_files.count} unmanaged files and trees."
   end
 
   private

@@ -33,7 +33,7 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": 5
+        "format_version": 6
       }
     }'
   end
@@ -292,7 +292,10 @@ describe SystemDescription do
       json = <<-EOF
         {
           "config_files": {
-            "extracted": true
+            "_attributes": {
+              "extracted": true
+            },
+            "_elements": []
           }
         }
       EOF
@@ -302,7 +305,10 @@ describe SystemDescription do
       json = <<-EOF
         {
           "config_files": {
-            "extracted": false
+            "_attributes": {
+              "extracted": false
+            },
+            "_elements": []
           }
         }
       EOF
@@ -599,8 +605,10 @@ describe SystemDescription do
       create_test_description(json: <<-EOF)
         {
           "services": {
-            "init_system": "systemd",
-            "services": [
+            "_attributes": {
+              "init_system": "systemd"
+            },
+            "_elements": [
               {
                 "name": "mysql.service",
                 "state": "enabled"
@@ -630,8 +638,10 @@ describe SystemDescription do
       create_test_description(json: <<-EOF)
         {
           "config_files": {
-            "extracted": true,
-            "files": [
+            "_attributes": {
+              "extracted": true
+            },
+            "_elements": [
               {
                 "name": "/etc/my.cnf"
               }

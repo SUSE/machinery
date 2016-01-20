@@ -21,10 +21,10 @@ describe ConfigFilesInspector do
   initialize_system_description_factory_store
 
   describe ".inspect" do
-    let(:rpm_database) { double }
+    let(:managed_files_database) { double }
     let(:system) {
       double(
-        rpm_database:                      rpm_database,
+        managed_files_database:                      managed_files_database,
         check_requirement:                 true,
         check_retrieve_files_dependencies: true
       )
@@ -54,7 +54,7 @@ describe ConfigFilesInspector do
       }
 
       before(:each) do
-        allow(rpm_database).to receive(:changed_files).and_return(
+        allow(managed_files_database).to receive(:changed_files).and_return(
           [
             RpmDatabase::ChangedFile.new(
               "c",
@@ -106,7 +106,7 @@ describe ConfigFilesInspector do
             )
           ]
         )
-        allow(rpm_database).to receive(:get_path_data).and_return(
+        allow(managed_files_database).to receive(:get_path_data).and_return(
           "/etc/config" => {
             user:  "root",
             group: "root",
@@ -132,11 +132,11 @@ describe ConfigFilesInspector do
         it "filters out the matching elements" do
           filter = Filter.new("/config_files/files/name=/usr/*")
           inspector.inspect(filter)
-          expect(description.config_files.files.map(&:name)).
+          expect(description.config_files.map(&:name)).
             to_not include("/usr/share/man/man1/time.1.gz")
 
           inspector.inspect(nil)
-          expect(description.config_files.files.map(&:name)).
+          expect(description.config_files.map(&:name)).
             to include("/usr/share/man/man1/time.1.gz")
         end
       end
@@ -145,7 +145,7 @@ describe ConfigFilesInspector do
         it "returns data about modified config files when requirements are fulfilled" do
           inspector.inspect(filter)
 
-          expect(description["config_files"].files.map(&:name)).to eq([
+          expect(description["config_files"].map(&:name)).to eq([
             "/etc/config",
             "/etc/config_directory",
             "/etc/deleted_config",
@@ -156,12 +156,12 @@ describe ConfigFilesInspector do
         end
 
         it "returns empty when no modified config files are there" do
-          expect(rpm_database).to receive(:changed_files).and_return([])
+          expect(managed_files_database).to receive(:changed_files).and_return([])
 
           inspector.inspect(filter)
           expected = ConfigFilesScope.new(
-            extracted: false,
-            files:     ConfigFileList.new
+            [],
+            "extracted" => false
           )
           expect(description["config_files"]).to eq(expected)
         end
@@ -227,7 +227,7 @@ describe ConfigFilesInspector do
           )
 
           inspector.inspect(filter, extract_changed_config_files: true)
-          names = description["config_files"].files.map(&:name)
+          names = description["config_files"].map(&:name)
 
           expect(names).to eq(names.sort)
         end

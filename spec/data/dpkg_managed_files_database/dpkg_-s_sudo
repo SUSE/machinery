@@ -1,0 +1,24 @@
+Package: sudo
+Status: install ok installed
+Priority: optional
+Section: admin
+Installed-Size: 1508
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 1.8.9p5-1ubuntu1.1
+Replaces: sudo-ldap
+Depends: libc6 (>= 2.15), libpam0g (>= 0.99.7.1), libselinux1 (>= 1.32), libpam-modules
+Conflicts: sudo-ldap
+Conffiles:
+ /etc/init.d/sudo 69497d0565055f626ee2bc84f818ce0f
+ /etc/sudoers e8e73f16ed73309df7574c12fbcc0af7
+ /etc/pam.d/sudo 665a6dead44ff792cfad6b0faa10a621
+ /etc/sudoers.d/README 8d3cf36d1713f40a0ddc38e1b21a51b6
+Description: Provide limited super user privileges to specific users
+ Sudo is a program designed to allow a sysadmin to give limited root
+ privileges to users and log root activity.  The basic philosophy is to give
+ as few privileges as possible but still allow people to get their work done.
+ .
+ This version is built with minimal shared library dependencies, use the
+ sudo-ldap package instead if you need LDAP support for sudoers.
+Original-Maintainer: Bdale Garbee <bdale@gag.com>

@@ -88,8 +88,8 @@ describe MachineryHelper do
       scope = UnmanagedFilesScope.new
       helper.run_helper(scope)
 
-      expect(scope.files.first.name).to eq("/opt/magic/file")
-      expect(scope.files.count).to eq(2)
+      expect(scope.first.name).to eq("/opt/magic/file")
+      expect(scope.count).to eq(2)
     end
   end
 

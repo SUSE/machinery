@@ -218,7 +218,7 @@ describe KiwiConfig do
     end
 
     it "raises an error if the systemd service state is unknown" do
-      system_description_with_systemd_services.services.services.first["state"] = "not_known"
+      system_description_with_systemd_services.services.first["state"] = "not_known"
       expect {
         KiwiConfig.new(system_description_with_systemd_services)
       }.to raise_error(Machinery::Errors::ExportFailed, /not_known/)
@@ -234,7 +234,7 @@ describe KiwiConfig do
     end
 
     it "handles quotes in changed links" do
-      system_description_with_modified_files["changed_managed_files"]["files"] <<
+      system_description_with_modified_files["changed_managed_files"] <<
         ChangedManagedFile.new(
           name: "/opt/test-quote-char/link",
           package_name: "test-data-files",

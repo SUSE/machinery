@@ -25,7 +25,29 @@ describe "repositories model" do
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.first).to be_a(Repository) }
+  specify { expect(scope.first).to be_a(ZyppRepository) }
+
+  describe "#compare_with" do
+    context "with different repository systems" do
+      let(:other) { create_test_description(scopes: ["apt_repositories"])["repositories"] }
+
+      it "doesn't return changed or common elements" do
+        expect(scope.compare_with(other)).to eq([scope, other, nil, nil])
+      end
+    end
+
+    context "with equal repository systems" do
+      let(:other) { create_test_description(scopes: ["zypp_repositories"])["repositories"] }
+
+      it "calculates changed and common" do
+        only_self, only_other, changed, common = scope.compare_with(other)
+        expect(only_self).not_to be_empty
+        expect(only_other).to eq(nil)
+        expect(changed.size).to eq(1)
+        expect(common.size).to eq(1)
+      end
+    end
+  end
 end
 
 describe Repository do

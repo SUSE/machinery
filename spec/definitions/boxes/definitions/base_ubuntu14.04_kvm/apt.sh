@@ -1,7 +1,9 @@
+# remove update repos
+cat << EOF > /etc/apt/sources.list
+deb http://de.archive.ubuntu.com/ubuntu/ trusty main restricted
+deb-src http://de.archive.ubuntu.com/ubuntu/ trusty main restricted
+EOF
 apt-get -y update
-apt-get -y upgrade
-apt-get -y install linux-headers-$(uname -r) build-essential
-apt-get -y install zlib1g-dev libssl-dev libreadline-gplv2-dev libyaml-dev
 apt-get -y install vim
-apt-get -y install dkms
 apt-get -y install nfs-common
+apt-get -y purge whiptail nano ppp pppconfig pppoeconf linux-image-extra-3.19.0-25-generic linux-headers-3.19.0-25-generic linux-headers-3.19.0-25

@@ -88,6 +88,11 @@ class Server < Sinatra::Base
       object.length.to_s + " " + Machinery.pluralize(object.length, singular, plural)
     end
 
+    def repository_changes
+      klass = @diff["repositories"].changed.first.first.class
+      changed_elements("repositories", attributes: klass.attributes, key: klass.key)
+    end
+
     def changed_elements(scope, opts)
       optional_attributes = opts[:optional_attributes] || []
 
@@ -199,7 +204,7 @@ class Server < Sinatra::Base
     description = SystemDescription.load(params[:id], settings.system_description_store)
     filename = File.join("/", params["splat"].first)
 
-    file = description[params[:scope]].files.find { |f| f.name == filename }
+    file = description[params[:scope]].find { |f| f.name == filename }
 
     if request.accept.first.to_s == "text/plain" && file.binary?
       status 406
@@ -298,7 +303,7 @@ class Server < Sinatra::Base
     diffs_dir = @description.scope_file_store("analyze/config_file_diffs").path
     if @description.config_files && diffs_dir
       # Enrich description with the config file diffs
-      @description.config_files.files.each do |file|
+      @description.config_files.each do |file|
         path = File.join(diffs_dir, file.name + ".diff")
         file.diff = diff_to_object(File.read(path)) if File.exists?(path)
       end

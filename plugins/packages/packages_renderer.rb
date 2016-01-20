@@ -23,13 +23,14 @@ class PackagesRenderer < Renderer
   def content(description)
     return unless description.packages
 
-    if description.packages.empty?
+    if description.packages.elements.empty?
       puts "There are no packages."
     end
 
     list do
       description.packages.each do |p|
-        item "#{p.name}-#{p.version}-#{p.release}.#{p.arch} (#{p.vendor})"
+        vendor = !p.vendor.empty? ? p.vendor : "N/A"
+        item [p.name, p.version, p.release].reject(&:empty?).join("-") + ".#{p.arch} (#{vendor})"
       end
     end
   end
@@ -37,6 +38,8 @@ class PackagesRenderer < Renderer
   # In the comparison case we only want to show the package name, not all details like version,
   # architecture etc.
   def compare_content_only_in(description)
+    return if description.packages.empty?
+
     list do
       description.packages.each do |p|
         item "#{p.name}"

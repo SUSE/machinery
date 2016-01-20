@@ -39,7 +39,7 @@ describe Comparison do
       let(:expected_only_in1) {
         PackagesScope.new(
           [
-            Package.new(
+            RpmPackage.new(
               name: "openSUSE-release-dvd",
               version: "13.1",
               release: "1.10",
@@ -47,13 +47,14 @@ describe Comparison do
               vendor: "SUSE LINUX Products GmbH, Nuernberg, Germany",
               checksum: "2a3d5b29179daa1e65e391d0a0c1442d"
             )
-          ]
+          ],
+          package_system: "rpm"
         )
       }
       let(:expected_only_in2) {
         PackagesScope.new(
           [
-            Package.new(
+            RpmPackage.new(
               name: "kernel-desktop",
               version: "3.7.10",
               release: "1.0",
@@ -61,13 +62,14 @@ describe Comparison do
               vendor: "openSUSE",
               checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
             )
-          ]
+          ],
+          package_system: "rpm"
         )
       }
       let(:expected_common) {
         PackagesScope.new(
           [
-            Package.new(
+            RpmPackage.new(
               name: "autofs",
               version: "5.0.9",
               release: "3.6",
@@ -75,7 +77,8 @@ describe Comparison do
               vendor: "Packman",
               checksum: "6d5d012b0e8d33cf93e216dfab6b174e"
             )
-          ]
+          ],
+          package_system: "rpm"
         )
       }
 
@@ -95,14 +98,14 @@ describe Comparison do
       it "returns changed elements" do
         expected = [
           [
-            Package.new(
+            RpmPackage.new(
               name: "bash",
               version: "4.2",
               release: "68.1.5",
               arch: "x86_64",
               vendor: "openSUSE",
               checksum: "533e40ba8a5551204b528c047e45c169"
-            ), Package.new(
+            ), RpmPackage.new(
               name: "bash",
               version: "4.3",
               release: "68.1.5",

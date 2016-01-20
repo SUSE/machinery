@@ -45,6 +45,22 @@ describe PatternsInspector do
     EOF
   }
 
+  let(:tasksel_output) {
+    <<-EOF
+u server        Basic Ubuntu server
+i openssh-server        OpenSSH server
+i dns-server    DNS server
+u lamp-server   LAMP server
+i mail-server   Mail server
+u postgresql-server     PostgreSQL database
+i print-server  Print server
+i samba-server  Samba file server
+u tomcat-server Tomcat Java server
+u cloud-image   Ubuntu Cloud Image (instance)
+u virt-host     Virtual Machine host
+EOF
+  }
+
   let(:patterns_inspector) { PatternsInspector.new(system, description) }
   let(:system) {
     double(
@@ -55,59 +71,105 @@ describe PatternsInspector do
   }
 
   describe "#inspect" do
-    before(:each) do
-      allow(system).to receive(:has_command?).with("zypper").and_return(true)
-    end
+    context "on a zypper based OS" do
+      before(:each) do
+        allow(system).to receive(:has_command?).with("zypper").and_return(true)
+      end
 
-    it "parses the patterns list into a Hash" do
-      expect(system).to receive(:run_command).
-        with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
-        and_return(zypper_output)
-      patterns_inspector.inspect(filter)
+      it "parses the patterns list into a Hash" do
+        expect(system).to receive(:run_command).
+          with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
+          and_return(zypper_output)
+        patterns_inspector.inspect(filter)
 
-      expect(description.patterns.size).to eql(2)
-      expect(description.patterns.first).to eq(
-        Pattern.new(
-          name: "base",
-          version: "13.1",
-          release: "13.6.1"
+        expect(description.patterns.size).to eql(2)
+        expect(description.patterns.first).to eq(
+          Pattern.new(
+            name: "base",
+            version: "13.1",
+            release: "13.6.1"
+          )
         )
-      )
 
-      expect(patterns_inspector.summary).to include("Found 2 patterns")
+        expect(patterns_inspector.summary).to include("Found 2 patterns")
+      end
+
+      it "returns an empty array when there are no patterns installed" do
+        expect(system).to receive(:run_command).and_return("")
+
+        patterns_inspector.inspect(filter)
+        expect(description.patterns).to eql(PatternsScope.new)
+      end
+
+      it "returns sorted data" do
+        expect(system).to receive(:run_command).and_return(zypper_output)
+
+        patterns_inspector.inspect(filter)
+        names = description.patterns.map(&:name)
+        expect(names).to eq(names.sort)
+      end
+
+      it "raises an error if zypper is locked" do
+        expect(system).to receive(:run_command).
+          with("zypper", "-xq", "--no-refresh", "patterns", "-i",
+            stdout: :capture).
+          and_raise(
+            Cheetah::ExecutionFailed.new(
+              nil,
+              nil,
+              "System management is locked by the application with pid 5480 (zypper).",
+              nil
+            )
+          )
+        expect { patterns_inspector.inspect(filter) }.to raise_error(
+          Machinery::Errors::ZypperFailed, /Zypper is locked./)
+      end
     end
 
-    it "returns an empty array when there are no patterns installed" do
-      expect(system).to receive(:run_command).and_return("")
+    context "on a tasksel based OS" do
+      before(:each) do
+        allow(system).to receive(:has_command?).with("zypper").and_return(false)
+        allow(system).to receive(:has_command?).with("dpkg").and_return(true)
+        allow(system).to receive(:has_command?).with("tasksel").and_return(true)
+      end
+
+      it "parses the patterns list into a Hash" do
+        expect(system).to receive(:run_command).
+          with("tasksel", "--list-tasks", stdout: :capture).
+          and_return(tasksel_output)
+        patterns_inspector.inspect(filter)
+
+        expect(description.patterns.size).to eql(5)
+        expect(description.patterns.first).to eql(
+          Pattern.new(
+            name: "dns-server"
+          )
+        )
+
+        expect(patterns_inspector.summary).to include("Found 5 patterns")
+      end
+    end
+
+    it "returns an empty array when no tasksel is installed on a deb based system
+        and shows an informational message" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(true)
+      allow(system).to receive(:has_command?).with("tasksel").and_return(false)
 
       patterns_inspector.inspect(filter)
+      expect(patterns_inspector.summary).to eq(
+        "For a patterns inspection please install the package tasksel on the inspected system."
+      )
       expect(description.patterns).to eql(PatternsScope.new)
     end
 
-    it "returns sorted data" do
-      expect(system).to receive(:run_command).and_return(zypper_output)
+    it "returns an empty array when no zypper or dpkg are installed and shows
+        an unsupported message" do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(false)
 
       patterns_inspector.inspect(filter)
-      names = description.patterns.map(&:name)
-      expect(names).to eq(names.sort)
-    end
-
-    it "raises an error if zypper is locked" do
-      expect(system).to receive(:run_command).
-        with("zypper", "-xq", "--no-refresh", "patterns", "-i",
-          stdout: :capture).
-        and_raise(Cheetah::ExecutionFailed.new(
-          nil, nil, "System management is locked by the application with pid 5480 (zypper).", nil)
-        )
-      expect { patterns_inspector.inspect(filter) }.to raise_error(
-        Machinery::Errors::ZypperFailed, /Zypper is locked./)
-    end
-
-    it "returns an empty array when no zypper is installed and shows an unsupported message" do
-      allow(system).to receive(:has_command?).with("zypper").and_return(false)
-
-      summary = patterns_inspector.inspect(filter)
-      expect(summary).to eq("Patterns are not supported on this system.")
+      expect(patterns_inspector.summary).to eq("Patterns are not supported on this system.")
       expect(description.patterns).to eql(PatternsScope.new)
     end
   end

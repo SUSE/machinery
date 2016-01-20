@@ -18,11 +18,11 @@
 require_relative "spec_helper"
 
 describe ChangedManagedFilesInspector do
-  let(:rpm_database) { double }
+  let(:managed_files_database) { double }
 
   let(:system) {
     double(
-      rpm_database:                      rpm_database,
+      managed_files_database:                      managed_files_database,
       check_requirement:                 true,
       check_retrieve_files_dependencies: true
     )
@@ -34,7 +34,7 @@ describe ChangedManagedFilesInspector do
 
   describe "#inspect" do
     before(:each) do
-      allow(rpm_database).to receive(:changed_files).and_return(
+      allow(managed_files_database).to receive(:changed_files).and_return(
         [
           RpmDatabase::ChangedFile.new(
             "c",
@@ -78,7 +78,7 @@ describe ChangedManagedFilesInspector do
           )
         ]
       )
-      allow(rpm_database).to receive(:get_path_data).and_return(
+      allow(managed_files_database).to receive(:get_path_data).and_return(
         "/etc/file" => {
           user:  "root",
           group: "root",
@@ -111,11 +111,11 @@ describe ChangedManagedFilesInspector do
         filter = Filter.new("/changed_managed_files/files/name=/usr/*")
 
         subject.inspect(filter)
-        expect(description["changed_managed_files"].files.map(&:name)).
+        expect(description["changed_managed_files"].map(&:name)).
           to_not include("/usr/share/man/man1/time.1.gz")
 
         subject.inspect(nil)
-        expect(description["changed_managed_files"].files.map(&:name)).
+        expect(description["changed_managed_files"].map(&:name)).
           to include("/usr/share/man/man1/time.1.gz")
       end
     end
@@ -132,7 +132,7 @@ describe ChangedManagedFilesInspector do
           "/etc/documentation",
           "/usr/share/man/man1/time.1.gz"
         ]
-        expect(description["changed_managed_files"].files.map(&:name)).
+        expect(description["changed_managed_files"].map(&:name)).
           to match_array(expected_result)
       end
 
@@ -143,7 +143,7 @@ describe ChangedManagedFilesInspector do
       end
 
       it "returns sorted data" do
-        names = description["changed_managed_files"].files.map(&:name)
+        names = description["changed_managed_files"].map(&:name)
 
         expect(names).to eq(names.sort)
       end

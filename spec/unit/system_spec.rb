@@ -179,6 +179,36 @@ describe System do
 
       expect(callback_buffer).to eq("output1\noutput2\n")
     end
+
+    it "passes options to run_script" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_script).with("script", hash_including(:privileged))
+      system.run_script("script", privileged: true)
+    end
+  end
+
+  describe "#run_command_with_progress" do
+    it "calls the callback with the output" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_command) do |_command, options|
+        options[:stdout].puts("output1")
+        options[:stdout].puts("output2")
+      end
+
+      callback_buffer = ""
+      system.run_command_with_progress("command") do |chunk|
+        callback_buffer << chunk
+      end
+
+      expect(callback_buffer).to eq("output1\noutput2\n")
+    end
+
+    it "passes options to run_command" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_command).
+        with("command", "parameter", hash_including(:privileged))
+      system.run_command_with_progress("command", "parameter", privileged: true)
+    end
   end
 
   describe "#has_command" do
@@ -265,9 +295,28 @@ describe System do
     end
   end
 
-  describe "#rpm_database" do
-    it "returns a RpmDatabase object" do
-      expect(System.new.rpm_database).to be_a(RpmDatabase)
+  describe "#managed_files_database" do
+    it "returns an RpmDatabase object on an RPM system" do
+      system = System.new
+      allow(system).to receive(:has_command?).with("rpm").and_return(true)
+      expect(system.managed_files_database).to be_a(RpmDatabase)
+    end
+
+    it "returns a DpkgDatabase object on a Debian system" do
+      system = System.new
+      allow(system).to receive(:has_command?).with("rpm").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(true)
+      expect(system.managed_files_database).to be_a(DpkgDatabase)
+    end
+
+    it "raises an error if neither rpm nor dpkg is on the system" do
+      system = System.new
+      allow(system).to receive(:has_command?).with("rpm").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(false)
+
+      expect {
+        system.managed_files_database
+      }.to raise_error(Machinery::Errors::MissingRequirement, /Need binary 'rpm' or 'dpkg'/)
     end
   end
 end

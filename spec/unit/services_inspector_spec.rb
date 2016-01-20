@@ -27,6 +27,18 @@ describe ServicesInspector do
   let(:filter) { nil }
   subject(:inspector) { ServicesInspector.new(system, description) }
 
+  let(:chkconfig_redhat_output) {
+    <<-EOF
+crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
+dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
+
+xinetd based services:
+        chargen-dgram:  off
+        chargen-stream: on
+        eklogin:        off
+EOF
+  }
+
   describe "#inspect" do
     let(:systemctl_list_unit_files_output) {
       <<-EOF
@@ -54,20 +66,24 @@ EOF
 
       inspector.inspect(filter)
 
-      expect(description.services).to eq(ServicesScope.new(
-        init_system: "systemd",
-        services:    ServiceList.new([
-          Service.new(name: "alsasound.service", state: "static"),
-          Service.new(name: "autofs.service",    state: "disabled"),
-          Service.new(name: "syslog.socket",     state: "enabled")
-        ])
-      ))
+      expect(description.services).to eq(
+        ServicesScope.new(
+          [
+            Service.new(name: "alsasound.service", state: "static"),
+            Service.new(name: "autofs.service",    state: "disabled"),
+            Service.new(name: "syslog.socket",     state: "enabled")
+          ],
+          init_system: "systemd"
+        )
+      )
       expect(inspector.summary).to eq("Found 3 services.")
     end
 
     it "returns data about SysVinit services on a suse system when no systemd is present" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(false)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -80,20 +96,106 @@ EOF
 
       inspector.inspect(filter)
 
-      expect(description.services).to eq(ServicesScope.new(
-        init_system: "sysvinit",
-        services:    ServiceList.new([
-          Service.new(name: "alsasound",   state: "on"),
-          Service.new(name: "autofs",      state: "off"),
-          Service.new(name: "boot.isapnp", state: "on"),
-        ])
-      ))
+      expect(description.services).to eq(
+        ServicesScope.new(
+          [
+            Service.new(name: "alsasound",   state: "on"),
+            Service.new(name: "autofs",      state: "off"),
+            Service.new(name: "boot.isapnp", state: "on"),
+          ],
+          init_system: "sysvinit"
+        )
+      )
       expect(inspector.summary).to eq("Found 3 services.")
+    end
+
+    it "returns data about upstart services on a ubuntu system" do
+      initctl_ubuntu_output =
+        <<-EOF
+ufw
+  start on starting (job: networking, env:)
+  stop on runlevel (job:, env: [!023456])
+tty4
+  start on runlevel (job:, env: [23])
+  start on container (job:, env: CONTAINER=lxc-libvirt)
+  stop on runlevel (job:, env: [!23])
+hostname
+  start on startup (job:, env:)
+EOF
+
+      service_ubuntu_output =
+        <<-EOF
+ [ + ]  apparmor
+ [ + ]  ntp
+ [ - ]  ssh
+ [ - ]  rsync
+EOF
+
+      service_ubuntu_error =
+        <<-EOF
+ [ ? ]  console-setup
+EOF
+
+      allow(system).to receive(:has_command?).
+        with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(true)
+      allow(system).to receive(:has_command?).
+        with("chkconfig").and_return(false)
+      expect(system).to receive(:run_command).
+        with(
+          "/usr/sbin/service",
+          "--status-all",
+          stdout: :capture, stderr: :capture
+        ).
+        and_return([service_ubuntu_output, service_ubuntu_error])
+
+      [2, "S"].map do |runlevel|
+        expect(system).to receive(:run_command).
+          with(
+            "/usr/bin/find",
+            "/etc/rc#{runlevel}.d",
+            "-name",
+            "S*",
+            stdout: :capture
+          ).
+          and_return(
+            "/etc/rc#{runlevel}.d/S23ntp\n/etc/rc#{runlevel}.d/S20rsync\n"
+          )
+      end
+
+      expect(system).to receive(:run_command).
+        with(
+          "/sbin/initctl",
+          "show-config",
+          "-e",
+          stdout: :capture
+        ).
+        and_return(initctl_ubuntu_output)
+      inspector.inspect(filter)
+
+      expect(description.services).to eq(
+        ServicesScope.new(
+          [
+            Service.new(name: "apparmor",       state: "disabled",      legacy_sysv: true),
+            Service.new(name: "console-setup",  state: "disabled",      legacy_sysv: true),
+            Service.new(name: "hostname",       state: "enabled",      legacy_sysv: false),
+            Service.new(name: "ntp",            state: "enabled",      legacy_sysv: true),
+            Service.new(name: "rsync",          state: "enabled",      legacy_sysv: true),
+            Service.new(name: "ssh",            state: "disabled",      legacy_sysv: true),
+            Service.new(name: "tty4",           state: "enabled",      legacy_sysv: false),
+            Service.new(name: "ufw",            state: "disabled",      legacy_sysv: false)
+          ], init_system: "upstart"
+        )
+      )
+      expect(inspector.summary).to eq("Found 8 services.")
     end
 
     it "raises an exception when requirements are not fulfilled" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(false)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version").
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
@@ -106,26 +208,66 @@ EOF
       }.to raise_error(Machinery::Errors::MissingRequirement)
     end
 
-    it "returns data about SysVinit services on a redhat system" do
+    it "returns data about Upstart services on a rhel6 system" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(true)
+      allow(system).to receive(:has_command?).
+        with("chkconfig").and_return(true)
       allow(system).to receive(:run_command).
         with("/sbin/chkconfig", "--version")
-      expect(inspector).to receive(:parse_redhat_chkconfig).
-        and_return([
-          Service.new(name: "crond", state: "on"),
-          Service.new(name: "dnsmasq", state: "off")])
+      allow(system).to receive(:check_requirement).with("/sbin/runlevel").and_return(true)
+      allow(system).to receive(:run_command).
+        with("/sbin/runlevel", stdout: :capture).and_return("N 3")
+      allow(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--list", stdout: :capture).and_return(chkconfig_redhat_output)
 
       inspector.inspect(filter)
 
-      expect(description.services).to eq(ServicesScope.new(
-        init_system: "sysvinit",
-        services: ServiceList.new([
-          Service.new(name: "crond", state: "on"),
-          Service.new(name: "dnsmasq", state: "off"),
-        ])
-      ))
-      expect(inspector.summary).to eq("Found 2 services.")
+      expect(description.services).to match_array(
+        ServicesScope.new(
+          [
+            Service.new(name: "crond", state: "on", legacy_sysv: true),
+            Service.new(name: "dnsmasq", state: "off", legacy_sysv: true),
+            Service.new(name: "chargen-dgram", state: "off", legacy_sysv: true),
+            Service.new(name: "chargen-stream", state: "on", legacy_sysv: true),
+            Service.new(name: "eklogin", state: "off", legacy_sysv: true)
+          ],
+          init_system: "upstart"
+        )
+      )
+      expect(inspector.summary).to eq("Found 5 services.")
+    end
+
+    it "returns data about SysVinit services on a redhat system" do
+      allow(system).to receive(:has_command?).
+        with("systemctl").and_return(false)
+      allow(system).to receive(:has_command?).
+        with("initctl").and_return(false)
+      allow(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--version")
+      allow(system).to receive(:check_requirement).with("/sbin/runlevel").and_return(true)
+      allow(system).to receive(:run_command).
+        with("/sbin/runlevel", stdout: :capture).and_return("N 3")
+      allow(system).to receive(:run_command).
+        with("/sbin/chkconfig", "--list", stdout: :capture).and_return(chkconfig_redhat_output)
+
+      inspector.inspect(filter)
+
+      expect(description.services).to match_array(
+        ServicesScope.new(
+          [
+            Service.new(name: "crond", state: "on"),
+            Service.new(name: "dnsmasq", state: "off"),
+            Service.new(name: "chargen-dgram", state: "off"),
+            Service.new(name: "chargen-stream", state: "on"),
+            Service.new(name: "eklogin", state: "off")
+          ],
+          init_system: "sysvinit"
+        )
+      )
+      expect(inspector.summary).to eq("Found 5 services.")
     end
   end
 
@@ -184,17 +326,6 @@ EOF
 
   describe "parse_redhat_chkconfig" do
     it "returns data about SysVinit services on a redhat system" do
-      chkconfig_redhat_output =
-        <<-EOF
-crond 0:off 1:off 2:on 3:on 4:on 5:on 6:off
-dnsmasq 0:off 1:off 2:off 3:off 4:off 5:off 6:off
-
-xinetd based services:
-        chargen-dgram:  off
-        chargen-stream: on
-        eklogin:        off
-EOF
-
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(false)
       allow(system).to receive(:has_command?).

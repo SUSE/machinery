@@ -92,19 +92,26 @@ trigger errors.
 
   * The system to be inspected needs to have the following commands:
 
-    * `rpm`
-    * `zypper` or `yum`
+    * `rpm` or `dpkg`
+    * `zypper`, `yum` or `apt-cache`
     * `rsync`
-    * `chkconfig`
+    * `chkconfig`, `initctl` or `systemctl`
     * `cat`
     * `sed`
     * `find`
     * `tar`
 
   * When inspecting as non-root the user has to have the following command
-    whitelist given in the sudoers file:
+    whitelist given in the sudoers file.
 
-    machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va \*,/bin/tar --create \*,/usr/bin/stat
+    * On rpm based systems, like SUSE or Red Hat:
+
+      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va \*,/bin/tar --create \*,/usr/bin/stat
+
+    * On dpkg based systems, like Debian or Ubuntu:
+
+      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg,/bin/readlink
+
 
   * To add a remote `machinery` user run as root:
 

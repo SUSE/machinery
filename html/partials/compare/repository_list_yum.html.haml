@@ -1,0 +1,35 @@
+%table.table.table-striped.table-hover.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th Alias
+      %th URL
+      %th Mirrorlist
+      %th.small Type
+      %th.small Enabled
+      %th.small.visible-lg GPG Check
+      %th.small.visible-lg GPG Keys
+      %th.tiny.hidden-lg
+  %tbody
+    - list.each do |repo|
+      %tr
+        %td= repo.name
+        %td= repo.alias
+        %td
+          - repo.url.each do |url|
+            %a{ href: url }= url
+            %br
+        %td
+          - unless repo.mirrorlist.empty?
+            %a{ href: repo.mirrorlist }= repo.mirrorlist
+        %td= repo.type
+        %td= repo.enabled
+        %td.visible-lg= repo.gpgcheck
+        %td.visble-lg
+          - repo.gpgkey.each do |url|
+            %a{ href: url }= url
+            %br
+        %td.hidden-lg{ title: "Name: #{repo.name}\nAlias: #{repo.alias}\nUrl: #{repo.url}\n" |
+                 "Type: #{repo.type}\nEnabled: #{repo.enabled}\n" |
+                 "GPG Check: #{repo.gpgcheck}" } |
+          | ...

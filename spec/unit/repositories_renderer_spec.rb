@@ -33,7 +33,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 1
-    Package Manager: zypp
+    Type: rpm-md
 
   * openSUSE-13.1-1.7
     URI: cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
@@ -41,7 +41,7 @@ describe RepositoriesRenderer do
     Enabled: No
     Refresh: No
     Priority: 2
-    Package Manager: zypp
+    Type: yast2
 
   * repo_without_type
     URI: http://repo-without-type
@@ -49,7 +49,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 3
-    Package Manager: zypp
+    Type: N/A
 
   * disabled_repo
     URI: http://disabled-repo
@@ -57,7 +57,7 @@ describe RepositoriesRenderer do
     Enabled: No
     Refresh: No
     Priority: 3
-    Package Manager: zypp
+    Type: N/A
 
   * autorefresh_enabled
     URI: http://autorefreshed-repo
@@ -65,7 +65,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: Yes
     Priority: 2
-    Package Manager: zypp
+    Type: N/A
 
   * dvd_entry
     URI: dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0
@@ -73,7 +73,7 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: No
     Priority: 2
-    Package Manager: zypp
+    Type: yast2
 
   * NCC Repository
     URI: https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials
@@ -81,7 +81,44 @@ describe RepositoriesRenderer do
     Enabled: Yes
     Refresh: Yes
     Priority: 2
-    Package Manager: zypp
+    Type: yast2
+EOT
+      expect(output).to include(expected_output)
+    end
+
+    it "prints an apt repository list" do
+      output = RepositoriesRenderer.new.render(
+        create_test_description(scopes: ["apt_repositories"])
+      )
+
+      expected_output = <<EOT
+  * URI: http://de.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: main, restricted
+    Type: deb
+
+  * URI: http://de.archive.ubuntu.com/ubuntu/
+    Distribution: trusty
+    Components: main, restricted
+    Type: deb-src
+EOT
+      expect(output).to include(expected_output)
+    end
+
+    it "prints a yum repository list" do
+      output = RepositoriesRenderer.new.render(
+        create_test_description(scopes: ["yum_repositories"])
+      )
+
+      expected_output = <<EOT
+  * CentOS-6Server - Base
+    URI:
+      * http://mirror.centos.org/centos/centos4/os/x86_64/
+      * http://mirror2.centos.org/centos/centos4/os/x86_64/
+    Mirrorlist: N/A
+    Alias: base
+    Enabled: Yes
+    Type: rpm-md
 EOT
       expect(output).to include(expected_output)
     end

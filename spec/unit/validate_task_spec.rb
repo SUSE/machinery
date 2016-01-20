@@ -23,9 +23,9 @@ describe ValidateTask, "#validate" do
   let(:validate_task) { ValidateTask.new }
   let(:store) { SystemDescriptionStore.new("spec/data/schema/") }
 
-  it "raises an error when encountering fauly description" do
+  it "raises an error when encountering faulty description" do
     expected = <<EOF
-In scope packages: The property #0 (checksum) value "Invalid Checksum" did not match the regex '^[a-f0-9]+$'.
+In scope packages: The property #0 (_elements/checksum/_attributes/package_system) of type Hash did not match any of the required schemas.
 
 EOF
     expected.chomp!

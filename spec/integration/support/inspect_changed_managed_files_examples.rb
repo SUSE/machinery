@@ -25,7 +25,13 @@ shared_examples "inspect changed managed files" do |base|
             "--scope=changed-managed-files --extract-files",
           as: machinery_config[:owner]
         )
-        expect(inspect_command).to succeed
+        if base == "ubuntu_1404"
+          expect(inspect_command).to succeed.with_stderr.
+            and include_stderr("The list of changed config and managed files is not complete")
+        else
+          expect(inspect_command).to succeed
+        end
+
         @machinery_output = inspect_command.stdout
       end
 
@@ -68,7 +74,7 @@ EOF
         actual_managed_files_list.grep(/^#{element}.+/).any? || element == "."
       }
 
-      expected_managed_files = description.changed_managed_files.files.select(&:file?).map(&:name)
+      expected_managed_files = description.changed_managed_files.select(&:file?).map(&:name)
       expect(actual_managed_files).to match_array(expected_managed_files)
 
       # test file content

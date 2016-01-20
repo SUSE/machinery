@@ -85,7 +85,7 @@ class AnalyzeConfigFileDiffsTask
   #   }
   # ]
   def files_by_package(description)
-    files = description["config_files"].files.
+    files = description["config_files"].
       select { |f| f.changes.include?("md5") }
 
     files.inject({}) do |result, file|

@@ -29,7 +29,7 @@ RSpec.describe "Analyze File Diff", type: :feature do
       extracted_scopes: ["config_files"]
     )
 
-    file = description.config_files.files.find(&:file?)
+    file = description.config_files.find(&:file?)
 
     File.write(
       File.join(description.description_path, "config_files", file.name),

@@ -37,11 +37,11 @@
       .col-md-12
         .row
           .col-md-6.table_container
-            - if safe_length(@diff["services"].only_in1, :services) > 0
+            - if @diff["services"].only_in1
               = only_in_a
               = render_partial "compare/service_list", list: @diff["services"].only_in1
           .col-md-6.table_container
-            - if safe_length(@diff["services"].only_in2, :services) > 0
+            - if @diff["services"].only_in2
               = only_in_b
               = render_partial "compare/service_list", list: @diff["services"].only_in2
         - if @diff["services"].changed
@@ -50,7 +50,7 @@
             .col-md-12.table_container
               = changed
               = render_partial "compare/changes", changes: changed_elements("services", key: "name")
-        - if safe_length(@diff["services"].common, :services) > 0
+        - if @diff["services"].common
           %a.both_anchor{ id: "services_both" }
           .row
             .col-md-12

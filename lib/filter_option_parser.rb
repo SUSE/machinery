@@ -63,7 +63,7 @@ class FilterOptionParser
       files.reject!(&:empty?) # Ignore empty filters
       files.map! { |file| file.chomp("/") } # List directories without the trailing /, in order to
                                             # not confuse the unmanaged files inspector
-      files.map { |file| "/unmanaged_files/files/name=#{file}" }
+      files.map { |file| "/unmanaged_files/name=#{file}" }
     end
 
     def expand_filter_file(path)

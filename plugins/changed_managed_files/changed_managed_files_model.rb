@@ -39,5 +39,7 @@ end
 class ChangedManagedFilesScope < FileScope
   include Machinery::Scope
   include ScopeFileAccessFlat
-  has_property :files, class: ChangedManagedFileList
+
+  has_attributes :extracted
+  has_elements class: ChangedManagedFile
 end

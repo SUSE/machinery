@@ -109,7 +109,9 @@ require_relative "workload_mapper_dsl"
 require_relative "containerized_app"
 require_relative "move_task"
 require_relative "docker_system"
+require_relative "managed_files_database"
 require_relative "rpm_database"
+require_relative "dpkg_database"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

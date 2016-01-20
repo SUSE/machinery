@@ -18,9 +18,9 @@
 package main
 
 import (
-  "io/ioutil"
-  "strings"
-  "sort"
+	"io/ioutil"
+	"sort"
+	"strings"
 )
 
 // this specifies the path of the process mounts. This needs to be
@@ -29,53 +29,53 @@ var ProcMountsPath = "/proc/mounts"
 
 var remoteFileSystems = []string{"autofs", "cifs", "nfs", "nfs4"}
 var specialFileSystems = []string{"proc", "sysfs", "devtmpfs", "tmpfs", "rpc_pipefs", "fuse.gvfs-fuse-daemon"}
-var localFileSystems  = []string{"ext2", "ext3", "ext4", "reiserfs", "btrfs", "vfat", "xfs", "jfs"}
+var localFileSystems = []string{"ext2", "ext3", "ext4", "reiserfs", "btrfs", "vfat", "xfs", "jfs"}
 
 func parseMounts() map[string]string {
-  mount, _ := ioutil.ReadFile(ProcMountsPath)
-  mounts := make(map[string]string)
+	mount, _ := ioutil.ReadFile(ProcMountsPath)
+	mounts := make(map[string]string)
 
-  lines := strings.Split(string(mount), "\n")
+	lines := strings.Split(string(mount), "\n")
 
-  for _, line := range(lines) {
-    elements := strings.Split(line, " ")
+	for _, line := range lines {
+		elements := strings.Split(line, " ")
 
-    if len(elements) >= 3 {
-      mounts[elements[1]] = elements[2]
-    }
-  }
+		if len(elements) >= 3 {
+			mounts[elements[1]] = elements[2]
+		}
+	}
 
-  return mounts
+	return mounts
 }
 
-func selectFileSystems(allMounts map[string]string, fileSystems[]string) []string {
-  mounts := []string{}
+func selectFileSystems(allMounts map[string]string, fileSystems []string) []string {
+	mounts := []string{}
 
-  for path, fs := range(allMounts) {
-    for _, specialFs := range fileSystems {
-      if specialFs == fs {
-        mounts = append(mounts, path)
-      }
-    }
-  }
-  sort.Strings(mounts)
+	for path, fs := range allMounts {
+		for _, specialFs := range fileSystems {
+			if specialFs == fs {
+				mounts = append(mounts, path)
+			}
+		}
+	}
+	sort.Strings(mounts)
 
-  return mounts
+	return mounts
 }
 
 // SpecialMounts returns an array of all special mount paths like
 // proc or sysfs
 func SpecialMounts() []string {
-  return selectFileSystems(parseMounts(), specialFileSystems)
+	return selectFileSystems(parseMounts(), specialFileSystems)
 }
 
 // LocalMounts returns an array of all local mount paths
 func LocalMounts() []string {
-  return selectFileSystems(parseMounts(), localFileSystems)
+	return selectFileSystems(parseMounts(), localFileSystems)
 }
 
 // RemoteMounts returns an array of all remote mount paths
 // (for example NFS mount points)
 func RemoteMounts() []string {
-  return selectFileSystems(parseMounts(), remoteFileSystems)
+	return selectFileSystems(parseMounts(), remoteFileSystems)
 }

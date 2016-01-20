@@ -86,10 +86,9 @@ trigger errors.
 
   * The image to be inspected needs to have the following commands:
 
-    * `rpm`
-    * `zypper` or `yum`
+    * `rpm` or `dpkg`
+    * `zypper`, `yum` or `apt-cache`
     * `rsync`
-    * `chkconfig`
     * `cat`
     * `sed`
     * `find`
@@ -97,7 +96,7 @@ trigger errors.
 ### EXAMPLES
 
   * Inspect docker-container `mycontainer` and save system description under name 'MyContainer':
-    
+
     $ `machinery` inspect-container --name=MyContainer mycontainer
 
   * Inspect docker-container `076f46c1bef1` and save system description under name 'MySecondContainer':

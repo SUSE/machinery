@@ -230,7 +230,7 @@ class Autoyast < Exporter
 
     xml.send("services-manager") do
       xml.services("config:type" => "list") do
-        @system_description.services.services.each do |service|
+        @system_description.services.each do |service|
           name = service.name
           if @system_description.services.init_system == "systemd"
             # Yast can only handle services right now
@@ -270,7 +270,7 @@ class Autoyast < Exporter
   def apply_changed_files(scope)
     return if !@system_description.scope_extracted?(scope)
 
-    @system_description[scope].files.each do |file|
+    @system_description[scope].each do |file|
       if file.deleted?
         @chroot_scripts << "rm -rf '#{quote(file.name)}'"
       elsif file.directory?

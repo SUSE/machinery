@@ -1,16 +1,21 @@
 {
-  "packages": [
-    {
-      "name": "foo",
-      "version": "1.0",
-      "release": "1",
-      "arch": "x86_64",
-      "vendor": "openSUSE",
-      "checksum": "Invalid Checksum"
-    }
-  ],
+  "packages": {
+    "_attributes": {
+      "package_system": "rpm"
+    },
+    "_elements": [
+      {
+        "name": "foo",
+        "version": "1.0",
+        "release": "1",
+        "arch": "x86_64",
+        "vendor": "openSUSE",
+        "checksum": "Invalid Checksum"
+      }
+    ]
+  },
   "meta": {
-    "format_version": 5,
+    "format_version": 6,
     "packages": {
       "modified": "2014-08-28T14:07:26Z",
       "hostname": "host.example.com"

@@ -18,6 +18,7 @@
 require_relative "spec_helper"
 
 describe RepositoriesInspector do
+  capture_machinery_output
   let(:system) {
     double
   }
@@ -61,56 +62,55 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
       EOF
     }
     let(:expected_repo_list) {
-      RepositoriesScope.new([
-        Repository.new(
-          alias: "nu_novell_com:SLES11-SP3-Pool",
-          name: "SLES11-SP3-Pool",
-          type: "rpm-md",
-          enabled: true,
-          autorefresh: true,
-          gpgcheck: true,
-          priority: 99,
-          url: "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials",
-          username: "d4c0246d79334fa59a9ffe625fffef1d",
-          password: "0a0918c876ef4a1d9c352e5c47421235",
-          package_manager: "zypp"
-        ),
-        Repository.new(
-          alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
-          name: "SLES12-Pool",
-          type: "rpm-md",
-          enabled: true,
-          autorefresh: false,
-          gpgcheck: true,
-          priority: 99,
-          url: "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e",
-          username: "SCC_d91435cca69a232114cf2e14aa830ad5",
-          password: "2fdcb7499fd46842",
-          package_manager: "zypp"
-        ),
-        Repository.new(
-          alias: "repo-oss",
-          name: "openSUSE-Oss",
-          type: "yast2",
-          enabled: true,
-          autorefresh: true,
-          gpgcheck: true,
-          priority: 22,
-          url: "http://download.opensuse.org/distribution/13.1/repo/oss/",
-          package_manager: "zypp"
-        ),
-          Repository.new(
-          alias: "repo-update",
-          name: "openSUSE-Update",
-          type: "rpm-md",
-          enabled: false,
-          autorefresh: false,
-          gpgcheck: false,
-          priority: 47,
-          url: "http://download.opensuse.org/update/13.1/",
-          package_manager: "zypp"
-        )
-      ])
+      RepositoriesScope.new(
+        [
+          ZyppRepository.new(
+            alias: "nu_novell_com:SLES11-SP3-Pool",
+            name: "SLES11-SP3-Pool",
+            type: "rpm-md",
+            enabled: true,
+            autorefresh: true,
+            gpgcheck: true,
+            priority: 99,
+            url: "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-i586?credentials=NCCcredentials",
+            username: "d4c0246d79334fa59a9ffe625fffef1d",
+            password: "0a0918c876ef4a1d9c352e5c47421235"
+          ),
+          ZyppRepository.new(
+            alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
+            name: "SLES12-Pool",
+            type: "rpm-md",
+            enabled: true,
+            autorefresh: false,
+            gpgcheck: true,
+            priority: 99,
+            url: "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product?5bcc650926e7f0c7ef4858047a5c1351f4239abe4dc5aafc7361cc2b47c1c13d21e53b8150115ffdd717636c1a26862f8e4ae463bbb1f318fea4234fe7202173edaf71db08671ff733d5a5695b1bd052deae102819327f8ac6ec4e",
+            username: "SCC_d91435cca69a232114cf2e14aa830ad5",
+            password: "2fdcb7499fd46842"
+          ),
+          ZyppRepository.new(
+            alias: "repo-oss",
+            name: "openSUSE-Oss",
+            type: "yast2",
+            enabled: true,
+            autorefresh: true,
+            gpgcheck: true,
+            priority: 22,
+            url: "http://download.opensuse.org/distribution/13.1/repo/oss/"
+          ),
+          ZyppRepository.new(
+            alias: "repo-update",
+            name: "openSUSE-Update",
+            type: "rpm-md",
+            enabled: false,
+            autorefresh: false,
+            gpgcheck: false,
+            priority: 47,
+            url: "http://download.opensuse.org/update/13.1/"
+          )
+        ],
+        repository_system: "zypp"
+      )
     }
     let(:credentials_directories) { "NCCcredentials\nSCCcredentials\n" }
     let(:ncc_credentials) {
@@ -189,7 +189,7 @@ password=2fdcb7499fd46842
       ).and_return(scc_credentials)
 
       inspector.inspect(filter)
-      expect(description.repositories).to match_array(expected_repo_list)
+      expect(description.repositories).to eq(expected_repo_list)
       expect(inspector.summary).to include("Found 4 repositories")
     end
 
@@ -208,7 +208,7 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([]))
+      expect(description.repositories).to eq(RepositoriesScope.new([], repository_system: "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -225,16 +225,17 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details_exit_6(system)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([]))
+      expect(description.repositories).to eq(RepositoriesScope.new([], repository_system: "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
     it "raise an error when requirements are not fulfilled" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
       allow(system).to receive(:has_command?).with("yum").and_return(false)
+      allow(system).to receive(:has_command?).with("apt").and_return(false)
 
       expect { inspector.inspect(filter) }.to raise_error(
-        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper' or 'yum'/
+        Machinery::Errors::MissingRequirement, /Need either the binary 'zypper', 'yum' or 'apt'/
       )
     end
 
@@ -256,7 +257,7 @@ password=2fdcb7499fd46842
     let(:expected_yum_extractor_output) {
       output = <<-EOF
 "Loaded plugins: priorities"
-[{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "enabled": true, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "gpgcheck": true, "package_manager": "yum", "type": "rpm-md"}, {"name": "Red Hat Enterprise Linux 6Server - x86_64 - Source", "url": "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/", "enabled": false, "alias": "rhel-source", "gpgcheck": true, "package_manager": "yum", "type": "rpm-md"}]
+[{"name": "CentOS-6Server - Base", "url": [], "gpgkey": ["http://mirror.centos.org/centos/RPM-GPG-KEY-centos4"], "enabled": true, "alias": "base", "mirrorlist": "http://mirrorlist.centos.org/?release=6Server&arch=x86_64&repo=os", "gpgcheck": true, "type": "rpm-md"},{"name": "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/", "url": ["http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/"], "gpgkey": [], "enabled": false, "alias": "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_", "mirrorlist": "", "gpgcheck": false, "type": "rpm-md"}]
 EOF
       output.chomp
     }
@@ -267,32 +268,32 @@ output
 EOF
     }
 
-    let(:unsupported_metalink_repo) {<<-EOF
-[{"package_manager": "yum", "name": "Fedora 21 - x86_64", "url": "", "enabled": true, "alias": "fedora", "gpgcheck": true, "type": "rpm-md"}]
-EOF
-    }
-
     let(:expected_yum_repo_list) {
-      RepositoriesScope.new([
-        Repository.new(
-          name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
-          url: "http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
-          enabled: true,
-          alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
-          gpgcheck: true,
-          type: "rpm-md",
-          package_manager: "yum"
-        ),
-        Repository.new(
-          name: "Red Hat Enterprise Linux 6Server - x86_64 - Source",
-          url: "ftp://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/",
-          enabled: false,
-          alias: "rhel-source",
-          gpgcheck: true,
-          type: "rpm-md",
-          package_manager: "yum"
-        )
-      ])
+      RepositoriesScope.new(
+        [
+          YumRepository.new(
+            name: "CentOS-6Server - Base",
+            url: [],
+            mirrorlist: "http://mirrorlist.centos.org/?release=6Server&arch=x86_64&repo=os",
+            enabled: true,
+            alias: "base",
+            gpgcheck: true,
+            gpgkey: ["http://mirror.centos.org/centos/RPM-GPG-KEY-centos4"],
+            type: "rpm-md"
+          ),
+          YumRepository.new(
+            name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
+            url: ["http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/"],
+            mirrorlist: "",
+            enabled: false,
+            alias: "download.opensuse.org_repositories_Virtualization_Appliances_RedHat_RHEL-6_",
+            gpgcheck: false,
+            gpgkey: [],
+            type: "rpm-md"
+          )
+        ],
+        repository_system: "yum"
+      )
     }
 
     before(:each) do
@@ -304,7 +305,7 @@ EOF
       expect(system).to receive(:run_command).and_return(expected_yum_extractor_output)
 
       inspector.inspect(filter)
-      expect(description.repositories).to match_array(expected_yum_repo_list)
+      expect(description.repositories).to eq(expected_yum_repo_list)
       expect(inspector.summary).to include("Found 2 repositories")
     end
 
@@ -325,14 +326,134 @@ EOF
         Machinery::Errors::InspectionFailed, /Extraction of YUM repositories failed:\nSome error/
       )
     end
+  end
 
-    # We don't support Yum Metalink repositories atm
-    it "throws an Machinery AnalysisFailed error when the url is empty" do
-      expect(system).to receive(:run_command).and_return(unsupported_metalink_repo)
+  describe "apt repositories" do
+    let(:cat_sources_list) {
+      output = <<-EOF
+## Also, please note that software in backports WILL NOT receive any review
+## or updates from the Ubuntu security team.
+deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
+# deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
 
-      expect { inspector.inspect(filter) }.to raise_error(
-        Machinery::Errors::InspectionFailed, /Yum repository baseurl is missing/
+deb http://security.ubuntu.com/ubuntu trusty-security main   #testcomment
+deb-src   http://repo-with-spaces-and-tabs.com/ubuntu   trusty-security component1    component2
+EOF
+      output.chomp
+    }
+
+    let(:cat_sources_list_d) {
+      output = <<-EOF
+deb http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu trusty main
+# deb-src http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu trusty main
+deb http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu trusty/binary-$(ARCH)/
+deb-src   http://repo-with-spaces-and-tabs.com/ubuntu   trusty-security component1    component2
+EOF
+      output.chomp
+    }
+
+    let(:expected_apt_repo_list) {
+      RepositoriesScope.new(
+        [
+          AptRepository.new(
+            type: "deb",
+            url: "http://us.archive.ubuntu.com/ubuntu/",
+            distribution: "trusty-backports",
+            components: ["main", "restricted", "universe", "multiverse"]
+          ),
+          AptRepository.new(
+            type: "deb",
+            url: "http://security.ubuntu.com/ubuntu",
+            distribution: "trusty-security",
+            components: ["main"]
+          ),
+          AptRepository.new(
+            type: "deb-src",
+            url: "http://repo-with-spaces-and-tabs.com/ubuntu",
+            distribution: "trusty-security",
+            components: ["component1", "component2"]
+          ),
+          AptRepository.new(
+            type: "deb",
+            url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu",
+            distribution: "trusty",
+            components: ["main"]
+          ),
+          AptRepository.new(
+            type: "deb",
+            url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu",
+            distribution: "trusty/binary-$(ARCH)/",
+            components: []
+          )
+        ],
+        repository_system: "apt"
       )
+    }
+
+    before(:each) do
+      allow(system).to receive(:has_command?).with("zypper").and_return(false)
+      allow(system).to receive(:has_command?).with("yum").and_return(false)
+      allow(system).to receive(:has_command?).with("apt").and_return(true)
+    end
+
+    it "inspects repos" do
+      expect(system).to receive(:read_file).with(
+        "/etc/apt/sources.list"
+      ).and_return(cat_sources_list)
+      expect(system).to receive(:run_command).with(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
+      ).and_return(cat_sources_list_d)
+
+      inspector.inspect(filter)
+      expect(description.repositories).to eq(expected_apt_repo_list)
+      expect(inspector.summary).to include("Found 5 repositories")
+    end
+
+    it "can handle an empty /etc/apt/sources.list.d/ directory" do
+      expect(system).to receive(:read_file).with(
+        "/etc/apt/sources.list"
+      ).and_return(cat_sources_list)
+      expect(system).to receive(:run_command).with(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
+      ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+
+      expect { inspector.inspect(filter) }.not_to raise_error
+      expect(inspector.summary).to include("Found 3 repositories")
+    end
+
+    it "shows a warning for each found rfc822 style repository but parses the rest" do
+      cat_sources_list_new = cat_sources_list
+      cat_sources_list_new += <<-EOF
+
+  Types: deb deb-src
+  URIs: http://example.com
+  Suites: stable testing
+  Sections: component1 component2
+  Description: short
+   long long long
+  [option1]: [option1-value]
+
+  Types: deb
+  URIs: http://another.example.com
+  Suites: experimental
+  Sections: component1 component2
+  Enabled: no
+  Description: short
+   long long long
+  [option1]: [option1-value]
+EOF
+      expect(system).to receive(:read_file).with(
+        "/etc/apt/sources.list"
+      ).and_return(cat_sources_list_new)
+      expect(system).to receive(:run_command).with(
+        "bash", "-c", "cat /etc/apt/sources.list.d/*.list", any_args
+      ).and_return(cat_sources_list_d)
+
+      inspector.inspect(filter)
+      expect(captured_machinery_output.scan(
+        /Warning: An unsupported rfc822 style repository was found, which will be ignored/
+      ).count).to eq(2)
+      expect(description.repositories).to eq(expected_apt_repo_list)
     end
   end
 end
