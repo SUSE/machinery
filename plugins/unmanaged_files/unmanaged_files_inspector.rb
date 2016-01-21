@@ -537,5 +537,7 @@ class UnmanagedFilesInspector < Inspector
       ["awk", "{print $NF}"],
       stdout: :capture
     ).split
+  rescue Cheetah::ExecutionFailed
+    []
   end
 end
