@@ -10,6 +10,23 @@
   * /bin/netcat (link)
     User/Group: root:root
 
+  * /boot/grub/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 4.2 MiB
+    Files: 282
+
+  * /boot/initrd.img-3.19.0-25-generic (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 6.6 MiB
+
+  * /boot/lost+found/ (dir)
+    User/Group: root:root
+    Mode: 700
+    Size: 0 B
+    Files: 1
+
   * /etc/.pwd.lock (file)
     User/Group: root:root
     Mode: 600

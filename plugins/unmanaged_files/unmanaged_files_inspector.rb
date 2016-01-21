@@ -402,7 +402,8 @@ class UnmanagedFilesInspector < Inspector
       if !local_filesystems.empty?
         # force all mount points to be non-leave directories (find is called with -xdev)
         local_filesystems.each do |mp|
-          dirs[mp] = true if dirs.has_key?(mp)
+          path = mp.sub(/^\//, "")
+          dirs[path] = true if dirs.has_key?(path)
         end
         local_filesystems.reject! { |mp| dirs.has_key?(mp) }
       end
