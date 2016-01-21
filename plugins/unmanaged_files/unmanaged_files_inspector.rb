@@ -72,7 +72,7 @@ class UnmanagedFilesInspector < Inspector
     dirs.dup.keys.each do |d|
       dir = d.rpartition("/").first
 
-      while !dirs.has_key?(dir) && dir.size > 1
+      while !dirs.key?(dir) && dir.size > 1
         dirs[dir] = false
         dir = dir[0..dir.rindex("/") - 1]
       end
@@ -83,13 +83,13 @@ class UnmanagedFilesInspector < Inspector
 
       # make sure that dirs leading to a managed file are treated as if they were
       # in rpm database, otherwise we cannot exclude whole unmanaged trees
-      while( !dirs.has_key?(dir) && dir.size > 1 )
+      while !dirs.key?(dir) && dir.size > 1
         dirs[dir] = false
         dir=dir[0..dir.rindex("/") - 1]
       end
 
       # put links to a managed directory also into directory hash
-      if !e.empty? && dirs.has_key?(e)
+      if !e.empty? && dirs.key?(e)
         dirs[f] = false
       end
     end
@@ -406,7 +406,7 @@ class UnmanagedFilesInspector < Inspector
         # force all mount points to be non-leave directories (find is called with -xdev)
         local_filesystems.each do |mp|
           path = mp.sub(/^\//, "")
-          dirs[path] = true if dirs.has_key?(path)
+          dirs[path] = true if dirs.key?(path)
         end
         local_filesystems.reject! { |mp| dirs.has_key?(mp) }
       end
