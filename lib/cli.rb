@@ -150,7 +150,8 @@ class Cli
         "Error: System description name '#{name}' is invalid. By default Machinery" \
           " uses the image name as description name if the parameter `--name` is not" \
           " provided.\nIf the image name contains a slash the `--name=NAME` parameter" \
-          " is mandatory. Valid characters are 'a-zA-Z0-9_:.-'."
+          " is mandatory. Valid characters are 'a-zA-Z0-9_:.-'.\n\nFor example run:\n" \
+          "#{Hint.program_name} #{ARGV.join(" ")} --name='#{image.tr("/", "_")}'"
       )
     end
   end
