@@ -27,12 +27,39 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"unicode/utf8"
 )
 
-func getRpms() []string {
+func getDpkgContent() []string {
+	cmd := exec.Command("bash", "-c", "dpkg --get-selections | grep -v deinstall | awk '{print $1}'")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var files []string
+
+	for _, pkg := range strings.Split(out.String(), "\n") {
+		cmd := exec.Command("dpkg", "-L", pkg)
+		var out1 bytes.Buffer
+		cmd.Stdout = &out1
+		cmd.Run()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		files = append(files, strings.Split(out1.String(), "\n")...)
+	}
+
+	return files
+}
+
+func getRpmContent() []string {
 	cmd := exec.Command("rpm", "-qlav")
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -44,8 +71,8 @@ func getRpms() []string {
 	f := func(c rune) bool {
 		return c == '\n'
 	}
-	packages := strings.FieldsFunc(out.String(), f)
-	return packages
+	files := strings.FieldsFunc(out.String(), f)
+	return files
 }
 
 func parseRpmLine(line string) (fileType string, fileName string, linkTarget string) {
@@ -86,11 +113,35 @@ func addImplicitlyManagedDirs(dirs map[string]bool, files map[string]string) {
 	return
 }
 
-func getManagedFiles() (map[string]string, map[string]bool) {
+func getManagedFilesDpkg() (map[string]string, map[string]bool) {
 	files := make(map[string]string)
 	dirs := make(map[string]bool)
 
-	for _, pkg := range getRpms() {
+	for _, file := range getDpkgContent() {
+		if len(file) > 0 {
+			reg := regexp.MustCompile(`/(?:$|(.+?)(?:(/.[^.]*$)|$))`)
+			segs := reg.FindAllString(file, -1)
+			if len(segs) > 0 {
+				fileInfo, err := os.Lstat(segs[0])
+
+				if err == nil {
+					if fileInfo.IsDir() {
+						dirs[segs[0]] = true
+					} else {
+						files[segs[0]] = ""
+					}
+				}
+			}
+		}
+	}
+
+	return files, dirs
+}
+func getManagedFilesRpm() (map[string]string, map[string]bool) {
+	files := make(map[string]string)
+	dirs := make(map[string]bool)
+
+	for _, pkg := range getRpmContent() {
 		if pkg != "(contains no files)" {
 			fileType, fileName, linkTarget := parseRpmLine(pkg)
 			switch fileType {
@@ -105,6 +156,29 @@ func getManagedFiles() (map[string]string, map[string]bool) {
 	}
 
 	addImplicitlyManagedDirs(dirs, files)
+
+	return files, dirs
+}
+
+func hasExecutable(name string) bool {
+	_, err := exec.LookPath(name)
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
+func getManagedFiles() (map[string]string, map[string]bool) {
+	files := make(map[string]string)
+	dirs := make(map[string]bool)
+
+	switch {
+	case hasExecutable("rpm"):
+		files, dirs = getManagedFilesRpm()
+	case hasExecutable("dpkg"):
+		files, dirs = getManagedFilesDpkg()
+	}
 
 	return files, dirs
 }
@@ -204,8 +278,8 @@ func main() {
 		unmanagedFiles[mount+"/"] = "remote_dir"
 	}
 
-	rpmFiles, rpmDirs := getManagedFiles()
-	findUnmanagedFiles("/", rpmFiles, rpmDirs, unmanagedFiles, ignoreList)
+	managedFiles, managedDirs := getManagedFiles()
+	findUnmanagedFiles("/", managedFiles, managedDirs, unmanagedFiles, ignoreList)
 
 	files := make([]string, len(unmanagedFiles))
 	i := 0
