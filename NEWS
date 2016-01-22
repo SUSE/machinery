@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Allow closing file dialog (in WebUI) by pressing ESC
 * Support inspection of Ubuntu 14.04 systems
 
 ## Version 1.16.4 - Thu Jan 14 18:35:47 CET 2016 - thardeck@suse.de
