@@ -19,7 +19,7 @@
   %body{ "data-description" => @description.name }
     - scopes = ["os", "packages", "patterns", "repositories", "users", "groups",
        "services", "config_files", "changed_managed_files", "unmanaged_files"]
-    #file-modal.modal.fade
+    .modal.fade#file-modal{ "tabindex" => "-1" }
       .modal-dialog.modal-lg
         .modal-content
           .modal-header
