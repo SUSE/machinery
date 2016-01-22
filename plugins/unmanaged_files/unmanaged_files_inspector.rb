@@ -536,12 +536,14 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def btrfs_subvolumes
-    @system.run_command(
-      ["btrfs", "subvolume", "list", "/"],
-      ["awk", "{print $NF}"],
-      stdout: :capture
-    ).split
-  rescue Cheetah::ExecutionFailed
-    []
+    if @system.has_command?("/sbin/btrfs")
+      @system.run_command(
+        ["/sbin/btrfs", "subvolume", "list", "/"],
+        ["awk", "{print $NF}"],
+        stdout: :capture
+      ).split
+    else
+      []
+    end
   end
 end
