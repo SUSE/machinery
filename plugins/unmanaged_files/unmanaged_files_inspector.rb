@@ -53,13 +53,27 @@ class UnmanagedFilesInspector < Inspector
         files[pair.first] = pair[1]
       end
     end
+
+    process_managed_files_and_dirs(files, dirh)
+  end
+
+  def extract_dpkg_database
+    out = @system.run_script_with_progress("dpkg_unmanaged_files.sh")
+    parsed_data = parse_dpkg_package_files_output(out)
+    files = parsed_data[:files]
+    dirh = parsed_data[:directories]
+
+    process_managed_files_and_dirs(files, dirh)
+  end
+
+  def process_managed_files_and_dirs(files, dirs)
     # make sure that all parent directories of managed rpm directories are considered
     # managed
-    dirh.dup.keys.each do |d|
+    dirs.dup.keys.each do |d|
       dir = d.rpartition("/").first
 
-      while !dirh.has_key?(dir) && dir.size > 1
-        dirh[dir] = false
+      while !dirs.key?(dir) && dir.size > 1
+        dirs[dir] = false
         dir = dir[0..dir.rindex("/") - 1]
       end
     end
@@ -69,28 +83,18 @@ class UnmanagedFilesInspector < Inspector
 
       # make sure that dirs leading to a managed file are treated as if they were
       # in rpm database, otherwise we cannot exclude whole unmanaged trees
-      while( !dirh.has_key?(dir) && dir.size > 1 )
-        dirh[dir] = false
+      while !dirs.key?(dir) && dir.size > 1
+        dirs[dir] = false
         dir=dir[0..dir.rindex("/") - 1]
       end
 
       # put links to a managed directory also into directory hash
-      if !e.empty? && dirh.has_key?(e)
-        dirh[f] = false
+      if !e.empty? && dirs.key?(e)
+        dirs[f] = false
       end
     end
-    Machinery.logger.debug "extract_rpm_database files:#{files.size} dirs:#{dirh.size}"
 
-    [files, dirh]
-  end
-
-  def extract_dpkg_database
-    out = @system.run_script_with_progress("dpkg_unmanaged_files.sh")
-    parsed_data = parse_dpkg_package_files_output(out)
-    files = parsed_data[:files]
-    dirh = parsed_data[:directories]
-
-    [files, dirh]
+    [files, dirs]
   end
 
   def parse_dpkg_package_files_output(data)
@@ -108,7 +112,6 @@ class UnmanagedFilesInspector < Inspector
         result[:files][pair[0]] = pair[1]
       end
     end
-
     result
   end
 
@@ -402,7 +405,8 @@ class UnmanagedFilesInspector < Inspector
       if !local_filesystems.empty?
         # force all mount points to be non-leave directories (find is called with -xdev)
         local_filesystems.each do |mp|
-          dirs[mp] = true if dirs.has_key?(mp)
+          path = mp.sub(/^\//, "")
+          dirs[path] = true if dirs.key?(path)
         end
         local_filesystems.reject! { |mp| dirs.has_key?(mp) }
       end
