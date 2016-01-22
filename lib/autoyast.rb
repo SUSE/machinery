@@ -23,9 +23,11 @@ class Autoyast < Exporter
     @chroot_scripts = []
     @system_description = description
     @system_description.assert_scopes(
+      "os",
       "repositories",
       "packages"
     )
+    check_exported_os
     if !description.users
       Machinery::Ui.puts(
         "\nWarning: Exporting a description without the scope 'users' as AutoYaST" \
@@ -107,6 +109,15 @@ class Autoyast < Exporter
   end
 
   private
+
+  def check_exported_os
+    unless @system_description.os.is_a?(OsSuse)
+      raise Machinery::Errors::ExportFailed.new(
+        "Export is not possible because the operating system " \
+        "'#{@system_description.os.display_name}' is not supported."
+      )
+    end
+  end
 
   def apply_software_settings(xml)
     xml.install_recommended "false", "config:type" => "boolean"

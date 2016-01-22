@@ -33,6 +33,7 @@ describe Autoyast do
         "unmanaged_files"
       ],
       scopes: [
+        "os",
         "packages",
         "patterns",
         "repositories",
@@ -42,6 +43,19 @@ describe Autoyast do
       ]
     )
   }
+
+  describe "#initialize" do
+    it "raises exception when OS is not supported for exporting" do
+      allow_any_instance_of(SystemDescription).to receive(:os).
+        and_return(Rhel.new)
+      description.os.name = "RHEL 99.1 (Repetition)"
+      expect {
+        Autoyast.new(description)
+      }.to raise_error(
+        Machinery::Errors::ExportFailed, /RHEL 99.1/
+      )
+    end
+  end
 
   describe "#profile" do
     it "handles quotes in changed links" do
