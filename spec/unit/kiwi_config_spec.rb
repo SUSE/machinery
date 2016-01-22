@@ -57,24 +57,14 @@ describe KiwiConfig do
 
   describe "#initialize" do
     it "raises exception when OS is not supported for building" do
-      class OsOpenSuse99_1 < Os
-        def self.canonical_name
-          "openSUSE 99.1 (Repetition)"
-        end
-
-        def self.can_run_machinery?
-          false
-        end
-      end
-
       allow_any_instance_of(SystemDescription).to receive(:os).
-        and_return(OsOpenSuse99_1.new)
-      system_description_with_content.os.name = "openSUSE 99.1 (Repetition)"
+        and_return(OsUnknown.new)
+      system_description_with_content.os.name = "something 99.1 (Repetition)"
       expect {
         KiwiConfig.new(system_description_with_content)
       }.to raise_error(
          Machinery::Errors::ExportFailed,
-         /openSUSE 99.1/
+         /something 99.1/
       )
     end
 
