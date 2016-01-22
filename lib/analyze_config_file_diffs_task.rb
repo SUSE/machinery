@@ -18,6 +18,7 @@
 class AnalyzeConfigFileDiffsTask
   def analyze(description)
     description.assert_scopes("os")
+    check_os(description)
     LocalSystem.validate_existence_of_packages(["zypper"])
     description.validate_analysis_compatibility
     description.assert_scopes(
@@ -73,6 +74,15 @@ class AnalyzeConfigFileDiffsTask
   end
 
   private
+
+  def check_os(description)
+    unless description.os.is_a?(OsSuse)
+      raise Machinery::Errors::AnalysisFailed.new(
+        "Can not analyze the system description because its operating system" \
+          " '#{description.os.display_name}' is not supported."
+      )
+    end
+  end
 
   # Creates an array of hashes with the RPM names, version and the list of
   # changed file paths, e.g.
