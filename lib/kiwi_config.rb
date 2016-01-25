@@ -29,6 +29,7 @@ class KiwiConfig < Exporter
       "packages",
       "os"
     )
+    check_exported_os
     check_existance_of_extracted_files
     check_repositories
     generate_config
@@ -172,6 +173,15 @@ EOF
     end
   end
 
+  def check_exported_os
+    unless @system_description.os.is_a?(OsSuse)
+      raise Machinery::Errors::ExportFailed.new(
+        "Export is not possible because the operating system " \
+        "'#{@system_description.os.display_name}' is not supported."
+      )
+    end
+  end
+
   def generate_config
     @sh = <<EOF
 test -f /.kconfig && . /.kconfig
@@ -181,13 +191,6 @@ suseSetupProduct
 suseImportBuildKey
 suseConfig
 EOF
-
-    unless @system_description.os.is_a?(OsSuse)
-      raise Machinery::Errors::ExportFailed.new(
-        "Export is not possible because the operating system " \
-        "'#{@system_description.os.display_name}' is not supported."
-      )
-    end
 
     builder = Nokogiri::XML::Builder.new do |xml|
       xml.image(schemaversion: "5.8", name: @system_description.name) do
