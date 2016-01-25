@@ -162,6 +162,15 @@ describe AnalyzeConfigFileDiffsTask do
       allow(Zypper).to receive(:cleanup)
     end
 
+    it "raises if the analyzed system is not a SUSE os" do
+      allow_any_instance_of(SystemDescription).to receive(:os).
+        and_return(OsUnknown.new)
+      description.os.name = "Unknown OS"
+      expect { subject.analyze(description) }.to raise_error(
+        Machinery::Errors::AnalysisFailed, /Can not analyze the system description/
+      )
+    end
+
     it "analyzes all files with changes" do
       expect_any_instance_of(Zypper).to receive(:download_package).
         with("aaa_base-3.11.1").and_return("/some/path/aaa_base")
