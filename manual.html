@@ -789,6 +789,10 @@ See the <a href="#Scopes" data-bare-link="true">Scope section</a> for more infor
 This user needs to be allowed to run certain commands using sudo (see
 PREREQUISITES for more information).
 To change the default-user use <code>machinery config remote-user=USER</code></p></dd>
+<dt><code>-p SSH-PORT</code>, <code>--ssh-port SSH-PORT</code> (optional)</dt><dd><p>Specifies the SSH port of the remote SSH server.</p></dd>
+<dt><code>-i SSH-IDENTITY-FILE</code>, <code>--ssh-identity-file SSH-IDENTITY-FILE</code> (optional)</dt><dd><p>Specifies the SSH private key what should be used to authenticate with the
+remote SSH server. Keys with a passphrase are not allowed here. Use the ssh-agent
+instead.</p></dd>
 <dt><code>-x</code>, <code>--extract-files</code> (optional)</dt><dd><p>Extract changed configuration and unmanaged files from the inspected system.
 Shortcut for the combination of <code>--extract-changed-config-files</code>,
 <code>--extract-unmanaged-files</code>, and <code>--extract-changed-managed-files</code></p></dd>
@@ -823,10 +827,10 @@ via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root
 <li><p>The system to be inspected needs to have the following commands:</p>
 
 <ul>
-<li><code>rpm</code></li>
-<li><code>zypper</code> or <code>yum</code></li>
+<li><code>rpm</code> or <code>dpkg</code></li>
+<li><code>zypper</code>, <code>yum</code> or <code>apt-cache</code></li>
 <li><code>rsync</code></li>
-<li><code>chkconfig</code></li>
+<li><code>chkconfig</code>, <code>initctl</code> or <code>systemctl</code></li>
 <li><code>cat</code></li>
 <li><code>sed</code></li>
 <li><code>find</code></li>
@@ -834,9 +838,17 @@ via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root
 </ul>
 </li>
 <li><p>When inspecting as non-root the user has to have the following command
-whitelist given in the sudoers file:</p>
+whitelist given in the sudoers file.</p>
 
-<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *,/usr/bin/stat</p></li>
+<dl>
+<dt>On rpm based systems, like SUSE or Red Hat:</dt><dd><p></p>
+
+<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va *,/bin/tar --create *,/usr/bin/stat</p></dd>
+<dt>On dpkg based systems, like Debian or Ubuntu:</dt><dd><p></p>
+
+<p>machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg,/bin/readlink</p></dd>
+</dl>
+</li>
 <li><p>To add a remote <code>machinery</code> user run as root:</p>
 
 <h1><code>useradd -m machinery -c "remote user for machinery"</code></h1>
@@ -940,10 +952,9 @@ by adding an '@' before the path, e.g.</p>
 <li><p>The image to be inspected needs to have the following commands:</p>
 
 <ul>
-<li><code>rpm</code></li>
-<li><code>zypper</code> or <code>yum</code></li>
+<li><code>rpm</code> or <code>dpkg</code></li>
+<li><code>zypper</code>, <code>yum</code> or <code>apt-cache</code></li>
 <li><code>rsync</code></li>
-<li><code>chkconfig</code></li>
 <li><code>cat</code></li>
 <li><code>sed</code></li>
 <li><code>find</code></li>
