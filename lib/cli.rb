@@ -585,10 +585,17 @@ class Cli
     c.flag ["remote-user", :r], type: String, required: false, default_value: @config.remote_user,
       desc: "Defines the user which is used to access the inspected system via SSH."\
         "This user needs sudo access on the remote machine or be root.", arg_name: "USER"
+    c.flag ["ssh-port", :p], type: Integer, required: false,
+      desc: "The SSH port of the remote server.",
+      arg_name: "SSH-PORT"
+    c.flag ["ssh-identity-file", :i], type: String, required: false,
+      desc: "The private SSH key location what can be used to authenticate with the remote system.",
+      arg_name: "SSH-KEY"
 
     c.action do |_global_options, options, args|
       host = shift_arg(args, "HOSTNAME")
-      system = System.for(host, options["remote-user"])
+      system = System.for(host, remote_user: options["remote-user"], ssh_port: options["ssh-port"],
+        ssh_identity_file: options["ssh-identity-file"])
       inspector_task = InspectTask.new
 
       name, scope_list, inspect_options, filter = parse_inspect_command_options(host, options)

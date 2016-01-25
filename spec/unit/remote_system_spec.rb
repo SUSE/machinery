@@ -18,7 +18,8 @@
 require_relative "spec_helper"
 
 describe RemoteSystem do
-  let(:remote_system) { RemoteSystem.new("remotehost") }
+  let(:remote_system) { RemoteSystem.new("remotehost", options) }
+  let(:options) { {} }
 
   describe "#initialize" do
     it "raises ConnectionFailed when it can't connect" do
@@ -27,8 +28,32 @@ describe RemoteSystem do
       ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect {
-        RemoteSystem.new("example.com")
+        remote_system
       }.to raise_error(Machinery::Errors::SshConnectionFailed, /SSH/)
+    end
+
+    context "when an ssh port is given" do
+      let(:options) { { ssh_port: 5000 } }
+
+      it "builds a correct command line" do
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "-p", "5000", any_args
+        )
+
+        remote_system
+      end
+    end
+
+    context "when an ssh key is given" do
+      let(:options) { { ssh_identity_file: "/tmp/private_ssh_key" } }
+
+      it "builds a correct command line" do
+        expect(Cheetah).to receive(:run).with(
+          "ssh", "-i", "/tmp/private_ssh_key", any_args
+        )
+
+        remote_system
+      end
     end
   end
 
@@ -74,64 +99,125 @@ describe RemoteSystem do
         remote_system.run_command("ls", disable_logging: true)
       end
 
-      it "adheres to the remote_user option" do
-        expect(Cheetah).to receive(:run).with(
-          "ssh", "machinery@remotehost", any_args, "ls", "/tmp", {}
-        )
+      context "when accessing as a remote user" do
+        let(:options) { { remote_user: "machinery" } }
 
-        remote_system.remote_user = "machinery"
-        remote_system.run_command("ls", "/tmp")
-      end
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with(
+            "ssh", "machinery@remotehost", any_args, "ls", "/tmp", {}
+          )
 
-      it "uses sudo when necessary" do
-        expect(Cheetah).to receive(:run).with(
-          "ssh", any_args, "sudo", "-n", "LANGUAGE=", "LC_ALL=C", "ls", "/tmp", privileged: true
-        )
+          remote_system.run_command("ls", "/tmp")
+        end
 
-        remote_system.remote_user = "machinery"
-        remote_system.run_command("ls", "/tmp", privileged: true)
-      end
+        it "uses sudo when necessary" do
+          expect(Cheetah).to receive(:run).with(
+            "ssh", any_args, "sudo", "-n", "LANGUAGE=", "LC_ALL=C", "ls", "/tmp", privileged: true
+          )
 
-      it "raises an exception if the user is not allowed to run sudo" do
-        expect(Cheetah).to receive(:run).with(
-          "ssh", any_args
-        ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
-
-        remote_system.remote_user = "machinery"
-        expect {
           remote_system.run_command("ls", "/tmp", privileged: true)
-        }.to raise_error(Machinery::Errors::InsufficientPrivileges,
-          /sudo isn't configured on the inspected host/
-        )
+        end
+
+        it "raises an exception if the user is not allowed to run sudo" do
+          expect(Cheetah).to receive(:run).with(
+            "ssh", any_args
+          ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
+
+          expect {
+            remote_system.run_command("ls", "/tmp", privileged: true)
+          }.to raise_error(
+            Machinery::Errors::InsufficientPrivileges,
+            /sudo isn't configured on the inspected host/
+          )
+        end
+      end
+
+      context "when running a command with a different ssh port" do
+        let(:options) { { ssh_port: 5000 } }
+
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with(
+            "ssh", "-p", "5000", any_args, privileged: true
+          )
+
+          remote_system.run_command("ls", "/tmp", privileged: true)
+        end
+      end
+
+      context "when running a command with an ssh key" do
+        let(:options) { { ssh_identity_file: "/tmp/private_ssh_key" } }
+
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with(
+            "ssh", "-i", "/tmp/private_ssh_key", any_args, privileged: true
+          )
+
+          remote_system.run_command("ls", "/tmp", privileged: true)
+        end
       end
     end
 
     describe "#retrieve_files" do
-      it "retrieves files via rsync from a remote host" do
-        expect(Cheetah).to receive(:run).with(
-          "rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", "--rsync-path=rsync",
-          "root@remotehost:/", "/tmp",
-          stdout: :capture,
-          stdin: "/foo\n/bar"
-        )
+      context "when retrieving files via rsync" do
+        it "builds the correct command" do
+          expect(Cheetah).to receive(:run).with(
+            "rsync", "-e", "ssh", "--chmod=go-rwx", "--files-from=-", "--rsync-path=rsync",
+            "root@remotehost:/", "/tmp",
+            stdout: :capture,
+            stdin: "/foo\n/bar"
+          )
 
-        remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+          remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+        end
       end
 
-      it "retrieves files via sudo rsync from a remote host when non-root access is used" do
-        expect(Cheetah).to receive(:run) do |*args|
-          expect(args).to include("--rsync-path=sudo -n rsync")
-        end
+      context "when retrieving files via sudo rsync" do
+        let(:options) { { remote_user: "machinery" } }
 
-        remote_system.remote_user = "machinery"
-        remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+        it "adds sudo to the rsync path" do
+          expect(Cheetah).to receive(:run) do |*args|
+            expect(args).to include("--rsync-path=sudo -n rsync")
+          end
+
+          remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+        end
+      end
+
+      context "when retrieving files by using a different ssh port" do
+        let(:options) { { ssh_port: 5000 } }
+
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with(
+            "rsync", "-e", "ssh -p 5000", "--chmod=go-rwx", "--files-from=-", "--rsync-path=rsync",
+            "root@remotehost:/", "/tmp",
+            stdout: :capture,
+            stdin: "/foo\n/bar"
+          )
+
+          remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+        end
+      end
+
+      context "when retrieving files by using an ssh key" do
+        let(:options) { { ssh_identity_file: "/tmp/private_ssh_key" } }
+
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with(
+            "rsync", "-e", "ssh -i /tmp/private_ssh_key", "--chmod=go-rwx", "--files-from=-",
+            "--rsync-path=rsync",
+            "root@remotehost:/", "/tmp",
+            stdout: :capture,
+            stdin: "/foo\n/bar"
+          )
+
+          remote_system.retrieve_files(["/foo", "/bar"], "/tmp")
+        end
       end
     end
 
     describe "#read_file" do
       it "retrieves the content of the remote file" do
         expect(remote_system).to receive(:run_command).and_return("foo")
-
         expect(remote_system.read_file("/foo")).to eq("foo")
       end
 
@@ -145,9 +231,27 @@ describe RemoteSystem do
     end
 
     describe "#inject_file" do
-      it "copies a file via scp" do
+      it "builds a correct command line" do
         expect(Cheetah).to receive(:run).with("scp", "/usr/foobar", "root@remotehost:/tmp")
         remote_system.inject_file("/usr/foobar", "/tmp")
+      end
+
+      context "when copying a file via scp by using a different ssh port" do
+        let(:options) { { ssh_port: 5000 } }
+
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with("scp", "-P", "5000", any_args)
+          remote_system.inject_file("/usr/foobar", "/tmp")
+        end
+      end
+
+      context "when copying a file via scp by using an SSH key" do
+        let(:options) { { ssh_identity_file: "/tmp/private_ssh_key" } }
+
+        it "builds a correct command line" do
+          expect(Cheetah).to receive(:run).with("scp", "-i", "/tmp/private_ssh_key", any_args)
+          remote_system.inject_file("/usr/foobar", "/tmp")
+        end
       end
     end
 

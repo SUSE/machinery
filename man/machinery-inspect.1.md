@@ -48,6 +48,14 @@ trigger errors.
     PREREQUISITES for more information).
     To change the default-user use `machinery config remote-user=USER`
 
+  * `-p SSH-PORT`, `--ssh-port SSH-PORT` (optional):
+    Specifies the SSH port of the remote SSH server.
+
+  * `-i SSH-IDENTITY-FILE`, `--ssh-identity-file SSH-IDENTITY-FILE` (optional):
+    Specifies the SSH private key what should be used to authenticate with the
+    remote SSH server. Keys with a passphrase are not allowed here. Use the ssh-agent
+    instead.
+
   * `-x`, `--extract-files` (optional):
     Extract changed configuration and unmanaged files from the inspected system.
     Shortcut for the combination of `--extract-changed-config-files`,

@@ -2,6 +2,9 @@
 
 * Allow closing file dialog (in WebUI) by pressing ESC
 * Support inspection of Ubuntu 14.04 systems
+* New `--ssh-identity-file` option to specify a SSH private key when inspecting
+  a remote system
+* New `--ssh-port` option to specify an SSH port when inspecting a remote system
 
 ## Version 1.16.4 - Thu Jan 14 18:35:47 CET 2016 - thardeck@suse.de
 
