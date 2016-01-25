@@ -40,4 +40,16 @@ RSpec::Steps.steps "Showing the landing page", type: :feature do
       find("td", text: "opensuse131")
     end
   end
+
+  it "filters the results" do
+    expect(page.all(".filterable tbody tr").size).to eq(3)
+
+    fill_in "filter", with: "leap"
+
+    expect(page.all(".filterable tbody tr").size).to eq(1)
+
+    click_link("Reset")
+
+    expect(page.all(".filterable tbody tr").size).to eq(3)
+  end
 end

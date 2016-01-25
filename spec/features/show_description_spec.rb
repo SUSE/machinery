@@ -43,4 +43,16 @@ RSpec::Steps.steps "Showing a system description in HTML format", type: :feature
       expect(page).to have_selector(".scope_content table")
     end
   end
+
+  it "filters the results" do
+    expect(page.all(".filterable tbody tr").size).to eq(436)
+
+    fill_in "filter", with: "cronie"
+
+    expect(page.all(".filterable tbody tr").size).to eq(2)
+
+    click_link("Reset")
+
+    expect(page.all(".filterable tbody tr").size).to eq(436)
+  end
 end
