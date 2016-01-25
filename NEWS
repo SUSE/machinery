@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.17.0 - Mon Jan 25 16:49:58 CET 2016 - thardeck@suse.de
+
 * Fix reset button in HTML view (gh#SUSE/machinery#1899)
 * Align config-files scope in HTML view (gh#SUSE/machinery#1814)
 * Allow closing file dialog (in WebUI) by pressing ESC
