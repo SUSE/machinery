@@ -25,39 +25,37 @@
                         %td.linenumber= line[:new_line_number]
                         %td
                           = line[:content]
-            .col-md-1
-            .col-md-11
-              %table.table.table-striped.table-hover.table-condensed.files-table.filterable
-                %thead
+            %table.table.table-striped.table-hover.table-condensed.files-table.filterable
+              %thead
+                %tr
+                  %th Name
+                  %th.medium Package Name
+                  %th.medium Package Version
+                  %th.medium Changes
+                  %th.small Mode
+                  %th.small User
+                  %th.small Group
+              %tbody
+                - config_files.each do |file|
                   %tr
-                    %th Name
-                    %th.medium Package Name
-                    %th.medium Package Version
-                    %th.medium Changes
-                    %th.small Mode
-                    %th.small User
-                    %th.small Group
-                %tbody
-                  - config_files.each do |file|
-                    %tr
-                      %td
-                        %span
-                          - if file.on_disk?
-                            %a.file-download{ href: "#" }
-                              = file.name
-                          - else
-                            %span
-                              = file.name
-                        - if file.diff
-                          %a.diff-toggle{ "data-config-file" => file.name,
-                            "data-toggle" => "popover" }
-                            Show diff
-                      %td= file.package_name
-                      %td= file.package_version
-                      %td
-                        = file.changes.join(",")
-                        - if file.error_message
-                          %span{ title: file.error_message } (details)
-                      %td= file.mode
-                      %td= file.user
-                      %td= file.group
+                    %td
+                      %span
+                        - if file.on_disk?
+                          %a.file-download{ href: "#" }
+                            = file.name
+                        - else
+                          %span
+                            = file.name
+                      - if file.diff
+                        %a.diff-toggle{ "data-config-file" => file.name,
+                          "data-toggle" => "popover" }
+                          Show diff
+                    %td= file.package_name
+                    %td= file.package_version
+                    %td
+                      = file.changes.join(",")
+                      - if file.error_message
+                        %span{ title: file.error_message } (details)
+                    %td= file.mode
+                    %td= file.user
+                    %td= file.group
