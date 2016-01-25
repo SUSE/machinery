@@ -16,7 +16,7 @@ The `inspect-container` command inspects a container image. It creates and start
 and generates a system description from the gathered data. After the inspection the container will be killed and removed again.
 This approach ensures that no containers and images are affected by the inspection.
 
-Right now we support only images from the type `docker`.
+Right now the container inspection only supports Docker images.
 
 The system data is structured into scopes, controlled by the
 `--scope` option.
@@ -95,14 +95,14 @@ trigger errors.
 
 ### EXAMPLES
 
-  * Inspect docker-container `mycontainer` and save system description under name 'MyContainer':
+  * Inspect Docker container `mycontainer` and save system description under name 'MyContainer':
 
     $ `machinery` inspect-container --name=MyContainer mycontainer
 
-  * Inspect docker-container `076f46c1bef1` and save system description under name 'MySecondContainer':
+  * Inspect Docker container `076f46c1bef1` and save system description under name 'MySecondContainer':
 
     $ `machinery` inspect-container --name=MySecondContainer 076f46c1bef1
 
-  * Extracts changed managed files and saves them:
+  * Extract changed managed files and save them:
 
     $ `machinery` inspect-container --scope=changed-managed-files --extract-files mycontainer
