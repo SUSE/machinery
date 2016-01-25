@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix reset button in HTML view (gh#SUSE/machinery#1899)
 * Align config-files scope in HTML view (gh#SUSE/machinery#1814)
 * Allow closing file dialog (in WebUI) by pressing ESC
 * Support inspection of Ubuntu 14.04 systems

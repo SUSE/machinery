@@ -22,4 +22,8 @@ $(document).ready(function () {
   $(".dismiss").click(function(){
     $(this).closest(".scope").hide();
   });
+
+  $(".btn-reset").click(function(){
+    $("#filter").val("").change();
+  });
 })
