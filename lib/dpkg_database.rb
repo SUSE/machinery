@@ -18,7 +18,7 @@
 class DpkgDatabase < ManagedFilesDatabase
   def managed_files_list(&block)
     message = "The list of changed config and managed files is not complete on dpkg systems."\
-     " The reason for this is missing verifcation data:" \
+     " The reason for this is missing verification data:" \
      " https://github.com/SUSE/machinery/wiki/Ubuntu-Inspection"
 
     Machinery.logger.warn(message)
