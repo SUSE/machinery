@@ -67,11 +67,11 @@ trigger errors.
     also point to a file which contains a list of files to filter (one per line)
     by adding an '@' before the path, e.g.
 
-      $ `machinery` inspect-container --skip-files=@/path/to/filter_file mycontainer
+      $ `machinery` inspect-container --skip-files=@/path/to/filter_file myimage
 
     If a filename contains a comma it needs to be escaped, e.g.
 
-      $ `machinery` inspect-container --skip-files=/file\\,with_comma mycontainer
+      $ `machinery` inspect-container --skip-files=/file\\,with_comma myimage
 
     **Note**: File or directory names are not expanded, e.g. '../path' is taken
       literally and not expanded.
@@ -95,9 +95,9 @@ trigger errors.
 
 ### EXAMPLES
 
-  * Inspect Docker container `mycontainer` and save system description under name 'MyContainer':
+  * Inspect Docker container `myimage` and save system description under name 'MyContainer':
 
-    $ `machinery` inspect-container --name=MyContainer mycontainer
+    $ `machinery` inspect-container --name=MyContainer myimage
 
   * Inspect Docker container `076f46c1bef1` and save system description under name 'MySecondContainer':
 
@@ -105,4 +105,4 @@ trigger errors.
 
   * Extract changed managed files and save them:
 
-    $ `machinery` inspect-container --scope=changed-managed-files --extract-files mycontainer
+    $ `machinery` inspect-container --scope=changed-managed-files --extract-files myimage
