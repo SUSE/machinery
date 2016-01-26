@@ -16,7 +16,7 @@ The `inspect-container` command inspects a container image. It creates and start
 and generates a system description from the gathered data. After the inspection the container will be killed and removed again.
 This approach ensures that no containers and images are affected by the inspection.
 
-Right now we support only images from the type `docker`.
+Right now the container inspection only supports Docker images.
 
 The system data is structured into scopes, controlled by the
 `--scope` option.
@@ -67,11 +67,11 @@ trigger errors.
     also point to a file which contains a list of files to filter (one per line)
     by adding an '@' before the path, e.g.
 
-      $ `machinery` inspect-container --skip-files=@/path/to/filter_file mycontainer
+      $ `machinery` inspect-container --skip-files=@/path/to/filter_file myimage
 
     If a filename contains a comma it needs to be escaped, e.g.
 
-      $ `machinery` inspect-container --skip-files=/file\\,with_comma mycontainer
+      $ `machinery` inspect-container --skip-files=/file\\,with_comma myimage
 
     **Note**: File or directory names are not expanded, e.g. '../path' is taken
       literally and not expanded.
@@ -95,14 +95,14 @@ trigger errors.
 
 ### EXAMPLES
 
-  * Inspect docker-container `mycontainer` and save system description under name 'MyContainer':
+  * Inspect Docker container `myimage` and save system description under name 'MyContainer':
 
-    $ `machinery` inspect-container --name=MyContainer mycontainer
+    $ `machinery` inspect-container --name=MyContainer myimage
 
-  * Inspect docker-container `076f46c1bef1` and save system description under name 'MySecondContainer':
+  * Inspect Docker container `076f46c1bef1` and save system description under name 'MySecondContainer':
 
     $ `machinery` inspect-container --name=MySecondContainer 076f46c1bef1
 
-  * Extracts changed managed files and saves them:
+  * Extract changed managed files and save them:
 
-    $ `machinery` inspect-container --scope=changed-managed-files --extract-files mycontainer
+    $ `machinery` inspect-container --scope=changed-managed-files --extract-files myimage
