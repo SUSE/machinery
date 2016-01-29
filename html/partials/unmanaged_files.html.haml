@@ -20,11 +20,12 @@
                 %tr
                   %th Name
                   %th.medium Type
-                  %th.medium Mode
-                  %th.medium User
-                  %th.medium Group
-                  %th.medium Size
-                  %th.medium Files in dir.
+                  - if unmanaged_files.extracted
+                    %th.medium Mode
+                    %th.medium User
+                    %th.medium Group
+                    %th.medium Size
+                    %th.medium Files in dir.
               %tbody
                 - unmanaged_files.each do |file|
                   %tr
@@ -36,8 +37,9 @@
                         %span
                           = file.name
                     %td= file.type
-                    %td= file.mode
-                    %td= file.user
-                    %td= file.group
-                    %td= number_to_human_size(file.size)
-                    %td= file.files
+                    - if unmanaged_files.extracted
+                      %td= file.mode
+                      %td= file.user
+                      %td= file.group
+                      %td= number_to_human_size(file.size)
+                      %td= file.files
