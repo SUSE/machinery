@@ -50,7 +50,7 @@ describe DockerSystem do
   describe "#run_command" do
     it "runs the command using docker exec" do
       expect(LoggedCheetah).to receive(:run).with("docker", "exec", "--user=root", "-i", "12345",
-        any_args)
+        "bash -c python")
 
       subject.run_command("bash -c python")
     end
