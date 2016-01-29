@@ -116,6 +116,7 @@ describe UnmanagedFilesInspector do
     def expect_requirements(system)
       allow(system).to receive(:check_requirement).and_return(true)
       allow(system).to receive(:has_command?).with("rpm").and_return(true)
+      allow(system).to receive(:run_command).with("bash", "-c", any_args)
     end
 
     def expect_rpm_qa(system)
@@ -437,7 +438,7 @@ describe UnmanagedFilesInspector do
   end
 
   it "runs helper" do
-    system = double(arch: "x86_64")
+    system = double(arch: "x86_64", run_command: "/root/machinery-helper")
     allow(system).to receive(:has_command?).and_return(true)
     allow(system).to receive(:check_requirement)
 

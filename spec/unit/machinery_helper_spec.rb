@@ -5,7 +5,8 @@ include GivenFilesystemSpecHelpers
 describe MachineryHelper do
   use_given_filesystem
 
-  let(:dummy_system) { double(arch: "x86_64") }
+  let(:remote_helper_path) { "/root/machinery-helper" }
+  let(:dummy_system) { double(arch: "x86_64", run_command: remote_helper_path) }
 
   describe "#can_help?" do
     context "on the same architecture" do
@@ -29,7 +30,9 @@ describe MachineryHelper do
     end
 
     it "returns false if the architectures don't match" do
-      helper = MachineryHelper.new(double(arch: "unknown_arch"))
+      helper = MachineryHelper.new(
+        double(arch: "unknown_arch", run_command: "/root/machinery-helper")
+      )
       helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
 
       expect(helper.can_help?).to be(false)
@@ -49,7 +52,7 @@ describe MachineryHelper do
     it "removes the helper using System#remove_file" do
       helper = MachineryHelper.new(dummy_system)
 
-      expect(dummy_system).to receive(:remove_file).with("/root/machinery-helper")
+      expect(dummy_system).to receive(:remove_file).with(remote_helper_path)
 
       helper.remove_helper
     end
@@ -95,7 +98,7 @@ describe MachineryHelper do
 
   describe "#has_compatible_version?" do
     let(:commit_id) { "b5ebdef2ccc0398113e4d88e04083a8369394f12" }
-    let(:remote_helper) { File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper") }
+    let(:remote_helper) { "/root/machinery-helper" }
 
     before(:each) do
       allow(File).to receive(:read).with(
