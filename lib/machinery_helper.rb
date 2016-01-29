@@ -30,7 +30,6 @@ class MachineryHelper
 
   def initialize(s)
     @system = s
-    @arch = @system.arch
 
     @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
     @remote_helper_path = File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")
@@ -43,7 +42,7 @@ class MachineryHelper
   # Returns true, if there is a helper binary matching the architecture of the
   # inspected system. Return false, if not.
   def can_help?
-    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@arch)
+    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@system.arch)
   end
 
   def inject_helper
