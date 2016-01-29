@@ -140,4 +140,24 @@ describe MachineryHelper do
       expect(helper.has_compatible_version?).to be(false)
     end
   end
+
+  describe "#remote_helper_path" do
+    let(:path) { "/root/machinery-helper" }
+
+    it "expands the path on the remote machine and returns it" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        "bash", "-c", "echo -n #{File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")}",
+          stdout: :capture
+      ).and_return(path)
+      expect(helper.remote_helper_path).to eq(path)
+    end
+
+    it "stores the result of the first call" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).once
+      helper.remote_helper_path
+      helper.remote_helper_path
+    end
+  end
 end

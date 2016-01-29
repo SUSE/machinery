@@ -26,21 +26,23 @@
 
 class MachineryHelper
   attr_accessor :local_helpers_path
-  attr_accessor :remote_helper_path
 
   def initialize(s)
     @system = s
 
     @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
-    @remote_helper_path = @system.run_command(
-      # Expand Machinery::HELPER_REMOTE_PATH on remote machine
-      "bash", "-c", "echo -n #{File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")}",
-        stdout: :capture
-    )
   end
 
   def local_helper_path
     File.join(local_helpers_path, "machinery-helper")
+  end
+
+  def remote_helper_path
+    @remote_helper_path ||= @system.run_command(
+      # Expand Machinery::HELPER_REMOTE_PATH on remote machine
+      "bash", "-c", "echo -n #{File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")}",
+        stdout: :capture
+    )
   end
 
   # Returns true, if there is a helper binary matching the architecture of the
