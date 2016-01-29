@@ -10,6 +10,8 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
+          %p
+            <strong>Files extracted:</strong> #{unmanaged_files.extracted ? "yes" : "no"}
           - if count == 0
             There are no unmanaged files.
           - if count > 0
@@ -18,6 +20,12 @@
                 %tr
                   %th Name
                   %th.medium Type
+                  - if unmanaged_files.extracted
+                    %th.medium Mode
+                    %th.medium User
+                    %th.medium Group
+                    %th.medium Size
+                    %th.medium Files in dir.
               %tbody
                 - unmanaged_files.each do |file|
                   %tr
@@ -29,3 +37,9 @@
                         %span
                           = file.name
                     %td= file.type
+                    - if unmanaged_files.extracted
+                      %td= file.mode
+                      %td= file.user
+                      %td= file.group
+                      %td= number_to_human_size(file.size)
+                      %td= file.files
