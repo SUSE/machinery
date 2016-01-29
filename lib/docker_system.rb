@@ -95,10 +95,9 @@ class DockerSystem < System
     created = !File.exists?(archive)
     out = File.open(archive, "w")
     begin
-      run_command(
-        File.join(
-          Machinery::HELPER_REMOTE_PATH, "machinery-helper"
-        ), "tar", "--create", "--gzip", "--null", "--files-from=-",
+      helper = MachineryHelper.new(self)
+      helper.run_helper_subcommand(
+        "tar", "--create", "--gzip", "--null", "--files-from=-",
         *exclude.flat_map { |f| ["--exclude", f] },
         stdout: out,
         stdin: Array(file_list).join("\0"),

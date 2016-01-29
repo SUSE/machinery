@@ -5,7 +5,9 @@ include GivenFilesystemSpecHelpers
 describe MachineryHelper do
   use_given_filesystem
 
-  let(:dummy_system) { double(arch: "x86_64") }
+  let(:remote_helper_path) { "/root/machinery-helper" }
+  let(:dummy_system) { double(arch: "x86_64", run_command: remote_helper_path) }
+  subject { MachineryHelper.new(dummy_system) }
 
   describe "#can_help?" do
     context "on the same architecture" do
@@ -14,51 +16,46 @@ describe MachineryHelper do
       end
 
       it "returns true if helper exists" do
-        helper = MachineryHelper.new(dummy_system)
-        helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+        subject.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
 
-        expect(helper.can_help?).to be(true)
+        expect(subject.can_help?).to be(true)
       end
 
       it "returns false if helper does not exist" do
-        helper = MachineryHelper.new(dummy_system)
-        helper.local_helpers_path = given_directory
+        subject.local_helpers_path = given_directory
 
-        expect(helper.can_help?).to be(false)
+        expect(subject.can_help?).to be(false)
       end
     end
 
     it "returns false if the architectures don't match" do
-      helper = MachineryHelper.new(double(arch: "unknown_arch"))
-      helper.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+      subject = MachineryHelper.new(
+        double(arch: "unknown_arch", run_command: "/root/machinery-helper")
+      )
+      subject.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
 
-      expect(helper.can_help?).to be(false)
+      expect(subject.can_help?).to be(false)
     end
   end
 
   describe "#inject_helper" do
     it "injects the helper using System#inject_file" do
-      helper = MachineryHelper.new(dummy_system)
       expect(dummy_system).to receive(:inject_file)
 
-      helper.inject_helper
+      subject.inject_helper
     end
   end
 
   describe "#remove_helper" do
     it "removes the helper using System#remove_file" do
-      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:remove_file).with(remote_helper_path)
 
-      expect(dummy_system).to receive(:remove_file).with("/root/machinery-helper")
-
-      helper.remove_helper
+      subject.remove_helper
     end
   end
 
   describe "#run_helper" do
     it "writes the inspection result into the scope" do
-      helper = MachineryHelper.new(dummy_system)
-
       json = <<-EOT
         {
           "files": [
@@ -86,16 +83,25 @@ describe MachineryHelper do
         and_return(json)
 
       scope = UnmanagedFilesScope.new
-      helper.run_helper(scope)
+      subject.run_helper(scope)
 
       expect(scope.first.name).to eq("/opt/magic/file")
       expect(scope.count).to eq(2)
     end
   end
 
+  describe "#run_helper_subcommand" do
+    it "calls run_command with helper path and the parameters" do
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper_path, "tar", "--create", stdout: :capture, privileged: true
+      )
+      subject.run_helper_subcommand("tar", "--create", stdout: :capture)
+    end
+  end
+
   describe "#has_compatible_version?" do
     let(:commit_id) { "b5ebdef2ccc0398113e4d88e04083a8369394f12" }
-    let(:remote_helper) { File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper") }
+    let(:remote_helper) { "/root/machinery-helper" }
 
     before(:each) do
       allow(File).to receive(:read).with(
@@ -104,27 +110,42 @@ describe MachineryHelper do
     end
 
     it "returns true if the machinery version equals the helper version" do
-      helper = MachineryHelper.new(dummy_system)
       expect(dummy_system).to receive(:run_command).with(
         remote_helper, "--version", stdout: :capture
       ).and_return("Version: #{commit_id}")
-      expect(helper.has_compatible_version?).to be(true)
+      expect(subject.has_compatible_version?).to be(true)
     end
 
     it "returns false if the machinery version does not equal the helper version" do
-      helper = MachineryHelper.new(dummy_system)
       expect(dummy_system).to receive(:run_command).with(
         remote_helper, "--version", stdout: :capture
       ).and_return("Version: 17c59264b8109ed33bb9bd1371af05bfb81d10df")
-      expect(helper.has_compatible_version?).to be(false)
+      expect(subject.has_compatible_version?).to be(false)
     end
 
     it "returns false on empty output of an old machinery-helper" do
-      helper = MachineryHelper.new(dummy_system)
       expect(dummy_system).to receive(:run_command).with(
         remote_helper, "--version", stdout: :capture
       ).and_return("")
-      expect(helper.has_compatible_version?).to be(false)
+      expect(subject.has_compatible_version?).to be(false)
+    end
+  end
+
+  describe "#remote_helper_path" do
+    let(:path) { "/root/machinery-helper" }
+
+    it "expands the path on the remote machine and returns it" do
+      expect(dummy_system).to receive(:run_command).with(
+        "bash", "-c", "echo -n #{File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")}",
+          stdout: :capture
+      ).and_return(path)
+      expect(subject.remote_helper_path).to eq(path)
+    end
+
+    it "stores the result of the first call" do
+      expect(dummy_system).to receive(:run_command).once
+      subject.remote_helper_path
+      subject.remote_helper_path
     end
   end
 end

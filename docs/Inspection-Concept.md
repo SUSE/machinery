@@ -67,15 +67,10 @@ There is a helper binary which is bundled with the Machinery package and is inst
 to `<machinery-installation-path>/machinery-helper/machinery-helper`.
 `<machinery-installation-path>` is the directory where all the Machinery gem files
 are installed.
-On the target system it is copied to the home directory of the root user. It is
+On the target system it is copied to the home directory of the remote user. It is
 removed when the inspection is done.
-
-The helper is only used, when Machinery logs into the inspected machine as root
-user. For the mode, where it logs in as a non-root user Machinery falls back to
-the traditional inspection.
 
 In the future we might support installation of the helper binary as RPM on the
 target machine by the system administrator. Then the temporary copying of the
-binary is not necessary anymore. It also would allow to let the non-root mode
-use the binary with a simplified sudo configuration, which only would require
-root privileges for the binary and no system tools anymore.
+binary is not necessary anymore and the command usage of machinery could be
+restricted by the sudo configuration.

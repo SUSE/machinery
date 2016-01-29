@@ -116,6 +116,7 @@ describe UnmanagedFilesInspector do
     def expect_requirements(system)
       allow(system).to receive(:check_requirement).and_return(true)
       allow(system).to receive(:has_command?).with("rpm").and_return(true)
+      allow(system).to receive(:run_command).with("bash", "-c", any_args)
     end
 
     def expect_rpm_qa(system)
@@ -418,26 +419,8 @@ describe UnmanagedFilesInspector do
     end
   end
 
-  describe "#helper_usable?" do
-    context "when helper is there" do
-      let(:system) { double(arch: "x86_64") }
-      let(:description) { SystemDescription.new("systemname", SystemDescriptionStore.new) }
-      let(:helper) { MachineryHelper.new(description) }
-
-      it "doesn't use the helper when a remote user != root is used" do
-        expect(system).to receive(:remote_user).and_return("machinery)")
-        expected = "Using traditional inspection because only 'root' is supported as remote user"
-        allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
-
-        subject.helper_usable?(helper)
-
-        expect(captured_machinery_output).to include(expected)
-      end
-    end
-  end
-
   it "runs helper" do
-    system = double(arch: "x86_64")
+    system = double(arch: "x86_64", run_command: "/root/machinery-helper")
     allow(system).to receive(:has_command?).and_return(true)
     allow(system).to receive(:check_requirement)
 

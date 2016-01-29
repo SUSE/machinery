@@ -26,32 +26,39 @@
 
 class MachineryHelper
   attr_accessor :local_helpers_path
-  attr_accessor :remote_helper_path
 
   def initialize(s)
     @system = s
-    @arch = @system.arch
 
     @local_helpers_path = File.join(Machinery::ROOT, "machinery-helper")
-    @remote_helper_path = File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")
   end
 
   def local_helper_path
     File.join(local_helpers_path, "machinery-helper")
   end
 
+  def remote_helper_path
+    @remote_helper_path ||= @system.run_command(
+      # Expand Machinery::HELPER_REMOTE_PATH on remote machine
+      "bash", "-c", "echo -n #{File.join(Machinery::HELPER_REMOTE_PATH, "machinery-helper")}",
+        stdout: :capture
+    )
+  end
+
   # Returns true, if there is a helper binary matching the architecture of the
   # inspected system. Return false, if not.
   def can_help?
-    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@arch)
+    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@system.arch)
   end
 
   def inject_helper
-    @system.inject_file(local_helper_path, Machinery::HELPER_REMOTE_PATH)
+    @system.inject_file(local_helper_path, remote_helper_path)
   end
 
   def run_helper(scope)
-    json = @system.run_command(remote_helper_path, stdout: :capture, stderr: STDERR)
+    json = @system.run_command(
+      remote_helper_path, stdout: :capture, stderr: STDERR, privileged: true
+    )
     scope.insert(0, *JSON.parse(json)["files"])
   end
 
@@ -65,5 +72,11 @@ class MachineryHelper
     version = output[/^Version: ([a-f0-9]{40})$/, 1]
 
     version == File.read(File.join(Machinery::ROOT, ".git_revision"))
+  end
+
+  def run_helper_subcommand(subcommand, *args)
+    options = args.last.is_a?(Hash) ? args.pop : {}
+    options[:privileged] = true
+    @system.run_command(remote_helper_path, subcommand, *args, options)
   end
 end

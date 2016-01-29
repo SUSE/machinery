@@ -50,7 +50,7 @@ describe DockerSystem do
   describe "#run_command" do
     it "runs the command using docker exec" do
       expect(LoggedCheetah).to receive(:run).with("docker", "exec", "--user=root", "-i", "12345",
-        any_args)
+        "bash -c python")
 
       subject.run_command("bash -c python")
     end
@@ -75,9 +75,9 @@ describe DockerSystem do
   end
 
   describe "#create_archive" do
-    it "extracts the archive using 'machinery-helper tar'" do
+    it "extracts the archive using MachineryHelper" do
       output_dir = given_dummy_file
-      expect(subject).to receive(:run_command).with("/root/machinery-helper", "tar", any_args)
+      expect_any_instance_of(MachineryHelper).to receive(:run_helper_subcommand)
 
       subject.create_archive(["/tmp/foo", "/tmp/bar"], output_dir)
     end
