@@ -109,17 +109,11 @@ trigger errors.
     * `find`
     * `tar`
 
-  * When inspecting as non-root the user has to have the following command
-    whitelist given in the sudoers file.
+  * When inspecting as non-root the user needs passwordless sudo rights.
+    The following entry in the sudoers file would allow the user `machinery`
+    to run sudo without password input:
 
-    * On rpm based systems, like SUSE or Red Hat:
-
-      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/rpm -Va \*,/bin/tar --create \*,/usr/bin/stat
-
-    * On dpkg based systems, like Debian or Ubuntu:
-
-      machinery ALL=(ALL) NOPASSWD: /usr/bin/find,/usr/bin/cat,/bin/cat,/usr/bin/rsync,/bin/tar --create *,/usr/bin/stat,/usr/bin/dpkg,/bin/readlink
-
+      machinery ALL=(ALL) NOPASSWD: ALL
 
   * To add a remote `machinery` user run as root:
 
