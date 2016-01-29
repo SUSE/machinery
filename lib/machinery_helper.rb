@@ -54,7 +54,9 @@ class MachineryHelper
   end
 
   def run_helper(scope)
-    json = @system.run_command(remote_helper_path, stdout: :capture, stderr: STDERR)
+    json = @system.run_command(
+      remote_helper_path, stdout: :capture, stderr: STDERR, privileged: true
+    )
     scope.insert(0, *JSON.parse(json)["files"])
   end
 
