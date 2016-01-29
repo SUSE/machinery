@@ -75,9 +75,9 @@ describe DockerSystem do
   end
 
   describe "#create_archive" do
-    it "extracts the archive using 'machinery-helper tar'" do
+    it "extracts the archive using MachineryHelper" do
       output_dir = given_dummy_file
-      expect(subject).to receive(:run_command).with("/root/machinery-helper", "tar", any_args)
+      expect_any_instance_of(MachineryHelper).to receive(:run_helper_subcommand)
 
       subject.create_archive(["/tmp/foo", "/tmp/bar"], output_dir)
     end
