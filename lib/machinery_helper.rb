@@ -71,4 +71,10 @@ class MachineryHelper
 
     version == File.read(File.join(Machinery::ROOT, ".git_revision"))
   end
+
+  def run_helper_subcommand(subcommand, *args)
+    options = args.last.is_a?(Hash) ? args.pop : {}
+    options[:privileged] = true
+    @system.run_command(remote_helper_path, subcommand, *args, options)
+  end
 end

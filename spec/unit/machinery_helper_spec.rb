@@ -96,6 +96,16 @@ describe MachineryHelper do
     end
   end
 
+  describe "#run_helper_subcommand" do
+    it "calls run_command with helper path and the parameters" do
+      helper = MachineryHelper.new(dummy_system)
+      expect(dummy_system).to receive(:run_command).with(
+        remote_helper_path, "tar", "--create", stdout: :capture, privileged: true
+      )
+      helper.run_helper_subcommand("tar", "--create", stdout: :capture)
+    end
+  end
+
   describe "#has_compatible_version?" do
     let(:commit_id) { "b5ebdef2ccc0398113e4d88e04083a8369394f12" }
     let(:remote_helper) { "/root/machinery-helper" }
