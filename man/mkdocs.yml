@@ -1,6 +1,6 @@
 site_name: Machinery Documentation
 pages:
-- Welcome: index.md
+- Welcome: docs.md
 - Home:
   - General: machinery_main_general.1.md
   - Scopes: machinery_main_scopes.1.md
@@ -26,3 +26,5 @@ pages:
   - Upgrade Format: machinery-upgrade-format.1.md
   - Validate: machinery-validate.1.md
 theme_dir: 'custom_theme'
+extra_templates:
+- 'index.html'
