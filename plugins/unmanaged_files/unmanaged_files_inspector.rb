@@ -293,10 +293,6 @@ class UnmanagedFilesInspector < Inspector
         "Note: Using traditional inspection because there is no helper binary for" \
         " architecture '#{@system.arch}' available."
       )
-    elsif @system.respond_to?(:remote_user) && @system.remote_user != "root"
-      Machinery::Ui.puts(
-        "Note: Using traditional inspection because only 'root' is supported as remote user."
-      )
     elsif ["rpm", "dpkg"].include?(@package_manager)
       return true
     end
