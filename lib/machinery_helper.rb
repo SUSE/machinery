@@ -50,7 +50,7 @@ class MachineryHelper
   end
 
   def inject_helper
-    @system.inject_file(local_helper_path, Machinery::HELPER_REMOTE_PATH)
+    @system.inject_file(local_helper_path, remote_helper_path)
   end
 
   def run_helper(scope)
