@@ -10,6 +10,8 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
+          %p
+            <strong>Files extracted:</strong> #{unmanaged_files.extracted ? "yes" : "no"}
           - if count == 0
             There are no unmanaged files.
           - if count > 0
