@@ -82,10 +82,10 @@ namespace :man_pages do
     system "gzip -f man/generated/machinery.1"
   end
 
-  desc 'Compile the scope documentation into one document'
-  task :compile_scope_docs do
-    puts "  Compiling scope documentation"
-    ManTask.compile_scope_documentation
+  desc 'Compile the documentation into HTML format'
+  task :compile_documentation do
+    puts "  Compiling documentation"
+    ManTask.compile_documentation
   end
 end
 

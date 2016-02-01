@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class ManTask
-  def self.compile_scope_documentation
+  def self.compile_documentation
     docs = Inspector.all_scopes.map do |scope|
       scope_doc = "* #{scope}\n\n"
       scope_doc += YAML.load_file(
@@ -25,6 +25,9 @@ class ManTask
       scope_doc + "\n"
     end.join
     File.write("manual/docs/machinery_main_scopes.1.md", docs)
+    Dir.chdir(File.join(Machinery::ROOT, "manual")) do
+      Cheetah.run("mkdocs", "build")
+    end
   end
 
   def man(options)
@@ -41,6 +44,14 @@ class ManTask
   end
 
   def man_html(options)
+    if !File.exists?(File.join(Machinery::ROOT, "manual/site"))
+      Machinery::Ui.warn(
+        "The documentation was not generated yet. Please make sure that 'mkdocs' is installed on" \
+        "your system and run 'rake man_pages:compile_documentation' from the machinery directory"
+      )
+      return
+    end
+
     LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
     url = "http://#{options[:ip]}:#{options[:port]}/site/docs/index.html"
