@@ -75,27 +75,11 @@ end
 namespace :man_pages do
   desc 'Build man page(s)'
   task :build do
-    puts "  Building man pages"
-    manpage = ""
-    Inspector.all_scopes.each do |scope|
-      manpage += "* #{scope}\n\n"
-      manpage += YAML.load_file("plugins/#{scope}/#{scope}.yml")[:description]
-      manpage += "\n"
-    end
-    manpage += "\n"
-    File.write("man/generated/machinery_main_scopes.1.md", manpage)
+    puts "  Building man page"
 
-    system <<-EOF
-      cat man/machinery_main_general.1.md man/generated/machinery_main_scopes.1.md \
-        man/machinery_main_usecases.1.md man/machinery-*.1.md \
-        man/machinery_footer.1.md  > man/generated/machinery.1.md
-    EOF
-    system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
-    system "ronn man/generated/machinery.1.md"
-    system "gzip -f man/generated/*.1"
-    # Build man page for website (manual.html)
-    system "ronn -f man/generated/machinery.1.md"
-    system "man/generate_man"
+    FileUtils.mkdir_p("man/generated")
+    system "ronn -r man/machinery.1.md --pipe > man/generated/machinery.1"
+    system "gzip -f man/generated/machinery.1"
   end
 end
 
