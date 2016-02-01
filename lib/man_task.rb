@@ -16,6 +16,17 @@
 # you may find current contact information at www.suse.com
 
 class ManTask
+  def self.compile_scope_documentation
+    docs = Inspector.all_scopes.map do |scope|
+      scope_doc = "* #{scope}\n\n"
+      scope_doc += YAML.load_file(
+        File.join(Machinery::ROOT, "plugins/#{scope}/#{scope}.yml")
+      )[:description]
+      scope_doc + "\n"
+    end.join
+    File.write("manual/docs/machinery_main_scopes.1.md", docs)
+  end
+
   def man
     LocalSystem.validate_existence_of_package("man")
     system("man", man_path)

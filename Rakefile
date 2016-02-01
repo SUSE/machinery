@@ -81,6 +81,12 @@ namespace :man_pages do
     system "ronn -r man/machinery.1.md --pipe > man/generated/machinery.1"
     system "gzip -f man/generated/machinery.1"
   end
+
+  desc 'Compile the scope documentation into one document'
+  task :compile_scope_docs do
+    puts "  Compiling scope documentation"
+    ManTask.compile_scope_documentation
+  end
 end
 
 # Disable packaging_tasks' tarball task. We package a gem, so we don't have to
