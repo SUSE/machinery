@@ -110,7 +110,7 @@ repositories, or configuration files.
 For example, if you are only interested in the installed packages, limit the
 scope to `packages`. This will output only the requested information.
 
-Machinery supports the following scopes:
+The the [scopes documentation](machinery_main_scopes.1) for a list of all supported scopes.
 
 ## FILES AND DEVICES
 
