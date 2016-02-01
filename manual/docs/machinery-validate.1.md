@@ -1,14 +1,14 @@
 
-## validate — Validate System Description
+# validate — Validate System Description
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery validate` NAME
 
 `machinery` help validate
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `validate` subcommand validates an existing system description.
 It checks, that the description has the correct structure and the data stored
@@ -21,14 +21,14 @@ The main purpose of this command is to verify the system description after
 manually editing it.
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME` (required):
     Name of the system description.
 
 
-### EXAMPLES
+## EXAMPLES
 
  * Validate the system description with the name `myhost`:
 
-   $ `machinery` validate myhost
+    $ `machinery` validate myhost

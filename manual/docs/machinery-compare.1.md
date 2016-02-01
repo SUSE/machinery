@@ -1,20 +1,20 @@
 
-## compare — Compare System Descriptions
+# compare — Compare System Descriptions
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery compare` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-all] [--html] NAME1 NAME2
 
 `machinery` help compare
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `compare` command compares stored system descriptions. The scope option can
 be used to limit the output to the given scopes.
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME1` (required):
     First system description to compare.
@@ -23,7 +23,7 @@ be used to limit the output to the given scopes.
     Second system description to compare.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Limit output to the specified scope.
@@ -43,7 +43,7 @@ be used to limit the output to the given scopes.
     Shows the comparison of two system descriptions in the web browser.
 
 
-### EXAMPLES
+## EXAMPLES
 
   * Compare system descriptions saved as `earth` and `moon`:
 
@@ -60,4 +60,4 @@ be used to limit the output to the given scopes.
 
   * Compares system descriptions and shows the result in HTML format in your web browser:
 
-      $ machinery compare --html earth moon
+    $ `machinery` compare --html earth moon

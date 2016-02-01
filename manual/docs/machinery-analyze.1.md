@@ -1,14 +1,13 @@
+# analyze — Analyze System Description
 
-## analyze — Analyze System Description
-
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery analyze` NAME -o | --operation=OPERATION
 
 `machinery` help analyze
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `analyze` subcommand analyzes an existing system description and enriches
 it with additional information. Supported operations are:
@@ -19,20 +18,20 @@ it with additional information. Supported operations are:
     The diffs can be shown using `machinery show --show-diffs`
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME` (required):
     Name of the system description.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-o OPERATION`, `--operation=OPERATION` (required):
     The analyze operation to perform.
 
 
-### EXAMPLES
+## EXAMPLES
 
  * Analyze the config file diffs for the `myhost` system description:
 
-   $ `machinery` analyze myhost --operation=config-file-diffs
+    $ `machinery` analyze myhost --operation=config-file-diffs

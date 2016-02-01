@@ -1,7 +1,7 @@
 
-## man — Shows Man Page
+# man — Shows Man Page
 
-### SYNOPSIS
+## SYNOPSIS
 
   `machinery man` [OPTIONS]
 
@@ -11,6 +11,6 @@
     Run a web server and open the documentation in HTML format in your web browser using the
     `xdg-open` command.
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `man` command shows the Machinery man page.

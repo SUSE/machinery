@@ -1,14 +1,13 @@
+# build — Build Image from System Description
 
-## build — Build Image from System Description
-
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery build` NAME -i IMAGE-DIR | --image-dir=IMAGE-DIR
 
 `machinery` help build
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `build` command builds an image from a system description. The image is a
 system image in the qcow2 format, which can be used with the KVM hypervisor.
@@ -24,13 +23,13 @@ When building an image, Machinery filters out some files which would break the
 built image. The list of filters is shown at the beginning of the build.
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME` (required):
     Use specified system description.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-i IMAGE-DIR`, `--image-dir=IMAGE-DIR` (required):
     Save image file under specified path.
@@ -42,7 +41,7 @@ built image. The list of filters is shown at the beginning of the build.
     Enable SSH service in built image
 
 
-### PREREQUISITES
+## PREREQUISITES
 
   * The `build` command requires the packages `kiwi` and `kiwi-desc-vmxboot`.
 
@@ -55,9 +54,9 @@ built image. The list of filters is shown at the beginning of the build.
 
   * Machinery can only build x86_64 images on x86_64 systems at the moment.
 
-### EXAMPLES
+## EXAMPLES
 
  * To build an image from the system description named "tux" and to save the
    image under the `/tmp/tux/` directory:
 
-   $ `machinery` build tux -i /tmp/tux/
+    $ `machinery` build tux -i /tmp/tux/

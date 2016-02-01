@@ -1,7 +1,7 @@
 
-## deploy — Deploy Image to OpenStack Cloud
+# deploy — Deploy Image to OpenStack Cloud
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery deploy` NAME -c CONFIG_FILE | --cloud-config=CONFIG_FILE
    [-i IMAGE_DIR | --image-dir=IMAGE_DIR]
@@ -11,7 +11,7 @@
 `machinery` help [deploy]
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `deploy` command builds and deploys an image to an OpenStack cloud.
 This command is particularly useful for testing, debugging, or for validation.
@@ -24,20 +24,20 @@ This command is particularly useful for testing, debugging, or for validation.
 > If you prefer to leave it uninterrupted and unattented, remove
 > the following line in your cloud configuration file (see the `-c` option):
 >
->   read -s OS_PASSWORD_INPUT 
+>   read -s OS_PASSWORD_INPUT
 >
 > and set the password in the `OS_PASSWORD` variable:
 >
->     export OS_PASSWORD=YOUR_PASSWORD
+>   export OS_PASSWORD=YOUR_PASSWORD
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME` (required):
     Name of the system description.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-c CONFIG_FILE`, `--cloud-config=CONFIG_FILE` (required):
     Path to file where the cloud config (openrc.sh) is located.
@@ -53,19 +53,19 @@ This command is particularly useful for testing, debugging, or for validation.
     Allow to make "insecure" HTTPS requests, without checking the SSL
     certificate when uploading to the cloud.
 
-### PREREQUISITES
+## PREREQUISITES
 
  * The `deploy` command requires the packages `kiwi` for building the image
    and `python-glanceclient` for uploading the image to the cloud.
 
-### SUPPORTED ARCHITECTURES
+## SUPPORTED ARCHITECTURES
 
 Machinery only supports deploying x86_64 images on x86_64 systems.
 
-### EXAMPLES
+## EXAMPLES
 
  * Build an image under the system description named `jeos`.
    Deploy it to the OpenStack cloud name `tux-cloud` by using the
    configuration file `openrc.sh` in directory `tux`:
 
-   $ `machinery` deploy jeos -n tux-cloud -c tux/openrc.sh
+    $ `machinery` deploy jeos -n tux-cloud -c tux/openrc.sh

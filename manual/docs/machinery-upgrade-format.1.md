@@ -1,7 +1,7 @@
 
-## upgrade-format — Upgrade System Description
+# upgrade-format — Upgrade System Description
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery upgrade-format` --all
 
@@ -10,7 +10,7 @@
 `machinery` help upgrade-format
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `upgrade-format` command upgrades a system description to the latest format
 version.
@@ -25,18 +25,18 @@ in the `meta` section of the according `manifest.json` file.
 If the `--all` switch is given all local descriptions will be upgraded.
 
 
-### OPTIONS
+## OPTIONS
 
   * `--all` (optional):
     Upgrade all stored system descriptions.
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME` (optional):
     Upgrade specified system description.
 
 
-### EXAMPLES
+## EXAMPLES
 
   * Upgrade the system description stored as `earth`:
 

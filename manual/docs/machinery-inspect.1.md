@@ -1,14 +1,14 @@
 
-## inspect — Inspect Running System
+# inspect — Inspect Running System
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery inspect` [OPTIONS] HOSTNAME
 
 `machinery` help inspect
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `inspect` command inspects a running system and generates a system
 description from the gathered data.
@@ -21,7 +21,7 @@ Machinery will always inspect all specified scopes, and skip scopes which
 trigger errors.
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `HOSTNAME` (required):
     The host name of the system to be inspected. The host name will also be
@@ -29,7 +29,7 @@ trigger errors.
     provided with the `--name` option.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-n NAME`, `--name=NAME` (optional):
     Store the system description under the specified name.
@@ -89,7 +89,7 @@ trigger errors.
     Display the filters which are used during inspection.
 
 
-### PREREQUISITES
+## PREREQUISITES
 
   * Inspecting a local system requires running `machinery` as root.
 
@@ -129,7 +129,7 @@ trigger errors.
 
     # `passwd machinery`
 
-### EXAMPLES
+## EXAMPLES
 
   * Inspect remote system `myhost` and save system description under name
     'MySystem':

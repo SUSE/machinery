@@ -1,7 +1,7 @@
 
-## inspect-container — Inspect Container
+# inspect-container — Inspect Container
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery inspect-container` [OPTIONS] IMAGENAME
 
@@ -10,7 +10,7 @@
 `machinery` help inspect-container
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `inspect-container` command inspects a container image. It creates and starts the container from the provided image before inspection
 and generates a system description from the gathered data. After the inspection the container will be killed and removed again.
@@ -26,7 +26,7 @@ Machinery will always inspect all specified scopes, and skip scopes which
 trigger errors.
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `IMAGENAME / IMAGEID` (required):
     The name or id of the image to be inspected. The provided name or id will also be
@@ -34,7 +34,7 @@ trigger errors.
     provided with the `--name` option.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-n NAME`, `--name=NAME` (optional):
     Store the system description under the specified name.
@@ -80,7 +80,7 @@ trigger errors.
     Display the filters which are used during inspection.
 
 
-### PREREQUISITES
+## PREREQUISITES
 
   * Inspecting a container requires an image specified by the name or id.
 
@@ -93,7 +93,7 @@ trigger errors.
     * `sed`
     * `find`
 
-### EXAMPLES
+## EXAMPLES
 
   * Inspect Docker container `myimage` and save system description under name 'MyContainer':
 

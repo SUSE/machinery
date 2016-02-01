@@ -1,14 +1,14 @@
 
-## show — Show System Description
+# show — Show System Description
 
-### SYNOPSIS
+## SYNOPSIS
 
 `machinery show` [-s SCOPE | --scope=SCOPE] [-e EXCLUDE-SCOPE | --exclude-scope=EXCLUDE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME
 
 `machinery` help show
 
 
-### DESCRIPTION
+## DESCRIPTION
 
 The `show` command displays a stored system description.
 Scopes are supported and limit the output to the given scope.
@@ -16,13 +16,13 @@ The hostname of the inspected system and the last modification
 in local time are shown in the title of each scope section.
 
 
-### ARGUMENTS
+## ARGUMENTS
 
   * `NAME` (required):
     Use specified system description.
 
 
-### OPTIONS
+## OPTIONS
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Limit output to the specified scope.
@@ -48,7 +48,7 @@ in local time are shown in the title of each scope section.
   * `--verbose` (optional):
     Display the filters which were applied before showing the system description.
 
-### EXAMPLES
+## EXAMPLES
 
   * Show the system description taken from the last inspection, saved as `earth`:
 

@@ -1,5 +1,5 @@
 
-### System Description
+## System Description
 
 The System Description format and file structure is documented in the machinery
 wiki: [https://github.com/SUSE/machinery/wiki/System-Description-Format](https://github.com/SUSE/machinery/wiki/System-Description-Format)
@@ -15,7 +15,7 @@ can use the description
 To manually validate a description use the `machinery validate` command.
 
 
-### Use Cases
+## Use Cases
 
 Some of the important use cases of Machinery are:
 
@@ -38,7 +38,7 @@ Some of the important use cases of Machinery are:
   can then for example be deployed to a cloud.
 
 
-## OPTIONS FOR ALL SUBCOMMANDS
+# OPTIONS FOR ALL SUBCOMMANDS
 <!--- These are 'global' options of machinery -->
 
   * `--version`:
