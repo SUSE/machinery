@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix repository recognition on older Debian systems
 * Inspection of unmanaged-files is now also using the faster machinery-helper
   when a remote user is used
 * Show all available information for unmanaged files in HTML view (gh#SUSE/machinery#1905)
