@@ -117,5 +117,22 @@ EOF
         manifest.validate
       }.not_to raise_error
     end
+
+    it "does not try to validate descriptions with unknown format versions" do
+      manifest = Manifest.new("name", <<-EOT)
+        {
+          "meta": {
+            "format_version": 99999
+          }
+        }
+      EOT
+      expect {
+        manifest.validate!
+      }.not_to raise_error
+
+      expect {
+        manifest.validate
+      }.not_to raise_error
+    end
   end
 end
