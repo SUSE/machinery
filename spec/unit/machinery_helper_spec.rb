@@ -6,7 +6,11 @@ describe MachineryHelper do
   use_given_filesystem
 
   let(:remote_helper_path) { "/root/machinery-helper" }
-  let(:dummy_system) { double(arch: "x86_64", run_command: remote_helper_path) }
+  let(:dummy_system) {
+    double(
+      arch: "x86_64", run_command: remote_helper_path, remote_user: "machinery", host: "host"
+    )
+  }
   subject { MachineryHelper.new(dummy_system) }
 
   describe "#can_help?" do
@@ -55,6 +59,8 @@ describe MachineryHelper do
   end
 
   describe "#run_helper" do
+    let(:scope) { UnmanagedFilesScope.new }
+
     it "writes the inspection result into the scope" do
       json = <<-EOT
         {
@@ -82,11 +88,31 @@ describe MachineryHelper do
       expect(dummy_system).to receive(:run_command).with("/root/machinery-helper", any_args).
         and_return(json)
 
-      scope = UnmanagedFilesScope.new
       subject.run_helper(scope)
 
       expect(scope.first.name).to eq("/opt/magic/file")
       expect(scope.count).to eq(2)
+    end
+
+    context "when errors occur" do
+      before(:each) do
+        expect(dummy_system).to receive(:run_command).with("/root/machinery-helper", any_args).
+          and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
+      end
+
+      it "handles sudo password ones gracefully" do
+        expect_any_instance_of(TeeIO).to receive(:string).and_return("password is required")
+        expect { subject.run_helper(scope) }.to raise_error(
+          Machinery::Errors::InsufficientPrivileges, /host/
+        )
+      end
+
+      it "raises on all other" do
+        expect_any_instance_of(TeeIO).to receive(:string).and_return("some random error")
+        expect { subject.run_helper(scope) }.to raise_error(
+          Cheetah::ExecutionFailed
+        )
+      end
     end
   end
 

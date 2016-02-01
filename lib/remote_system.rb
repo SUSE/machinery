@@ -178,7 +178,7 @@ class RemoteSystem < System
 
   # Removes a file from the system
   def remove_file(file)
-    run_command("rm", file, privileged: true)
+    run_command("rm", file)
   rescue Cheetah::ExecutionFailed => e
     raise Machinery::Errors::RemoveFileFailed.new(
       "Could not remove file '#{file}' on host '#{host}'.\nError: #{e}"

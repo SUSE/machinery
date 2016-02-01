@@ -258,7 +258,7 @@ describe RemoteSystem do
     describe "#remove_file" do
       it "removes a file" do
         expect(remote_system).to receive(:run_command).with(
-          "rm", "/tmp/foo", privileged: true
+          "rm", "/tmp/foo"
         )
         remote_system.remove_file("/tmp/foo")
       end

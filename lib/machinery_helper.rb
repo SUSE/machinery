@@ -56,10 +56,17 @@ class MachineryHelper
   end
 
   def run_helper(scope)
+    error = TeeIO.new(STDERR)
     json = @system.run_command(
-      remote_helper_path, stdout: :capture, stderr: STDERR, privileged: true
+      remote_helper_path, stdout: :capture, stderr: error, privileged: true
     )
     scope.insert(0, *JSON.parse(json)["files"])
+  rescue Cheetah::ExecutionFailed => e
+    if error.string.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(@system.remote_user, @system.host)
+    else
+      raise e
+    end
   end
 
   def remove_helper
