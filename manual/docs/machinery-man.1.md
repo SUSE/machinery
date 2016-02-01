@@ -3,7 +3,13 @@
 
 ### SYNOPSIS
 
-  `machinery man`
+  `machinery man` [OPTIONS]
+
+## OPTIONS
+
+  * `--html` (optional):
+    Run a web server and open the documentation in HTML format in your web browser using the
+    `xdg-open` command.
 
 ### DESCRIPTION
 

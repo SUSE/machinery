@@ -27,12 +27,35 @@ class ManTask
     File.write("manual/docs/machinery_main_scopes.1.md", docs)
   end
 
-  def man
-    LocalSystem.validate_existence_of_package("man")
-    system("man", man_path)
+  def man(options)
+    if options[:html]
+      man_html(options)
+    else
+      man_system
+    end
   end
 
-  def man_path
-    File.join(Machinery::ROOT, "man/generated/machinery.1.gz")
+  def man_system
+    LocalSystem.validate_existence_of_package("man")
+    system("man", File.join(Machinery::ROOT, "man/generated/machinery.1.gz"))
+  end
+
+  def man_html(options)
+    LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+
+    url = "http://#{options[:ip]}:#{options[:port]}/site/docs/index.html"
+
+    Machinery::Ui.use_pager = false
+    Machinery::Ui.puts <<EOF
+Trying to start a web server for serving the documentation on #{url}.
+
+The server can be closed with Ctrl+C.
+EOF
+
+    server = Html.run_server(SystemDescriptionStore.new, port: options[:port], ip: options[:ip]) do
+      LoggedCheetah.run("xdg-open", url)
+    end
+
+    server.join # Wait until the user cancelled the blocking webserver
   end
 end

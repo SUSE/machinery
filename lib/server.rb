@@ -200,6 +200,17 @@ class Server < Sinatra::Base
 
   helpers Helpers
 
+  get "/site*" do
+    path = params["splat"].join
+
+    redirect to("site#{path}/") unless path.end_with?("/") || path =~ /\.[a-z]+$/
+
+    path += "index.html" unless path.end_with?("index.html")
+
+    content = File.read(File.join(Machinery::ROOT, "manual/site", path))
+    content
+  end
+
   get "/descriptions/:id/files/:scope/*" do
     description = SystemDescription.load(params[:id], settings.system_description_store)
     filename = File.join("/", params["splat"].first)
