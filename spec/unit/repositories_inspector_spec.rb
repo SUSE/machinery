@@ -232,7 +232,7 @@ password=2fdcb7499fd46842
     it "raise an error when requirements are not fulfilled" do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
       allow(system).to receive(:has_command?).with("yum").and_return(false)
-      allow(system).to receive(:has_command?).with("apt").and_return(false)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(false)
 
       expect { inspector.inspect(filter) }.to raise_error(
         Machinery::Errors::MissingRequirement, /Need either the binary 'zypper', 'yum' or 'apt'/
@@ -393,7 +393,7 @@ EOF
     before(:each) do
       allow(system).to receive(:has_command?).with("zypper").and_return(false)
       allow(system).to receive(:has_command?).with("yum").and_return(false)
-      allow(system).to receive(:has_command?).with("apt").and_return(true)
+      allow(system).to receive(:has_command?).with("dpkg").and_return(true)
     end
 
     it "inspects repos" do

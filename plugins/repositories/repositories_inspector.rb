@@ -27,7 +27,7 @@ class RepositoriesInspector < Inspector
       @description.repositories = inspect_zypp_repositories
     elsif system.has_command?("yum")
       @description.repositories = inspect_yum_repositories
-    elsif system.has_command?("apt")
+    elsif system.has_command?("dpkg")
       @description.repositories = inspect_apt_repositories
     else
       raise Machinery::Errors::MissingRequirement.new(
