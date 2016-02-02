@@ -710,9 +710,17 @@ class Cli
 
   LONGDESC
   command "man" do |c|
-    c.action do
+    c.switch "html", required: false, negatable: false,
+      desc: "Open documentation in HTML format in your web browser."
+
+    c.action do |_global_options, options, _args|
+      options = {
+        ip: "127.0.0.1",
+        port: @config.http_server_port
+      }.merge(options)
+
       task = ManTask.new
-      task.man
+      task.man(options)
     end
   end
 

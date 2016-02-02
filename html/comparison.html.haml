@@ -51,13 +51,6 @@
           .col-xs-10
             %h1
               Comparing '#{@description_a.name}' with '#{@description_b.name}'
-            %span.scope-navigation
-              Scopes:
-              - scopes.each do |scope|
-                %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
-                  "data-toggle"=>"popover", "data-content" => scope_help(scope),
-                  :class => nav_class(scope), "ng-show" => "diff.#{scope}" }
-                  %span= scope_initials(scope)
         .row
           .col-xs-1
             %a#expand-all{:href => "#", :style => "display: none"}
@@ -65,11 +58,23 @@
             %a#collapse-all{:href => "#"}
               Collapse all
         .row
-          .col-xs-9
-            %small.pull-right.pad-top
+          .col-xs-1
+          .col-xs-10
+            %small.pull-right
               created by
               %a{:href => "http://machinery-project.org", :target => "_blank"}
                 Machinery
+              %br
+              %a{ :href => "/site/docs", :target => "_blank" }
+                Machinery documentation
+
+            %span.scope-navigation
+              Scopes:
+              - scopes.each do |scope|
+                %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
+                  "data-toggle"=>"popover", "data-content" => scope_help(scope),
+                  :class => nav_class(scope), "ng-show" => "diff.#{scope}" }
+                  %span= scope_initials(scope)
 
       #content_container
         %div

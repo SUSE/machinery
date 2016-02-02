@@ -101,20 +101,8 @@ class Release
   end
 
   def publish_man_page
-    Cheetah.run("git", "checkout", "gh-pages")
-    Cheetah.run("git", "pull")
-    FileUtils.cp("man/generated/manual.html", "manual.html")
-    if !Cheetah.run("git", "ls-files", "-m", stdout: :capture).empty?
-      puts("Publishing man page to website...")
-      Cheetah.run(
-        "git", "commit", "-m", "Update man page for release #{@options[:version]}", "manual.html"
-      )
-
-      Cheetah.run("git", "push")
-    else
-      puts("The man page hasn't changed, no update of the website required.")
-    end
-    Cheetah.run("git", "checkout", "master")
+    puts("Publishing man page to website...")
+    Cheetah.run("mkdocs", "gh-deploy", "-b", "gh-pages")
   end
 
   def publish_gem

@@ -75,34 +75,24 @@ end
 namespace :man_pages do
   desc 'Build man page(s)'
   task :build do
-    puts "  Building man pages"
-    manpage = ""
-    Inspector.all_scopes.each do |scope|
-      manpage += "* #{scope}\n\n"
-      manpage += YAML.load_file("plugins/#{scope}/#{scope}.yml")[:description]
-      manpage += "\n"
-    end
-    manpage += "\n"
-    File.write("man/generated/machinery_main_scopes.1.md", manpage)
+    puts "  Building man page"
 
-    system <<-EOF
-      cat man/machinery_main_general.1.md man/generated/machinery_main_scopes.1.md \
-        man/machinery_main_usecases.1.md man/machinery-*.1.md \
-        man/machinery_footer.1.md  > man/generated/machinery.1.md
-    EOF
-    system "sed -i '/<!--.*-->/d' man/generated/machinery.1.md"
-    system "ronn man/generated/machinery.1.md"
-    system "gzip -f man/generated/*.1"
-    # Build man page for website (manual.html)
-    system "ronn -f man/generated/machinery.1.md"
-    system "man/generate_man"
+    FileUtils.mkdir_p("man/generated")
+    system "ronn -r man/machinery.1.md --pipe > man/generated/machinery.1"
+    system "gzip -f man/generated/machinery.1"
+  end
+
+  desc 'Compile the documentation into HTML format'
+  task :compile_documentation do
+    puts "  Compiling documentation"
+    ManTask.compile_documentation
   end
 end
 
 # Disable packaging_tasks' tarball task. We package a gem, so we don't have to
 # put the sources into IBS. Instead we build the gem in the tarball task
 Rake::Task[:tarball].clear
-task :tarball => ["man_pages:build"] do
+task :tarball => ["man_pages:build", "man_pages:compile_documentation"] do
   Cheetah.run "gem", "build", "machinery.gemspec"
   FileUtils.mv Dir.glob("machinery-*.gem"), "package/"
 end
