@@ -1,6 +1,6 @@
 # encoding:utf-8
 
-# Copyright (c) 2013-2015 SUSE LLC
+# Copyright (c) 2013-2016 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
