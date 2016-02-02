@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <link href="../custom.css" rel="stylesheet">
+  </head>
+  <body id="manpage">
+    <div id="back">
+      <a href="..">
+        <img src="../hand3.png" class="hand3"/>
+        <div class="goback">Go back to the web site</div>
+      </a>
+    </div>
+    <div class="mp">
+      <div class="nav">
+        <ul>
+          
+              
+                  <li class="">
+                      <a href="../docs/">Welcome</a>
+                  </li>
+              
+
+          
+              
+                  <li>Home
+                      <ul>
+                      
+                          <li class="">
+                              <a href="../machinery_main_general.1/">General</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery_main_scopes.1/">Scopes</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery_main_usecases.1/">Use cases</a>
+                          </li>
+                      
+                      </ul>
+                  </li>
+              
+
+          
+              
+                  <li>Commands
+                      <ul>
+                      
+                          <li class="">
+                              <a href="../machinery-analyze.1/">Analyze</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-build.1/">Build</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-compare.1/">Compare</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-config.1/">Config</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-copy.1/">Copy</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-deploy.1/">Deploy</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
+                          </li>
+                      
+                          <li class="current">
+                              <a href="./">Export Kiwi</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-inspect.1/">Inspect</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-list.1/">List</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-man.1/">Man</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-move.1/">Move</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-remove.1/">Remove</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-serve.1/">Serve</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-show.1/">Show</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-upgrade-format.1/">Upgrade Format</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-validate.1/">Validate</a>
+                          </li>
+                      
+                      </ul>
+                  </li>
+              
+
+          
+        </ul>
+      </div>
+      <div class="content">
+        <h1 id="export-kiwi-export-system-description-as-kiwi-image-description">export-kiwi — Export System Description as KIWI Image Description</h1>
+<h2 id="synopsis">SYNOPSIS</h2>
+<p><code>machinery export-kiwi</code> -k | --kiwi-dir NAME
+   --force</p>
+<p><code>machinery</code> help export-kiwi</p>
+<h2 id="description">DESCRIPTION</h2>
+<p>The <code>export-kiwi</code> subcommand exports a stored system description as a KIWI
+image description.</p>
+<h2 id="arguments">ARGUMENTS</h2>
+<ul>
+<li><code>NAME</code> (required):
+    Name of the system description.</li>
+</ul>
+<h2 id="options">OPTIONS</h2>
+<ul>
+<li>
+<p><code>-k KIWI_DIR</code>, <code>--kiwi-dir=KIWI_DIR</code> (required):
+    Write the KIWI image description to a subdirectory at the specified directory. The directory
+    will be created if it does not exist yet.</p>
+</li>
+<li>
+<p><code>--force</code> (optional):
+    Overwrite existing system description</p>
+</li>
+</ul>
+<h2 id="examples">EXAMPLES</h2>
+<ul>
+<li>
+<p>Export the <code>myhost</code> system description to <code>/tmp/myhost-kiwi</code>:</p>
+<p>$ <code>machinery</code> export-kiwi myhost --kiwi-dir=/tmp</p>
+</li>
+</ul>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <link href="../custom.css" rel="stylesheet">
+  </head>
+  <body id="manpage">
+    <div id="back">
+      <a href="..">
+        <img src="../hand3.png" class="hand3"/>
+        <div class="goback">Go back to the web site</div>
+      </a>
+    </div>
+    <div class="mp">
+      <div class="nav">
+        <ul>
+          
+              
+                  <li class="">
+                      <a href="../docs/">Welcome</a>
+                  </li>
+              
+
+          
+              
+                  <li>Home
+                      <ul>
+                      
+                          <li class="">
+                              <a href="../machinery_main_general.1/">General</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery_main_scopes.1/">Scopes</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery_main_usecases.1/">Use cases</a>
+                          </li>
+                      
+                      </ul>
+                  </li>
+              
+
+          
+              
+                  <li>Commands
+                      <ul>
+                      
+                          <li class="">
+                              <a href="../machinery-analyze.1/">Analyze</a>
+                          </li>
+                      
+                          <li class="current">
+                              <a href="./">Build</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-compare.1/">Compare</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-config.1/">Config</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-copy.1/">Copy</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-deploy.1/">Deploy</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-export-kiwi.1/">Export Kiwi</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-inspect.1/">Inspect</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-list.1/">List</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-man.1/">Man</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-move.1/">Move</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-remove.1/">Remove</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-serve.1/">Serve</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-show.1/">Show</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-upgrade-format.1/">Upgrade Format</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-validate.1/">Validate</a>
+                          </li>
+                      
+                      </ul>
+                  </li>
+              
+
+          
+        </ul>
+      </div>
+      <div class="content">
+        <h1 id="build-build-image-from-system-description">build — Build Image from System Description</h1>
+<h2 id="synopsis">SYNOPSIS</h2>
+<p><code>machinery build</code> NAME -i IMAGE-DIR | --image-dir=IMAGE-DIR</p>
+<p><code>machinery</code> help build</p>
+<h2 id="description">DESCRIPTION</h2>
+<p>The <code>build</code> command builds an image from a system description. The image is a
+system image in the qcow2 format, which can be used with the KVM hypervisor.
+It can be run locally or deployed to a cloud environment.</p>
+<p><code>machinery</code> uses the image building command line tool
+<a href="http://en.opensuse.org/Portal:KIWI">KIWI</a> to perform the actual build. KIWI
+data is stored to a temporary directory and cleaned up after the build. The KIWI
+log is shown as output of the <code>build</code> command format for showing progress and
+diagnosing errors.</p>
+<p>When building an image, Machinery filters out some files which would break the
+built image. The list of filters is shown at the beginning of the build.</p>
+<h2 id="arguments">ARGUMENTS</h2>
+<ul>
+<li><code>NAME</code> (required):
+    Use specified system description.</li>
+</ul>
+<h2 id="options">OPTIONS</h2>
+<ul>
+<li>
+<p><code>-i IMAGE-DIR</code>, <code>--image-dir=IMAGE-DIR</code> (required):
+    Save image file under specified path.</p>
+</li>
+<li>
+<p><code>-d</code>, <code>--enable-dhcp</code> (optional):
+    Enable DHCP client on first network card of built image</p>
+</li>
+<li>
+<p><code>-s</code>, <code>--enable-ssh</code> (optional):
+    Enable SSH service in built image</p>
+</li>
+</ul>
+<h2 id="prerequisites">PREREQUISITES</h2>
+<ul>
+<li>
+<p>The <code>build</code> command requires the packages <code>kiwi</code> and <code>kiwi-desc-vmxboot</code>.</p>
+</li>
+<li>
+<p>The necessary vmxboot template for the machinery being built must be
+    installed (i.e. if you want to build an openSUSE Leap machine then the
+    template <code>/usr/share/kiwi/image/vmxboot/suse-leap42.1</code> is required)</p>
+</li>
+<li>
+<p>All repositories in the system description must be accessible from the
+    build machine on which <code>machinery build</code> is called.</p>
+</li>
+<li>
+<p>Machinery can only build x86_64 images on x86_64 systems at the moment.</p>
+</li>
+</ul>
+<h2 id="examples">EXAMPLES</h2>
+<ul>
+<li>
+<p>To build an image from the system description named "tux" and to save the
+   image under the <code>/tmp/tux/</code> directory:</p>
+<p>$ <code>machinery</code> build tux -i /tmp/tux/</p>
+</li>
+</ul>
+      </div>
+    </div>
+  </body>
+</html>
