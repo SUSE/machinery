@@ -34,9 +34,9 @@ remote machine, which can be achieved by using ssh-agent.
 
 The other mode uses a non-root user on the remote machine, which is configured
 to be able to execute specific commands with root privileges via sudo. The
-exact sudo configuration is documented in the Machinery man page. Which user is
-used to log in to the remote system is specified by a command line option in
-Machinery.
+exact sudo configuration is documented in the Machinery documentation. Which
+user is used to log in to the remote system is specified by a command line
+option in Machinery.
 
 For the case of inspecting the local system Machinery requires to be run as
 root.
