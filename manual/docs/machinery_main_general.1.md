@@ -136,4 +136,4 @@ The the [scopes documentation](machinery_main_scopes.1) for a list of all suppor
 
 # COPYRIGHT
 
-Copyright \(c) 2013-2015 [SUSE LLC](http://www.suse.com)
+Copyright \(c) 2013-2016 [SUSE LLC](http://www.suse.com)
