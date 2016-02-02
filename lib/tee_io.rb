@@ -15,19 +15,25 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-# TeeIO
+# = TeeIO
 #
 # Class to allow the storage and forwarding of input at the same time
 # For example if stderr output should be handled by our code but at the
 # same time be put out directly
+#
+# To prevent for example double error messages data can be filtered
+# before being passed on to the io_object
+# Only the data passed along is filtered, not the data stored in this
+# IO object.
 class TeeIO < StringIO
-  def initialize(io_object)
+  def initialize(io_object, io_filter = [])
     super()
     @io_object = io_object
+    @io_filter = Array(io_filter)
   end
 
   def write(data)
     super
-    @io_object.puts(data)
+    @io_object.puts(data) unless @io_filter.include?(data)
   end
 end

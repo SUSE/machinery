@@ -35,5 +35,30 @@ describe TeeIO do
       subject.write("something")
       expect(io_object.string).to include("something")
     end
+
+    context "when a filter was initalized" do
+      let(:filter_string) { "something to filter" }
+      subject { TeeIO.new(io_object, filter_string) }
+
+      it "filters strings from being forwarded to io_object" do
+        subject.write(filter_string)
+        expect(subject.string).to include(filter_string)
+        expect(io_object.string).not_to include(filter_string)
+      end
+
+      it "only filters matching strings" do
+        subject.write("anything")
+        subject.write(filter_string)
+        expect(subject.string).to include("anything")
+        expect(io_object.string).to include("anything")
+      end
+
+      it "filters arrays of strings from being forwarded to io_object" do
+        subject = TeeIO.new(io_object, ["filter1", filter_string])
+        subject.write(filter_string)
+        expect(subject.string).to include(filter_string)
+        expect(io_object.string).not_to include(filter_string)
+      end
+    end
   end
 end
