@@ -207,8 +207,7 @@ class Server < Sinatra::Base
 
     path += "index.html" unless path.end_with?("index.html")
 
-    content = File.read(File.join(Machinery::ROOT, "manual/site", path))
-    content
+    File.read(File.join(Machinery::ROOT, "manual/site", path))
   end
 
   get "/descriptions/:id/files/:scope/*" do
