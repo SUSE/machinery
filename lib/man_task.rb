@@ -46,8 +46,8 @@ class ManTask
   def man_html(options)
     unless File.exist?(File.join(Machinery::ROOT, "manual/site"))
       Machinery::Ui.warn(
-        "The documentation was not generated yet. Please make sure that 'mkdocs' is installed on" \
-        "your system and run 'rake man_pages:compile_documentation' from the machinery directory"
+        "The documentation was not generated yet. Please make sure that `mkdocs` is installed on " \
+        "your system and run `rake man_pages:compile_documentation` from the machinery directory."
       )
       return
     end
