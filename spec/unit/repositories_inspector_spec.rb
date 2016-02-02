@@ -333,6 +333,7 @@ EOF
       output = <<-EOF
 ## Also, please note that software in backports WILL NOT receive any review
 ## or updates from the Ubuntu security team.
+deb cdrom:[Debian GNU/Linux 7.9.0 _Wheezy_ - Official amd64 DVD Binary-1 20150905-14:38]/ wheezy contrib main
 deb http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
 # deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
 
@@ -355,6 +356,12 @@ EOF
     let(:expected_apt_repo_list) {
       RepositoriesScope.new(
         [
+          AptRepository.new(
+            type: "deb",
+            url: "cdrom:[Debian GNU/Linux 7.9.0 _Wheezy_ - Official amd64 DVD Binary-1 20150905-14:38]/",
+            distribution: "wheezy",
+            components: ["contrib", "main"]
+          ),
           AptRepository.new(
             type: "deb",
             url: "http://us.archive.ubuntu.com/ubuntu/",
@@ -406,7 +413,7 @@ EOF
 
       inspector.inspect(filter)
       expect(description.repositories).to eq(expected_apt_repo_list)
-      expect(inspector.summary).to include("Found 5 repositories")
+      expect(inspector.summary).to include("Found 6 repositories")
     end
 
     it "can handle an empty /etc/apt/sources.list.d/ directory" do
@@ -418,7 +425,7 @@ EOF
       ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect { inspector.inspect(filter) }.not_to raise_error
-      expect(inspector.summary).to include("Found 3 repositories")
+      expect(inspector.summary).to include("Found 4 repositories")
     end
 
     it "shows a warning for each found rfc822 style repository but parses the rest" do

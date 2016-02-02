@@ -105,7 +105,7 @@ class RepositoriesInspector < Inspector
   def parse_apt_repositories(content)
     repositories = []
     content.each_line do |line|
-      if line =~ /^\s*(deb|deb-src)\s+(\S+)\s+(\S+)(\s+\S[^#]*\S)?(\s*|\s*#.*)$/
+      if line =~ /^\s*(deb|deb-src)\s+(cdrom:\[.+\]\/|\S+)\s+(\S+)(\s+\S[^#]*\S)?(\s*|\s*#.*)$/
         repositories << AptRepository.new(
           type: $1,
           url: $2,
