@@ -42,10 +42,10 @@ the `help` command:
     $ machinery help
 
 For more information about the commands, see
-[Machinery man page](http://machinery-project.org/manual.html).
+[Machinery Documentation](http://machinery-project.org/docs).
 
 ## Documentation
-* [User Documentation](http://machinery-project.org/manual.html)
+* [User Documentation](http://machinery-project.org/docs)
 * [Developer Documentation](https://github.com/SUSE/machinery/tree/master/docs)
 
 ## Development

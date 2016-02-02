@@ -1,25 +1,26 @@
-# Styleguide for Machinery Man Page
+# Styleguide for Machinery Documentation
 
-This guide provides answers to writing and style questions commonly arising when editing man pages.
+This guide provides answers to writing and style questions commonly arising when editing the
+documentation.
 The following rules are intentionally kept concise. Refer to our [SUSE Styleguide][1] for more information.
 
 
 ## Audience
 
-Our main audience for man pages are system administrators. Adjust tone, style, and technicality
-of the text based on the intended audience.
+Our main audience for the documentation are system administrators. Adjust tone, style, and
+technicality of the text based on the intended audience.
 
 
 ## Physical Structure
 
-The man page is written in Markdown and contains:
+The documentation is written in Markdown and contains:
 
 * a "main" file `machinery_main_general.1.md` which consists of an overview of the machinery command,
   its global options and a brief description of all subcommands, and
 
 * its subcommands, stored in separate files each named `machinery-SUBCOMMAND.1.md`.
 
-* Scopes are described in `plugins/docs/SCOPENAME.md`
+* Scopes are described in the `documentation` attribute in `plugins/SCOPENAME/SCOPENAME.yml`
 
 
 **Tip:** To create a file for your subcommand, copy the `subcommand-template.1.md` template to
@@ -81,10 +82,10 @@ The structure of each subcommand contains:
 
 ## Level of Detail
 
-The Machinery man page is mainly a reference: an overview of Machinery itself, its
+The Machinery documentation is mainly a reference: an overview of Machinery itself, its
 subcommands, and usage examples.
 
-Keep the man page concise. Avoid describing implementing details. Focus on
+Keep the documentation concise. Avoid describing implementing details. Focus on
 what the user can do with a subcommand, what information it gathers, and its results.
 
 For example, it is unimportant whether a subcommand uses `rpm`, `zypper`, or anything else
