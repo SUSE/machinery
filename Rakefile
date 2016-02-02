@@ -92,7 +92,7 @@ end
 # Disable packaging_tasks' tarball task. We package a gem, so we don't have to
 # put the sources into IBS. Instead we build the gem in the tarball task
 Rake::Task[:tarball].clear
-task :tarball => ["man_pages:build"] do
+task :tarball => ["man_pages:build", "man_pages:compile_documentation"] do
   Cheetah.run "gem", "build", "machinery.gemspec"
   FileUtils.mv Dir.glob("machinery-*.gem"), "package/"
 end
