@@ -202,6 +202,18 @@ func assembleJSON(unmanagedFilesMap interface{}) string {
 var readDir = func(dir string) ([]os.FileInfo, error) {
 	return ioutil.ReadDir(dir)
 }
+var dirSize = func(path string) int64 {
+	dir, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	stat, err := dir.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	dir.Close()
+	return stat.Size()
+}
 
 func hasManagedDirs(dir string, rpmDirs map[string]bool) bool {
 	for rpmDir := range rpmDirs {
@@ -261,9 +273,27 @@ func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 	entry.Mode = strconv.FormatInt(result, 8)
 }
 
-func amendSize(entry *UnmanagedFile, size int64) {
+func recursiveDirSize(path string) int64 {
+	sum := dirSize(path)
+
+	files, _ := readDir(path)
+	for _, f := range files {
+		if f.IsDir() {
+			sum += recursiveDirSize(path + f.Name() + "/")
+		} else {
+			sum += f.Size()
+		}
+	}
+
+	return sum
+}
+
+func amendSize(entry *UnmanagedFile, size int64, ) {
 	if entry.Type == "file" {
 		entry.SizeValue = UnmangedFileSize(size)
+		entry.Size = &entry.SizeValue
+	} else if entry.Type == "dir" {
+		entry.SizeValue = UnmangedFileSize(recursiveDirSize(entry.Name))
 		entry.Size = &entry.SizeValue
 	}
 }

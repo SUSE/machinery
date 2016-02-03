@@ -242,4 +242,30 @@ func TestAmendSize(t *testing.T) {
 	if *entry.Size != 0 {
 		t.Errorf("File should get a size")
 	}
+
+	entry = UnmanagedFile{Name: "/opt/", Type: "dir"}
+	readDir = func(dir string) ([]os.FileInfo, error) {
+		dirs := make([]os.FileInfo, 0, 1)
+		switch dir {
+		case "/opt/":
+			dirs = append(dirs, fakefileinfo.New("foo", int64(12), os.ModeType, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("bar", int64(12), os.ModeType, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("baz", int64(4096), os.ModeType, time.Now(), true, nil))
+		case "/opt/baz/":
+			dirs = append(dirs, fakefileinfo.New("foo", int64(12), os.ModeType, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("bar", int64(12), os.ModeType, time.Now(), false, nil))
+		}
+		return dirs, nil
+	}
+	dirSize = func(path string) int64 {
+		return 4096
+	}
+	amendSize(&entry, 0)
+	want := int64(8240) // 2 directories (4096 bytes each) + 4 files (12 bytes each)
+	if int64(*entry.Size) != want {
+		t.Errorf("amendSize() = '%v', want '%v'", *entry.Size, want)
+	}
 }
+
+
+
