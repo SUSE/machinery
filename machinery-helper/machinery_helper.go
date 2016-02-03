@@ -35,15 +35,15 @@ import (
 )
 
 type UnmanagedFile struct {
-	Name      string            `json:"name"`
-	User      string            `json:"user"`
-	Group     string            `json:"group"`
-	Type      string            `json:"type"`
-	Mode      string            `json:"mode"`
-	Files     *int              `json:"files,omitempty"`
-	FilesValue int `json:"-"`
-	Size      *int64 `json:"size,omitempty"`
-	SizeValue int64  `json:"-"`
+	Name       string `json:"name"`
+	User       string `json:"user"`
+	Group      string `json:"group"`
+	Type       string `json:"type"`
+	Mode       string `json:"mode,omitempty"`
+	Files      *int   `json:"files,omitempty"`
+	FilesValue int    `json:"-"`
+	Size       *int64 `json:"size,omitempty"`
+	SizeValue  int64  `json:"-"`
 }
 
 func getDpkgContent() []string {
@@ -262,6 +262,10 @@ func findUnmanagedFiles(dir string, rpmFiles map[string]string, rpmDirs map[stri
 }
 
 func amendMode(entry *UnmanagedFile, perm os.FileMode) {
+	if entry.Type == "link" {
+		return
+	}
+
 	result := int64(perm.Perm())
 
 	if perm&os.ModeSticky > 0 {

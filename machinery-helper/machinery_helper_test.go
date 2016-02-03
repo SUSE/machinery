@@ -192,7 +192,7 @@ func TestSubdirIsNotAccidentallyConsideredManaged(t *testing.T) {
 }
 
 func TestAmendMode(t *testing.T) {
-	entry := UnmanagedFile{}
+	entry := UnmanagedFile{Type: "file"}
 
 	amendMode(&entry, os.FileMode(0777))
 	want := "777"
@@ -225,6 +225,12 @@ func TestAmendMode(t *testing.T) {
 	want = "5555"
 	if entry.Mode != want {
 		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	entry = UnmanagedFile{Type: "link"}
+	amendMode(&entry, perm)
+	if entry.Mode != "" {
+		t.Errorf("links should not have a mode")
 	}
 }
 
