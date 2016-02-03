@@ -56,7 +56,7 @@ class MachineryHelper
   end
 
   def run_helper(scope)
-    error = TeeIO.new(STDERR)
+    error = TeeIO.new(STDERR, "sudo: a password is required\n")
     json = @system.run_command(
       remote_helper_path, stdout: :capture, stderr: error, privileged: true
     )
