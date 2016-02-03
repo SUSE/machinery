@@ -34,6 +34,12 @@ import (
 	"unicode/utf8"
 )
 
+type UnmanagedFile struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+	Mode string `json:"mode"`
+}
+
 func getDpkgContent() []string {
 	cmd := exec.Command("bash", "-c", "dpkg --get-selections | grep -v deinstall | awk '{print $1}'")
 	var out bytes.Buffer
@@ -252,10 +258,8 @@ func permToString(perm os.FileMode) string {
 	return strconv.FormatInt(result, 8)
 }
 
-func getPathAttributes(path string, file_type string) map[string]string {
-	attributes := make(map[string]string)
-
-	file, err := os.Open(path)
+func amendPathAttributes(entry *UnmanagedFile, file_type string) {
+	file, err := os.Open(entry.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -265,9 +269,7 @@ func getPathAttributes(path string, file_type string) map[string]string {
 	}
 	file.Close()
 
-	attributes["mode"] = permToString(fi.Mode())
-
-	return attributes
+	entry.Mode = permToString(fi.Mode())
 }
 
 func printVersion() {
@@ -323,16 +325,13 @@ func main() {
 	}
 	sort.Strings(files)
 
-	unmanagedFilesMap := make([]map[string]string, len(unmanagedFiles))
+	unmanagedFilesMap := make([]UnmanagedFile, len(unmanagedFiles))
 	for j := range files {
-		entry := make(map[string]string)
-		entry["name"] = files[j]
-		entry["type"] = unmanagedFiles[files[j]]
+		entry := UnmanagedFile{}
+		entry.Name = files[j]
+		entry.Type = unmanagedFiles[files[j]]
 
-		attributes := getPathAttributes(files[j], unmanagedFiles[files[j]])
-		for attribute, value := range attributes {
-			entry[attribute] = value
-		}
+		amendPathAttributes(&entry, unmanagedFiles[files[j]])
 
 		unmanagedFilesMap[j] = entry
 	}
