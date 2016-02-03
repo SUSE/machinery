@@ -192,37 +192,39 @@ func TestSubdirIsNotAccidentallyConsideredManaged(t *testing.T) {
 }
 
 func TestPermToString(t *testing.T) {
-	s := permToString(os.FileMode(0777))
+	entry := UnmanagedFile{}
+
+	amendMode(&entry, os.FileMode(0777))
 	want := "777"
-	if s != want {
-		t.Errorf("permToString() = '%v', want '%v", s, want)
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 
-	s = permToString(os.FileMode(0222))
+	amendMode(&entry, os.FileMode(0222))
 	want = "222"
-	if s != want {
-		t.Errorf("permToString() = '%v', want '%v", s, want)
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 
 	perm := os.FileMode(0222 | os.ModeSticky)
-	s = permToString(perm)
+	amendMode(&entry, perm)
 	want = "1222"
-	if s != want {
-		t.Errorf("permToString() = '%v', want '%v", s, want)
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 
 	perm = os.FileMode(0222 | os.ModeSetuid)
-	s = permToString(perm)
+	amendMode(&entry, perm)
 	want = "2222"
-	if s != want {
-		t.Errorf("permToString() = '%v', want '%v", s, want)
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 
 	perm = os.FileMode(0555 | os.ModeSticky | os.ModeSetgid)
-	s = permToString(perm)
+	amendMode(&entry, perm)
 	want = "5555"
-	if s != want {
-		t.Errorf("permToString() = '%v', want '%v", s, want)
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 }
 

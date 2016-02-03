@@ -246,7 +246,7 @@ func findUnmanagedFiles(dir string, rpmFiles map[string]string, rpmDirs map[stri
 	}
 }
 
-func permToString(perm os.FileMode) string {
+func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 	result := int64(perm.Perm())
 
 	if perm&os.ModeSticky > 0 {
@@ -258,7 +258,7 @@ func permToString(perm os.FileMode) string {
 	if perm&os.ModeSetgid > 0 {
 		result |= 04000
 	}
-	return strconv.FormatInt(result, 8)
+	entry.Mode = strconv.FormatInt(result, 8)
 }
 
 func amendSize(entry *UnmanagedFile, size int64) {
@@ -278,7 +278,7 @@ func amendPathAttributes(entry *UnmanagedFile, file_type string) {
 	}
 	file.Close()
 
-	entry.Mode = permToString(fi.Mode())
+	amendMode(entry, fi.Mode())
 	amendSize(entry, fi.Size())
 }
 
