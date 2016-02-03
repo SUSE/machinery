@@ -34,10 +34,13 @@ import (
 	"unicode/utf8"
 )
 
+type UnmangedFileSize int64
 type UnmanagedFile struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 	Mode string `json:"mode"`
+	Size *UnmangedFileSize `json:"size,omitempty"`
+	SizeValue UnmangedFileSize `json:"-"`
 }
 
 func getDpkgContent() []string {
@@ -258,6 +261,12 @@ func permToString(perm os.FileMode) string {
 	return strconv.FormatInt(result, 8)
 }
 
+func amendSize(entry *UnmanagedFile, size int64) {
+	if entry.Type == "file" {
+		entry.SizeValue = UnmangedFileSize(size)
+		entry.Size = &entry.SizeValue
+	}
+}
 func amendPathAttributes(entry *UnmanagedFile, file_type string) {
 	file, err := os.Open(entry.Name)
 	if err != nil {
@@ -270,6 +279,7 @@ func amendPathAttributes(entry *UnmanagedFile, file_type string) {
 	file.Close()
 
 	entry.Mode = permToString(fi.Mode())
+	amendSize(entry, fi.Size())
 }
 
 func printVersion() {

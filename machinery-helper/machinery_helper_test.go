@@ -225,3 +225,19 @@ func TestPermToString(t *testing.T) {
 		t.Errorf("permToString() = '%v', want '%v", s, want)
 	}
 }
+
+func TestAmendSize(t *testing.T) {
+	entry := UnmanagedFile{Type: "link"}
+
+	amendSize(&entry, 0)
+	if entry.Size != nil {
+		t.Errorf("Link should not get a size")
+	}
+
+	entry = UnmanagedFile{Type: "file"}
+
+	amendSize(&entry, 0)
+	if *entry.Size != 0 {
+		t.Errorf("File should get a size")
+	}
+}
