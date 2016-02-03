@@ -34,7 +34,6 @@ import (
 	"unicode/utf8"
 )
 
-type UnmangedFileSize int64
 type UnmanagedFile struct {
 	Name      string            `json:"name"`
 	User      string            `json:"user"`
@@ -43,8 +42,8 @@ type UnmanagedFile struct {
 	Mode      string            `json:"mode"`
 	Files     *int              `json:"files,omitempty"`
 	FilesValue int `json:"-"`
-	Size      *UnmangedFileSize `json:"size,omitempty"`
-	SizeValue UnmangedFileSize  `json:"-"`
+	Size      *int64 `json:"size,omitempty"`
+	SizeValue int64  `json:"-"`
 }
 
 func getDpkgContent() []string {
@@ -297,11 +296,11 @@ func dirInfo(path string) (size int64, file_count int) {
 
 func amendSize(entry *UnmanagedFile, size int64) {
 	if entry.Type == "file" {
-		entry.SizeValue = UnmangedFileSize(size)
+		entry.SizeValue = size
 		entry.Size = &entry.SizeValue
 	} else if entry.Type == "dir" {
 		size, files := dirInfo(entry.Name)
-		entry.SizeValue = UnmangedFileSize(size)
+		entry.SizeValue = size
 		entry.Size = &entry.SizeValue
 		entry.FilesValue = files
 		entry.Files = &entry.FilesValue
