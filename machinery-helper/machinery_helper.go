@@ -36,8 +36,8 @@ import (
 
 type UnmanagedFile struct {
 	Name       string `json:"name"`
-	User       string `json:"user"`
-	Group      string `json:"group"`
+	User       string `json:"user,omitempty"`
+	Group      string `json:"group,omitempty"`
 	Type       string `json:"type"`
 	Mode       string `json:"mode,omitempty"`
 	Files      *int   `json:"files,omitempty"`
