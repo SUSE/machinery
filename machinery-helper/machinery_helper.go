@@ -36,13 +36,13 @@ import (
 
 type UnmangedFileSize int64
 type UnmanagedFile struct {
-	Name string `json:"name"`
-	User string `json:"user"`
-	Group string `json:"group"`
-	Type string `json:"type"`
-	Mode string `json:"mode"`
-	Size *UnmangedFileSize `json:"size,omitempty"`
-	SizeValue UnmangedFileSize `json:"-"`
+	Name      string            `json:"name"`
+	User      string            `json:"user"`
+	Group     string            `json:"group"`
+	Type      string            `json:"type"`
+	Mode      string            `json:"mode"`
+	Size      *UnmangedFileSize `json:"size,omitempty"`
+	SizeValue UnmangedFileSize  `json:"-"`
 }
 
 func getDpkgContent() []string {
@@ -290,7 +290,7 @@ func recursiveDirSize(path string) int64 {
 	return sum
 }
 
-func amendSize(entry *UnmanagedFile, size int64, ) {
+func amendSize(entry *UnmanagedFile, size int64) {
 	if entry.Type == "file" {
 		entry.SizeValue = UnmangedFileSize(size)
 		entry.Size = &entry.SizeValue

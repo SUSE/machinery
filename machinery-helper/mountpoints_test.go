@@ -18,57 +18,57 @@
 package main
 
 import (
-  "testing"
-  "reflect"
+	"reflect"
+	"testing"
 )
 
 func TestParseMounts(t *testing.T) {
-  ProcMountsPath = "fixtures/proc_mounts"
+	ProcMountsPath = "fixtures/proc_mounts"
 
-  expectedMounts := map[string]string{
-    "/dev": "devtmpfs",
-    "/homes/tux": "nfs",
-    "/data": "ext4",
-    "/": "ext4",
-    "/var/lib/ntp/proc": "proc",
-    "/var/lib/tmpfs": "tmpfs",
-  }
+	expectedMounts := map[string]string{
+		"/dev":              "devtmpfs",
+		"/homes/tux":        "nfs",
+		"/data":             "ext4",
+		"/":                 "ext4",
+		"/var/lib/ntp/proc": "proc",
+		"/var/lib/tmpfs":    "tmpfs",
+	}
 
-  actualMounts := parseMounts()
-  if !reflect.DeepEqual(actualMounts, expectedMounts) {
-    t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
-  }
+	actualMounts := parseMounts()
+	if !reflect.DeepEqual(actualMounts, expectedMounts) {
+		t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
+	}
 }
 
 func TestSpecialMounts(t *testing.T) {
-  ProcMountsPath = "fixtures/proc_mounts"
+	ProcMountsPath = "fixtures/proc_mounts"
 
-  expectedMounts := []string{"/dev", "/var/lib/ntp/proc", "/var/lib/tmpfs"}
-  actualMounts := SpecialMounts()
+	expectedMounts := []string{"/dev", "/var/lib/ntp/proc", "/var/lib/tmpfs"}
+	actualMounts := SpecialMounts()
 
-  if !reflect.DeepEqual(actualMounts, expectedMounts) {
-    t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
-  }
+	if !reflect.DeepEqual(actualMounts, expectedMounts) {
+		t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
+	}
 }
 
 func TestLocalMounts(t *testing.T) {
-  ProcMountsPath = "fixtures/proc_mounts"
+	ProcMountsPath = "fixtures/proc_mounts"
 
-  expectedMounts := []string{"/", "/data"}
-  actualMounts := LocalMounts()
+	expectedMounts := []string{"/", "/data"}
+	actualMounts := LocalMounts()
 
-  if !reflect.DeepEqual(actualMounts, expectedMounts) {
-    t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
-  }
+	if !reflect.DeepEqual(actualMounts, expectedMounts) {
+		t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
+	}
 }
 
 func TestRemoteMounts(t *testing.T) {
-  ProcMountsPath = "fixtures/proc_mounts"
+	ProcMountsPath = "fixtures/proc_mounts"
 
-  expectedMounts := []string{"/homes/tux"}
-  actualMounts := RemoteMounts()
+	expectedMounts := []string{"/homes/tux"}
+	actualMounts := RemoteMounts()
 
-  if !reflect.DeepEqual(actualMounts, expectedMounts) {
-    t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
-  }
+	if !reflect.DeepEqual(actualMounts, expectedMounts) {
+		t.Errorf("Expected: ", expectedMounts, " Got: ", actualMounts)
+	}
 }

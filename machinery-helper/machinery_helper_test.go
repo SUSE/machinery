@@ -266,6 +266,3 @@ func TestAmendSize(t *testing.T) {
 		t.Errorf("amendSize() = '%v', want '%v'", *entry.Size, want)
 	}
 }
-
-
-

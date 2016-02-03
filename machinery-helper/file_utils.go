@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os/exec"
-	"log"
-	"strings"
 	"bytes"
+	"log"
+	"os/exec"
+	"strings"
 )
 
 var statFile = func(path string) string {
