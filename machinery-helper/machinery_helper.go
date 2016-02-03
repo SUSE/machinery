@@ -37,6 +37,8 @@ import (
 type UnmangedFileSize int64
 type UnmanagedFile struct {
 	Name string `json:"name"`
+	User string `json:"user"`
+	Group string `json:"group"`
 	Type string `json:"type"`
 	Mode string `json:"mode"`
 	Size *UnmangedFileSize `json:"size,omitempty"`
@@ -297,6 +299,7 @@ func amendSize(entry *UnmanagedFile, size int64, ) {
 		entry.Size = &entry.SizeValue
 	}
 }
+
 func amendPathAttributes(entry *UnmanagedFile, file_type string) {
 	file, err := os.Open(entry.Name)
 	if err != nil {
@@ -310,6 +313,7 @@ func amendPathAttributes(entry *UnmanagedFile, file_type string) {
 
 	amendMode(entry, fi.Mode())
 	amendSize(entry, fi.Size())
+	entry.User, entry.Group = getFileOwnerGroup(entry.Name)
 }
 
 func printVersion() {
