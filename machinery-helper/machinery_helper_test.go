@@ -263,6 +263,10 @@ func TestAmendSize(t *testing.T) {
 	amendSize(&entry, 0)
 	want := int64(8240) // 2 directories (4096 bytes each) + 4 files (12 bytes each)
 	if int64(*entry.Size) != want {
-		t.Errorf("amendSize() = '%v', want '%v'", *entry.Size, want)
+		t.Errorf("entry.Size = '%v', want '%v'", *entry.Size, want)
+	}
+	want_files := 5
+	if *entry.Files != want_files {
+		t.Errorf("entry.Files = '%v', want '%v'", *entry.Files, want_files)
 	}
 }
