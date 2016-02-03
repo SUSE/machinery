@@ -190,3 +190,38 @@ func TestSubdirIsNotAccidentallyConsideredManaged(t *testing.T) {
 		t.Errorf("hasManagedDirs() = '%v', want '%v'", hasDirs, want)
 	}
 }
+
+func TestPermToString(t *testing.T) {
+	s := permToString(os.FileMode(0777))
+	want := "777"
+	if s != want {
+		t.Errorf("permToString() = '%v', want '%v", s, want)
+	}
+
+	s = permToString(os.FileMode(0222))
+	want = "222"
+	if s != want {
+		t.Errorf("permToString() = '%v', want '%v", s, want)
+	}
+
+	perm := os.FileMode(0222 | os.ModeSticky)
+	s = permToString(perm)
+	want = "1222"
+	if s != want {
+		t.Errorf("permToString() = '%v', want '%v", s, want)
+	}
+
+	perm = os.FileMode(0222 | os.ModeSetuid)
+	s = permToString(perm)
+	want = "2222"
+	if s != want {
+		t.Errorf("permToString() = '%v', want '%v", s, want)
+	}
+
+	perm = os.FileMode(0555 | os.ModeSticky | os.ModeSetgid)
+	s = permToString(perm)
+	want = "5555"
+	if s != want {
+		t.Errorf("permToString() = '%v', want '%v", s, want)
+	}
+}

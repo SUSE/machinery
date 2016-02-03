@@ -29,6 +29,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 )
@@ -236,6 +237,39 @@ func findUnmanagedFiles(dir string, rpmFiles map[string]string, rpmDirs map[stri
 	}
 }
 
+func permToString(perm os.FileMode) string {
+	result := int64(perm.Perm())
+
+	if perm&os.ModeSticky > 0 {
+		result |= 01000
+	}
+	if perm&os.ModeSetuid > 0 {
+		result |= 02000
+	}
+	if perm&os.ModeSetgid > 0 {
+		result |= 04000
+	}
+	return strconv.FormatInt(result, 8)
+}
+
+func getPathAttributes(path string, file_type string) map[string]string {
+	attributes := make(map[string]string)
+
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fi, err := file.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	file.Close()
+
+	attributes["mode"] = permToString(fi.Mode())
+
+	return attributes
+}
+
 func printVersion() {
 	fmt.Println("Version:", VERSION)
 	os.Exit(0)
@@ -294,6 +328,12 @@ func main() {
 		entry := make(map[string]string)
 		entry["name"] = files[j]
 		entry["type"] = unmanagedFiles[files[j]]
+
+		attributes := getPathAttributes(files[j], unmanagedFiles[files[j]])
+		for attribute, value := range attributes {
+			entry[attribute] = value
+		}
+
 		unmanagedFilesMap[j] = entry
 	}
 
