@@ -191,7 +191,7 @@ func TestSubdirIsNotAccidentallyConsideredManaged(t *testing.T) {
 	}
 }
 
-func TestPermToString(t *testing.T) {
+func TestAmendMode(t *testing.T) {
 	entry := UnmanagedFile{}
 
 	amendMode(&entry, os.FileMode(0777))
