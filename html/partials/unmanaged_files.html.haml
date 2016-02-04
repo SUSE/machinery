@@ -20,7 +20,7 @@
                 %tr
                   %th Name
                   %th.medium Type
-                  - if unmanaged_files.extracted
+                  - if unmanaged_files.has_metadata
                     %th.medium Mode
                     %th.medium User
                     %th.medium Group
@@ -37,7 +37,7 @@
                         %span
                           = file.name
                     %td= file.type
-                    - if unmanaged_files.extracted
+                    - if unmanaged_files.has_metadata
                       %td= file.mode
                       %td= file.user
                       %td= file.group
