@@ -55,12 +55,18 @@ describe Migration do
     )
     stub_const(
       "Migrate6To7", Class.new(Migration) do
+        desc "Migrate version 6 to 7"
+        def migrate; end
+      end
+    )
+    stub_const(
+      "Migrate7To8", Class.new(Migration) do
         # Bad migration, it does not describe its purpose.
         def migrate; end
       end
     )
 
-    stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 6)
+    stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 7)
     stub_const("Machinery::DEFAULT_CONFIG_DIR", store.base_path)
     1.upto(SystemDescription::CURRENT_FORMAT_VERSION).each do |version|
       store_raw_description("v#{version}_description", <<-EOF)
@@ -118,9 +124,10 @@ describe Migration do
       expect_any_instance_of(Migrate3To4).to_not receive(:migrate)
       expect_any_instance_of(Migrate4To5).to_not receive(:migrate)
       expect_any_instance_of(Migrate5To6).to_not receive(:migrate)
+      expect_any_instance_of(Migrate6To7).to_not receive(:migrate)
 
-      Migration.migrate_description(store, "v6_description")
-      description = SystemDescription.load("v6_description", store)
+      Migration.migrate_description(store, "v7_description")
+      description = SystemDescription.load("v7_description", store)
       expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
       expect(captured_machinery_output).to include("No upgrade necessary")
     end
@@ -140,10 +147,10 @@ describe Migration do
     end
 
     it "refuses to run migrations without a migration_desc" do
-      stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 7)
+      stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 8)
       expect {
-        Migration.migrate_description(store, "v6_description")
-      }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate6To7'/)
+        Migration.migrate_description(store, "v7_description")
+      }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate7To8'/)
     end
 
     it "deletes the backup if the migration failed" do

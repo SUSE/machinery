@@ -1,7 +1,8 @@
 {
   "unmanaged_files": {
     "_attributes": {
-      "extracted": true
+      "extracted": true,
+      "has_metadata": true
     },
     "_elements": [
       {
@@ -48,7 +49,7 @@
     ]
   },
   "meta": {
-    "format_version": 6,
+    "format_version": 7,
     "unmanaged_files": {
       "modified": "2014-08-27T18:00:17Z",
       "hostname": "10.122.166.77"

@@ -23,7 +23,8 @@ describe UnmanagedFilesRenderer do
     {
       "unmanaged_files": {
         "_attributes": {
-          "extracted": false
+          "extracted": false,
+          "has_metadata": false
         },
         "_elements": [
           {
@@ -45,7 +46,8 @@ describe UnmanagedFilesRenderer do
     {
       "unmanaged_files": {
         "_attributes": {
-          "extracted": true
+          "extracted": true,
+          "has_metadata": true
         },
         "_elements": [
           {
@@ -65,7 +67,8 @@ describe UnmanagedFilesRenderer do
     {
       "unmanaged_files": {
         "_attributes": {
-          "extracted": true
+          "extracted": true,
+          "has_metadata": true
         },
         "_elements": [
           {
@@ -88,7 +91,8 @@ describe UnmanagedFilesRenderer do
     {
       "unmanaged_files": {
         "_attributes": {
-          "extracted": true
+          "extracted": true,
+          "has_metadata": true
         },
         "_elements": [
           {
@@ -110,7 +114,8 @@ describe UnmanagedFilesRenderer do
     {
       "unmanaged_files": {
         "_attributes": {
-          "extracted": true
+          "extracted": true,
+          "has_metadata": true
         },
         "_elements": [
           {

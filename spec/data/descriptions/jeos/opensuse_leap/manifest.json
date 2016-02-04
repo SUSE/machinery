@@ -2904,7 +2904,8 @@
   },
   "unmanaged_files": {
     "_attributes": {
-      "extracted": true
+      "extracted": true,
+      "has_metadata": true
     },
     "_elements": [
       {
@@ -2976,7 +2977,7 @@
     ]
   },
   "meta": {
-    "format_version": 6,
+    "format_version": 7,
     "os": {
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"

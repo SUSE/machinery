@@ -33,7 +33,7 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": 6
+        "format_version": 7
       }
     }'
   end
