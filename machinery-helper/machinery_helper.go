@@ -312,18 +312,21 @@ func amendSize(entry *UnmanagedFile, size int64) {
 }
 
 func amendPathAttributes(entry *UnmanagedFile, file_type string) {
-	file, err := os.Open(entry.Name)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fi, err := file.Stat()
-	if err != nil {
-		log.Fatal(err)
-	}
-	file.Close()
+	if file_type != "link" {
+		file, err := os.Open(entry.Name)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fi, err := file.Stat()
+		if err != nil {
+			log.Fatal(err)
+		}
+		file.Close()
 
-	amendMode(entry, fi.Mode())
-	amendSize(entry, fi.Size())
+		amendMode(entry, fi.Mode())
+		amendSize(entry, fi.Size())
+	}
+
 	entry.User, entry.Group = getFileOwnerGroup(entry.Name)
 }
 
