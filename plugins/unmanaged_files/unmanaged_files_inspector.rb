@@ -347,9 +347,11 @@ class UnmanagedFilesInspector < Inspector
         file_store_tmp.rename(file_store_final.store_name)
         scope.scope_file_store = file_store_final
         scope.extracted = true
+        scope.has_metadata = true
       else
         file_store_final.remove
         scope.extracted = false
+        scope.has_metadata = !!options[:extract_metadata]
       end
     ensure
       helper.remove_helper
@@ -482,6 +484,7 @@ class UnmanagedFilesInspector < Inspector
       excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
 
     scope.extracted = !!do_extract
+    scope.has_metadata = !!do_extract
     scope += processed_files.sort_by(&:name)
     @description["unmanaged_files"] = scope
   end
