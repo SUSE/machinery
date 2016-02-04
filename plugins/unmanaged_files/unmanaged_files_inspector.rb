@@ -249,7 +249,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def inspect(filter, options = {})
-    do_extract = options && options[:extract_unmanaged_files]
+    do_extract = options[:extract_unmanaged_files]
     check_requirements(do_extract)
 
     determine_package_manager
@@ -271,9 +271,14 @@ class UnmanagedFilesInspector < Inspector
     end
 
     helper = MachineryHelper.new(@system)
+
     if helper_usable?(helper)
-      run_helper_inspection(helper, file_filter, do_extract, file_store_tmp, file_store_final,
-        scope)
+      helper_options = {}
+      helper_options[:do_extract] = do_extract
+      helper_options[:extract_metadata] = options[:extract_metadata]
+
+      run_helper_inspection(helper, file_filter, file_store_tmp, file_store_final,
+        scope, helper_options)
     else
       run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
@@ -300,7 +305,7 @@ class UnmanagedFilesInspector < Inspector
     false
   end
 
-  def run_helper_inspection(helper, filter, do_extract, file_store_tmp, file_store_final, scope)
+  def run_helper_inspection(helper, filter, file_store_tmp, file_store_final, scope, options)
     begin
       helper.inject_helper
       if !helper.has_compatible_version?
@@ -310,10 +315,13 @@ class UnmanagedFilesInspector < Inspector
         )
       end
 
-      helper.run_helper(scope)
+      args = []
+      args.push("--extract-metadata") if options[:extract_metadata]
+
+      helper.run_helper(scope, *args)
       scope.delete_if { |f| filter.matches?(f.name) }
 
-      if do_extract
+      if options[:do_extract]
         mount_points = MountPoints.new(@system)
         excluded_trees = mount_points.remote + mount_points.special
 

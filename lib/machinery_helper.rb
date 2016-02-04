@@ -55,10 +55,10 @@ class MachineryHelper
     @system.inject_file(local_helper_path, remote_helper_path)
   end
 
-  def run_helper(scope)
+  def run_helper(scope, *options)
     error = TeeIO.new(STDERR, "sudo: a password is required\n")
     json = @system.run_command(
-      remote_helper_path, stdout: :capture, stderr: error, privileged: true
+      remote_helper_path, *options, stdout: :capture, stderr: error, privileged: true
     )
     scope.insert(0, *JSON.parse(json)["files"])
   rescue Cheetah::ExecutionFailed => e
