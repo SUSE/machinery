@@ -280,6 +280,11 @@ class UnmanagedFilesInspector < Inspector
       run_helper_inspection(helper, file_filter, file_store_tmp, file_store_final,
         scope, helper_options)
     else
+      if options[:extract_metadata]
+        raise Machinery::Errors::InvalidCommandLine.new(
+          "Error: the --extract-metadata option is not available for the traditional inspection."
+        )
+      end
       run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
   end

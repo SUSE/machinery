@@ -400,6 +400,16 @@ describe UnmanagedFilesInspector do
         subject.inspect(default_filter, extract_unmanaged_files: true)
       }.to raise_error(SignalException)
     end
+
+    it "raises if the --extract-metadata option is given and the helper can't be used" do
+      allow(system).to receive(:has_command?).and_return(true)
+      allow(system).to receive(:check_requirement)
+      allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(false)
+
+      expect {
+        subject.inspect(default_filter, extract_metadata: true)
+      }.to raise_error(Machinery::Errors::InvalidCommandLine)
+    end
   end
 
   describe "#get_find_data" do
