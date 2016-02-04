@@ -81,8 +81,7 @@ rm /etc/cron.daily/*
 #======================================
 # Repositories
 #--------------------------------------
-zypper --non-interactive --gpg-auto-import-keys addrepo --refresh --name "Main Repository (OSS)" http://download.opensuse.org/tumbleweed/repo/oss/ download.opensuse.org-oss
-zypper --non-interactive refresh
+zypper --non-interactive --gpg-auto-import-keys refresh
 
 #======================================
 # BTRFS sub volumes

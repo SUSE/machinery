@@ -32,9 +32,9 @@ describe "machinery@Tumbleweed" do
         ],
       "repositories" =>
         [
-          /\* Main Repository \(OSS\)$/,
+          /\* Main_Repository$/,
           /URI: http:\/\/download\.opensuse\.org\/tumbleweed\/repo\/oss\/$/,
-          /Alias: download\.opensuse\.org-oss$/,
+          /Alias: Main_Repository$/,
           /Refresh: Yes$/,
           /Priority: 99$/
         ],
