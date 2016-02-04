@@ -35,8 +35,10 @@ describe "machinery@Tumbleweed" do
           /\* Main_Repository$/,
           /URI: http:\/\/download\.opensuse\.org\/tumbleweed\/repo\/oss\/$/,
           /Alias: Main_Repository$/,
+          /Enabled: Yes$/,
           /Refresh: Yes$/,
-          /Priority: 99$/
+          /Priority: 99$/,
+          /Type: yast2$/
         ],
       "services" =>
         [
