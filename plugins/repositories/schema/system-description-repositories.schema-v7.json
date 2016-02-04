@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "required": [
+    "_elements"
+  ],
+  "oneOf": [
+    {
+      "properties": {
+        "_attributes": {
+          "type": "object",
+          "required": [
+            "repository_system"
+          ],
+          "properties": {
+            "repository_system": {
+              "enum": ["zypp"]
+            }
+          }
+        },
+        "_elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["alias", "name", "url", "type", "enabled", "gpgcheck", "autorefresh", "priority"],
+            "properties": {
+              "alias": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "enum": ["yast2", "rpm-md", "plaindir", null]
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "minLength": 1
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "autorefresh": {
+                "type": "boolean"
+              },
+              "gpgcheck": {
+                "type": "boolean"
+              },
+              "priority": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "_attributes": {
+          "type": "object",
+          "required": [
+            "repository_system"
+          ],
+          "properties": {
+            "repository_system": {
+              "enum": ["yum"]
+            }
+          }
+        },
+        "_elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["alias", "name", "url", "type", "enabled", "gpgcheck", "gpgkey", "mirrorlist"],
+            "properties": {
+              "alias": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mirrorlist": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "enum": ["rpm-md", null]
+              },
+              "url": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "url",
+                  "minLength": 1
+                }
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "gpgcheck": {
+                "type": "boolean"
+              },
+              "gpgkey": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "url",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "_attributes": {
+          "type": "object",
+          "required": [
+            "repository_system"
+          ],
+          "properties": {
+            "repository_system": {
+              "enum": ["apt"]
+            }
+          }
+        },
+        "_elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["url", "type", "distribution", "components"],
+            "properties": {
+              "distribution": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "enum": ["deb", "deb-src"]
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "minLength": 1
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

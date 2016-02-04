@@ -106,7 +106,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: options.fetch(:format_version, 6)
+      format_version: options.fetch(:format_version, 7)
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -741,7 +741,8 @@ module SystemDescriptionFactory
   EXAMPLE_SCOPES["empty_unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
       "_attributes": {
-        "extracted": false
+        "extracted": false,
+        "has_metadata": false
       },
       "_elements": []
     }
@@ -749,7 +750,8 @@ module SystemDescriptionFactory
   EXAMPLE_SCOPES["unmanaged_files"] = <<-EOF.chomp
     "unmanaged_files": {
       "_attributes": {
-        "extracted": false
+        "extracted": false,
+        "has_metadata": false
       },
       "_elements": [
         {
