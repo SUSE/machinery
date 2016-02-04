@@ -344,6 +344,7 @@ func main() {
 
 	// parse CLI arguments
 	var versionFlag = flag.Bool("version", false, "shows the version number")
+	var extractMetadataFlag = flag.Bool("extract-metadata", false, "extracts metadat without extracting files")
 	flag.Parse()
 
 	// show version
@@ -386,7 +387,9 @@ func main() {
 		entry.Name = files[j]
 		entry.Type = unmanagedFiles[files[j]]
 
-		amendPathAttributes(&entry, unmanagedFiles[files[j]])
+		if *extractMetadataFlag {
+			amendPathAttributes(&entry, unmanagedFiles[files[j]])
+		}
 
 		unmanagedFilesMap[j] = entry
 	}
