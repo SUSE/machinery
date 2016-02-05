@@ -321,7 +321,7 @@ class UnmanagedFilesInspector < Inspector
       end
 
       args = []
-      args.push("--extract-metadata") if options[:extract_metadata]
+      args.push("--extract-metadata") if options[:extract_metadata] || options[:do_extract]
 
       helper.run_helper(scope, *args)
       scope.delete_if { |f| filter.matches?(f.name) }
@@ -342,7 +342,6 @@ class UnmanagedFilesInspector < Inspector
           show_extraction_progress(files.count + count)
         end
 
-        scope = extract_tar_metadata(scope, file_store_tmp.path)
         file_store_final.remove
         file_store_tmp.rename(file_store_final.store_name)
         scope.scope_file_store = file_store_final
