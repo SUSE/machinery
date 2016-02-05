@@ -3,33 +3,32 @@ This document describes security related issues administrators need to be aware 
 Machinery.
 
 ## Inspection
-Machinery inspects several parts of a system which are covered by Machinery's scopes. An
-explanation which scopes are and what they'll do can be found
-[here](machinery_main_scopes.1/index.html).
+Machinery inspects several parts of a system which are covered by Machinery's scopes. A list
+and what they do can be found [here](machinery_main_scopes.1/index.html).
 
 Users of Machinery who inspect systems need to be aware of the security implications in order
 to take the right decisions on how to protect the retrieved data.
 
 ## Retrieval of Data
-Machinery transfers data from one end point to another via SSH (public key authentication).
+Machinery transfers data from one end point to another via SSH (using public key authentication).
 
 Depending on the scope, Machinery [collects information](machinery_main_scopes.1/index.html)
-about files on the system. Additionally when the `--extract-files` option is set for the `inspect`
-command, not only the meta data about the files (e.g. permission bits, owner, group etc.) is
-retrieved but the file content is extracted, too. Machinery does not distinguish between sensitive
-data (such as private keys or password files). That means that everyone who has access to the
-system description, has automatically access to **all** extracted files and contained sensitive
-data.
+about files on the system. Additionally, when the `--extract-files` option is given for `inspect`
+command, not only the meta data about the files (e.g. permission bits, owner, group etc.) but
+also the file content is extracted. Machinery does not distinguish between sensitive
+data (such as private keys or password files). That means that everyone with access to the system
+description has automatically access to **all** extracted files and contained sensitive data.
 
 #### root/sudo Privileges
 An inspection can only be done, when the user on the inspected system is either root or has
-specific sudo privileges. The commands, a user needs to access for a system inspection are
-described [here](machinery-inspect.1/index.html#prerequisites).
+sudo privileges. How sudo needs to be configured can be read
+[here](machinery-inspect.1/index.html#prerequisites).
 
 ## Storage of Data
 #### Access Restrictions
-After an inspection has been completed, the directory where the description is stored is only
-accessible by the user who did the inspection and by root. The data is not encrypted by Machinery.
+After an inspection has been completed, the directory where the description is stored is made
+readable only for the user. Whether the root user or other users with sudo rights can still
+access it is out of scope. The data is not encrypted by Machinery.
 
 #### Used Permission Bits
 When Machinery extracts data, it sets permission bits for files and directories as follows:
@@ -40,40 +39,29 @@ When Machinery extracts data, it sets permission bits for files and directories 
 | 0600            | ... for files inside the description directory   |
 
 #### Accessing System Descriptions
-All system descriptions are stored by default in the directory `.machinery` in the user's home
-directory who runs Machinery. The directory can be redefined by the environment variable
-`$MACHINERY_DIR`. Each description has its own subdirectory. In each description directory is a
-`manifest.json` file which contains the data of the inspection. Extracted files are stored in
+By default, all system descriptions are stored in the directory `.machinery` in the home directory
+of the user running Machinery. The directory can be redefined by the environment variable
+`$MACHINERY_DIR`. Each description has its own subdirectory. There is a `manifest.json` file in
+each description directory which contains the data of the inspection. Extracted files are stored in
 separate subdirectories inside the same description directory.
 
 ## Presentation of Data
-The Machinery `show` command presents the data of a system description to user. 
+There are several ways how data can be presented to one or more users. The user has the option to
+either start a web server and view descriptions or view the descriptions only in the console.
 
-Show one description in the terminal (local only):
+The following commands are used to present data to users:
 
-$ `machinery` show DESCRIPTION
+* show
+* compare
+* serve
 
-Start a web server and the default browser that shows the requested description: 
+All of the commands (listed above) also have a `--html` option. When this option is used, Machinery
+starts a web server what will listen on the IP address `127.0.0.1`. The `serve` command
+offers also a `--public` option what makes the server listen on all configured IP addresseses.
 
-$ `machinery` show DESCRIPTION --html
-
-Not only the requested, but all system descriptions are accessible through the web server.
-By default the web server is only accessible from the localhost.
-
-Starts a web server what serves the description (local only):
-
-$ `machinery` serve DESCRIPTION
-
-Starts a web server what serves the description (local & over network):
-
-$ `machinery` serve DESCRIPTION --public
-
-**WARNING:** The `--public` option for the `serve` command makes all descriptions  and
-potentially sensitive data (like passwords) available on the network.
-
-Starts a web server what compares two descriptions (local only):
-
-$ `machinery` compare1 compare2 DESCRIPTION1 DESCRIPTION2
+**WARNING:** When making the server reachable from the outside, users can modify the link to
+access also other descriptions. There is currently no way to restrict the access to only one
+description.
 
 The `serve` command also allows the user to specify a port via the `--port` option. When no port
 is specified, the default port which is configured in the machinery config file in
