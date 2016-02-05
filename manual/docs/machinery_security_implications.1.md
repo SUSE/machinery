@@ -4,7 +4,8 @@ Machinery.
 
 ## Inspection
 Machinery inspects several parts of a system which are covered by Machinery's scopes. A list
-and what they do can be found [here](machinery_main_scopes.1/index.html).
+of the available scopes and information about what they do can be found
+[here](machinery_main_scopes.1/index.html).
 
 Users of Machinery who inspect systems need to be aware of the security implications in order
 to take the right decisions on how to protect the retrieved data.
@@ -13,22 +14,21 @@ to take the right decisions on how to protect the retrieved data.
 Machinery transfers data from one end point to another via SSH (using public key authentication).
 
 Depending on the scope, Machinery [collects information](machinery_main_scopes.1/index.html)
-about files on the system. Additionally, when the `--extract-files` option is given for `inspect`
-command, not only the meta data about the files (e.g. permission bits, owner, group etc.) but
-also the file content is extracted. Machinery does not distinguish between sensitive
+about files on the system. Additionally, when the `--extract-files` option is given for the
+`inspect` command, not only the meta data about the files (e.g. permission bits, owner, group etc
+.) but also the file content is extracted. Machinery does not distinguish between sensitive
 data (such as private keys or password files). That means that everyone with access to the system
 description has automatically access to **all** extracted files and contained sensitive data.
 
 #### root/sudo Privileges
 An inspection can only be done, when the user on the inspected system is either root or has
-sudo privileges. How sudo needs to be configured can be read
+sudo privileges. Information about the required sudo configuration can be found
 [here](machinery-inspect.1/index.html#prerequisites).
 
 ## Storage of Data
 #### Access Restrictions
 After an inspection has been completed, the directory where the description is stored is made
-readable only for the user. Whether the root user or other users with sudo rights can still
-access it is out of scope. The data is not encrypted by Machinery.
+readable only for the user. The data is not encrypted by Machinery.
 
 #### Used Permission Bits
 When Machinery extracts data, it sets permission bits for files and directories as follows:
@@ -54,10 +54,11 @@ The following commands are used to present data to users:
 * show
 * compare
 * serve
+* list
 
-All of the commands (listed above) also have a `--html` option. When this option is used, Machinery
+All of the commands listed above also have a `--html` option. When this option is used, Machinery
 starts a web server what will listen on the IP address `127.0.0.1`. The `serve` command
-offers also a `--public` option what makes the server listen on all configured IP addresseses.
+offers also a `--public` option which makes the server listen on all configured IP addresses.
 
 **WARNING:** When making the server reachable from the outside, users can modify the link to
 access also other descriptions. There is currently no way to restrict the access to only one
