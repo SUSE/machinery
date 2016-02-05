@@ -4,7 +4,7 @@
     
     <url>
      <loc>None/docs/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,19 +13,25 @@
         
     <url>
      <loc>None/machinery_main_general.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery_main_scopes.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery_main_usecases.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>None/machinery_security_implications.1/</loc>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -35,109 +41,109 @@
         
     <url>
      <loc>None/machinery-analyze.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-build.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-compare.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-config.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-copy.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-deploy.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-export-autoyast.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-export-kiwi.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-inspect.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-inspect-docker.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-list.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-man.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-move.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-remove.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-serve.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-show.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-upgrade-format.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>None/machinery-validate.1/</loc>
-     <lastmod>2016-02-02</lastmod>
+     <lastmod>2016-02-05</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

@@ -38,6 +38,10 @@
                               <a href="../machinery_main_usecases.1/">Use cases</a>
                           </li>
                       
+                          <li class="">
+                              <a href="../machinery_security_implications.1/">Security Implications</a>
+                          </li>
+                      
                       </ul>
                   </li>
               
@@ -155,12 +159,12 @@ trigger errors.</p>
 <li>
 <p><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional):
     Inspect system for specified scope.
-    See the <a href="#Scopes">Scope section</a> for more information.</p>
+    See the <a href="../machinery_main_scopes.1/index.html">Scope section</a> for more information.</p>
 </li>
 <li>
 <p><code>-e SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional):
     Inspect system for all scopes except the specified scope.
-    See the <a href="#Scopes">Scope section</a> for more information.</p>
+    See the <a href="../machinery_main_scopes.1/index.html">Scope section</a> for more information.</p>
 </li>
 <li>
 <p><code>-r USER</code>, <code>--remote-user=USER</code> (optional):
@@ -229,9 +233,9 @@ trigger errors.</p>
 <p>The system to be inspected needs to have the following commands:</p>
 <ul>
 <li><code>rpm</code> or <code>dpkg</code></li>
-<li><code>zypper</code>, <code>yum</code> or <code>apt-cache</code></li>
+<li><code>zypper</code>, <code>yum</code>, or <code>apt-cache</code></li>
 <li><code>rsync</code></li>
-<li><code>chkconfig</code>, <code>initctl</code> or <code>systemctl</code></li>
+<li><code>chkconfig</code>, <code>initctl</code>, or <code>systemctl</code></li>
 <li><code>cat</code></li>
 <li><code>sed</code></li>
 <li><code>find</code></li>
@@ -246,9 +250,9 @@ trigger errors.</p>
 </li>
 <li>
 <p>To add a remote <code>machinery</code> user run as root:</p>
-<h1 id="useradd-m-machinery-c-remote-user-for-machinery"><code>useradd -m machinery -c "remote user for machinery"</code></h1>
+<p># <code>useradd</code> -m machinery -c "remote user for machinery"</p>
 <p>To configure a password for the new user run:</p>
-<h1 id="passwd-machinery"><code>passwd machinery</code></h1>
+<p># <code>passwd</code> machinery</p>
 </li>
 </ul>
 <h2 id="examples">EXAMPLES</h2>
