@@ -40,7 +40,8 @@ ol.man-decor {width:100%}
 ol.man-decor li.tl {text-align:left}
 ol.man-decor li.tc {text-align:center;letter-spacing:4px}
 ol.man-decor li.tr {text-align:right;float:right}
-
+tr th {text-decoration:underline;padding-left:20pt;}
+td {padding-left:20pt;}
 
 body {
   background: #bcb7a5;

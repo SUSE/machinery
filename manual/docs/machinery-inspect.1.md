@@ -36,11 +36,11 @@ trigger errors.
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Inspect system for specified scope.
-    See the [Scope section](#Scopes) for more information.
+    See the [Scope section](machinery_main_scopes.1/index.html) for more information.
 
   * `-e SCOPE`, `--exclude-scope=EXCLUDE-SCOPE` (optional):
     Inspect system for all scopes except the specified scope.
-    See the [Scope section](#Scopes) for more information.
+    See the [Scope section](machinery_main_scopes.1/index.html) for more information.
 
   * `-r USER`, `--remote-user=USER` (optional):
     Defines the user which is used to access the inspected system via SSH.
@@ -101,9 +101,9 @@ trigger errors.
   * The system to be inspected needs to have the following commands:
 
     * `rpm` or `dpkg`
-    * `zypper`, `yum` or `apt-cache`
+    * `zypper`, `yum`, or `apt-cache`
     * `rsync`
-    * `chkconfig`, `initctl` or `systemctl`
+    * `chkconfig`, `initctl`, or `systemctl`
     * `cat`
     * `sed`
     * `find`
@@ -117,11 +117,11 @@ trigger errors.
 
   * To add a remote `machinery` user run as root:
 
-    # `useradd -m machinery -c "remote user for machinery"`
+    \# `useradd` -m machinery -c "remote user for machinery"
 
     To configure a password for the new user run:
 
-    # `passwd machinery`
+    \# `passwd` machinery
 
 ## EXAMPLES
 
