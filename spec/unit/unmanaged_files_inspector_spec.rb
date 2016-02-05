@@ -58,7 +58,8 @@ describe UnmanagedFilesInspector do
           UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
         ],
-        "extracted" => false
+        "extracted" => false,
+        "has_metadata" => false
       )
     }
 
@@ -100,7 +101,8 @@ describe UnmanagedFilesInspector do
       end
       UnmanagedFilesScope.new(
         files,
-        "extracted" => true
+        "extracted" => true,
+        "has_metadata" => true
       )
     }
 
@@ -316,7 +318,8 @@ describe UnmanagedFilesInspector do
 
       expected = UnmanagedFilesScope.new(
         [],
-        "extracted" => false
+        "extracted" => false,
+        "has_metadata" => false
       )
       expect(description["unmanaged_files"]).to eq(expected)
       expect(subject.summary).to include("Found 0 unmanaged files and trees")
