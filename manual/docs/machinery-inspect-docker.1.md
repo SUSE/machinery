@@ -61,6 +61,9 @@ trigger errors.
   * `--extract-changed-managed-files` (optional):
     Extract changed managed files from inspected image.
 
+  * `--extract-metadata` (optional):
+    Extract metadata of unmanaged files even if the files itself are not extracted.
+
   * `--skip-files` (optional):
     Do not consider given files or directories during inspection. Either provide
     one file or directory name or a list of names separated by commas. You can
