@@ -78,8 +78,8 @@ EOF
 
       it "parses the patterns list into a Hash" do
         expect(system).to receive(:run_command).
-          with("zypper", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture).
-          and_return(zypper_output)
+          with("zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i",
+            stdout: :capture).and_return(zypper_output)
         patterns_inspector.inspect(filter)
 
         expect(description.patterns.size).to eql(2)
@@ -111,7 +111,7 @@ EOF
 
       it "raises an error if zypper is locked" do
         expect(system).to receive(:run_command).
-          with("zypper", "-xq", "--no-refresh", "patterns", "-i",
+          with("zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i",
             stdout: :capture).
           and_raise(
             Cheetah::ExecutionFailed.new(

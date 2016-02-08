@@ -55,7 +55,7 @@ class PatternsInspector < Inspector
 
   def inspect_with_zypper
     begin
-      xml = @system.run_command("zypper", "-xq", "--no-refresh", "patterns",
+      xml = @system.run_command("zypper", "--non-interactive", "-xq", "--no-refresh", "patterns",
         "-i", stdout: :capture)
     rescue Cheetah::ExecutionFailed => e
       if e.stdout.include?("locked")
