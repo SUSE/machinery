@@ -298,7 +298,6 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def helper_usable?(helper)
-    return false
     if !helper.can_help?
       Machinery::Ui.puts(
         "Note: Using traditional inspection because there is no helper binary for" \
