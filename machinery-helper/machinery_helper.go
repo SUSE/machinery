@@ -283,7 +283,7 @@ func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 func dirInfo(path string) (size int64, file_count int) {
 	files, _ := readDir(path)
 
-	size = dirSize(path)
+	size = int64(0)
 	file_count = len(files)
 	for _, f := range files {
 		if f.IsDir() {
