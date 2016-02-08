@@ -272,10 +272,10 @@ func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 		result |= 01000
 	}
 	if perm&os.ModeSetuid > 0 {
-		result |= 02000
+		result |= 04000
 	}
 	if perm&os.ModeSetgid > 0 {
-		result |= 04000
+		result |= 02000
 	}
 	entry.Mode = strconv.FormatInt(result, 8)
 }

@@ -215,14 +215,14 @@ func TestAmendMode(t *testing.T) {
 
 	perm = os.FileMode(0222 | os.ModeSetuid)
 	amendMode(&entry, perm)
-	want = "2222"
+	want = "4222"
 	if entry.Mode != want {
 		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 
 	perm = os.FileMode(0555 | os.ModeSticky | os.ModeSetgid)
 	amendMode(&entry, perm)
-	want = "5555"
+	want = "3555"
 	if entry.Mode != want {
 		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
