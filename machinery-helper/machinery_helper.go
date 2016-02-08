@@ -287,10 +287,12 @@ func dirInfo(path string) (size int64, file_count int) {
 	file_count = len(files)
 	for _, f := range files {
 		if f.IsDir() {
-			sub_size, sub_count := dirInfo(path + f.Name() + "/")
-			size += sub_size
-			file_count += sub_count
-		} else {
+			if _, ok := IgnoreList[path + f.Name()]; !ok {
+				sub_size, sub_count := dirInfo(path + f.Name() + "/")
+				size += sub_size
+				file_count += sub_count
+			}
+		} else if f.Mode()&os.ModeSymlink != os.ModeSymlink {
 			size += f.Size()
 		}
 	}
@@ -335,6 +337,8 @@ func printVersion() {
 	os.Exit(0)
 }
 
+var IgnoreList = map[string]bool{}
+
 func main() {
 	// check for tar extraction
 	if len(os.Args) >= 2 {
@@ -359,14 +363,14 @@ func main() {
 	unmanagedFiles := make(map[string]string)
 	thisBinary, _ := filepath.Abs(os.Args[0])
 
-	ignoreList := map[string]bool{
+	IgnoreList = map[string]bool{
 		thisBinary: true,
 	}
 	for _, mount := range RemoteMounts() {
-		ignoreList[mount] = true
+		IgnoreList[mount] = true
 	}
 	for _, mount := range SpecialMounts() {
-		ignoreList[mount] = true
+		IgnoreList[mount] = true
 	}
 
 	for _, mount := range RemoteMounts() {
@@ -374,7 +378,7 @@ func main() {
 	}
 
 	managedFiles, managedDirs := getManagedFiles()
-	findUnmanagedFiles("/", managedFiles, managedDirs, unmanagedFiles, ignoreList)
+	findUnmanagedFiles("/", managedFiles, managedDirs, unmanagedFiles, IgnoreList)
 
 	files := make([]string, len(unmanagedFiles))
 	i := 0
