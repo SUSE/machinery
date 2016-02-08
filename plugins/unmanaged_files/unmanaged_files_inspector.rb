@@ -157,7 +157,7 @@ class UnmanagedFilesInspector < Inspector
           # unmanaged dirs are trees and only have one entry in the manifest
           if os.type == "dir"
             os.size = files.map { |d| d[:size] }.reduce(:+)
-            os.files = files.size
+            os.files = files.size - 1
             break
           end
         end
@@ -298,6 +298,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def helper_usable?(helper)
+    return false
     if !helper.can_help?
       Machinery::Ui.puts(
         "Note: Using traditional inspection because there is no helper binary for" \
