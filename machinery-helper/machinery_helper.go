@@ -205,6 +205,7 @@ func assembleJSON(unmanagedFilesMap interface{}) string {
 var readDir = func(dir string) ([]os.FileInfo, error) {
 	return ioutil.ReadDir(dir)
 }
+
 var dirSize = func(path string) int64 {
 	dir, err := os.Open(path)
 	if err != nil {

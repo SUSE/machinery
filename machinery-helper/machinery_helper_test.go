@@ -253,13 +253,15 @@ func TestAmendSize(t *testing.T) {
 	readDir = func(dir string) ([]os.FileInfo, error) {
 		dirs := make([]os.FileInfo, 0, 1)
 		switch dir {
+		// 0 is used as a type to define a Normal file
 		case "/opt/":
-			dirs = append(dirs, fakefileinfo.New("foo", int64(12), os.ModeType, time.Now(), false, nil))
-			dirs = append(dirs, fakefileinfo.New("bar", int64(12), os.ModeType, time.Now(), false, nil))
-			dirs = append(dirs, fakefileinfo.New("baz", int64(4096), os.ModeType, time.Now(), true, nil))
+			dirs = append(dirs, fakefileinfo.New("foo", int64(12), 0, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("bar", int64(12), 0, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("baz", int64(4096), os.ModeDir, time.Now(), true, nil))
+			dirs = append(dirs, fakefileinfo.New("foo-link", int64(8), os.ModeSymlink, time.Now(), false, nil))
 		case "/opt/baz/":
-			dirs = append(dirs, fakefileinfo.New("foo", int64(12), os.ModeType, time.Now(), false, nil))
-			dirs = append(dirs, fakefileinfo.New("bar", int64(12), os.ModeType, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("foo", int64(12), 0, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("bar", int64(12), 0, time.Now(), false, nil))
 		}
 		return dirs, nil
 	}
@@ -271,7 +273,7 @@ func TestAmendSize(t *testing.T) {
 	if *entry.Size != want {
 		t.Errorf("entry.Size = '%v', want '%v'", *entry.Size, want)
 	}
-	want_files := 5
+	want_files := 6
 	if *entry.Files != want_files {
 		t.Errorf("entry.Files = '%v', want '%v'", *entry.Files, want_files)
 	}
