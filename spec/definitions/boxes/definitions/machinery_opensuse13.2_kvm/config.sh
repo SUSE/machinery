@@ -59,9 +59,24 @@ UseDNS no
 #======================================
 # Repositories
 #--------------------------------------
-zypper -n --gpg-auto-import-keys ar --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/13.2/repo/oss/ download.opensuse.org-oss
-zypper -n --gpg-auto-import-keys ar --refresh --name "Main Update Repository" http://download.opensuse.org/update/13.2/ download.opensuse.org-update
-zypper -n refresh
+zypper --non-interactive --gpg-auto-import-keys refresh
+
+#======================================
+# BTRFS sub volumes
+#--------------------------------------
+cat <<EOF >> /etc/fstab
+/dev/vda1 /home btrfs subvol=@/home 0 0
+/dev/vda1 /tmp btrfs subvol=@/tmp 0 0
+/dev/vda1 /opt btrfs subvol=@/opt 0 0
+/dev/vda1 /srv btrfs subvol=@/srv 0 0
+/dev/vda1 /var/crash btrfs subvol=@/var/crash 0 0
+/dev/vda1 /var/spool btrfs subvol=@/var/spool 0 0
+/dev/vda1 /boot/grub2/i386-pc btrfs subvol=@/boot/grub2/i386-pc 0 0
+/dev/vda1 /usr/local btrfs subvol=@/usr/local 0 0
+/dev/vda1 /var/log btrfs subvol=@/var/log 0 0
+/dev/vda1 /var/opt btrfs subvol=@/var/opt 0 0
+/dev/vda1 /var/tmp btrfs subvol=@/var/tmp 0 0
+EOF
 
 #======================================
 # Umount kernel filesystems

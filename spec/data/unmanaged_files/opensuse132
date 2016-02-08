@@ -264,10 +264,10 @@
     Mode: 644
     Size: 779 B
 
-  * /etc/zypp/repos.d/download.opensuse.org-oss.repo (file)
+  * /etc/zypp/repos.d/Main_Repository.repo (file)
     User/Group: root:root
     Mode: 644
-    Size: 155 B
+    Size: 139 B
 
   * /home/vagrant/ (dir)
     User/Group: vagrant:vagrant
