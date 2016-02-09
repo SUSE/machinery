@@ -34,6 +34,7 @@ import (
 	"unicode/utf8"
 )
 
+// An UnmanagedFile represents an unmanaged file in the system description.
 type UnmanagedFile struct {
 	Name       string `json:"name"`
 	User       string `json:"user,omitempty"`
@@ -281,17 +282,17 @@ func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 	entry.Mode = strconv.FormatInt(result, 8)
 }
 
-func dirInfo(path string) (size int64, file_count int) {
+func dirInfo(path string) (size int64, fileCount int) {
 	files, _ := readDir(path)
 
 	size = int64(0)
-	file_count = len(files)
+	fileCount = len(files)
 	for _, f := range files {
 		if f.IsDir() {
 			if _, ok := IgnoreList[path + f.Name()]; !ok {
-				sub_size, sub_count := dirInfo(path + f.Name() + "/")
-				size += sub_size
-				file_count += sub_count
+				subSize, subCount := dirInfo(path + f.Name() + "/")
+				size += subSize
+				fileCount += subCount
 			}
 		} else if f.Mode()&os.ModeSymlink != os.ModeSymlink {
 			size += f.Size()
@@ -314,8 +315,8 @@ func amendSize(entry *UnmanagedFile, size int64) {
 	}
 }
 
-func amendPathAttributes(entry *UnmanagedFile, file_type string) {
-	if file_type != "link" {
+func amendPathAttributes(entry *UnmanagedFile, fileType string) {
+	if fileType != "link" {
 		file, err := os.Open(entry.Name)
 		if err != nil {
 			log.Fatal(err)
@@ -338,6 +339,8 @@ func printVersion() {
 	os.Exit(0)
 }
 
+// IgnoreList includes mounts and any other file type that will be ignored when
+// evaluating the unmanaged files in a system.
 var IgnoreList = map[string]bool{}
 
 func main() {

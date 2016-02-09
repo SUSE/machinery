@@ -84,7 +84,6 @@ describe MachineryHelper do
       EOT
     }
 
-
     it "writes the inspection result into the scope" do
       expect(dummy_system).to receive(:run_command).with("/root/machinery-helper", any_args).
         and_return(json)
@@ -96,8 +95,8 @@ describe MachineryHelper do
     end
 
     it "pases the extract metadata option" do
-      expect(dummy_system).to receive(:run_command).with("/root/machinery-helper", "--extract-metadata", any_args).
-        and_return(json)
+      expect(dummy_system).to receive(:run_command).
+        with("/root/machinery-helper", "--extract-metadata", any_args).and_return(json)
 
       subject.run_helper(scope, "--extract-metadata")
     end

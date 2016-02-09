@@ -273,8 +273,8 @@ func TestAmendSize(t *testing.T) {
 	if *entry.Size != want {
 		t.Errorf("entry.Size = '%v', want '%v'", *entry.Size, want)
 	}
-	want_files := 6
-	if *entry.Files != want_files {
-		t.Errorf("entry.Files = '%v', want '%v'", *entry.Files, want_files)
+	wantFiles := 6
+	if *entry.Files != wantFiles {
+		t.Errorf("entry.Files = '%v', want '%v'", *entry.Files, wantFiles)
 	}
 }
