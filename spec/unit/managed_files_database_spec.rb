@@ -83,6 +83,18 @@ describe ManagedFilesDatabase do
       expect(subject.changed_files.first).to eq(expected)
       expect(subject.changed_files.length).to eq(7)
     end
+
+    it "merges lines that refer to the same file" do
+      expect(subject).to receive(:managed_files_list).and_return(<<EOF
+missing     /lib/modules/3.16.7-29-desktop/updates/vboxpci.ko (replaced)
+missing     /lib/modules/3.16.7-29-desktop/updates/vboxpci.ko
+EOF
+      )
+
+      files = subject.changed_files
+      expect(files.count).to eq(1)
+      expect(files.first.changes).to match_array(["deleted", "replaced"])
+    end
   end
 
   describe "parse_changes_line" do
