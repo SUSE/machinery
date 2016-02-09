@@ -190,3 +190,91 @@ func TestSubdirIsNotAccidentallyConsideredManaged(t *testing.T) {
 		t.Errorf("hasManagedDirs() = '%v', want '%v'", hasDirs, want)
 	}
 }
+
+func TestAmendMode(t *testing.T) {
+	entry := UnmanagedFile{Type: "file"}
+
+	amendMode(&entry, os.FileMode(0777))
+	want := "777"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	amendMode(&entry, os.FileMode(0222))
+	want = "222"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	perm := os.FileMode(0222 | os.ModeSticky)
+	amendMode(&entry, perm)
+	want = "1222"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	perm = os.FileMode(0222 | os.ModeSetuid)
+	amendMode(&entry, perm)
+	want = "4222"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	perm = os.FileMode(0555 | os.ModeSticky | os.ModeSetgid)
+	amendMode(&entry, perm)
+	want = "3555"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	entry = UnmanagedFile{Type: "link"}
+	amendMode(&entry, perm)
+	if entry.Mode != "" {
+		t.Errorf("links should not have a mode")
+	}
+}
+
+func TestAmendSize(t *testing.T) {
+	entry := UnmanagedFile{Type: "link"}
+
+	amendSize(&entry, 0)
+	if entry.Size != nil {
+		t.Errorf("Link should not get a size")
+	}
+
+	entry = UnmanagedFile{Type: "file"}
+
+	amendSize(&entry, 0)
+	if *entry.Size != 0 {
+		t.Errorf("File should get a size")
+	}
+
+	entry = UnmanagedFile{Name: "/opt/", Type: "dir"}
+	readDir = func(dir string) ([]os.FileInfo, error) {
+		dirs := make([]os.FileInfo, 0, 1)
+		switch dir {
+		// 0 is used as a type to define a Normal file
+		case "/opt/":
+			dirs = append(dirs, fakefileinfo.New("foo", int64(12), 0, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("bar", int64(12), 0, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("baz", int64(4096), os.ModeDir, time.Now(), true, nil))
+			dirs = append(dirs, fakefileinfo.New("foo-link", int64(8), os.ModeSymlink, time.Now(), false, nil))
+		case "/opt/baz/":
+			dirs = append(dirs, fakefileinfo.New("foo", int64(12), 0, time.Now(), false, nil))
+			dirs = append(dirs, fakefileinfo.New("bar", int64(12), 0, time.Now(), false, nil))
+		}
+		return dirs, nil
+	}
+	dirSize = func(path string) int64 {
+		return 4096
+	}
+	amendSize(&entry, 0)
+	want := int64(48) // 4 files (12 bytes each)
+	if *entry.Size != want {
+		t.Errorf("entry.Size = '%v', want '%v'", *entry.Size, want)
+	}
+	wantFiles := 6
+	if *entry.Files != wantFiles {
+		t.Errorf("entry.Files = '%v', want '%v'", *entry.Files, wantFiles)
+	}
+}

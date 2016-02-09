@@ -25,7 +25,7 @@ class UnmanagedFilesScope < FileScope
   include Machinery::Scope
   include ScopeFileAccessArchive
 
-  has_attributes :extracted
+  has_attributes :extracted, :has_metadata
   has_elements class: UnmanagedFile
 
   def compare_with(other)

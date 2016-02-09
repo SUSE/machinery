@@ -193,13 +193,13 @@ EOF
 
       it "raises for extracted in case of unknown type" do
         expected = <<EOF
-In scope unmanaged_files: The property #0 (_elements) of type Array did not match any of the required schemas.
+In scope unmanaged_files: The property #0 (_elements) of type Hash did not match one or more of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
           JSON.parse(File.read("#{path}extracted_unknown_type.json"))
         ).validate
-        expect(errors.first).to eq(expected)
+        expect(errors.first).to include(expected)
       end
     end
   end

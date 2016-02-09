@@ -9,10 +9,14 @@
     "_attributes": {
       "type": "object",
       "required": [
-        "extracted"
+        "extracted",
+        "has_metadata"
       ],
       "properties": {
         "extracted": {
+          "type": "boolean"
+        },
+        "has_metadata": {
           "type": "boolean"
         }
       }

@@ -157,7 +157,7 @@ class UnmanagedFilesInspector < Inspector
           # unmanaged dirs are trees and only have one entry in the manifest
           if os.type == "dir"
             os.size = files.map { |d| d[:size] }.reduce(:+)
-            os.files = files.size
+            os.files = files.size - 1
             break
           end
         end
@@ -249,7 +249,7 @@ class UnmanagedFilesInspector < Inspector
   end
 
   def inspect(filter, options = {})
-    do_extract = options && options[:extract_unmanaged_files]
+    do_extract = options[:extract_unmanaged_files]
     check_requirements(do_extract)
 
     determine_package_manager
@@ -271,10 +271,20 @@ class UnmanagedFilesInspector < Inspector
     end
 
     helper = MachineryHelper.new(@system)
+
     if helper_usable?(helper)
-      run_helper_inspection(helper, file_filter, do_extract, file_store_tmp, file_store_final,
-        scope)
+      helper_options = {}
+      helper_options[:do_extract] = do_extract
+      helper_options[:extract_metadata] = options[:extract_metadata]
+
+      run_helper_inspection(helper, file_filter, file_store_tmp, file_store_final,
+        scope, helper_options)
     else
+      if options[:extract_metadata]
+        raise Machinery::Errors::InvalidCommandLine.new(
+          "Error: the --extract-metadata option is not available for the traditional inspection."
+        )
+      end
       run_inspection(file_filter, options, do_extract, file_store_tmp, file_store_final, scope)
     end
   end
@@ -300,7 +310,7 @@ class UnmanagedFilesInspector < Inspector
     false
   end
 
-  def run_helper_inspection(helper, filter, do_extract, file_store_tmp, file_store_final, scope)
+  def run_helper_inspection(helper, filter, file_store_tmp, file_store_final, scope, options)
     begin
       helper.inject_helper
       if !helper.has_compatible_version?
@@ -310,10 +320,13 @@ class UnmanagedFilesInspector < Inspector
         )
       end
 
-      helper.run_helper(scope)
+      args = []
+      args.push("--extract-metadata") if options[:extract_metadata] || options[:do_extract]
+
+      helper.run_helper(scope, *args)
       scope.delete_if { |f| filter.matches?(f.name) }
 
-      if do_extract
+      if options[:do_extract]
         mount_points = MountPoints.new(@system)
         excluded_trees = mount_points.remote + mount_points.special
 
@@ -329,14 +342,15 @@ class UnmanagedFilesInspector < Inspector
           show_extraction_progress(files.count + count)
         end
 
-        scope = extract_tar_metadata(scope, file_store_tmp.path)
         file_store_final.remove
         file_store_tmp.rename(file_store_final.store_name)
         scope.scope_file_store = file_store_final
         scope.extracted = true
+        scope.has_metadata = true
       else
         file_store_final.remove
         scope.extracted = false
+        scope.has_metadata = !!options[:extract_metadata]
       end
     ensure
       helper.remove_helper
@@ -469,6 +483,7 @@ class UnmanagedFilesInspector < Inspector
       excluded_files, remote_dirs, do_extract, file_store_tmp, file_store_final, scope)
 
     scope.extracted = !!do_extract
+    scope.has_metadata = !!do_extract
     scope += processed_files.sort_by(&:name)
     @description["unmanaged_files"] = scope
   end

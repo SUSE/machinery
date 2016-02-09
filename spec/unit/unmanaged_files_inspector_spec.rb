@@ -58,18 +58,19 @@ describe UnmanagedFilesInspector do
           UnmanagedFile.new( name: "/usr/X11R6/x11_mydir/", type: "dir" ),
           UnmanagedFile.new( name: "/usr/X11R6/x11_myfile", type: "file" )
         ],
-        "extracted" => false
+        "extracted" => false,
+        "has_metadata" => false
       )
     }
 
     let(:expected_data_meta) {
       new = [
         { name: "/etc/etc_mydir/",
-          size: 18806, mode: "755", user: "root", group: "lp", files: 16 },
+          size: 18806, mode: "755", user: "root", group: "lp", files: 15 },
         { name: "/etc/etc_myfile",
           size: 10, mode: "644", user: "emil", group: "users" },
         { name: "/mydir/",
-          size: 6204, mode: "755", user: "root", group: "root", files: 17 },
+          size: 6204, mode: "755", user: "root", group: "root", files: 16 },
         { name: "/myfile",
           size: 1, mode: "644", user: "root", group: "root" },
         { name: "/myfile_setgid",
@@ -87,9 +88,9 @@ describe UnmanagedFilesInspector do
         { name: "/my link",
           user: "root", group: "root" },
         { name: "/other_dir/",
-          size: 0, mode: "755", user: "root", group: "root", files: 1 },
+          size: 0, mode: "755", user: "root", group: "root", files: 0 },
         { name: "/usr/X11R6/x11_mydir/",
-          size: 1000000, mode: "755", user: "root", group: "root", files: 13  },
+          size: 1000000, mode: "755", user: "root", group: "root", files: 12 },
         { name: "/usr/X11R6/x11_myfile",
           size: 1024, mode: "6644", user: "emil", group: "users" },
         { name: "/homes/tux/" },
@@ -100,7 +101,8 @@ describe UnmanagedFilesInspector do
       end
       UnmanagedFilesScope.new(
         files,
-        "extracted" => true
+        "extracted" => true,
+        "has_metadata" => true
       )
     }
 
@@ -316,7 +318,8 @@ describe UnmanagedFilesInspector do
 
       expected = UnmanagedFilesScope.new(
         [],
-        "extracted" => false
+        "extracted" => false,
+        "has_metadata" => false
       )
       expect(description["unmanaged_files"]).to eq(expected)
       expect(subject.summary).to include("Found 0 unmanaged files and trees")
@@ -400,6 +403,16 @@ describe UnmanagedFilesInspector do
         subject.inspect(default_filter, extract_unmanaged_files: true)
       }.to raise_error(SignalException)
     end
+
+    it "raises if the --extract-metadata option is given and the helper can't be used" do
+      allow(system).to receive(:has_command?).and_return(true)
+      allow(system).to receive(:check_requirement)
+      allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(false)
+
+      expect {
+        subject.inspect(default_filter, extract_metadata: true)
+      }.to raise_error(Machinery::Errors::InvalidCommandLine)
+    end
   end
 
   describe "#get_find_data" do
@@ -419,23 +432,39 @@ describe UnmanagedFilesInspector do
     end
   end
 
-  it "runs helper" do
-    system = double(arch: "x86_64", run_command: "/root/machinery-helper")
-    allow(system).to receive(:has_command?).and_return(true)
-    allow(system).to receive(:check_requirement)
+  describe "runs helper" do
+    let(:system) { double(arch: "x86_64", run_command: "/root/machinery-helper") }
+    let(:description) { SystemDescription.new("systemname", SystemDescriptionStore.new) }
+    let(:inspector) { UnmanagedFilesInspector.new(system, description) }
 
-    description = SystemDescription.new("systemname", SystemDescriptionStore.new)
-    inspector = UnmanagedFilesInspector.new(system, description)
+    before(:each) do
+      allow(system).to receive(:has_command?).and_return(true)
+      allow(system).to receive(:check_requirement)
 
-    allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
-    expect_any_instance_of(MachineryHelper).to receive(:inject_helper)
-    expect_any_instance_of(MachineryHelper).to receive(:remove_helper)
-    expect_any_instance_of(MachineryHelper).to receive(:has_compatible_version?).and_return(true)
-    expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope|
-      UnmanagedFilesScope.new
+      allow_any_instance_of(MachineryHelper).to receive(:can_help?).and_return(true)
+      expect_any_instance_of(MachineryHelper).to receive(:inject_helper)
+      expect_any_instance_of(MachineryHelper).to receive(:remove_helper)
+      expect_any_instance_of(MachineryHelper).to receive(:has_compatible_version?).and_return(true)
     end
 
-    inspector.inspect(Filter.from_default_definition("inspect"))
+    it "inspects unamanged-files" do
+      expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope|
+        expect(scope).to be_a(UnmanagedFilesScope)
+      end
+
+      inspector.inspect(Filter.from_default_definition("inspect"))
+    end
+
+    context "when the --extract-metadata option is given" do
+      it "inspects and extracts metadata for unmanaged-files" do
+        expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope, args|
+          expect(scope).to be_a(UnmanagedFilesScope)
+          expect(args).to eq("--extract-metadata")
+        end
+
+        inspector.inspect(Filter.from_default_definition("inspect"), extract_metadata: true)
+      end
+    end
   end
 
   context "dpkg" do

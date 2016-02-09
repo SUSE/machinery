@@ -60,9 +60,7 @@ describe MachineryHelper do
 
   describe "#run_helper" do
     let(:scope) { UnmanagedFilesScope.new }
-
-    it "writes the inspection result into the scope" do
-      json = <<-EOT
+    let(:json) { <<-EOT
         {
           "files": [
             {
@@ -84,7 +82,9 @@ describe MachineryHelper do
           ]
         }
       EOT
+    }
 
+    it "writes the inspection result into the scope" do
       expect(dummy_system).to receive(:run_command).with("/root/machinery-helper", any_args).
         and_return(json)
 
@@ -92,6 +92,13 @@ describe MachineryHelper do
 
       expect(scope.first.name).to eq("/opt/magic/file")
       expect(scope.count).to eq(2)
+    end
+
+    it "pases the extract metadata option" do
+      expect(dummy_system).to receive(:run_command).
+        with("/root/machinery-helper", "--extract-metadata", any_args).and_return(json)
+
+      subject.run_helper(scope, "--extract-metadata")
     end
 
     context "when errors occur" do

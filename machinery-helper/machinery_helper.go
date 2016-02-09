@@ -29,9 +29,23 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 )
+
+// An UnmanagedFile represents an unmanaged file in the system description.
+type UnmanagedFile struct {
+	Name       string `json:"name"`
+	User       string `json:"user,omitempty"`
+	Group      string `json:"group,omitempty"`
+	Type       string `json:"type"`
+	Mode       string `json:"mode,omitempty"`
+	Files      *int   `json:"files,omitempty"`
+	FilesValue int    `json:"-"`
+	Size       *int64 `json:"size,omitempty"`
+	SizeValue  int64  `json:"-"`
+}
 
 func getDpkgContent() []string {
 	cmd := exec.Command("bash", "-c", "dpkg --get-selections | grep -v deinstall | awk '{print $1}'")
@@ -193,6 +207,19 @@ var readDir = func(dir string) ([]os.FileInfo, error) {
 	return ioutil.ReadDir(dir)
 }
 
+var dirSize = func(path string) int64 {
+	dir, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	stat, err := dir.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	dir.Close()
+	return stat.Size()
+}
+
 func hasManagedDirs(dir string, rpmDirs map[string]bool) bool {
 	for rpmDir := range rpmDirs {
 		if strings.HasPrefix(rpmDir, dir+"/") {
@@ -236,10 +263,85 @@ func findUnmanagedFiles(dir string, rpmFiles map[string]string, rpmDirs map[stri
 	}
 }
 
+func amendMode(entry *UnmanagedFile, perm os.FileMode) {
+	if entry.Type == "link" {
+		return
+	}
+
+	result := int64(perm.Perm())
+
+	if perm&os.ModeSticky > 0 {
+		result |= 01000
+	}
+	if perm&os.ModeSetuid > 0 {
+		result |= 04000
+	}
+	if perm&os.ModeSetgid > 0 {
+		result |= 02000
+	}
+	entry.Mode = strconv.FormatInt(result, 8)
+}
+
+func dirInfo(path string) (size int64, fileCount int) {
+	files, _ := readDir(path)
+
+	size = int64(0)
+	fileCount = len(files)
+	for _, f := range files {
+		if f.IsDir() {
+			if _, ok := IgnoreList[path + f.Name()]; !ok {
+				subSize, subCount := dirInfo(path + f.Name() + "/")
+				size += subSize
+				fileCount += subCount
+			}
+		} else if f.Mode()&os.ModeSymlink != os.ModeSymlink {
+			size += f.Size()
+		}
+	}
+
+	return
+}
+
+func amendSize(entry *UnmanagedFile, size int64) {
+	if entry.Type == "file" {
+		entry.SizeValue = size
+		entry.Size = &entry.SizeValue
+	} else if entry.Type == "dir" {
+		size, files := dirInfo(entry.Name)
+		entry.SizeValue = size
+		entry.Size = &entry.SizeValue
+		entry.FilesValue = files
+		entry.Files = &entry.FilesValue
+	}
+}
+
+func amendPathAttributes(entry *UnmanagedFile, fileType string) {
+	if fileType != "link" {
+		file, err := os.Open(entry.Name)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fi, err := file.Stat()
+		if err != nil {
+			log.Fatal(err)
+		}
+		file.Close()
+
+		amendMode(entry, fi.Mode())
+		amendSize(entry, fi.Size())
+	}
+
+	entry.User, entry.Group = getFileOwnerGroup(entry.Name)
+}
+
 func printVersion() {
 	fmt.Println("Version:", VERSION)
 	os.Exit(0)
 }
+
+// IgnoreList includes mounts and any other file type that will be ignored when
+// evaluating the unmanaged files in a system.
+var IgnoreList = map[string]bool{}
 
 func main() {
 	// check for tar extraction
@@ -253,6 +355,7 @@ func main() {
 
 	// parse CLI arguments
 	var versionFlag = flag.Bool("version", false, "shows the version number")
+	var extractMetadataFlag = flag.Bool("extract-metadata", false, "extracts metadat without extracting files")
 	flag.Parse()
 
 	// show version
@@ -264,14 +367,14 @@ func main() {
 	unmanagedFiles := make(map[string]string)
 	thisBinary, _ := filepath.Abs(os.Args[0])
 
-	ignoreList := map[string]bool{
+	IgnoreList = map[string]bool{
 		thisBinary: true,
 	}
 	for _, mount := range RemoteMounts() {
-		ignoreList[mount] = true
+		IgnoreList[mount] = true
 	}
 	for _, mount := range SpecialMounts() {
-		ignoreList[mount] = true
+		IgnoreList[mount] = true
 	}
 
 	for _, mount := range RemoteMounts() {
@@ -279,7 +382,7 @@ func main() {
 	}
 
 	managedFiles, managedDirs := getManagedFiles()
-	findUnmanagedFiles("/", managedFiles, managedDirs, unmanagedFiles, ignoreList)
+	findUnmanagedFiles("/", managedFiles, managedDirs, unmanagedFiles, IgnoreList)
 
 	files := make([]string, len(unmanagedFiles))
 	i := 0
@@ -289,11 +392,16 @@ func main() {
 	}
 	sort.Strings(files)
 
-	unmanagedFilesMap := make([]map[string]string, len(unmanagedFiles))
+	unmanagedFilesMap := make([]UnmanagedFile, len(unmanagedFiles))
 	for j := range files {
-		entry := make(map[string]string)
-		entry["name"] = files[j]
-		entry["type"] = unmanagedFiles[files[j]]
+		entry := UnmanagedFile{}
+		entry.Name = files[j]
+		entry.Type = unmanagedFiles[files[j]]
+
+		if *extractMetadataFlag {
+			amendPathAttributes(&entry, unmanagedFiles[files[j]])
+		}
+
 		unmanagedFilesMap[j] = entry
 	}
 

@@ -269,6 +269,7 @@ EOF
     describe "#changed_elements" do
       before(:each) {
         files_comparison = Comparison.new
+        files_comparison.common = UnmanagedFilesScope.new([], extracted: true)
         files_comparison.changed = [
           [
             UnmanagedFile.new(name: "/tmp/foo", size: 1, type: "file"),

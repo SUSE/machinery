@@ -2864,7 +2864,8 @@
   },
   "unmanaged_files": {
     "_attributes": {
-      "extracted": true
+      "extracted": true,
+      "has_metadata": true
     },
     "_elements": [
       {
@@ -2936,7 +2937,7 @@
     ]
   },
   "meta": {
-    "format_version": 6,
+    "format_version": 7,
     "os": {
       "modified": "2015-06-23T11:55:38Z",
       "hostname": "192.168.121.70"

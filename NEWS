@@ -6,6 +6,11 @@
   when a remote user is used
 * Show all available information for unmanaged files in HTML view (gh#SUSE/machinery#1905)
 * Move the machinery documentation from man page to HTML format
+* Implement "--extract-metadata" option for the unmanaged-files inspection to
+  retrieve the file meta (e.g. owner, group, size) data without extracting the
+  files.
+* Fixed counting of files in unmanaged directories (empty directories now report zero files
+  as one would expect)
 
 ## Version 1.17.0 - Mon Jan 25 16:49:58 CET 2016 - thardeck@suse.de
 

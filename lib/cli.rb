@@ -518,6 +518,10 @@ class Cli
         "Either provide one file or directory name or a list of names separated by commas."
     c.switch ["extract-files", :x], required: false, negatable: false,
       desc: "Extract changed configuration files and unmanaged files from inspected system"
+    if @config.experimental_features
+      c.switch ["extract-metadata", :m], required: false, negatable: false,
+        desc: "Extract unmanaged files metadata without extracting the files."
+    end
     c.switch "extract-changed-config-files", required: false, negatable: false,
       desc: "Extract changed configuration files from inspected system"
     c.switch "extract-unmanaged-files", required: false, negatable: false,
@@ -555,6 +559,9 @@ class Cli
     end
     if options["extract-files"] || options["extract-unmanaged-files"]
       inspect_options[:extract_unmanaged_files] = true
+    end
+    if options["extract-metadata"]
+      inspect_options[:extract_metadata] = true
     end
 
     filter = FilterOptionParser.parse("inspect", options)

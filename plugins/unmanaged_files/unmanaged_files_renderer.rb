@@ -30,7 +30,7 @@ class UnmanagedFilesRenderer < Renderer
 
       if description["unmanaged_files"]
         description["unmanaged_files"].each do |p|
-          if description["unmanaged_files"].extracted
+          if description["unmanaged_files"].has_metadata
             item "#{p.name} (#{p.type})" do
               puts "User/Group: #{p.user}:#{p.group}" if p.user || p.group
               puts "Mode: #{p.mode}" if p.mode
