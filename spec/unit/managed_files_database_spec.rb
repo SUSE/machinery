@@ -154,6 +154,17 @@ describe ManagedFilesDatabase do
       "rpm changes for file '/etc/pulse/client.conf'.")
       subject.parse_changes_line(line)
     end
+
+    it "treats the replaced flag properly" do
+      [
+        ".........  c /etc/test.conf (replaced)",
+        "missing   c /etc/test.conf (replaced)"
+      ].each do |line|
+        path, changes = subject.parse_changes_line(line)
+        expect(changes).to include("replaced")
+        expect(path).to eq("/etc/test.conf")
+      end
+    end
   end
 
   describe "#subject.parse_stat_line" do
