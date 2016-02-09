@@ -52,12 +52,9 @@ describe ManagedFilesDatabase do
 
   describe "#changed_files" do
     before(:each) do
-      allow_any_instance_of(ManagedFilesDatabase).to receive(:check_requirements)
-      allow_any_instance_of(ManagedFilesDatabase).to receive(:managed_files_list).
-        and_return(changed_files_sh_result)
-      allow_any_instance_of(ManagedFilesDatabase).to receive(:package_for_file_path).
-        and_return(["zypper", "1.6.311"])
-
+      allow(subject).to receive(:check_requirements)
+      allow(subject).to receive(:managed_files_list).and_return(changed_files_sh_result)
+      allow(subject).to receive(:package_for_file_path).and_return(["zypper", "1.6.311"])
       allow(system).to receive(:run_command).with("stat", any_args).and_return(
         File.read(File.join(Machinery::ROOT, "spec/data/rpm_managed_files_database/stat_result"))
       )
@@ -82,6 +79,18 @@ describe ManagedFilesDatabase do
 
       expect(subject.changed_files.first).to eq(expected)
       expect(subject.changed_files.length).to eq(7)
+    end
+
+    it "merges lines that refer to the same file" do
+      expect(subject).to receive(:managed_files_list).and_return(<<EOF
+missing     /lib/modules/3.16.7-29-desktop/updates/vboxpci.ko (replaced)
+missing     /lib/modules/3.16.7-29-desktop/updates/vboxpci.ko
+EOF
+      )
+
+      files = subject.changed_files
+      expect(files.count).to eq(1)
+      expect(files.first.changes).to match_array(["deleted", "replaced"])
     end
   end
 

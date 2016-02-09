@@ -46,23 +46,28 @@ class ManagedFilesDatabase
     return @changed_files if @changed_files
     check_requirements
 
-    result = managed_files_list(&block).each_line.map do |line|
+    result = managed_files_list(&block).lines.inject({}) do |hash, line|
       line.chomp!
-      next unless line =~ /^[^ ]+[ ]+. \/.*$/
+      next(hash) unless line =~ /^[^ ]+[ ]+. \/.*$/
 
       file, changes, type = parse_changes_line(line)
 
-      package_name, package_version = package_for_file_path(file)
+      unless hash[file]
+        package_name, package_version = package_for_file_path(file)
 
-      ChangedFile.new(
-        type,
-        name:            file,
-        package_name:    package_name,
-        package_version: package_version,
-        status:          "changed",
-        changes:         changes
-      )
-    end.compact.uniq
+        hash[file] = ChangedFile.new(
+          type,
+          name:            file,
+          package_name:    package_name,
+          package_version: package_version,
+          status:          "changed",
+          changes:         []
+        )
+      end
+
+      hash[file].changes |= changes
+      hash
+    end.values
 
     paths = result.reject { |f| f.changes.include?("deleted") }.map(&:name)
     path_data = get_path_data(paths)
