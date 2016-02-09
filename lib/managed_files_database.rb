@@ -64,7 +64,7 @@ class ManagedFilesDatabase
       )
     end.compact.uniq
 
-    paths = result.reject { |f| f.changes == ["deleted"] }.map(&:name)
+    paths = result.reject { |f| f.changes.include?("deleted") }.map(&:name)
     path_data = get_path_data(paths)
     result.each do |pkg|
       next unless path_data[pkg.name]
@@ -90,11 +90,13 @@ class ManagedFilesDatabase
     path = fields.join(" ")
 
     changes = []
-    if @rpm_changes == "missing"
-      changes << "deleted"
-    elsif @rpm_changes == "........." && path.end_with?(" (replaced)")
+    if (@rpm_changes == "........." || @rpm_changes == "missing") && path.end_with?(" (replaced)")
       changes << "replaced"
       path.slice!(/ \(replaced\)$/)
+    end
+
+    if @rpm_changes == "missing"
+      changes << "deleted"
     else
       changes << "size" if expected_tag?("S", 0)
       changes << "mode" if expected_tag?("M", 1)
