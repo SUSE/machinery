@@ -73,7 +73,7 @@ codebase or test the latest development changes.
 
      Install packages needed to compile Gems with native extensions:
 
-         $ sudo zypper in gcc-c++ make ruby-devel libxslt-devel libxml2-devel
+         $ sudo zypper in gcc-c++ make patch ruby-devel libxslt-devel libxml2-devel libvirt-devel
 
   4. **Clone Machinery repository and install Gem dependencies**
 
