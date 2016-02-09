@@ -60,12 +60,11 @@
       },
       "oneOf": [
         { "$ref": "#/definitions/file_changed_modified" },
-        { "$ref": "#/definitions/link_changed_modified" },
-        { "$ref": "#/definitions/file_changed_deleted" }
+        { "$ref": "#/definitions/link_changed_modified" }
       ]
     },
     "file_changed_modified": {
-      "required": ["changes", "mode", "user", "group", "type"],
+      "required": ["changes"],
       "properties": {
         "changes": {
           "type": "array",
@@ -81,7 +80,8 @@
               "time",
               "capabilities",
               "replaced",
-              "other_rpm_changes"
+              "other_rpm_changes",
+              "deleted"
             ]
           },
           "minItems": 1
@@ -142,14 +142,6 @@
         },
         "target": {
           "type": "string"
-        }
-      }
-    },
-    "file_changed_deleted": {
-      "required": ["changes"],
-      "properties": {
-        "changes": {
-          "enum": [["deleted"]]
         }
       }
     },
