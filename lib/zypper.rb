@@ -76,8 +76,8 @@ class Zypper
   def download_package(package)
     raw_xml = call_zypper "-x", "download", package, stdout: :capture
 
-    xml = Nokogiri::XML(raw_xml)
-    xml.xpath("//localfile/@path").to_s
+    xml = REXML::Document.new(raw_xml)
+    elements = xml.elements["//localfile"].attributes["path"]
   end
 
   def version
