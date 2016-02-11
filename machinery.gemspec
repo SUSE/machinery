@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   s.add_dependency "cheetah", "~>0.4"
   s.add_dependency "json", "~>1.8"
   s.add_dependency "abstract_method", "~>1.2"
-  s.add_dependency "nokogiri", "~>1.6"
+  s.add_dependency "builder", "~>3.2"
   s.add_dependency "gli", "~>2.11"
   s.add_dependency "json-schema", "~> 2.2.4"
   s.add_dependency "haml", "~> 4.0"
