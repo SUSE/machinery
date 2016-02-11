@@ -131,23 +131,27 @@
         </ul>
       </div>
       <div class="content">
-        <h1 id="scopes">Scopes</h1>
-<p>A scope in Machinery is a set of instructions what data on a system will be inspected.
-During an inspection, it's possible to specify a list of scopes (separated by commas) by
-using the <code>-s</code> option.</p>
-<h1 id="available-scopes">Available Scopes</h1>
-<h2 id="os">os</h2>
+        <ul>
+<li>os</li>
+</ul>
 <p>Contains information about the operating system, name, version, and
 architecture of the inspected system.</p>
-<h2 id="packages">packages</h2>
-<p>Contains information about all installed RPM or dpkg packages of an inspected system.</p>
-<h2 id="patterns">patterns</h2>
+<ul>
+<li>packages</li>
+</ul>
+<p>Contains information on all installed RPM packages installed on the
+inspected system.</p>
+<ul>
+<li>patterns</li>
+</ul>
 <p>Contains all patterns installed on the inspected system. A pattern is a
 collection of software packages.
 The meaning of software patterns depends on the package manager of the
 distribution. Therefore, the pattern scope on SUSE based systems uses the
 <code>zypper</code> command to obtain the information about installed pattern names.</p>
-<h2 id="repositories">repositories</h2>
+<ul>
+<li>repositories</li>
+</ul>
 <p>Contains all information about software repositories configured on the
 inspected system. The information about repositories depends on the package
 manager of the distribution. Thus on SUSE-based systems the <code>zypper</code> command
@@ -180,50 +184,57 @@ is used. Machinery collects the following information from each configured repos
   to the priorities of all other activated repositories. Values can
   range from 1 (highest) to 99 (lowest, default).</p>
 </li>
+<li>
+<p>users</p>
+</li>
 </ul>
-<h2 id="users">users</h2>
 <p>Contains information about the system users including user and group ids,
 login information, such as password hashes and - if available - additional
 password properties.</p>
-<h2 id="groups">groups</h2>
+<ul>
+<li>groups</li>
+</ul>
 <p>Contains information about the system groups such as group attributes and the
 list of group members.</p>
-<h2 id="services">services</h2>
+<ul>
+<li>services</li>
+</ul>
 <p>Services are applications running in the background doing continuous work
 or waiting for requests to do work.
 The scope determines which services are configured to be started in which
 runlevel. It uses the <code>chkconfig</code> command to obtain that information.
 The xinetd services that are also displayed by <code>chkconfig</code> are switched
 on/off by editing config files and are ignored in this context.</p>
-<h2 id="config-files">config-files</h2>
+<ul>
+<li>config_files</li>
+</ul>
 <p>Contains all configuration files which have been changed since they were
-installed. Configuration files are all those files which are marked as such in the
+installed.
+Configuration files are all those files which are marked as such in the
 package which has installed them. A configuration file change is reported
-if its content or its attributes (like Linux permission bits or ownership)
+if its content or its attributes like Linux permission bits or ownership
 have changed.</p>
-<p>When using the <code>--extract-changed-config-files</code> option, all changed config files will be
-transferred from the inspected system and stored in the system description. Depending
-on the content of the inspected system, the amount of data stored may be huge.</p>
-<h2 id="changed-managed-files">changed-managed-files</h2>
+<ul>
+<li>changed_managed_files</li>
+</ul>
 <p>Contains the names and contents of all non-configuration files which have
 been changed compared to the files in the package. A file change is reported
 if its content or its attributes like Linux permission bits or ownership
 have changed.</p>
-<p>When using the <code>--extract-changed-managed-files</code> option, the changed managed files will be
-transferred from the inspected system and stored in the system description. Depending
-on the content of the inspected system, the amount of data stored may be huge.</p>
-<h2 id="unmanaged-files">unmanaged-files</h2>
+<ul>
+<li>unmanaged_files</li>
+</ul>
 <p>Contains the names and contents of all files which are not part of any RPM
-or dpkg package. The list of unmanaged files contains only plain files and
+package. The list of unmanaged files contains only plain files and
 directories. Special files like device nodes, named pipes and Unix domain
 sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/.snapshots/</code>,
-<code>/var/run</code>, and special mounts like procfs and sysfs are ignored, too.
-If a directory is in this list, no file or directory below belongs to an
-RPM or dpkg package.</p>
+<code>/var/run</code> and special mounts like procfs and sysfs are ignored, too.
+If a directory is in this list, no file or directory below it belongs to a
+RPM package.</p>
 <p>Meta data information of unmanaged files is only available if the files were
 extracted during inspection.</p>
-<p>When using the <code>--extract-unmanaged-files</code> option, the files will be transferred from
-the inspected system and stored in the system description. Depending on the content of
+<p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from
+the system and stored in the system description. Depending on the content of
 the inspected system, the amount of data stored may be huge.</p>
       </div>
     </div>
