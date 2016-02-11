@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE profile>
 <profile xmlns="http://www.suse.com/1.0/yast2ns" xmlns:config="http://www.suse.com/1.0/configns">
   <general>
@@ -70,7 +70,7 @@
       <gid>100</gid>
       <home>/home/vagrant</home>
       <shell>/bin/bash</shell>
-      <fullname/>
+      <fullname></fullname>
       <password_settings>
         <min>0</min>
         <max>99999</max>
@@ -104,12 +104,15 @@
   <scripts>
     <pre-scripts config:type="list">
       <script>
-        <source><![CDATA[sed -n '/.*autoyast2\?=\([^ ]*\)\/.*[^\s]*/s//\1/p' /proc/cmdline > /tmp/description_url]]></source>
+        <source>
+          <![CDATA[sed -n '/.*autoyast2\?=\([^ ]*\)\/.*[^\s]*/s//\1/p' /proc/cmdline > /tmp/description_url]]>
+        </source>
       </script>
     </pre-scripts>
     <chroot-scripts config:type="list">
       <script>
-        <source><![CDATA[zypper -n mr --priority=1 'nodejs_alias' --name='nodejs' --no-refresh
+        <source>
+          <![CDATA[zypper -n mr --priority=1 'nodejs_alias' --name='nodejs' --no-refresh
 zypper -n ar --name='openSUSE-13.1-1.7' --type='yast2' --disable 'cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0' 'openSUSE-13.1-1.7_alias'
 zypper -n mr --priority=2 'openSUSE-13.1-1.7_alias' --name='openSUSE-13.1-1.7' --no-refresh
 zypper -n mr --priority=3 'repo_without_type_alias' --name='repo_without_type' --no-refresh
@@ -150,7 +153,8 @@ tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/files.tgz'
 rm '/mnt/tmp/files.tgz'
 curl -o '/mnt/tmp/tarball with spaces.tgz' "`cat /tmp/description_url`/unmanaged_files/trees/etc/tarball%20with%20spaces.tgz"
 tar -C /mnt/ -X '/mnt/tmp/filter' -xf '/mnt/tmp/tarball with spaces.tgz'
-rm '/mnt/tmp/tarball with spaces.tgz']]></source>
+rm '/mnt/tmp/tarball with spaces.tgz']]>
+        </source>
       </script>
     </chroot-scripts>
   </scripts>
