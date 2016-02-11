@@ -236,7 +236,7 @@ EOT
       config = KiwiConfig.new(system_description_with_content)
 
       type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
-      expect(type_node.attributes["boot"]).to eq ("vmxboot/suse-13.1")
+      expect(type_node.attributes["boot"]).to eq("vmxboot/suse-13.1")
       expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 
@@ -269,7 +269,7 @@ EOT
       )
 
       type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
-      expect(type_node.attributes["boot"]).to eq ("vmxboot/suse-SLES12")
+      expect(type_node.attributes["boot"]).to eq("vmxboot/suse-SLES12")
       expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 

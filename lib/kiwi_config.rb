@@ -41,8 +41,8 @@ class KiwiConfig < Exporter
 
     @sh << "baseCleanMount\n"
     @sh << "exit 0\n"
-    File.write(File.join(output_location, "config.xml") , xml_text)
-    File.write(File.join(output_location, "config.sh") , @sh)
+    File.write(File.join(output_location, "config.xml"), xml_text)
+    File.write(File.join(output_location, "config.sh"), @sh)
     FileUtils.cp(
        File.join(Machinery::ROOT, "export_helpers/kiwi_export_readme.md"),
        File.join(output_location, "README.md")
