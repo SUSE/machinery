@@ -37,6 +37,7 @@ require "socket"
 require "diffy"
 require "sinatra/base"
 require "mimemagic"
+require "rexml/document"
 
 require_relative "try"
 require_relative "machinery_logger"
