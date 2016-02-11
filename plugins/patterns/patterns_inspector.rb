@@ -67,7 +67,7 @@ class PatternsInspector < Inspector
         raise
       end
     end
-    pattern_list = Nokogiri::XML(xml).xpath("/stream/pattern-list/pattern")
+    pattern_list = REXML::Document.new(xml).get_elements("/stream/pattern-list/pattern")
 
     if pattern_list.count == 0
       @description.patterns = PatternsScope.new
@@ -76,9 +76,9 @@ class PatternsInspector < Inspector
 
     patterns = pattern_list.map do |pattern|
       Pattern.new(
-        name: pattern["name"],
-        version: pattern["version"],
-        release: pattern["release"]
+        name: pattern.attributes["name"],
+        version: pattern.attributes["version"],
+        release: pattern.attributes["release"]
       )
     end.uniq.sort_by(&:name)
 
