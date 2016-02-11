@@ -68,45 +68,42 @@ describe KiwiConfig do
       )
     end
 
-    it "applies the packages to the kiwi config" do
+    it "generates kiwi config with content" do
       config = KiwiConfig.new(system_description_with_content)
 
-      users = config.xml.xpath("/image/users/user")
-      expect(users.count).to eq(1)
-      expect(users[0].attr("home")).to eq("/root")
-      packages = config.xml.xpath("/image/packages/package")
-      expect(packages.count).to eq(2)
-      expect(packages[0].attr("name")).to eq("bash")
-      expect(packages[1].attr("name")).to eq("autofs")
-    end
-
-    it "applies the packages to the kiwi config" do
-      config = KiwiConfig.new(system_description_with_content)
-
-      packages = config.xml.xpath("/image/packages/package").
-        map { |e| e.attr("name") }
-      expect(packages).not_to include("openSUSE-release-dvd")
-    end
-
-    it "applies the patterns to the kiwi config" do
-      config = KiwiConfig.new(system_description_with_content)
-      patterns = config.xml.xpath("/image/packages/namedCollection")
-
-      expect(patterns.count).to eq(1)
-      expect(patterns[0].attr("name")).to eq("base")
-    end
-
-    it "applies the repositories to the kiwi config" do
-      config = KiwiConfig.new(system_description_with_content)
-
-      repositories = config.xml.xpath("/image/repository")
-
-      # enabled web based repositories go to config.xml if they have a type
-      expect(repositories.count).to eq(3)
-      expect(repositories[0].attr("type")).to eq("rpm-md")
-      expect(repositories[0].children[0].attr("path")).to \
-        eq("http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/")
-      expect(repositories[0].attr("priority")).to eq("1")
+      expected_xml = <<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<image schemaversion="5.8" name="name">
+  <description type="system">
+    <author>Machinery</author>
+    <contact></contact>
+    <specification>Description of system 'name' exported by Machinery</specification>
+  </description>
+  <preferences>
+    <packagemanager>zypper</packagemanager>
+    <version>0.0.1</version>
+    <type image="vmx" filesystem="ext3" installiso="true" boot="vmxboot/suse-13.1" format="qcow2" bootloader="grub2"/>
+  </preferences>
+  <users group="root">
+    <user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root"/>
+  </users>
+  <repository alias="nodejs_alias" type="rpm-md" priority="1">
+    <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
+  </repository>
+  <repository alias="NCCRepo" type="yast2" priority="2">
+    <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
+  </repository>
+  <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
+    <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
+  </repository>
+  <packages type="bootstrap">
+    <package name="bash"/>
+    <package name="autofs"/>
+    <namedCollection name="base"/>
+  </packages>
+</image>
+EOT
+      expect(config.xml_text).to eq(expected_xml)
 
       # all repositories go to config.sh
       expect(config.sh.scan(/zypper -n ar/).count).to eq(7)
@@ -166,35 +163,55 @@ describe KiwiConfig do
           scopes: ["os", "packages", "repositories"], name: name, store: store
         )
       )
-      repositories = config.xml.xpath("/image/repository")
 
-      # escapes the alias in the xml
-      expect(repositories.last.attr("alias")).to eq("Alias-With-Spaces")
+      repositories = REXML::Document.new(config.xml_text).get_elements("/image/repository")
+      expect(repositories.last.attributes["alias"]).to eq("Alias-With-Spaces")
 
       # doesn't escape the alias in the config.sh
       expect(config.sh).to include("Alias With Spaces")
     end
 
-    it "applies sysvinit services to kiwi config" do
+    it "generates kiwi config with sysvinit services" do
       config = KiwiConfig.new(system_description_with_sysvinit_services)
+
+      expected_xml = <<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<image schemaversion="5.8" name="name">
+  <description type="system">
+    <author>Machinery</author>
+    <contact></contact>
+    <specification>Description of system 'name' exported by Machinery</specification>
+  </description>
+  <preferences>
+    <packagemanager>zypper</packagemanager>
+    <version>0.0.1</version>
+    <type image="vmx" filesystem="ext3" installiso="true" boot="vmxboot/suse-SLES11" format="qcow2" bootloader="grub"/>
+  </preferences>
+  <users group="root">
+    <user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root"/>
+  </users>
+  <repository alias="nodejs_alias" type="rpm-md" priority="1">
+    <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
+  </repository>
+  <repository alias="NCCRepo" type="yast2" priority="2">
+    <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
+  </repository>
+  <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
+    <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
+  </repository>
+  <packages type="bootstrap">
+    <package name="bash"/>
+    <package name="autofs"/>
+  </packages>
+</image>
+EOT
+      expect(config.xml_text).to eq(expected_xml)
 
       expect(config.sh).to include("chkconfig sshd on\n")
       expect(config.sh).to include("chkconfig rsyncd off\n")
     end
 
-    it "writes a proper description" do
-      config = KiwiConfig.new(system_description_with_sysvinit_services)
-
-      author = config.xml.xpath("/image/description/author").children.text
-      contact = config.xml.xpath("/image/description/contact").children.text
-      specification = config.xml.xpath("/image/description/specification").children.text
-
-      expect(author).to eq("Machinery")
-      expect(contact).to eq("")
-      expect(specification).to eq("Description of system 'name' exported by Machinery")
-    end
-
-    it "applies systemd services to kiwi config" do
+    it "generates kiwi config with systemd services" do
       config = KiwiConfig.new(system_description_with_systemd_services)
 
       expect(config.sh).to include("systemctl enable sshd.service")
@@ -217,10 +234,10 @@ describe KiwiConfig do
     it "sets the target distribution and bootloader for openSUSE 13.1" do
       expect(system_description_with_content.os.name).to include("openSUSE 13.1")
       config = KiwiConfig.new(system_description_with_content)
-      type_node = config.xml.xpath("/image/preferences/type")[0]
 
-      expect(type_node["boot"]).to eq("vmxboot/suse-13.1")
-      expect(type_node["bootloader"]).to eq("grub2")
+      type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
+      expect(type_node.attributes["boot"]).to eq ("vmxboot/suse-13.1")
+      expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 
     it "handles quotes in changed links" do
@@ -250,17 +267,10 @@ describe KiwiConfig do
           scopes: ["os_sles12", "packages", "repositories"], name: name, store: store
         )
       )
-      type_node = config.xml.xpath("/image/preferences/type")[0]
 
-      expect(type_node["boot"]).to eq("vmxboot/suse-SLES12")
-      expect(type_node["bootloader"]).to eq("grub2")
-    end
-
-    it "sets the image format to qcow2" do
-      config = KiwiConfig.new(system_description_with_content)
-      type_node = config.xml.xpath("/image/preferences/type")[0]
-
-      expect(type_node["format"]).to eq("qcow2")
+      type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
+      expect(type_node.attributes["boot"]).to eq ("vmxboot/suse-SLES12")
+      expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 
     it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
