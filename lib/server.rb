@@ -16,6 +16,28 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+# Rack::TryStatic was taken from the rack-contrib repository (https://github.com/rack/rack-contrib)
+module Rack
+  class TryStatic
+    def initialize(app, options)
+      @app = app
+      @try = ["", *options[:try]]
+      @static = ::Rack::Static.new(->(_) { [404, {}, []] }, options)
+    end
+
+    def call(env)
+      orig_path = env["PATH_INFO"]
+      found = nil
+      @try.each do |path|
+        resp = @static.call(env.merge!("PATH_INFO" => orig_path + path))
+        break if !(403..405).cover?(resp[0]) && found = resp
+      end
+      found || @app.call(env.merge!("PATH_INFO" => orig_path))
+    end
+  end
+end
+
+
 class Server < Sinatra::Base
   module Helpers
     def render_partial(partial, locals = {})
@@ -201,15 +223,12 @@ class Server < Sinatra::Base
 
   helpers Helpers
 
-  get "/site*" do
-    path = params["splat"].join
+  # Serve the 'manual/site' directory under /site using Rack::TryStatic
+  use Rack::TryStatic,
+    root: File.join(Machinery::ROOT, "manual"),
+    urls: %w[/site],
+    try: ["index.html"]
 
-    redirect to("site#{path}/") unless path.end_with?("/") || path =~ /\.[a-z]+$/
-
-    path += "index.html" unless path.end_with?("index.html")
-
-    File.read(File.join(Machinery::ROOT, "manual/site", path))
-  end
 
   get "/descriptions/:id/files/:scope/*" do
     description = SystemDescription.load(params[:id], settings.system_description_store)

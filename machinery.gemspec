@@ -65,7 +65,8 @@ Gem::Specification.new do |s|
     "machinery-helper/Rakefile",
     "machinery-helper/README.md",
     "tools/helper_builder.rb",
-    ".git_revision"
+    ".git_revision",
+    "manual/**/*"
   ]
   s.executables  = "machinery"
   s.require_path = "lib"
