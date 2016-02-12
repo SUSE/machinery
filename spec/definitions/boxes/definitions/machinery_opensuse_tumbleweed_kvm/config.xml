@@ -9,7 +9,7 @@
         </specification>
     </description>
     <preferences>
-      <type image="vmx" filesystem="btrfs" boot="vmxboot/suse-tumbleweed" format="vagrant" bootloader="grub2"  kernelcmdline="root=/dev/vda1 disk=/dev/vda nomodeset LOCAL_BOOT=yes" bootpartition="false">
+      <type image="vmx" filesystem="btrfs" boot="vmxboot/suse-tumbleweed" format="vagrant" bootloader="grub2"  kernelcmdline="root=/dev/vda1 disk=/dev/vda nomodeset LOCAL_BOOT=yes net.ifnames=0" bootpartition="false">
             <vagrantconfig provider="libvirt" virtualsize="16"/>
             <size unit="G">15</size>
             <systemdisk name="btrfs">
