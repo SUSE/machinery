@@ -39,9 +39,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  go
 %endif
 BuildRequires:  ruby-macros >= 5
-# libxml2-devel and libxslt-devel are needed to install Nokogiri.
-BuildRequires:  libxml2-devel
-BuildRequires:  libxslt-devel
 BuildRequires:  fdupes
 %if %suse_version > 1310
 %define rb_build_versions %{rb_default_ruby}
@@ -122,21 +119,7 @@ EOT
 mkdir -p vendor/cache
 cp %{_libdir}/ruby/gems/%{rb_ver}/cache/*.gem vendor/cache
 
-# Normally, Nokogiri builds its own version of libexslt, libxslt and libxml2 and
-# links nokogiri.so against them. The problem is that the linked library path
-# contains the build root and would not work when the package is installed. The
-# work around is to force Nokogiri to use system libraries.
-export NOKOGIRI_USE_SYSTEM_LIBRARIES=1
-
 bundle install --standalone --local
-
-# Remove references to the build directory to prevent the following RPMLint error:
-# E: file-contains-buildroot (Badness: 10000)
-rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/mkmf.log
-rm -rf bundle/ruby/%{rb_ver}/extensions/*/%{rb_ver}/nokogiri-*/gem_make.out
-# The nokogiri gem is mentioned twice in the setup.rb in Tumbleweed (once with
-# a relative and once with an absolute path) so we remove the absolute one
-sed -i '\|%{buildroot}|d' bundle/bundler/setup.rb
 
 popd
 %endif
