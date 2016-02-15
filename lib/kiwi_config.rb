@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 class KiwiConfig < Exporter
-  attr_accessor :xml, :sh
+  attr_accessor :xml_text, :sh
   attr_accessor :name
 
   def initialize(system_description, options = {})
@@ -41,8 +41,8 @@ class KiwiConfig < Exporter
 
     @sh << "baseCleanMount\n"
     @sh << "exit 0\n"
-    File.write(File.join(output_location, "config.xml") , @xml.to_xml)
-    File.write(File.join(output_location, "config.sh") , @sh)
+    File.write(File.join(output_location, "config.xml"), xml_text)
+    File.write(File.join(output_location, "config.sh"), @sh)
     FileUtils.cp(
        File.join(Machinery::ROOT, "export_helpers/kiwi_export_readme.md"),
        File.join(output_location, "README.md")
@@ -192,41 +192,41 @@ suseImportBuildKey
 suseConfig
 EOF
 
-    builder = Nokogiri::XML::Builder.new do |xml|
-      xml.image(schemaversion: "5.8", name: @system_description.name) do
-        xml.description(type: "system") do
-          xml.author "Machinery"
-          xml.contact ""
-          xml.specification "Description of system '#{@system_description.name}' exported by Machinery"
-        end
-
-        xml.preferences do
-          xml.packagemanager "zypper"
-          xml.version "0.0.1"
-          xml.type_(
-            image: "vmx",
-            filesystem: "ext3",
-            installiso: "true",
-            boot: @system_description.os.kiwi_boot,
-            format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
-          )
-        end
-
-        xml.users(group: "root") do
-          xml.user(password: "$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0",
-            home: "/root", name: "root")
-        end
-
-
-        apply_repositories(xml)
-        apply_packages(xml)
-        apply_services
+    xml = Builder::XmlMarkup.new(indent: 2)
+    xml.instruct! :xml
+    xml.image(schemaversion: "5.8", name: @system_description.name) do
+      xml.description(type: "system") do
+        xml.author "Machinery"
+        xml.contact ""
+        xml.specification "Description of system '#{@system_description.name}' exported by Machinery"
       end
+
+      xml.preferences do
+        xml.packagemanager "zypper"
+        xml.version "0.0.1"
+        xml.type(
+          image: "vmx",
+          filesystem: "ext3",
+          installiso: "true",
+          boot: @system_description.os.kiwi_boot,
+          format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
+        )
+      end
+
+      xml.users(group: "root") do
+        xml.user(password: "$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0",
+          home: "/root", name: "root")
+      end
+
+
+      apply_repositories(xml)
+      apply_packages(xml)
+      apply_services
     end
 
     pre_process_config
 
-    @xml = builder.doc
+    @xml_text = xml.target!
   end
 
   def apply_packages(xml)

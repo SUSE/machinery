@@ -157,16 +157,16 @@ class RepositoriesInspector < Inspector
   end
 
   def parse_repositories_from_xml(xml, priorities, credentials)
-    reps = Nokogiri::XML(xml).xpath("/stream/repo-list/repo")
+    reps = REXML::Document.new(xml).get_elements("/stream/repo-list/repo")
     result = reps.map do |rep|
-      if rep["priority"]
-        pri_value = rep["priority"].to_i
+      if rep.attributes["priority"]
+        pri_value = rep.attributes["priority"].to_i
       else
-        pri_value = priorities[rep["alias"]]
+        pri_value = priorities[rep.attributes["alias"]]
       end
 
       # NCC
-      rep.at_xpath("./url").text.match(/\?credentials=(\w*)/)
+      rep.elements["url"].first.to_s.match(/\?credentials=(\w*)/)
       cred_value = $1
       if cred_value && credentials[cred_value]
         username = credentials[cred_value][:username]
@@ -174,7 +174,7 @@ class RepositoriesInspector < Inspector
       end
 
       # SCC
-      rep.at_xpath("./url").text.match(/(https:\/\/updates.suse.com\/SUSE\/)/)
+      rep.elements["url"].first.to_s.match(/(https:\/\/updates.suse.com\/SUSE\/)/)
       scc_url = $1
       cred_value = "SCCcredentials"
       if scc_url && credentials[cred_value]
@@ -183,13 +183,13 @@ class RepositoriesInspector < Inspector
       end
 
       repository = ZyppRepository.new(
-        alias:       rep["alias"],
-        name:        rep["name"],
-        type:        rep["type"],
-        url:         rep.at_xpath("./url").text,
-        enabled:     rep["enabled"] == "1",
-        autorefresh: rep["autorefresh"] == "1",
-        gpgcheck:    rep["gpgcheck"] == "1",
+        alias:       rep.attributes["alias"],
+        name:        rep.attributes["name"],
+        type:        rep.attributes["type"],
+        url:         rep.elements["url"].first.to_s,
+        enabled:     rep.attributes["enabled"] == "1",
+        autorefresh: rep.attributes["autorefresh"] == "1",
+        gpgcheck:    rep.attributes["gpgcheck"] == "1",
         priority:    pri_value
       )
       if username && password

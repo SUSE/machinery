@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <image schemaversion="5.8" name="opensuse_leap">
   <description type="system">
     <author>Machinery</author>
-    <contact/>
+    <contact></contact>
     <specification>Description of system 'opensuse_leap' exported by Machinery</specification>
   </description>
   <preferences>

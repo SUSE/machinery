@@ -66,41 +66,41 @@ class Autoyast < Exporter
   end
 
   def profile
-    builder = Nokogiri::XML::Builder.new do |xml|
-      xml.doc.create_internal_subset("profile", nil, nil)
-      xml.profile(
-        "xmlns" => "http://www.suse.com/1.0/yast2ns",
-        "xmlns:config" => "http://www.suse.com/1.0/configns"
-      ) do
-        apply_non_interactive_mode(xml)
-        apply_basic_network(xml)
-        apply_repositories(xml)
-        xml.software do
-          apply_software_settings(xml)
-          apply_packages(xml)
-          apply_patterns(xml)
-        end
-        apply_users(xml)
-        apply_groups(xml)
-        apply_services(xml)
+    xml = Builder::XmlMarkup.new(indent: 2)
+    xml.instruct! :xml
+    xml.declare! :DOCTYPE, :profile
+    xml.profile(
+      "xmlns" => "http://www.suse.com/1.0/yast2ns",
+      "xmlns:config" => "http://www.suse.com/1.0/configns"
+    ) do
+      apply_non_interactive_mode(xml)
+      apply_basic_network(xml)
+      apply_repositories(xml)
+      xml.software do
+        apply_software_settings(xml)
+        apply_packages(xml)
+        apply_patterns(xml)
+      end
+      apply_users(xml)
+      apply_groups(xml)
+      apply_services(xml)
 
-        apply_changed_files("config_files")
-        apply_changed_files("changed_managed_files")
-        apply_unmanaged_files
-        xml.scripts do
-          apply_url_extraction(xml)
-          xml.send("chroot-scripts", "config:type" => "list") do
-            xml.script do
-              xml.source do
-                xml.cdata @chroot_scripts.join("\n")
-              end
+      apply_changed_files("config_files")
+      apply_changed_files("changed_managed_files")
+      apply_unmanaged_files
+      xml.scripts do
+        apply_url_extraction(xml)
+        xml.tag!("chroot-scripts", "config:type" => "list") do
+          xml.script do
+            xml.source do
+              xml.cdata! @chroot_scripts.join("\n")
             end
           end
         end
       end
     end
 
-    builder.to_xml
+    xml.target!
   end
 
   def outgoing_ip
@@ -140,7 +140,7 @@ class Autoyast < Exporter
   def apply_repositories(xml)
     return if !@system_description.repositories
 
-    xml.send("add-on") do
+    xml.tag!("add-on") do
       xml.add_on_products("config:type" => "list") do
         @system_description.repositories.each do |repository|
           if repository.enabled && !repository.external_medium?
@@ -239,7 +239,7 @@ class Autoyast < Exporter
   def apply_services(xml)
     return if !@system_description.services
 
-    xml.send("services-manager") do
+    xml.tag!("services-manager") do
       xml.services("config:type" => "list") do
         @system_description.services.each do |service|
           name = service.name
@@ -268,10 +268,10 @@ class Autoyast < Exporter
   end
 
   def apply_url_extraction(xml)
-    xml.send("pre-scripts", "config:type" => "list") do
+    xml.tag!("pre-scripts", "config:type" => "list") do
       xml.script do
         xml.source do
-          xml.cdata 'sed -n \'/.*autoyast2\?=\([^ ]*\)\/.*[^\s]*/s//\1/p\'' \
+          xml.cdata! 'sed -n \'/.*autoyast2\?=\([^ ]*\)\/.*[^\s]*/s//\1/p\'' \
             ' /proc/cmdline > /tmp/description_url'
         end
       end

@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Remove dependency on Nokogiri gem
 * Fix treatment of the rpm `(replaced)` flag (gh#SUSE/machinery#1897)
 * Fix repository recognition on older Debian systems
 * Inspection of unmanaged-files is now also using the faster machinery-helper
@@ -420,4 +421,3 @@
 ## Version 0.1.0 - Tue Dec 17 14:06:59 CET 2013 - aduffeck@suse.de
 
 * Package and repository inspection of SLES 11 systems
-
