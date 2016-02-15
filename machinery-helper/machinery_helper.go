@@ -280,6 +280,11 @@ func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 		result |= 02000
 	}
 	entry.Mode = strconv.FormatInt(result, 8)
+
+	// Pad mode string to a length of three
+	for len(entry.Mode) < 3 {
+		entry.Mode = "0" + entry.Mode
+	}
 }
 
 func dirInfo(path string) (size int64, fileCount int) {

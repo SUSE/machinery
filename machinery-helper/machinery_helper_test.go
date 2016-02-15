@@ -227,6 +227,20 @@ func TestAmendMode(t *testing.T) {
 		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
 	}
 
+	perm = os.FileMode(0000)
+	amendMode(&entry, perm)
+	want = "000"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
+	perm = os.FileMode(0044)
+	amendMode(&entry, perm)
+	want = "044"
+	if entry.Mode != want {
+		t.Errorf("amendMode() = '%v', want '%v", entry.Mode, want)
+	}
+
 	entry = UnmanagedFile{Type: "link"}
 	amendMode(&entry, perm)
 	if entry.Mode != "" {
