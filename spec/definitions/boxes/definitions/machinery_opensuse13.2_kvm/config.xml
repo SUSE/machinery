@@ -9,9 +9,22 @@
         </specification>
     </description>
     <preferences>
-      <type image="vmx" filesystem="ext4" boot="vmxboot/suse-13.2" format="vagrant" bootloader="grub2"  kernelcmdline="root=/dev/vda1 disk=/dev/vda nomodeset LOCAL_BOOT=yes">
+      <type image="vmx" filesystem="btrfs" boot="vmxboot/suse-13.2" format="vagrant" bootloader="grub2"  kernelcmdline="root=/dev/vda1 disk=/dev/vda nomodeset LOCAL_BOOT=yes" bootpartition="false">
             <vagrantconfig provider="libvirt" virtualsize="16"/>
             <size unit="G">15</size>
+            <systemdisk name="btrfs">
+                <volume name="home"/>
+                <volume name="tmp"/>
+                <volume name="opt"/>
+                <volume name="srv"/>
+                <volume name="var/crash"/>
+                <volume name="var/spool"/>
+                <volume name="boot/grub2/i386-pc"/>
+                <volume name="usr/local"/>
+                <volume name="var/log"/>
+                <volume name="var/opt"/>
+                <volume name="var/tmp"/>
+            </systemdisk>
         </type>
         <version>1.13.2</version>
         <packagemanager>zypper</packagemanager>
@@ -27,11 +40,11 @@
     <users group="vagrant">
         <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant"/>
     </users>
-    <repository type="yast2">
-        <source path="obs://13.2/repo/oss"/>
+    <repository type="yast2" alias="Main Repository" imageinclude="true">
+        <source path="http://download.opensuse.org/distribution/13.2/repo/oss/"/>
     </repository>
-    <repository type="rpm-md">
-        <source path="obs://openSUSE:13.2:Update/standard"/>
+    <repository type="rpm-md" alias="Main Update Repository" imageinclude="true">
+        <source path="http://download.opensuse.org/update/13.2/"/>
     </repository>
     <packages type="image">
         <namedCollection name="base"/>
