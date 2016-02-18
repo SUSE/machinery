@@ -39,6 +39,8 @@ require "mimemagic"
 require "rexml/document"
 require "builder"
 
+require_relative "json_schema_monkey_patch"
+
 require_relative "try"
 require_relative "machinery_logger"
 require_relative "zypper"
