@@ -101,7 +101,10 @@ const VERSION = "#{git_revision}"
           []
         end
       elsif version <= 1.6
-        ["i686", "x86_64", "ppc64le"]
+        archs = ["i686", "x86_64", "ppc64le"]
+        # the two following lines are temporary until Go 1.7 with s390x support is released
+        archs.push("s390x") if File.exist?("/usr/share/go/src/cmd/asm/internal/arch/s390x.go")
+        archs
       else
         ["i686", "x86_64", "ppc64le", "s390x"]
       end

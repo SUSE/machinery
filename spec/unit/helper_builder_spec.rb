@@ -313,6 +313,9 @@ describe HelperBuilder do
 
     it "returns i686, x86_64 and ppc64le for Go 1.5.2" do
       expect(subject).to receive(:run_go_version).and_return("go version go1.5.2 linux/amd64")
+      # the following line is temporary until Go 1.7 with s390x support is released
+      expect(File).to receive(:exist?).with("/usr/share/go/src/cmd/asm/internal/arch/s390x.go").
+        and_return(false)
       expect(subject.buildable_archs).to match_array(["i686", "x86_64", "ppc64le"])
     end
 
