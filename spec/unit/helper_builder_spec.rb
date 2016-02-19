@@ -37,6 +37,7 @@ describe HelperBuilder do
       allow(subject).to receive(:git_revision).and_return(commit)
       allow(subject).to receive(:run_uname_p).and_return("x86_64")
       allow(subject).to receive(:run_go_build).and_return(true)
+      allow(subject).to receive(:run_go_version).and_return("go version go1.4.2 linux/amd64")
       allow(subject).to receive(:run_which_go).and_return(true)
       allow(subject).to receive(:go_available?).and_return(true)
     end
@@ -136,14 +137,14 @@ describe HelperBuilder do
       end
 
       it "builds go binary if source files are newer than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"), mtime: Time.now.to_i - 10)
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"), mtime: Time.now.to_i - 10)
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"))
         expect(subject).to receive(:run_go_build).and_return(true)
         expect(subject.run_build).to be(true)
       end
 
       it "does not build go binary if source files are older than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"))
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"))
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"), mtime: Time.now.to_i - 10)
         FileUtils.touch(File.join(helper_dir, "version.go"), mtime: Time.now.to_i - 10)
         expect(subject).not_to receive(:run_go_build)
@@ -175,14 +176,14 @@ describe HelperBuilder do
       end
 
       it "builds go binary if source files are newer than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"), mtime: Time.now.to_i - 10)
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"), mtime: Time.now.to_i - 10)
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"))
         expect(subject).to receive(:run_go_build).and_return(true)
         expect(subject.run_build).to be(true)
       end
 
       it "does not build go binary if source files are older than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"))
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"))
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"), mtime: Time.now.to_i - 10)
         expect(subject).not_to receive(:run_go_build)
         expect(subject.run_build).to be(true)
@@ -249,7 +250,7 @@ describe HelperBuilder do
       end
 
       it "removes the pre-existing machinery-helper binary" do
-        machinery_helper = File.join(helper_dir, "machinery-helper")
+        machinery_helper = File.join(helper_dir, "machinery-helper-x86_64")
         FileUtils.touch(machinery_helper)
 
         expect(File.exist?(machinery_helper)).to be(true)
@@ -284,15 +285,52 @@ describe HelperBuilder do
     end
   end
 
+  describe "#buildable_archs" do
+    before(:each) do
+      allow(subject).to receive(:run_uname_p).and_return("x86_64")
+    end
+
+    context "for Go 1.4.2" do
+      before(:each) do
+        allow(subject).to receive(:run_go_version).and_return("go version go1.4.2 linux/amd64")
+      end
+
+      it "returns only the local arch if it is x86_64" do
+        expect(subject).to receive(:run_uname_p).and_return("x86_64")
+        expect(subject.buildable_archs).to match_array(["x86_64"])
+      end
+
+      it "returns only the local arch if it is i686" do
+        expect(subject).to receive(:run_uname_p).and_return("i686")
+        expect(subject.buildable_archs).to match_array(["i686"])
+      end
+
+      it "returns an empty array for non supported archs" do
+        expect(subject).to receive(:run_uname_p).and_return("s390x")
+        expect(subject.buildable_archs).to match_array([])
+      end
+    end
+
+    it "returns i686, x86_64 and ppc64le for Go 1.5.2" do
+      expect(subject).to receive(:run_go_version).and_return("go version go1.5.2 linux/amd64")
+      expect(subject.buildable_archs).to match_array(["i686", "x86_64", "ppc64le"])
+    end
+
+    it "returns i686, x86_64, ppc64le and s390x for Go 1.7.0" do
+      expect(subject).to receive(:run_go_version).and_return("go version go1.7.0 linux/amd64")
+      expect(subject.buildable_archs).to match_array(["i686", "x86_64", "ppc64le", "s390x"])
+    end
+  end
+
   describe "#arch_supported?" do
     it "returns true if the current architecture is in the supported list" do
-      expect(subject).to receive(:run_uname_p).and_return("x86_64")
+      expect(subject).to receive(:run_uname_p).and_return("x86_64").at_least(:once)
       expect(subject.arch_supported?).to be(true)
     end
 
     context "if current architecture is not supported" do
       before(:each) do
-        expect(subject).to receive(:run_uname_p).and_return("arch")
+        expect(subject).to receive(:run_uname_p).and_return("arch").at_least(:once)
       end
 
       it "returns false" do

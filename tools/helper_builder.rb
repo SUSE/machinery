@@ -41,10 +41,13 @@ class HelperBuilder
       end
     end
 
-    if !FileUtils.uptodate?(
-      File.join(@helper_dir, "machinery-helper"), Dir.glob(File.join(@helper_dir, "*.go"))
-    )
-      return build_machinery_helper
+    buildable_archs.each do |arch|
+      unless FileUtils.uptodate?(
+        File.join(@helper_dir, "machinery-helper-#{arch}"),
+        Dir.glob(File.join(@helper_dir, "*.go"))
+      )
+        return build_machinery_helper
+      end
     end
     true
   end
@@ -61,7 +64,7 @@ const VERSION = "#{git_revision}"
   end
 
   def build_machinery_helper
-    FileUtils.rm_f(File.join(@helper_dir, "machinery-helper"))
+    FileUtils.rm_f(Dir.glob(File.join(@helper_dir, "machinery-helper*")))
     Dir.chdir(@helper_dir) do
       puts("Building machinery-helper binary.")
       if !run_go_build
@@ -85,15 +88,36 @@ const VERSION = "#{git_revision}"
     end
   end
 
+  def buildable_archs
+    if @archs.nil?
+      version = run_go_version[/go(\d+.\d)/, 1].to_f
+      @archs = if version <= 1.4
+        case run_uname_p
+        when "x86_64"
+          ["x86_64"]
+        when "i686"
+          ["i686"]
+        else
+          []
+        end
+      elsif version <= 1.6
+        ["i686", "x86_64", "ppc64le"]
+      else
+        ["i686", "x86_64", "ppc64le", "s390x"]
+      end
+    end
+    @archs
+  end
+
   def arch_supported?
     arch = run_uname_p
-    if !["x86_64"].include?(arch)
+    if buildable_archs.include?(arch)
+      true
+    else
       STDERR.puts(
         "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
       )
       false
-    else
-      true
     end
   end
 
@@ -116,8 +140,31 @@ const VERSION = "#{git_revision}"
 
   private
 
+  def run_go_version
+    `go version`
+  end
+
+  def convert_to_go_arch(arch)
+    case arch
+    when "x86_64"
+      "amd64"
+    when "i686"
+      "386"
+    else
+      arch
+    end
+  end
+
   def run_go_build
-    system("go build")
+    if buildable_archs.count == 1
+      system("go build -o machinery-helper-#{buildable_archs.first}")
+    else
+      buildable_archs.each do |arch|
+        system(
+          "env GOOS=linux GOARCH=#{convert_to_go_arch(arch)} go build -o machinery-helper-#{arch}"
+        )
+      end
+    end
   end
 
   def git_revision
