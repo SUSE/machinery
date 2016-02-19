@@ -34,7 +34,7 @@ class MachineryHelper
   end
 
   def local_helper_path
-    File.join(local_helpers_path, "machinery-helper")
+    File.join(local_helpers_path, "machinery-helper-#{@system.arch}")
   end
 
   def remote_helper_path
@@ -48,7 +48,7 @@ class MachineryHelper
   # Returns true, if there is a helper binary matching the architecture of the
   # inspected system. Return false, if not.
   def can_help?
-    File.exist?(local_helper_path) && LocalSystem.matches_architecture?(@system.arch)
+    File.exist?(local_helper_path)
   end
 
   def inject_helper
