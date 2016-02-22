@@ -52,16 +52,11 @@ describe HelperBuilder do
       end
 
       it "returns true" do
-        expect(subject.run_build).to be(true)
+        expect(subject.run_build).to be(false)
       end
 
       it "does not build" do
         expect(subject).not_to receive(:run_go_build)
-        subject.run_build
-      end
-
-      it "does not check for go_availbility" do
-        expect(subject).not_to receive(:go_available?)
         subject.run_build
       end
     end
@@ -277,8 +272,9 @@ describe HelperBuilder do
 
       it "shows warning" do
         expect(STDERR).to receive(:puts).with(
-          "Warning: The Go compiler is not available on this system. Skipping building the" \
-            " machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
+          "Error: The official Go compiler is not available on this system which prevents the" \
+            " machinery-helper from being built.\nInspection of unmanaged-files is" \
+            " not possible without this helper."
         )
         subject.go_available?
       end
@@ -326,6 +322,11 @@ describe HelperBuilder do
   end
 
   describe "#arch_supported?" do
+    before(:each) do
+      allow(subject).to receive(:go_available?).and_return(true)
+      allow(subject).to receive(:run_go_version).and_return("go version go1.4.2 linux/amd64")
+    end
+
     it "returns true if the current architecture is in the supported list" do
       expect(subject).to receive(:run_uname_p).and_return("x86_64").at_least(:once)
       expect(subject.arch_supported?).to be(true)
@@ -342,7 +343,8 @@ describe HelperBuilder do
 
       it "shows a warning if the current architecture is not in the supported list" do
         expect(STDERR).to receive(:puts).with(
-          "Warning: The hardware architecture arch is not yet supported by the machinery-helper."
+          "Error: The hardware architecture arch is not yet supported by the official GO" \
+            " Compiler so the machinery-helper can not be built."
         )
         subject.arch_supported?
       end

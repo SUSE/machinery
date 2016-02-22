@@ -26,9 +26,7 @@ class HelperBuilder
   end
 
   def run_build
-    # An unsupported architecture is no error
-    return true if !arch_supported?
-    return false if !go_available?
+    return false if !go_available? || !arch_supported?
 
     # handle changed branches (where go files are older than the helper)
     if runs_in_git? && (changed_revision? || !File.exist?(@go_version_file))
@@ -79,8 +77,9 @@ const VERSION = "#{git_revision}"
   def go_available?
     if !run_which_go
       STDERR.puts(
-        "Warning: The Go compiler is not available on this system. Skipping building the" \
-          " machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
+        "Error: The official Go compiler is not available on this system which prevents the" \
+          " machinery-helper from being built.\nInspection of unmanaged-files is" \
+          " not possible without this helper."
       )
       false
     else
@@ -118,7 +117,8 @@ const VERSION = "#{git_revision}"
       true
     else
       STDERR.puts(
-        "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
+        "Error: The hardware architecture #{arch} is not yet supported by the official GO" \
+          " Compiler so the machinery-helper can not be built."
       )
       false
     end
