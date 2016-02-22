@@ -292,7 +292,6 @@ describe HelperBuilder do
       end
 
       it "returns only the local arch if it is x86_64" do
-        expect(subject).to receive(:run_uname_p).and_return("x86_64")
         expect(subject.buildable_archs).to match_array(["x86_64"])
       end
 
