@@ -117,9 +117,7 @@ shared_examples "build" do |distribution|
         end
 
         it "removed the deleted config file" do
-          expect(
-            @test_system.run_command("ls /etc/postfix/LICENSE")
-          ).to fail.and include_stderr("No such file")
+          expect(@test_system.has_file?("/etc/postfix/LICENSE")).to be(false)
         end
       end
 
@@ -145,9 +143,7 @@ shared_examples "build" do |distribution|
         end
 
         it "removed the deleted managed file" do
-          expect(
-            @test_system.run_command("ls /usr/share/doc/packages/rsync/NEWS")
-          ).to fail.and include_stderr("No such file")
+          expect(@test_system.has_file?("/usr/share/doc/packages/rsync/NEWS")).to be(false)
         end
       end
 
