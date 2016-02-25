@@ -100,11 +100,6 @@ end
 namespace :rpm do
   desc 'Build RPM of current version'
   task :build, [:api, :project, :target] do |task, args|
-    # make sure the helper version is up to date
-    Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
-      Cheetah.run("rake", "build")
-    end
-
     if args[:api] && args[:project] && args[:target]
       Packaging.configuration do |conf|
         conf.obs_api = args[:api]

@@ -65,6 +65,7 @@ Gem::Specification.new do |s|
     "machinery-helper/Rakefile",
     "machinery-helper/README.md",
     "tools/helper_builder.rb",
+    "tools/go.rb",
     ".git_revision",
     "manual/**/*"
   ]

@@ -20,7 +20,8 @@ describe MachineryHelper do
       end
 
       it "returns true if helper exists" do
-        subject.local_helpers_path = File.join(Machinery::ROOT, "spec/data/machinery-helper")
+        subject.local_helpers_path = given_directory
+        FileUtils.touch(subject.local_helper_path)
 
         expect(subject.can_help?).to be(true)
       end

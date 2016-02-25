@@ -17,18 +17,19 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+require_relative "go"
+
 # This class is used in the machinery-helper/Rakefile to build the helper
 class HelperBuilder
   def initialize(helper_dir)
     @helper_dir = helper_dir
     @git_revision_file = File.join(helper_dir, "..", ".git_revision")
     @go_version_file = File.join(helper_dir, "version.go")
+    @go = Go.new
   end
 
   def run_build
-    # An unsupported architecture is no error
-    return true if !arch_supported?
-    return false if !go_available?
+    return false unless @go.available?
 
     # handle changed branches (where go files are older than the helper)
     if runs_in_git? && (changed_revision? || !File.exist?(@go_version_file))
@@ -41,9 +42,11 @@ class HelperBuilder
       end
     end
 
-    if !FileUtils.uptodate?(
-      File.join(@helper_dir, "machinery-helper"), Dir.glob(File.join(@helper_dir, "*.go"))
-    )
+    @go.archs.each do |arch|
+      next if FileUtils.uptodate?(
+        File.join(@helper_dir, "machinery-helper-#{arch}"),
+        Dir.glob(File.join(@helper_dir, "*.go"))
+      )
       return build_machinery_helper
     end
     true
@@ -61,39 +64,15 @@ const VERSION = "#{git_revision}"
   end
 
   def build_machinery_helper
-    FileUtils.rm_f(File.join(@helper_dir, "machinery-helper"))
+    FileUtils.rm_f(Dir.glob(File.join(@helper_dir, "machinery-helper*")))
     Dir.chdir(@helper_dir) do
-      puts("Building machinery-helper binary.")
-      if !run_go_build
-        STDERR.puts("Warning: Building of the machinery-helper failed!")
-        false
-      else
+      puts("Building machinery-helper binaries")
+      if @go.build
         true
+      else
+        STDERR.puts("Error: Building of the machinery-helper failed!")
+        false
       end
-    end
-  end
-
-  def go_available?
-    if !run_which_go
-      STDERR.puts(
-        "Warning: The Go compiler is not available on this system. Skipping building the" \
-          " machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
-      )
-      false
-    else
-      true
-    end
-  end
-
-  def arch_supported?
-    arch = run_uname_p
-    if !["x86_64"].include?(arch)
-      STDERR.puts(
-        "Warning: The hardware architecture #{arch} is not yet supported by the machinery-helper."
-      )
-      false
-    else
-      true
     end
   end
 
@@ -116,19 +95,7 @@ const VERSION = "#{git_revision}"
 
   private
 
-  def run_go_build
-    system("go build")
-  end
-
   def git_revision
     `git rev-parse HEAD`.chomp
-  end
-
-  def run_which_go
-    system("which go > /dev/null 2>&1")
-  end
-
-  def run_uname_p
-    `uname -p`.chomp
   end
 end

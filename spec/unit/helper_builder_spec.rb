@@ -35,39 +35,18 @@ describe HelperBuilder do
 
     before(:each) do
       allow(subject).to receive(:git_revision).and_return(commit)
-      allow(subject).to receive(:run_uname_p).and_return("x86_64")
-      allow(subject).to receive(:run_go_build).and_return(true)
-      allow(subject).to receive(:run_which_go).and_return(true)
-      allow(subject).to receive(:go_available?).and_return(true)
+      allow_any_instance_of(Go).to receive(:available?).and_return(true)
+      allow_any_instance_of(Go).to receive(:build).and_return(true)
+      allow_any_instance_of(Go).to receive(:archs).and_return(["x86_64"])
     end
 
     it "returns true if all commands succeed" do
       expect(subject.run_build).to be(true)
     end
 
-    context "if architecture is unsupported" do
-      before(:each) do
-        expect(subject).to receive(:run_uname_p).and_return("unknown")
-      end
-
-      it "returns true" do
-        expect(subject.run_build).to be(true)
-      end
-
-      it "does not build" do
-        expect(subject).not_to receive(:run_go_build)
-        subject.run_build
-      end
-
-      it "does not check for go_availbility" do
-        expect(subject).not_to receive(:go_available?)
-        subject.run_build
-      end
-    end
-
     context "if go environment unavailable" do
       before(:each) do
-        expect(subject).to receive(:go_available?).and_return(false)
+        expect_any_instance_of(Go).to receive(:available?).and_return(false)
       end
 
       it "returns false" do
@@ -75,7 +54,7 @@ describe HelperBuilder do
       end
 
       it "does not build" do
-        expect(subject).not_to receive(:run_go_build)
+        expect(subject).not_to receive(:build_machinery_helper)
         subject.run_build
       end
     end
@@ -86,7 +65,7 @@ describe HelperBuilder do
       end
 
       it "returns false if build fails" do
-        expect(subject).to receive(:run_go_build).and_return(false)
+        expect(subject).to receive(:build_machinery_helper).and_return(false)
         expect(subject.run_build).to be(false)
       end
 
@@ -110,14 +89,14 @@ describe HelperBuilder do
       it "creates git revision file after successful build" do
         git_revision_file = File.join(helper_dir, "..", ".git_revision")
         expect(File.exist?(git_revision_file)).to be(false)
-        expect(subject).to receive(:run_go_build).and_return(true)
+        expect(subject).to receive(:build_machinery_helper).and_return(true)
         expect(subject.run_build).to be(true)
         expect(File.exist?(git_revision_file)).to be(true)
       end
 
       it "does not create git revision file after failed build" do
         git_revision_file = File.join(helper_dir, "..", ".git_revision")
-        expect(subject).to receive(:run_go_build).and_return(false)
+        expect(subject).to receive(:build_machinery_helper).and_return(false)
         expect(subject.run_build).to be(false)
         expect(File.exist?(git_revision_file)).to be(false)
       end
@@ -131,22 +110,22 @@ describe HelperBuilder do
       end
 
       it "returns false if build fails" do
-        expect(subject).to receive(:run_go_build).and_return(false)
+        expect(subject).to receive(:build_machinery_helper).and_return(false)
         expect(subject.run_build).to be(false)
       end
 
       it "builds go binary if source files are newer than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"), mtime: Time.now.to_i - 10)
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"), mtime: Time.now.to_i - 10)
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"))
-        expect(subject).to receive(:run_go_build).and_return(true)
+        expect(subject).to receive(:build_machinery_helper).and_return(true)
         expect(subject.run_build).to be(true)
       end
 
       it "does not build go binary if source files are older than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"))
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"))
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"), mtime: Time.now.to_i - 10)
         FileUtils.touch(File.join(helper_dir, "version.go"), mtime: Time.now.to_i - 10)
-        expect(subject).not_to receive(:run_go_build)
+        expect(subject).not_to receive(:build_machinery_helper)
         expect(subject.run_build).to be(true)
       end
     end
@@ -157,7 +136,7 @@ describe HelperBuilder do
       end
 
       it "returns false if build fails" do
-        expect(subject).to receive(:run_go_build).and_return(false)
+        expect(subject).to receive(:build_machinery_helper).and_return(false)
         expect(subject.run_build).to be(false)
       end
 
@@ -169,22 +148,22 @@ describe HelperBuilder do
 
       it "does not create git revision file after successful build" do
         git_revision_file = File.join(helper_dir, "..", ".git_revision")
-        expect(subject).to receive(:run_go_build).and_return(true)
+        expect(subject).to receive(:build_machinery_helper).and_return(true)
         expect(subject.run_build).to be(true)
         expect(File.exist?(git_revision_file)).to be(false)
       end
 
       it "builds go binary if source files are newer than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"), mtime: Time.now.to_i - 10)
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"), mtime: Time.now.to_i - 10)
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"))
-        expect(subject).to receive(:run_go_build).and_return(true)
+        expect(subject).to receive(:build_machinery_helper).and_return(true)
         expect(subject.run_build).to be(true)
       end
 
       it "does not build go binary if source files are older than binary" do
-        FileUtils.touch(File.join(helper_dir, "machinery-helper"))
+        FileUtils.touch(File.join(helper_dir, "machinery-helper-x86_64"))
         FileUtils.touch(File.join(helper_dir, "machinery_helper.go"), mtime: Time.now.to_i - 10)
-        expect(subject).not_to receive(:run_go_build)
+        expect(subject).not_to receive(:build_machinery_helper)
         expect(subject.run_build).to be(true)
       end
     end
@@ -217,7 +196,7 @@ describe HelperBuilder do
 
     context "if build succedes" do
       before(:each) do
-        expect(subject).to receive(:run_go_build).and_return(true)
+        expect_any_instance_of(Go).to receive(:build).and_return(true)
       end
 
       it "returns true" do
@@ -226,7 +205,7 @@ describe HelperBuilder do
 
       it "shows a building message on stdout" do
         expect(subject).to receive(:puts).with(
-          "Building machinery-helper binary."
+          "Building machinery-helper binaries"
         )
         subject.build_machinery_helper
       end
@@ -234,76 +213,27 @@ describe HelperBuilder do
 
     context "if build fails" do
       before(:each) do
-        expect(subject).to receive(:run_go_build).and_return(false)
+        expect_any_instance_of(Go).to receive(:build).and_return(false)
       end
 
       it "returns false" do
         expect(subject.build_machinery_helper).to be(false)
       end
 
-      it "shows warning" do
+      it "shows error" do
         expect(STDERR).to receive(:puts).with(
-          "Warning: Building of the machinery-helper failed!"
+          "Error: Building of the machinery-helper failed!"
         )
         subject.build_machinery_helper
       end
 
       it "removes the pre-existing machinery-helper binary" do
-        machinery_helper = File.join(helper_dir, "machinery-helper")
+        machinery_helper = File.join(helper_dir, "machinery-helper-x86_64")
         FileUtils.touch(machinery_helper)
 
         expect(File.exist?(machinery_helper)).to be(true)
         subject.build_machinery_helper
         expect(File.exist?(machinery_helper)).to be(false)
-      end
-    end
-  end
-
-  describe "#go_available?" do
-    it "returns true if go is available according to which" do
-      expect(subject).to receive(:run_which_go).and_return(true)
-      expect(subject.go_available?).to be(true)
-    end
-
-    context "if go is not available according to which" do
-      before(:each) do
-        expect(subject).to receive(:run_which_go).and_return(false)
-      end
-
-      it "returns false" do
-        expect(subject.go_available?).to be(false)
-      end
-
-      it "shows warning" do
-        expect(STDERR).to receive(:puts).with(
-          "Warning: The Go compiler is not available on this system. Skipping building the" \
-            " machinery-helper.\nThe machinery-helper increases the inspection speed significantly."
-        )
-        subject.go_available?
-      end
-    end
-  end
-
-  describe "#arch_supported?" do
-    it "returns true if the current architecture is in the supported list" do
-      expect(subject).to receive(:run_uname_p).and_return("x86_64")
-      expect(subject.arch_supported?).to be(true)
-    end
-
-    context "if current architecture is not supported" do
-      before(:each) do
-        expect(subject).to receive(:run_uname_p).and_return("arch")
-      end
-
-      it "returns false" do
-        expect(subject.arch_supported?).to be(false)
-      end
-
-      it "shows a warning if the current architecture is not in the supported list" do
-        expect(STDERR).to receive(:puts).with(
-          "Warning: The hardware architecture arch is not yet supported by the machinery-helper."
-        )
-        subject.arch_supported?
       end
     end
   end
