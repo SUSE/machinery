@@ -1,5 +1,6 @@
 # Machinery RPM Changelog
 
+* remove dependency on Nokogiri gem
 
 ## Version 1.17.0 - Mon Jan 25 16:49:58 CET 2016 - thardeck@suse.de
 

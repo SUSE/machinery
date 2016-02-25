@@ -1,6 +1,8 @@
 # Machinery Release Notes
 
-* Remove dependency on Nokogiri gem
+* Make the machinery-helper exclusive to improve inspection performance significantly
+  on all supported architectures.
+  Following this change Go is required for installing the gem for now.
 * Fix treatment of the rpm `(replaced)` flag (gh#SUSE/machinery#1897)
 * Fix repository recognition on older Debian systems
 * Inspection of unmanaged-files is now also using the faster machinery-helper
