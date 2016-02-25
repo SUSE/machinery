@@ -7,7 +7,7 @@ describe SupportMatrix do
   subject { SupportMatrix.new(path, formatter) }
   let(:path) { given_directory_from_data "support_matrix" }
   let(:target_path) { given_directory }
-  let(:formatter) { OdsFormatter.new }
+  let(:formatter) { PdfFormatter.new }
 
   describe "#new" do
     it "converts the path to an array" do
@@ -16,10 +16,10 @@ describe SupportMatrix do
   end
 
   describe "#write" do
-    it "creates an .ods file" do
+    it "creates a .pdf file" do
       subject.write(target_path)
 
-      expect(File.exist?(File.join(target_path, "Machinery_support_matrix.ods"))).to be(true)
+      expect(File.exist?(File.join(target_path, "Machinery_support_matrix.pdf"))).to be(true)
     end
   end
 
