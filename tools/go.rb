@@ -17,7 +17,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-# This class is used in the machinery-helper/Rakefile to build the helper
+# This class is used to build the helper binaries with Go
 
 class Go
   def archs
