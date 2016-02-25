@@ -294,46 +294,48 @@ EOF
       init_system = @system_description["services"].init_system
 
       case init_system
-        when "sysvinit"
-          @system_description["services"].each do |service|
+      when "sysvinit"
+        @system_description["services"].each do |service|
+          @sh <<
             if service.state == "on"
-              @sh << "chkconfig #{service.name} on\n"
+              "chkconfig #{service.name} on\n"
             else
-              @sh << "chkconfig #{service.name} off\n"
+              "chkconfig #{service.name} off\n"
             end
+        end
+      when "systemd"
+        # possible systemd service states:
+        # http://www.freedesktop.org/software/systemd/man/systemctl.html#Unit%20File%20Commands
+        @system_description["services"].each do |service|
+          case service.state
+          when "enabled"
+            @sh << "systemctl enable #{service.name}\n"
+          when "disabled"
+            @sh << "systemctl disable #{service.name}\n"
+          when "masked"
+            @sh << "systemctl mask #{service.name}\n"
+          when "static"
+            # Don't do anything because the unit is not meant to be
+            # enabled/disabled manually.
+          when "linked"
+            # Don't do anything because linking doesn't mean enabling
+            # nor disabling.
+          when "enabled-runtime"
+          when "linked-runtime"
+          when "masked-runtime"
+            # Don't do anything because these states are not supposed
+            # to be permanent.
+          else
+            raise Machinery::Errors::ExportFailed.new(
+              "The systemd unit state #{service.state} is unknown."
+            )
           end
-
-        when "systemd"
-          # possible systemd service states:
-          # http://www.freedesktop.org/software/systemd/man/systemctl.html#Unit%20File%20Commands
-          @system_description["services"].each do |service|
-            case service.state
-              when "enabled"
-                @sh << "systemctl enable #{service.name}\n"
-              when "disabled"
-                @sh << "systemctl disable #{service.name}\n"
-              when "masked"
-                @sh << "systemctl mask #{service.name}\n"
-              when "static"
-                # Don't do anything because the unit is not meant to be
-                # enabled/disabled manually.
-              when "linked"
-                # Don't do anything because linking doesn't mean enabling
-                # nor disabling.
-              when "enabled-runtime"
-              when "linked-runtime"
-              when "masked-runtime"
-                # Don't do anything because these states are not supposed
-                # to be permanent.
-              else
-                raise Machinery::Errors::ExportFailed.new(
-                  "The systemd unit state #{service.state} is unknown."
-                )
-            end
-          end
-
-        else
-          raise "Unsupported init system: #{init_system.inspect}."
+        end
+      else
+        Machinery::Ui.warn(
+          "Warning: Containers do not have an init system, so the default service" \
+            " configuration provided by the packages will be used for the image."
+        )
       end
     end
   end

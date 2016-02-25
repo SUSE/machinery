@@ -19,6 +19,7 @@ require_relative "spec_helper"
 
 describe KiwiConfig do
   initialize_system_description_factory_store
+  capture_machinery_output
 
   let(:name) { "name" }
   let(:store) { system_description_factory_store }
@@ -42,6 +43,12 @@ describe KiwiConfig do
   let(:system_description_with_systemd_services) {
     create_test_description(
       scopes: ["os_sles12", "packages", "repositories", "services"], name: name, store: store
+    )
+  }
+
+  let(:system_description_with_docker_services) {
+    create_test_description(
+      scopes: ["os_sles12", "packages", "repositories", "docker_services"], name: name, store: store
     )
   }
 
@@ -222,6 +229,14 @@ EOT
       expect(config.sh).not_to match(/systemctl static /)
       expect(config.sh).not_to match(/systemctl linked /)
       expect(config.sh).not_to match(/systemctl \w+-runtime /)
+    end
+
+    context "if an empty docker service scope is provided" do
+      it "shows a warning" do
+        KiwiConfig.new(system_description_with_docker_services)
+
+        expect(captured_machinery_output).to match(/Warning:.*containers/i)
+      end
     end
 
     it "raises an error if the systemd service state is unknown" do
