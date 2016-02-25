@@ -29,7 +29,6 @@ group :test do
   gem "codeclimate-test-reporter"
   gem "rspec_junit_formatter"
   gem "byebug"
-  gem "rodf", github: "mauromorales/rodf"
   gem "rack-test"
   gem "prawn"
   gem "prawn-table"
