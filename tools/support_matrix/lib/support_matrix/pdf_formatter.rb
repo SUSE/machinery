@@ -14,7 +14,7 @@ class PdfFormatter
     integration_tests_sheet(matrix)
     unit_tests_sheet(matrix)
     runs_on_sheet(matrix)
-    sections
+    sections(matrix)
 
     @document.render_file(full_path)
     full_path
@@ -22,18 +22,18 @@ class PdfFormatter
 
   private
 
-  def sections
+  def sections(matrix)
+    page_number = 0
+
     @document.outline.define do
-      section("Legend", destination: 1)
+      section("Legend", destination: page_number += 1)
       section("Integration Tests") do
-        page title: "Inspect", destination: 2
-        page title: "Build", destination: 3
-        page title: "Export", destination: 4
-        page title: "Analyze", destination: 5
-        page title: "Deploy", destination: 6
+        matrix.integration_tests.keys.each do |test|
+          page title: test, destination: page_number += 1
+        end
       end
-      section("Unit Tests", destination: 7)
-      section("Runs On", destination: 8)
+      section("Unit Tests", destination: page_number += 1)
+      section("Runs On", destination: page_number += 1)
     end
   end
 
