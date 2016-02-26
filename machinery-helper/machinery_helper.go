@@ -360,7 +360,7 @@ func main() {
 
 	// parse CLI arguments
 	var versionFlag = flag.Bool("version", false, "shows the version number")
-	var extractMetadataFlag = flag.Bool("extract-metadata", false, "extracts metadat without extracting files")
+	var extractMetadataFlag = flag.Bool("extract-metadata", false, "extracts metadata without extracting files")
 	flag.Parse()
 
 	// show version
