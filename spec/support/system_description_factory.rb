@@ -672,6 +672,16 @@ module SystemDescriptionFactory
       "_elements": []
     }
   EOF
+  EXAMPLE_SCOPES["docker_services"] = <<-EOF.chomp
+    "services": {
+      "_attributes": {
+        "init_system": "none"
+      },
+      "_elements": [
+
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["services"] = <<-EOF.chomp
     "services": {
       "_attributes": {
