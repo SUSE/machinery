@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="6.1" name="Machinery-openSUSE-13.2">
+<image schemaversion="6.1" name="Machinery-openSUSE-Tumbleweed">
     <description type="system">
         <author>Machinery-Team</author>
         <contact>machinery@lists.suse.com</contact>
