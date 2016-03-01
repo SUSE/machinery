@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.18.0 - Tue Mar 01 13:51:39 CET 2016 - thardeck@suse.de
+
+* update to version 1.18.0
 * remove dependency on Nokogiri gem
 * tracking bug (bnc#968380)
 
