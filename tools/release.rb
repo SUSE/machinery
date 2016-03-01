@@ -102,6 +102,9 @@ class Release
 
   def publish_man_page
     puts("Publishing man page to website...")
+    # make sure gh-pages is checked out
+    Cheetah.run("git", "checkout", "gh-pages")
+    Cheetah.run("git", "checkout", "-")
     Cheetah.run("mkdocs", "gh-deploy", "-b", "gh-pages")
   end
 
