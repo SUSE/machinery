@@ -21,8 +21,16 @@ require_relative '../lib/machinery'
 
 begin
   if Dir.exist?(File.join(Machinery::ROOT, ".git"))
-    Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
-      Cheetah.run("rake", "build")
+    begin
+      Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
+        Cheetah.run("rake", "build")
+      end
+    rescue
+      STDERR.puts(
+        "ERROR: The official Go compiler is not available on this system which prevents the" \
+          " machinery-helper binaries from being built."
+      )
+      exit
     end
   end
 
