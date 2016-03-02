@@ -26,7 +26,7 @@
                 %a.show-changed-elements{ href: "#unmanaged_files_changed" }
                   changed
                 = ": #{pluralize_scope(@diff["unmanaged_files"].changed, "file", "files")}"
-            - if @diff["unmanaged_files"].common
+            - unless @diff["unmanaged_files"].common.elements.empty?
               %span.summary-part
                 %a.show-common-elements{ href: "#unmanaged_files_both" }<
                   both
@@ -51,7 +51,7 @@
               = changed
               = render_partial "compare/changes", changes: changed_elements("unmanaged_files",
                 key: "name")
-        - if @diff["unmanaged_files"].common
+        - unless @diff["unmanaged_files"].common.elements.empty?
           %a.both_anchor{ id: "unmanaged_files_both" }
           .row
             .col-md-12

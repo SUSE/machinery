@@ -103,6 +103,47 @@ describe "unmanaged_files model" do
           ],
           nil])
       end
+
+      it "keeps the common elements if there are common attributes" do
+        scope = UnmanagedFilesScope.new(
+          [
+            UnmanagedFile.new(
+              name: "/foo",
+              b:    2
+            )
+          ],
+          extracted: true
+        )
+        scope_changed = UnmanagedFilesScope.new(
+          [
+            UnmanagedFile.new(
+              name: "/foo",
+              b:    3
+            )
+          ],
+          extracted: true
+        )
+
+        expect(scope.compare_with(scope_changed)).to eq(
+          [
+            nil,
+            nil,
+            [
+              [
+                UnmanagedFile.new(
+                  name: "/foo",
+                  b:    2
+                ),
+                UnmanagedFile.new(
+                  name: "/foo",
+                  b:    3
+                )
+              ]
+            ],
+            UnmanagedFilesScope.new([], extracted: true)
+          ]
+        )
+      end
     end
   end
 end

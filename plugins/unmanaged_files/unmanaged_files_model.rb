@@ -58,12 +58,19 @@ class UnmanagedFilesScope < FileScope
       only_other_attributes = other.attributes
     end
 
-    [
+    comparison = [
       self.class.new(only_self, only_self_attributes || {}),
       self.class.new(only_other, only_other_attributes || {}),
-      changed,
-      self.class.new(both, common_attributes || {})
+      changed
     ].map { |e| e.empty? ? nil : e }
+
+    common = if both.empty? && common_attributes && common_attributes.empty?
+      nil
+    else
+      self.class.new(both, common_attributes || {})
+    end
+
+    comparison.push(common)
   end
 
   private
