@@ -77,7 +77,7 @@ class Zypper
     raw_xml = call_zypper "-x", "download", package, stdout: :capture
 
     xml = REXML::Document.new(raw_xml)
-    xml.elements["//localfile"].attributes["path"]
+    xml.elements["//localfile"].attributes["path"] if xml.elements["//localfile"]
   end
 
   def version
