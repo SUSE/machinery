@@ -36,7 +36,7 @@ class PackagesInspector < Inspector
   end
 
   def summary
-    "Found #{Machinery::pluralize(@description.packages.length, "%d package")}."
+    "Found #{Machinery.pluralize(@description.packages.length, "%d package")}."
   end
 
   private

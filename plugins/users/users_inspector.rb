@@ -33,7 +33,7 @@ class UsersInspector < Inspector
   end
 
   def summary
-    "Found #{Machinery::pluralize(@description.users.size, "%d user")}."
+    "Found #{Machinery.pluralize(@description.users.size, "%d user")}."
   end
 
   private

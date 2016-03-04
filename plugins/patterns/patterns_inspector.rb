@@ -45,7 +45,7 @@ class PatternsInspector < Inspector
 
   def summary
     if @patterns_supported
-      "Found #{Machinery::pluralize(@description.patterns.count, "%d pattern")}."
+      "Found #{Machinery.pluralize(@description.patterns.count, "%d pattern")}."
     else
       @status
     end

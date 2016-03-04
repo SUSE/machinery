@@ -43,7 +43,7 @@ class ConfigFilesInspector < Inspector
     count = 0
     files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.count { |l| !l.chomp.end_with?(":") && l.split(" ")[1] == "c" }
-      Machinery::Ui.progress(" -> Found #{Machinery::pluralize(count, "%d changed config file")}...")
+      Machinery::Ui.progress(" -> Found #{Machinery.pluralize(count, "%d changed config file")}...")
     end
     result = files.select(&:config_file?).map do |file|
       ConfigFile.new(file.attributes)
@@ -76,6 +76,6 @@ class ConfigFilesInspector < Inspector
 
   def summary
     "#{@description.config_files.extracted ? "Extracted" : "Found"} " +
-      Machinery::pluralize(@description.config_files.count, "%d changed config file") + "."
+      Machinery.pluralize(@description.config_files.count, "%d changed config file") + "."
   end
 end
