@@ -146,18 +146,38 @@ describe ListTask do
         expect(captured_machinery_output).to eq(expected_output)
       end
 
-      it "if short is true it lists only the description names" do
-        system_description.save
-        system_description2.save
-        system_description3.save
-        expected_output = <<-EOF.chomp
+      context "if short is true" do
+        let(:attributes) { { short: true } }
+        it "lists only the description names" do
+          system_description.save
+          system_description2.save
+          system_description3.save
+          expected_output = <<-EOF.chomp
 bar
 description
 foo
 
+          EOF
+          list_task.list(store, [], attributes)
+          expect(captured_machinery_output).to eq(expected_output)
+        end
+
+        it "also shows errors in one line only" do
+          system_description.save
+          create_test_description(
+            scopes: ["packages"], modified: date, hostname: hostname, name: "description_old",
+              format_version: 1, store: store
+          ).save
+          system_description2.save
+          expected_output = <<-EOF.chomp
+bar
+description_old: format version 1, needs to be upgraded. Try '/usr/bin/rspec upgrade-format description_old' to upgrade it to the current version.
+foo
+
         EOF
-        list_task.list(store, [], short: true)
-        expect(captured_machinery_output).to eq(expected_output)
+          list_task.list(store, [], attributes)
+          expect(captured_machinery_output).to eq(expected_output)
+        end
       end
 
       it "shows also the date and hostname of the descriptions if verbose is true" do
