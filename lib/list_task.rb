@@ -117,7 +117,7 @@ EOF
 
   def show_error(error_message, options)
     if options[:short]
-      Machinery::Ui.puts(error_message)
+      Machinery::Ui.puts(error_message.chomp)
     else
       Machinery::Ui.puts(" " + error_message + "\n")
     end
