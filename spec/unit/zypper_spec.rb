@@ -73,5 +73,20 @@ describe Zypper do
 
       expect(path).to eq("/var/cache/machinery/zypp/packages/SMT-http_example_com:SLES11-SP3-Updates/rpm/x86_64/fontconfig-2.6.0-10.17.1.x86_64.rpm")
     end
+
+    it "can handle xml output in case of unavailable packages" do
+      zypper_xml = <<-EOF
+<?xml version='1.0'?>
+<stream>
+<message type="info">Loading repository data...</message>
+<message type="info">Reading installed packages...</message>
+<message type="warning">Argument resolves to no package: test-data-files-1.0</message>
+<message type="info">Nothing to do.</message>
+<message type="info">download: Done.</message>
+</stream>
+      EOF
+      expect(subject).to receive(:call_zypper).and_return(zypper_xml)
+      expect { subject.download_package("test-data-files-1.0") }.not_to raise_error
+    end
   end
 end
