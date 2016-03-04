@@ -49,7 +49,7 @@ shared_examples "inspect config files" do |base|
       expected = <<EOF
 Inspecting 0.0.0.0 for config-files...
 Inspecting config-files...
- -> Found 0 config files...\r\033\[K -> Found 0 config files...\r\033\[K -> Extracted 0 changed configuration files.
+ -> Found 0 changed config files...\r\033\[K -> Found 0 changed config files...\r\033\[K -> Extracted 0 changed config files.
 EOF
       expect(normalize_inspect_output(@machinery_output)).to start_with(expected)
     end
