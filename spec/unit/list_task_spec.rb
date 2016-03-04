@@ -171,12 +171,12 @@ foo
           system_description2.save
           expected_output = <<-EOF.chomp
 bar
-description_old: format version 1, needs to be upgraded. Try '/usr/bin/rspec upgrade-format description_old' to upgrade it to the current version.
+description_old: format version 1, needs to be upgraded. Try '.+ upgrade-format description_old' to upgrade it to the current version.
 foo
 
         EOF
           list_task.list(store, [], attributes)
-          expect(captured_machinery_output).to eq(expected_output)
+          expect(captured_machinery_output).to match(expected_output)
         end
       end
 
