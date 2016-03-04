@@ -37,7 +37,8 @@ class RepositoriesInspector < Inspector
   end
 
   def summary
-    "Found #{@description.repositories.size} repositories."
+    "Found " \
+      "#{Machinery::pluralize(@description.repositories.size, "%d repository", "%d repositories")}."
   end
 
   private

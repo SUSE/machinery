@@ -45,7 +45,7 @@ class ServicesInspector < Inspector
   end
 
   def summary
-    "Found #{@description.services.length} services."
+    "Found #{Machinery::pluralize(@description.services.length, "%d service")}."
   end
 
   private

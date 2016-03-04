@@ -120,14 +120,19 @@ class UnmanagedFilesInspector < Inspector
 
   def summary
     "#{@description.unmanaged_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.unmanaged_files.count} unmanaged files and trees."
+      Machinery::pluralize(
+        @description.unmanaged_files.count,
+        "%d unmanaged file or tree.",
+        "%d unmanaged files and trees."
+      )
   end
 
   private
 
   def show_extraction_progress(count)
     progress = Machinery::pluralize(
-      count, " -> Extracted %d file or tree", " -> Extracted %d files and trees",
+      count, " -> Extracted %d unmanaged file or tree",
+        " -> Extracted %d unmanaged files and trees"
     )
     Machinery::Ui.progress(progress)
   end

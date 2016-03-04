@@ -32,7 +32,7 @@ class GroupsInspector < Inspector
   end
 
   def summary
-    "Found #{@description.groups.size} groups."
+    "Found #{Machinery::pluralize(@description.groups.size, "%d group")}."
   end
 
   private
