@@ -47,7 +47,7 @@ shared_examples "inspect changed managed files" do |base|
       expected = <<EOF
 Inspecting 0.0.0.0 for changed-managed-files...
 Inspecting changed-managed-files...
- -> Found 0 changed files...\r\033\[K -> Found 0 changed files...\r\033\[K -> Extracted 0 changed files.
+ -> Found 0 changed managed files...\r\033\[K -> Found 0 changed managed files...\r\033\[K -> Extracted 0 changed managed files.
 EOF
       expect(normalize_inspect_output(@machinery_output)).to start_with(expected)
     end

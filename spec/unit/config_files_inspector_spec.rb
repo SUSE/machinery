@@ -152,7 +152,7 @@ describe ConfigFilesInspector do
             "/etc/linked_config",
             "/usr/share/man/man1/time.1.gz"
           ])
-          expect(inspector.summary).to include("5 changed configuration files")
+          expect(inspector.summary).to include("5 changed config files")
         end
 
         it "returns empty when no modified config files are there" do
@@ -166,13 +166,13 @@ describe ConfigFilesInspector do
           expect(description["config_files"]).to eq(expected)
         end
 
-        it "extracts changed configuration files" do
+        it "extracts changed config files" do
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(system).to receive(:retrieve_files).with(extractable_paths, config_file_directory)
 
           inspector.inspect(filter, extract_changed_config_files: true)
 
-          expect(inspector.summary).to include("Extracted 5 changed configuration files")
+          expect(inspector.summary).to include("Extracted 5 changed config files")
           config_file_directory = File.join(store.description_path(name), "config_files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
         end
@@ -188,7 +188,7 @@ describe ConfigFilesInspector do
           File.chmod(0750, store.description_path(name))
 
           inspector.inspect(filter, extract_changed_config_files: true)
-          expect(inspector.summary).to include("Extracted 5 changed configuration files")
+          expect(inspector.summary).to include("Extracted 5 changed config files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
         end
 

@@ -60,7 +60,7 @@ Run `zypper install #{package}` to install the package.
       if !missing_packages.empty?
         count = missing_packages.count
         error_string = <<-EOF
-You need the #{Machinery::pluralize(count, "package")} '#{missing_packages.join("\',\'")}'.
+You need the #{Machinery.pluralize(count, "package")} '#{missing_packages.join("\',\'")}'.
 You can install it by running `zypper install #{missing_packages.join(" ")}`.
         EOF
         raise(Machinery::Errors::MissingRequirement.new(error_string))

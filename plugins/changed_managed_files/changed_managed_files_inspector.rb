@@ -62,7 +62,9 @@ class ChangedManagedFilesInspector < Inspector
 
   def summary
     "#{@description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
-      "#{@description.changed_managed_files.count} changed files."
+      Machinery.pluralize(
+        @description.changed_managed_files.count, "%d changed managed file"
+      ) + "."
   end
 
   private
@@ -71,7 +73,9 @@ class ChangedManagedFilesInspector < Inspector
     count = 0
     files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
-      Machinery::Ui.progress(" -> Found #{count} changed #{Machinery::pluralize(count, "file")}...")
+      Machinery::Ui.progress(
+        " -> Found #{Machinery.pluralize(count, "%d changed managed file")}..."
+      )
     end
     files.reject(&:config_file?).map do |file|
       ChangedManagedFile.new(file.attributes)
