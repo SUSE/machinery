@@ -151,7 +151,7 @@ describe WorkloadMapper do
           subject.identify_workloads(system_description)
         }.to raise_error(
           Machinery::Errors::SystemDescriptionError,
-          /The system description misses the following scope\w? : .*/
+          /The system description misses the following scopes: .*/
         )
       end
     end
