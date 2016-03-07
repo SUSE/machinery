@@ -197,30 +197,21 @@ describe SystemDescription do
   end
 
   describe "#assert_scopes" do
-    let(:working_description) {
-      create_test_description(
-        name: @name, scopes: ["packages", "repositories", "config_files"]
+    it "raises if one of the required scopes is missing" do
+      description = create_test_description(scopes: ["packages", "repositories"])
+      expect {
+        description.assert_scopes("repositories", "packages", "config_files")
+      }.to raise_error(
+        Machinery::Errors::SystemDescriptionError,
+        /The system description misses the following scope: config-files/
       )
-    }
+    end
 
-    it "checks the system description for completeness" do
-      [
-        ["repositories"],
-        ["packages"],
-        ["repositories", "packages", "config_files"]
-      ].each do |missing|
-        expect {
-          description = working_description.dup
-          missing.each do |element|
-            description.send("#{element}=", nil)
-          end
-          description.assert_scopes("repositories", "packages", "config_files")
-        }.to raise_error(
-           Machinery::Errors::SystemDescriptionError,
-           /: #{missing.map { |scope|
-             Machinery::Ui.internal_scope_list_to_string(scope)
-           }.join(",")}\./)
-      end
+    it "does not raise if the required scopes are available" do
+      description = create_test_description(scopes: ["packages", "repositories", "config_files"])
+      expect {
+        description.assert_scopes("repositories", "packages", "config_files")
+      }.not_to raise_error
     end
   end
 

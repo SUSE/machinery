@@ -228,7 +228,7 @@ class SystemDescription < Machinery::Object
     unless missing.empty?
       raise Machinery::Errors::SystemDescriptionError.new(
         "The system description misses the following" \
-          " #{Machinery.pluralize(missing.size, "scope")} : #{missing.join(",")}."
+          " #{Machinery.pluralize(missing.size, "scope")}: #{missing.join(",")}."
       )
     end
   end
