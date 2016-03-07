@@ -197,22 +197,29 @@ describe SystemDescription do
   end
 
   describe "#assert_scopes" do
+    let(:working_description) {
+      create_test_description(
+        name: @name, scopes: ["packages", "repositories", "config_files"]
+      )
+    }
+
     it "checks the system description for completeness" do
-      full_description = create_test_description(name: @name, json: @description)
       [
         ["repositories"],
         ["packages"],
-        ["repositories", "packages"]
+        ["repositories", "packages", "config_files"]
       ].each do |missing|
         expect {
-          description = full_description.dup
+          description = working_description.dup
           missing.each do |element|
             description.send("#{element}=", nil)
           end
-          description.assert_scopes("repositories", "packages")
+          description.assert_scopes("repositories", "packages", "config_files")
         }.to raise_error(
            Machinery::Errors::SystemDescriptionError,
-           /: #{missing.join(", ")}\./)
+           /: #{missing.map { |scope|
+             Machinery::Ui.internal_scope_list_to_string(scope)
+           }.join(",")}\./)
       end
     end
   end
