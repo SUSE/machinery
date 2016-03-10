@@ -57,7 +57,7 @@ shared_examples "upgrade format" do
       ).to succeed
 
       show_command = @machinery.run_command(
-          "machinery show format_v2 --scope=config-files --show-diffs",
+          "machinery show format_v2 --scope=changed-config-files --show-diffs",
           as: "vagrant"
       )
       expect(show_command).to succeed

@@ -231,7 +231,7 @@ foo
         system_description_with_extracted_files.save
         expected_output = <<-EOF
  foo:
-   * config-files (extracted)
+   * changed-config-files (extracted)
    * changed-managed-files (not extracted)
    * unmanaged-files (extracted)
         EOF

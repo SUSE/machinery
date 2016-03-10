@@ -26,11 +26,11 @@ describe Machinery::Errors::MissingExtractedFiles do
     e = Machinery::Errors::MissingExtractedFiles.new(description, scopes)
     expect(e.to_s).
       to eq(
-        "The following scopes 'config-files, changed-managed-files' are part of the " \
+        "The following scopes 'changed-config-files, changed-managed-files' are part of the " \
         "system description" \
         " but the corresponding files weren't extracted during inspection.\n" \
         "The files are required to continue with this command. " \
-        "Run `#{$0} inspect --extract-files --scope=config-files,changed-managed-files " \
+        "Run `#{$0} inspect --extract-files --scope=changed-config-files,changed-managed-files " \
         "--name='#{name}' example.com` to extract them."
       )
   end
@@ -39,10 +39,10 @@ describe Machinery::Errors::MissingExtractedFiles do
     e = Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
     expect(e.to_s).
       to eq(
-        "The scope 'config-files' is part of the system description" \
+        "The scope 'changed-config-files' is part of the system description" \
         " but the corresponding files weren't extracted during inspection.\n" \
         "The files are required to continue with this command. " \
-        "Run `#{$0} inspect --extract-files --scope=config-files --name='#{name}' example.com` to extract them."
+        "Run `#{$0} inspect --extract-files --scope=changed-config-files --name='#{name}' example.com` to extract them."
       )
   end
 
@@ -53,10 +53,10 @@ describe Machinery::Errors::MissingExtractedFiles do
       e = Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
       expect(e.to_s).
         to eq(
-          "The scope 'config-files' is part of the system description" \
+          "The scope 'changed-config-files' is part of the system description" \
           " but the corresponding files weren't extracted during inspection.\n" \
           "The files are required to continue with this command. " \
-          "Run `#{$0} inspect-container --extract-files --scope=config-files --name='#{name}' " \
+          "Run `#{$0} inspect-container --extract-files --scope=changed-config-files --name='#{name}' " \
           "example.com` to extract them."
         )
     end

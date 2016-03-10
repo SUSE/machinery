@@ -203,7 +203,7 @@ describe SystemDescription do
         description.assert_scopes("repositories", "packages", "changed_config_files")
       }.to raise_error(
         Machinery::Errors::SystemDescriptionError,
-        /The system description misses the following scope: config-files/
+        /The system description misses the following scope: changed-config-files/
       )
     end
 

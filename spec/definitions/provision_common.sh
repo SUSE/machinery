@@ -13,7 +13,7 @@ ln -sf /opt/test-quote-char/target-with-quote\'-foo /opt/test-quote-char/link
 rm -rf "/var/lib/yum/history/"*
 cd /; tar xf /vagrant/unmanaged_files.tgz
 
-# config-files
+# changed-config-files
 echo '-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null' >> /etc/crontab
 echo 'change in umlauts config file' >> /etc/umlaut-äöü.conf
 

@@ -18,13 +18,13 @@
 shared_examples "inspect config files" do |base|
   expected_content = "-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null\n"
 
-  describe "--scope=config-files" do
+  describe "--scope=changed-config-files" do
     it "extracts list of config files and shows progress" do
       measure("Inspect system") do
         inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
             "#{@subject_system.ip} #{inspect_options if defined?(inspect_options)} " \
-            "--scope=config-files --extract-files",
+            "--scope=changed-config-files --extract-files",
           as: "vagrant"
         )
         if base == "ubuntu_1404"
@@ -38,7 +38,7 @@ shared_examples "inspect config files" do |base|
       end
 
       show_command = @machinery.run_command(
-        "#{machinery_command} show #{@subject_system.ip} --scope=config-files",
+        "#{machinery_command} show #{@subject_system.ip} --scope=changed-config-files",
         as: "vagrant"
       )
       expect(show_command).to succeed
@@ -47,8 +47,8 @@ shared_examples "inspect config files" do |base|
       expect(show_command.stdout).to match_machinery_show_scope(expected_files_list)
 
       expected = <<EOF
-Inspecting 0.0.0.0 for config-files...
-Inspecting config-files...
+Inspecting 0.0.0.0 for changed-config-files...
+Inspecting changed-config-files...
  -> Found 0 changed config files...\r\033\[K -> Found 0 changed config files...\r\033\[K -> Extracted 0 changed config files.
 EOF
       expect(normalize_inspect_output(@machinery_output)).to start_with(expected)

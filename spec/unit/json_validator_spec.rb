@@ -140,7 +140,7 @@ EOF
       expect(errors).to be_empty
     end
 
-    context "config-files" do
+    context "changed-config-files" do
       let(:path) { "spec/data/schema/validation_error/changed_config_files/" }
 
       it "raises in case of missing package_version" do

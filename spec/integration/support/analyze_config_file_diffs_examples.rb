@@ -38,7 +38,7 @@ shared_examples "analyze config file diffs" do |distribution|
       end
 
       show_command = @machinery.run_command(
-        "machinery show #{distribution} --scope=config-files --show-diffs",
+        "machinery show #{distribution} --scope=changed-config-files --show-diffs",
         as: "vagrant"
       )
 

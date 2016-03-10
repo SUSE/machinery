@@ -719,7 +719,7 @@ describe Cli do
 
   describe ".parse_scopes" do
     it "returns an array with existing scopes" do
-      expect(Cli.parse_scopes("os,config-files")).to eq(["os", "changed_config_files"])
+      expect(Cli.parse_scopes("os,changed-config-files")).to eq(["os", "changed_config_files"])
     end
 
     it "raises an error if the provided scope is unknown" do

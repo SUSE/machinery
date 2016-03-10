@@ -431,7 +431,7 @@ EOT
       let(:config) { KiwiConfig.new(system_description_with_modified_files) }
       let(:manifest_path) { store.description_path(name) }
 
-      it "restores the extracted config-files" do
+      it "restores the extracted changed-config-files" do
         config.write(export_dir)
 
         expect(config.sh).to include("chmod 644 '/etc/cron tab'\n")

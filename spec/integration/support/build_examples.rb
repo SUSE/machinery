@@ -70,7 +70,7 @@ shared_examples "build" do |distribution|
           expect(
             @machinery.run_command(
               "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns," \
-              "repositories,config-files,unmanaged-files,services,changed-managed-files -x",
+              "repositories,changed-config-files,unmanaged-files,services,changed-managed-files -x",
               as: "vagrant"
             )
           ).to succeed
@@ -102,7 +102,7 @@ shared_examples "build" do |distribution|
         expect(current_repos).to match_array(original_repos)
       end
 
-      describe "config-files:" do
+      describe "changed-config-files:" do
         it "contains the changed config file" do
           expect(
             @machinery.run_command(
@@ -111,7 +111,7 @@ shared_examples "build" do |distribution|
           ).to succeed.and include_stdout("etc/crontab")
         end
 
-        it "contains the changed config-files from the system description" do
+        it "contains the changed changed-config-files from the system description" do
           expect(@new_description).to include_file_scope(@system_description,
             "changed_config_files")
         end
