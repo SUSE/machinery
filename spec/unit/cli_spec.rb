@@ -301,7 +301,7 @@ describe Cli do
           ).
           and_return(description)
 
-        run_command(["inspect", "--exclude-scope=packages,repositories", example_host])
+        run_command(["inspect", "--ignore-scope=packages,repositories", example_host])
       end
 
       it "forwards the --skip-files option to the InspectTask as an unmanaged_files filter" do

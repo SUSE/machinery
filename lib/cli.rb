@@ -177,19 +177,19 @@ class Cli
   def self.process_scope_option(scopes, exclude_scopes)
     if scopes
       if exclude_scopes
-        # scope and exclude-scope
+        # scope and ignore-scope
         raise Machinery::Errors::InvalidCommandLine.new("You cannot provide the --scope and " \
-          "--exclude-scope option at the same time.")
+          "--ignore-scope option at the same time.")
       else
         # scope only
         scope_list = parse_scopes(scopes)
       end
     else
       if exclude_scopes
-        # exclude-scope only
+        # ignore-scope only
         scope_list = Inspector.all_scopes - parse_scopes(exclude_scopes)
       else
-        # neither scope nor exclude-scope
+        # neither scope nor ignore-scope
         scope_list = Inspector.all_scopes
       end
     end
@@ -341,7 +341,7 @@ class Cli
   command "compare" do |c|
     c.flag [:scope, :s], type: String, required: false,
       desc: "Compare specified scopes", arg_name: "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], type: String, required: false,
+    c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
@@ -368,7 +368,7 @@ class Cli
       store = system_description_store
       description1 = SystemDescription.load(name1, store)
       description2 = SystemDescription.load(name2, store)
-      scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+      scope_list = process_scope_option(options[:scope], options["ignore-scope"])
 
       task = CompareTask.new
       opts = {
@@ -511,7 +511,7 @@ class Cli
       desc: "Store system description under the specified name"
     c.flag [:scope, :s], type: String, required: false,
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], type: String, required: false,
+    c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag "skip-files", required: false, negatable: false,
       desc: "Do not consider given files or directories during inspection. " \
@@ -535,7 +535,7 @@ class Cli
   end
 
   def self.parse_inspect_command_options(host, options)
-    scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+    scope_list = process_scope_option(options[:scope], options["ignore-scope"])
     name = options[:name] || host
 
 
@@ -773,7 +773,7 @@ class Cli
     supports_filtering(c)
     c.flag [:scope, :s], type: String, required: false,
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], type: String, required: false,
+    c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
@@ -802,7 +802,7 @@ class Cli
       end
 
       description = SystemDescription.load(name, system_description_store)
-      scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+      scope_list = process_scope_option(options[:scope], options["ignore-scope"])
 
       filter = FilterOptionParser.parse("show", options)
 
