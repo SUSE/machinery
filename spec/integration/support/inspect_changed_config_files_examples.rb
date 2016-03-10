@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "inspect changed configuration files" do |base|
+shared_examples "inspect changed config files" do |base|
   expected_content = "-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null\n"
 
   describe "--scope=changed-config-files" do
