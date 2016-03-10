@@ -1,5 +1,15 @@
 {
-  "config_files": {
+  "meta": {
+    "format_version": 8,
+    "changed_config_files": {
+      "modified": "2014-08-27T18:00:17Z",
+      "hostname": "10.122.166.77"
+    }
+  },
+  "environment": {
+    "locale": "en_US.utf8"
+  },
+  "changed_config_files": {
     "_attributes": {
       "extracted": true
     },
@@ -28,15 +38,5 @@
         ]
       }
     ]
-  },
-  "meta": {
-    "format_version": 7,
-    "config_files": {
-      "modified": "2014-08-27T18:00:17Z",
-      "hostname": "10.122.166.77"
-    }
-  },
-  "environment": {
-    "locale": "en_US.utf8"
   }
 }

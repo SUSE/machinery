@@ -2927,26 +2927,6 @@
       }
     ]
   },
-  "config_files": {
-    "_attributes": {
-      "extracted": true
-    },
-    "_elements": [
-      {
-        "name": "/etc/crontab",
-        "package_name": "cronie",
-        "package_version": "1.4.11",
-        "status": "changed",
-        "changes": [
-          "md5"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "644",
-        "type": "file"
-      }
-    ]
-  },
   "changed_managed_files": {
     "_attributes": {
       "extracted": true
@@ -2977,7 +2957,7 @@
     ]
   },
   "meta": {
-    "format_version": 7,
+    "format_version": 8,
     "os": {
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"
@@ -3006,7 +2986,7 @@
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"
     },
-    "config_files": {
+    "changed_config_files": {
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"
     },
@@ -3043,5 +3023,25 @@
         "/unmanaged_files/files/name=/etc/init.d/rcS.d"
       ]
     }
+  },
+  "changed_config_files": {
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.11",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644",
+        "type": "file"
+      }
+    ]
   }
 }

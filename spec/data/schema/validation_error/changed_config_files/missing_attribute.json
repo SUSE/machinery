@@ -1,13 +1,12 @@
 {
-  "config_files": {
+  "changed_config_files": {
     "_attributes": {
-      "extracted": true
+      "extracted": false
     },
     "_elements": [
       {
         "name": "/etc/default/grub",
         "package_name": "grub2",
-        "package_version": "2.00",
         "status": "changed",
         "changes": [
           "mode",
@@ -15,14 +14,14 @@
         ],
         "user": "root",
         "group": "root",
-        "mode": "900",
+        "mode": "600",
         "type": "file"
       }
     ]
   },
   "meta": {
     "format_version": 7,
-    "config_files": {
+    "changed_config_files": {
       "modified": "2014-08-25T14:45:38Z",
       "hostname": "192.168.121.68"
     }

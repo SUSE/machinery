@@ -1,5 +1,5 @@
 {
-  "config_files": {
+  "changed_config_files": {
     "_attributes": {
       "extracted": true
     },
@@ -18,7 +18,7 @@
   },
   "meta": {
     "format_version": 7,
-    "config_files": {
+    "changed_config_files": {
       "modified": "2014-08-28T15:21:21Z",
       "hostname": "192.168.121.135"
     }

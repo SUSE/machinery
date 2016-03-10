@@ -1,5 +1,5 @@
 {
-  "config_files": {
+  "changed_config_files": {
     "_attributes": {
       "extracted": true
     },
@@ -8,21 +8,21 @@
         "name": "/etc/default/grub",
         "package_name": "grub2",
         "package_version": "2.00",
-        "status": "unknown_status",
+        "status": "changed",
         "changes": [
           "mode",
           "md5"
         ],
         "user": "root",
         "group": "root",
-        "mode": "600",
+        "mode": "900",
         "type": "file"
       }
     ]
   },
   "meta": {
     "format_version": 7,
-    "config_files": {
+    "changed_config_files": {
       "modified": "2014-08-25T14:45:38Z",
       "hostname": "192.168.121.68"
     }
