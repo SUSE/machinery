@@ -14,7 +14,7 @@ rm -rf "/var/lib/yum/history/"*
 cd /; tar xf /vagrant/unmanaged_files.tgz
 
 # config-files
-echo '-*/15 * * * *   root  echo config_files_integration_test &> /dev/null' >> /etc/crontab
+echo '-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null' >> /etc/crontab
 echo 'change in umlauts config file' >> /etc/umlaut-äöü.conf
 
 # changed-managed-files

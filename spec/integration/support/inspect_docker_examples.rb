@@ -96,7 +96,7 @@ shared_examples "inspect-container" do |container|
     context "--scope=config-files" do
       it "extracts the files" do
         ls_command = @machinery.run_command(
-          "ls #{machinery_config[:machinery_dir]}/test/config_files/etc/",
+          "ls #{machinery_config[:machinery_dir]}/test/changed_config_files/etc/",
           as: "vagrant"
         )
 

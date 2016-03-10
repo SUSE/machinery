@@ -183,7 +183,7 @@ task :upgrade_test_descriptions do
     ["faulty_description", "valid_description"]
   )
   update_json_format_version(
-    File.join(Machinery::ROOT, "spec/data/schema/validation_error/config_files")
+    File.join(Machinery::ROOT, "spec/data/schema/validation_error/changed_config_files")
   )
   update_json_format_version(
     File.join(Machinery::ROOT, "spec/data/schema/validation_error/unmanaged_files")

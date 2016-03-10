@@ -29,7 +29,7 @@ class SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 7
   EXTRACTABLE_SCOPES = [
     "changed_managed_files",
-    "config_files",
+    "changed_config_files",
     "unmanaged_files"
   ]
 

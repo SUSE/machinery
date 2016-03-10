@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 shared_examples "inspect config files" do |base|
-  expected_content = "-*/15 * * * *   root  echo config_files_integration_test &> /dev/null\n"
+  expected_content = "-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null\n"
 
   describe "--scope=config-files" do
     it "extracts list of config files and shows progress" do
@@ -43,7 +43,7 @@ shared_examples "inspect config files" do |base|
       )
       expect(show_command).to succeed
 
-      expected_files_list = File.read("spec/data/config_files/#{base}")
+      expected_files_list = File.read("spec/data/changed_config_files/#{base}")
       expect(show_command.stdout).to match_machinery_show_scope(expected_files_list)
 
       expected = <<EOF
@@ -61,24 +61,24 @@ EOF
       ).stdout
       description = create_test_description(json: description_json)
 
-      actual_config_files = nil
+      actual_changed_config_files = nil
       measure("Gather information about extracted files") do
-        actual_config_files = @machinery.run_command(
-          "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/config_files/; find -type f",
+        actual_changed_config_files = @machinery.run_command(
+          "cd #{machinery_config[:machinery_dir]}/#{@subject_system.ip}/changed_config_files/; find -type f",
           as: "vagrant"
         ).stdout.split("\n").map { |file_name| # Remove trailing dots returned by find
           file_name.sub(/^\./, "")
         }
       end
 
-      expected_config_files = description.config_files.select(&:file?).map(&:name)
-      expect(actual_config_files).to match_array(expected_config_files)
+      expected_changed_config_files = description.changed_config_files.select(&:file?).map(&:name)
+      expect(actual_changed_config_files).to match_array(expected_changed_config_files)
 
       # test file content
       expect(
         @machinery.run_command(
-          "grep config_files_integration_test #{machinery_config[:machinery_dir]}/" \
-          "#{@subject_system.ip}/config_files/etc/crontab",
+          "grep changed_config_files_integration_test #{machinery_config[:machinery_dir]}/" \
+          "#{@subject_system.ip}/changed_config_files/etc/crontab",
           as: "vagrant"
         )
       ).to succeed.and have_stdout(expected_content)

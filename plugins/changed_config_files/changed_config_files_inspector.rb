@@ -37,7 +37,7 @@ class ChangedConfigFilesInspector < Inspector
   end
 
   def inspect(filter, options = {})
-    do_extract = options[:extract_changed_config_files]
+    do_extract = options[:extract_changed_changed_config_files]
     system.check_retrieve_files_dependencies if do_extract
 
     count = 0
@@ -50,12 +50,12 @@ class ChangedConfigFilesInspector < Inspector
     end
 
     if filter
-      file_filter = filter.element_filter_for("/config_files/files/name")
+      file_filter = filter.element_filter_for("/changed_config_files/files/name")
       result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
     end
 
     scope = ChangedConfigFilesScope.new
-    file_store = @description.scope_file_store("config_files")
+    file_store = @description.scope_file_store("changed_config_files")
     scope.scope_file_store = file_store
 
     file_store.remove
@@ -71,11 +71,11 @@ class ChangedConfigFilesInspector < Inspector
     scope.extracted = !!do_extract
     scope += result.sort_by(&:name)
 
-    @description["config_files"] = scope
+    @description["changed_config_files"] = scope
   end
 
   def summary
-    "#{@description.config_files.extracted ? "Extracted" : "Found"} " +
-      Machinery.pluralize(@description.config_files.count, "%d changed config file") + "."
+    "#{@description.changed_config_files.extracted ? "Extracted" : "Found"} " +
+      Machinery.pluralize(@description.changed_config_files.count, "%d changed config file") + "."
   end
 end

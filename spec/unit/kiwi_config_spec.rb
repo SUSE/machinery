@@ -55,7 +55,7 @@ describe KiwiConfig do
   let(:system_description_with_modified_files) {
     create_test_description(
       scopes: ["os", "packages", "repositories", "services"],
-      extracted_scopes: ["config_files", "unmanaged_files", "changed_managed_files"],
+      extracted_scopes: ["changed_config_files", "unmanaged_files", "changed_managed_files"],
       name: name,
       store: store,
       store_on_disk: true
@@ -289,7 +289,7 @@ EOT
     end
 
     it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
-      scope = "config_files"
+      scope = "changed_config_files"
       system_description_with_modified_files.scope_file_store(scope).remove
       expect {
         KiwiConfig.new(system_description_with_modified_files)

@@ -101,12 +101,12 @@ describe Inspector do
     it "sorts all scopes" do
       unsorted_list = [
         "services", "packages", "changed_managed_files", "os", "groups", "unmanaged_files",
-        "config_files", "patterns", "users", "repositories"
+        "changed_config_files", "patterns", "users", "repositories"
       ]
 
       expected_result = [
         "os", "packages", "patterns", "repositories", "users", "groups",
-        "services", "config_files", "changed_managed_files", "unmanaged_files"
+        "services", "changed_config_files", "changed_managed_files", "unmanaged_files"
       ]
 
       expect(Inspector.sort_scopes(unsorted_list)).to eq(expected_result)

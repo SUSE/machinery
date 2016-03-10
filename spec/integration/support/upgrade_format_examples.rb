@@ -62,7 +62,7 @@ shared_examples "upgrade format" do
       )
       expect(show_command).to succeed
       expected = File.read(
-        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_config_files")
+        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_changed_config_files")
       )
       expect(show_command.stdout).to match_machinery_show_scope(expected)
 

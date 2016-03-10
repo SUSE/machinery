@@ -29,7 +29,7 @@ class ConfigBase
     apply_custom_config(@file) if File.exist?(@file)
   end
 
-  abstract_method :default_config_files
+  abstract_method :default_changed_config_files
 
   abstract_method :define_entries
   abstract_method :deprecated_entries

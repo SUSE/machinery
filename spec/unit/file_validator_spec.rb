@@ -63,8 +63,8 @@ EOT
           expect(error.to_s).to eq(<<EOT
 Error validating description 'config-files-bad'
 
-Scope 'config_files':
-  * File 'spec/data/descriptions/validation/config-files-bad/config_files/etc/postfix/main.cf' doesn't exist
+Scope 'changed_config_files':
+  * File 'spec/data/descriptions/validation/config-files-bad/changed_config_files/etc/postfix/main.cf' doesn't exist
 EOT
           )
         end
@@ -190,8 +190,8 @@ EOT
             SystemDescription.load!("config-files-additional-files", @store)
           }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
             expect(error.to_s).to include(
-              "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/postfix/main.cf' doesn't have meta data",
-              "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/ntp.conf' doesn't have meta data"
+              "* File 'spec/data/descriptions/validation/config-files-additional-files/changed_config_files/etc/postfix/main.cf' doesn't have meta data",
+              "* File 'spec/data/descriptions/validation/config-files-additional-files/changed_config_files/etc/ntp.conf' doesn't have meta data"
             )
           end
         end

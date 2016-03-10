@@ -22,7 +22,7 @@
 
   %body{ "data-description-a" => @description_a.name, "data-description-b" => @description_b.name }
     - scopes = ["os", "packages", "patterns", "repositories", "users", "groups",
-       "services", "config_files", "changed_managed_files", "unmanaged_files"]
+       "services", "changed_config_files", "changed_managed_files", "unmanaged_files"]
     #diff-unmanaged-files.modal.fade
       .modal-dialog.modal-lg
         .modal-content

@@ -130,13 +130,13 @@ describe ChangedConfigFilesInspector do
 
       context "with filters" do
         it "filters out the matching elements" do
-          filter = Filter.new("/config_files/files/name=/usr/*")
+          filter = Filter.new("/changed_config_files/files/name=/usr/*")
           inspector.inspect(filter)
-          expect(description.config_files.map(&:name)).
+          expect(description.changed_config_files.map(&:name)).
             to_not include("/usr/share/man/man1/time.1.gz")
 
           inspector.inspect(nil)
-          expect(description.config_files.map(&:name)).
+          expect(description.changed_config_files.map(&:name)).
             to include("/usr/share/man/man1/time.1.gz")
         end
       end
@@ -145,7 +145,7 @@ describe ChangedConfigFilesInspector do
         it "returns data about modified config files when requirements are fulfilled" do
           inspector.inspect(filter)
 
-          expect(description["config_files"].map(&:name)).to eq([
+          expect(description["changed_config_files"].map(&:name)).to eq([
             "/etc/config",
             "/etc/config_directory",
             "/etc/deleted_config",
@@ -163,22 +163,22 @@ describe ChangedConfigFilesInspector do
             [],
             "extracted" => false
           )
-          expect(description["config_files"]).to eq(expected)
+          expect(description["changed_config_files"]).to eq(expected)
         end
 
         it "extracts changed config files" do
-          config_file_directory = File.join(store.description_path(name), "config_files")
+          config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(system).to receive(:retrieve_files).with(extractable_paths, config_file_directory)
 
-          inspector.inspect(filter, extract_changed_config_files: true)
+          inspector.inspect(filter, extract_changed_changed_config_files: true)
 
           expect(inspector.summary).to include("Extracted 5 changed config files")
-          config_file_directory = File.join(store.description_path(name), "config_files")
+          config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
         end
 
         it "keep permissions on extracted config files dir" do
-          config_file_directory = File.join(store.description_path(name), "config_files")
+          config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(system).to receive(:retrieve_files).with(
             extractable_paths,
             config_file_directory
@@ -187,13 +187,13 @@ describe ChangedConfigFilesInspector do
           File.chmod(0750, config_file_directory)
           File.chmod(0750, store.description_path(name))
 
-          inspector.inspect(filter, extract_changed_config_files: true)
+          inspector.inspect(filter, extract_changed_changed_config_files: true)
           expect(inspector.summary).to include("Extracted 5 changed config files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
         end
 
         it "removes config files on inspect without extraction" do
-          config_file_directory      = File.join(store.description_path(name), "config_files")
+          config_file_directory      = File.join(store.description_path(name), "changed_config_files")
           config_file_directory_file = File.join(config_file_directory, "config_file")
           FileUtils.mkdir_p(config_file_directory)
           FileUtils.touch(config_file_directory_file)
@@ -206,13 +206,13 @@ describe ChangedConfigFilesInspector do
         end
 
         it "returns schema compliant data" do
-          config_file_directory = File.join(store.description_path(name), "config_files")
+          config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(system).to receive(:retrieve_files).with(
             extractable_paths,
             config_file_directory
           )
 
-          inspector.inspect(filter, extract_changed_config_files: true)
+          inspector.inspect(filter, extract_changed_changed_config_files: true)
 
           expect {
             JsonValidator.new(description.to_hash).validate
@@ -220,14 +220,14 @@ describe ChangedConfigFilesInspector do
         end
 
         it "returns sorted data" do
-          config_file_directory = File.join(store.description_path(name), "config_files")
+          config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(system).to receive(:retrieve_files).with(
             extractable_paths,
             config_file_directory
           )
 
-          inspector.inspect(filter, extract_changed_config_files: true)
-          names = description["config_files"].map(&:name)
+          inspector.inspect(filter, extract_changed_changed_config_files: true)
+          names = description["changed_config_files"].map(&:name)
 
           expect(names).to eq(names.sort)
         end

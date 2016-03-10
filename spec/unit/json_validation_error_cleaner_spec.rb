@@ -74,7 +74,7 @@ describe JsonValidationErrorCleaner do
       it "for unknown status in config-files" do
         error = "The property '#/0/1/status' of type Hash did not match any of the required schemas in schema 5257ca96-7f5c-5c72-b44e-80abca5b0f38#"
         expected = "The property #1 (status) of type Hash did not match any of the required schemas."
-        expect(subject.cleanup_error(error, "config_files")).
+        expect(subject.cleanup_error(error, "changed_config_files")).
           to eq(expected)
       end
     end

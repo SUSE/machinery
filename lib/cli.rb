@@ -552,7 +552,7 @@ class Cli
       inspect_options[:verbose] = true
     end
     if options["extract-files"] || options["extract-changed-config-files"]
-      inspect_options[:extract_changed_config_files] = true
+      inspect_options[:extract_changed_changed_config_files] = true
     end
     if options["extract-files"] || options["extract-changed-managed-files"]
       inspect_options[:extract_changed_managed_files] = true

@@ -80,12 +80,12 @@ describe JsonValidator do
 
     it "raises an error when encountering invalid enum values" do
       expected = <<EOF
-In scope config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
 EOF
 
       errors = JsonValidator.new(JSON.parse(<<-EOT)).validate
         {
-          "config_files": {
+          "changed_config_files": {
             "extracted": true,
             "files": [
               {
@@ -141,11 +141,11 @@ EOF
     end
 
     context "config-files" do
-      let(:path) { "spec/data/schema/validation_error/config_files/" }
+      let(:path) { "spec/data/schema/validation_error/changed_config_files/" }
 
       it "raises in case of missing package_version" do
         expected = <<EOF
-In scope config_files: The property #0 (_elements) did not contain a required property of 'package_version'.
+In scope changed_config_files: The property #0 (_elements) did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -156,7 +156,7 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope config_files: The property #0 (_elements/status) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 (_elements/status) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -167,7 +167,7 @@ EOF
 
       it "raises in case of a pattern mismatch" do
         expected = <<EOF
-In scope config_files: The property #0 (_elements/mode/changes) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 (_elements/mode/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(
@@ -178,7 +178,7 @@ EOF
 
       it "raises for a deleted file in case of an empty changes array" do
         expected = <<EOF
-In scope config_files: The property #0 (_elements/changes) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 (_elements/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
         errors = JsonValidator.new(

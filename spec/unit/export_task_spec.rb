@@ -37,7 +37,7 @@ describe ExportTask do
       name: "autoyast",
       export_name: "no-extracted-files",
       system_description: create_test_description(
-        scopes: ["os", "config_files", "unmanaged_files"]
+        scopes: ["os", "changed_config_files", "unmanaged_files"]
       )
     )
   }

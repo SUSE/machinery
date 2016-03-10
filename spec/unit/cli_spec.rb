@@ -400,7 +400,7 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              extract_changed_config_files: true,
+              extract_changed_changed_config_files: true,
               extract_unmanaged_files: true,
               extract_changed_managed_files: true
             ).
@@ -418,7 +418,7 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              extract_changed_config_files: true
+              extract_changed_changed_config_files: true
             ).
             and_return(description)
 
@@ -719,7 +719,7 @@ describe Cli do
 
   describe ".parse_scopes" do
     it "returns an array with existing scopes" do
-      expect(Cli.parse_scopes("os,config-files")).to eq(["os", "config_files"])
+      expect(Cli.parse_scopes("os,config-files")).to eq(["os", "changed_config_files"])
     end
 
     it "raises an error if the provided scope is unknown" do

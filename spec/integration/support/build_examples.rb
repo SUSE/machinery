@@ -106,14 +106,14 @@ shared_examples "build" do |distribution|
         it "contains the changed config file" do
           expect(
             @machinery.run_command(
-              "find", "/home/vagrant/.machinery/built_image/config_files/", "-printf", "%P\n"
+              "find", "/home/vagrant/.machinery/built_image/changed_config_files/", "-printf", "%P\n"
             )
           ).to succeed.and include_stdout("etc/crontab")
         end
 
         it "contains the changed config-files from the system description" do
           expect(@new_description).to include_file_scope(@system_description,
-            "config_files")
+            "changed_config_files")
         end
 
         it "removed the deleted config file" do

@@ -17,7 +17,7 @@
 
 class ChangedConfigFilesRenderer < Renderer
   def content(description)
-    return unless description["config_files"]
+    return unless description["changed_config_files"]
 
     diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
 
@@ -30,8 +30,8 @@ class ChangedConfigFilesRenderer < Renderer
     end
 
     list do
-      file_status = description["config_files"].extracted
-      files = description["config_files"]
+      file_status = description["changed_config_files"].extracted
+      files = description["changed_config_files"]
 
       if files.elements.empty?
         puts "There are no config files."

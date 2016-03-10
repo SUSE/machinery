@@ -23,7 +23,7 @@ class AnalyzeConfigFileDiffsTask
     description.validate_analysis_compatibility
     description.assert_scopes(
       "repositories",
-      "config_files"
+      "changed_config_files"
     )
 
     if !description["repositories"].any? { |repo| repo.enabled && !repo.external_medium? }
@@ -31,15 +31,15 @@ class AnalyzeConfigFileDiffsTask
         "Can not analyze the system description because it does not contain any online repository"
     end
 
-    if !description.scope_extracted?("config_files")
-      raise Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
+    if !description.scope_extracted?("changed_config_files")
+      raise Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
     end
 
     with_repositories(description) do |zypper|
       file_store = description.scope_file_store("analyze/config_file_diffs")
       file_store.create
       diffs_path = file_store.path
-      extracted_files_path = description.scope_file_store("config_files").path
+      extracted_files_path = description.scope_file_store("changed_config_files").path
 
       Machinery::Ui.puts "Generating diffs..."
       cnt = 1
@@ -95,7 +95,7 @@ class AnalyzeConfigFileDiffsTask
   #   }
   # ]
   def files_by_package(description)
-    files = description["config_files"].
+    files = description["changed_config_files"].
       select { |f| f.changes.include?("md5") }
 
     files.inject({}) do |result, file|

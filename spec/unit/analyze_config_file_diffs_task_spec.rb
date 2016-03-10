@@ -45,7 +45,7 @@ describe AnalyzeConfigFileDiffsTask do
             "gpgcheck": true,
             "priority": 2
           }
-        ], "config_files": {
+        ], "changed_config_files": {
           "_attributes": {
             "extracted": true
           },
@@ -95,7 +95,7 @@ describe AnalyzeConfigFileDiffsTask do
         }
       }
     EOF
-    FileUtils.mkdir_p(File.join(description.description_path, "config_files"))
+    FileUtils.mkdir_p(File.join(description.description_path, "changed_config_files"))
 
     description
   }
@@ -132,7 +132,7 @@ describe AnalyzeConfigFileDiffsTask do
               "priority": 2
             }
           ]
-        }, "config_files": {
+        }, "changed_config_files": {
           "_attributes": {
             "extracted": true
           },
@@ -145,7 +145,7 @@ describe AnalyzeConfigFileDiffsTask do
         }
       }
     EOF
-    FileUtils.mkdir_p(File.join(description.description_path, "config_files"))
+    FileUtils.mkdir_p(File.join(description.description_path, "changed_config_files"))
 
     description
   }

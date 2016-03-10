@@ -1,21 +1,21 @@
-- if config_files
+- if changed_config_files
   %div
-    %a.scope_anchor{ id: "config_files" }
-    .scope#config_files_container{ "data-scope" => "config_files" }
-      - count = config_files.length
+    %a.scope_anchor{ id: "changed_config_files" }
+    .scope#changed_config_files_container{ "data-scope" => "changed_config_files" }
+      - count = changed_config_files.length
       = render_partial "scope_header",
-        :scope => "config_files",
+        :scope => "changed_config_files",
         :title => "Config Files",
         :count => "#{count} #{Machinery.pluralize(count, "file")}"
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
           %p
-            <strong>Files extracted:</strong> #{config_files.extracted ? "yes" : "no"}
+            <strong>Files extracted:</strong> #{changed_config_files.extracted ? "yes" : "no"}
           - if count == 0
             There are no config files.
           - if count > 0
-            - config_files.each do |file|
+            - changed_config_files.each do |file|
               - if file.diff
                 .diff{ style: "display: none", "data-config-file-diff" => file.diff.file }
                   %span.diff-summary
@@ -38,7 +38,7 @@
                   %th.small User
                   %th.small Group
               %tbody
-                - config_files.each do |file|
+                - changed_config_files.each do |file|
                   %tr
                     %td
                       %span

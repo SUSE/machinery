@@ -24,7 +24,7 @@ describe ChangedConfigFilesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF, store_on_disk: true)
     {
-      "config_files": {
+      "changed_config_files": {
         "_attributes": {
           "extracted": true
         },
@@ -103,7 +103,7 @@ describe ChangedConfigFilesRenderer do
 
       let(:system_description) {
         create_test_description(
-          scopes: ["empty_config_files"],
+          scopes: ["empty_changed_config_files"],
           store: store,
           store_on_disk: true
         )
@@ -149,7 +149,7 @@ describe ChangedConfigFilesRenderer do
         end
 
         it "does not try to show a diff when the md5 did not change" do
-          system_description["config_files"].each do |config_file|
+          system_description["changed_config_files"].each do |config_file|
             config_file.changes = ["deleted"]
           end
           subject.render(system_description, show_diffs: true)

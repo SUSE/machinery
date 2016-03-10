@@ -96,7 +96,7 @@ class KiwiConfig < Exporter
   end
 
   def inject_extracted_files(output_location)
-    ["changed_managed_files", "config_files"].each do |scope|
+    ["changed_managed_files", "changed_config_files"].each do |scope|
       next if !@system_description.scope_extracted?(scope)
 
       output_root_path = File.join(output_location, "root")
@@ -147,7 +147,7 @@ EOF
 
   def check_existance_of_extracted_files
     missing_scopes = []
-    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
+    ["changed_config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
 
       if @system_description[scope] &&
          !@system_description.scope_file_store(scope).path

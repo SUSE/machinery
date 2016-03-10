@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe Machinery::Errors::MissingExtractedFiles do
   let (:name) { "name" }
-  let (:scopes) { ["config_files", "changed_managed_files"] }
+  let (:scopes) { ["changed_config_files", "changed_managed_files"] }
   let (:description) { create_test_description(name: name, scopes: scopes) }
 
   it "shows message about missing files and how to extract them" do
@@ -36,7 +36,7 @@ describe Machinery::Errors::MissingExtractedFiles do
   end
 
   it "adapts the message if only one scope is affected" do
-    e = Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
+    e = Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
     expect(e.to_s).
       to eq(
         "The scope 'config-files' is part of the system description" \
@@ -47,10 +47,10 @@ describe Machinery::Errors::MissingExtractedFiles do
   end
 
   context "when analyzing a docker container" do
-    let(:scopes) { ["docker_environment", "config_files", "changed_managed_files"] }
+    let(:scopes) { ["docker_environment", "changed_config_files", "changed_managed_files"] }
 
     it "adapts the output message with the correct inspect command" do
-      e = Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
+      e = Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
       expect(e.to_s).
         to eq(
           "The scope 'config-files' is part of the system description" \

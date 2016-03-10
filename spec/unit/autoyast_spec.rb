@@ -28,7 +28,7 @@ describe Autoyast do
     create_test_description(
       store_on_disk: true,
       extracted_scopes: [
-        "config_files",
+        "changed_config_files",
         "changed_managed_files",
         "unmanaged_files"
       ],
@@ -87,7 +87,7 @@ describe Autoyast do
 
     it "does not ask for export URL if files weren't extracted" do
       [
-        "config_files",
+        "changed_config_files",
         "changed_managed_files",
         "unmanaged_files"
       ].each do |scope|
