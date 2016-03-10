@@ -127,7 +127,7 @@ Match the global cache directory in changed managed files:
 
     /changed_managed_files/file/name=/var/cache/
 
-Match all deleted config files:
+Match all deleted configuration files:
 
     /changed_config_files/files/changes=deleted
 

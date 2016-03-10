@@ -17,7 +17,7 @@
 
 shared_examples "analyze config file diffs" do |distribution|
   describe "--operation=config-file-diffs" do
-    it "generates diffs for the changed config files" do
+    it "generates diffs for the changed configuration files" do
       system_description_file = "spec/data/descriptions/jeos/#{distribution}/manifest.json"
       system_description_dir = File.dirname(system_description_file)
 

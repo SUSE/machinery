@@ -48,7 +48,7 @@ RSpec.describe "Inspected but empty Scopes", type: :feature do
       end
     end
 
-    context "when config files are empty" do
+    context "when changed configuration files are empty" do
       let(:description) {
         create_test_description(
           extracted_scopes: ["empty_changed_config_files"],
@@ -62,7 +62,7 @@ RSpec.describe "Inspected but empty Scopes", type: :feature do
         visit("/name")
 
         expect(find("#changed_config_files_container")).
-          to have_content("There are no config files.")
+          to have_content("There are no changed configuration files.")
       end
     end
 

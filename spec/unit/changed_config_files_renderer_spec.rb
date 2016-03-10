@@ -83,7 +83,7 @@ describe ChangedConfigFilesRenderer do
   subject { ChangedConfigFilesRenderer.new }
 
   describe "#render" do
-    it "prints a list of config files" do
+    it "prints a list of changed configuration files" do
       output = subject.render(system_description)
 
       expect(output).to include("/etc/default/grub")
@@ -98,7 +98,7 @@ describe ChangedConfigFilesRenderer do
       expect(output).to include("Files extracted: yes")
     end
 
-    context "when there are no config files" do
+    context "when there are no changed configuration files" do
       let(:store) { system_description_factory_store }
 
       let(:system_description) {
@@ -113,7 +113,7 @@ describe ChangedConfigFilesRenderer do
         output = subject.render(system_description)
 
         expect(output).not_to match(/Files extracted: (yes|no)/)
-        expect(output).to include("There are no config files.")
+        expect(output).to include("There are no changed configuration files.")
       end
     end
 

@@ -409,7 +409,7 @@ describe Cli do
           run_command(["inspect", "--extract-files", example_host])
         end
 
-        it "extracts only changed config files files when --extract-changed-config-files is specified" do
+        it "extracts only changed configuration files when --extract-changed-config-files is specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),

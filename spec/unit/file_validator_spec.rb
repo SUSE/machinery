@@ -178,7 +178,7 @@ EOT
         end
       end
 
-      describe "for config files" do
+      describe "for changed configuration files" do
         it "validates existence of meta data" do
           expect {
             SystemDescription.load!("changed-config-files-good", @store)

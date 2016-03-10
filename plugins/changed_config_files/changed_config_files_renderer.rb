@@ -34,7 +34,7 @@ class ChangedConfigFilesRenderer < Renderer
       files = description["changed_config_files"]
 
       if files.elements.empty?
-        puts "There are no config files."
+        puts "There are no changed configuration files."
       elsif !file_status.nil?
         puts "Files extracted: #{file_status ? "yes" : "no"}"
       end

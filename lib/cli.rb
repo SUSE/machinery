@@ -272,7 +272,7 @@ class Cli
     The supported operations are:
 
     - config-file-diffs: Generate diffs against the original version from
-      the package for the modified config files
+      the package for the changed configuration files
   LONGDESC
   arg "NAME"
   command "analyze" do |c|
@@ -778,7 +778,7 @@ class Cli
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
-      desc: "Show diffs of configuration files changes."
+      desc: "Show diffs of changed configuration files changes."
     c.switch "html", required: false, negatable: false,
       desc: "Open system description in HTML format in your web browser."
     c.switch "verbose", required: false, negatable: false,

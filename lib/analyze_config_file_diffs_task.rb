@@ -137,7 +137,7 @@ class AnalyzeConfigFileDiffsTask
           raise if e.status.exitstatus == 7
 
           # Refreshing repositories might fail for various other reasons, but we
-          # still stick to the plan because the relevant config files might be
+          # still stick to the plan because the relevant configuration files might be
           # available from the other repositories.
           # If they aren't an error message will then be generated for each of
           # the actually missing files instead.

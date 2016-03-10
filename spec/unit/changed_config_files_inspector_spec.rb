@@ -142,7 +142,7 @@ describe ChangedConfigFilesInspector do
       end
 
       context "without filters" do
-        it "returns data about modified config files when requirements are fulfilled" do
+        it "returns data about modified changed configuration files when requirements are fulfilled" do
           inspector.inspect(filter)
 
           expect(description["changed_config_files"].map(&:name)).to eq([
@@ -152,10 +152,10 @@ describe ChangedConfigFilesInspector do
             "/etc/linked_config",
             "/usr/share/man/man1/time.1.gz"
           ])
-          expect(inspector.summary).to include("5 changed config files")
+          expect(inspector.summary).to include("5 changed configuration files")
         end
 
-        it "returns empty when no modified config files are there" do
+        it "returns empty when no modified changed configuration files are there" do
           expect(managed_files_database).to receive(:changed_files).and_return([])
 
           inspector.inspect(filter)
@@ -166,18 +166,18 @@ describe ChangedConfigFilesInspector do
           expect(description["changed_config_files"]).to eq(expected)
         end
 
-        it "extracts changed config files" do
+        it "extracts changed configuration files" do
           config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(system).to receive(:retrieve_files).with(extractable_paths, config_file_directory)
 
           inspector.inspect(filter, extract_changed_changed_config_files: true)
 
-          expect(inspector.summary).to include("Extracted 5 changed config files")
+          expect(inspector.summary).to include("Extracted 5 changed configuration files")
           config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0700)
         end
 
-        it "keep permissions on extracted config files dir" do
+        it "keep permissions on extracted changed configuration files dir" do
           config_file_directory = File.join(store.description_path(name), "changed_config_files")
           expect(system).to receive(:retrieve_files).with(
             extractable_paths,
@@ -188,11 +188,11 @@ describe ChangedConfigFilesInspector do
           File.chmod(0750, store.description_path(name))
 
           inspector.inspect(filter, extract_changed_changed_config_files: true)
-          expect(inspector.summary).to include("Extracted 5 changed config files")
+          expect(inspector.summary).to include("Extracted 5 changed configuration files")
           expect(File.stat(config_file_directory).mode & 0777).to eq(0750)
         end
 
-        it "removes config files on inspect without extraction" do
+        it "removes changed configuration files on inspect without extraction" do
           config_file_directory      = File.join(store.description_path(name), "changed_config_files")
           config_file_directory_file = File.join(config_file_directory, "config_file")
           FileUtils.mkdir_p(config_file_directory)

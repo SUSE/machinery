@@ -18,7 +18,7 @@
 class ChangedConfigFilesInspector < Inspector
   has_priority 80
 
-  # returns a hash with entries for changed config files
+  # returns a hash with entries for changed configuration files
   def config_file_changes(pkg)
     @system.changed_files.select(&:config_file?).map do |file|
       ConfigFile.new(
@@ -43,7 +43,9 @@ class ChangedConfigFilesInspector < Inspector
     count = 0
     files = @system.managed_files_database.changed_files do |chunk|
       count += chunk.lines.count { |l| !l.chomp.end_with?(":") && l.split(" ")[1] == "c" }
-      Machinery::Ui.progress(" -> Found #{Machinery.pluralize(count, "%d changed config file")}...")
+      Machinery::Ui.progress(
+        " -> Found #{Machinery.pluralize(count, "%d changed configuration file")}..."
+      )
     end
     result = files.select(&:config_file?).map do |file|
       ConfigFile.new(file.attributes)
@@ -76,6 +78,6 @@ class ChangedConfigFilesInspector < Inspector
 
   def summary
     "#{@description.changed_config_files.extracted ? "Extracted" : "Found"} " +
-      Machinery.pluralize(@description.changed_config_files.count, "%d changed config file") + "."
+      Machinery.pluralize(@description.changed_config_files.count, "%d changed configuration file") + "."
   end
 end

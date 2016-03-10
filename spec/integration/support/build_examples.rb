@@ -111,7 +111,7 @@ shared_examples "build" do |distribution|
           ).to succeed.and include_stdout("etc/crontab")
         end
 
-        it "contains the changed changed-config-files from the system description" do
+        it "contains the changed-config-files from the system description" do
           expect(@new_description).to include_file_scope(@system_description,
             "changed_config_files")
         end

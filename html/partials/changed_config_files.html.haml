@@ -13,7 +13,7 @@
           %p
             <strong>Files extracted:</strong> #{changed_config_files.extracted ? "yes" : "no"}
           - if count == 0
-            There are no config files.
+            There are no changed configuration files.
           - if count > 0
             - changed_config_files.each do |file|
               - if file.diff

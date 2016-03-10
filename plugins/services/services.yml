@@ -7,4 +7,4 @@
   The scope determines which services are configured to be started in which
   runlevel. It uses the `chkconfig` command to obtain that information.
   The xinetd services that are also displayed by `chkconfig` are switched
-  on/off by editing config files and are ignored in this context.
+  on/off by editing configuration files and are ignored in this context.

@@ -15,11 +15,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-shared_examples "inspect config files" do |base|
+shared_examples "inspect changed configuration files" do |base|
   expected_content = "-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null\n"
 
   describe "--scope=changed-config-files" do
-    it "extracts list of config files and shows progress" do
+    it "extracts list of changed configuration files and shows progress" do
       measure("Inspect system") do
         inspect_command = @machinery.run_command(
           "FORCE_MACHINERY_PROGRESS_OUTPUT=true #{machinery_command} inspect " \
@@ -49,7 +49,7 @@ shared_examples "inspect config files" do |base|
       expected = <<EOF
 Inspecting 0.0.0.0 for changed-config-files...
 Inspecting changed-config-files...
- -> Found 0 changed config files...\r\033\[K -> Found 0 changed config files...\r\033\[K -> Extracted 0 changed config files.
+ -> Found 0 changed configuration files...\r\033\[K -> Found 0 changed configuration files...\r\033\[K -> Extracted 0 changed configuration files.
 EOF
       expect(normalize_inspect_output(@machinery_output)).to start_with(expected)
     end

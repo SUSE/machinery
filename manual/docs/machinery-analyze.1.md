@@ -13,7 +13,7 @@ The `analyze` subcommand analyzes an existing system description and enriches
 it with additional information. Supported operations are:
 
   * `config-file-diffs`:
-    Generates the diffs between the extracted changed config files from the
+    Generates the diffs between the extracted changed configuration files from the
     system and the original versions from the RPM packages.
     The diffs can be shown using `machinery show --show-diffs`
 
