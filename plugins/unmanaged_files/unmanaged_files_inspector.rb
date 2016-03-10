@@ -131,8 +131,8 @@ class UnmanagedFilesInspector < Inspector
 
   def show_extraction_progress(count)
     progress = Machinery.pluralize(
-      count, " -> Extracted %d unmanaged file or tree",
-        " -> Extracted %d unmanaged files and/or trees"
+      count, " -> Extracted %d unmanaged file or tree...",
+        " -> Extracted %d unmanaged files and/or trees..."
     )
     Machinery::Ui.progress(progress)
   end
