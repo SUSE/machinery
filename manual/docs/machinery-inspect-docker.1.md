@@ -43,7 +43,7 @@ trigger errors.
     Inspect image for specified scope.
     See the [Scope section](#Scopes) for more information.
 
-  * `-e SCOPE`, `--ignore-scope=ignore-scope` (optional):
+  * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Inspect image for all scopes except the specified scope.
     See the [Scope section](#Scopes) for more information.
 

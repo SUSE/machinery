@@ -3,7 +3,7 @@
 
 ## SYNOPSIS
 
-`machinery show` [-s SCOPE | --scope=SCOPE] [-e ignore-scope | --ignore-scope=ignore-scope] [--no-pager] [--show-diffs] [--html] NAME
+`machinery show` [-s SCOPE | --scope=SCOPE] [-e IGNORE-SCOPE | --ignore-scope=IGNORE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME
 
 `machinery` help show
 
@@ -30,7 +30,7 @@ in local time are shown in the title of each scope section.
     If displaying information related to a scope fails, `show` will print an error message what has failed.
     In case of an error, no content is displayed.
 
-  * `-e ignore-scope`, `--ignore-scope=ignore-scope` (optional):
+  * `-e IGNORE-SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Skip output of the specified scope.
     See the [Scope section](#Scopes) for more information.
 

@@ -3,7 +3,7 @@
 
 ## SYNOPSIS
 
-`machinery compare` [-s SCOPE | --scope=SCOPE] [-e ignore-scope | --ignore-scope=ignore-scope] [--no-pager] [--show-all] [--html] NAME1 NAME2
+`machinery compare` [-s SCOPE | --scope=SCOPE] [-e IGNORE-SCOPE | --ignore-scope=IGNORE-SCOPE] [--no-pager] [--show-all] [--html] NAME1 NAME2
 
 `machinery` help compare
 
@@ -29,7 +29,7 @@ be used to limit the output to the given scopes.
     Limit output to the specified scope.
     See the [Scope section](#Scopes) for more information.
 
-  * `-e SCOPE`, `--ignore-scope=ignore-scope` (optional):
+  * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Skip output of the specified scope.
     See the [Scope section](#Scopes) for more information.
 
