@@ -106,7 +106,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: options.fetch(:format_version, 7)
+      format_version: options.fetch(:format_version, SystemDescription::CURRENT_FORMAT_VERSION)
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
