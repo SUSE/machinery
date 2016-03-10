@@ -70,6 +70,14 @@ describe Server do
       end
     end
 
+    describe "GET /:id with non-existent id" do
+      it "redirects to landing page if description is not found" do
+        get "/does_not_exist"
+
+        expect(last_response).to be_redirect
+      end
+    end
+
     describe "GET /descriptions/:id/files/:scope" do
       it "sends the file" do
         get "/descriptions/#{description_a.name}/files/config_files/etc/cron%20tab"

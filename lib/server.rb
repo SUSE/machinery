@@ -328,7 +328,12 @@ class Server < Sinatra::Base
   end
 
   get "/:id" do
-    @description = SystemDescription.load(params[:id], settings.system_description_store)
+    begin
+      @description = SystemDescription.load(params[:id], settings.system_description_store)
+    rescue Machinery::Errors::SystemDescriptionNotFound
+      status 404
+      redirect "/"
+    end
 
     diffs_dir = @description.scope_file_store("analyze/config_file_diffs").path
     if @description.config_files && diffs_dir
