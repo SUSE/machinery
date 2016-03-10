@@ -1,5 +1,9 @@
 # Machinery Release Notes
 
+* Rename config-files inspector to changed-config-files inspector to be more
+  intuitive
+* Following the previous change the analyze operation was also renamed to
+  changed-config-files-diffs
 
 ## Version 1.18.0 - Tue Mar 01 13:51:39 CET 2016 - thardeck@suse.de
 
