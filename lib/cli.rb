@@ -41,7 +41,7 @@ class Cli
   end
 
   post do |global_options,command,options,args|
-    if command.is_a?(GLI::Commands::Help) && !global_options[:version] && ARGV == ["help"]
+    if command.is_a?(GLI::Commands::Help) && !global_options[:version] || ARGV == ["help"]
 
       Machinery::Ui.puts "\nFor more detailed information, open the documentation by typing " \
         "'machinery man --html'.\nIf you are unable to find a solution within the man page " \
