@@ -26,7 +26,7 @@
 # The sub directories storing the data for specific scopes are handled by the
 # ScopeFileStore class.
 class SystemDescription < Machinery::Object
-  CURRENT_FORMAT_VERSION = 7
+  CURRENT_FORMAT_VERSION = 8
   EXTRACTABLE_SCOPES = [
     "changed_managed_files",
     "changed_config_files",

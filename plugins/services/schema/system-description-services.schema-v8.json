@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "type": "object",
+  "required": [
+    "_elements"
+  ],
+  "oneOf": [
+    {
+      "properties": {
+        "_attributes": {
+          "type": "object",
+          "required": [
+            "init_system"
+          ],
+          "properties": {
+            "init_system": {
+              "not": {
+                "enum": [
+                  "upstart"
+                ]
+              },
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "_elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "state"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "_attributes": {
+          "type": "object",
+          "required": [
+            "init_system"
+          ],
+          "properties": {
+            "init_system": {
+              "enum": [
+                "upstart"
+              ]
+            }
+          }
+        },
+        "_elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "state",
+              "legacy_sysv"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state": {
+                "type": "string",
+                "minLength": 1
+              },
+              "legacy_sysv": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+
