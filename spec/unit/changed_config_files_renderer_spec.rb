@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ConfigFilesRenderer do
+describe ChangedConfigFilesRenderer do
   capture_machinery_output
   initialize_system_description_factory_store
 
@@ -80,7 +80,7 @@ describe ConfigFilesRenderer do
     }
     EOF
   }
-  subject { ConfigFilesRenderer.new }
+  subject { ChangedConfigFilesRenderer.new }
 
   describe "#render" do
     it "prints a list of config files" do

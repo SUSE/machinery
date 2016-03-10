@@ -36,7 +36,7 @@ class ConfigFileList < Machinery::Array
   end
 end
 
-class ConfigFilesScope < FileScope
+class ChangedConfigFilesScope < FileScope
   include Machinery::Scope
   include ScopeFileAccessFlat
 

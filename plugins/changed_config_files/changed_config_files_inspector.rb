@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ConfigFilesInspector < Inspector
+class ChangedConfigFilesInspector < Inspector
   has_priority 80
 
   # returns a hash with entries for changed config files
@@ -54,7 +54,7 @@ class ConfigFilesInspector < Inspector
       result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
     end
 
-    scope = ConfigFilesScope.new
+    scope = ChangedConfigFilesScope.new
     file_store = @description.scope_file_store("config_files")
     scope.scope_file_store = file_store
 
