@@ -26,16 +26,18 @@ describe SystemDescription do
     @name = "name"
     @description = create_test_description_json(scopes: ["packages", "repositories"])
     @empty_description = create_test_description_json
-    @mix_struct_hash_descr = '{
+    @mix_struct_hash_descr = <<-EOF.chomp
+    {
       "software": {
         "packages": {
           "foo": "bar"
         }
       },
       "meta": {
-        "format_version": 7
+        "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION}
       }
-    }'
+    }
+EOF
   end
 
   it "returns empty JSON structure on .new" do
