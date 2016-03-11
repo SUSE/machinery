@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Rename --exclude-scope option to --ignore-scope to avoid confusion with global --exclude option
 
 ## Version 1.18.0 - Tue Mar 01 13:51:39 CET 2016 - thardeck@suse.de
 
