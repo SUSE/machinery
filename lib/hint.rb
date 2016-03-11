@@ -44,7 +44,9 @@ class Hint
     end
 
     def get_started(_options)
-      "You can get started by inspecting a system. Run:\n#{program_name} inspect HOSTNAME"
+      "You can get started by inspecting a system. Run:\n'#{program_name} inspect HOSTNAME'\n" \
+      "To inspect a system as a user with sudo rights instead of root run:\n" \
+      "'#{program_name} inspect --remote-user USER HOSTNAME'"
     end
 
     def upgrade_format_force(options)
