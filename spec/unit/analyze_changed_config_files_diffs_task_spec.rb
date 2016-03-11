@@ -185,7 +185,10 @@ describe AnalyzeConfigFileDiffsTask do
       diff_count = Dir.glob(File.join(description.description_path, "/**/*.diff")).size
       expect(diff_count).to eq(3)
       example_content = File.read(
-        File.join(description.description_path, "analyze/config_file_diffs/etc/pam.d/login.diff")
+        File.join(
+          description.description_path,
+          "analyze/changed_config_files_diffs/etc/pam.d/login.diff"
+        )
       )
       expect(example_content).to eq("some login diff")
     end

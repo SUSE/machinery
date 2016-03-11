@@ -271,27 +271,27 @@ class Cli
 
     The supported operations are:
 
-    - config-file-diffs: Generate diffs against the original version from
+    - changed-config-files-diffs: Generate diffs against the original version from
       the package for the changed configuration files
   LONGDESC
   arg "NAME"
   command "analyze" do |c|
     c.flag [:operation, :o], type: String, required: false,
-      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "config-file-diffs"
+      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "changed-config-files-diffs"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       description = SystemDescription.load(name, system_description_store)
 
       case options[:operation]
-        when "config-file-diffs"
+        when "changed-config-files-diffs"
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
           Hint.print(:show_analyze_data, name: name)
         else
           raise Machinery::Errors::InvalidCommandLine.new(
             "The operation '#{options[:operation]}' is not supported. " \
-            "Valid operations are: config-file-diffs."
+            "Valid operations are: changed-config-files-diffs."
           )
       end
     end

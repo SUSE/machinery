@@ -19,13 +19,13 @@ class ChangedConfigFilesRenderer < Renderer
   def content(description)
     return unless description["changed_config_files"]
 
-    diffs_dir = description.scope_file_store("analyze/config_file_diffs").path
+    diffs_dir = description.scope_file_store("analyze/changed_config_files_diffs").path
 
     if !diffs_dir && @options[:show_diffs]
       raise Machinery::Errors::SystemDescriptionError.new(
         "Diffs can not be shown because they were not generated yet.\n" \
         "You can generate them with `#{Hint.program_name} analyze" \
-        " --operation=config-file-diffs #{description.name}`."
+        " --operation=changed-config-files-diffs #{description.name}`."
       )
     end
 

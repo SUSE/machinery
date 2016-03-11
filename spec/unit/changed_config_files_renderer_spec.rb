@@ -128,7 +128,7 @@ describe ChangedConfigFilesRenderer do
 
       context "when the diffs were generated" do
         before(:each) do
-          @diffs_dir = File.join(system_description.description_path, "analyze/config_file_diffs")
+          @diffs_dir = File.join(system_description.description_path, "analyze/changed_config_files_diffs")
           FileUtils.mkdir_p(File.join(@diffs_dir, "/etc/postfix"))
           File.write(File.join(@diffs_dir, "/etc/postfix/main.cf.diff"), "main.cf.diff")
           File.write(File.join(@diffs_dir, "/etc/my.cnf.diff"), "my.cf.diff")

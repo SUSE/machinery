@@ -15,8 +15,8 @@
 #  To contact SUSE about this file by physical or electronic mail,
 #  you may find current contact information at www.suse.com
 
-shared_examples "analyze config file diffs" do |distribution|
-  describe "--operation=config-file-diffs" do
+shared_examples "analyze changed config files diffs" do |distribution|
+  describe "--operation=changed-config-files-diffs" do
     it "generates diffs for the changed configuration files" do
       system_description_file = "spec/data/descriptions/jeos/#{distribution}/manifest.json"
       system_description_dir = File.dirname(system_description_file)
@@ -31,7 +31,7 @@ shared_examples "analyze config file diffs" do |distribution|
       measure("Analyze system description") do
         expect(
           @machinery.run_command(
-            "machinery analyze #{distribution} --operation=config-file-diffs",
+            "machinery analyze #{distribution} --operation=changed-config-files-diffs",
             as: "vagrant"
           )
         ).to succeed
@@ -44,7 +44,7 @@ shared_examples "analyze config file diffs" do |distribution|
 
       expect(show_command).to succeed
       expect(show_command.stdout).to match_machinery_show_scope(
-        File.read("spec/data/analyze_config_file_diffs/#{distribution}"))
+        File.read("spec/data/analyze_changed_config_files_diffs/#{distribution}"))
     end
   end
 end
