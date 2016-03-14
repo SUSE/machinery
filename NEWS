@@ -4,6 +4,7 @@
   intuitive
 * Following the previous change the analyze operation was also renamed to
   changed-config-files-diffs
+* Rename --exclude-scope option to --ignore-scope to avoid confusion with global --exclude option (gh#SUSE/machinery#897)
 
 ## Version 1.18.0 - Tue Mar 01 13:51:39 CET 2016 - thardeck@suse.de
 

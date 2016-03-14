@@ -38,7 +38,7 @@ trigger errors.
     Inspect system for specified scope.
     See the [Scope section](machinery_main_scopes.1/index.html) for more information.
 
-  * `-e SCOPE`, `--exclude-scope=EXCLUDE-SCOPE` (optional):
+  * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Inspect system for all scopes except the specified scope.
     See the [Scope section](machinery_main_scopes.1/index.html) for more information.
 
