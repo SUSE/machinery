@@ -210,6 +210,13 @@ class Cli
         next
       end
 
+      if scope == "config-files"
+        Machinery::Ui.warn(
+          "The scope name `config-files` is deprecated. The new name is `changed-config-files`."
+        )
+        scope = "changed-config-files"
+      end
+
       # convert cli scope naming to internal one
       scope.tr!("-", "_")
 

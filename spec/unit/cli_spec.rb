@@ -722,6 +722,25 @@ describe Cli do
       expect(Cli.parse_scopes("os,changed-config-files")).to eq(["os", "changed_config_files"])
     end
 
+    context "if the old scope name config-files is used" do
+      it "shows a deprecated warning" do
+        expect(Machinery::Ui).to receive(:warn).with(
+          "The scope name `config-files` is deprecated. The new name is `changed-config-files`."
+        )
+        Cli.parse_scopes("config-files")
+      end
+
+      it "does not raise" do
+        expect{
+          Cli.parse_scopes("config-files")
+        }.not_to raise_error
+      end
+
+      it "returns the scope name changed-config-files instead" do
+        expect(Cli.parse_scopes("config-files")).to eq(["changed_config_files"])
+      end
+    end
+
     it "raises an error if the provided scope is unknown" do
       expect{
         Cli.parse_scopes("unknown-scope")
