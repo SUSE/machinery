@@ -19,45 +19,46 @@ require_relative "spec_helper"
 
 describe Machinery::Errors::MissingExtractedFiles do
   let (:name) { "name" }
-  let (:scopes) { ["config_files", "changed_managed_files"] }
+  let (:scopes) { ["changed_config_files", "changed_managed_files"] }
   let (:description) { create_test_description(name: name, scopes: scopes) }
 
   it "shows message about missing files and how to extract them" do
     e = Machinery::Errors::MissingExtractedFiles.new(description, scopes)
     expect(e.to_s).
       to eq(
-        "The following scopes 'config-files, changed-managed-files' are part of the " \
+        "The following scopes 'changed-config-files, changed-managed-files' are part of the " \
         "system description" \
         " but the corresponding files weren't extracted during inspection.\n" \
         "The files are required to continue with this command. " \
-        "Run `#{$0} inspect --extract-files --scope=config-files,changed-managed-files " \
+        "Run `#{$0} inspect --extract-files --scope=changed-config-files,changed-managed-files " \
         "--name='#{name}' example.com` to extract them."
       )
   end
 
   it "adapts the message if only one scope is affected" do
-    e = Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
+    e = Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
     expect(e.to_s).
       to eq(
-        "The scope 'config-files' is part of the system description" \
+        "The scope 'changed-config-files' is part of the system description" \
         " but the corresponding files weren't extracted during inspection.\n" \
         "The files are required to continue with this command. " \
-        "Run `#{$0} inspect --extract-files --scope=config-files --name='#{name}' example.com` to extract them."
+        "Run `#{$0} inspect --extract-files --scope=changed-config-files " \
+        "--name='#{name}' example.com` to extract them."
       )
   end
 
   context "when analyzing a docker container" do
-    let(:scopes) { ["docker_environment", "config_files", "changed_managed_files"] }
+    let(:scopes) { ["docker_environment", "changed_config_files", "changed_managed_files"] }
 
     it "adapts the output message with the correct inspect command" do
-      e = Machinery::Errors::MissingExtractedFiles.new(description, ["config_files"])
+      e = Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
       expect(e.to_s).
         to eq(
-          "The scope 'config-files' is part of the system description" \
+          "The scope 'changed-config-files' is part of the system description" \
           " but the corresponding files weren't extracted during inspection.\n" \
           "The files are required to continue with this command. " \
-          "Run `#{$0} inspect-container --extract-files --scope=config-files --name='#{name}' " \
-          "example.com` to extract them."
+          "Run `#{$0} inspect-container --extract-files --scope=changed-config-files " \
+          "--name='#{name}' example.com` to extract them."
         )
     end
   end

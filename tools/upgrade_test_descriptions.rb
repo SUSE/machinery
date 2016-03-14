@@ -34,6 +34,8 @@ def upgrade_descriptions(path, descriptions = [])
 
     puts File.join(path, description)
     Migration.migrate_description(store, description, force: true)
+
+    FileUtils.rm_rf(File.join(path, "#{description}.backup"))
   end
 end
 

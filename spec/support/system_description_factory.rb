@@ -106,7 +106,7 @@ module SystemDescriptionFactory
 
     json_objects = []
     meta = {
-      format_version: options.fetch(:format_version, 7)
+      format_version: options.fetch(:format_version, SystemDescription::CURRENT_FORMAT_VERSION)
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -250,16 +250,16 @@ module SystemDescriptionFactory
       ]
     }
   EOF
-  EXAMPLE_SCOPES["empty_config_files"] = <<-EOF.chomp
-    "config_files": {
+  EXAMPLE_SCOPES["empty_changed_config_files"] = <<-EOF.chomp
+    "changed_config_files": {
       "_attributes": {
         "extracted": false
       },
       "_elements": []
     }
   EOF
-  EXAMPLE_SCOPES["config_files"] = <<-EOF.chomp
-    "config_files": {
+  EXAMPLE_SCOPES["changed_config_files"] = <<-EOF.chomp
+    "changed_config_files": {
       "_attributes": {
         "extracted": false
       },

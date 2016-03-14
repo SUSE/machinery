@@ -57,18 +57,20 @@ shared_examples "upgrade format" do
       ).to succeed
 
       show_command = @machinery.run_command(
-          "machinery show format_v2 --scope=config-files --show-diffs",
-          as: "vagrant"
+        "machinery show format_v2 --scope=changed-config-files --show-diffs",
+        as: "vagrant"
       )
       expect(show_command).to succeed
       expected = File.read(
-        File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_config_files")
+        File.join(
+          Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_changed_config_files"
+        )
       )
       expect(show_command.stdout).to match_machinery_show_scope(expected)
 
       show_command = @machinery.run_command(
-          "machinery show format_v2 --scope=repositories --show-diffs",
-          as: "vagrant"
+        "machinery show format_v2 --scope=repositories --show-diffs",
+        as: "vagrant"
       )
       expect(show_command).to succeed
       expected = File.read(

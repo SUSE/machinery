@@ -23,7 +23,7 @@ class ExportTask
   def export(output_dir, options)
     @exporter.system_description.assert_scopes("os")
 
-    ["unmanaged_files", "changed_managed_files", "config_files"].each do |scope|
+    ["unmanaged_files", "changed_managed_files", "changed_config_files"].each do |scope|
       if @exporter.system_description[scope] &&
           !@exporter.system_description.scope_extracted?(scope)
         raise Machinery::Errors::MissingExtractedFiles.new(@exporter.system_description, [scope])

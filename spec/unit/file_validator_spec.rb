@@ -45,26 +45,26 @@ EOT
     describe "validate config file presence" do
       it "validates unextracted description" do
         expect {
-          SystemDescription.load!("config-files-unextracted", @store)
+          SystemDescription.load!("changed-config-files-unextracted", @store)
         }.to_not raise_error
       end
 
       it "validates valid description" do
         expect {
 
-          SystemDescription.load!("config-files-good", @store)
+          SystemDescription.load!("changed-config-files-good", @store)
         }.to_not raise_error
       end
 
       it "throws error on invalid description" do
         expect {
-          SystemDescription.load!("config-files-bad", @store)
+          SystemDescription.load!("changed-config-files-bad", @store)
         }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
           expect(error.to_s).to eq(<<EOT
-Error validating description 'config-files-bad'
+Error validating description 'changed-config-files-bad'
 
-Scope 'config_files':
-  * File 'spec/data/descriptions/validation/config-files-bad/config_files/etc/postfix/main.cf' doesn't exist
+Scope 'changed_config_files':
+  * File 'spec/data/descriptions/validation/changed-config-files-bad/changed_config_files/etc/postfix/main.cf' doesn't exist
 EOT
           )
         end
@@ -178,20 +178,20 @@ EOT
         end
       end
 
-      describe "for config files" do
+      describe "for changed configuration files" do
         it "validates existence of meta data" do
           expect {
-            SystemDescription.load!("config-files-good", @store)
+            SystemDescription.load!("changed-config-files-good", @store)
           }.to_not raise_error
         end
 
         it "throws an error on file exists without meta data" do
           expect {
-            SystemDescription.load!("config-files-additional-files", @store)
+            SystemDescription.load!("changed-config-files-additional-files", @store)
           }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed) do |error|
             expect(error.to_s).to include(
-              "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/postfix/main.cf' doesn't have meta data",
-              "* File 'spec/data/descriptions/validation/config-files-additional-files/config_files/etc/ntp.conf' doesn't have meta data"
+              "* File 'spec/data/descriptions/validation/changed-config-files-additional-files/changed_config_files/etc/postfix/main.cf' doesn't have meta data",
+              "* File 'spec/data/descriptions/validation/changed-config-files-additional-files/changed_config_files/etc/ntp.conf' doesn't have meta data"
             )
           end
         end

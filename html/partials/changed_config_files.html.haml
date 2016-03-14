@@ -1,0 +1,63 @@
+- if changed_config_files
+  %div
+    %a.scope_anchor{ id: "changed_config_files" }
+    .scope#changed_config_files_container{ "data-scope" => "changed_config_files" }
+      - count = changed_config_files.length
+      = render_partial "scope_header",
+        :scope => "changed_config_files",
+        :title => "Changed Configuration Files",
+        :count => "#{count} #{Machinery.pluralize(count, "file")}"
+      .row.scope_content.collapse.in
+        .col-xs-1
+        .col-xs-11
+          %p
+            <strong>Files extracted:</strong> #{changed_config_files.extracted ? "yes" : "no"}
+          - if count == 0
+            There are no changed configuration files.
+          - if count > 0
+            - changed_config_files.each do |file|
+              - if file.diff
+                .diff{ style: "display: none", "data-config-file-diff" => file.diff.file }
+                  %span.diff-summary
+                    #{file.diff.additions} additions & #{file.diff.deletions} deletions
+                  %table.diff
+                    - file.diff.lines.each do |line|
+                      %tr{ class: line[:type] }
+                        %td.active.linenumber= line[:original_line_number]
+                        %td.linenumber= line[:new_line_number]
+                        %td
+                          = line[:content]
+            %table.table.table-striped.table-hover.table-condensed.files-table.filterable
+              %thead
+                %tr
+                  %th Name
+                  %th.medium Package Name
+                  %th.medium Package Version
+                  %th.medium Changes
+                  %th.small Mode
+                  %th.small User
+                  %th.small Group
+              %tbody
+                - changed_config_files.each do |file|
+                  %tr
+                    %td
+                      %span
+                        - if file.on_disk?
+                          %a.file-download{ href: "#" }
+                            = file.name
+                        - else
+                          %span
+                            = file.name
+                      - if file.diff
+                        %a.diff-toggle{ "data-config-file" => file.name,
+                          "data-toggle" => "popover" }
+                          Show diff
+                    %td= file.package_name
+                    %td= file.package_version
+                    %td
+                      = file.changes.join(",")
+                      - if file.error_message
+                        %span{ title: file.error_message } (details)
+                    %td= file.mode
+                    %td= file.user
+                    %td= file.group

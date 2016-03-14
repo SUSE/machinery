@@ -62,9 +62,9 @@ class WorkloadMapper
   end
 
   def identify_workloads(system_description)
-    system_description.assert_scopes("services", "unmanaged_files", "config_files")
+    system_description.assert_scopes("services", "unmanaged_files", "changed_config_files")
 
-    ["unmanaged_files", "config_files"].each do |scope|
+    ["unmanaged_files", "changed_config_files"].each do |scope|
       if !system_description.scope_extracted?(scope)
         raise Machinery::Errors::SystemDescriptionError.new(
           "Required scope: '#{scope}' was not extracted. Can't continue."
@@ -99,14 +99,14 @@ class WorkloadMapper
         workloads.each do |workload, config|
           config.fetch("data", {}).each do |origin, destination|
             file = system_description.unmanaged_files.find { |f| f.name == origin }
-            file ||= system_description.config_files.find { |f| f.name == origin }
+            file ||= system_description.changed_config_files.find { |f| f.name == origin }
             if file && file.directory?
               tgz_file = File.join(dir, "trees", "#{origin.chop}.tgz")
               output_path = File.join(path, workload, destination)
               FileUtils.mkdir_p(output_path)
               strip_number = origin.split("/").size - 1
               Cheetah.run("tar", "zxf", tgz_file, "-C", output_path, "--strip=#{strip_number}")
-              copy_workload_config_files(workload, output_path)
+              copy_workload_changed_config_files(workload, output_path)
             end
             if file && file.file?
               output_path = File.join(path, workload, destination, origin)
@@ -121,7 +121,7 @@ class WorkloadMapper
 
   private
 
-  def copy_workload_config_files(workload, path)
+  def copy_workload_changed_config_files(workload, path)
     FileUtils.cp_r(File.join(workload_mapper_path, workload, "config", "."), path)
   end
 

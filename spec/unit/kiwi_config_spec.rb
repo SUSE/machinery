@@ -55,7 +55,7 @@ describe KiwiConfig do
   let(:system_description_with_modified_files) {
     create_test_description(
       scopes: ["os", "packages", "repositories", "services"],
-      extracted_scopes: ["config_files", "unmanaged_files", "changed_managed_files"],
+      extracted_scopes: ["changed_config_files", "unmanaged_files", "changed_managed_files"],
       name: name,
       store: store,
       store_on_disk: true
@@ -288,31 +288,33 @@ EOT
       expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 
-    it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
-      scope = "config_files"
-      system_description_with_modified_files.scope_file_store(scope).remove
-      expect {
-        KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
-    end
+    context "if files were not extracted" do
+      it "throws an error if changed configuration files are part of the system description" do
+        scope = "changed_config_files"
+        system_description_with_modified_files.scope_file_store(scope).remove
+        expect {
+          KiwiConfig.new(system_description_with_modified_files)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError,
+          /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      end
 
-    it "throws an error if changed managed files are part of the system description but don't exist on the filesystem" do
-      scope = "changed_managed_files"
-      system_description_with_modified_files.scope_file_store(scope).remove
-      expect {
-        KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
-    end
+      it "throws an error if changed managed files are part of the system description" do
+        scope = "changed_managed_files"
+        system_description_with_modified_files.scope_file_store(scope).remove
+        expect {
+          KiwiConfig.new(system_description_with_modified_files)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError,
+          /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      end
 
-    it "throws an error if unmanaged files are part of the system description but don't exist on the filesystem" do
-      scope = "unmanaged_files"
-      system_description_with_modified_files.scope_file_store(scope).remove
-      expect {
-        KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      it "throws an error if unmanaged files are part of the system description" do
+        scope = "unmanaged_files"
+        system_description_with_modified_files.scope_file_store(scope).remove
+        expect {
+          KiwiConfig.new(system_description_with_modified_files)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError,
+          /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      end
     end
 
     it "applies 'pre-process' config" do
@@ -431,7 +433,7 @@ EOT
       let(:config) { KiwiConfig.new(system_description_with_modified_files) }
       let(:manifest_path) { store.description_path(name) }
 
-      it "restores the extracted config-files" do
+      it "restores the extracted changed-config-files" do
         config.write(export_dir)
 
         expect(config.sh).to include("chmod 644 '/etc/cron tab'\n")
@@ -447,14 +449,14 @@ EOT
         expect(config.sh).to include("chown --no-dereference root:target '/etc/replaced_by_link'\n")
       end
 
-      it "copies the changed config files to the template root directory" do
+      it "copies the changed configuration files to the template root directory" do
         config_file = "/etc/cron tab"
         config.write(export_dir)
 
         # expect config file attributes to be set via config.sh
         expect(config.sh).to include("chmod 644 '#{config_file}'\n")
         expect(config.sh).to include("chown root:root '#{config_file}'\n")
-        # expect config files to be stored in the template root directory
+        # expect changed configuration files to be stored in the template root directory
         expect(File.exists?(File.join(export_dir, "root", config_file))).to be(true)
       end
 
@@ -466,7 +468,7 @@ EOT
         expect(config.sh).to include("chmod 644 '#{changed_managed_file}'\n")
         expect(config.sh).to include("chown user:group '#{changed_managed_file}'\n")
 
-        # expect config files to be stored in the template root directory
+        # expect changed configuration files to be stored in the template root directory
         expect(File.exists?(File.join(export_dir, "root", changed_managed_file))).to be(true)
       end
 

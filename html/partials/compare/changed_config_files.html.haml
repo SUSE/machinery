@@ -1,0 +1,48 @@
+- if @diff["changed_config_files"]
+  - scope = "changed_config_files"
+  %a.scope_anchor{ id: scope }
+  .scope#changed_config_files_container
+    .row
+      .col-xs-1
+        %a.btn.btn-default.btn-lg.scope_logo_big{ :href => "##{scope}",
+          :title => scope_title(scope), "data-toggle"=>"popover",
+          "data-content" => scope_help(scope) }
+          %span= scope_initials(scope)
+        %span.toggle{ title: "Collapse/Expand" }
+      .col-xs-11
+        %h2
+          Changed Config Files
+          = render_partial "compare/summary",
+            scope: "changed_config_files",
+            singular: "file",
+            plural: "files"
+    .row.scope_content.collapse.in
+      .col-md-12
+        .row
+          .col-xs-6.table_container
+            - if @diff["changed_config_files"].only_in1
+              = only_in_a
+              = render_partial "compare/changed_config_files_list", list: @diff["changed_config_files"].only_in1
+          .col-xs-6.table_container
+            - if @diff["changed_config_files"].only_in2
+              = only_in_b
+              = render_partial "compare/changed_config_files_list", list: @diff["changed_config_files"].only_in2
+        - if @diff["changed_config_files"].changed
+          %a.both_anchor{ id: "changed_config_files_changed" }
+          .row
+            .col-xs-12.table_container
+              = changed
+              = render_partial "compare/changes", changes: changed_elements("changed_config_files",
+                key: "name")
+        - if @diff["changed_config_files"].common
+          %a.both_anchor{ id: "changed_config_files_both" }
+          .row
+            .col-xs-12
+              %a.show-common-elements{ href: "#changed_config_files_both" }
+                Show common elements in changed-config-files
+              %a.hide-common-elements{ href: "#", style: "display: none" }
+                Hide common elements in changed-config-files
+          .row.scope_common_content.collapse
+            .col-xs-12.table_container
+              = in_both
+              = render_partial "compare/changed_config_files_list", list: @diff["changed_config_files"].common

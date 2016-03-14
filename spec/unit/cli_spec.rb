@@ -400,7 +400,7 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              extract_changed_config_files: true,
+              extract_changed_changed_config_files: true,
               extract_unmanaged_files: true,
               extract_changed_managed_files: true
             ).
@@ -409,7 +409,7 @@ describe Cli do
           run_command(["inspect", "--extract-files", example_host])
         end
 
-        it "extracts only changed config files files when --extract-changed-config-files is specified" do
+        it "extracts only changed config files when --extract-changed-config-files is specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
@@ -418,7 +418,7 @@ describe Cli do
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
-              extract_changed_config_files: true
+              extract_changed_changed_config_files: true
             ).
             and_return(description)
 
@@ -588,10 +588,10 @@ describe Cli do
           description
         )
 
-        run_command(["analyze", "description1", "--operation=config-file-diffs"])
+        run_command(["analyze", "description1", "--operation=changed-config-files-diffs"])
       end
 
-      it "runs config-file-diffs by default" do
+      it "runs changed-config-files-diffs by default" do
         description = create_test_description(json: test_manifest)
         expect_any_instance_of(AnalyzeConfigFileDiffsTask).to receive(:analyze).with(
           description
@@ -719,7 +719,24 @@ describe Cli do
 
   describe ".parse_scopes" do
     it "returns an array with existing scopes" do
-      expect(Cli.parse_scopes("os,config-files")).to eq(["os", "config_files"])
+      expect(Cli.parse_scopes("os,changed-config-files")).to eq(["os", "changed_config_files"])
+    end
+
+    context "if the old scope name config-files is used" do
+      it "shows a deprecated warning" do
+        expect(Machinery::Ui).to receive(:warn).with(
+          "The scope name `config-files` is deprecated. The new name is `changed-config-files`."
+        )
+        Cli.parse_scopes("config-files")
+      end
+
+      it "does not raise" do
+        expect { Cli.parse_scopes("config-files") }.not_to raise_error
+      end
+
+      it "returns the scope name changed-config-files instead" do
+        expect(Cli.parse_scopes("config-files")).to eq(["changed_config_files"])
+      end
     end
 
     it "raises an error if the provided scope is unknown" do

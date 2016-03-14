@@ -32,7 +32,10 @@ class FileValidator
   def validate
     errors = []
 
-    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
+    # the deprecated config_files is still needed to be able to validate older descriptions
+    [
+      "changed_config_files", "config_files", "changed_managed_files", "unmanaged_files"
+    ].each do |scope|
       next if !scope_extracted?(scope)
 
       expected_files = expected_files(scope)

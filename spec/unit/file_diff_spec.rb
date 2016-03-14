@@ -25,26 +25,26 @@ describe FileDiff do
     create_test_description(
       name: "description1",
       store_on_disk: true,
-      extracted_scopes: ["config_files"]
+      extracted_scopes: ["changed_config_files"]
     )
   }
   let(:unextracted_description) {
     create_test_description(
       name: "description1",
       store_on_disk: true,
-      scopes: ["config_files"]
+      scopes: ["changed_config_files"]
     )
   }
   let(:description2) {
     description = create_test_description(
       name: "description2",
       store_on_disk: true,
-      extracted_scopes: ["config_files"]
+      extracted_scopes: ["changed_config_files"]
     )
-    file = description.config_files.find(&:file?)
+    file = description.changed_config_files.find(&:file?)
 
     File.write(
-      File.join(description.description_path, "config_files", file.name),
+      File.join(description.description_path, "changed_config_files", file.name),
       "Other content\n"
     )
     description
@@ -55,26 +55,26 @@ describe FileDiff do
       empty_description = create_test_description
 
       expect(
-        subject.diff(description1, empty_description, "config_files", "/etc/cron tab")
+        subject.diff(description1, empty_description, "changed_config_files", "/etc/cron tab")
       ).to be(nil)
     end
 
     it "returns nil if file was not extracted" do
       expect(
-        subject.diff(description1, unextracted_description, "config_files", "/etc/cron tab")
+        subject.diff(description1, unextracted_description, "changed_config_files", "/etc/cron tab")
       ).to be(nil)
     end
 
     it "raises an exception when it's asked to diff binary files" do
       expect_any_instance_of(Machinery::SystemFile).to receive(:binary?).and_return(true)
       expect {
-        subject.diff(description1, description2, "config_files", "/etc/cron tab")
+        subject.diff(description1, description2, "changed_config_files", "/etc/cron tab")
       }.to raise_error(Machinery::Errors::BinaryDiffError, /binary/)
     end
 
     it "returns an empty string if files are equal" do
       expect(
-        subject.diff(description1, description1, "config_files", "/etc/cron tab").to_s
+        subject.diff(description1, description1, "changed_config_files", "/etc/cron tab").to_s
       ).to eq("")
     end
 
@@ -85,7 +85,7 @@ describe FileDiff do
 +Other content
 EOF
       expect(
-        subject.diff(description1, description2, "config_files", "/etc/cron tab").to_s
+        subject.diff(description1, description2, "changed_config_files", "/etc/cron tab").to_s
       ).to eq(expected_diff)
     end
   end

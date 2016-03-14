@@ -26,16 +26,18 @@ describe SystemDescription do
     @name = "name"
     @description = create_test_description_json(scopes: ["packages", "repositories"])
     @empty_description = create_test_description_json
-    @mix_struct_hash_descr = '{
+    @mix_struct_hash_descr = <<-EOF.chomp
+    {
       "software": {
         "packages": {
           "foo": "bar"
         }
       },
       "meta": {
-        "format_version": 7
+        "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION}
       }
-    }'
+    }
+EOF
   end
 
   it "returns empty JSON structure on .new" do
@@ -200,17 +202,19 @@ describe SystemDescription do
     it "raises if one of the required scopes is missing" do
       description = create_test_description(scopes: ["packages", "repositories"])
       expect {
-        description.assert_scopes("repositories", "packages", "config_files")
+        description.assert_scopes("repositories", "packages", "changed_config_files")
       }.to raise_error(
         Machinery::Errors::SystemDescriptionError,
-        /The system description misses the following scope: config-files/
+        /The system description misses the following scope: changed-config-files/
       )
     end
 
     it "does not raise if the required scopes are available" do
-      description = create_test_description(scopes: ["packages", "repositories", "config_files"])
+      description = create_test_description(
+        scopes: ["packages", "repositories", "changed_config_files"]
+      )
       expect {
-        description.assert_scopes("repositories", "packages", "config_files")
+        description.assert_scopes("repositories", "packages", "changed_config_files")
       }.not_to raise_error
     end
   end
@@ -289,7 +293,7 @@ describe SystemDescription do
     let(:extracted_description) {
       json = <<-EOF
         {
-          "config_files": {
+          "changed_config_files": {
             "_attributes": {
               "extracted": true
             },
@@ -302,7 +306,7 @@ describe SystemDescription do
     let(:unextracted_description) {
       json = <<-EOF
         {
-          "config_files": {
+          "changed_config_files": {
             "_attributes": {
               "extracted": false
             },
@@ -314,11 +318,11 @@ describe SystemDescription do
     }
 
     it "returns true" do
-      expect(extracted_description.scope_extracted?("config_files")).to be(true)
+      expect(extracted_description.scope_extracted?("changed_config_files")).to be(true)
     end
 
     it "returns false" do
-      expect(unextracted_description.scope_extracted?("config_files")).to be(false)
+      expect(unextracted_description.scope_extracted?("changed_config_files")).to be(false)
     end
   end
 
@@ -635,7 +639,7 @@ describe SystemDescription do
     let(:system_description) {
       create_test_description(json: <<-EOF)
         {
-          "config_files": {
+          "changed_config_files": {
             "_attributes": {
               "extracted": true
             },

@@ -58,7 +58,7 @@ class Hint
 
     def show_analyze_data(options)
       "To show the config file diffs you just created run:\n" \
-        "#{program_name} show --scope config-files --show-diffs #{options[:name]}"
+        "#{program_name} show --scope changed-config-files --show-diffs #{options[:name]}"
     end
 
     def do_complete_inspection(options)

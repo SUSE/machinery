@@ -105,7 +105,7 @@ name which can be used by all subcommands.
 
 The system description is structured into "scopes". A scope covers a specific
 part of the configuration of the inspected system such as installed packages,
-repositories, or configuration files.
+repositories, or changed configuration files.
 
 For example, if you are only interested in the installed packages, limit the
 scope to `packages`. This will output only the requested information.

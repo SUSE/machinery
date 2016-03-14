@@ -52,7 +52,7 @@ A simplified example of the manifest can look like this:
       }
     ]
   },
-  "config_files": {
+  "changed_config_files": {
     "_attributes": {
       "extracted": true
     },
@@ -96,9 +96,9 @@ The name of the sub directory corresponds to the scope name. Scope names which
 consist of multiple words, use underscores to separate the words in the manifest
 as well as in the sub directory name.
 
-For example the configuration files of the `config-files` scope are stored in
-the directory `config_files`. The config file from the example above is stored
-at `~/.machinery/mini/config_files/etc/ntp.conf`.
+For example the configuration files of the `changed-config-files` scope are stored in
+the directory `changed_config_files`. The config file from the example above is stored
+at `~/.machinery/mini/changed_config_files/etc/ntp.conf`.
 
 The names of the scopes in the JSON use `_` as separator of words, while when
 specifying a scope name on the command line `-` is used as separator of words.
@@ -146,13 +146,13 @@ JSON Example:
 | hostname        | the host name of the inspected system | string |
 
 
-### config-files
+### changed-config-files
 
 The config file scope contains entries for all information related to managed config files.
-If the `--extract-files` option is used, all files also get copied from the inspected machine into `~/.machinery/<hostname>/config_files`. The directory structure of the files and directories is identical to the one they had on the inspected system, e.g.:
+If the `--extract-files` option is used, all files also get copied from the inspected machine into `~/.machinery/<hostname>/changed_config_files`. The directory structure of the files and directories is identical to the one they had on the inspected system, e.g.:
 
 ```
-config_files/
+changed_config_files/
 └── etc
     ├── crontab
     ├── default
@@ -169,7 +169,7 @@ config_files/
 
 JSON Example:
 ```json
-"config_files": {
+"changed_config_files": {
   "_attributes": {
     "extracted": true
   },
@@ -211,7 +211,7 @@ JSON Example:
 
 #### Common information for every file
 
-The attributes of the config_files array are:
+The attributes of the changed_config_files array are:
 
 | item            | description                          | type                       |
 |-----------------|--------------------------------------|----------------------------|

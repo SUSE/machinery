@@ -48,7 +48,7 @@ shared_examples "inspect" do |base|
     include_examples "inspect services", base
     include_examples "inspect users", base
     include_examples "inspect groups", base
-    include_examples "inspect config files", base
+    include_examples "inspect changed config files", base
     include_examples "inspect changed managed files", base
     include_examples "inspect unmanaged files", base
 

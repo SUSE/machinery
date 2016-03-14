@@ -210,6 +210,13 @@ class Cli
         next
       end
 
+      if scope == "config-files"
+        Machinery::Ui.warn(
+          "The scope name `config-files` is deprecated. The new name is `changed-config-files`."
+        )
+        scope = "changed-config-files"
+      end
+
       # convert cli scope naming to internal one
       scope.tr!("-", "_")
 
@@ -271,28 +278,28 @@ class Cli
 
     The supported operations are:
 
-    - config-file-diffs: Generate diffs against the original version from
-      the package for the modified config files
+    - changed-config-files-diffs: Generate diffs against the original version from
+      the package for the changed configuration files
   LONGDESC
   arg "NAME"
   command "analyze" do |c|
     c.flag [:operation, :o], type: String, required: false,
-      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "config-file-diffs"
+      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "changed-config-files-diffs"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       description = SystemDescription.load(name, system_description_store)
 
       case options[:operation]
-        when "config-file-diffs"
-          task = AnalyzeConfigFileDiffsTask.new
-          task.analyze(description)
-          Hint.print(:show_analyze_data, name: name)
-        else
-          raise Machinery::Errors::InvalidCommandLine.new(
-            "The operation '#{options[:operation]}' is not supported. " \
-            "Valid operations are: config-file-diffs."
-          )
+      when "changed-config-files-diffs"
+        task = AnalyzeConfigFileDiffsTask.new
+        task.analyze(description)
+        Hint.print(:show_analyze_data, name: name)
+      else
+        raise Machinery::Errors::InvalidCommandLine.new(
+          "The operation '#{options[:operation]}' is not supported. " \
+          "Valid operations are: changed-config-files-diffs."
+        )
       end
     end
   end
@@ -552,7 +559,7 @@ class Cli
       inspect_options[:verbose] = true
     end
     if options["extract-files"] || options["extract-changed-config-files"]
-      inspect_options[:extract_changed_config_files] = true
+      inspect_options[:extract_changed_changed_config_files] = true
     end
     if options["extract-files"] || options["extract-changed-managed-files"]
       inspect_options[:extract_changed_managed_files] = true
@@ -778,7 +785,7 @@ class Cli
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
-      desc: "Show diffs of configuration files changes."
+      desc: "Show diffs of changed configuration files changes."
     c.switch "html", required: false, negatable: false,
       desc: "Open system description in HTML format in your web browser."
     c.switch "verbose", required: false, negatable: false,

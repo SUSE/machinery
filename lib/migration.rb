@@ -50,7 +50,7 @@
 #
 #     def migrate
 #       is_extracted = Dir.exists?(File.join(@path, "config-files"))
-#       @hash["config_files"]["extracted"] = is_extracted
+#       @hash["changed_config_files"]["extracted"] = is_extracted
 #     end
 #   end
 class Migration

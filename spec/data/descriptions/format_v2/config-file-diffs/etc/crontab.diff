@@ -4,4 +4,4 @@
  #
  -*/15 * * * *   root  test -x /usr/lib/cron/run-crons && /usr/lib/cron/run-crons >/dev/null 2>&1
  
-+-*/15 * * * *   root  echo config_files_integration_test &> /dev/null
++-*/15 * * * *   root  echo changed_config_files_integration_test &> /dev/null

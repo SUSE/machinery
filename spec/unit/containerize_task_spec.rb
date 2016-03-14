@@ -36,7 +36,7 @@ describe ContainerizeTask do
               "state": "enabled"
             }]
         },
-        "config_files": {
+        "changed_config_files": {
           "_attributes": {
             "extracted": false
           },

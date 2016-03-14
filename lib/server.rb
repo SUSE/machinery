@@ -331,9 +331,9 @@ class Server < Sinatra::Base
     @description = SystemDescription.load(params[:id], settings.system_description_store)
 
     diffs_dir = @description.scope_file_store("analyze/config_file_diffs").path
-    if @description.config_files && diffs_dir
+    if @description.changed_config_files && diffs_dir
       # Enrich description with the config file diffs
-      @description.config_files.each do |file|
+      @description.changed_config_files.each do |file|
         path = File.join(diffs_dir, file.name + ".diff")
         file.diff = diff_to_object(File.read(path)) if File.exists?(path)
       end

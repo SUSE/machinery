@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe ManagedFilesDatabase do
   describe ManagedFilesDatabase::ChangedFile do
     describe "config_file?" do
-      it "returns true for config files" do
+      it "returns true for configuration files" do
         file = ManagedFilesDatabase::ChangedFile.new(
           "c",
           name:    "/etc/foo",
@@ -30,7 +30,7 @@ describe ManagedFilesDatabase do
         expect(file.config_file?).to be(true)
       end
 
-      it "returns false for non-config files" do
+      it "returns false for non-configuration files" do
         file = ManagedFilesDatabase::ChangedFile.new(
           "",
           name:    "/etc/foo",

@@ -2374,65 +2374,6 @@
       }
     ]
   },
-  "config_files": {
-    "_attributes": {
-      "extracted": true
-    },
-    "_elements": [
-      {
-        "name": "/etc/crontab",
-        "package_name": "cronie",
-        "package_version": "1.4.11",
-        "status": "changed",
-        "changes": [
-          "size",
-          "md5"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "600",
-        "type": "file"
-      },
-      {
-        "name": "/etc/postfix/LICENSE",
-        "package_name": "postfix",
-        "package_version": "2.11.6",
-        "status": "changed",
-        "changes": [
-          "deleted"
-        ]
-      },
-      {
-        "name": "/etc/postfix/TLS_LICENSE",
-        "package_name": "postfix",
-        "package_version": "2.11.6",
-        "status": "changed",
-        "changes": [
-          "mode",
-          "user",
-          "group"
-        ],
-        "user": "bin",
-        "group": "users",
-        "mode": "666",
-        "type": "file"
-      },
-      {
-        "name": "/etc/postfix/generic",
-        "package_name": "postfix",
-        "package_version": "2.11.6",
-        "status": "changed",
-        "changes": [
-          "link_path"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "777",
-        "type": "link",
-        "target": "/test-f'le"
-      }
-    ]
-  },
   "changed_managed_files": {
     "_attributes": {
       "extracted": true
@@ -2514,7 +2455,7 @@
     ]
   },
   "meta": {
-    "format_version": 7,
+    "format_version": 8,
     "os": {
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"
@@ -2535,7 +2476,7 @@
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"
     },
-    "config_files": {
+    "changed_config_files": {
       "modified": "2015-11-19T16:08:46Z",
       "hostname": "192.168.121.32"
     },
@@ -2572,5 +2513,64 @@
         "/unmanaged_files/files/name=/etc/init.d/rcS.d"
       ]
     }
+  },
+  "changed_config_files": {
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.11",
+        "status": "changed",
+        "changes": [
+          "size",
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "600",
+        "type": "file"
+      },
+      {
+        "name": "/etc/postfix/LICENSE",
+        "package_name": "postfix",
+        "package_version": "2.11.6",
+        "status": "changed",
+        "changes": [
+          "deleted"
+        ]
+      },
+      {
+        "name": "/etc/postfix/TLS_LICENSE",
+        "package_name": "postfix",
+        "package_version": "2.11.6",
+        "status": "changed",
+        "changes": [
+          "mode",
+          "user",
+          "group"
+        ],
+        "user": "bin",
+        "group": "users",
+        "mode": "666",
+        "type": "file"
+      },
+      {
+        "name": "/etc/postfix/generic",
+        "package_name": "postfix",
+        "package_version": "2.11.6",
+        "status": "changed",
+        "changes": [
+          "link_path"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "777",
+        "type": "link",
+        "target": "/test-f'le"
+      }
+    ]
   }
 }

@@ -17,6 +17,6 @@
 
 shared_examples "analyze" do |base|
   describe "analyze #{base} system description" do
-    include_examples "analyze config file diffs", base
+    include_examples "analyze changed config files diffs", base
   end
 end

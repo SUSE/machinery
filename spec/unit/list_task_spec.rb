@@ -52,7 +52,7 @@ describe ListTask do
   let(:system_description_with_extracted_files) {
     create_test_description(
       scopes: ["changed_managed_files"],
-      extracted_scopes: ["config_files", "unmanaged_files"],
+      extracted_scopes: ["changed_config_files", "unmanaged_files"],
       name: name, store: store)
   }
   let(:system_description_with_newer_data_format) {
@@ -231,7 +231,7 @@ foo
         system_description_with_extracted_files.save
         expected_output = <<-EOF
  foo:
-   * config-files (extracted)
+   * changed-config-files (extracted)
    * changed-managed-files (not extracted)
    * unmanaged-files (extracted)
         EOF

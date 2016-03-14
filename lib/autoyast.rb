@@ -85,7 +85,7 @@ class Autoyast < Exporter
       apply_groups(xml)
       apply_services(xml)
 
-      apply_changed_files("config_files")
+      apply_changed_files("changed_config_files")
       apply_changed_files("changed_managed_files")
       apply_unmanaged_files
       xml.scripts do

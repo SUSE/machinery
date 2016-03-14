@@ -22,17 +22,17 @@ RSpec.describe "Analyze File Diff", type: :feature do
   let(:store) { system_description_factory_store }
   let(:description) {
     description = create_test_description(
-      scopes:           ["config_files"],
+      scopes:           ["changed_config_files"],
       name:             "name",
       store:            store,
       store_on_disk:    true,
-      extracted_scopes: ["config_files"]
+      extracted_scopes: ["changed_config_files"]
     )
 
-    file = description.config_files.find(&:file?)
+    file = description.changed_config_files.find(&:file?)
 
     File.write(
-      File.join(description.description_path, "config_files", file.name),
+      File.join(description.description_path, "changed_config_files", file.name),
       "Other content\n"
     )
 
