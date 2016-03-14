@@ -21,11 +21,11 @@ class InspectTask
     description, failed_inspections = build_description(store, name, system,
       scopes, filter, options)
 
-    if !description.attributes.empty?
+    unless description.attributes.empty?
       print_description(description, scopes) if options[:show]
     end
 
-    if !failed_inspections.empty?
+    unless failed_inspections.empty?
       Machinery::Ui.puts "\n"
       message = failed_inspections.map { |scope, msg|
         "Errors while inspecting " \
@@ -92,7 +92,7 @@ class InspectTask
       end
       description[inspector.scope].set_metadata(timestring, host)
 
-      if !description.attributes.empty?
+      unless description.attributes.empty?
         effective_filter.apply!(description)
         description.set_filter_definitions("inspect", effective_filter.to_array)
         description.save

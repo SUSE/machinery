@@ -72,7 +72,7 @@ class UnmanagedFilesInspector < Inspector
   def run_helper_inspection(helper, filter, file_store_tmp, file_store_final, scope, options)
     begin
       helper.inject_helper
-      if !helper.has_compatible_version?
+      unless helper.has_compatible_version?
         raise Machinery::Errors::UnsupportedHelperVersion.new(
           "Error: machinery-helper is not compatible with this Machinery version." \
             "\nTry to reinstall the package or gem to fix the issue."

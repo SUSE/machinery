@@ -23,7 +23,7 @@ module ScopeFileAccessArchive
 
     target = File.join(destination, "trees")
     self.select(&:directory?).each do |system_file|
-      raise Machinery::Errors::FileUtilsError if !system_file.directory?
+      raise Machinery::Errors::FileUtilsError unless system_file.directory?
 
       tarball_target = File.join(target, File.dirname(system_file.name))
 
@@ -56,7 +56,7 @@ module ScopeFileAccessArchive
   end
 
   def file_content(system_file)
-    if !extracted
+    unless extracted
       raise Machinery::Errors::FileUtilsError, "The requested file '#{system_file.name}' is not" \
         " available because files for scope '#{scope_name}' were not extracted."
     end

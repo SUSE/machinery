@@ -21,7 +21,7 @@ class JsonValidator
 
     format_version = @json_hash["meta"]["format_version"] if @json_hash["meta"]
 
-    if !format_version
+    unless format_version
       raise Machinery::Errors::SystemDescriptionValidationFailed.new(
         ["Could not determine format version"]
       )
@@ -47,7 +47,7 @@ class JsonValidator
   private
 
   def validate_scope(scope_hash, scope)
-    return [] if !@scope_schemas[scope]
+    return [] unless @scope_schemas[scope]
 
     errors = JSON::Validator.fully_validate(@scope_schemas[scope], scope_hash).map do |error|
       "In scope #{scope}: #{error}"

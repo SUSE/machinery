@@ -28,7 +28,7 @@ module SystemDescriptionFactory
   end
 
   def system_description_factory_store
-    if !(self.class < GivenFilesystemSpecHelpers)
+    unless self.class < GivenFilesystemSpecHelpers
       raise RuntimeError.new("Call 'initialize_system_description_factory_store'" \
         " before trying to access the factory store.")
     end

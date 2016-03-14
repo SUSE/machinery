@@ -109,7 +109,7 @@
             .row
               .col-xs-1
               .col-xs-11
-                - if !@description.filter_definitions("inspect").empty?
+                - unless @description.filter_definitions("inspect").empty?
                   %ul
                     - @description.filter_definitions("inspect").each do |filter|
                       %li.filter

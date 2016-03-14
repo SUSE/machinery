@@ -18,13 +18,13 @@
 class Hint
   class << self
     def print(method, options = {})
-      return if !Machinery::Config.new.hints
+      return unless Machinery::Config.new.hints
 
       Machinery::Ui.puts to_string(method, options)
     end
 
     def to_string(method, options = {})
-      return "" if !Machinery::Config.new.hints
+      return "" unless Machinery::Config.new.hints
 
       "\nHint: #{send(method, options)}\n"
     end

@@ -26,9 +26,9 @@ module Machinery
       FileUtils.mv(log_file, rotated_file)
     end
 
-    if !File.exists?(log_file)
+    unless File.exists?(log_file)
       dirname = File.dirname(log_file)
-      if !Dir.exists?(dirname)
+      unless Dir.exists?(dirname)
         FileUtils.mkdir_p(dirname)
         File.chmod(0700, dirname)
       end

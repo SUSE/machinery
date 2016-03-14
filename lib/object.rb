@@ -114,7 +114,7 @@ module Machinery
         @attributes[key] = self.class.convert_element(key, args.first)
       else
         if @attributes.has_key?(name.to_s)
-          if !args.empty?
+          unless args.empty?
             raise ArgumentError, "wrong number of arguments (#{args.size} for 0)"
           end
 

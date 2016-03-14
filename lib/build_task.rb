@@ -89,7 +89,7 @@ class BuildTask
 
     image_file = Dir.glob(File.join(output_path, "*.#{img_extension}")).first
 
-    if !image_file
+    unless image_file
       raise(Machinery::Errors::BuildFailed, "The image build process failed. Check " \
         "build log '#{tmp_image_dir}/kiwi-terminal-output.log' for more " \
         "details."

@@ -22,7 +22,7 @@ class FileValidator
 
     @format_version = @json_hash["meta"]["format_version"] if @json_hash["meta"]
 
-    if !@format_version
+    unless @format_version
       raise Machinery::Errors::SystemDescriptionValidationFailed.new(
         ["Could not determine format version"]
       )
@@ -36,12 +36,12 @@ class FileValidator
     [
       "changed_config_files", "config_files", "changed_managed_files", "unmanaged_files"
     ].each do |scope|
-      next if !scope_extracted?(scope)
+      next unless scope_extracted?(scope)
 
       expected_files = expected_files(scope)
       file_errors = validate_scope(ScopeFileStore.new(@base_path, scope.to_s), expected_files)
 
-      errors << "Scope '#{scope}':\n" + file_errors.join("\n") if !file_errors.empty?
+      errors << "Scope '#{scope}':\n" + file_errors.join("\n") unless file_errors.empty?
     end
 
     errors

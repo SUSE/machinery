@@ -65,11 +65,11 @@ class WorkloadMapper
     system_description.assert_scopes("services", "unmanaged_files", "changed_config_files")
 
     ["unmanaged_files", "changed_config_files"].each do |scope|
-      if !system_description.scope_extracted?(scope)
-        raise Machinery::Errors::SystemDescriptionError.new(
-          "Required scope: '#{scope}' was not extracted. Can't continue."
-        )
-      end
+      next if system_description.scope_extracted?(scope)
+
+      raise Machinery::Errors::SystemDescriptionError.new(
+        "Required scope: '#{scope}' was not extracted. Can't continue."
+      )
     end
 
     workloads = {}
@@ -94,7 +94,7 @@ class WorkloadMapper
 
   def extract(system_description, workloads, path)
     Dir.mktmpdir do |dir|
-      if !workloads.select { |_, w| w["data"] }.empty?
+      unless workloads.select { |_, w| w["data"] }.empty?
         system_description.unmanaged_files.export_files_as_tarballs(dir)
         workloads.each do |workload, config|
           config.fetch("data", {}).each do |origin, destination|

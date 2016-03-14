@@ -97,7 +97,7 @@ class KiwiConfig < Exporter
 
   def inject_extracted_files(output_location)
     ["changed_managed_files", "changed_config_files"].each do |scope|
-      next if !@system_description.scope_extracted?(scope)
+      next unless @system_description.scope_extracted?(scope)
 
       output_root_path = File.join(output_location, "root")
       FileUtils.mkdir_p(output_root_path)
@@ -155,7 +155,7 @@ EOF
       end
     end
 
-    if !missing_scopes.empty?
+    unless missing_scopes.empty?
       raise Machinery::Errors::MissingExtractedFiles.new(@system_description, missing_scopes)
     end
   end
@@ -268,16 +268,17 @@ EOF
             xml.source(path: repo.url)
           end
         end
-        if !repo.url.match(/^https:\/\/nu.novell.com|^https:\/\/update.suse.com/)
-          @sh << "zypper -n ar --name='#{repo.name}' "
-          @sh << "--type='#{repo.type}' " if repo.type
-          @sh << "--refresh " if repo.autorefresh
-          @sh << "--disable " unless repo.enabled
-          @sh << "'#{repo.url}' '#{repo.alias}'\n"
-          @sh << "zypper -n mr --priority=#{repo.priority} '#{repo.name}'\n"
-        end
+
+        next if repo.url =~ /^https:\/\/nu.novell.com|^https:\/\/update.suse.com/
+
+        @sh << "zypper -n ar --name='#{repo.name}' "
+        @sh << "--type='#{repo.type}' " if repo.type
+        @sh << "--refresh " if repo.autorefresh
+        @sh << "--disable " unless repo.enabled
+        @sh << "'#{repo.url}' '#{repo.alias}'\n"
+        @sh << "zypper -n mr --priority=#{repo.priority} '#{repo.name}'\n"
       end
-      if !usable_repositories
+      unless usable_repositories
         raise(
           Machinery::Errors::MissingRequirement.new(
             "The system description doesn't contain any enabled or network reachable repository." \

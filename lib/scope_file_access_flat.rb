@@ -4,7 +4,7 @@ module ScopeFileAccessFlat
   end
 
   def write_file(system_file, target)
-    raise Machinery::Errors::FileUtilsError, "Not a file" if !system_file.file?
+    raise Machinery::Errors::FileUtilsError, "Not a file" unless system_file.file?
 
     target_path = File.join(target, system_file.name)
     FileUtils.mkdir_p(File.dirname(target_path))
@@ -12,13 +12,13 @@ module ScopeFileAccessFlat
   end
 
   def file_path(system_file)
-    raise Machinery::Errors::FileUtilsError, "Not a file" if !system_file.file?
+    raise Machinery::Errors::FileUtilsError, "Not a file" unless system_file.file?
 
     File.join(scope_file_store.path, system_file.name)
   end
 
   def file_content(system_file)
-    if !extracted
+    unless extracted
       raise Machinery::Errors::FileUtilsError, "The requested file '#{system_file.name}' is" \
         " not available because files for scope '#{scope_name}' were not extracted."
     end

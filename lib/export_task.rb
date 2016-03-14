@@ -43,7 +43,7 @@ class ExportTask
     end
 
     begin
-      FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
+      FileUtils.mkdir_p(output_dir, mode: 0700) unless Dir.exists?(output_dir)
     rescue Errno::EACCES
       raise(Machinery::Errors::ExportFailed, \
             "Permission denied. Directory '#{output_dir}' is not writable")
