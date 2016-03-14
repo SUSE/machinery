@@ -229,6 +229,7 @@ class Server < Sinatra::Base
     urls: %w[/site],
     try: ["index.html"]
 
+  enable :sessions
 
   get "/descriptions/:id/files/:scope/*" do
     description = SystemDescription.load(params[:id], settings.system_description_store)
@@ -251,6 +252,7 @@ class Server < Sinatra::Base
   end
 
   get "/" do
+    check_session_for_error
     descriptions = settings.system_description_store.list
     @all_descriptions = Hash.new
 
@@ -330,7 +332,8 @@ class Server < Sinatra::Base
   get "/:id" do
     begin
       @description = SystemDescription.load(params[:id], settings.system_description_store)
-    rescue Machinery::Errors::SystemDescriptionNotFound
+    rescue Machinery::Errors::SystemDescriptionNotFound => e
+      session[:error] = e.to_s
       status 404
       redirect "/"
     end
@@ -345,5 +348,14 @@ class Server < Sinatra::Base
     end
 
     haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
+  end
+
+  private
+
+  def check_session_for_error
+    if session[:error]
+      @errors ||= Array.new
+      @errors.push(session[:error])
+    end
   end
 end
