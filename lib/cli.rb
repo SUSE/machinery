@@ -291,15 +291,15 @@ class Cli
       description = SystemDescription.load(name, system_description_store)
 
       case options[:operation]
-        when "changed-config-files-diffs"
-          task = AnalyzeConfigFileDiffsTask.new
-          task.analyze(description)
-          Hint.print(:show_analyze_data, name: name)
-        else
-          raise Machinery::Errors::InvalidCommandLine.new(
-            "The operation '#{options[:operation]}' is not supported. " \
-            "Valid operations are: changed-config-files-diffs."
-          )
+      when "changed-config-files-diffs"
+        task = AnalyzeConfigFileDiffsTask.new
+        task.analyze(description)
+        Hint.print(:show_analyze_data, name: name)
+      else
+        raise Machinery::Errors::InvalidCommandLine.new(
+          "The operation '#{options[:operation]}' is not supported. " \
+          "Valid operations are: changed-config-files-diffs."
+        )
       end
     end
   end

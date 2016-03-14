@@ -57,7 +57,9 @@ describe ScopeFileAccessFlat do
       end
 
       file_content = description.changed_config_files.file_content(system_file)
-      expect(file_content).to eq("-*/15 * * * *   root  echo changed_config_files_integration_test\n")
+      expect(file_content).to eq(
+        "-*/15 * * * *   root  echo changed_config_files_integration_test\n"
+      )
     end
 
     it "raises an error if the files were not extracted" do

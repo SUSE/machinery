@@ -103,7 +103,9 @@ describe WorkloadMapper do
 
     it "extracts the related workload data" do
       allow_any_instance_of(UnmanagedFilesScope).to receive(:export_files_as_tarballs)
-      allow_any_instance_of(WorkloadMapper).to receive(:copy_workload_changed_config_files).and_return(true)
+      allow_any_instance_of(WorkloadMapper).to receive(
+        :copy_workload_changed_config_files
+      ).and_return(true)
 
       expect(Cheetah).to receive(:run).with("tar", "zxf", /.*\/foo\/bar\.tgz/, "-C",
                                             /#{output_path}\/foo_workload\/sub\/path/, /--strip=\d/)

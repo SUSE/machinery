@@ -54,7 +54,7 @@ end
 
 RSpec::Matchers.define :include_file_scope do |expected, scope|
   match do |actual|
-    if !["changed_config_files", "changed_managed_files", "unmanaged_files"].include?(scope)
+    unless ["changed_config_files", "changed_managed_files", "unmanaged_files"].include?(scope)
       raise "Scope '#{scope}' is not supported by the 'include_files_scope' matcher." \
         "Only use it with file scopes."
     end

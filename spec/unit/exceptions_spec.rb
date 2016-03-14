@@ -42,7 +42,8 @@ describe Machinery::Errors::MissingExtractedFiles do
         "The scope 'changed-config-files' is part of the system description" \
         " but the corresponding files weren't extracted during inspection.\n" \
         "The files are required to continue with this command. " \
-        "Run `#{$0} inspect --extract-files --scope=changed-config-files --name='#{name}' example.com` to extract them."
+        "Run `#{$0} inspect --extract-files --scope=changed-config-files " \
+        "--name='#{name}' example.com` to extract them."
       )
   end
 
@@ -56,8 +57,8 @@ describe Machinery::Errors::MissingExtractedFiles do
           "The scope 'changed-config-files' is part of the system description" \
           " but the corresponding files weren't extracted during inspection.\n" \
           "The files are required to continue with this command. " \
-          "Run `#{$0} inspect-container --extract-files --scope=changed-config-files --name='#{name}' " \
-          "example.com` to extract them."
+          "Run `#{$0} inspect-container --extract-files --scope=changed-config-files " \
+          "--name='#{name}' example.com` to extract them."
         )
     end
   end

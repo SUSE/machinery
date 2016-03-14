@@ -409,7 +409,7 @@ describe Cli do
           run_command(["inspect", "--extract-files", example_host])
         end
 
-        it "extracts only changed configuration files when --extract-changed-config-files is specified" do
+        it "extracts only changed config files when --extract-changed-config-files is specified" do
           expect_any_instance_of(InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
@@ -731,9 +731,7 @@ describe Cli do
       end
 
       it "does not raise" do
-        expect{
-          Cli.parse_scopes("config-files")
-        }.not_to raise_error
+        expect { Cli.parse_scopes("config-files") }.not_to raise_error
       end
 
       it "returns the scope name changed-config-files instead" do

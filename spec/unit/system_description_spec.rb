@@ -210,7 +210,9 @@ EOF
     end
 
     it "does not raise if the required scopes are available" do
-      description = create_test_description(scopes: ["packages", "repositories", "changed_config_files"])
+      description = create_test_description(
+        scopes: ["packages", "repositories", "changed_config_files"]
+      )
       expect {
         description.assert_scopes("repositories", "packages", "changed_config_files")
       }.not_to raise_error

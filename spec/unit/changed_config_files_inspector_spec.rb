@@ -142,7 +142,7 @@ describe ChangedConfigFilesInspector do
       end
 
       context "without filters" do
-        it "returns data about modified changed configuration files when requirements are fulfilled" do
+        it "returns data about changed configuration files when requirements are fulfilled" do
           inspector.inspect(filter)
 
           expect(description["changed_config_files"].map(&:name)).to eq([
@@ -193,7 +193,7 @@ describe ChangedConfigFilesInspector do
         end
 
         it "removes changed configuration files on inspect without extraction" do
-          config_file_directory      = File.join(store.description_path(name), "changed_config_files")
+          config_file_directory = File.join(store.description_path(name), "changed_config_files")
           config_file_directory_file = File.join(config_file_directory, "config_file")
           FileUtils.mkdir_p(config_file_directory)
           FileUtils.touch(config_file_directory_file)

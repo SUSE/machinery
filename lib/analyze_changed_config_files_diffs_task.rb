@@ -31,7 +31,7 @@ class AnalyzeConfigFileDiffsTask
         "Can not analyze the system description because it does not contain any online repository"
     end
 
-    if !description.scope_extracted?("changed_config_files")
+    unless description.scope_extracted?("changed_config_files")
       raise Machinery::Errors::MissingExtractedFiles.new(description, ["changed_config_files"])
     end
 

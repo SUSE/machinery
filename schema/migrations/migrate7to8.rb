@@ -35,13 +35,13 @@ class Migrate7To8 < Migration
       )
     end
 
-    if @hash.has_key?("config_files")
+    if @hash.key?("config_files")
       @hash["changed_config_files"] = @hash["config_files"]
       @hash.delete("config_files")
     end
 
     meta = @hash["meta"]
-    if meta.has_key?("config_files")
+    if meta.key?("config_files")
       meta["changed_config_files"] = meta["config_files"]
       meta.delete("config_files")
     end

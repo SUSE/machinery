@@ -78,6 +78,8 @@ class ChangedConfigFilesInspector < Inspector
 
   def summary
     "#{@description.changed_config_files.extracted ? "Extracted" : "Found"} " +
-      Machinery.pluralize(@description.changed_config_files.count, "%d changed configuration file") + "."
+      Machinery.pluralize(
+        @description.changed_config_files.count, "%d changed configuration file"
+      ) + "."
   end
 end
