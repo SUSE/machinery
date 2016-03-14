@@ -49,7 +49,7 @@
 #     EOT
 #
 #     def migrate
-#       is_extracted = Dir.exists?(File.join(@path, "config-files"))
+#       is_extracted = Dir.exist?(File.join(@path, "config-files"))
 #       @hash["changed_config_files"]["extracted"] = is_extracted
 #     end
 #   end

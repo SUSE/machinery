@@ -37,7 +37,7 @@ class Migrate1To2 < Migration
       next unless @hash.key?(scope)
 
       files = @hash[scope]
-      is_extracted = Dir.exists?(File.join(@path, scope))
+      is_extracted = Dir.exist?(File.join(@path, scope))
 
       @hash[scope] = {
         "extracted" => is_extracted,

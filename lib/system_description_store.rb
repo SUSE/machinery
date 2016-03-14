@@ -51,8 +51,9 @@ class SystemDescriptionStore
 
   def list
     Dir["#{@base_path}/*"].
-      select { |item| File.exists?(manifest_path(File.basename(item)))}.
-      map { |item| File.basename(item) }.sort
+      select { |item| File.exist?(manifest_path(File.basename(item))) }.map { |item|
+        File.basename(item)
+      }.sort
   end
 
   def remove(name)
@@ -124,9 +125,7 @@ class SystemDescriptionStore
   private
 
   def create_dir(dir, mode = 0700)
-    unless Dir.exists?(dir)
-      FileUtils.mkdir_p(dir, mode: mode)
-    end
+    FileUtils.mkdir_p(dir, mode: mode) unless Dir.exist?(dir)
   end
 
   def get_backup_name(description_name)

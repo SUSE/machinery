@@ -69,7 +69,7 @@ class FilterOptionParser
     def expand_filter_file(path)
       filename = File.expand_path(path[1..-1])
 
-      unless File.exists?(filename)
+      unless File.exist?(filename)
         raise Machinery::Errors::MachineryError.new(
           "The filter file '#{filename}' does not exist."
         )

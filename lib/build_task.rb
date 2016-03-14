@@ -68,7 +68,7 @@ class BuildTask
 
           Machinery::Ui.warn "Cleaning up temporary files..."
           [tmp_config_dir, tmp_image_dir].each do |path|
-            LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exists?(path)
+            LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exist?(path)
           end
         end
         raise

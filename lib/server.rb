@@ -335,7 +335,7 @@ class Server < Sinatra::Base
       # Enrich description with the config file diffs
       @description.changed_config_files.each do |file|
         path = File.join(diffs_dir, file.name + ".diff")
-        file.diff = diff_to_object(File.read(path)) if File.exists?(path)
+        file.diff = diff_to_object(File.read(path)) if File.exist?(path)
       end
     end
 

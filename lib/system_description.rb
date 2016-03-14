@@ -197,7 +197,7 @@ class SystemDescription < Machinery::Object
     SystemDescription.validate_name(name)
     @store.directory_for(name)
     path = @store.manifest_path(name)
-    created = !File.exists?(path)
+    created = !File.exist?(path)
     File.write(path, to_json)
     File.chmod(0600, path) if created
   end

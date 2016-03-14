@@ -58,7 +58,7 @@ shared_examples "build" do |distribution|
           # Extract image from master VM
           image = images.split.first.chomp
           local_image = File.join("/tmp", File.basename(image))
-          `sudo rm #{local_image}` if File.exists?(local_image)
+          `sudo rm #{local_image}` if File.exist?(local_image)
           @machinery.extract_file image, "/tmp"
         end
 

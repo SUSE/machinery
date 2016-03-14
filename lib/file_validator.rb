@@ -97,7 +97,7 @@ class FileValidator
   end
 
   def missing_files(file_list)
-    file_list.select { |file| !File.exists?(file) }
+    file_list.select { |file| !File.exist?(file) }
   end
 
   def additional_files(file_list, file_store)

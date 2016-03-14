@@ -20,15 +20,15 @@ module Machinery
 
   def self.initialize_logger(log_file)
     # We rotate one old log file of 21 MB
-    if File.exists?(log_file) && File.size(log_file) > 21*1024*1024
+    if File.exist?(log_file) && File.size(log_file) > 21 * 1024 * 1024
       rotated_file = log_file + ".0"
-      FileUtils.rm(rotated_file) if File.exists?(rotated_file)
+      FileUtils.rm(rotated_file) if File.exist?(rotated_file)
       FileUtils.mv(log_file, rotated_file)
     end
 
-    unless File.exists?(log_file)
+    unless File.exist?(log_file)
       dirname = File.dirname(log_file)
-      unless Dir.exists?(dirname)
+      unless Dir.exist?(dirname)
         FileUtils.mkdir_p(dirname)
         File.chmod(0700, dirname)
       end

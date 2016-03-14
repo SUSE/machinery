@@ -33,7 +33,7 @@ class ScopeFileStore
 
   def path
     dir = File.join(base_path, store_name)
-    Dir.exists?(dir) ? dir : nil
+    Dir.exist?(dir) ? dir : nil
   end
 
   def remove
@@ -60,14 +60,14 @@ class ScopeFileStore
 
   def new_dir_mode
     mode = 0700
-    if Dir.exists?(base_path)
+    if Dir.exist?(base_path)
       mode = File.stat(base_path).mode & 0777
     end
     mode
   end
 
   def create_dir(dir, mode = 0700)
-    unless Dir.exists?(dir)
+    unless Dir.exist?(dir)
       FileUtils.mkdir_p(dir, mode: mode)
     end
   end

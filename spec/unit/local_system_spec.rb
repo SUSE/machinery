@@ -80,10 +80,10 @@ describe LocalSystem do
 
       expected_file = File.join(destination, File.basename(file))
 
-      expect(File.exists?(expected_file)).to be(false)
+      expect(File.exist?(expected_file)).to be(false)
 
       local_system.inject_file(file, destination)
-      expect(File.exists?(expected_file)).to be(true)
+      expect(File.exist?(expected_file)).to be(true)
     end
   end
 
@@ -91,10 +91,10 @@ describe LocalSystem do
     it "removes the file" do
       file = given_dummy_file
 
-      expect(File.exists?(file)).to be(true)
+      expect(File.exist?(file)).to be(true)
 
       local_system.remove_file(file)
-      expect(File.exists?(file)).to be(false)
+      expect(File.exist?(file)).to be(false)
     end
   end
 

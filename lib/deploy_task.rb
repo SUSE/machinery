@@ -21,14 +21,14 @@ class DeployTask
     LocalSystem.validate_existence_of_packages(["python-glanceclient", "kiwi", "kiwi-desc-vmxboot"])
     description.validate_build_compatibility
 
-    unless File.exists?(cloud_config)
+    unless File.exist?(cloud_config)
       raise(Machinery::Errors::DeployFailed,
         "The cloud config file '#{cloud_config}' could not be found."
       )
     end
 
     if options[:image_dir]
-      unless Dir.exists?(options[:image_dir])
+      unless Dir.exist?(options[:image_dir])
         raise(Machinery::Errors::DeployFailed,
           "The image directory does not exist."
         )
@@ -50,7 +50,7 @@ class DeployTask
       )
     end
 
-    unless File.exists?(image_file)
+    unless File.exist?(image_file)
       raise(Machinery::Errors::DeployFailed,
         "The image file '#{image_file}' does not exist."
       )
@@ -74,7 +74,7 @@ class DeployTask
 
   def load_meta_data(meta_dir)
       meta_file = File.join(meta_dir, Machinery::IMAGE_META_DATA_FILE)
-      unless File.exists?(meta_file)
+      unless File.exist?(meta_file)
         raise(Machinery::Errors::DeployFailed,
           "The meta data file '#{meta_file}' could not be found."
         )

@@ -41,7 +41,7 @@ def build_image(path, name)
 end
 
 puts "Setting up #{db_workload}"
-if File.exists?("#{Dir.pwd}/#{db_workload}/data/configured.txt")
+if File.exist?("#{Dir.pwd}/#{db_workload}/data/configured.txt")
   puts "Exiting as database has already been configured.\n" \
     "If you want to re run the configuration just remove the files in #{Dir.pwd}/#{db_workload}/data/"
   exit 1

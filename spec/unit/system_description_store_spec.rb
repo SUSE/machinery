@@ -34,10 +34,10 @@ describe SystemDescriptionStore do
     end
 
     it "creates the directory with correct permissions if it doesn't exist" do
-      expect(Dir.exists?(File.join(ENV['HOME'], ".machinery"))).to be(false)
+      expect(Dir.exist?(File.join(ENV["HOME"], ".machinery"))).to be(false)
       store = SystemDescriptionStore.new
 
-      expect(Dir.exists?(store.base_path)).to be(true)
+      expect(Dir.exist?(store.base_path)).to be(true)
       expect(File.stat(store.base_path).mode & 0777).to eq(0700)
     end
 
@@ -47,7 +47,7 @@ describe SystemDescriptionStore do
       File.chmod(0755, alfdir)
       store = SystemDescriptionStore.new
 
-      expect(Dir.exists?(store.base_path)).to be(true)
+      expect(Dir.exist?(store.base_path)).to be(true)
       expect(File.stat(store.base_path).mode & 0777).to eq(0755)
     end
   end

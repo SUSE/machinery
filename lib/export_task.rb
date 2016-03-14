@@ -31,7 +31,7 @@ class ExportTask
     end
 
     output_dir = File.join(output_dir, @exporter.export_name)
-    if File.exists?(output_dir)
+    if File.exist?(output_dir)
       if options[:force]
         FileUtils.rm_r(output_dir)
       else
@@ -43,7 +43,7 @@ class ExportTask
     end
 
     begin
-      FileUtils.mkdir_p(output_dir, mode: 0700) unless Dir.exists?(output_dir)
+      FileUtils.mkdir_p(output_dir, mode: 0700) unless Dir.exist?(output_dir)
     rescue Errno::EACCES
       raise(Machinery::Errors::ExportFailed, \
             "Permission denied. Directory '#{output_dir}' is not writable")

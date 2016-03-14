@@ -38,11 +38,11 @@ describe "Machinery.logger" do
   it "creates the log directory with mode 0700" do
     log_file = "/tmp/machinery_mode_check/machinery.log"
     log_dir  = File.dirname(log_file)
-    expect(Dir.exists?(log_dir)).to be(false)
+    expect(Dir.exist?(log_dir)).to be(false)
     expect(Logger).to receive(:new).with(log_file)
 
     Machinery.initialize_logger(log_file)
-    expect(Dir.exists?(log_dir)).to be(true)
+    expect(Dir.exist?(log_dir)).to be(true)
     expect(File.stat(log_dir).mode.to_s(8)).to eq("100700")
   end
 end

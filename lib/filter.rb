@@ -73,7 +73,7 @@ class Filter
     filter = Filter.new
 
     default_filters_file = File.join(Machinery::ROOT, "filters", "default_filters.json")
-    if File.exists?(default_filters_file)
+    if File.exist?(default_filters_file)
       default_filters = JSON.parse(File.read(default_filters_file))
       if default_filters[command]
         default_filters[command].each do |definition|

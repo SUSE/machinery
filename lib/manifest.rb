@@ -22,7 +22,7 @@ class Manifest
   attr_accessor :name, :path, :json, :hash
 
   def self.load(name, path)
-    unless File.exists?(path)
+    unless File.exist?(path)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
         "Couldn't find a system description with the name '#{name}'."
       )
