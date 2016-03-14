@@ -22,11 +22,11 @@
           .col-xs-6.table_container
             - if @diff["changed_config_files"].only_in1
               = only_in_a
-              = render_partial "compare/config_file_list", list: @diff["changed_config_files"].only_in1
+              = render_partial "compare/changed_config_files_list", list: @diff["changed_config_files"].only_in1
           .col-xs-6.table_container
             - if @diff["changed_config_files"].only_in2
               = only_in_b
-              = render_partial "compare/config_file_list", list: @diff["changed_config_files"].only_in2
+              = render_partial "compare/changed_config_files_list", list: @diff["changed_config_files"].only_in2
         - if @diff["changed_config_files"].changed
           %a.both_anchor{ id: "changed_config_files_changed" }
           .row
@@ -45,4 +45,4 @@
           .row.scope_common_content.collapse
             .col-xs-12.table_container
               = in_both
-              = render_partial "compare/config_file_list", list: @diff["changed_config_files"].common
+              = render_partial "compare/changed_config_files_list", list: @diff["changed_config_files"].common
