@@ -177,7 +177,7 @@ EOF
 
       hash = description.to_hash
 
-      has_format_version = hash.has_key?("meta") && hash["meta"].has_key?("format_version")
+      has_format_version = hash.key?("meta") && hash["meta"].key?("format_version")
       expect(has_format_version).to be(false)
     end
   end

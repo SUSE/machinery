@@ -975,7 +975,7 @@ class Cli
   end
 
   def self.system_description_store
-    if ENV.has_key?("MACHINERY_DIR")
+    if ENV.key?("MACHINERY_DIR")
       SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
     else
       SystemDescriptionStore.new

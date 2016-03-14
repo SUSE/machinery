@@ -139,11 +139,11 @@ describe Migrate1To2 do
   end
 
   it "makes sure that NIS group placeholders have a GID" do
-    expect(description_hash["groups"].first.has_key?("gid")).to be(false)
+    expect(description_hash["groups"].first.key?("gid")).to be(false)
 
     migration = Migrate1To2.new(description_hash, description_base)
     migration.migrate
 
-    expect(description_hash["groups"].first.has_key?("gid")).to be(true)
+    expect(description_hash["groups"].first.key?("gid")).to be(true)
   end
 end
