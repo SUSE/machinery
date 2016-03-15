@@ -56,7 +56,7 @@ class ChangedConfigFilesRenderer < Renderer
   end
 
   def display_name
-    "Changed configuration files"
+    "Changed Configuration Files"
   end
 
   def compare_content_changed(changed_elements)

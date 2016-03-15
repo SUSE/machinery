@@ -51,7 +51,7 @@ class ChangedManagedFilesRenderer < Renderer
   end
 
   def display_name
-    "Changed managed files"
+    "Changed Managed Files"
   end
 
   def compare_content_changed(changed_elements)
