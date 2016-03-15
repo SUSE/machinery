@@ -34,7 +34,9 @@ shared_examples "CLI" do
     it "offers hint without options" do
       expect(
         @machinery.run_command("#{machinery_command}", as: "vagrant")
-      ).to succeed.and have_stdout(/GLOBAL OPTIONS.*COMMANDS.*help/m)
+      ).to succeed.and include_stdout(
+        "You can get started by inspecting a system. Run:\n#{machinery_command} inspect HOSTNAME"
+        )
     end
 
     it "processes help option" do
