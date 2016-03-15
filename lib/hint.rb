@@ -41,6 +41,9 @@ class Hint
 
     def which_machinery
       `which machinery 2>/dev/null`.chomp
+    rescue Errno::EPIPE => e
+      Machinery.logger.debug "Command `which machinery 2>/dev/null` crashed. " \
+                             "Error was #{e.class}: #{e}"
     end
 
     def get_started(_options)
