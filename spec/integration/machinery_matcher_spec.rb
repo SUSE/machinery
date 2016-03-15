@@ -38,7 +38,7 @@ describe "match_machinery_show_scope matcher", matrix: "pending" do
 
   it "matches output with timestamps" do
     expected = <<-EOT
-      # Changed configuration files [192.168.0.10] (2014-02-24 16:13:09)
+      # Changed Configuration Files [192.168.0.10] (2014-02-24 16:13:09)
 
       - /etc/crontab (md5)
         Diff:
@@ -48,7 +48,7 @@ describe "match_machinery_show_scope matcher", matrix: "pending" do
         +-*/15 * * * *   root  echo changed_config_files_integration_test
     EOT
     actual = <<-EOT
-      # Changed configuration files [192.168.0.10] (2014-02-24 16:13:09)
+      # Changed Configuration Files [192.168.0.10] (2014-02-24 16:13:09)
 
       - /etc/crontab (md5)
         Diff:

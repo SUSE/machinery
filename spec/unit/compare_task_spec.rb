@@ -328,7 +328,7 @@ EOF
       EOT
 
       expected_output = <<EOT
-# Operating system
+# Operating System
 
 Only in 'one':
   Name: openSUSE

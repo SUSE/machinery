@@ -26,6 +26,6 @@ class OsRenderer < Renderer
   end
 
   def display_name
-    "Operating system"
+    "Operating System"
   end
 end

@@ -46,7 +46,7 @@ class UnmanagedFilesRenderer < Renderer
   end
 
   def display_name
-    "Unmanaged files"
+    "Unmanaged Files"
   end
 
   def compare_content_changed(changed_elements)

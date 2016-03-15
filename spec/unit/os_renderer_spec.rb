@@ -33,7 +33,7 @@ describe OsRenderer do
   describe "show" do
     it "prints operation system information" do
       expected_output = <<-EOF
-# Operating system
+# Operating System
 
   Name: openSUSE 13.1 (Bottle)
   Version: 13.1
