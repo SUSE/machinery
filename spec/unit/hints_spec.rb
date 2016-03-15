@@ -81,7 +81,8 @@ describe Hint do
     it "expands program name in get_started hint" do
       $0 = "machinery"
 
-      expect(Hint.to_string(:get_started)).to eq("\nHint: You can get started" \
+      expect(Hint.to_string(:get_started)).to eq(
+        "\nHint: You can get started" \
         " by inspecting a system. Run:\n'machinery inspect HOSTNAME'\n" \
         "To inspect a system as a user with sudo rights instead of root run:\n" \
         "'machinery inspect --remote-user USER HOSTNAME'\n"
