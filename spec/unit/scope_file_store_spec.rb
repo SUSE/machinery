@@ -38,9 +38,9 @@ describe ScopeFileStore do
 
   describe "#create" do
     it "creates a directory in the description directory" do
-      expect(Dir.exists?(@file_store_path)).to be(false)
+      expect(Dir.exist?(@file_store_path)).to be(false)
       @store.create
-      expect(Dir.exists?(@file_store_path)).to be(true)
+      expect(Dir.exist?(@file_store_path)).to be(true)
     end
 
     it "creates a directory with the parent directory  permissions" do
@@ -58,14 +58,14 @@ describe ScopeFileStore do
   describe "#remove" do
     it "removes the file store dir" do
       @store.create
-      expect(Dir.exists?(@file_store_path)).to be(true)
+      expect(Dir.exist?(@file_store_path)).to be(true)
 
       @store.remove
-      expect(Dir.exists?(@file_store_path)).to be(false)
+      expect(Dir.exist?(@file_store_path)).to be(false)
     end
 
     it "doesn't throw an error if the dir doesn't exist" do
-      expect(Dir.exists?(@file_store_path)).to be(false)
+      expect(Dir.exist?(@file_store_path)).to be(false)
       expect {
         @store.remove
       }.not_to raise_error
@@ -79,12 +79,12 @@ describe ScopeFileStore do
         File.join(@base_path, file_store_name_new)
 
       @store.create
-      expect(Dir.exists?(@file_store_path)).to be(true)
-      expect(Dir.exists?(file_store_path_new)).to be(false)
+      expect(Dir.exist?(@file_store_path)).to be(true)
+      expect(Dir.exist?(file_store_path_new)).to be(false)
 
       @store.rename(file_store_name_new)
-      expect(Dir.exists?(@file_store_path)).to be(false)
-      expect(Dir.exists?(file_store_path_new)).to be(true)
+      expect(Dir.exist?(@file_store_path)).to be(false)
+      expect(Dir.exist?(file_store_path_new)).to be(true)
     end
   end
 
@@ -95,7 +95,7 @@ describe ScopeFileStore do
     end
 
     it "returns nil if the file store does not exist" do
-      expect(Dir.exists?(@file_store_path)).to be(false)
+      expect(Dir.exist?(@file_store_path)).to be(false)
       expect(@store.path).to be_nil
     end
   end
@@ -106,10 +106,10 @@ describe ScopeFileStore do
 
     it "creates a directory in the file store" do
       @store.create
-      expect(Dir.exists?(sub_dir_path)).to be(false)
+      expect(Dir.exist?(sub_dir_path)).to be(false)
 
       @store.create_sub_directory(sub_dir)
-      expect(Dir.exists?(sub_dir_path)).to be(true)
+      expect(Dir.exist?(sub_dir_path)).to be(true)
     end
 
     it "preserves the parent directory permissions" do
@@ -135,7 +135,7 @@ describe ScopeFileStore do
 
     it "returns the default of 0700 if the description directory is missing" do
       @store.remove
-      expect(Dir.exists?(@file_store_path)).to be(false)
+      expect(Dir.exist?(@file_store_path)).to be(false)
       expect(@store.new_dir_mode).to eq(0700)
     end
   end

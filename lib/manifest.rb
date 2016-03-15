@@ -22,7 +22,7 @@ class Manifest
   attr_accessor :name, :path, :json, :hash
 
   def self.load(name, path)
-    unless File.exists?(path)
+    unless File.exist?(path)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
         "Couldn't find a system description with the name '#{name}'."
       )
@@ -41,20 +41,20 @@ class Manifest
   end
 
   def validate
-    return if !compatible_json?
+    return unless compatible_json?
 
     errors = JsonValidator.new(@hash).validate
-    if !errors.empty?
+    unless errors.empty?
       Machinery::Ui.warn("Warning: System Description validation errors:")
       Machinery::Ui.warn(errors.join("\n"))
     end
   end
 
   def validate!
-    return if !compatible_json?
+    return unless compatible_json?
 
     errors = JsonValidator.new(@hash).validate
-    if !errors.empty?
+    unless errors.empty?
       raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
     end
   end

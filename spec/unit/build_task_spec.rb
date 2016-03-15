@@ -46,7 +46,7 @@ describe BuildTask do
   describe "#build" do
     it "stores the kiwi config to a temporary directory" do
       build_task.build(system_description, output_path)
-      expect(File.exists?(File.join(tmp_config_dir, "config.xml"))).to be(true)
+      expect(File.exist?(File.join(tmp_config_dir, "config.xml"))).to be(true)
     end
 
     it "calls the kiwi wrapper script with sudo to build the image" do
@@ -97,7 +97,7 @@ describe BuildTask do
 
     it "creates the output directory if it doesn't exist" do
       build_task.build(system_description, output_path)
-      expect(Dir.exists?(output_path)).to be(true)
+      expect(Dir.exist?(output_path)).to be(true)
     end
 
     it "throws an error if kiwi doesn't exist" do
@@ -114,7 +114,7 @@ describe BuildTask do
 
       build_task.build(system_description, output_path)
 
-      expect(File.exists?(meta_file)).to be(true)
+      expect(File.exist?(meta_file)).to be(true)
       content = YAML.load_file(meta_file)
       expect(content[:description]).to eq(system_description.name)
       expect(content[:image_file]).to eq(image_file)
@@ -123,7 +123,7 @@ describe BuildTask do
     it "shows an error with path to kiwi log after failure" do
       image_path = File.join(output_path, image_file)
       FileUtils.rm(image_path)
-      expect(File.exists?(image_path)).to be(false)
+      expect(File.exist?(image_path)).to be(false)
       expect{
         build_task.build(system_description, output_path)
       }.to raise_error(Machinery::Errors::BuildFailed, /kiwi-terminal-output.log/)
@@ -172,7 +172,7 @@ describe BuildTask do
 
     it "generates a wrapper bash script" do
       lines = File.read(@wrapper_script).split("\n")
-      expect(File.exists?(@wrapper_script)).to be(true)
+      expect(File.exist?(@wrapper_script)).to be(true)
       expect(lines.first).to eq("#!/bin/bash")
     end
 

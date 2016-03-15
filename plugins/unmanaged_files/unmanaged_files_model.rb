@@ -40,14 +40,14 @@ class UnmanagedFilesScope < FileScope
     both = []
     only_self = []
     elements.each do |element|
-      if other_hash.has_key?(element.name) && files_match(element, other_hash[element.name])
+      if other_hash.key?(element.name) && files_match(element, other_hash[element.name])
         both << element
       else
         only_self << element
       end
     end
     only_other = other.elements.reject do |element|
-      self_hash.has_key?(element.name) && files_match(element, self_hash[element.name])
+      self_hash.key?(element.name) && files_match(element, self_hash[element.name])
     end
     changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
 

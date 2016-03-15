@@ -198,11 +198,11 @@ describe ChangedConfigFilesInspector do
           FileUtils.mkdir_p(config_file_directory)
           FileUtils.touch(config_file_directory_file)
 
-          expect(File.exists?(config_file_directory_file)).to be true
+          expect(File.exist?(config_file_directory_file)).to be true
 
           inspector.inspect(filter)
 
-          expect(File.exists?(config_file_directory_file)).to be false
+          expect(File.exist?(config_file_directory_file)).to be false
         end
 
         it "returns schema compliant data" do

@@ -82,7 +82,7 @@ module Machinery
       end
 
       def progress(output)
-        return if !progress_enabled?
+        return unless progress_enabled?
 
         reset_line if progress_visible?
         print output

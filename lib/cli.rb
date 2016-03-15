@@ -168,7 +168,7 @@ class Cli
   end
 
   def self.shift_arg(args, name)
-    if !res = args.shift
+    unless res = args.shift
       raise GLI::BadCommandLine.new("You need to provide the required argument #{name}.")
     end
     res
@@ -205,7 +205,7 @@ class Cli
     scopes = []
 
     scope_string.split(",").each do |scope|
-      if !(scope =~ /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/)
+      unless scope =~ /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/
         invalid_scopes << scope
         next
       end
@@ -546,7 +546,7 @@ class Cli
     name = options[:name] || host
 
 
-    if !scope_list.empty?
+    unless scope_list.empty?
       inspected_scopes = " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
     end
     Machinery::Ui.puts "Inspecting #{host}#{inspected_scopes}..."
@@ -822,12 +822,12 @@ class Cli
           details += "\n  Type of inspected container: #{description[:environment].system_type}\n"
         end
 
-        if !inspected_filters.empty?
+        unless inspected_filters.empty?
           details += "\n  The following filters were applied during inspection:"
           details += "\n    * " + inspected_filters.join("\n    * ") + "\n\n"
         end
 
-        if !filter.empty?
+        unless filter.empty?
           details += "\n  The following filters were applied before showing the description:"
           details += "\n    * " + filter.to_array.join("\n    * ") + "\n\n"
         end
@@ -876,7 +876,7 @@ class Cli
       desc: "Keep backup after migration and ingnore validation errors"
 
     c.action do |global_options,options,args|
-      name = shift_arg(args, "NAME") if !options[:all]
+      name = shift_arg(args, "NAME") unless options[:all]
 
       task = UpgradeFormatTask.new
       task.upgrade(
@@ -975,7 +975,7 @@ class Cli
   end
 
   def self.system_description_store
-    if ENV.has_key?("MACHINERY_DIR")
+    if ENV.key?("MACHINERY_DIR")
       SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
     else
       SystemDescriptionStore.new

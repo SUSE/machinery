@@ -84,8 +84,9 @@ describe WorkloadMapper do
       expect(yaml["db"]["environment"]["DB_USER"]).to eq("portus")
       expect(yaml["db"]["environment"]["DB_PASS"]).to eq("portus")
 
-      expect(File.exists?(File.join(output_path, "mariadb", "Dockerfile"))).
-        to be_truthy
+      expect(
+        File.exist?(File.join(output_path, "mariadb", "Dockerfile"))
+      ).to be_truthy
     end
   end
 

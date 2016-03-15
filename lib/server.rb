@@ -50,7 +50,7 @@ class Server < Sinatra::Base
     end
 
     def scope_meta_info(scope)
-      return "" if !@description[scope]
+      return "" unless @description[scope]
 
       " (" \
       "inspected host: '#{@description[scope].meta.hostname}', " \
@@ -298,11 +298,11 @@ class Server < Sinatra::Base
       elsif @description_a[scope] || @description_b[scope]
         @meta[:uninspected] ||= Hash.new
 
-        if !@description_a[scope]
+        unless @description_a[scope]
           @meta[:uninspected][@description_a.name] ||= Array.new
           @meta[:uninspected][@description_a.name] << scope
         end
-        if !@description_b[scope]
+        unless @description_b[scope]
           @meta[:uninspected][@description_b.name] ||= Array.new
           @meta[:uninspected][@description_b.name] << scope
         end
@@ -335,7 +335,7 @@ class Server < Sinatra::Base
       # Enrich description with the config file diffs
       @description.changed_config_files.each do |file|
         path = File.join(diffs_dir, file.name + ".diff")
-        file.diff = diff_to_object(File.read(path)) if File.exists?(path)
+        file.diff = diff_to_object(File.read(path)) if File.exist?(path)
       end
     end
 

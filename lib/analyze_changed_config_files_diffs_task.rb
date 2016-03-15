@@ -26,7 +26,7 @@ class AnalyzeConfigFileDiffsTask
       "changed_config_files"
     )
 
-    if !description["repositories"].any? { |repo| repo.enabled && !repo.external_medium? }
+    unless description["repositories"].any? { |repo| repo.enabled && !repo.external_medium? }
       raise Machinery::Errors::AnalysisFailed,
         "Can not analyze the system description because it does not contain any online repository"
     end

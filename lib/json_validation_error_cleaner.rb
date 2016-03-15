@@ -33,7 +33,7 @@ class JsonValidationErrorCleaner
 
       new_path = "The property"
       new_path += " ##{position}" if position > -1
-      new_path += " (#{details})" if !details.empty?
+      new_path += " (#{details})" unless details.empty?
 
       message.gsub(/The property '#\/.*?'/, new_path)
     end

@@ -81,7 +81,7 @@ class ChangedConfigFilesRenderer < Renderer
   def render_diff_file(diffs_dir, name)
     path = File.join(diffs_dir, name + ".diff")
 
-    if File.exists?(path)
+    if File.exist?(path)
       puts "Diff:\n#{File.read(path).chomp}"
     else
       Machinery::Ui.warn "Diff for #{name} was not found on disk."

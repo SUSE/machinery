@@ -33,7 +33,7 @@ class Migrate2To3 < Migration
       FileUtils.mv(old_path, new_path)
     end
 
-    if @hash.has_key?("repositories")
+    if @hash.key?("repositories")
       @hash["repositories"].each do |repository|
         repository["package_manager"] = "zypp"
       end

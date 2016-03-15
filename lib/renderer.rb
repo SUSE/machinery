@@ -161,7 +161,7 @@ class Renderer
   end
 
   def render_comparison_common(description)
-    return if !description[scope]
+    return unless description[scope]
 
     puts "Common to both systems:"
     indent { compare_content_common(description) }
@@ -182,10 +182,10 @@ class Renderer
     @stack = []
     missing_descriptions = Array.new
 
-    if !description1[scope]
+    unless description1[scope]
       missing_descriptions << description1.name
     end
-    if !description2[scope]
+    unless description2[scope]
       missing_descriptions << description2.name
     end
 

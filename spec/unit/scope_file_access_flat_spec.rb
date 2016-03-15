@@ -41,7 +41,7 @@ describe ScopeFileAccessFlat do
       target = given_directory
       subject.write_file(file, target)
 
-      expect(File.exists?(File.join(target, file.name))).to be(true)
+      expect(File.exist?(File.join(target, file.name))).to be(true)
     end
   end
 

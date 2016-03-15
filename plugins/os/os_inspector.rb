@@ -65,12 +65,12 @@ class OsInspector < Inspector
     os = get_os_from_os_release
 
     # Fall back to SuSE-release file
-    if !os
+    unless os
       os = get_os_from_suse_release
     end
 
     # Fall back to redhat-release file
-    if !os
+    unless os
       os = get_os_from_redhat_release
     end
 
@@ -80,7 +80,7 @@ class OsInspector < Inspector
   # check for freedesktop standard: /etc/os-release
   def get_os_from_os_release
     os_release = @system.read_file("/etc/os-release")
-    return if !os_release
+    return unless os_release
 
     result = Hash.new
     key_value_pairs = Hash[os_release.split("\n").reject(&:empty?).map { |l| l.split("=") }]
@@ -124,7 +124,7 @@ class OsInspector < Inspector
   # checks for old suse standard: /etc/SuSE-release
   def get_os_from_suse_release
     suse_release = @system.read_file("/etc/SuSE-release")
-    return if !suse_release
+    return unless suse_release
 
     result = Hash.new
     # name is always the first line in /etc/SuSE-release
@@ -132,7 +132,7 @@ class OsInspector < Inspector
 
     result["patchlevel"] = nil
     suse_release.split("\n").slice(1, suse_release.length).each do |line|
-      if !line.start_with?("#")
+      unless line.start_with?("#")
         key, value = line.split("=")
         result[key.strip.downcase] = value.strip
       end
@@ -155,7 +155,7 @@ class OsInspector < Inspector
   # checks for redhat standard: /etc/redhat-release
   def get_os_from_redhat_release
     redhat_release = @system.read_file("/etc/redhat-release")
-    return if !redhat_release
+    return unless redhat_release
 
     result = Hash.new
     result["name"], result["version"] = redhat_release.split("\n").first.split(" release ")

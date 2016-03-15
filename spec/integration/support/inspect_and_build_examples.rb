@@ -63,7 +63,7 @@ shared_examples "inspect and build" do |bases|
 
           image = find_command.stdout.split.first.chomp
           local_image = File.join("/tmp", File.basename(image))
-          `sudo rm #{local_image}` if File.exists?(local_image)
+          `sudo rm #{local_image}` if File.exist?(local_image)
           @machinery.extract_file image, "/tmp"
 
           @test_system = start_system(

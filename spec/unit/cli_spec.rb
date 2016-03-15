@@ -24,11 +24,11 @@ describe Cli do
     # Manually create the exclude option. It depends on the experimental_features option,
     # but that is evaluated when the class is loaded, not when the test is run, so it can't be
     # stubbed.
-    if !Cli.commands[:inspect].flags[:exclude]
+    unless Cli.commands[:inspect].flags[:exclude]
       Cli.commands[:inspect].flag :exclude, negatable: false,
         desc: "Exclude elements matching the filter criteria"
     end
-    if !Cli.commands[:show].flags[:exclude]
+    unless Cli.commands[:show].flags[:exclude]
       Cli.commands[:show].flag :exclude, negatable: false,
         desc: "Exclude elements matching the filter criteria"
     end

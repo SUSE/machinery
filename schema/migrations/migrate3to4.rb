@@ -23,16 +23,16 @@ class Migrate3To4 < Migration
 
   def migrate
     ["changed_managed_files", "config_files"].each do |scope|
-      if @hash.has_key?(scope)
-        @hash[scope]["files"].each do |file|
-          next if file["changes"] == ["deleted"]
+      next unless @hash.key?(scope)
 
-          path = File.join(@path, scope, file["name"])
-          file["type"] = if File.directory?(path) || path.end_with?("/")
-            "dir"
-          else
-            "file"
-          end
+      @hash[scope]["files"].each do |file|
+        next if file["changes"] == ["deleted"]
+
+        path = File.join(@path, scope, file["name"])
+        file["type"] = if File.directory?(path) || path.end_with?("/")
+          "dir"
+        else
+          "file"
         end
       end
     end

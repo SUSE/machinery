@@ -24,5 +24,5 @@ HELPER_DIR = File.expand_path(File.dirname(__FILE__))
 desc "Build the helper if needed"
 task :build do
   helper_builder = HelperBuilder.new(HELPER_DIR)
-  raise "Error: Build of Machinery helper failed" if !helper_builder.run_build
+  raise "Error: Build of Machinery helper failed" unless helper_builder.run_build
 end

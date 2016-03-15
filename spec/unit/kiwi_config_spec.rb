@@ -374,9 +374,9 @@ EOT
       config.write(export_dir)
 
       expect(
-        File.exists?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
+        File.exist?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
       ).to be(false)
-      expect(File.exists?(network_config)).to be(true)
+      expect(File.exist?(network_config)).to be(true)
 
       expect(File.read(network_config)).to include("BOOTPROTO='dhcp'")
     end
@@ -393,9 +393,9 @@ EOT
       config.write(export_dir)
 
       expect(
-        File.exists?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
+        File.exist?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
       ).to be(true)
-      expect(File.exists?(network_config)).to be(true)
+      expect(File.exist?(network_config)).to be(true)
 
       expect(File.read(network_config)).to include("BOOTPROTO='dhcp'")
     end
@@ -422,7 +422,7 @@ EOT
       )
       config.write(export_dir)
 
-      expect(File.exists?(readme)).to be(true)
+      expect(File.exist?(readme)).to be(true)
 
       expect(File.read(readme)).to include(
         "README for Kiwi export from Machinery"
@@ -457,7 +457,7 @@ EOT
         expect(config.sh).to include("chmod 644 '#{config_file}'\n")
         expect(config.sh).to include("chown root:root '#{config_file}'\n")
         # expect changed configuration files to be stored in the template root directory
-        expect(File.exists?(File.join(export_dir, "root", config_file))).to be(true)
+        expect(File.exist?(File.join(export_dir, "root", config_file))).to be(true)
       end
 
       it "copies the changed managed files to the template root directory" do
@@ -469,17 +469,17 @@ EOT
         expect(config.sh).to include("chown user:group '#{changed_managed_file}'\n")
 
         # expect changed configuration files to be stored in the template root directory
-        expect(File.exists?(File.join(export_dir, "root", changed_managed_file))).to be(true)
+        expect(File.exist?(File.join(export_dir, "root", changed_managed_file))).to be(true)
       end
 
       it "copies the unmanaged files tarballs into the root directory" do
         config.write(export_dir)
 
         expect(
-          File.exists?(File.join(export_dir, "/root/tmp/unmanaged_files/files.tgz"))
+          File.exist?(File.join(export_dir, "/root/tmp/unmanaged_files/files.tgz"))
         ).to be(true)
         expect(
-          File.exists?(
+          File.exist?(
             File.join(export_dir, "/root/tmp/unmanaged_files/trees/etc/tarball with spaces.tgz")
           )
         ).to be(true)
@@ -488,7 +488,7 @@ EOT
 
         # expect filter to be present
         expect(
-          File.exists?(File.join(export_dir, "/root/tmp/unmanaged_files_kiwi_excludes"))
+          File.exist?(File.join(export_dir, "/root/tmp/unmanaged_files_kiwi_excludes"))
         ).to be(true)
         expect(config.sh).to match(/tar.*-X '\/tmp\/unmanaged_files_kiwi_excludes' /)
       end
@@ -524,7 +524,7 @@ EOT
       script_path = File.join(export_dir, "root", "tmp", "merge_users_and_groups.pl")
 
       expect(config.sh).to include("perl /tmp/merge_users_and_groups.pl /etc/passwd /etc/shadow /etc/group")
-      expect(File.exists?(script_path)).to be(true)
+      expect(File.exist?(script_path)).to be(true)
 
       script = File.read(script_path)
       expect(script).to include("['root:x:0:0:root:/root:/bin/bash', 'root:$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.:16357::::::']")

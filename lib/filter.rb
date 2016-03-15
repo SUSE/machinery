@@ -54,7 +54,7 @@ class Filter
     Array(filter_definitions).each do |definition|
       path, operator, matcher_definition = definition.scan(/([a-zA-Z_\/]+)(.*=)(.*)/)[0]
 
-      raise Machinery::Errors::InvalidFilter.new("Invalid filter: '#{definition}'") if !operator
+      raise Machinery::Errors::InvalidFilter.new("Invalid filter: '#{definition}'") unless operator
       element_filters[path] ||= ElementFilter.new(path)
       if matcher_definition.index(",")
         matchers = matcher_definition.split(/(?<!\\),/)
@@ -73,7 +73,7 @@ class Filter
     filter = Filter.new
 
     default_filters_file = File.join(Machinery::ROOT, "filters", "default_filters.json")
-    if File.exists?(default_filters_file)
+    if File.exist?(default_filters_file)
       default_filters = JSON.parse(File.read(default_filters_file))
       if default_filters[command]
         default_filters[command].each do |definition|
@@ -134,7 +134,7 @@ class Filter
 
   def matches?(path, value)
     filter = element_filter_for(path)
-    return false if !filter
+    return false unless filter
 
     filter.matches?(value)
   end
@@ -147,12 +147,12 @@ class Filter
       pointer = system_description
       container = nil
       steps.each do |step|
-        break if !pointer
+        break unless pointer
         pointer = pointer[step]
         container ||= pointer if pointer.is_a?(Machinery::Array)
       end
 
-      next if !pointer
+      next unless pointer
 
       begin
         pointer.delete_if do |element|

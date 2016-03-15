@@ -36,7 +36,7 @@ class FilterOptionParser
     private
 
     def exclude_definitions(exclude)
-      return [] if !exclude
+      return [] unless exclude
 
       filters = if exclude.start_with?("@")
         expand_filter_file(exclude)
@@ -49,7 +49,7 @@ class FilterOptionParser
     end
 
     def skip_files_definitions(skip_files)
-      return [] if !skip_files
+      return [] unless skip_files
 
       files = skip_files.split(/(?<!\\),/) # Do not split on escaped commas
       files = files.flat_map do |file|
@@ -69,7 +69,7 @@ class FilterOptionParser
     def expand_filter_file(path)
       filename = File.expand_path(path[1..-1])
 
-      if !File.exists?(filename)
+      unless File.exist?(filename)
         raise Machinery::Errors::MachineryError.new(
           "The filter file '#{filename}' does not exist."
         )

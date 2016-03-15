@@ -114,9 +114,10 @@ describe Migrate3To4 do
     end
 
     it "removes empty directories" do
-      expect(File.exists?(File.join(description_base, "config_files", "empty"))).to be(false)
-      expect(File.exists?(File.join(description_base, "changed_managed_files", "empty"))).
-        to be(false)
+      expect(File.exist?(File.join(description_base, "config_files", "empty"))).to be(false)
+      expect(
+        File.exist?(File.join(description_base, "changed_managed_files", "empty"))
+      ).to be(false)
     end
 
     it "adds type entries to config and changed-managed files" do
