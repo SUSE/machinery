@@ -356,6 +356,7 @@ class Server < Sinatra::Base
     if session[:error]
       @errors ||= Array.new
       @errors.push(session[:error])
+      session.clear
     end
   end
 end
