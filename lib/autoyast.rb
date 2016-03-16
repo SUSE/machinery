@@ -24,7 +24,6 @@ class Autoyast < Exporter
     @system_description = description
     @system_description.assert_scopes(
       "os",
-      "repositories",
       "packages"
     )
     check_exported_os
