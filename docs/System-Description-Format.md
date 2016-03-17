@@ -871,3 +871,12 @@ version of Machinery.
 * There are now three types of repositories: zypper, yum and apt
 * There are now three types of init systems: sysvinit, systemd and upstart
 * All JSON arrays are converted to the attribute-enriched machinery arrays
+
+### Version 7
+
+* Schema version 7 adds support to extract metadata for unmanaged files in systems that can use the helper
+
+### Version 8
+
+* Format version 8 renames the scope config-files to changed-config-files
+* Following this change the config_file_diff dir is also renamed to changed_config_files_diffs
