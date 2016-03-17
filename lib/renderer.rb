@@ -205,7 +205,7 @@ class Renderer
   end
 
   def puts(s)
-    print_indented "#{s}"
+    print_indented Machinery.scrub(s)
   end
 
   def list(name = nil, options = {}, &block)
@@ -237,7 +237,7 @@ class Renderer
       )
     end
 
-    print_indented "* #{s}"
+    print_indented "* #{Machinery.scrub(s)}"
 
     if block_given?
       @stack << :item
