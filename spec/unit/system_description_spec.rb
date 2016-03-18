@@ -119,6 +119,29 @@ EOF
         )
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
+
+    it "raises an SystemDescriptionIncompatibleError when attribute parsing fails" do
+      expect {
+        SystemDescription.from_hash(
+          @name,
+          SystemDescriptionMemoryStore.new,
+          JSON.parse(
+<<-EOF
+{
+  "unmanaged_files": {
+    "_attributes": {
+      "unknown_attribute": false
+    }
+  },
+  "meta": {
+    "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION + 1}
+  }
+}
+EOF
+          )
+        )
+      }.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
+    end
   end
 
   describe "#compatible?" do

@@ -90,7 +90,7 @@ class SystemDescription < Machinery::Object
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
         description = SystemDescription.new(name, store, hash)
-      rescue NameError, TypeError
+      rescue NameError, TypeError, RuntimeError
         if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
         else
