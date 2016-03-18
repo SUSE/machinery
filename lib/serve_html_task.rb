@@ -17,7 +17,12 @@
 
 class ServeHtmlTask
   def serve(system_description_store, opts)
-    url = "http://127.0.0.1:#{opts[:port]}/"
+    hostname = Socket.gethostbyname(Socket.gethostname).first
+    url = "http://#{hostname}:#{opts[:port]}/"
+    if opts[:public]
+      remote_ip = Socket.ip_address_list.find { |ip| ip.ipv4? && !ip.ipv4_loopback? }.ip_address
+      remote_url = "http://#{remote_ip}:#{opts[:port]}/"
+    end
     Machinery::Ui.use_pager = false
     Machinery::Ui.puts <<EOF
 Trying to start a web server for serving a view on all system descriptions.
@@ -25,8 +30,9 @@ Trying to start a web server for serving a view on all system descriptions.
 The overview of all descriptions is accessible at:
 
     #{url}
+    #{remote_url}
 
-A specific descriptions with the name NAME is accessible at:
+A specific description with the name NAME is accessible at:
 
     #{url}NAME
 

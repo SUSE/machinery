@@ -30,17 +30,17 @@ class Html
 
         Machinery::Ui.warn <<-EOF.chomp
 Warning:
-The --public option makes the HTTP server listen on all configured IP addresses. Everyone who has access to one of those IP addresses can access all of your system descriptions stored in '~/.machinery'. Be careful if there are sensible information (such as private keys) stored in one of your descriptions.
+The --public option makes the HTTP server listen on all configured IP addresses. Everyone who has access to one of those IP addresses can access all of your system descriptions stored in '~/.machinery'. Be careful if there is sensitive information (such as private keys) stored in one of your descriptions.
 EOF
       elsif opts[:ip] == "0.0.0.0"
         Machinery::Ui.warn <<-EOF.chomp
 Warning:
-The server is listening on all configured IP addresses. Everyone who has access to one of those IP addresses can access all of your system descriptions stored in '~/.machinery'. Be careful if there are sensible information (such as private keys) stored in one of your descriptions.
+The server is listening on all configured IP addresses. Everyone who has access to one of those IP addresses can access all of your system descriptions stored in '~/.machinery'. Be careful if there is sensitive information (such as private keys) stored in one of your descriptions.
 EOF
       elsif opts[:ip] && opts[:ip] != "localhost" && opts[:ip] != "127.0.0.1"
         Machinery::Ui.warn <<-EOF.chomp
 Warning:
-You specified an IP address other than '127.0.0.1', your server may be reachable from the network. Everyone who can access that network can access your system descriptions stored in '~/.machinery'. Be careful if there are sensible information (such as private keys) stored in one of your descriptions.
+You specified an IP address other than '127.0.0.1', your server may be reachable from the network. Everyone who can access that network can access your system descriptions stored in '~/.machinery'. Be careful if there is sensitive information (such as private keys) stored in one of your descriptions.
 EOF
       elsif !opts[:ip]
         opts[:ip] = "127.0.0.1"
