@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Fix regression which prevented changed-config-file diffs from being shown
+  in the HTML output
 * Hint now mentions remote-user option (gh#SUSE/machinery#1813)
 * Hint is printed when `machinery` is called without options (gh#SUSE/machinery#1286)
 * Rename config-files inspector to changed-config-files inspector to be more

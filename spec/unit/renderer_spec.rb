@@ -275,6 +275,14 @@ EOF
 
       expect(renderer.render(description)).to include("  line 1\n  line 2")
     end
+
+    it "can handle broken utf-8 characters" do
+      def renderer.content(_description)
+        puts "\255"
+      end
+
+      expect { renderer.render(description) }.not_to raise_error
+    end
   end
 
   describe "#render_comparison" do

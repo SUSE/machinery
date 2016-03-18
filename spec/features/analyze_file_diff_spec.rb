@@ -36,8 +36,12 @@ RSpec.describe "Analyze File Diff", type: :feature do
       "Other content\n"
     )
 
-    diff_file_path = File.join(description.description_path, "analyze", "config_file_diffs",
-                               File.dirname(file.name))
+    diff_file_path = File.join(
+      description.description_path,
+      "analyze",
+      "changed_config_files_diffs",
+      File.dirname(file.name)
+    )
 
     FileUtils.mkdir_p(diff_file_path)
     crontab_diff = <<EOF
