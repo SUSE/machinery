@@ -231,7 +231,6 @@
     <package name="sysvinit-tools"/>
     <package name="tar"/>
     <package name="terminfo-base"/>
-    <package name="test-data-files"/>
     <package name="time"/>
     <package name="udev"/>
     <package name="update-alternatives"/>
