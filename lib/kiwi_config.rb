@@ -57,6 +57,28 @@ class KiwiConfig < Exporter
 
   private
 
+  def optional_bootstrap_packages
+    [
+      "glibc-locale",
+      "module-init-tools",
+      "cracklib-dict-full",
+      "ca-certificates",
+      "ca-certificates-mozilla"
+    ]
+  end
+
+  def add_bootstrap_packages(xml)
+    xml.packages(type: "bootstrap") do
+      xml.package(name: "filesystem")
+      bootstrap_packages = @system_description.packages.select { |package|
+        optional_bootstrap_packages.include?(package.name)
+      }
+      bootstrap_packages.each do |package|
+        xml.package(name: package.name)
+      end
+    end
+  end
+
   def pre_process_config
     enable_ssh if @options[:enable_ssh]
   end
@@ -234,7 +256,9 @@ EOF
       File.join(Machinery::ROOT, "filters", "filter-packages-for-build.yaml")
     ) || []
 
-    xml.packages(type: "bootstrap") do
+    add_bootstrap_packages(xml)
+
+    xml.packages(type: "image") do
       if @system_description.packages
         @system_description.packages.each do |package|
           next if filter.include?(package.name)

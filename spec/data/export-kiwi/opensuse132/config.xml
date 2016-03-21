@@ -17,6 +17,12 @@
     <source path="http://download.opensuse.org/distribution/13.2/repo/oss/"/>
   </repository>
   <packages type="bootstrap">
+    <package name="filesystem"/>
+    <package name="ca-certificates"/>
+    <package name="cracklib-dict-full"/>
+    <package name="glibc-locale"/>
+  </packages>
+  <packages type="image">
     <package name="aaa_base"/>
     <package name="acl"/>
     <package name="adjtimex"/>
