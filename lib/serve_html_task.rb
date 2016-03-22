@@ -16,13 +16,21 @@
 # you may find current contact information at www.suse.com
 
 class ServeHtmlTask
-  def serve(system_description_store, opts)
-    hostname = Socket.gethostbyname(Socket.gethostname).first
-    url = "http://#{hostname}:#{opts[:port]}/"
-    if opts[:public]
-      remote_ip = Socket.ip_address_list.find { |ip| ip.ipv4? && !ip.ipv4_loopback? }.ip_address
-      remote_url = "http://#{remote_ip}:#{opts[:port]}/"
+  def assemble_url(opts)
+    host = if !opts[:public]
+      "127.0.0.1"
+    else
+      begin
+        Socket.gethostbyname(Socket.gethostname).first
+      rescue SocketError
+        Socket.gethostname
+      end
     end
+    "http://#{host}:#{opts[:port]}/"
+  end
+
+  def serve(system_description_store, opts)
+    url = assemble_url(opts)
     Machinery::Ui.use_pager = false
     Machinery::Ui.puts <<EOF
 Trying to start a web server for serving a view on all system descriptions.
@@ -30,7 +38,6 @@ Trying to start a web server for serving a view on all system descriptions.
 The overview of all descriptions is accessible at:
 
     #{url}
-    #{remote_url}
 
 A specific description with the name NAME is accessible at:
 
