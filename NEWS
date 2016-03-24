@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Only use required packages for bootstrap in Kiwi export
 * Fix regression which prevented changed-config-file diffs from being shown
   in the HTML output
 * Hint now mentions remote-user option (gh#SUSE/machinery#1813)
