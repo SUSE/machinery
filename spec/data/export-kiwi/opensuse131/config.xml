@@ -20,6 +20,11 @@
     <source path="http://download.opensuse.org/update/13.1/"/>
   </repository>
   <packages type="bootstrap">
+    <package name="filesystem"/>
+    <package name="cracklib-dict-full"/>
+    <package name="module-init-tools"/>
+  </packages>
+  <packages type="image">
     <package name="DirectFB"/>
     <package name="Mesa"/>
     <package name="Mesa-libEGL1"/>

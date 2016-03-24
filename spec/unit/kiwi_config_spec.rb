@@ -104,6 +104,9 @@ describe KiwiConfig do
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
   <packages type="bootstrap">
+    <package name="filesystem"/>
+  </packages>
+  <packages type="image">
     <package name="bash"/>
     <package name="autofs"/>
     <namedCollection name="base"/>
@@ -207,6 +210,9 @@ EOT
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
   <packages type="bootstrap">
+    <package name="filesystem"/>
+  </packages>
+  <packages type="image">
     <package name="bash"/>
     <package name="autofs"/>
   </packages>
