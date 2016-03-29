@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* public serve task now prints hostname for sharing (gh#SUSE/machinery#1699)
+* Fix export of description with no repositories scope to Autoyast (gh#SUSE/machinery#2024) 
 * Only use required packages for bootstrap in Kiwi export
 * Fix regression which prevented changed-config-file diffs from being shown
   in the HTML output
