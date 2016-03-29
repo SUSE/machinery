@@ -328,17 +328,21 @@ class Server < Sinatra::Base
   end
 
   get "/:id" do
-    @description = SystemDescription.load(params[:id], settings.system_description_store)
-
-    diffs_dir = @description.scope_file_store("analyze/changed_config_files_diffs").path
-    if @description.changed_config_files && diffs_dir
-      # Enrich description with the config file diffs
-      @description.changed_config_files.each do |file|
-        path = File.join(diffs_dir, file.name + ".diff")
-        file.diff = diff_to_object(File.read(path)) if File.exist?(path)
+    begin
+      @description = SystemDescription.load(params[:id], settings.system_description_store)
+    rescue Machinery::Errors::SystemDescriptionIncompatible => e
+      @error = e
+      haml File.read(File.join(Machinery::ROOT, "html/upgrade.html.haml"))
+    else
+      diffs_dir = @description.scope_file_store("analyze/changed_config_files_diffs").path
+      if @description.changed_config_files && diffs_dir
+        # Enrich description with the config file diffs
+        @description.changed_config_files.each do |file|
+          path = File.join(diffs_dir, file.name + ".diff")
+          file.diff = diff_to_object(File.read(path)) if File.exist?(path)
+        end
       end
+      haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
     end
-
-    haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
   end
 end
