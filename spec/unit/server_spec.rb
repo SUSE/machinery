@@ -106,6 +106,21 @@ describe Server do
       end
     end
 
+    describe "GET /:id with non-existent id" do
+      it "redirects to landing page if description is not found" do
+        bad_description = "does_not_exist"
+
+        get "/#{bad_description}"
+
+        expect(last_response).to be_redirect
+
+        follow_redirect!
+
+        expect(last_response.body).
+            to include("Couldn't find a system description with the name '#{bad_description}'")
+      end
+    end
+
     describe "GET /descriptions/:id/files/:scope" do
       it "sends the file" do
         get "/descriptions/#{description_a.name}/files/changed_config_files/etc/cron%20tab"
