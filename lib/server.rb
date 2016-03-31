@@ -334,7 +334,6 @@ class Server < Sinatra::Base
       @description = SystemDescription.load(params[:id], settings.system_description_store)
     rescue Machinery::Errors::SystemDescriptionNotFound => e
       session[:error] = e.to_s
-      status 404
       redirect "/"
     end
 
