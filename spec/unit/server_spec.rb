@@ -25,7 +25,7 @@ describe Server do
     create_test_description(
       name: "description_a",
       store_on_disk: true,
-      extracted_scopes: ["config_files"],
+      extracted_scopes: ["changed_config_files"],
       scopes: ["os"]
     )
   }
@@ -41,12 +41,12 @@ describe Server do
     description = create_test_description(
       name: "description_c",
       store_on_disk: true,
-      extracted_scopes: ["config_files"],
+      extracted_scopes: ["changed_config_files"],
       scopes: ["os"]
     )
 
-    file = description.config_files.find { |f| f.name == "/etc/cron tab" }
-    File.write(description.config_files.file_path(file), "Other content")
+    file = description.changed_config_files.find { |f| f.name == "/etc/cron tab" }
+    File.write(description.changed_config_files.file_path(file), "Other content")
 
     description
   }
@@ -60,13 +60,49 @@ describe Server do
   end
 
   describe "show" do
-    describe "GET /:id" do
-      it "returns the page" do
-        get "/#{description_a.name}"
+    context "description with incompatible format version" do
+      describe "GET /:id" do
+        let(:old_format_version) {
+          create_test_description(
+            name: "old_format_version",
+            store_on_disk: true,
+            scopes: ["os"],
+            format_version: 7
+          )
+        }
+        let(:unknown_format_version) {
+          create_test_description(
+            name: "unknown_format_version",
+            store_on_disk: true,
+            scopes: ["os"],
+            format_version: 12
+          )
+        }
 
-        expect(last_response).to be_ok
-        expect(last_response.body).
-          to include("#{description_a.name} - Machinery System Description")
+        it "returns update instructions for lower format versions" do
+          get "/#{old_format_version.name}"
+          expect(last_response).to be_ok
+          expect(last_response.body).
+            to include("Machinery Error: incompatible system description")
+        end
+
+        it "returns update instructions for higher format versions" do
+          get "/#{unknown_format_version.name}"
+          expect(last_response).to be_ok
+          expect(last_response.body).
+            to include("Machinery Error: incompatible system description")
+        end
+      end
+    end
+
+    context "compatible format version" do
+      describe "GET /:id" do
+        it "returns the page" do
+          get "/#{description_a.name}"
+          expect(last_response).to be_ok
+          expect(last_response.body).
+            to include("#{description_a.name} - Machinery System Description")
+        end
       end
     end
 
@@ -87,7 +123,7 @@ describe Server do
 
     describe "GET /descriptions/:id/files/:scope" do
       it "sends the file" do
-        get "/descriptions/#{description_a.name}/files/config_files/etc/cron%20tab"
+        get "/descriptions/#{description_a.name}/files/changed_config_files/etc/cron%20tab"
 
         expect(last_response).to be_ok
         expect(last_response.headers["Content-Type"]).to include("text/plain")
@@ -108,7 +144,7 @@ describe Server do
 
     describe "GET /compare/:a/:b/files/:scope" do
       it "sends the diff between the files" do
-        get "/compare/#{description_a.name}/#{description_c.name}/files/config_files/etc/cron%20tab"
+        get "/compare/#{description_a.name}/#{description_c.name}/files/changed_config_files/etc/cron%20tab"
 
         expect(last_response).to be_ok
         expect(last_response.body).to eq(<<EOF)

@@ -1,0 +1,16 @@
+# Changed Configuration Files [192.168.121.137] (2014-11-25 18:21:52)
+
+  Files extracted: yes
+  * /etc/auto.master (autofs-5.0.7, size, md5)
+  * /etc/crontab (cronie-1.4.8, size, md5)
+  * /etc/pam.d/common-account (pam-1.1.8, link_path)
+  * /etc/pam.d/common-auth (pam-1.1.8, link_path)
+  * /etc/pam.d/common-password (pam-1.1.8, link_path)
+  * /etc/pam.d/common-session (pam-1.1.8, link_path)
+  * /etc/ssh/sshd_config (openssh-6.2p2, size, md5)
+  * /etc/stat-test/test.conf (test-data-files-1.0, size, md5)
+  * /etc/sudoers (sudo-1.8.7, size, md5)
+  * /etc/umlaut-äöü.conf (test-data-files-1.0, size, md5)
+  * /etc/zypp/zypp.conf (libzypp-13.8.1, size, md5)
+  * /var/lib/nfs/etab (nfs-kernel-server-1.2.8, size, md5)
+

@@ -67,7 +67,7 @@ shared_examples "inspect-container" do |container|
       "os",
       "users",
       "groups",
-      "config-files",
+      "changed-config-files",
       "changed-managed-files"
     ].each do |scope|
       include_examples("inspect-container simple scope", scope, container)
@@ -93,10 +93,10 @@ shared_examples "inspect-container" do |container|
       ).to succeed.and include_stdout("Hint: To show")
     end
 
-    context "--scope=config-files" do
+    context "--scope=changed-config-files" do
       it "extracts the files" do
         ls_command = @machinery.run_command(
-          "ls #{machinery_config[:machinery_dir]}/test/config_files/etc/",
+          "ls #{machinery_config[:machinery_dir]}/test/changed_config_files/etc/",
           as: "vagrant"
         )
 

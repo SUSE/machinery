@@ -23,7 +23,7 @@ class GroupsRenderer < Renderer
       description.groups.each do |group|
         gid = group.gid || "N/A"
         details ="gid: #{gid}"
-        details += ", users: #{group.users.join(",")}" if !group.users.empty?
+        details += ", users: #{group.users.join(",")}" unless group.users.empty?
 
         item "#{group.name} (#{details})"
       end

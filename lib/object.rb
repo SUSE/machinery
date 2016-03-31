@@ -112,16 +112,12 @@ module Machinery
         end
         key = name.to_s[0..-2]
         @attributes[key] = self.class.convert_element(key, args.first)
-      else
-        if @attributes.has_key?(name.to_s)
-          if !args.empty?
-            raise ArgumentError, "wrong number of arguments (#{args.size} for 0)"
-          end
-
-          @attributes[name.to_s]
-        else
-          nil
+      elsif @attributes.key?(name.to_s)
+        unless args.empty?
+          raise ArgumentError, "wrong number of arguments (#{args.size} for 0)"
         end
+
+        @attributes[name.to_s]
       end
     end
 
@@ -129,7 +125,7 @@ module Machinery
       if name.to_s.end_with?("=")
         true
       else
-        @attributes.has_key?(name) || super(name, include_all)
+        @attributes.key?(name) || super(name, include_all)
       end
     end
 

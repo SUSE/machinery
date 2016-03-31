@@ -27,7 +27,7 @@ shared_examples "serve html" do
     def test_basic_html(port)
       wait_time = 0
       loop do
-        curl_command = @machinery.run_command("curl http://localhost:#{port}/opensuse131")
+        curl_command = @machinery.run_command("curl http://127.0.0.1:#{port}/opensuse131")
 
         if curl_command.stderr =~ /Failed to connect/
           raise "Could not connect to webserver" if wait_time >= 10
@@ -66,10 +66,10 @@ shared_examples "serve html" do
 
       # Test file content download
       expected_content = File.read(
-        File.join(system_description_dir, "config_files", "etc", "crontab")
+        File.join(system_description_dir, "changed_config_files", "etc", "crontab")
       )
       curl_command = @machinery.run_command(
-        "curl http://localhost:5000/descriptions/opensuse131/files/config_files/etc/crontab"
+        "curl http://127.0.0.1:5000/descriptions/opensuse131/files/changed_config_files/etc/crontab"
       )
       expect(curl_command).to succeed.with_stderr.and have_stdout(expected_content)
     end

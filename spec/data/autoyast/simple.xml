@@ -125,7 +125,7 @@ zypper -n mr --priority=2 'NCCRepo' --name='NCC Repository' --refresh
 zypper -n mr --priority=1 'Alias With Spaces' --name='nodejs' --no-refresh
 rm -rf '/etc/deleted config'
 mkdir -p '/mnt/etc'
-curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/config_files/etc/cron%20tab"
+curl -o '/mnt/etc/cron tab' "`cat /tmp/description_url`/changed_config_files/etc/cron%20tab"
 chmod 644 '/mnt/etc/cron tab'
 chown root:root '/mnt/etc/cron tab'
 rm -rf '/mnt/etc/replaced_by_link'

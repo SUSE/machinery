@@ -58,7 +58,7 @@ shared_examples "build" do |distribution|
           # Extract image from master VM
           image = images.split.first.chomp
           local_image = File.join("/tmp", File.basename(image))
-          `sudo rm #{local_image}` if File.exists?(local_image)
+          `sudo rm #{local_image}` if File.exist?(local_image)
           @machinery.extract_file image, "/tmp"
         end
 
@@ -70,7 +70,7 @@ shared_examples "build" do |distribution|
           expect(
             @machinery.run_command(
               "machinery inspect #{@test_system.ip} -n built_image --scope packages,patterns," \
-              "repositories,config-files,unmanaged-files,services,changed-managed-files -x",
+              "repositories,changed-config-files,unmanaged-files,services,changed-managed-files -x",
               as: "vagrant"
             )
           ).to succeed
@@ -102,18 +102,19 @@ shared_examples "build" do |distribution|
         expect(current_repos).to match_array(original_repos)
       end
 
-      describe "config-files:" do
+      describe "changed-config-files:" do
         it "contains the changed config file" do
           expect(
             @machinery.run_command(
-              "find", "/home/vagrant/.machinery/built_image/config_files/", "-printf", "%P\n"
+              "find", "/home/vagrant/.machinery/built_image/changed_config_files/",
+              "-printf", "%P\n"
             )
           ).to succeed.and include_stdout("etc/crontab")
         end
 
-        it "contains the changed config-files from the system description" do
+        it "contains the changed-config-files from the system description" do
           expect(@new_description).to include_file_scope(@system_description,
-            "config_files")
+            "changed_config_files")
         end
 
         it "removed the deleted config file" do

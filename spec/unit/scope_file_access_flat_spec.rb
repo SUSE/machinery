@@ -5,10 +5,10 @@ describe ScopeFileAccessFlat do
   let(:description) {
     create_test_description(
       store_on_disk: true,
-      extracted_scopes: ["config_files"]
+      extracted_scopes: ["changed_config_files"]
     )
   }
-  subject { description.config_files }
+  subject { description.changed_config_files }
   let(:dir) { subject.find(&:directory?) }
   let(:link) { subject.find(&:link?) }
   let(:file) { subject.find { |file| file.name == "/etc/cron tab" } }
@@ -41,7 +41,7 @@ describe ScopeFileAccessFlat do
       target = given_directory
       subject.write_file(file, target)
 
-      expect(File.exists?(File.join(target, file.name))).to be(true)
+      expect(File.exist?(File.join(target, file.name))).to be(true)
     end
   end
 
@@ -52,17 +52,19 @@ describe ScopeFileAccessFlat do
     }
 
     it "returns the file content of a file stored in a directory" do
-      system_file = description.config_files.find do |file|
+      system_file = description.changed_config_files.find do |file|
         file.name == "/etc/crontab"
       end
 
-      file_content = description.config_files.file_content(system_file)
-      expect(file_content).to eq("-*/15 * * * *   root  echo config_files_integration_test\n")
+      file_content = description.changed_config_files.file_content(system_file)
+      expect(file_content).to eq(
+        "-*/15 * * * *   root  echo changed_config_files_integration_test\n"
+      )
     end
 
     it "raises an error if the files were not extracted" do
       description["changed_managed_files"].extracted = false
-      system_file = description.config_files.find do |file|
+      system_file = description.changed_config_files.find do |file|
         file.name == "/etc/crontab"
       end
 
@@ -124,7 +126,7 @@ describe ScopeFileAccessFlat do
     }
 
     it "returns true" do
-      expect(description.config_files.has_file?("/etc/crontab")).to be_truthy
+      expect(description.changed_config_files.has_file?("/etc/crontab")).to be_truthy
     end
   end
 end

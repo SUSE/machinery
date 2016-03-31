@@ -23,7 +23,7 @@ class ExportTask
   def export(output_dir, options)
     @exporter.system_description.assert_scopes("os")
 
-    ["unmanaged_files", "changed_managed_files", "config_files"].each do |scope|
+    ["unmanaged_files", "changed_managed_files", "changed_config_files"].each do |scope|
       if @exporter.system_description[scope] &&
           !@exporter.system_description.scope_extracted?(scope)
         raise Machinery::Errors::MissingExtractedFiles.new(@exporter.system_description, [scope])
@@ -31,7 +31,7 @@ class ExportTask
     end
 
     output_dir = File.join(output_dir, @exporter.export_name)
-    if File.exists?(output_dir)
+    if File.exist?(output_dir)
       if options[:force]
         FileUtils.rm_r(output_dir)
       else
@@ -43,7 +43,7 @@ class ExportTask
     end
 
     begin
-      FileUtils.mkdir_p(output_dir, mode: 0700) if !Dir.exists?(output_dir)
+      FileUtils.mkdir_p(output_dir, mode: 0700) unless Dir.exist?(output_dir)
     rescue Errno::EACCES
       raise(Machinery::Errors::ExportFailed, \
             "Permission denied. Directory '#{output_dir}' is not writable")

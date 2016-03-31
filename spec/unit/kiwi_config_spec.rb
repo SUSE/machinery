@@ -55,7 +55,7 @@ describe KiwiConfig do
   let(:system_description_with_modified_files) {
     create_test_description(
       scopes: ["os", "packages", "repositories", "services"],
-      extracted_scopes: ["config_files", "unmanaged_files", "changed_managed_files"],
+      extracted_scopes: ["changed_config_files", "unmanaged_files", "changed_managed_files"],
       name: name,
       store: store,
       store_on_disk: true
@@ -104,6 +104,9 @@ describe KiwiConfig do
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
   <packages type="bootstrap">
+    <package name="filesystem"/>
+  </packages>
+  <packages type="image">
     <package name="bash"/>
     <package name="autofs"/>
     <namedCollection name="base"/>
@@ -207,6 +210,9 @@ EOT
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
   <packages type="bootstrap">
+    <package name="filesystem"/>
+  </packages>
+  <packages type="image">
     <package name="bash"/>
     <package name="autofs"/>
   </packages>
@@ -288,31 +294,33 @@ EOT
       expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 
-    it "throws an error if changed config files are part of the system description but don't exist on the filesystem" do
-      scope = "config_files"
-      system_description_with_modified_files.scope_file_store(scope).remove
-      expect {
-        KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
-    end
+    context "if files were not extracted" do
+      it "throws an error if changed configuration files are part of the system description" do
+        scope = "changed_config_files"
+        system_description_with_modified_files.scope_file_store(scope).remove
+        expect {
+          KiwiConfig.new(system_description_with_modified_files)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError,
+          /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      end
 
-    it "throws an error if changed managed files are part of the system description but don't exist on the filesystem" do
-      scope = "changed_managed_files"
-      system_description_with_modified_files.scope_file_store(scope).remove
-      expect {
-        KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
-    end
+      it "throws an error if changed managed files are part of the system description" do
+        scope = "changed_managed_files"
+        system_description_with_modified_files.scope_file_store(scope).remove
+        expect {
+          KiwiConfig.new(system_description_with_modified_files)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError,
+          /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      end
 
-    it "throws an error if unmanaged files are part of the system description but don't exist on the filesystem" do
-      scope = "unmanaged_files"
-      system_description_with_modified_files.scope_file_store(scope).remove
-      expect {
-        KiwiConfig.new(system_description_with_modified_files)
-      }.to raise_error(Machinery::Errors::SystemDescriptionError,
-        /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      it "throws an error if unmanaged files are part of the system description" do
+        scope = "unmanaged_files"
+        system_description_with_modified_files.scope_file_store(scope).remove
+        expect {
+          KiwiConfig.new(system_description_with_modified_files)
+        }.to raise_error(Machinery::Errors::SystemDescriptionError,
+          /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
+      end
     end
 
     it "applies 'pre-process' config" do
@@ -372,9 +380,9 @@ EOT
       config.write(export_dir)
 
       expect(
-        File.exists?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
+        File.exist?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
       ).to be(false)
-      expect(File.exists?(network_config)).to be(true)
+      expect(File.exist?(network_config)).to be(true)
 
       expect(File.read(network_config)).to include("BOOTPROTO='dhcp'")
     end
@@ -391,9 +399,9 @@ EOT
       config.write(export_dir)
 
       expect(
-        File.exists?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
+        File.exist?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
       ).to be(true)
-      expect(File.exists?(network_config)).to be(true)
+      expect(File.exist?(network_config)).to be(true)
 
       expect(File.read(network_config)).to include("BOOTPROTO='dhcp'")
     end
@@ -420,7 +428,7 @@ EOT
       )
       config.write(export_dir)
 
-      expect(File.exists?(readme)).to be(true)
+      expect(File.exist?(readme)).to be(true)
 
       expect(File.read(readme)).to include(
         "README for Kiwi export from Machinery"
@@ -431,7 +439,7 @@ EOT
       let(:config) { KiwiConfig.new(system_description_with_modified_files) }
       let(:manifest_path) { store.description_path(name) }
 
-      it "restores the extracted config-files" do
+      it "restores the extracted changed-config-files" do
         config.write(export_dir)
 
         expect(config.sh).to include("chmod 644 '/etc/cron tab'\n")
@@ -447,15 +455,15 @@ EOT
         expect(config.sh).to include("chown --no-dereference root:target '/etc/replaced_by_link'\n")
       end
 
-      it "copies the changed config files to the template root directory" do
+      it "copies the changed configuration files to the template root directory" do
         config_file = "/etc/cron tab"
         config.write(export_dir)
 
         # expect config file attributes to be set via config.sh
         expect(config.sh).to include("chmod 644 '#{config_file}'\n")
         expect(config.sh).to include("chown root:root '#{config_file}'\n")
-        # expect config files to be stored in the template root directory
-        expect(File.exists?(File.join(export_dir, "root", config_file))).to be(true)
+        # expect changed configuration files to be stored in the template root directory
+        expect(File.exist?(File.join(export_dir, "root", config_file))).to be(true)
       end
 
       it "copies the changed managed files to the template root directory" do
@@ -466,18 +474,18 @@ EOT
         expect(config.sh).to include("chmod 644 '#{changed_managed_file}'\n")
         expect(config.sh).to include("chown user:group '#{changed_managed_file}'\n")
 
-        # expect config files to be stored in the template root directory
-        expect(File.exists?(File.join(export_dir, "root", changed_managed_file))).to be(true)
+        # expect changed configuration files to be stored in the template root directory
+        expect(File.exist?(File.join(export_dir, "root", changed_managed_file))).to be(true)
       end
 
       it "copies the unmanaged files tarballs into the root directory" do
         config.write(export_dir)
 
         expect(
-          File.exists?(File.join(export_dir, "/root/tmp/unmanaged_files/files.tgz"))
+          File.exist?(File.join(export_dir, "/root/tmp/unmanaged_files/files.tgz"))
         ).to be(true)
         expect(
-          File.exists?(
+          File.exist?(
             File.join(export_dir, "/root/tmp/unmanaged_files/trees/etc/tarball with spaces.tgz")
           )
         ).to be(true)
@@ -486,7 +494,7 @@ EOT
 
         # expect filter to be present
         expect(
-          File.exists?(File.join(export_dir, "/root/tmp/unmanaged_files_kiwi_excludes"))
+          File.exist?(File.join(export_dir, "/root/tmp/unmanaged_files_kiwi_excludes"))
         ).to be(true)
         expect(config.sh).to match(/tar.*-X '\/tmp\/unmanaged_files_kiwi_excludes' /)
       end
@@ -522,7 +530,7 @@ EOT
       script_path = File.join(export_dir, "root", "tmp", "merge_users_and_groups.pl")
 
       expect(config.sh).to include("perl /tmp/merge_users_and_groups.pl /etc/passwd /etc/shadow /etc/group")
-      expect(File.exists?(script_path)).to be(true)
+      expect(File.exist?(script_path)).to be(true)
 
       script = File.read(script_path)
       expect(script).to include("['root:x:0:0:root:/root:/bin/bash', 'root:$6$E4YLEez0s3MP$YkWtqN9J8uxEsYgv4WKDLRKxM2aNCSJajXlffV4XGlALrHzfHg1XRVxMht9XBQURDMY8J7dNVEpMaogqXIkL0.:16357::::::']")

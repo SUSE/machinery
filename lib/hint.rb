@@ -18,13 +18,13 @@
 class Hint
   class << self
     def print(method, options = {})
-      return if !Machinery::Config.new.hints
+      return unless Machinery::Config.new.hints
 
       Machinery::Ui.puts to_string(method, options)
     end
 
     def to_string(method, options = {})
-      return "" if !Machinery::Config.new.hints
+      return "" unless Machinery::Config.new.hints
 
       "\nHint: #{send(method, options)}\n"
     end
@@ -41,10 +41,15 @@ class Hint
 
     def which_machinery
       `which machinery 2>/dev/null`.chomp
+    rescue Errno::EPIPE => e
+      Machinery.logger.debug "Command `which machinery 2>/dev/null` crashed. " \
+                             "Error was #{e.class}: #{e}"
     end
 
     def get_started(_options)
-      "You can get started by inspecting a system. Run:\n#{program_name} inspect HOSTNAME"
+      "You can get started by inspecting a system. Run:\n'#{program_name} inspect HOSTNAME'\n" \
+      "To inspect a system as a user with sudo rights instead of root run:\n" \
+      "'#{program_name} inspect --remote-user USER HOSTNAME'"
     end
 
     def upgrade_format_force(options)
@@ -58,7 +63,7 @@ class Hint
 
     def show_analyze_data(options)
       "To show the config file diffs you just created run:\n" \
-        "#{program_name} show --scope config-files --show-diffs #{options[:name]}"
+        "#{program_name} show --scope changed-config-files --show-diffs #{options[:name]}"
     end
 
     def do_complete_inspection(options)

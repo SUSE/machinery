@@ -1,0 +1,14 @@
+# Changed Configuration Files [192.168.121.32] (2015-11-19 17:08:46)
+
+  Files extracted: yes
+  * /etc/crontab (cronie-1.4.11, md5)
+    Diff:
+    --- a/etc/crontab
+    +++ b/etc/crontab
+    @@ -6,3 +6,4 @@
+     #
+     -*/15 * * * *   root  test -x /usr/lib/cron/run-crons && /usr/lib/cron/run-crons >/dev/null 2>&1
+     
+    +-*/15 * * * *   root  echo changed_config_files_integration_test
+
+

@@ -28,7 +28,7 @@ Prophet.setup do |config|
   log.level = Logger::INFO
 
   CONFIG_FILE = "config/options-local.yml"
-  if File.exists?(CONFIG_FILE)
+  if File.exist?(CONFIG_FILE)
     options = YAML.load_file(CONFIG_FILE)
     # The GitHub (GH) username/password to use for commenting on a successful run.
     config.username = options["default"]["git_username"]

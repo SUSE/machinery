@@ -19,7 +19,7 @@ describe ScopeFileAccessArchive do
       end
 
       subject.retrieve_files_from_system_as_archive(system, ["/foo", "/bar"], ["/exclude"])
-      expect(File.exists?(File.join(scope_file_store.path, "files.tgz"))).to be(true)
+      expect(File.exist?(File.join(scope_file_store.path, "files.tgz"))).to be(true)
     end
 
     it "create tree tarballs in the scope file store" do
@@ -28,8 +28,8 @@ describe ScopeFileAccessArchive do
       end.at_least(:once)
 
       subject.retrieve_trees_from_system_as_archive(system, ["/opt", "/foo/bar"], ["/exclude"])
-      expect(File.exists?(File.join(scope_file_store.path, "trees", "opt.tgz"))).to be(true)
-      expect(File.exists?(File.join(scope_file_store.path, "trees", "foo/bar.tgz"))).to be(true)
+      expect(File.exist?(File.join(scope_file_store.path, "trees", "opt.tgz"))).to be(true)
+      expect(File.exist?(File.join(scope_file_store.path, "trees", "foo/bar.tgz"))).to be(true)
     end
   end
 
@@ -79,8 +79,8 @@ describe ScopeFileAccessArchive do
       target = given_directory
       description.unmanaged_files.export_files_as_tarballs(target)
 
-      expect(File.exists?(File.join(target, "files.tgz"))).to be(true)
-      expect(File.exists?(File.join(target, "trees/etc/tarball with spaces.tgz"))).to be(true)
+      expect(File.exist?(File.join(target, "files.tgz"))).to be(true)
+      expect(File.exist?(File.join(target, "trees/etc/tarball with spaces.tgz"))).to be(true)
     end
   end
 

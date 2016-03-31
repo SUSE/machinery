@@ -28,7 +28,7 @@ describe Autoyast do
     create_test_description(
       store_on_disk: true,
       extracted_scopes: [
-        "config_files",
+        "changed_config_files",
         "changed_managed_files",
         "unmanaged_files"
       ],
@@ -87,7 +87,7 @@ describe Autoyast do
 
     it "does not ask for export URL if files weren't extracted" do
       [
-        "config_files",
+        "changed_config_files",
         "changed_managed_files",
         "unmanaged_files"
       ].each do |scope|
@@ -114,15 +114,15 @@ describe Autoyast do
     end
 
     it "copies over the system description" do
-      expect(File.exists?(File.join(@output_dir, "manifest.json"))).to be(true)
+      expect(File.exist?(File.join(@output_dir, "manifest.json"))).to be(true)
     end
 
     it "adds the autoinst.xml" do
-      expect(File.exists?(File.join(@output_dir, "autoinst.xml"))).to be(true)
+      expect(File.exist?(File.join(@output_dir, "autoinst.xml"))).to be(true)
     end
 
     it "adds unmanaged files filter list" do
-      expect(File.exists?(File.join(@output_dir, "unmanaged_files_autoyast_excludes"))).to be(true)
+      expect(File.exist?(File.join(@output_dir, "unmanaged_files_autoyast_excludes"))).to be(true)
     end
 
     it "filters log files from the Autoyast export" do
@@ -131,7 +131,7 @@ describe Autoyast do
     end
 
     it "adds the autoyast export readme" do
-      expect(File.exists?(File.join(@output_dir, "README.md"))).to be(true)
+      expect(File.exist?(File.join(@output_dir, "README.md"))).to be(true)
     end
 
     it "adds the ip of the outgoing network to the readme" do

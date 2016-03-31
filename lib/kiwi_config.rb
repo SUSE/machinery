@@ -57,6 +57,28 @@ class KiwiConfig < Exporter
 
   private
 
+  def optional_bootstrap_packages
+    [
+      "glibc-locale",
+      "module-init-tools",
+      "cracklib-dict-full",
+      "ca-certificates",
+      "ca-certificates-mozilla"
+    ]
+  end
+
+  def add_bootstrap_packages(xml)
+    xml.packages(type: "bootstrap") do
+      xml.package(name: "filesystem")
+      bootstrap_packages = @system_description.packages.select { |package|
+        optional_bootstrap_packages.include?(package.name)
+      }
+      bootstrap_packages.each do |package|
+        xml.package(name: package.name)
+      end
+    end
+  end
+
   def pre_process_config
     enable_ssh if @options[:enable_ssh]
   end
@@ -96,8 +118,8 @@ class KiwiConfig < Exporter
   end
 
   def inject_extracted_files(output_location)
-    ["changed_managed_files", "config_files"].each do |scope|
-      next if !@system_description.scope_extracted?(scope)
+    ["changed_managed_files", "changed_config_files"].each do |scope|
+      next unless @system_description.scope_extracted?(scope)
 
       output_root_path = File.join(output_location, "root")
       FileUtils.mkdir_p(output_root_path)
@@ -147,7 +169,7 @@ EOF
 
   def check_existance_of_extracted_files
     missing_scopes = []
-    ["config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
+    ["changed_config_files", "changed_managed_files", "unmanaged_files"].each do |scope|
 
       if @system_description[scope] &&
          !@system_description.scope_file_store(scope).path
@@ -155,7 +177,7 @@ EOF
       end
     end
 
-    if !missing_scopes.empty?
+    unless missing_scopes.empty?
       raise Machinery::Errors::MissingExtractedFiles.new(@system_description, missing_scopes)
     end
   end
@@ -234,7 +256,9 @@ EOF
       File.join(Machinery::ROOT, "filters", "filter-packages-for-build.yaml")
     ) || []
 
-    xml.packages(type: "bootstrap") do
+    add_bootstrap_packages(xml)
+
+    xml.packages(type: "image") do
       if @system_description.packages
         @system_description.packages.each do |package|
           next if filter.include?(package.name)
@@ -268,16 +292,17 @@ EOF
             xml.source(path: repo.url)
           end
         end
-        if !repo.url.match(/^https:\/\/nu.novell.com|^https:\/\/update.suse.com/)
-          @sh << "zypper -n ar --name='#{repo.name}' "
-          @sh << "--type='#{repo.type}' " if repo.type
-          @sh << "--refresh " if repo.autorefresh
-          @sh << "--disable " unless repo.enabled
-          @sh << "'#{repo.url}' '#{repo.alias}'\n"
-          @sh << "zypper -n mr --priority=#{repo.priority} '#{repo.name}'\n"
-        end
+
+        next if repo.url =~ /^https:\/\/nu.novell.com|^https:\/\/update.suse.com/
+
+        @sh << "zypper -n ar --name='#{repo.name}' "
+        @sh << "--type='#{repo.type}' " if repo.type
+        @sh << "--refresh " if repo.autorefresh
+        @sh << "--disable " unless repo.enabled
+        @sh << "'#{repo.url}' '#{repo.alias}'\n"
+        @sh << "zypper -n mr --priority=#{repo.priority} '#{repo.name}'\n"
       end
-      if !usable_repositories
+      unless usable_repositories
         raise(
           Machinery::Errors::MissingRequirement.new(
             "The system description doesn't contain any enabled or network reachable repository." \

@@ -83,12 +83,12 @@ class UsersInspector < Inspector
       result = {
         encrypted_password: passwd
       }
-      result[:last_changed_date] = changed.to_i if !changed.empty?
-      result[:min_days] = min.to_i if !min.empty?
-      result[:max_days] = max.to_i if !max.empty?
-      result[:warn_days] = warn.to_i if !warn.empty?
-      result[:disable_days] = inactive.to_i if !inactive.empty?
-      result[:disabled_date] = expire.to_i if !expire.empty?
+      result[:last_changed_date] = changed.to_i unless changed.empty?
+      result[:min_days] = min.to_i unless min.empty?
+      result[:max_days] = max.to_i unless max.empty?
+      result[:warn_days] = warn.to_i unless warn.empty?
+      result[:disable_days] = inactive.to_i unless inactive.empty?
+      result[:disabled_date] = expire.to_i unless expire.empty?
 
       result
     else

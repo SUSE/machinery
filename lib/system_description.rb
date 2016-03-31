@@ -26,10 +26,10 @@
 # The sub directories storing the data for specific scopes are handled by the
 # ScopeFileStore class.
 class SystemDescription < Machinery::Object
-  CURRENT_FORMAT_VERSION = 7
+  CURRENT_FORMAT_VERSION = 8
   EXTRACTABLE_SCOPES = [
     "changed_managed_files",
-    "config_files",
+    "changed_config_files",
     "unmanaged_files"
   ]
 
@@ -49,7 +49,7 @@ class SystemDescription < Machinery::Object
       description = from_hash(name, store, manifest.to_hash)
       description.validate_file_data!
 
-      if !options[:skip_format_compatibility]
+      unless options[:skip_format_compatibility]
         description.validate_format_compatibility
       end
 
@@ -62,12 +62,12 @@ class SystemDescription < Machinery::Object
     # loading of the system description succeeds.
     def load(name, store, options = {})
       manifest = Manifest.load(name, store.manifest_path(name))
-      manifest.validate if !options[:skip_validation]
+      manifest.validate unless options[:skip_validation]
 
       description = from_hash(name, store, manifest.to_hash)
-      description.validate_file_data if !options[:skip_validation]
+      description.validate_file_data unless options[:skip_validation]
 
-      description.validate_format_compatibility if !options[:skip_format_compatibility]
+      description.validate_format_compatibility unless options[:skip_format_compatibility]
 
       description
     end
@@ -90,7 +90,7 @@ class SystemDescription < Machinery::Object
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
         description = SystemDescription.new(name, store, hash)
-      rescue NameError, TypeError
+      rescue NameError, TypeError, RuntimeError
         if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
         else
@@ -148,7 +148,7 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_format_compatibility
-    if !compatible?
+    unless compatible?
       raise Machinery::Errors::SystemDescriptionIncompatible.new(name, format_version)
     end
   end
@@ -197,7 +197,7 @@ class SystemDescription < Machinery::Object
     SystemDescription.validate_name(name)
     @store.directory_for(name)
     path = @store.manifest_path(name)
-    created = !File.exists?(path)
+    created = !File.exist?(path)
     File.write(path, to_json)
     File.chmod(0600, path) if created
   end
@@ -207,7 +207,7 @@ class SystemDescription < Machinery::Object
   end
 
   def set_filter_definitions(command, filter)
-    if !["inspect"].include?(command)
+    unless ["inspect"].include?(command)
       raise Machinery::Errors::MachineryError.new(
         "Storing the filter for command '#{command}' is not supported."
       )
@@ -256,7 +256,7 @@ class SystemDescription < Machinery::Object
 
   def validate_file_data
     errors = FileValidator.new(to_hash, description_path).validate
-    if !errors.empty?
+    unless errors.empty?
       Machinery::Ui.warn("Warning: File validation errors:")
       Machinery::Ui.warn("Error validating description '#{@name}'\n\n")
       Machinery::Ui.warn(errors.join("\n"))
@@ -265,7 +265,7 @@ class SystemDescription < Machinery::Object
 
   def validate_file_data!
     errors = FileValidator.new(to_hash, description_path).validate
-    if !errors.empty?
+    unless errors.empty?
       e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
       e.header = "Error validating description '#{@name}'"
       raise e

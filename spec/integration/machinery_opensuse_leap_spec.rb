@@ -64,7 +64,7 @@ describe "machinery@leap" do
     include_examples "inspect services", base
     include_examples "inspect repositories", base
     include_examples "inspect packages", base
-    include_examples "inspect config files", base
+    include_examples "inspect changed config files", base
     include_examples "inspect changed managed files", base
     include_examples "inspect unmanaged files", base, true
   end

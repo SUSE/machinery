@@ -1,0 +1,49 @@
+!!!
+%html
+  %head
+    %title
+      Machinery Error: incompatible system description
+    %meta{ :charset => 'utf-8' }
+    %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
+    %script{ :src => "assets/jquery-2.1.1.min.js" }
+    %script{ :src => "assets/transition.js" }
+    %script{ :src => "assets/collapse.js" }
+    %script{ :src => "assets/modal.js" }
+    %script{ :src => "assets/jquery.searcher.min.js" }
+    %script{ :src => "assets/machinery-base.js" }
+    %script{ :src => "assets/show/machinery.js" }
+    %script{ :src => "assets/bootstrap-tooltip.js" }
+    %script{ :src => "assets/bootstrap-popover.js" }
+
+  %body
+    .container-fluid
+      #nav-bar
+        .row
+          .col-xs-1
+          .col-xs-10
+            %h1
+              System Description incompatible!
+        .row
+          .col-xs-1
+          .col-xs-4
+            Incompatible format version of system description
+          .col-xs-10.nav-buttons
+            %small.pull-right
+              created by
+              %a{ :href => "http://machinery-project.org", :target => "_blank" }
+                Machinery
+              %br
+              %a{ :href => "/site/docs/", :target => "_blank" }
+                Machinery documentation
+      #content_container
+        .row
+          .col-xs-11
+            - if @error
+              .scope#alert_container
+                .row
+                  .col-xs-10.col-xs-offset-1
+                    .well
+                      %span
+                        %p
+                          = @error

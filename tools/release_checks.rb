@@ -56,7 +56,7 @@ module ReleaseChecks
 
       last_revision = Cheetah.run("git", "rev-parse", "HEAD", stdout: :capture).chomp
       tested_revision = actions.find do |e|
-        e.has_key?("lastBuiltRevision")
+        e.key?("lastBuiltRevision")
       end["lastBuiltRevision"]["SHA1"]
 
       if last_revision != tested_revision

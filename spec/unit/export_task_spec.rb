@@ -37,7 +37,7 @@ describe ExportTask do
       name: "autoyast",
       export_name: "no-extracted-files",
       system_description: create_test_description(
-        scopes: ["os", "config_files", "unmanaged_files"]
+        scopes: ["os", "changed_config_files", "unmanaged_files"]
       )
     )
   }
@@ -102,7 +102,7 @@ EOF
           subject.export(output_dir, force: true)
         }.to_not raise_error
 
-        expect(File.exists?(content)).to be(false)
+        expect(File.exist?(content)).to be(false)
         expect(captured_machinery_output).to include("Exported to '#{export_dir}'.")
       end
     end

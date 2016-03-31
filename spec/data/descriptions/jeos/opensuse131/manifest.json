@@ -2881,26 +2881,6 @@
       }
     ]
   },
-  "config_files": {
-    "_attributes": {
-      "extracted": true
-    },
-    "_elements": [
-      {
-        "name": "/etc/crontab",
-        "package_name": "cronie",
-        "package_version": "1.4.8",
-        "status": "changed",
-        "changes": [
-          "md5"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "644",
-        "type": "file"
-      }
-    ]
-  },
   "users": {
     "_attributes": {
     },
@@ -3140,7 +3120,7 @@
     ]
   },
   "meta": {
-    "format_version": 7,
+    "format_version": 8,
     "os": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
@@ -3161,7 +3141,7 @@
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
     },
-    "config_files": {
+    "changed_config_files": {
       "modified": "2014-08-14T18:39:10Z",
       "hostname": "192.168.122.164"
     },
@@ -3184,5 +3164,25 @@
   },
   "environment": {
     "locale": "en_US.utf8"
+  },
+  "changed_config_files": {
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.8",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644",
+        "type": "file"
+      }
+    ]
   }
 }

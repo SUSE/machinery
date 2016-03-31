@@ -22,7 +22,7 @@ class ElementFilter
     @path = path
     @matchers = {}
 
-    if ![NilClass, String, Array].include?(matchers.class)
+    unless [NilClass, String, Array].include?(matchers.class)
       raise Machinery::Errors::InvalidFilter.new("Wrong filter type")
     end
 
@@ -34,7 +34,7 @@ class ElementFilter
   end
 
   def add_matchers(operator, matchers)
-    if ![Filter::OPERATOR_EQUALS, Filter::OPERATOR_EQUALS_NOT].include?(operator)
+    unless [Filter::OPERATOR_EQUALS, Filter::OPERATOR_EQUALS_NOT].include?(operator)
       raise Machinery::Errors::InvalidFilter.new("Wrong filter operator '#{operator}'")
     end
 
@@ -69,7 +69,7 @@ class ElementFilter
         if operator == Filter::OPERATOR_EQUALS
           return true if values_equal
         elsif operator == Filter::OPERATOR_EQUALS_NOT
-          return true if !values_equal
+          return true unless values_equal
         end
       end
     end

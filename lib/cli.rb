@@ -41,7 +41,7 @@ class Cli
   end
 
   post do |global_options,command,options,args|
-    if command.is_a?(GLI::Commands::Help) && !global_options[:version] && ARGV == ["help"]
+    if (command.is_a?(GLI::Commands::Help) && !global_options[:version]) || ARGV == ["help"]
 
       Machinery::Ui.puts "\nFor more detailed information, open the documentation by typing " \
         "'machinery man --html'.\nIf you are unable to find a solution within the man page " \
@@ -168,7 +168,7 @@ class Cli
   end
 
   def self.shift_arg(args, name)
-    if !res = args.shift
+    unless res = args.shift
       raise GLI::BadCommandLine.new("You need to provide the required argument #{name}.")
     end
     res
@@ -177,19 +177,19 @@ class Cli
   def self.process_scope_option(scopes, exclude_scopes)
     if scopes
       if exclude_scopes
-        # scope and exclude-scope
+        # scope and ignore-scope
         raise Machinery::Errors::InvalidCommandLine.new("You cannot provide the --scope and " \
-          "--exclude-scope option at the same time.")
+          "--ignore-scope option at the same time.")
       else
         # scope only
         scope_list = parse_scopes(scopes)
       end
     else
       if exclude_scopes
-        # exclude-scope only
+        # ignore-scope only
         scope_list = Inspector.all_scopes - parse_scopes(exclude_scopes)
       else
-        # neither scope nor exclude-scope
+        # neither scope nor ignore-scope
         scope_list = Inspector.all_scopes
       end
     end
@@ -205,9 +205,16 @@ class Cli
     scopes = []
 
     scope_string.split(",").each do |scope|
-      if !(scope =~ /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/)
+      unless scope =~ /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/
         invalid_scopes << scope
         next
+      end
+
+      if scope == "config-files"
+        Machinery::Ui.warn(
+          "The scope name `config-files` is deprecated. The new name is `changed-config-files`."
+        )
+        scope = "changed-config-files"
       end
 
       # convert cli scope naming to internal one
@@ -271,28 +278,28 @@ class Cli
 
     The supported operations are:
 
-    - config-file-diffs: Generate diffs against the original version from
-      the package for the modified config files
+    - changed-config-files-diffs: Generate diffs against the original version from
+      the package for the changed configuration files
   LONGDESC
   arg "NAME"
   command "analyze" do |c|
     c.flag [:operation, :o], type: String, required: false,
-      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "config-file-diffs"
+      desc: "The analyze operation to perform", arg_name: "OPERATION", default_value: "changed-config-files-diffs"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
       description = SystemDescription.load(name, system_description_store)
 
       case options[:operation]
-        when "config-file-diffs"
-          task = AnalyzeConfigFileDiffsTask.new
-          task.analyze(description)
-          Hint.print(:show_analyze_data, name: name)
-        else
-          raise Machinery::Errors::InvalidCommandLine.new(
-            "The operation '#{options[:operation]}' is not supported. " \
-            "Valid operations are: config-file-diffs."
-          )
+      when "changed-config-files-diffs"
+        task = AnalyzeConfigFileDiffsTask.new
+        task.analyze(description)
+        Hint.print(:show_analyze_data, name: name)
+      else
+        raise Machinery::Errors::InvalidCommandLine.new(
+          "The operation '#{options[:operation]}' is not supported. " \
+          "Valid operations are: changed-config-files-diffs."
+        )
       end
     end
   end
@@ -341,7 +348,7 @@ class Cli
   command "compare" do |c|
     c.flag [:scope, :s], type: String, required: false,
       desc: "Compare specified scopes", arg_name: "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], type: String, required: false,
+    c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.switch "show-all", required: false, negatable: false,
       desc: "Show also common properties"
@@ -368,7 +375,7 @@ class Cli
       store = system_description_store
       description1 = SystemDescription.load(name1, store)
       description2 = SystemDescription.load(name2, store)
-      scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+      scope_list = process_scope_option(options[:scope], options["ignore-scope"])
 
       task = CompareTask.new
       opts = {
@@ -511,7 +518,7 @@ class Cli
       desc: "Store system description under the specified name"
     c.flag [:scope, :s], type: String, required: false,
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], type: String, required: false,
+    c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag "skip-files", required: false, negatable: false,
       desc: "Do not consider given files or directories during inspection. " \
@@ -535,11 +542,11 @@ class Cli
   end
 
   def self.parse_inspect_command_options(host, options)
-    scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+    scope_list = process_scope_option(options[:scope], options["ignore-scope"])
     name = options[:name] || host
 
 
-    if !scope_list.empty?
+    unless scope_list.empty?
       inspected_scopes = " for #{Machinery::Ui.internal_scope_list_to_string(scope_list)}"
     end
     Machinery::Ui.puts "Inspecting #{host}#{inspected_scopes}..."
@@ -552,7 +559,7 @@ class Cli
       inspect_options[:verbose] = true
     end
     if options["extract-files"] || options["extract-changed-config-files"]
-      inspect_options[:extract_changed_config_files] = true
+      inspect_options[:extract_changed_changed_config_files] = true
     end
     if options["extract-files"] || options["extract-changed-managed-files"]
       inspect_options[:extract_changed_managed_files] = true
@@ -773,12 +780,12 @@ class Cli
     supports_filtering(c)
     c.flag [:scope, :s], type: String, required: false,
       desc: "Show specified scopes", arg_name: "SCOPE_LIST"
-    c.flag ["exclude-scope", :e], type: String, required: false,
+    c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.switch "pager", required: false, default_value: true,
       desc: "Pipe output into a pager"
     c.switch "show-diffs", required: false, negatable: false,
-      desc: "Show diffs of configuration files changes."
+      desc: "Show diffs of changed configuration files changes."
     c.switch "html", required: false, negatable: false,
       desc: "Open system description in HTML format in your web browser."
     c.switch "verbose", required: false, negatable: false,
@@ -802,7 +809,7 @@ class Cli
       end
 
       description = SystemDescription.load(name, system_description_store)
-      scope_list = process_scope_option(options[:scope], options["exclude-scope"])
+      scope_list = process_scope_option(options[:scope], options["ignore-scope"])
 
       filter = FilterOptionParser.parse("show", options)
 
@@ -815,12 +822,12 @@ class Cli
           details += "\n  Type of inspected container: #{description[:environment].system_type}\n"
         end
 
-        if !inspected_filters.empty?
+        unless inspected_filters.empty?
           details += "\n  The following filters were applied during inspection:"
           details += "\n    * " + inspected_filters.join("\n    * ") + "\n\n"
         end
 
-        if !filter.empty?
+        unless filter.empty?
           details += "\n  The following filters were applied before showing the description:"
           details += "\n    * " + filter.to_array.join("\n    * ") + "\n\n"
         end
@@ -869,7 +876,7 @@ class Cli
       desc: "Keep backup after migration and ingnore validation errors"
 
     c.action do |global_options,options,args|
-      name = shift_arg(args, "NAME") if !options[:all]
+      name = shift_arg(args, "NAME") unless options[:all]
 
       task = UpgradeFormatTask.new
       task.upgrade(
@@ -968,7 +975,7 @@ class Cli
   end
 
   def self.system_description_store
-    if ENV.has_key?("MACHINERY_DIR")
+    if ENV.key?("MACHINERY_DIR")
       SystemDescriptionStore.new(ENV["MACHINERY_DIR"])
     else
       SystemDescriptionStore.new

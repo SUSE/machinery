@@ -166,6 +166,21 @@ task :inspector_files, [:ip_adress, :destination] do |task, args|
   test_data.write(args[:destination])
 end
 
+task :create_schemas_for_new_version do |task, args|
+  old_format = SystemDescription::CURRENT_FORMAT_VERSION
+  new_format = old_format + 1
+  FileUtils.cp(
+    "schema/system-description-global.schema-v#{old_format}.json",
+    "schema/system-description-global.schema-v#{new_format}.json"
+  )
+  files = Dir.glob("plugins/**/schema/*-v#{old_format}.json")
+  files.each do |file|
+    FileUtils.cp(file, file.gsub(
+      /-v#{old_format}.json$/, "-v#{new_format}.json"
+    ))
+  end
+end
+
 desc "Upgrade machinery unit/integration test descriptions"
 task :upgrade_test_descriptions do
   DESCRIPTIONS_PATH = File.join(Machinery::ROOT, "spec", "data", "descriptions")
@@ -183,7 +198,7 @@ task :upgrade_test_descriptions do
     ["faulty_description", "valid_description"]
   )
   update_json_format_version(
-    File.join(Machinery::ROOT, "spec/data/schema/validation_error/config_files")
+    File.join(Machinery::ROOT, "spec/data/schema/validation_error/changed_config_files")
   )
   update_json_format_version(
     File.join(Machinery::ROOT, "spec/data/schema/validation_error/unmanaged_files")

@@ -72,7 +72,7 @@ class System
     Machinery.logger.info(
       "The following files are packaged in #{archive}: " + Array(file_list).join(", ")
     )
-    created = !File.exists?(archive)
+    created = !File.exist?(archive)
     out = File.open(archive, "w")
     begin
       run_command(

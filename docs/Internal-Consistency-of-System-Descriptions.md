@@ -9,7 +9,7 @@ When a system is inspected some data is duplicated. This happens for example whe
 An example is repositories: The repositories are queried and then stored in `manifest.json` by the repositories scope.
 Additionally the files in `/etc/zypp/repos.d` contain the same information and are handled by unmanaged-files.
 Another example are users and groups, which are handled by the scopes 'users' and 'groups'. The files `/etc/passwd`,
-`/etc/shadow`, and `/etc/group` contain the same information. Configuration files are handled by the scope config-files.
+`/etc/shadow`, and `/etc/group` contain the same information. Configuration files are handled by the scope changed-config-files.
 
 Duplication of this data leads to problems like the same repository appearing multiple times on a build image because it's applied by the unmanaged-files and the repositories scope.
 
@@ -112,7 +112,7 @@ This section describes the concept how we address the issue of consistency of th
 
 ### Duplication of data
 
-With scopes covering the same data from different views, e.g. a configuration file in the config-files scope, and the data extraced from the file in the manifest, some data is duplicated. This gives the full picture and can be useful to the user. So the basic approach is to not try to prevent duplication of data, but make it transparent and controllable what effect the duplication has.
+With scopes covering the same data from different views, e.g. a configuration file in the changed-config-files scope, and the data extraced from the file in the manifest, some data is duplicated. This gives the full picture and can be useful to the user. So the basic approach is to not try to prevent duplication of data, but make it transparent and controllable what effect the duplication has.
 
 This makes writing scopes easier, because they can do simple extraction of data without having to care about effects on other scopes, provided it is clearly defined how the data is used.
 

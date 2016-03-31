@@ -41,7 +41,7 @@ class RemoveTask
       end
     end
 
-    if !errors.empty?
+    unless errors.empty?
       raise Machinery::Errors::SystemDescriptionNotFound.new(errors.join("\n"))
     end
   end

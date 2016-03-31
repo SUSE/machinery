@@ -34,10 +34,10 @@ class Migrate1To2 < Migration
       "changed_managed_files",
       "unmanaged_files"
     ].each do |scope|
-      next if !@hash.has_key?(scope)
+      next unless @hash.key?(scope)
 
       files = @hash[scope]
-      is_extracted = Dir.exists?(File.join(@path, scope))
+      is_extracted = Dir.exist?(File.join(@path, scope))
 
       @hash[scope] = {
         "extracted" => is_extracted,
@@ -45,9 +45,9 @@ class Migrate1To2 < Migration
       }
     end
 
-    if @hash.has_key?("groups")
+    if @hash.key?("groups")
       @hash["groups"].each do |element|
-        if !element["gid"]
+        unless element["gid"]
           element["gid"] = nil
         end
       end

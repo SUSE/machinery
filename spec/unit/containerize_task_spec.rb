@@ -36,7 +36,7 @@ describe ContainerizeTask do
               "state": "enabled"
             }]
         },
-        "config_files": {
+        "changed_config_files": {
           "_attributes": {
             "extracted": false
           },
@@ -97,7 +97,7 @@ EOF
       subject.write_readme_file(output_path)
       readme = File.join(output_path, "README.md")
 
-      expect(File.exists?(readme)).to be(true)
+      expect(File.exist?(readme)).to be(true)
 
       expect(File.read(readme)).to include(
         "README for Docker Containers created by Machinery"

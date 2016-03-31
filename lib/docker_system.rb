@@ -92,7 +92,7 @@ class DockerSystem < System
 
   # Retrieves files specified in file_list from the container and creates an archive.
   def create_archive(file_list, archive, exclude = [])
-    created = !File.exists?(archive)
+    created = !File.exist?(archive)
     out = File.open(archive, "w")
     begin
       helper = MachineryHelper.new(self)

@@ -88,7 +88,7 @@ describe DeployTask do
 
     it "raises an exception if the provided image-dir doesn't exist"  do
       image_dir = "/tmp/doesnotexist"
-      expect(File.exists?(image_dir)).to be(false)
+      expect(File.exist?(image_dir)).to be(false)
       expect{
         deploy_task.deploy(system_description, cloud_config_file, image_dir: "/tmp/doesnotexist")
       }.to raise_error(Machinery::Errors::DeployFailed, /image dir/)

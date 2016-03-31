@@ -1,4 +1,4 @@
-- if !list.extracted.nil?
+- unless list.extracted.nil?
   %p
     <strong>Files extracted:</strong> #{list.extracted ? "yes" : "no"}
 - unless list.elements.empty?

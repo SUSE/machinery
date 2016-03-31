@@ -1674,14 +1674,6 @@
         "checksum": "4c87f521aa2da791c0e6570330716718"
       },
       {
-        "name": "test-data-files",
-        "version": "1.0",
-        "release": "1",
-        "arch": "noarch",
-        "vendor": "(none)",
-        "checksum": "e356aa610edf853009e640e9d6bee813"
-      },
-      {
         "name": "time",
         "version": "1.7",
         "release": "7.1.2",
@@ -2887,26 +2879,6 @@
       }
     ]
   },
-  "config_files": {
-    "_attributes": {
-      "extracted": true
-    },
-    "_elements": [
-      {
-        "name": "/etc/crontab",
-        "package_name": "cronie",
-        "package_version": "1.4.12",
-        "status": "changed",
-        "changes": [
-          "md5"
-        ],
-        "user": "root",
-        "group": "root",
-        "mode": "644",
-        "type": "file"
-      }
-    ]
-  },
   "changed_managed_files": {
     "_attributes": {
       "extracted": true
@@ -2937,7 +2909,7 @@
     ]
   },
   "meta": {
-    "format_version": 7,
+    "format_version": 8,
     "os": {
       "modified": "2015-06-23T11:55:38Z",
       "hostname": "192.168.121.70"
@@ -2966,7 +2938,7 @@
       "modified": "2015-06-23T11:55:38Z",
       "hostname": "192.168.121.70"
     },
-    "config_files": {
+    "changed_config_files": {
       "modified": "2015-06-23T11:55:38Z",
       "hostname": "192.168.121.70"
     },
@@ -3005,5 +2977,25 @@
   },
   "environment": {
     "locale": "en_US.utf8"
+  },
+  "changed_config_files": {
+    "_attributes": {
+      "extracted": true
+    },
+    "_elements": [
+      {
+        "name": "/etc/crontab",
+        "package_name": "cronie",
+        "package_version": "1.4.12",
+        "status": "changed",
+        "changes": [
+          "md5"
+        ],
+        "user": "root",
+        "group": "root",
+        "mode": "644",
+        "type": "file"
+      }
+    ]
   }
 }

@@ -16,8 +16,21 @@
 # you may find current contact information at www.suse.com
 
 class ServeHtmlTask
+  def assemble_url(opts)
+    host = if !opts[:public]
+      "127.0.0.1"
+    else
+      begin
+        Socket.gethostbyname(Socket.gethostname).first
+      rescue SocketError
+        Socket.gethostname
+      end
+    end
+    "http://#{host}:#{opts[:port]}/"
+  end
+
   def serve(system_description_store, opts)
-    url = "http://127.0.0.1:#{opts[:port]}/"
+    url = assemble_url(opts)
     Machinery::Ui.use_pager = false
     Machinery::Ui.puts <<EOF
 Trying to start a web server for serving a view on all system descriptions.
@@ -26,7 +39,7 @@ The overview of all descriptions is accessible at:
 
     #{url}
 
-A specific descriptions with the name NAME is accessible at:
+A specific description with the name NAME is accessible at:
 
     #{url}NAME
 

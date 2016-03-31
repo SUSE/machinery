@@ -20,7 +20,7 @@ class LocalSystem < System
 
   class << self
     def os
-      if !@@os
+      unless @@os
         description = SystemDescription.new("localhost", SystemDescriptionMemoryStore.new)
         inspector = OsInspector.new(System.for("localhost"), description)
         inspector.inspect(nil)
@@ -57,7 +57,7 @@ Run `zypper install #{package}` to install the package.
         end
       end
 
-      if !missing_packages.empty?
+      unless missing_packages.empty?
         count = missing_packages.count
         error_string = <<-EOF
 You need the #{Machinery.pluralize(count, "package")} '#{missing_packages.join("\',\'")}'.
@@ -82,7 +82,7 @@ You can install it by running `zypper install #{package}`.
     end
 
     def validate_architecture(arch)
-      if !matches_architecture?(arch)
+      unless matches_architecture?(arch)
         raise(Machinery::Errors::UnsupportedArchitecture.new(
           "This operation is not supported on architecture '#{os.architecture}'."
         ))

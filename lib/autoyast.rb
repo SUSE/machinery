@@ -24,11 +24,10 @@ class Autoyast < Exporter
     @system_description = description
     @system_description.assert_scopes(
       "os",
-      "repositories",
       "packages"
     )
     check_exported_os
-    if !description.users
+    unless description.users
       Machinery::Ui.puts(
         "\nWarning: Exporting a description without the scope 'users' as AutoYaST" \
         " profile will result in a root account without a password which prevents" \
@@ -85,7 +84,7 @@ class Autoyast < Exporter
       apply_groups(xml)
       apply_services(xml)
 
-      apply_changed_files("config_files")
+      apply_changed_files("changed_config_files")
       apply_changed_files("changed_managed_files")
       apply_unmanaged_files
       xml.scripts do
@@ -138,7 +137,7 @@ class Autoyast < Exporter
   end
 
   def apply_repositories(xml)
-    return if !@system_description.repositories
+    return unless @system_description.repositories
 
     xml.tag!("add-on") do
       xml.add_on_products("config:type" => "list") do
@@ -158,7 +157,7 @@ class Autoyast < Exporter
       if !repository.enabled || repository.external_medium?
         zypper_ar = "zypper -n ar --name='#{repository.name}'"
         zypper_ar << " --type='#{repository.type}'" if repository.type
-        zypper_ar << " --disable" if !repository.enabled
+        zypper_ar << " --disable" unless repository.enabled
         zypper_ar << " '#{repository.url}' '#{repository.alias}'"
         @chroot_scripts << zypper_ar.strip
       end
@@ -175,7 +174,7 @@ class Autoyast < Exporter
   end
 
   def apply_packages(xml)
-    return if !@system_description.packages
+    return unless @system_description.packages
 
     xml.packages("config:type" => "list") do
       @system_description.packages.each do |package|
@@ -185,7 +184,7 @@ class Autoyast < Exporter
   end
 
   def apply_patterns(xml)
-    return if !@system_description.patterns
+    return unless @system_description.patterns
 
     xml.patterns("config:type" => "list") do
       @system_description.patterns.each do |pattern|
@@ -195,7 +194,7 @@ class Autoyast < Exporter
   end
 
   def apply_users(xml)
-    return if !@system_description.users
+    return unless @system_description.users
 
     xml.users("config:type" => "list") do
       @system_description.users.each do |user|
@@ -221,7 +220,7 @@ class Autoyast < Exporter
   end
 
   def apply_groups(xml)
-    return if !@system_description.groups
+    return unless @system_description.groups
 
     xml.groups("config:type" => "list") do
       @system_description.groups.each do |group|
@@ -237,7 +236,7 @@ class Autoyast < Exporter
   end
 
   def apply_services(xml)
-    return if !@system_description.services
+    return unless @system_description.services
 
     xml.tag!("services-manager") do
       xml.services("config:type" => "list") do
@@ -245,7 +244,7 @@ class Autoyast < Exporter
           name = service.name
           if @system_description.services.init_system == "systemd"
             # Yast can only handle services right now
-            next if !(name =~ /\.service$/)
+            next unless name =~ /\.service$/
             name = name.gsub(/\.service$/, "")
           end
           # systemd service states like "masked" and "static" are
@@ -279,7 +278,7 @@ class Autoyast < Exporter
   end
 
   def apply_changed_files(scope)
-    return if !@system_description.scope_extracted?(scope)
+    return unless @system_description.scope_extracted?(scope)
 
     @system_description[scope].each do |file|
       if file.deleted?
@@ -308,7 +307,7 @@ EOF
   end
 
   def apply_unmanaged_files
-    return if !@system_description.scope_extracted?("unmanaged_files")
+    return unless @system_description.scope_extracted?("unmanaged_files")
 
     base = Pathname(@system_description.scope_file_store("unmanaged_files").path)
     @chroot_scripts << <<-EOF.chomp.gsub(/^\s+/, "")

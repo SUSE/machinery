@@ -72,7 +72,7 @@ class UnmanagedFilesInspector < Inspector
   def run_helper_inspection(helper, filter, file_store_tmp, file_store_final, scope, options)
     begin
       helper.inject_helper
-      if !helper.has_compatible_version?
+      unless helper.has_compatible_version?
         raise Machinery::Errors::UnsupportedHelperVersion.new(
           "Error: machinery-helper is not compatible with this Machinery version." \
             "\nTry to reinstall the package or gem to fix the issue."
@@ -131,8 +131,8 @@ class UnmanagedFilesInspector < Inspector
 
   def show_extraction_progress(count)
     progress = Machinery.pluralize(
-      count, " -> Extracted %d unmanaged file or tree",
-        " -> Extracted %d unmanaged files and/or trees"
+      count, " -> Extracted %d unmanaged file or tree...",
+        " -> Extracted %d unmanaged files and/or trees..."
     )
     Machinery::Ui.progress(progress)
   end
