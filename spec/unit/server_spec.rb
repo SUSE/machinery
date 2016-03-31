@@ -72,9 +72,16 @@ describe Server do
 
     describe "GET /:id with non-existent id" do
       it "redirects to landing page if description is not found" do
-        get "/does_not_exist"
+        bad_description = "does_not_exist"
+
+        get "/#{bad_description}"
 
         expect(last_response).to be_redirect
+
+        follow_redirect!
+
+        expect(last_response.body).
+            to include("Couldn't find a system description with the name '#{bad_description}'")
       end
     end
 
