@@ -117,7 +117,7 @@ describe Server do
         follow_redirect!
 
         expect(last_response.body).
-            to include("Couldn't find a system description with the name '#{bad_description}'")
+          to include("Couldn't find a system description with the name '#{bad_description}'")
       end
     end
 
