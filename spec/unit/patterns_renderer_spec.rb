@@ -18,33 +18,27 @@
 require_relative "spec_helper"
 
 describe PatternsRenderer do
-  let(:system_description) {
-    create_test_description(json: <<-EOF)
-      {
-        "patterns": {
-          "_elements": [
-            {
-              "name": "base",
-              "version": "11",
-              "release": "38.44.33"
-            },
-            {
-              "name": "Minimal",
-              "version": "11",
-              "release": "38.44.33"
-            }
-          ]
-        }
-      }
-    EOF
-  }
-
   describe "#render" do
-    it "prints a pattern list" do
-      output = PatternsRenderer.new.render(system_description)
+    context "when showing an rpm-based system" do
+      let(:system_description) { create_test_description(scopes: ["patterns"]) }
 
-      expect(output).to include("base\n")
-      expect(output).to include("Minimal\n")
+      it "prints a pattern list" do
+        output = PatternsRenderer.new.render(system_description)
+
+        expect(output).to include("base\n")
+        expect(output).to include("Minimal\n")
+      end
+
+
+      context "when there are no patterns" do
+        let(:system_description) { create_test_description(scopes: ["empty_patterns"]) }
+
+        it "shows a message" do
+          output = subject.render(system_description)
+
+          expect(output).to include("There are no patterns or tasks.")
+        end
+      end
     end
 
     context "when there are no patterns" do

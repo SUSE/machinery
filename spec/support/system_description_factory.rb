@@ -430,6 +430,11 @@ module SystemDescriptionFactory
           "name": "base",
           "version": "13.1",
           "release": "13.6.1"
+        },
+        {
+          "name": "Minimal",
+          "version": "11",
+          "release": "38.44.33"
         }
       ]
     }
