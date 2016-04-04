@@ -20,6 +20,9 @@ The system data is structured into scopes, controlled by the
 Machinery will always inspect all specified scopes, and skip scopes which
 trigger errors.
 
+**Note**:
+Tasks on Debian-like systems are treated as patterns.
+
 
 ## ARGUMENTS
 

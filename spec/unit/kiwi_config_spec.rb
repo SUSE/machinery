@@ -110,6 +110,7 @@ describe KiwiConfig do
     <package name="bash"/>
     <package name="autofs"/>
     <namedCollection name="base"/>
+    <namedCollection name="Minimal"/>
   </packages>
 </image>
 EOT

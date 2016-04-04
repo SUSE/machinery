@@ -347,6 +347,7 @@ class Server < Sinatra::Base
           file.diff = diff_to_object(File.read(path)) if File.exist?(path)
         end
       end
+
       haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
     end
   end

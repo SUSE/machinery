@@ -6,6 +6,11 @@
         :scope => "patterns",
         :title => "Patterns",
         :count => "#{patterns.length} #{Machinery.pluralize(patterns.length, "pattern")}"
+      - if @description.packages && @description.packages.package_system == "dpkg"
+        .row
+          .col-xs-1
+          .col-xs-11
+            Note: Tasks on Debian-like systems are treated as patterns.
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
