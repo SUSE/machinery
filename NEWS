@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.19.0 - Mon Apr 04 17:06:37 CEST 2016 - thardeck@suse.de
+
 * Rename config-files inspector to changed-config-files inspector to be more
   intuitive
 * Following the previous change the analyze operation was also renamed to
