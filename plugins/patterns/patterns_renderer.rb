@@ -20,7 +20,11 @@ class PatternsRenderer < Renderer
     return unless description.patterns
 
     if description.patterns.empty?
-      puts "There are no patterns."
+      puts "There are no patterns or tasks."
+    end
+
+    if description.packages && description.packages.package_system == "dpkg"
+      puts "Note: Tasks on Debian-like systems are treated as patterns."
     end
 
     list do

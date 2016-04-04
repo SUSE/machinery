@@ -74,6 +74,7 @@ EOF
     context "on a zypper based OS" do
       before(:each) do
         allow(system).to receive(:has_command?).with("zypper").and_return(true)
+        allow(system).to receive(:has_command?).with("dpkg").and_return(false)
       end
 
       it "parses the patterns list into a Hash" do
@@ -158,7 +159,8 @@ EOF
 
       patterns_inspector.inspect(filter)
       expect(patterns_inspector.summary).to eq(
-        "For a patterns inspection please install the package tasksel on the inspected system."
+        "For a patterns (tasks) inspection please install the package tasksel " \
+        "on the inspected system."
       )
       expect(description.patterns).to eql(PatternsScope.new)
     end
@@ -169,7 +171,9 @@ EOF
       allow(system).to receive(:has_command?).with("dpkg").and_return(false)
 
       patterns_inspector.inspect(filter)
-      expect(patterns_inspector.summary).to eq("Patterns are not supported on this system.")
+      expect(patterns_inspector.summary).to eq(
+        "Patterns or tasks are not supported on this system."
+      )
       expect(description.patterns).to eql(PatternsScope.new)
     end
   end

@@ -29,6 +29,11 @@ describe PatternsRenderer do
         expect(output).to include("Minimal\n")
       end
 
+      it "does not show the dpkg message" do
+        output = subject.render(system_description)
+
+        expect(output).not_to include("Note: Tasks on Debian-like systems are treated as patterns.")
+      end
 
       context "when there are no patterns" do
         let(:system_description) { create_test_description(scopes: ["empty_patterns"]) }
@@ -41,13 +46,13 @@ describe PatternsRenderer do
       end
     end
 
-    context "when there are no patterns" do
-      let(:system_description) { create_test_description(scopes: ["empty_patterns"]) }
+    context "when showing a Debian based system" do
+      let(:system_description) { create_test_description(scopes: ["patterns", "dpkg_packages"]) }
 
-      it "shows a message" do
+      it "shows a note" do
         output = subject.render(system_description)
 
-        expect(output).to include("There are no patterns.")
+        expect(output).to include("Note: Tasks on Debian-like systems are treated as patterns.")
       end
     end
   end

@@ -4,6 +4,8 @@
   intuitive
 * Following the previous change the analyze operation was also renamed to
   changed-config-files-diffs
+* Add explanation for patterns-tasks relationship for Debian based
+  systems (gh#SUSE/machinery#1820)
 * Public serve task now prints hostname for sharing (gh#SUSE/machinery#1699)
 * Fix export of description with no repositories scope to Autoyast (gh#SUSE/machinery#2024)
 * Only use required packages for bootstrap in Kiwi export

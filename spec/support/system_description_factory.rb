@@ -418,6 +418,23 @@ module SystemDescriptionFactory
       ]
     }
   EOF
+  EXAMPLE_SCOPES["dpkg_packages"] = <<-EOF.chomp
+    "packages": {
+      "_attributes": {
+        "package_system": "dpkg"
+      },
+      "_elements": [
+        {
+          "name": "zlib1g:amd64",
+          "version": "1:1.2.8.dfsg",
+          "release": "1ubuntu1",
+          "arch": "amd64",
+          "checksum": "468af3913970b3264a2525959e37a871",
+          "vendor": "Ubuntu"
+        }
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
     "patterns": {
       "_elements": []

@@ -2,8 +2,10 @@
 :name: Patterns
 :initials: pt
 :description: |
-  Contains all patterns installed on the inspected system. A pattern is a
-  collection of software packages.
+  Contains all patterns or tasks installed on the inspected system. A pattern is a
+  collection of software packages, similar to the idea of tasks on Debian/Ubuntu-
+  like systems.
   The meaning of software patterns depends on the package manager of the
   distribution. Therefore, the pattern scope on SUSE based systems uses the
-  `zypper` command to obtain the information about installed pattern names.
+  `zypper` command to obtain the information about installed pattern names, whereas
+  on Debian based systems the `tasksel` tool is necessary to list installed tasks.

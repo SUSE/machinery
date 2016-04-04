@@ -28,17 +28,18 @@ class PatternsInspector < Inspector
       inspect_with_zypper
     elsif @system.has_command?("dpkg")
       if @system.has_command?("tasksel")
+        Machinery::Ui.puts "Note: Tasks on Debian-like systems are treated as patterns."
         @patterns_supported = true
         inspect_with_tasksel
       else
         @patterns_supported = false
-        @status = "For a patterns inspection please install the package tasksel " \
+        @status = "For a patterns (tasks) inspection please install the package tasksel " \
           "on the inspected system."
         @description.patterns = PatternsScope.new
       end
     else
       @patterns_supported = false
-      @status = "Patterns are not supported on this system."
+      @status = "Patterns or tasks are not supported on this system."
       @description.patterns = PatternsScope.new
     end
   end
