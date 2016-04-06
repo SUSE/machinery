@@ -39,7 +39,7 @@ class Go
     else
       archs.each do |arch|
         system(
-          "env GOOS=linux GOARCH=#{compile_arch(arch)} go build -o machinery-helper-#{arch}"
+          "env GOOS=linux #{compile_options(arch)} go build -o machinery-helper-#{arch}"
         )
       end
     end
@@ -67,8 +67,10 @@ class Go
     File.exist?("/usr/share/go/src/cmd/asm/internal/arch/s390x.go")
   end
 
-  def compile_arch(arch)
-    case arch
+  def compile_options(arch)
+    # check https://golang.org/doc/install/source#environment
+    additional_options = ""
+    compile_arch = case arch
     when "x86_64"
       "amd64"
     when "i686"
@@ -76,6 +78,8 @@ class Go
     else
       arch
     end
+
+    "GOARCH=#{compile_arch}#{additional_options}"
   end
 
   def run_go_version
