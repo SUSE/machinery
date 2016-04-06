@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Added support of the ARM architectures "armv6l", "armv7l" and "aarch64" to
+  our machinery-helper (This requires at least Go version 1.5)
 
 ## Version 1.19.0 - Mon Apr 04 17:06:37 CEST 2016 - thardeck@suse.de
 
