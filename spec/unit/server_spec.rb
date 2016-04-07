@@ -191,6 +191,32 @@ EOF
         end
       end
     end
+
+    context "broken description" do
+      before do
+        store_raw_description(
+          "foo", <<-EOT
+            {
+              "unmanaged_files": {
+                  "_attributes": {
+                      "has_metadata": false,
+                      "foo": true
+                  }
+              }
+            }
+            EOT
+        )
+      end
+
+      describe "GET /" do
+        it "shows a 'description is broken' error message" do
+          get "/"
+
+          expect(last_response).to be_ok
+          expect(last_response.body).to include("This description is broken.")
+        end
+      end
+    end
   end
 
   describe Server::Helpers do

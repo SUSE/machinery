@@ -94,7 +94,9 @@ class SystemDescription < Machinery::Object
         if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
         else
-          raise Machinery::Errors::SystemDescriptionError.new
+          raise Machinery::Errors::SystemDescriptionError.new(
+            "#{name}: This description is broken."
+          )
         end
       end
 
