@@ -25,11 +25,11 @@ class Go
     when version <= 1.4
       ["i686", "x86_64"].include?(local_arch) ? [local_arch] : []
     when version == 1.6 && suse_package_includes_s390?
-      ["i686", "x86_64", "ppc64le", "s390x"]
+      ["i686", "x86_64", "ppc64le", "s390x", "armv6l", "armv7l", "aarch64"]
     when version <= 1.6
-      ["i686", "x86_64", "ppc64le"]
+      ["i686", "x86_64", "ppc64le", "armv6l", "armv7l", "aarch64"]
     when version >= 1.7
-      ["i686", "x86_64", "ppc64le", "s390x"]
+      ["i686", "x86_64", "ppc64le", "s390x", "armv6l", "armv7l", "aarch64"]
     end
   end
 
@@ -39,7 +39,7 @@ class Go
     else
       archs.each do |arch|
         system(
-          "env GOOS=linux GOARCH=#{compile_arch(arch)} go build -o machinery-helper-#{arch}"
+          "env GOOS=linux #{compile_options(arch)} go build -o machinery-helper-#{arch}"
         )
       end
     end
@@ -67,15 +67,27 @@ class Go
     File.exist?("/usr/share/go/src/cmd/asm/internal/arch/s390x.go")
   end
 
-  def compile_arch(arch)
-    case arch
+  def compile_options(arch)
+    # check https://golang.org/doc/install/source#environment
+    additional_options = ""
+    compile_arch = case arch
     when "x86_64"
       "amd64"
     when "i686"
       "386"
+    when "aarch64"
+      "arm64"
+    when "armv6l"
+      additional_options = " GOARM=6"
+      "arm"
+    when "armv7l"
+      additional_options = " GOARM=7"
+      "arm"
     else
       arch
     end
+
+    "GOARCH=#{compile_arch}#{additional_options}"
   end
 
   def run_go_version

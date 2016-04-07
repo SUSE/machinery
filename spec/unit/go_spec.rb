@@ -45,29 +45,34 @@ describe Go do
         allow(subject).to receive(:local_arch).and_return("s390x")
         expect(subject.archs).to eq([])
       end
-
     end
 
     context "for go 1.5 and 1.6 upstream" do
-      it "returns x86_64, i686 and ppc64le" do
+      it "returns arm, x86_64, i686 and ppc64le" do
         allow(subject).to receive(:version).and_return(1.6)
-        expect(subject.archs).to match_array(["x86_64", "i686", "ppc64le"])
+        expect(subject.archs).to match_array(
+          ["x86_64", "i686", "ppc64le", "armv6l", "armv7l", "aarch64"]
+        )
       end
     end
 
     context "for go-s390x 1.6 (machinery build)" do
-      it "returns x86_64, i686, ppc64le and s390x" do
+      it "returns arm, x86_64, i686, ppc64le and s390x" do
         allow(subject).to receive(:version).and_return(1.6)
         allow(subject).to receive(:suse_package_includes_s390?).and_return(true)
 
-        expect(subject.archs).to match_array(["x86_64", "i686", "ppc64le", "s390x"])
+        expect(subject.archs).to match_array(
+          ["x86_64", "i686", "ppc64le", "s390x", "armv6l", "armv7l", "aarch64"]
+        )
       end
     end
 
     context "for go 1.7 and newer" do
-      it "returns x86_64, i686, ppc64le and s390x" do
+      it "returns arm, x86_64, i686, ppc64le and s390x" do
         allow(subject).to receive(:version).and_return(1.7)
-        expect(subject.archs).to match_array(["x86_64", "i686", "ppc64le", "s390x"])
+        expect(subject.archs).to match_array(
+          ["x86_64", "i686", "ppc64le", "s390x", "armv6l", "armv7l", "aarch64"]
+        )
       end
     end
   end
@@ -92,6 +97,22 @@ describe Go do
         )
         expect(subject).to receive(:system).with(
           "env GOOS=linux GOARCH=ppc64le go build -o machinery-helper-ppc64le"
+        )
+        subject.build
+      end
+
+      it "compiles arm with the appropriate compiler options" do
+        expect(subject).to receive(:archs).and_return(
+          ["armv6l", "armv7l", "aarch64"]
+        ).at_least(:once)
+        expect(subject).to receive(:system).with(
+          "env GOOS=linux GOARCH=arm GOARM=6 go build -o machinery-helper-armv6l"
+        )
+        expect(subject).to receive(:system).with(
+          "env GOOS=linux GOARCH=arm GOARM=7 go build -o machinery-helper-armv7l"
+        )
+        expect(subject).to receive(:system).with(
+          "env GOOS=linux GOARCH=arm64 go build -o machinery-helper-aarch64"
         )
         subject.build
       end
