@@ -335,9 +335,10 @@ class Server < Sinatra::Base
     rescue Machinery::Errors::SystemDescriptionNotFound => e
       session[:error] = e.to_s
       redirect "/"
-    rescue Machinery::Errors::SystemDescriptionIncompatible => e
+    rescue Machinery::Errors::SystemDescriptionIncompatible, \
+           Machinery::Errors::SystemDescriptionError => e
       @error = e
-      haml File.read(File.join(Machinery::ROOT, "html/upgrade.html.haml"))
+      haml File.read(File.join(Machinery::ROOT, "html/exception.html.haml"))
     else
       diffs_dir = @description.scope_file_store("analyze/changed_config_files_diffs").path
       if @description.changed_config_files && diffs_dir
@@ -359,6 +360,15 @@ class Server < Sinatra::Base
       @errors ||= Array.new
       @errors.push(session[:error])
       session.clear
+    end
+  end
+
+  def render_exception_title
+    case @error
+    when Machinery::Errors::SystemDescriptionIncompatible
+      return "System Description incompatible!"
+    when Machinery::Errors::SystemDescriptionError
+      return "System Description broken!"
     end
   end
 end

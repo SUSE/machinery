@@ -2,7 +2,7 @@
 %html
   %head
     %title
-      Machinery Error: incompatible system description
+      Machinery Error
     %meta{ :charset => 'utf-8' }
     %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
@@ -23,11 +23,7 @@
           .col-xs-1
           .col-xs-10
             %h1
-              System Description incompatible!
-        .row
-          .col-xs-1
-          .col-xs-4
-            Incompatible format version of system description
+              = render_exception_title
           .col-xs-10.nav-buttons
             %small.pull-right
               created by

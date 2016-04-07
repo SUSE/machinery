@@ -83,14 +83,14 @@ describe Server do
           get "/#{old_format_version.name}"
           expect(last_response).to be_ok
           expect(last_response.body).
-            to include("Machinery Error: incompatible system description")
+            to include("System Description incompatible!")
         end
 
         it "returns update instructions for higher format versions" do
           get "/#{unknown_format_version.name}"
           expect(last_response).to be_ok
           expect(last_response.body).
-            to include("Machinery Error: incompatible system description")
+            to include("System Description incompatible!")
         end
       end
     end
@@ -193,7 +193,7 @@ EOF
     end
 
     context "broken description" do
-      before do
+      before(:each) do
         store_raw_description(
           "foo", <<-EOT
             {
@@ -204,7 +204,7 @@ EOF
                   }
               }
             }
-            EOT
+          EOT
         )
       end
 
@@ -214,6 +214,14 @@ EOF
 
           expect(last_response).to be_ok
           expect(last_response.body).to include("This description is broken.")
+        end
+      end
+
+      describe "GET /:id" do
+        it "returns error message view" do
+          get "/foo"
+          expect(last_response).to be_ok
+          expect(last_response.body).to include("System Description broken!")
         end
       end
     end
