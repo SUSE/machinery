@@ -19,6 +19,8 @@ class GroupsRenderer < Renderer
   def content(description)
     return unless description.groups
 
+    na_note("group ID") if description.groups.any? { |a| a[:gid].nil? }
+
     list do
       description.groups.each do |group|
         gid = group.gid || "N/A"

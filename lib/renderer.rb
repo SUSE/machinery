@@ -266,4 +266,9 @@ class Renderer
     yield
     @indent -= 2
   end
+
+  def na_note(s)
+    Machinery::Ui.puts "Note: 'N/A' represents a missing #{s} which could not\n" \
+      "be gathered during inspection.\n"
+  end
 end

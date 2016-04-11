@@ -28,6 +28,12 @@ describe ShowTask, "#show" do
   let(:description_with_packages) {
     create_test_description(scopes: ["empty_packages"])
   }
+  let(:description_without_vendor) {
+    create_test_description(scopes: ["package_without_vendor"])
+  }
+  let(:description_without_user_comment) {
+    create_test_description(scopes: ["users_without_comment"])
+  }
 
   it "runs the proper renderer when a scope is given" do
     renderer = double
@@ -35,6 +41,16 @@ describe ShowTask, "#show" do
     expect(Renderer).to receive(:for).with("packages").and_return(renderer)
 
     show_task.show(system_description, ["packages"], Filter.new, no_pager: true)
+  end
+
+  it "prints a note about the 'N/A' tag for package vendor attribute" do
+    show_task.show(description_without_vendor, ["packages"], Filter.new, no_pager: true)
+    expect(captured_machinery_output).to include("missing package vendor")
+  end
+
+  it "prints a note about the 'N/A' tag for user comments attribute" do
+    show_task.show(description_without_user_comment, ["users"], Filter.new, no_pager: true)
+    expect(captured_machinery_output).to include("missing user info, user ID or group ID")
   end
 
   it "prints scopes missing from the system description" do

@@ -19,6 +19,10 @@ class UsersRenderer < Renderer
   def content(description)
     return unless description.users
 
+    if description.users.any? { |a| a[:comment] == "" || a[:uid].nil? || a[:gid].nil? }
+      na_note("user info, user ID or group ID")
+    end
+
     list do
       description.users.each do |user|
         info = user.comment.empty? ? "N/A" : user.comment

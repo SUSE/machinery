@@ -23,6 +23,8 @@ class RepositoriesRenderer < Renderer
       puts "There are no repositories."
     end
 
+    na_note("repository type") if description.repositories.any? { |a| a[:type] == "" }
+
     list do
       description.repositories.each do |p|
         item_name = if p.name

@@ -435,6 +435,23 @@ module SystemDescriptionFactory
       ]
     }
   EOF
+  EXAMPLE_SCOPES["package_without_vendor"] = <<-EOF.chomp
+    "packages": {
+      "_attributes": {
+        "package_system": "rpm"
+      },
+      "_elements": [
+        {
+          "name": "bash",
+          "version": "4.3",
+          "release": "68.1.5",
+          "arch": "x86_64",
+          "vendor": "",
+          "checksum": "533e40ba8a5551204b528c047e45c169"
+        }
+      ]
+    }
+  EOF
   EXAMPLE_SCOPES["empty_patterns"] = <<-EOF.chomp
     "patterns": {
       "_elements": []
@@ -644,6 +661,25 @@ module SystemDescriptionFactory
           "uid": 1,
           "gid": 1,
           "comment": "bin",
+          "home": "/bin",
+          "shell": "/bin/bash",
+          "encrypted_password": "*",
+          "last_changed_date": 16125
+        }
+      ]
+    }
+  EOF
+
+  EXAMPLE_SCOPES["users_without_comment"] = <<-EOF.chomp
+    "users": {
+      "_attributes": {},
+      "_elements": [
+        {
+          "name": "bin",
+          "password": "x",
+          "uid": null,
+          "gid": 1,
+          "comment": "",
           "home": "/bin",
           "shell": "/bin/bash",
           "encrypted_password": "*",
