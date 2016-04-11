@@ -27,6 +27,8 @@ class PackagesRenderer < Renderer
       puts "There are no packages."
     end
 
+    na_note("package vendor") if description.packages.any? { |a| a[:vendor] == "" }
+
     list do
       description.packages.each do |p|
         vendor = !p.vendor.empty? ? p.vendor : "N/A"
