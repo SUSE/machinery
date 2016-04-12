@@ -55,4 +55,30 @@ RSpec::Steps.steps "Showing a system description in HTML format", type: :feature
 
     expect(page.all(".filterable tbody tr").size).to eq(436)
   end
+
+  it "opens a modal to select a new description" do
+    expect(page).not_to have_content("Select a description to show")
+    within("#nav-bar") do
+      find("button.open-description-selector.show").click
+    end
+    expect(page).to have_content("Select a description to show")
+    expect(page).to have_link("opensuse131", href: /\/opensuse131/)
+
+    click_on("Close")
+
+    expect(page).not_to have_content("Select a description to show")
+  end
+
+  it "opens a modal to select a description to compare" do
+    expect(page).not_to have_content("Select a description to compare")
+    within("#nav-bar") do
+      find("button.open-description-selector.compare").click
+    end
+    expect(page).to have_content("Select a description to compare")
+    expect(page).to have_link("opensuse131", href: /\/compare\/opensuse131\/opensuse131/)
+
+    click_on("Close")
+
+    expect(page).not_to have_content("Select a description to compare")
+  end
 end

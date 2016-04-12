@@ -260,3 +260,7 @@ h1 {
 .modal-dialog.large {
   width: 90%; /* respsonsive width */
 }
+
+.missing {
+  font-style: italic;
+}

@@ -28,6 +28,23 @@ $(document).ready(function () {
   });
 })
 
+$(document).on("click", ".open-description-selector", function () {
+  if ($(this).hasClass("show")) {
+    $(".description-selector-action").text("show");
+    $("a.show-description").show();
+    $("a.compare-description").hide();
+  }else{
+    $(".description-selector-action").text("compare");
+    $("a.show-description").hide();
+    $("a.compare-description").show();
+  }
+});
+
 $(window).load(function(){
-  $('#description-selector').modal({backdrop: 'static', keyboard: false});
+  if (window.location.pathname == "/") {
+    descriptionSelector = $('#description-selector')
+    descriptionSelector.modal({backdrop: 'static', keyboard: false});
+    descriptionSelector.find("button[data-dismiss='modal']").attr("disabled", true)
+
+  }
 });

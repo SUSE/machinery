@@ -1,28 +1,44 @@
-.row
-  .filter-input.col-md-3.col-md-offset-1
-    %input.col-md-8#filter{ :placeholder => "Type to Filter" }
-    %a.btn.btn-default.btn-reset{ :href => "#", :title => "Reset Filter" }
-      %span Reset
+#description-selector.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.large{:role => "document"}
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+        %h4#myModalLabel.modal-title
+          Select a description to
+          %span.description-selector-action
+            show
+      .modal-body
+        .row
+          .filter-input.col-md-3.col-md-offset-1
+            %input.col-md-8#descriptions-filter{ :placeholder => "Type to Filter" }
+            %a.btn.btn-default.btn-reset{ :href => "#", :title => "Reset Filter" }
+              %span Reset
 
-= render_partial "landing_page/alert"
-- if @all_descriptions.empty?
-  %p.col-md-5.col-md-offset-1
-    %strong
-      No system descriptions available on your machine.
-- else
-  %table.table.table-striped.table-condensed.filterable
-    %thead
-      %tr
-        %th Name
-        %th Last update
-        %th Scopes
-        %th Host
-    %tbody
-      - @all_descriptions.each do |key, value|
-        %tr
-          %td
-            %a{ :href => "/#{key}" }
-              #{key}
-          %td= value["date"]
-          %td= value["scopes"].join(", ")
-          %td= value["host"].join(", ")
+        = render_partial "landing_page/alert"
+        - if @all_descriptions.empty?
+          %p.col-md-5.col-md-offset-1
+            %strong
+              No system descriptions available on your machine.
+        - else
+          %table.table.table-striped.table-condensed.filterable
+            %thead
+              %tr
+                %th Name
+                %th Last update
+                %th Scopes
+                %th Host
+            %tbody
+              - @all_descriptions.each do |key, value|
+                %tr
+                  %td
+                    %a.show-description{ :href => "/#{key}" }
+                      #{key}
+                    - if @description && @description.name
+                      %a.compare-description{ :href => "/compare/#{@description.name}/#{key}" }
+                        #{key}
+                  %td= value["date"]
+                  %td= value["scopes"].join(", ")
+                  %td= value["host"].join(", ")
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

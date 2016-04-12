@@ -17,14 +17,4 @@
   %body
     .container-fluid
       #content_container
-        #description-selector.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-          .modal-dialog.large{:role => "document"}
-            .modal-content
-              .modal-header
-                %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button", disabled: "disabled"}
-                  %span{"aria-hidden" => "true"} ×
-                %h4#myModalLabel.modal-title Select a description
-              .modal-body
-                = render_partial "landing_page"
-              .modal-footer
-                %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", disabled: "disabled"} Close
+        = render_partial "landing_page"

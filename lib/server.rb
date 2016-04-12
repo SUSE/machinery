@@ -291,6 +291,10 @@ class Server < Sinatra::Base
     haml File.read(File.join(Machinery::ROOT, "html/homepage.html.haml"))
   end
 
+  get "/fonts/:font" do
+    File.read(File.join(Machinery::ROOT, "html/assets/fonts/#{params[:font]}"))
+  end
+
   get "/compare/:a/:b" do
     all_descriptions
 
