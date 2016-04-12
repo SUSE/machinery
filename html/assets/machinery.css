@@ -256,3 +256,7 @@ h1 {
   min-width: 32px;
   min-height: 32px;
 }
+
+.modal-dialog.large {
+  width: 90%; /* respsonsive width */
+}

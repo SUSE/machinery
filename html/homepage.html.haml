@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    %title
+      Machinery System Descriptions
+    %meta{ :charset => 'utf-8' }
+    %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
+    %script{ :src => "assets/jquery-2.1.1.min.js" }
+    %script{ :src => "assets/jquery.searcher.min.js" }
+    %script{ :src => "assets/machinery-base.js" }
+    %script{ :src => "assets/show/machinery.js" }
+    %script{ :src => "assets/bootstrap-tooltip.js" }
+    %script{ :src => "assets/bootstrap-popover.js" }
+    %script{ :src => "assets/bootstrap-modal.js" }
+
+  %body
+    .container-fluid
+      #content_container
+        #description-selector.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+          .modal-dialog.large{:role => "document"}
+            .modal-content
+              .modal-header
+                %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button", disabled: "disabled"}
+                  %span{"aria-hidden" => "true"} ×
+                %h4#myModalLabel.modal-title Select a description
+              .modal-body
+                = render_partial "landing_page"
+              .modal-footer
+                %button.btn.btn-default{"data-dismiss" => "modal", :type => "button", disabled: "disabled"} Close

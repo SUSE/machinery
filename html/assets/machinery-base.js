@@ -27,3 +27,7 @@ $(document).ready(function () {
     $("#filter").val("").change();
   });
 })
+
+$(window).load(function(){
+  $('#description-selector').modal({backdrop: 'static', keyboard: false});
+});
