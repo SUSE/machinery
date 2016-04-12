@@ -1,3 +1,6 @@
+Note: 'N/A' represents a missing package vendor which could not
+be gathered during inspection.
+
 # Packages [192.168.121.195] (2015-12-23 12:14:31)
 
   * accountsservice-0.6.35-0ubuntu7.2.amd64 (N/A)

@@ -1,3 +1,6 @@
+Note: 'N/A' represents a missing group ID which could not
+be gathered during inspection.
+
 # Users [192.168.121.137] (2014-11-25 18:21:52)
 
   * + (N/A, uid: N/A, gid: N/A, shell: )
