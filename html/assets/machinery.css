@@ -12,6 +12,7 @@ body {
   padding-left: 15px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
+  padding-top: 20px;
 }
 
 #nav-bar a:hover {
@@ -263,4 +264,9 @@ h1 {
 
 .missing {
   font-style: italic;
+}
+
+.description-name {
+  border: 0;
+  font-size: 2em !important;
 }
