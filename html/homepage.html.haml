@@ -18,3 +18,21 @@
     .container-fluid
       #content_container
         = render_partial "landing_page"
+
+    .container-fluid
+      #nav-bar
+        .row
+          .col-xs-4.col-xs-offset-1
+            .input-group.input-group-lg
+              .input-group-btn
+                %button.btn.btn-default.open-description-selector.show{"data-target" => "#description-selector", "data-toggle" => "modal", :type => "button"}
+                  %span.glyphicon.glyphicon-option-horizontal{"aria-hidden" => "true"}
+              %input.description-name.form-control{"aria-label" => "...", :type => "text", :placeholder => "No description to show", :disabled => "disabled" }
+          .col-xs-4.col-xs-offset-1
+            .input-group.input-group-lg
+              .input-group-btn
+                %button.btn.btn-default.open-description-selector.compare{"data-target" => "#description-selector", "data-toggle" => "modal", :type => "button"}
+                  %span.glyphicon.glyphicon-option-horizontal{"aria-hidden" => "true"}
+                %a.btn.btn-default.close-comparison{ href: "#", :disabled => "disabled" }
+                  %span.glyphicon.glyphicon-remove{"aria-hidden" => "true"}
+              %input.description-name.form-control{"aria-label" => "...", :type => "text", :placeholder => "No description selected to compare", :disabled => "disabled"  }
