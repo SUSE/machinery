@@ -7,6 +7,10 @@ $(document).ready(function () {
     $("#filter").val("").change()
   });
 
+  $(".description-filterable").searcher({
+    inputSelector: "#descriptions-filter"
+  });
+
   // Align content below floating menu
   var header_height =  $("#nav-bar").height() + 20;
   $("#content_container, #angular-content").css("margin-top", header_height);
@@ -178,3 +182,16 @@ $(document).ready(function () {
   });
   highlightCurrentScope();
 });
+
+$(document).on("click", ".open-description-selector", function () {
+  if ($(this).hasClass("show")) {
+    $(".description-selector-action").text("show");
+    $("a.show-description").show();
+    $("a.compare-description").hide();
+  }else{
+    $(".description-selector-action").text("compare");
+    $("a.show-description").hide();
+    $("a.compare-description").show();
+  }
+});
+

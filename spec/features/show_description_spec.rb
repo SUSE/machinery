@@ -64,7 +64,9 @@ RSpec::Steps.steps "Showing a system description in HTML format", type: :feature
     expect(page).to have_content("Select a description to show")
     expect(page).to have_link("opensuse131", href: /\/opensuse131/)
 
-    click_on("Close")
+    within(".modal-footer") do
+      click_on("Close")
+    end
 
     expect(page).not_to have_content("Select a description to show")
   end
@@ -77,7 +79,9 @@ RSpec::Steps.steps "Showing a system description in HTML format", type: :feature
     expect(page).to have_content("Select a description to compare")
     expect(page).to have_link("opensuse131", href: /\/compare\/opensuse131\/opensuse131/)
 
-    click_on("Close")
+    within(".modal-footer") do
+      click_on("Close")
+    end
 
     expect(page).not_to have_content("Select a description to compare")
   end

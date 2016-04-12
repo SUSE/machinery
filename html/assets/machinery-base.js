@@ -23,28 +23,18 @@ $(document).ready(function () {
     $(this).closest(".scope").hide();
   });
 
-  $(".btn-reset").click(function(){
+  $(".reset-filter").click(function(){
     $("#filter").val("").change();
   });
+  $(".reset-descriptions-filter").click(function(){
+    $("#descriptions-filter").val("").change();
+  });
 })
-
-$(document).on("click", ".open-description-selector", function () {
-  if ($(this).hasClass("show")) {
-    $(".description-selector-action").text("show");
-    $("a.show-description").show();
-    $("a.compare-description").hide();
-  }else{
-    $(".description-selector-action").text("compare");
-    $("a.show-description").hide();
-    $("a.compare-description").show();
-  }
-});
 
 $(window).load(function(){
   if (window.location.pathname == "/") {
     descriptionSelector = $('#description-selector')
     descriptionSelector.modal({backdrop: 'static', keyboard: false});
     descriptionSelector.find("button[data-dismiss='modal']").attr("disabled", true)
-
   }
 });

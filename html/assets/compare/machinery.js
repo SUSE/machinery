@@ -118,3 +118,16 @@ $(document).ready(function () {
   });
   highlightCurrentScope();
 });
+
+$(document).on("click", ".open-description-selector", function () {
+  if ($(this).hasClass("show")) {
+    $(".description-selector-action").text("compare");
+    $("a.show-description").show();
+    $("a.compare-description").hide();
+  }else{
+    $(".description-selector-action").text("compare");
+    $("a.show-description").hide();
+    $("a.compare-description").show();
+  }
+});
+

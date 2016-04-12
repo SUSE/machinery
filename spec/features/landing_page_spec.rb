@@ -42,14 +42,14 @@ RSpec::Steps.steps "Showing the landing page", type: :feature do
   end
 
   it "filters the results" do
-    expect(page.all(".filterable tbody tr").size).to eq(3)
+    expect(page.all(".description-filterable tbody tr").size).to eq(3)
 
-    fill_in "filter", with: "leap"
+    fill_in "descriptions-filter", with: "leap"
 
-    expect(page.all(".filterable tbody tr").size).to eq(1)
+    expect(page.all(".description-filterable tbody tr").size).to eq(1)
 
     click_link("Reset")
 
-    expect(page.all(".filterable tbody tr").size).to eq(3)
+    expect(page.all(".description-filterable tbody tr").size).to eq(3)
   end
 end

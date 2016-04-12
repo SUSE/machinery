@@ -12,7 +12,7 @@
         .row
           .filter-input.col-md-3.col-md-offset-1
             %input.col-md-8#descriptions-filter{ :placeholder => "Type to Filter" }
-            %a.btn.btn-default.btn-reset{ :href => "#", :title => "Reset Filter" }
+            %a.btn.btn-default.reset-descriptions-filter{ :href => "#", :title => "Reset Filter" }
               %span Reset
 
         = render_partial "landing_page/alert"
@@ -21,7 +21,7 @@
             %strong
               No system descriptions available on your machine.
         - else
-          %table.table.table-striped.table-condensed.filterable
+          %table.table.table-striped.table-condensed.description-filterable
             %thead
               %tr
                 %th Name
@@ -32,10 +32,19 @@
               - @all_descriptions.each do |key, value|
                 %tr
                   %td
-                    %a.show-description{ :href => "/#{key}" }
-                      #{key}
-                    - if @description && @description.name
+                    - case
+                    - when @description
+                      %a.show-description{ :href => "/#{key}" }
+                        #{key}
                       %a.compare-description{ :href => "/compare/#{@description.name}/#{key}" }
+                        #{key}
+                    - when @description_a && @description_b
+                      %a.show-description{ :href => "/compare/#{key}/#{@description_b.name}" }
+                        #{key}
+                      %a.compare-description{ :href => "/compare/#{@description_a.name}/#{key}" }
+                        #{key}
+                    - else
+                      %a.show-description{ :href => "/#{key}" }
                         #{key}
                   %td= value["date"]
                   %td= value["scopes"].join(", ")
