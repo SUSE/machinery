@@ -1,0 +1,32 @@
+{
+  "environment": {
+    "locale": "en_US.utf8",
+    "system_type": "remote"
+  },
+  "unmanaged_files": {
+    "extracted": false,
+    "files": [
+      {
+        "name": "/boot/grub2/bootpart.cfg",
+        "type": "file"
+      },
+      {
+        "name": "/boot/grub2/i386-pc/",
+        "type": "dir"
+      }
+    ]
+  },
+  "meta": {
+    "format_version": 5,
+    "unmanaged_files": {
+      "modified": "2016-04-13T09:02:45Z",
+      "hostname": "192.168.121.191"
+    },
+    "filters": {
+      "inspect": [
+        "/unmanaged_files/files/name=/etc/passwd",
+        "/unmanaged_files/files/name=/etc/shadow"
+      ]
+    }
+  }
+}

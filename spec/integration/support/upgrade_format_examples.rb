@@ -78,5 +78,27 @@ shared_examples "upgrade format" do
       )
       expect(show_command.stdout).to match_machinery_show_scope(expected)
     end
+
+    context "when upgrading format v5" do
+      it "successfully upgrades to the latest format version" do
+        # localhost inspection is only possible as root
+        @machinery.inject_directory(
+          File.join(Machinery::ROOT, "spec/data/descriptions/format_v5/"),
+          "/root/.machinery/",
+          owner: "root",
+          group: "root"
+        )
+
+        expect(
+          @machinery.run_command("machinery upgrade-format format_v5", as: "root")
+        ).to succeed
+      end
+
+      it "successfully inspects using the migrated description" do
+        expect(
+          @machinery.run_command("machinery inspect -n format_v5 -s os localhost", as: "root")
+        ).to succeed
+      end
+    end
   end
 end
