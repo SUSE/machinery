@@ -83,29 +83,37 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
   end
 
   it "opens a modal to compare a description on the left side" do
-    expect(page).not_to have_content("Select a description to compare")
+    visit("/compare/opensuse131/opensuse132")
+
+    expect(page).not_to have_content("Select a description from the list below")
     within("#nav-bar") do
       find("button.open-description-selector.show").click
     end
-    expect(page).to have_content("Select a description to compare")
+    expect(page).to have_content(
+      "Select a description from the list below to compare with description \"opensuse132\""
+    )
     expect(page).to have_link("opensuse132", href: /\/compare\/opensuse132\/opensuse132/)
 
     click_on("Close")
 
-    expect(page).not_to have_content("Select a description to compare")
+    expect(page).not_to have_content("Select a description from the list below")
   end
 
   it "opens a modal to compare a description on the right side" do
-    expect(page).not_to have_content("Select a description to compare")
+    visit("/compare/opensuse131/opensuse132")
+
+    expect(page).not_to have_content("Select a description from the list below")
     within("#nav-bar") do
       find("button.open-description-selector.compare").click
     end
-    expect(page).to have_content("Select a description to compare")
+    expect(page).to have_content(
+      "Select a description from the list below to compare with description \"opensuse131\""
+    )
     expect(page).to have_link("opensuse131", href: /\/compare\/opensuse131\/opensuse131/)
 
     click_on("Close")
 
-    expect(page).not_to have_content("Select a description to compare")
+    expect(page).not_to have_content("Select a description from the list below")
   end
 
   it "returns from compare to detail view" do

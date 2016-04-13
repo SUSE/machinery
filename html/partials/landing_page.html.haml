@@ -5,17 +5,17 @@
         %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
           %span{"aria-hidden" => "true"} ×
         %h4#myModalLabel.modal-title
-          Select a description to
+          Select a description from the list below to
           %span.description-selector-action
             show
       .modal-body
+        = render_partial "landing_page/alert"
         .row
           .filter-input.col-md-3.col-md-offset-1
             %input.col-md-8#descriptions-filter{ :placeholder => "Type to Filter" }
             %a.btn.btn-default.reset-descriptions-filter{ :href => "#", :title => "Reset Filter" }
               %span Reset
 
-        = render_partial "landing_page/alert"
         - if @all_descriptions.empty?
           %p.col-md-5.col-md-offset-1
             %strong

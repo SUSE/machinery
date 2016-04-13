@@ -185,11 +185,12 @@ $(document).ready(function () {
 
 $(document).on("click", ".open-description-selector", function () {
   if ($(this).hasClass("show")) {
-    $(".description-selector-action").text("show");
+    $(".description-selector-action").text("show its details.");
     $("a.show-description").show();
     $("a.compare-description").hide();
   }else{
-    $(".description-selector-action").text("compare");
+    descriptionName = $(".description-name:first").val();
+    $(".description-selector-action").text("compare with description \"" + descriptionName + "\".");
     $("a.show-description").hide();
     $("a.compare-description").show();
   }

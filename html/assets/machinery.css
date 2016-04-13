@@ -262,11 +262,27 @@ h1 {
   width: 90%; /* respsonsive width */
 }
 
-.missing {
-  font-style: italic;
+.description-name {
+  font-size: 2em ;
+  box-sizing: border-box ;
+  -webkit-box-sizing: border-box ;
+  -moz-box-sizing: border-box ;
+  outline: none ;
+  display: block ;
+  width: 100% ;
+  padding: 7px ;
+  border: none ;
+  background: transparent ;
+  border-radius: 0 ;
+  border-bottom: 1px solid #7f694f;
+  height: 45px;
 }
 
-.description-name {
-  border: 0;
-  font-size: 2em !important;
+.missing {
+  font-style: italic;
+  font-size: 1.2em !important;
+}
+
+.description-selector-action {
+  font-style: bold !important;
 }
