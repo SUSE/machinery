@@ -65,29 +65,29 @@
                   %span.glyphicon.glyphicon-remove{"aria-hidden" => "true"}
 
         .row
-          .col-xs-1
+          %small.col-xs-1
             %a#expand-all{:href => "#", :style => "display: none"}
               Expand all
             %a#collapse-all{:href => "#"}
               Collapse all
-        .row
-          .col-xs-1
-          .col-xs-10
-            %small.pull-right
-              created by
-              %a{:href => "http://machinery-project.org", :target => "_blank"}
-                Machinery
-              %br
-              %a{ :href => "/site/docs/", :target => "_blank" }
-                Machinery documentation
 
-            %span.scope-navigation
-              Scopes:
-              - scopes.each do |scope|
-                %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
-                  "data-toggle"=>"popover", "data-content" => scope_help(scope),
-                  :class => nav_class(scope), "ng-show" => "diff.#{scope}" }
-                  %span= scope_initials(scope)
+          .col-xs-11.nav-buttons
+            .col-xs-10
+              %span.scope-navigation
+                Scopes:
+                - scopes.each do |scope|
+                  %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
+                    "data-toggle"=>"popover", "data-content" => scope_help(scope),
+                    :class => nav_class(scope), "ng-show" => "diff.#{scope}" }
+                    %span= scope_initials(scope)
+            .col-xs-2
+              %small.pull-right
+                created by
+                %a{:href => "http://machinery-project.org", :target => "_blank"}
+                  Machinery
+                %br
+                %a{ :href => "/site/docs/", :target => "_blank" }
+                  Machinery documentation
 
       #content_container
         %div

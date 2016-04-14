@@ -286,3 +286,11 @@ h1 {
 .description-selector-action {
   font-style: bold !important;
 }
+
+#filter {
+  height: 31px !important;
+}
+
+.reset-filter {
+  height: 31px !important;
+}
