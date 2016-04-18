@@ -35,6 +35,6 @@ $(window).load(function(){
   if (window.location.pathname == "/") {
     descriptionSelector = $('#description-selector')
     descriptionSelector.modal({backdrop: 'static', keyboard: false});
-    descriptionSelector.find("button[data-dismiss='modal']").attr("disabled", true)
+    descriptionSelector.find("button[data-dismiss='modal']").hide();
   }
 });

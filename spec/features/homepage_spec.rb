@@ -15,9 +15,4 @@ RSpec::Steps.steps "Showing the home/list page", type: :feature do
   it "starts with the modal view to select a description open" do
     expect(page).to have_content("Select a description")
   end
-
-  it "doesn't allow the user to close the modal" do
-    expect(page).to have_button("Close", disabled: true)
-    expect(page).to have_css("button.close[disabled]")
-  end
 end
