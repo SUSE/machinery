@@ -294,3 +294,6 @@ h1 {
 .reset-filter {
   height: 31px !important;
 }
+.toolbar {
+  margin-top: 5px;
+}
