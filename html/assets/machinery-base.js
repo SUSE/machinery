@@ -38,3 +38,7 @@ $(window).load(function(){
     descriptionSelector.find("button[data-dismiss='modal']").hide();
   }
 });
+
+$(document).on("click", ".description-name", function () {
+  $(this).parent().find(".open-description-selector").trigger("click");
+});

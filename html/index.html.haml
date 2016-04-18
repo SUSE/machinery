@@ -49,7 +49,7 @@
         .row
           .col-xs-4.col-xs-offset-1
             .input-group.input-group-lg
-              %input.description-name{"aria-label" => "...", :type => "text", :value => @description.name, :disabled => "disabled" }
+              %input.description-name{"aria-label" => "...", :type => "text", :value => @description.name }
               .input-group-btn
                 %button.btn.btn-default.open-description-selector.show{"data-target" => "#description-selector", "data-toggle" => "modal", :type => "button"}
                   %span.glyphicon.glyphicon-option-horizontal{"aria-hidden" => "true"}
