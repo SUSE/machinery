@@ -11,10 +11,12 @@
       .modal-body
         = render_partial "landing_page/alert"
         .row
-          .filter-input.col-md-3.col-md-offset-1
-            %input.col-md-8#descriptions-filter{ :placeholder => "Type to Filter" }
-            %a.btn.btn-default.reset-descriptions-filter{ :href => "#", :title => "Reset Filter" }
-              %span Reset
+          .filter-input.col-md-3
+            .input-group
+              %input.col-md-8.form-control#descriptions-filter{ :placeholder => "Type to filter by Name" }
+              .input-group-btn
+                %a.btn.btn-default.reset-descriptions-filter{ :href => "#", :title => "Reset Filter" }
+                  %span Reset
 
         - if @all_descriptions.empty?
           %p.col-md-5.col-md-offset-1
@@ -25,9 +27,9 @@
             %thead
               %tr
                 %th Name
-                %th Last update
-                %th Scopes
                 %th Host
+                %th Scopes
+                %th Last update
             %tbody
               - @all_descriptions.each do |key, value|
                 %tr
@@ -46,8 +48,8 @@
                     - else
                       %a.show-description{ :href => "/#{key}" }
                         #{key}
-                  %td= value["date"]
-                  %td= value["scopes"].join(", ")
                   %td= value["host"].join(", ")
+                  %td= value["scopes"].join(", ")
+                  %td= value["date"]
       .modal-footer
         %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
