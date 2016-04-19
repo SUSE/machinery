@@ -51,24 +51,28 @@
         .row
           .col-xs-4.col-xs-offset-1
             .input-group.input-group-lg
-              %input.description-name{"aria-label" => "...", :type => "text", :value => @description_a.name }
+              %input.description-name{ "aria-label" => "...", :type => "text",
+                :value => @description_a.name }
               .input-group-btn
-                %button.btn.btn-default.open-description-selector.show{"data-target" => "#description-selector", "data-toggle" => "modal", :type => "button"}
-                  %span.glyphicon.glyphicon-option-horizontal{"aria-hidden" => "true"}
+                %button.btn.btn-default.open-description-selector.show{ "data-target" => "#description-selector",
+                  "data-toggle" => "modal", :type => "button" }
+                  %span.glyphicon.glyphicon-option-horizontal{ "aria-hidden" => "true" }
           .col-xs-4.col-xs-offset-1
             .input-group.input-group-lg
-              %input.description-name{"aria-label" => "...", :type => "text", :value => @description_b.name }
+              %input.description-name{ "aria-label" => "...", :type => "text",
+                :value => @description_b.name }
               .input-group-btn
-                %button.btn.btn-default.open-description-selector.compare{"data-target" => "#description-selector", "data-toggle" => "modal", :type => "button"}
-                  %span.glyphicon.glyphicon-option-horizontal{"aria-hidden" => "true"}
-                %a.btn.btn-default.close-comparison{ href: "/#{@description_a.name}"}
-                  %span.glyphicon.glyphicon-remove{"aria-hidden" => "true"}
+                %button.btn.btn-default.open-description-selector.compare{ "data-target" => "#description-selector",
+                  "data-toggle" => "modal", :type => "button" }
+                  %span.glyphicon.glyphicon-option-horizontal{ "aria-hidden" => "true" }
+                %a.btn.btn-default.close-comparison{ href: "/#{@description_a.name}" }
+                  %span.glyphicon.glyphicon-remove{ "aria-hidden" => "true" }
 
         .row.toolbar
           %small.col-xs-1
-            %a#expand-all{:href => "#", :style => "display: none"}
+            %a#expand-all{ :href => "#", :style => "display: none" }
               Expand all
-            %a#collapse-all{:href => "#"}
+            %a#collapse-all{ :href => "#" }
               Collapse all
 
           .col-xs-11.nav-buttons
@@ -83,7 +87,7 @@
             .col-xs-2
               %small.pull-right
                 created by
-                %a{:href => "http://machinery-project.org", :target => "_blank"}
+                %a{ :href => "http://machinery-project.org", :target => "_blank" }
                   Machinery
                 %br
                 %a{ :href => "/site/docs/", :target => "_blank" }

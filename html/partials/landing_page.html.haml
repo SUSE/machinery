@@ -1,10 +1,11 @@
-#description-selector.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog.large{:role => "document"}
+.modal.fade#description-selector{ "aria-labelledby" => "description-selector-label",
+  :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.large{ :role => "document" }
     .modal-content
       .modal-header
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"} ×
-        %h4#myModalLabel.modal-title
+        %button.close{ "aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{ "aria-hidden" => "true" } ×
+        %h4.modal-title#description-selector-label
           Select a description from the list below to
           %span.description-selector-action
             show
@@ -13,9 +14,10 @@
         .row
           .filter-input.col-md-3
             .input-group
-              %input.col-md-8.form-control#descriptions-filter{ :placeholder => "Type to filter by Name" }
+              %input.col-md-8.form-control#descriptions-filter{ :placeholder => "Type to filter" }
               .input-group-btn
-                %a.btn.btn-default.reset-descriptions-filter{ :href => "#", :title => "Reset Filter" }
+                %a.btn.btn-default.reset-descriptions-filter{ :href => "#",
+                  :title => "Reset Filter" }
                   %span Reset
 
         - if @all_descriptions.empty?
@@ -52,4 +54,4 @@
                   %td= value["scopes"].join(", ")
                   %td= value["date"]
       .modal-footer
-        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+        %button.btn.btn-default{ "data-dismiss" => "modal", :type => "button" } Close
