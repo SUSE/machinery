@@ -60,11 +60,6 @@
   * /etc/alternatives/usr-bin-awk (link)
     User/Group: root:root
 
-  * /etc/auto.remote_dir (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 34 B
-
   * /etc/fstab (file)
     User/Group: root:root
     Mode: 644
@@ -486,16 +481,6 @@
 
   * /lib64/libdmraid-events-isw.so.1.0.0.rc16-3 (link)
     User/Group: root:root
-
-  * /mnt/unmanaged/ (dir)
-    User/Group: root:root
-    Mode: 755
-    Size: 0 B
-    Files: 1
-
-  * /mnt/unmanaged/remote-dir/ (remote_dir)
-
-  * /remote-dir/ (remote_dir)
 
   * /root/.bash_history (file)
     User/Group: root:root
