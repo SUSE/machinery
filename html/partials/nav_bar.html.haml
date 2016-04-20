@@ -1,0 +1,34 @@
+- if @description
+  - show_description_name = @description.name
+  - compare_description_name = ""
+  - compare_description_class = "missing"
+  - close_comparison_attrs = { href: "#", disabled: "disabled" }
+- elsif @description_a && @description_b
+  - show_description_name = @description_a.name
+  - compare_description_name = @description_b.name
+  - compare_description_class = ""
+  - close_comparison_attrs = { href: "/#{@description_a.name}" }
+- else
+  - show_description_name = ""
+  - compare_description_name = ""
+  - compare_description_class = ""
+  - close_comparison_attrs = { href: "#", disabled: "disabled" }
+.row
+  .col-xs-4.col-xs-offset-1
+    .input-group.input-group-lg
+      %input.description-name{ :type => "text",
+        :placeholder => "No description selected", :value => show_description_name }
+      .input-group-btn
+        %button.btn.btn-default.open-description-selector.show{ "data-target" => "#description-selector",
+          "data-toggle" => "modal", :type => "button" }
+          %span.glyphicon.glyphicon-option-horizontal
+  .col-xs-4.col-xs-offset-1
+    .input-group.input-group-lg
+      %input.description-name{ :type => "text",
+        :placeholder => "No description selected for comparison", :class => compare_description_class, :value => compare_description_name }
+      .input-group-btn
+        %button.btn.btn-default.open-description-selector.compare{ "data-target" => "#description-selector",
+          "data-toggle" => "modal", :type => "button" }
+          %span.glyphicon.glyphicon-option-horizontal
+        %a.btn.btn-default.close-comparison{ close_comparison_attrs }
+          %span.glyphicon.glyphicon-remove
