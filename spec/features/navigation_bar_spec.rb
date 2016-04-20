@@ -20,6 +20,30 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
   initialize_system_description_factory_store
 
   let(:store) { system_description_factory_store }
+  let(:description) {
+    create_test_description(
+      scopes:        ["os", "packages", "repositories", "services"],
+      name:          "name",
+      store:         store,
+      store_on_disk: true
+    )
+  }
+  let(:description_b) {
+    create_test_description(
+      scopes:        ["os", "packages", "repositories"],
+      name:          "description_b",
+      store:         store,
+      store_on_disk: true
+    )
+  }
+  let(:description_c) {
+    create_test_description(
+      scopes:        ["os"],
+      name:          "description_c",
+      store:         store,
+      store_on_disk: true
+    )
+  }
 
   def nav_scopes
     all(".scope-navigation a.btn-sm:not(.disabled) span").map(&:text)
@@ -36,16 +60,8 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
   context "when showing a system description" do
     before(:each) do
       description
+      description_b
     end
-
-    let(:description) {
-      create_test_description(
-        scopes:        ["os", "packages", "repositories", "services"],
-        name:          "name",
-        store:         store,
-        store_on_disk: true
-      )
-    }
 
     it "disables buttons whose scope was excluded" do
       visit("/name")
@@ -74,33 +90,43 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
         end
       end
     end
+
+    it "opens a modal to select a new description" do
+      visit("/name")
+
+      within("#nav-bar") do
+        find("button.open-description-selector.show").click
+      end
+      expect(page).not_to have_content("Select a description to show its details.")
+      expect(page).to have_link("description_b", href: /\/description_b/)
+
+      click_on("Close")
+      expect(page).not_to have_content("Select a description from the list below")
+    end
+
+    it "opens a modal to select a description to compare" do
+      visit("/name")
+
+      within("#nav-bar") do
+        find("button.open-description-selector.compare").click
+      end
+
+      expect(page).to have_content(
+        "Select a description from the list below to compare with description \"name\""
+      )
+      expect(page).to have_link("description_b", href: /\/compare\/name\/description_b/)
+    end
   end
 
   context "when comparing two system descriptions" do
     before(:each) do
-      description_a
+      description
       description_b
+      description_c
     end
 
-    let(:description_a) {
-      create_test_description(
-        scopes:        ["os", "packages", "repositories"],
-        name:          "description_a",
-        store:         store,
-        store_on_disk: true
-      )
-    }
-    let(:description_b) {
-      create_test_description(
-        scopes:        ["os", "packages", "repositories", "services"],
-        name:          "description_b",
-        store:         store,
-        store_on_disk: true
-      )
-    }
-
     it "disables buttons whose scope was excluded in both descriptions" do
-      visit("/compare/description_a/description_b")
+      visit("/compare/name/description_b")
 
       within(".scope-navigation") do
         expect(find_link("UF")[:class]).to include("disabled")
@@ -108,7 +134,7 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
     end
 
     it "disables buttons whose scope was excluded in any of the two descriptions" do
-      visit("/compare/description_a/description_b")
+      visit("/compare/name/description_b")
 
       within(".scope-navigation") do
         expect(find_link("S")[:class]).to include("disabled")
@@ -116,9 +142,39 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
     end
 
     it "displays in the same order as the scopes" do
-      visit("/compare/description_a/description_b")
+      visit("/compare/name/description_b")
 
       expect(nav_scopes).to eq(content_scopes)
+    end
+
+    it "opens a modal to compare a description on the left side" do
+      visit("/compare/name/description_b")
+
+      within("#nav-bar") do
+        find("button.open-description-selector.show").click
+      end
+      expect(page).to have_content(
+        "Select a description from the list below to compare with description \"description_b\""
+      )
+      expect(page).to have_link("description_c", href: /\/compare\/description_c\/description_b/)
+
+      click_on("Close")
+      expect(page).not_to have_content("Select a description from the list below")
+    end
+
+    it "opens a modal to compare a description on the right side" do
+      visit("/compare/name/description_b")
+
+      within("#nav-bar") do
+        find("button.open-description-selector.compare").click
+      end
+      expect(page).to have_content(
+        "Select a description from the list below to compare with description \"name\""
+      )
+
+      expect(page).to have_link("description_c", href: /\/compare\/name\/description_c/)
+      click_on("Close")
+      expect(page).not_to have_content("Select a description from the list below")
     end
   end
 end

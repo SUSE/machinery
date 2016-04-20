@@ -46,7 +46,7 @@ Capybara.configure do |config|
   config.app = Server
 
   config.default_driver = :poltergeist
-  config.default_max_wait_time = 5
+  config.default_max_wait_time = 2
 end
 
 def get_coordinates(selector)
