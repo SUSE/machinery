@@ -1,7 +1,6 @@
 # Changed Configuration Files [192.168.121.194] (2014-11-25 18:38:32)
 
   Files extracted: yes
-  * /etc/auto.master (autofs-5.1.0, size, md5)
   * /etc/crontab (cronie-1.4.12, size, md5)
   * /etc/pam.d/common-account (pam-1.1.8, link_path)
   * /etc/pam.d/common-auth (pam-1.1.8, link_path)

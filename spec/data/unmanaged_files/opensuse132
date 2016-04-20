@@ -46,11 +46,6 @@
   * /etc/alternatives/openSUSE-default.xml (link)
     User/Group: root:root
 
-  * /etc/auto.remote_dir (file)
-    User/Group: root:root
-    Mode: 644
-    Size: 34 B
-
   * /etc/fstab (file)
     User/Group: root:root
     Mode: 644
@@ -274,16 +269,6 @@
     Mode: 755
     Size: 409 B
     Files: 7
-
-  * /mnt/unmanaged/ (dir)
-    User/Group: root:root
-    Mode: 755
-    Size: 0 B
-    Files: 1
-
-  * /mnt/unmanaged/remote-dir/ (remote_dir)
-
-  * /remote-dir/ (remote_dir)
 
   * /root/.bash_history (file)
     User/Group: root:root
