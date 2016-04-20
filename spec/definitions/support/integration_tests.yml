@@ -1,15 +1,3 @@
-"serve html":
-  supported:
-    "openSUSE_13_2:x86_64":
-      "local":
-    "openSUSE_13_1:x86_64":
-      "local":
-    "leap:x86_64":
-      "local":
-    "Tumbleweed:x86_64":
-      "local":
-    "local":
-      "local": acceptance_test
 CLI:
   supported:
     "openSUSE_13_2:x86_64":
