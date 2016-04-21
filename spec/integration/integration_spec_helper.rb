@@ -132,6 +132,13 @@ end
 Dir[File.join(Machinery::ROOT, "/spec/integration/support/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    puts "Compiling helper binaries..."
+    Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
+      Cheetah.run("rake", "build")
+    end
+  end
+
   config.include(SystemDescriptionFactory)
 
   config.vagrant_dir = File.join(Machinery::ROOT, "spec/definitions/vagrant/")
