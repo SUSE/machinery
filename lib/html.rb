@@ -58,12 +58,6 @@ EOF
           Server.run! do
             Thread.new { block.call }
           end
-        rescue Errno::EADDRINUSE
-          servefailed_error = <<-EOF.chomp
-Port #{Server.settings.port} is already in use.
-You have to stop the already running server on port #{Server.settings.port} first or if you're serving a description with the `serve` command, you can also use the `--port` option.
-EOF
-          raise Machinery::Errors::ServeFailed, servefailed_error
         rescue SocketError => e
           servefailed_error = <<-EOF.chomp
 Cannot start server on #{opts[:ip]}:#{Server.settings.port}.
@@ -80,6 +74,16 @@ EOF
 You are not allowed to start the server on port #{Server.settings.port}. You need root privileges for ports between 2 and 1023!
 ERROR: #{e.message}
 EOF
+          raise Machinery::Errors::ServeFailed, servefailed_error
+        rescue Errno::EADDRINUSE, RuntimeError => e
+          # If eventmachine is installed it will be used for handling the server. And eventmachine
+          # raises RuntimeError instead of Errno::EADDRINUSE, so we have to handle these as well
+          raise(e) if e.is_a?(RuntimeError) && !(e.to_s.index("port is in use"))
+
+          servefailed_error = <<-EOF.chomp
+Port #{Server.settings.port} is already in use.
+You have to stop the already running server on port #{Server.settings.port} first or if you're serving a description with the `serve` command, you can also use the `--port` option.
+          EOF
           raise Machinery::Errors::ServeFailed, servefailed_error
         end
         remove_output_redirection
