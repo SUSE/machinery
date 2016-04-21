@@ -73,7 +73,7 @@ A simplified example of the manifest can look like this:
     ]
   },
   "meta": {
-    "format_version": 6,
+    "format_version": 9,
     "os": {
       "modified": "2014-08-22T14:34:59Z",
       "hostname": "host.example.org"
@@ -123,7 +123,7 @@ The global scope contains a meta object that holds this information about the in
 JSON Example:
 ```json
 "meta": {
-    "format_version": 6,
+    "format_version": 9,
     "services": {
       "modified": "2014-09-09T08:27:51Z",
       "hostname": "192.168.121.109"
@@ -880,3 +880,7 @@ version of Machinery.
 
 * Format version 8 renames the scope config-files to changed-config-files
 * Following this change the config_file_diff dir is also renamed to changed_config_files_diffs
+
+### Version 9
+
+* Format version 9 fixes the filter paths for migrated descriptions
