@@ -166,7 +166,8 @@ task :inspector_files, [:ip_adress, :destination] do |task, args|
   test_data.write(args[:destination])
 end
 
-task :create_schemas_for_new_version do |task, args|
+desc "Create schema files for new format version"
+task :upgrade_schemas_for_new_format do |task, args|
   old_format = SystemDescription::CURRENT_FORMAT_VERSION
   new_format = old_format + 1
   FileUtils.cp(
