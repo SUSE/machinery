@@ -65,7 +65,7 @@ describe "machinery@Tumbleweed" do
       "changed-config-files" =>
         [
           /Files extracted: yes$/,
-          /\* \/etc\/auto\.master \(autofs-\d+.*, size, md5\)$/
+          /\* \/etc\/sudoers \(sudo-\d+.*, size, md5\)$/
         ],
       "changed-managed-files" =>
         [
