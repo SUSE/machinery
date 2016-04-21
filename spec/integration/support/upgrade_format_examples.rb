@@ -17,7 +17,7 @@
 
 shared_examples "upgrade format" do
   describe "upgrade-format" do
-    it "Upgrades an existing system description" do
+    it "Upgrades an existing system description with format v1" do
       @machinery.inject_directory(
         File.join(Machinery::ROOT, "spec/data/descriptions/format_v1/"),
         "/home/vagrant/.machinery/",
@@ -44,7 +44,7 @@ shared_examples "upgrade format" do
       expect(show_command.stdout).to match_machinery_show_scope(expected)
     end
 
-    it "Upgrades format v2 to v3" do
+    it "Upgrades format v2" do
       @machinery.inject_directory(
         File.join(Machinery::ROOT, "spec/data/descriptions/format_v2/"),
         "/home/vagrant/.machinery/",
@@ -77,6 +77,28 @@ shared_examples "upgrade format" do
         File.join(Machinery::ROOT, "spec/data/upgrade-format/format_v2_upgraded_repositories")
       )
       expect(show_command.stdout).to match_machinery_show_scope(expected)
+    end
+
+    context "when upgrading format v5" do
+      it "successfully upgrades to the latest format version" do
+        # localhost inspection is only possible as root
+        @machinery.inject_directory(
+          File.join(Machinery::ROOT, "spec/data/descriptions/format_v5/"),
+          "/root/.machinery/",
+          owner: "root",
+          group: "root"
+        )
+
+        expect(
+          @machinery.run_command("machinery upgrade-format format_v5", as: "root")
+        ).to succeed
+      end
+
+      it "successfully inspects using the migrated description" do
+        expect(
+          @machinery.run_command("machinery inspect -n format_v5 -s os localhost", as: "root")
+        ).to succeed
+      end
     end
   end
 end
