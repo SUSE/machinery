@@ -144,11 +144,13 @@ inspected system.</p>
 <ul>
 <li>patterns</li>
 </ul>
-<p>Contains all patterns installed on the inspected system. A pattern is a
-collection of software packages.
+<p>Contains all patterns or tasks installed on the inspected system. A pattern is a
+collection of software packages, similar to the idea of tasks on Debian/Ubuntu-
+like systems.
 The meaning of software patterns depends on the package manager of the
 distribution. Therefore, the pattern scope on SUSE based systems uses the
-<code>zypper</code> command to obtain the information about installed pattern names.</p>
+<code>zypper</code> command to obtain the information about installed pattern names, whereas
+on Debian based systems the <code>tasksel</code> tool is necessary to list installed tasks.</p>
 <ul>
 <li>repositories</li>
 </ul>
@@ -204,13 +206,13 @@ or waiting for requests to do work.
 The scope determines which services are configured to be started in which
 runlevel. It uses the <code>chkconfig</code> command to obtain that information.
 The xinetd services that are also displayed by <code>chkconfig</code> are switched
-on/off by editing config files and are ignored in this context.</p>
+on/off by editing configuration files and are ignored in this context.</p>
 <ul>
-<li>config_files</li>
+<li>changed_config_files</li>
 </ul>
 <p>Contains all configuration files which have been changed since they were
 installed.
-Configuration files are all those files which are marked as such in the
+Changed configuration files are all those files which are marked as such in the
 package which has installed them. A configuration file change is reported
 if its content or its attributes like Linux permission bits or ownership
 have changed.</p>

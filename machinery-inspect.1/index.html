@@ -143,6 +143,8 @@ description from the gathered data.</p>
 <p><strong>Note</strong>:
 Machinery will always inspect all specified scopes, and skip scopes which
 trigger errors.</p>
+<p><strong>Note</strong>:
+Tasks on Debian-like systems are treated as patterns.</p>
 <h2 id="arguments">ARGUMENTS</h2>
 <ul>
 <li><code>HOSTNAME</code> (required):
@@ -162,7 +164,7 @@ trigger errors.</p>
     See the <a href="../machinery_main_scopes.1/index.html">Scope section</a> for more information.</p>
 </li>
 <li>
-<p><code>-e SCOPE</code>, <code>--exclude-scope=EXCLUDE-SCOPE</code> (optional):
+<p><code>-e SCOPE</code>, <code>--ignore-scope=IGNORE-SCOPE</code> (optional):
     Inspect system for all scopes except the specified scope.
     See the <a href="../machinery_main_scopes.1/index.html">Scope section</a> for more information.</p>
 </li>

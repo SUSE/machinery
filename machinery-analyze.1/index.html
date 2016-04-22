@@ -139,8 +139,8 @@
 <p>The <code>analyze</code> subcommand analyzes an existing system description and enriches
 it with additional information. Supported operations are:</p>
 <ul>
-<li><code>config-file-diffs</code>:
-    Generates the diffs between the extracted changed config files from the
+<li><code>changed-config-files-diffs</code>:
+    Generates the diffs between the extracted changed configuration files from the
     system and the original versions from the RPM packages.
     The diffs can be shown using <code>machinery show --show-diffs</code></li>
 </ul>
@@ -158,7 +158,7 @@ it with additional information. Supported operations are:</p>
 <ul>
 <li>
 <p>Analyze the config file diffs for the <code>myhost</code> system description:</p>
-<p>$ <code>machinery</code> analyze myhost --operation=config-file-diffs</p>
+<p>$ <code>machinery</code> analyze myhost --operation=changed-config-files-diffs</p>
 </li>
 </ul>
       </div>
