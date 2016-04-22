@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.20.0 - Fri Apr 22 16:39:04 CEST 2016 - thardeck@suse.de
+
 * Added explanation for 'N/A' fields for each scope (gh#SUSE/machinery#1904)
 * Added support of the ARM architectures "armv6l", "armv7l" and "aarch64" to
   our machinery-helper (This requires at least Go version 1.5)
