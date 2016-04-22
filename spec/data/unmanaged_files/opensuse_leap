@@ -46,6 +46,11 @@
   * /etc/alternatives/openSUSE-default.xml (link)
     User/Group: root:root
 
+  * /etc/auto.remote_dir (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 34 B
+
   * /etc/fstab (file)
     User/Group: root:root
     Mode: 644
@@ -282,6 +287,14 @@
   * /lib64/libdmraid-events-isw.so.1.0.0.rc16-3 (link)
     User/Group: root:root
 
+  * /mnt/unmanaged/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 2
+
+  * /mnt/unmanaged/remote-dir/ (remote_dir)
+
   * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-dir-with-' quote '/ (dir)
     User/Group: root:root
     Mode: 755
@@ -292,6 +305,8 @@
     User/Group: root:root
     Mode: 644
     Size: 3 B
+
+  * /remote-dir/ (remote_dir)
 
   * /root/.bash_history (file)
     User/Group: root:root

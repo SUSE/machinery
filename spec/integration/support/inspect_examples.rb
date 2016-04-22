@@ -50,7 +50,7 @@ shared_examples "inspect" do |base|
     include_examples "inspect groups", base
     include_examples "inspect changed config files", base
     include_examples "inspect changed managed files", base
-    include_examples "inspect unmanaged files", base, true
+    include_examples "inspect unmanaged files", base
 
     context "`show` hint" do
       it "will not be shown when --show is used" do
