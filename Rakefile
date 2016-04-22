@@ -144,9 +144,10 @@ task :release, [:type] do |task, args|
   new_version = Release.generate_release_version(args[:type])
   release = Release.new(version: new_version)
 
-  # Check syntax, git and CI state
+  # Disable unnecessary syntax checks
+  Rake::Task["check:syntax"].clear
+  # Check git and CI state
   Rake::Task['check:committed'].invoke
-  Rake::Task['check:syntax'].invoke
   release.check
 
   release.publish
