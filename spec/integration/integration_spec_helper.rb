@@ -133,7 +133,6 @@ Dir[File.join(Machinery::ROOT, "/spec/integration/support/*.rb")].each { |f| req
 
 RSpec.configure do |config|
   config.before(:suite) do
-    puts "Compiling helper binaries..."
     Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
       Cheetah.run("rake", "build")
     end
