@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.description = "Machinery is a systems management toolkit for Linux. It supports configuration discovery, system validation, and service migration. It's based on the idea of a universal system description."
   s.extensions = ["machinery-helper/Rakefile"]
 
-  s.required_ruby_version = '>= 1.9.2'
+  s.required_ruby_version = '>= 2.0.0'
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_dependency "cheetah", "~>0.4"
