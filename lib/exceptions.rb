@@ -65,7 +65,6 @@ module Machinery
       end
 
       def to_s
-        meta = @description[@scopes.first].meta
         hostname = @scopes.map do |s|
           @description[s].meta.hostname if @description[s].meta
         end.compact.first || "<HOSTNAME>"

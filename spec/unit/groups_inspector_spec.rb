@@ -77,7 +77,7 @@ describe GroupsInspector do
     it "can handle a missing newline at the end in /etc/group" do
       expect(system).to receive(:read_file).with("/etc/group").and_return(group_content.chomp)
 
-      summary = subject.inspect(filter)
+      subject.inspect(filter)
       expect(description.groups).to eq(expected_groups)
     end
 

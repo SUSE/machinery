@@ -94,7 +94,7 @@ class Zypper
     cmd += args
 
     with_env "ZYPP_CONF" => @zypp_config do
-      LoggedCheetah.run *cmd
+      LoggedCheetah.run(*cmd)
     end
   end
 end

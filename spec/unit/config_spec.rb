@@ -96,7 +96,7 @@ describe Machinery::Config do
 
     it "raises an error when a config is unknown" do
       expect {
-        value = subject.get("unknownkey")
+        subject.get("unknownkey")
       }.to raise_error(Machinery::Errors::UnknownConfig)
     end
   end

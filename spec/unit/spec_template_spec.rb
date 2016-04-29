@@ -20,7 +20,7 @@ require File.expand_path('../../../tools/spec_template.rb', __FILE__)
 describe SpecTemplate do
   let(:version)  { "0.16.0" }
   let(:gemspec) {
-    spec = Gem::Specification.new do |s|
+    Gem::Specification.new do |s|
       s.name = "machinery"
       s.version = "0.16.0"
       s.summary = "Systems management toolkit"
