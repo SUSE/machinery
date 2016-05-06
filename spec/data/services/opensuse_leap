@@ -3,12 +3,14 @@
   * after-local.service: static
   * auth-rpcgss-module.service: static
   * autofs.service: enabled
+  * autovt@.service: disabled
   * blk-availability.service: disabled
   * cgroup.service: masked
   * cleanup.service: static
   * clock.service: masked
   * console-getty.service: disabled
   * console-shell.service: static
+  * container-getty@.service: static
   * cron.service: enabled
   * crypto-early.service: masked
   * crypto.service: masked
@@ -40,6 +42,7 @@
   * earlyxdm.service: masked
   * emergency.service: static
   * fstrim.service: static
+  * getty@tty1.service: enabled
   * grub2-once.service: disabled
   * halt-local.service: static
   * initrd-cleanup.service: static
@@ -56,6 +59,7 @@
   * lvm2-lvmetad.service: disabled
   * lvm2-lvmetad.socket: enabled
   * lvm2-monitor.service: disabled
+  * lvm2-pvscan@.service: static
   * network.service: enabled
   * nfs-blkmap.service: disabled
   * nfs-config.service: static
@@ -80,6 +84,7 @@
   * rpcbind.service: enabled
   * rpcbind.socket: enabled
   * rsyncd.service: disabled
+  * serial-getty@.service: disabled
   * single.service: masked
   * sshd.service: enabled
   * startpreload.service: masked
@@ -89,9 +94,11 @@
   * syslog.socket: static
   * systemd-ask-password-console.service: static
   * systemd-ask-password-wall.service: static
+  * systemd-backlight@.service: static
   * systemd-binfmt.service: static
   * systemd-firstboot.service: static
   * systemd-fsck-root.service: static
+  * systemd-fsck@.service: static
   * systemd-halt.service: static
   * systemd-hibernate.service: static
   * systemd-hostnamed.service: static
@@ -106,6 +113,7 @@
   * systemd-logind.service: static
   * systemd-machined.service: static
   * systemd-modules-load.service: static
+  * systemd-nspawn@.service: disabled
   * systemd-poweroff.service: static
   * systemd-quotacheck.service: static
   * systemd-random-seed.service: static
@@ -115,6 +123,7 @@
   * systemd-readahead-replay.service: enabled
   * systemd-reboot.service: static
   * systemd-remount-fs.service: static
+  * systemd-rfkill@.service: static
   * systemd-shutdownd.service: static
   * systemd-shutdownd.socket: static
   * systemd-suspend.service: static
@@ -134,6 +143,7 @@
   * systemd-user-sessions.service: static
   * systemd-vconsole-setup.service: static
   * udev.service: static
+  * user@.service: static
   * wicked.service: enabled
   * wickedd-auto4.service: enabled
   * wickedd-dhcp4.service: enabled
