@@ -1,5 +1,4 @@
 .dockerenv
-.dockerinit
 etc/.pwd.lock
 etc/ImageVersion
 etc/fstab
