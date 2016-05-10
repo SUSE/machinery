@@ -22,7 +22,7 @@ gemspec
 group :test do
   gem "guard"
   gem "guard-rspec"
-  gem "listen", "~> 3.0.0"
+  gem "listen", "< 3.1"
   gem "rspec", "~> 3.2.0"
   gem "fakefs", ">= 0.6.7"
   gem "given_filesystem", ">= 0.1.1"
