@@ -51,7 +51,27 @@ class ServicesInspector < Inspector
   private
 
   def inspect_systemd_services
-    output = @system.run_command(
+    services = list_unit_files.map do |line|
+      name, state = line.split(/\s+/)
+
+      Service.new(name: name, state: state)
+    end
+
+    list_unit_files(true).map { |line| line.split(/\s+/) }.each do |name, state|
+      prefix, suffix = name.split("@")
+
+      instances = list_unit_instances.select { |i| i =~ /#{prefix}@.+#{suffix}/ }.each do |instance|
+        services << Service.new(name: instance, state: unit_is_enabled?(instance))
+      end
+
+      services << Service.new(name: name, state: state) if instances.empty?
+    end
+
+    services.sort_by(&:name)
+  end
+
+  def list_unit_files(templates = false)
+    @unit_files ||= @system.run_command(
       "systemctl",
       "list-unit-files",
       "--type=service,socket",
@@ -59,16 +79,28 @@ class ServicesInspector < Inspector
     )
 
     # The first line contains a table header. The last two lines contain a
-    # separator and a summary (e.g. "197 unit files listed"). We also filter
-    # templates.
-    lines = output.lines[1..-3].reject { |l| l =~ /@/ }
-    services = lines.map do |line|
-      name, state = line.split(/\s+/)
+    # separator and a summary (e.g. "197 unit files listed"). Files will be grouped by depending on
+    # weather they are templates or not.
+    @unit_files.lines[1..-3].group_by { |l| l.include?("@") }[templates]
+  end
 
-      Service.new(name: name, state: state)
-    end
+  def list_unit_instances
+    output = @system.run_command(
+      "systemctl",
+      "list-units",
+      "--all",
+      "*@*.service",
+      stdout: :capture
+    )
 
-    services.sort_by(&:name)
+    output.lines[1..-8].map { |line| line.split.first }
+  end
+
+  def unit_is_enabled?(unit)
+    output = @system.run_command("systemctl", "is-enabled", unit, stdout: :capture)
+    return output.split("\n").first
+  rescue Cheetah::ExecutionFailed
+    return "disabled"
   end
 
   def inspect_sysvinit_services

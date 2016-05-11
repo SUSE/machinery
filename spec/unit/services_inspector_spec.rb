@@ -51,10 +51,42 @@ syslog.socket     enabled
 4 unit files listed.
 EOF
     }
+    let(:systemctl_list_units_output) {
+      <<-EOF
+UNIT               LOAD   ACTIVE     SUB        JOB   DESCRIPTION
+getty@tty1.service loaded active     running          Getty on tty1
+user@0.service     loaded active     running          User Manager for UID 0
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+JOB    = Pending job for the unit.
+
+2 loaded units listed.
+To show all installed unit files use 'systemctl list-unit-files'.
+EOF
+    }
 
     it "returns data about systemd services when systemd is present" do
       allow(system).to receive(:has_command?).
         with("systemctl").and_return(true)
+      expect(system).to receive(:run_command).
+        with(
+          "systemctl",
+          "is-enabled",
+          "getty@tty1.service",
+          stdout: :capture
+        ).
+        and_return("enabled")
+      expect(system).to receive(:run_command).
+        with(
+          "systemctl",
+          "list-units",
+          "--all",
+          "*@*.service",
+          stdout: :capture
+        ).
+        and_return(systemctl_list_units_output)
       expect(system).to receive(:run_command).
         with(
           "systemctl",
@@ -69,14 +101,15 @@ EOF
       expect(description.services).to eq(
         ServicesScope.new(
           [
-            Service.new(name: "alsasound.service", state: "static"),
-            Service.new(name: "autofs.service",    state: "disabled"),
-            Service.new(name: "syslog.socket",     state: "enabled")
+            Service.new(name: "alsasound.service",  state: "static"),
+            Service.new(name: "autofs.service",     state: "disabled"),
+            Service.new(name: "getty@tty1.service", state: "enabled"),
+            Service.new(name: "syslog.socket",      state: "enabled")
           ],
           init_system: "systemd"
         )
       )
-      expect(inspector.summary).to eq("Found 3 services.")
+      expect(inspector.summary).to eq("Found 4 services.")
     end
 
     it "returns data about SysVinit services on a suse system when no systemd is present" do
