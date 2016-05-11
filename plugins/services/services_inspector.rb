@@ -60,7 +60,7 @@ class ServicesInspector < Inspector
     list_unit_files(true).map { |line| line.split(/\s+/) }.each do |name, state|
       prefix, suffix = name.split("@")
 
-      instances = list_unit_instances.select { |i| i =~ /#{prefix}@.+#{suffix}/ }.each do |instance|
+      instances = list_units.select { |i| i =~ /#{prefix}@.+#{suffix}/ }.each do |instance|
         services << Service.new(name: instance, state: unit_is_enabled?(instance))
       end
 
@@ -84,12 +84,11 @@ class ServicesInspector < Inspector
     @unit_files.lines[1..-3].group_by { |l| l.include?("@") }[templates]
   end
 
-  def list_unit_instances
+  def list_units
     output = @system.run_command(
       "systemctl",
       "list-units",
       "--all",
-      "*@*.service",
       stdout: :capture
     )
 

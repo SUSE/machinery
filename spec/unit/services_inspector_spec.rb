@@ -83,7 +83,6 @@ EOF
           "systemctl",
           "list-units",
           "--all",
-          "*@*.service",
           stdout: :capture
         ).
         and_return(systemctl_list_units_output)
