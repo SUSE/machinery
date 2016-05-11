@@ -2,6 +2,7 @@
 
   * after-local.service: static
   * autofs.service: enabled
+  * autovt@.service: disabled
   * blk-availability.service: disabled
   * cgroup.service: masked
   * cleanup.service: static
@@ -25,6 +26,7 @@
   * earlysyslog.service: masked
   * earlyxdm.service: masked
   * emergency.service: static
+  * getty@tty1.service: enabled
   * halt-local.service: static
   * initrd-cleanup.service: static
   * initrd-parse-etc.service: static
@@ -41,6 +43,7 @@
   * lvm2-lvmetad.socket: disabled
   * lvm2-monitor.service: disabled
   * network.service: enabled
+  * network@eth0.service: disabled
   * polkit.service: static
   * proc.service: masked
   * purge-kernels.service: enabled
@@ -52,6 +55,7 @@
   * rpcbind.service: enabled
   * rpcbind.socket: enabled
   * rsyncd.service: disabled
+  * serial-getty@.service: static
   * single.service: masked
   * sshd.service: enabled
   * startpreload.service: masked
@@ -61,8 +65,10 @@
   * syslog.socket: static
   * systemd-ask-password-console.service: static
   * systemd-ask-password-wall.service: static
+  * systemd-backlight@.service: static
   * systemd-binfmt.service: static
   * systemd-fsck-root.service: static
+  * systemd-fsck@.service: static
   * systemd-halt.service: static
   * systemd-hibernate.service: static
   * systemd-hostnamed.service: static
@@ -77,6 +83,7 @@
   * systemd-logind.service: static
   * systemd-machined.service: static
   * systemd-modules-load.service: static
+  * systemd-nspawn@.service: static
   * systemd-poweroff.service: static
   * systemd-quotacheck.service: static
   * systemd-random-seed.service: static
@@ -105,4 +112,6 @@
   * systemd-user-sessions.service: static
   * systemd-vconsole-setup.service: static
   * udev.service: static
+  * user@0.service: disabled
+  * user@1000.service: disabled
 
