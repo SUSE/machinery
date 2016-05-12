@@ -1821,6 +1821,10 @@
         "state": "enabled"
       },
       {
+        "name": "autovt@.service",
+        "state": "disabled"
+      },
+      {
         "name": "blk-availability.service",
         "state": "disabled"
       },
@@ -1842,6 +1846,10 @@
       },
       {
         "name": "console-shell.service",
+        "state": "static"
+      },
+      {
+        "name": "container-getty@.service",
         "state": "static"
       },
       {
@@ -1969,6 +1977,10 @@
         "state": "static"
       },
       {
+        "name": "getty@tty1.service",
+        "state": "enabled"
+      },
+      {
         "name": "grub2-once.service",
         "state": "disabled"
       },
@@ -2031,6 +2043,10 @@
       {
         "name": "lvm2-monitor.service",
         "state": "disabled"
+      },
+      {
+        "name": "lvm2-pvscan@.service",
+        "state": "static"
       },
       {
         "name": "network.service",
@@ -2133,6 +2149,10 @@
         "state": "disabled"
       },
       {
+        "name": "serial-getty@.service",
+        "state": "disabled"
+      },
+      {
         "name": "single.service",
         "state": "masked"
       },
@@ -2169,6 +2189,10 @@
         "state": "static"
       },
       {
+        "name": "systemd-backlight@.service",
+        "state": "static"
+      },
+      {
         "name": "systemd-binfmt.service",
         "state": "static"
       },
@@ -2178,6 +2202,10 @@
       },
       {
         "name": "systemd-fsck-root.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-fsck@.service",
         "state": "static"
       },
       {
@@ -2237,6 +2265,10 @@
         "state": "static"
       },
       {
+        "name": "systemd-nspawn@.service",
+        "state": "disabled"
+      },
+      {
         "name": "systemd-poweroff.service",
         "state": "static"
       },
@@ -2270,6 +2302,10 @@
       },
       {
         "name": "systemd-remount-fs.service",
+        "state": "static"
+      },
+      {
+        "name": "systemd-rfkill@.service",
         "state": "static"
       },
       {
@@ -2347,6 +2383,10 @@
       {
         "name": "udev.service",
         "state": "static"
+      },
+      {
+        "name": "user@0.service",
+        "state": "disabled"
       },
       {
         "name": "wicked.service",
