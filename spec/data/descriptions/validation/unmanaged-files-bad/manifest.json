@@ -20,12 +20,12 @@
         "group": "root",
         "size": 616,
         "mode": "700",
-        "files": 2
+        "file_objects": 2
       }
     ]
   },
   "meta": {
-    "format_version": 9,
+    "format_version": 10,
     "unmanaged_files": {
       "modified": "2014-08-27T18:00:17Z",
       "hostname": "10.122.166.77"

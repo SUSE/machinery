@@ -17,7 +17,7 @@
     ]
   },
   "meta": {
-    "format_version": 9,
+    "format_version": 10,
     "changed_config_files": {
       "modified": "2014-08-28T15:21:21Z",
       "hostname": "192.168.121.135"

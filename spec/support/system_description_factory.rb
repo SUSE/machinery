@@ -819,7 +819,7 @@ module SystemDescriptionFactory
     "unmanaged_files": {
       "_attributes": {
         "extracted": false,
-        "has_metadata": false
+        "has_metadata": true
       },
       "_elements": [
         {
@@ -845,7 +845,8 @@ module SystemDescriptionFactory
           "group": "root",
           "size": 12345,
           "mode": "755",
-          "files": 16
+          "files": 14,
+          "dirs": 2
         }
       ]
     }
