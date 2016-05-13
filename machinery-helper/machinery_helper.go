@@ -43,6 +43,8 @@ type UnmanagedFile struct {
 	Mode       string `json:"mode,omitempty"`
 	Files      *int   `json:"files,omitempty"`
 	FilesValue int    `json:"-"`
+	Dirs       *int   `json:"dirs,omitempty"`
+	DirsValue  int    `json:"-"`
 	Size       *int64 `json:"size,omitempty"`
 	SizeValue  int64  `json:"-"`
 }
@@ -287,17 +289,21 @@ func amendMode(entry *UnmanagedFile, perm os.FileMode) {
 	}
 }
 
-func dirInfo(path string) (size int64, fileCount int) {
+func dirInfo(path string) (size int64, fileCount int, dirCount int) {
 	files, _ := readDir(path)
 
 	size = int64(0)
 	fileCount = len(files)
+	dirCount = 0
 	for _, f := range files {
 		if f.IsDir() {
+			dirCount++
+			fileCount--
 			if _, ok := IgnoreList[path + f.Name()]; !ok {
-				subSize, subCount := dirInfo(path + f.Name() + "/")
+				subSize, subFiles, subDirs := dirInfo(path + f.Name() + "/")
 				size += subSize
-				fileCount += subCount
+				fileCount += subFiles
+				dirCount += subDirs
 			}
 		} else if f.Mode()&os.ModeSymlink != os.ModeSymlink {
 			size += f.Size()
@@ -312,11 +318,13 @@ func amendSize(entry *UnmanagedFile, size int64) {
 		entry.SizeValue = size
 		entry.Size = &entry.SizeValue
 	} else if entry.Type == "dir" {
-		size, files := dirInfo(entry.Name)
+		size, files, dirs := dirInfo(entry.Name)
 		entry.SizeValue = size
 		entry.Size = &entry.SizeValue
 		entry.FilesValue = files
 		entry.Files = &entry.FilesValue
+		entry.DirsValue = dirs
+		entry.Dirs = &entry.DirsValue
 	}
 }
 
