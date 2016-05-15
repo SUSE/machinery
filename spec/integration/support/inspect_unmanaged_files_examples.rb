@@ -29,8 +29,7 @@ shared_examples "inspect unmanaged files" do |base, skip_remote_mounts_test|
         "/var/lib/dpkg",
         "/var/lib/apt",
         "/var/lib/ureadahead",
-        "/var/log/upstart",
-        "/.dockerinit"
+        "/var/log/upstart"
       ]
     }
 
