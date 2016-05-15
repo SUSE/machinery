@@ -136,36 +136,6 @@ describe "machinery@Tumbleweed" do
       end
     end
 
-    describe "check if the latest version is run" do
-      let(:tumbleweed_version) {
-        Net::HTTP.get(
-          "download.opensuse.org", "/tumbleweed/repo/oss/media.1/products"
-        )[/\d{8}/]
-      }
-
-      context "when running a base image" do
-        it "matches the latest Tumbleweed version" do
-          output = @machinery.run_command(
-            "#{machinery_command} inspect  #{@subject_system.ip} --remote-user=machinery " \
-              "--scope=os --show", as: "vagrant"
-          ).stdout
-
-          expect(output).to include(tumbleweed_version)
-        end
-      end
-
-      context "when running a machinery image" do
-        it "matches the latest Tumbleweed version" do
-          output = @machinery.run_command(
-            "sudo #{machinery_command} inspect localhost --remote-user=machinery --scope=os --show",
-            as: "vagrant"
-          ).stdout
-
-          expect(output).to include(tumbleweed_version)
-        end
-      end
-    end
-
     context "when the use of the stat command is required while running as a remote user" do
       it "runs with privileged permissions" do
         expect(
