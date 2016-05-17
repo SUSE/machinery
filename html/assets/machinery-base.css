@@ -2377,8 +2377,8 @@ input[type="button"].btn-block {
 }
 @font-face {
     font-family: 'Glyphicons Halflings';
-    src: url('../app/fonts/glyphicons-halflings-regular.eot');
-    src: url('../app/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../app/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../app/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../app/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+    src: url('../fonts/glyphicons-halflings-regular.eot');
+    src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
     position: relative;
@@ -2990,6 +2990,9 @@ input[type="button"].btn-block {
 }
 .glyphicon-tree-deciduous:before {
     content: "\e200";
+}
+.glyphicon-option-horizontal:before {
+    content: "\e234";
 }
 .caret {
     display: inline-block;

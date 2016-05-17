@@ -251,7 +251,7 @@ class Server < Sinatra::Base
     content
   end
 
-  get "/" do
+  def all_descriptions
     check_session_for_error
     descriptions = settings.system_description_store.list
     @all_descriptions = Hash.new
@@ -283,11 +283,21 @@ class Server < Sinatra::Base
         @errors.push(e)
       end
     end
+  end
 
-    haml File.read(File.join(Machinery::ROOT, "html/landing_page.html.haml"))
+  get "/" do
+    all_descriptions
+
+    haml File.read(File.join(Machinery::ROOT, "html/homepage.html.haml"))
+  end
+
+  get "/fonts/:font" do
+    File.read(File.join(Machinery::ROOT, "html/assets/fonts/#{params[:font]}"))
   end
 
   get "/compare/:a/:b" do
+    all_descriptions
+
     @description_a = SystemDescription.load(params[:a], settings.system_description_store)
     @description_b = SystemDescription.load(params[:b], settings.system_description_store)
 
@@ -330,6 +340,8 @@ class Server < Sinatra::Base
   end
 
   get "/:id" do
+    all_descriptions
+
     begin
       @description = SystemDescription.load(params[:id], settings.system_description_store)
     rescue Machinery::Errors::SystemDescriptionNotFound => e

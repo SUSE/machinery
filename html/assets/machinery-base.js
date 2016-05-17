@@ -23,7 +23,22 @@ $(document).ready(function () {
     $(this).closest(".scope").hide();
   });
 
-  $(".btn-reset").click(function(){
+  $(".reset-filter").click(function(){
     $("#filter").val("").change();
   });
+  $(".reset-descriptions-filter").click(function(){
+    $("#descriptions-filter").val("").change();
+  });
 })
+
+$(window).load(function(){
+  if (window.location.pathname == "/") {
+    descriptionSelector = $('#description-selector')
+    descriptionSelector.modal({backdrop: 'static', keyboard: false});
+    descriptionSelector.find("button[data-dismiss='modal']").hide();
+  }
+});
+
+$(document).on("click", ".description-name", function () {
+  $(this).parent().find(".open-description-selector").trigger("click");
+});

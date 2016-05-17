@@ -118,3 +118,18 @@ $(document).ready(function () {
   });
   highlightCurrentScope();
 });
+
+$(document).on("click", ".open-description-selector", function () {
+  if ($(this).hasClass("show")) {
+    descriptionName = $(".description-name:last").val();
+    $(".description-selector-action").text("compare with description \"" + descriptionName + "\".");
+    $("a.show-description").show();
+    $("a.compare-description").hide();
+  }else{
+    descriptionName = $(".description-name:first").val();
+    $(".description-selector-action").text("compare with description \"" + descriptionName + "\".");
+    $("a.show-description").hide();
+    $("a.compare-description").show();
+  }
+});
+

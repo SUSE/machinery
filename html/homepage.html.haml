@@ -1,0 +1,24 @@
+!!!
+%html
+  %head
+    %title
+      Machinery System Descriptions
+    %meta{ :charset => 'utf-8' }
+    %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
+    %script{ :src => "assets/jquery-2.1.1.min.js" }
+    %script{ :src => "assets/jquery.searcher.min.js" }
+    %script{ :src => "assets/machinery-base.js" }
+    %script{ :src => "assets/show/machinery.js" }
+    %script{ :src => "assets/bootstrap-tooltip.js" }
+    %script{ :src => "assets/bootstrap-popover.js" }
+    %script{ :src => "assets/bootstrap-modal.js" }
+
+  %body
+    .container-fluid
+      #content_container
+        = render_partial "description_selector"
+
+    .container-fluid
+      #nav-bar
+        = render_partial "nav_bar"

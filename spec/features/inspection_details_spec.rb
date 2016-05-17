@@ -32,7 +32,7 @@ RSpec.describe "Inspection Details", type: :feature do
     it "displays all used filters" do
       visit("/description")
 
-      click_on("(inspection details)")
+      click_on("inspection details")
 
       expect(find("#filters")).to have_content("Filters used during Inspection")
       expect(find("#filters")).to have_content("No filters were used.")
@@ -49,7 +49,7 @@ RSpec.describe "Inspection Details", type: :feature do
 
       visit("/description")
 
-      click_on("(inspection details)")
+      click_on("inspection details")
 
       expect(find("#filters")).to have_content("Filters used during Inspection")
       expect(find("#filters")).to have_content("/foo=bar")
@@ -62,7 +62,7 @@ RSpec.describe "Inspection Details", type: :feature do
     it "displays docker in the inspection details" do
       visit("/description")
 
-      click_on("(inspection details)")
+      click_on("inspection details")
 
       expect(find("#container_type")).to have_content(/Type of Inspected Container docker/)
     end

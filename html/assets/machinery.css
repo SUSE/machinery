@@ -12,6 +12,7 @@ body {
   padding-left: 15px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
+  padding-top: 20px;
 }
 
 #nav-bar a:hover {
@@ -255,4 +256,44 @@ h1 {
   height: 32px;
   min-width: 32px;
   min-height: 32px;
+}
+
+.modal-dialog.large {
+  width: 90%; /* respsonsive width */
+}
+
+.description-name {
+  font-size: 2em ;
+  box-sizing: border-box ;
+  -webkit-box-sizing: border-box ;
+  -moz-box-sizing: border-box ;
+  outline: none ;
+  display: block ;
+  width: 100% ;
+  padding: 7px ;
+  border: none ;
+  background: transparent ;
+  border-radius: 0 ;
+  border-bottom: 1px solid #7f694f;
+  height: 45px;
+}
+
+.missing {
+  font-style: italic;
+  font-size: 1.2em !important;
+}
+
+.description-selector-action {
+  font-style: bold !important;
+}
+
+#filter {
+  height: 31px !important;
+}
+
+.reset-filter {
+  height: 31px !important;
+}
+.toolbar {
+  margin-top: 5px;
 }

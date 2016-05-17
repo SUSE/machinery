@@ -23,12 +23,9 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
       File.join(Machinery::ROOT, "spec/data/descriptions/jeos/"))
   end
 
-  it "opens the page" do
-    visit("/compare/opensuse131/opensuse132")
-    expect(page).to have_content("Comparing 'opensuse131' with 'opensuse132'")
-  end
-
   it "shows the comparison" do
+    visit("/compare/opensuse131/opensuse132")
+
     within("#packages_container") do
       find("tr", text: "DirectFB 1.6.3 4.1.3")
       expect(page).to have_content("aaa_base (version: 13.1 ↔ 13.2+git20140911.61c1681)")
