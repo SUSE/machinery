@@ -36,6 +36,38 @@
     }
   },
   "definitions": {
+    "file": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["name", "type", "user", "group"],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "enum": ["file", "link", "dir", "remote_dir"]
+            },
+            "user": {
+              "type": "string",
+              "minLength": 1
+            },
+            "group": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "oneOf": [
+            { "$ref": "#/definitions/file_file" },
+            { "$ref": "#/definitions/file_dir" },
+            { "$ref": "#/definitions/file_link" }
+          ]
+        },
+        {
+          "$ref": "#/definitions/file_common"
+        }
+      ]
+    },
     "file_common": {
       "type": "object",
       "required": ["name", "type"],
@@ -47,47 +79,6 @@
           "enum": ["file", "link", "dir", "remote_dir"]
         }
       }
-    },
-    "file": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/file_common"
-        },
-        {
-          "allOf": [
-            {
-              "type": "object",
-              "required": ["name", "type"],
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                }
-              }
-            },
-            {
-              "required": ["user", "group"],
-              "properties": {
-                "user": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "group": {
-                  "type": "string",
-                  "minLength": 1
-                }
-              },
-              "oneOf": [
-                { "$ref": "#/definitions/file_file" },
-                { "$ref": "#/definitions/file_dir" },
-                { "$ref": "#/definitions/file_link" }
-              ]
-            }
-          ]
-        }
-      ]
     },
     "file_file": {
       "required": ["type", "size", "mode"],
@@ -158,7 +149,6 @@
         { "$ref": "#/definitions/file_common" },
         {
           "properties": {
-            "required": ["type"],
             "type": {
               "enum": ["remote_dir"]
             }
