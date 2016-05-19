@@ -146,14 +146,7 @@
     },
     "file_remote_dir": {
       "allOf": [
-        { "$ref": "#/definitions/file_common" },
-        {
-          "properties": {
-            "type": {
-              "enum": ["remote_dir"]
-            }
-          }
-        }
+        { "$ref": "#/definitions/file_common" }
       ]
     }
   }
