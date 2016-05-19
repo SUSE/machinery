@@ -2875,7 +2875,7 @@
         "group": "root",
         "size": 339,
         "mode": "644",
-        "files": 2
+        "file_objects": 2
       }
     ]
   },
@@ -2909,7 +2909,7 @@
     ]
   },
   "meta": {
-    "format_version": 9,
+    "format_version": 10,
     "os": {
       "modified": "2015-06-23T11:55:38Z",
       "hostname": "192.168.121.70"

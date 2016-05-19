@@ -111,7 +111,8 @@ shared_examples "inspect-container" do |container|
           expect(
             @machinery.run_command(
               "#{machinery_command} inspect-container -x machinerytool/#{container} " \
-              "--scope=unmanaged-files --skip-files=/etc/resolv.conf --name=test",
+                "--scope=unmanaged-files --skip-files=/etc/resolv.conf,/.dockerinit " \
+                "--name=test",
               as: "vagrant"
             )
           ).to succeed

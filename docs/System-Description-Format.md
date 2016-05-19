@@ -884,3 +884,10 @@ version of Machinery.
 ### Version 9
 
 * Format version 9 fixes the filter paths for migrated descriptions
+
+### Version 10
+
+* Add meta data information regarding subdirectories to unmanaged files, to allow distinction
+  between files and directories.
+  The subdirectory count is not available for migrated descriptions so the sum of both is
+  called file_objects.

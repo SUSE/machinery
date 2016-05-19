@@ -78,7 +78,32 @@ describe UnmanagedFilesRenderer do
             "group": "root",
             "size": 12024,
             "mode": "755",
-            "files": 2
+            "files": 1,
+            "dirs": 1
+          }
+        ]
+      }
+    }
+    EOF
+  }
+
+  let(:description_dir_legacy) {
+    create_test_description(json: <<-EOF)
+    {
+      "unmanaged_files": {
+        "_attributes": {
+          "extracted": true,
+          "has_metadata": true
+        },
+        "_elements": [
+          {
+            "name": "/etc/iscsi/",
+            "type": "dir",
+            "user": "root",
+            "group": "root",
+            "size": 12024,
+            "mode": "755",
+            "file_objects": 2
           }
         ]
       }
@@ -134,19 +159,6 @@ describe UnmanagedFilesRenderer do
     EOF
   }
 
-  let(:empty_description) {
-    create_test_description(json: <<-EOF)
-    {
-      "unmanaged_files": {
-        "_attributes": {
-          "extracted": true
-        },
-        "_elements": []
-      }
-    }
-    EOF
-  }
-
   describe "#render" do
     it "prints a list of files without meta data if non exists" do
       actual_output = UnmanagedFilesRenderer.new.render(description_without_meta)
@@ -178,11 +190,29 @@ EOF
 
     it "prints a dir with meta data" do
       actual_output = UnmanagedFilesRenderer.new.render(description_dir)
-      expect(actual_output).to include("/etc/iscsi/ (dir)")
-      expect(actual_output).to include("Mode: 755")
-      expect(actual_output).to include("User/Group: root:root")
-      expect(actual_output).to include("Size: 11.7 KiB")
-      expect(actual_output).to include("Files: 2")
+      expected_output = <<-EOF
+  Files extracted: yes
+  * /etc/iscsi/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 11.7 KiB
+    Files: 1
+    Subdirectories: 1
+      EOF
+      expect(actual_output).to include(expected_output)
+    end
+
+    it "prints a dir with legacy meta data" do
+      actual_output = UnmanagedFilesRenderer.new.render(description_dir_legacy)
+      expected_output = <<-EOF
+  Files extracted: yes
+  * /etc/iscsi/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 11.7 KiB
+    File Objects: 2
+      EOF
+      expect(actual_output).to include(expected_output)
     end
 
     it "prints a remote dir" do

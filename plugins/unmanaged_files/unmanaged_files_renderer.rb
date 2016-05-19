@@ -35,7 +35,13 @@ class UnmanagedFilesRenderer < Renderer
               puts "User/Group: #{p.user}:#{p.group}" if p.user || p.group
               puts "Mode: #{p.mode}" if p.mode
               puts "Size: #{number_to_human_size(p.size)}" if p.size
-              puts "Files: #{p.files}" if p.files
+              if p.files && p.dirs
+                puts "Files: #{p.files}"
+                puts "Subdirectories: #{p.dirs}"
+              end
+              if p.file_objects
+                puts "File Objects: #{p.file_objects}"
+              end
             end
           else
             item "#{p.name} (#{p.type})"

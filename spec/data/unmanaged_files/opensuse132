@@ -1,16 +1,17 @@
-# Unmanaged Files [192.168.121.194] (2014-11-25 18:38:32)
+# Unmanaged Files [192.168.121.52] (2016-05-13 15:33:41)
 
   Files extracted: yes
   * /boot/grub2/bootpart.cfg (file)
     User/Group: root:root
     Mode: 644
-    Size: 95 B
+    Size: 97 B
 
   * /boot/grub2/i386-pc/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 12.7 MiB
-    Files: 543
+    Files: 542
+    Subdirectories: 0
 
   * /boot/initrd.vmx (file)
     User/Group: root:root
@@ -41,7 +42,8 @@
     User/Group: root:root
     Mode: 755
     Size: 99.3 KiB
-    Files: 17
+    Files: 15
+    Subdirectories: 1
 
   * /etc/alternatives/openSUSE-default.xml (link)
     User/Group: root:root
@@ -54,7 +56,7 @@
   * /etc/fstab (file)
     User/Group: root:root
     Mode: 644
-    Size: 86 B
+    Size: 596 B
 
   * /etc/group- (file)
     User/Group: root:root
@@ -92,7 +94,7 @@
   * /etc/passwd- (file)
     User/Group: root:root
     Mode: 644
-    Size: 915 B
+    Size: 923 B
 
   * /etc/resolv.conf (file)
     User/Group: root:root
@@ -102,7 +104,7 @@
   * /etc/shadow- (file)
     User/Group: root:shadow
     Mode: 640
-    Size: 374 B
+    Size: 387 B
 
   * /etc/sysconfig/backup (file)
     User/Group: root:root
@@ -201,25 +203,29 @@
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 3
+    Files: 2
+    Subdirectories: 0
 
   * /etc/systemd/system/getty.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 2
+    Files: 1
+    Subdirectories: 0
 
   * /etc/systemd/system/multi-user.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 8
+    Files: 7
+    Subdirectories: 0
 
   * /etc/systemd/system/network-online.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 2
+    Files: 1
+    Subdirectories: 0
 
   * /etc/systemd/system/network.service (link)
     User/Group: root:root
@@ -228,31 +234,36 @@
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 4
+    Files: 3
+    Subdirectories: 0
 
   * /etc/systemd/system/sysinit.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 3
+    Files: 2
+    Subdirectories: 0
 
   * /etc/systemd/system/system-update.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 2
+    Files: 1
+    Subdirectories: 0
 
   * /etc/systemd/system/wicked.service.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 2
+    Files: 1
+    Subdirectories: 0
 
   * /etc/systemd/system/wickedd.service.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 5
+    Files: 4
+    Subdirectories: 0
 
   * /etc/vagrant_box_build_time (file)
     User/Group: root:root
@@ -269,21 +280,46 @@
     Mode: 644
     Size: 139 B
 
+  * /home/machinery/ (dir)
+    User/Group: machinery:users
+    Mode: 755
+    Size: 2.2 KiB
+    Files: 3
+    Subdirectories: 4
+
   * /home/vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
-    Size: 409 B
-    Files: 7
+    Size: 389 B
+    Files: 2
+    Subdirectories: 4
 
   * /mnt/unmanaged/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 1
+    Files: 0
+    Subdirectories: 1
 
   * /mnt/unmanaged/remote-dir/ (remote_dir)
+    User/Group: root:root
+    Mode: 755
+
+  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-dir-with-' quote '/ (dir)
+    User/Group: root:root
+    Mode: 755
+    Size: 0 B
+    Files: 0
+    Subdirectories: 0
+
+  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-file-with-' quote ' (file)
+    User/Group: root:root
+    Mode: 644
+    Size: 3 B
 
   * /remote-dir/ (remote_dir)
+    User/Group: root:root
+    Mode: 755
 
   * /root/.bash_history (file)
     User/Group: root:root
@@ -291,29 +327,30 @@
     Size: 0 B
 
   * /root/.ssh/ (dir)
-
-  * /home/machinery/ (dir)
-    User/Group: machinery:users
-    Mode: 755
-    Size: 0 B
-    Files: 4
+    User/Group: root:root
+    Mode: 700
+    Size: 808 B
+    Files: 1
+    Subdirectories: 0
 
   * /srv/test/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 73.4 KiB
-    Files: 5
+    Files: 4
+    Subdirectories: 0
 
   * /usr/bin/crontab_link_target (file)
-    User/Group: root:root
-    Mode: 755
-    Size: 150 B
+    User/Group: root:trusted
+    Mode: 4755
+    Size: 54.6 KiB
 
   * /usr/local/magicapp/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 150 B
-    Files: 8
+    Files: 5
+    Subdirectories: 2
 
   * /usr/sbin/userdel.local (file)
     User/Group: root:root
@@ -323,20 +360,23 @@
   * /vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
-    Size: 39.2 KiB
-    Files: 4
+    Size: 45.7 KiB
+    Files: 5
+    Subdirectories: 0
 
   * /var/adm/netconfig/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 84 B
-    Files: 5
+    Files: 2
+    Subdirectories: 2
 
   * /var/cache/kiwi/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 1
+    Files: 0
+    Subdirectories: 0
 
   * /var/cache/ldconfig/aux-cache (file)
     User/Group: root:root
@@ -347,13 +387,15 @@
     User/Group: root:root
     Mode: 755
     Size: 9.3 MiB
-    Files: 18
+    Files: 12
+    Subdirectories: 5
 
   * /var/cache/zypp/solv/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 10.9 MiB
-    Files: 7
+    Files: 4
+    Subdirectories: 2
 
   * /var/lib/nfs/.etab.lock (file)
     User/Group: root:root
@@ -374,7 +416,8 @@
     User/Group: root:root
     Mode: 700
     Size: 5 KiB
-    Files: 2
+    Files: 1
+    Subdirectories: 0
 
   * /var/lib/systemd/entropy_count (file)
     User/Group: root:root
@@ -469,7 +512,7 @@
   * /var/lib/wicked/lease-eth0-dhcp-ipv4.xml (file)
     User/Group: root:root
     Mode: 600
-    Size: 848 B
+    Size: 847 B
 
   * /var/lib/zypp/AnonymousUniqueId (file)
     User/Group: root:root
@@ -490,12 +533,13 @@
     User/Group: root:root
     Mode: 755
     Size: 0 B
-    Files: 1
+    Files: 0
+    Subdirectories: 0
 
   * /var/log/YaST2/mkinitrd.log (file)
     User/Group: root:root
     Mode: 644
-    Size: 7.8 KiB
+    Size: 7.7 KiB
 
   * /var/log/alternatives.log (file)
     User/Group: root:root
@@ -505,30 +549,21 @@
   * /var/log/boot.kiwi (file)
     User/Group: root:root
     Mode: 644
-    Size: 36.9 KiB
+    Size: 38.1 KiB
 
   * /var/log/zypp/history (file)
     User/Group: root:root
     Mode: 644
-    Size: 51.7 KiB
-
-  * /var/spool/mail/vagrant (file)
-    User/Group: vagrant:mail
-    Mode: 660
-    Size: 0 B
+    Size: 93.7 KiB
 
   * /var/spool/mail/machinery (file)
     User/Group: machinery:mail
     Mode: 660
     Size: 0 B
 
-  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-dir-with-' quote '/ (dir)
-    User/Group: root:root
-    Mode: 755
+  * /var/spool/mail/vagrant (file)
+    User/Group: vagrant:mail
+    Mode: 660
     Size: 0 B
-    Files: 1
 
-  * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-file-with-' quote ' (file)
-    User/Group: root:root
-    Mode: 755
-    Size: 0 B
+
