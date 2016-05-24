@@ -25,7 +25,11 @@
                     %th.medium User
                     %th.medium Group
                     %th.medium Size
-                    %th.medium Files in dir.
+                  - if unmanaged_files.any?(&:file_objects)
+                    %th.medium File Objects
+                  - else
+                    %th.medium Subdirectories
+                    %th.medium Files in Directory
               %tbody
                 - unmanaged_files.each do |file|
                   %tr
@@ -42,4 +46,11 @@
                       %td= file.user
                       %td= file.group
                       %td= number_to_human_size(file.size)
-                      %td= file.files
+                      - if unmanaged_files.any?(&:file_objects)
+                        %td
+                          = file.file_objects if file.file_objects
+                      - else
+                        %td
+                          = file.dirs if file.dirs
+                        %td
+                          = file.files if file.files
