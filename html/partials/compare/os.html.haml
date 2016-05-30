@@ -19,7 +19,7 @@
               - if @diff["os"].only_in1
                 = only_in_a
                 = render_partial "compare/os_table", os: @diff["os"].only_in1
-            .col-md-6.table_container
+            .col-md-6.table_container{ class: offset_class(@diff["os"].only_in1) }
               - if @diff["os"].only_in2
                 = only_in_b
                 = render_partial "compare/os_table", os: @diff["os"].only_in2

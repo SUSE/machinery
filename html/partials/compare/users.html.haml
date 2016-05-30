@@ -23,7 +23,7 @@
             - if @diff["users"].only_in1
               = only_in_a
               = render_partial "compare/user_list", list: @diff["users"].only_in1
-          .col-md-6.table_container
+          .col-md-6.table_container{ class: offset_class(@diff["users"].only_in1) }
             - if @diff["users"].only_in2
               = only_in_b
               = render_partial "compare/user_list", list: @diff["users"].only_in2

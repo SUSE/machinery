@@ -102,6 +102,11 @@ class Server < Sinatra::Base
       "<h3>In both descriptions:</h3>"
     end
 
+    def offset_class(first_col)
+      return "" if first_col
+      "col-md-offset-6"
+    end
+
     def changed
       "<h3>In both with different attributes:</h3>"
     end
