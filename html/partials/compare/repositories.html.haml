@@ -25,7 +25,7 @@
               - repo_system = @diff["repositories"].only_in1.repository_system
               = render_partial "compare/repository_list_#{repo_system}",
                 list: @diff["repositories"].only_in1
-          .col-md-6.table_container
+          .col-md-6.table_container{ class: offset_class(@diff["repositories"].only_in1) }
             - if @diff["repositories"].only_in2
               = only_in_b
               - repo_system = @diff["repositories"].only_in2.repository_system

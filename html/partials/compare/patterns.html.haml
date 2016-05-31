@@ -23,7 +23,7 @@
             - if @diff["patterns"].only_in1
               = only_in_a
               = render_partial "compare/pattern_list", list: @diff["patterns"].only_in1
-          .col-md-6.table_container
+          .col-md-6.table_container{ class: offset_class(@diff["patterns"].only_in1) }
             - if @diff["patterns"].only_in2
               = only_in_b
               = render_partial "compare/pattern_list", list: @diff["patterns"].only_in2
@@ -48,4 +48,3 @@
             .col-md-12.table_container
               = in_both
               = render_partial "compare/pattern_list", list: @diff["patterns"].common
-

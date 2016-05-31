@@ -24,7 +24,7 @@
               = only_in_a
               = render_partial "compare/changed_managed_file_list",
                 list: @diff["changed_managed_files"].only_in1
-          .col-xs-6.table_container
+          .col-xs-6.table_container{ class: offset_class(@diff["changed_managed_files"].only_in1) }
             - if @diff["changed_managed_files"].only_in2
               = only_in_b
               = render_partial "compare/changed_managed_file_list",
