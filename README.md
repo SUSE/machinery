@@ -75,6 +75,10 @@ codebase or test the latest development changes.
 
          $ sudo zypper in gcc-c++ make patch ruby-devel libxslt-devel libxml2-devel libvirt-devel
 
+     Install Go in order to compile the machinery-helper:
+
+         $ sudo zypper in go
+
   4. **Clone Machinery repository and install Gem dependencies**
 
          $ git clone git@github.com:SUSE/machinery.git
