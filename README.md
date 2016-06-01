@@ -61,10 +61,10 @@ codebase or test the latest development changes.
 
          $ sudo zypper in ruby rubygem-bundler
 
-     After the installation, make sure that your `ruby20` version is at least
+     After the installation, make sure that your ruby version is at least
      `2.0.0.p247-3.11.1`:
 
-         $ rpm -q ruby20
+         $ ruby -v
 
      With lower versions, `bundle install` won't work because of a
      [bug](https://bugzilla.novell.com/show_bug.cgi?id=858100).
@@ -74,6 +74,10 @@ codebase or test the latest development changes.
      Install packages needed to compile Gems with native extensions:
 
          $ sudo zypper in gcc-c++ make patch ruby-devel libxslt-devel libxml2-devel libvirt-devel
+
+     Install Go in order to compile the machinery-helper:
+
+         $ sudo zypper in go
 
   4. **Clone Machinery repository and install Gem dependencies**
 
