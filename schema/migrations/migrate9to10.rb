@@ -19,6 +19,8 @@ class Migrate9To10 < Migration
   desc <<-EOT
     Add meta data information regarding subdirectories to unmanaged files. The subdirectory
     count is not available for migrated descriptions so the sum of both is called file_objects.
+    Add an attribute to the patterns scope which identifies pattern management on the inspected
+    system (tasksel on Debian, zypper on SUSE).
   EOT
 
   def migrate
@@ -28,6 +30,26 @@ class Migrate9To10 < Migration
           element["file_objects"] = element.delete("files")
         end
       end
+    end
+
+    if @hash.key?("patterns")
+      if @hash.key?("packages")
+        patterns_system = if @hash["packages"]["_attributes"]["package_system"] == "dpkg"
+          "tasksel"
+        else
+          "zypper"
+        end
+      else
+        patterns_system = "zypper"
+        Machinery::Ui.warn("No packages scope found. Patterns system defaults to zypper.")
+      end
+
+      @hash["patterns"] = {
+        "_attributes" => {
+          "patterns_system" => patterns_system
+        },
+        "_elements" => @hash["patterns"]["_elements"]
+      }
     end
   end
 end

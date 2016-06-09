@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Add attribute in patterns scope to identify the patterns manager
 * Improve navigation in HTML view to connect "list", "show" and "compare"
   functionality
 * Fix service inspector on systemd to include instanciated services

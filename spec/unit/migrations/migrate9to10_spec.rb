@@ -76,6 +76,104 @@ describe Migrate9To10 do
       }
     EOT
   }
+  let(:description_hash_with_rpm) {
+    JSON.parse(<<-EOT)
+      {
+        "packages": {
+          "_attributes": {
+            "package_system": "rpm"
+          },
+          "_elements": [
+            {
+              "name": "ConsoleKit",
+              "version": "0.2.10",
+              "release": "64.67.1",
+              "arch": "i586",
+              "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+              "checksum": "5f41336f0a7f7beb6771d8c56f4b8a1b"
+            }
+          ]
+        },
+        "patterns": {
+          "_elements": [
+            {
+              "name": "Minimal",
+              "version": "11",
+              "release": "38.47.37"
+            }
+          ]
+        },
+        "meta": {
+          "format_version": 9,
+          "unmanaged_files": {
+            "modified": "2014-12-04T14:57:58Z",
+            "hostname": "localhost"
+          }
+        }
+      }
+    EOT
+  }
+
+  let(:description_hash_with_dpkg) {
+    JSON.parse(<<-EOT)
+      {
+        "packages": {
+          "_attributes": {
+            "package_system": "dpkg"
+          },
+          "_elements": [
+            {
+              "name": "ConsoleKit",
+              "version": "0.2.10",
+              "release": "64.67.1",
+              "arch": "i586",
+              "vendor": "SUSE LINUX Products GmbH, Nuernberg, Germany",
+              "checksum": "5f41336f0a7f7beb6771d8c56f4b8a1b"
+            }
+          ]
+        },
+        "patterns": {
+          "_elements": [
+            {
+              "name": "Minimal",
+              "version": "11",
+              "release": "38.47.37"
+            }
+          ]
+        },
+        "meta": {
+          "format_version": 9,
+          "unmanaged_files": {
+            "modified": "2014-12-04T14:57:58Z",
+            "hostname": "localhost"
+          }
+        }
+      }
+    EOT
+  }
+
+  let(:description_hash_without_package_system) {
+    JSON.parse(<<-EOT)
+      {
+        "patterns": {
+          "_elements": [
+            {
+              "name": "Minimal",
+              "version": "11",
+              "release": "38.47.37"
+            }
+          ]
+        },
+        "meta": {
+          "format_version": 9,
+          "unmanaged_files": {
+            "modified": "2014-12-04T14:57:58Z",
+            "hostname": "localhost"
+          }
+        }
+      }
+    EOT
+  }
   let(:description_base) { system_description_factory_store.description_path("description") }
 
   it "renames the attribute 'files' of unmanaged dirs to 'file_objects'" do
@@ -91,5 +189,28 @@ describe Migrate9To10 do
     migration = Migrate9To10.new(description_hash_without_meta_data, description_base)
     migration.migrate
     expect(original).to eq(description_hash_without_meta_data)
+  end
+
+  it "adds the attribute patterns_system and sets it to zypper for rpm based systems" do
+    migration = Migrate9To10.new(description_hash_with_rpm, description_base)
+    migration.migrate
+
+    expect(description_hash_with_rpm["patterns"]["_attributes"]["patterns_system"]).to eq("zypper")
+  end
+
+  it "adds the attribute patterns_system and sets it to tasksel for dpkg based systems" do
+    migration = Migrate9To10.new(description_hash_with_dpkg, description_base)
+    migration.migrate
+
+    expect(description_hash_with_dpkg["patterns"]["_attributes"]["patterns_system"]).to eq("tasksel")
+  end
+
+  it "adds the attribute patterns_system and sets it to zypper for systems without package system" \
+        "attribute" do
+    migration = Migrate9To10.new(description_hash_without_package_system, description_base)
+    migration.migrate
+
+    expect(description_hash_without_package_system["patterns"]["_attributes"] \
+      ["patterns_system"]).to eq("zypper")
   end
 end

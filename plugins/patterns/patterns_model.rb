@@ -22,6 +22,7 @@ end
 class PatternsScope < Machinery::Array
   include Machinery::Scope
 
+  has_attributes :patterns_system
   has_elements class: Pattern
 
   def compare_with(other)

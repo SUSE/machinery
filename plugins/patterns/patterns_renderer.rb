@@ -23,9 +23,12 @@ class PatternsRenderer < Renderer
       puts "There are no patterns or tasks."
     end
 
-    if description.packages && description.packages.package_system == "dpkg"
+    if description.patterns.patterns_system == "tasksel"
       puts "Note: Tasks on Debian-like systems are treated as patterns."
     end
+
+    puts "Pattern Manager: #{description.patterns.patterns_system}" unless
+      description.patterns.empty?
 
     list do
       description.patterns.each do |p|
