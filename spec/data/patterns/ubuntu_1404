@@ -1,4 +1,5 @@
 # Patterns [192.168.121.176] (2015-12-14 15:10:04)
 
+  Note: Tasks on Debian-like systems are treated as patterns.
+  Pattern Manager: tasksel
   * openssh-server
-

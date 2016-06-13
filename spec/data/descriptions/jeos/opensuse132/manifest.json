@@ -1773,6 +1773,7 @@
   },
   "patterns": {
     "_attributes": {
+      "patterns_system": "zypper"
     },
     "_elements": [
       {

@@ -84,6 +84,7 @@ class PatternsInspector < Inspector
     end.uniq.sort_by(&:name)
 
     @description.patterns = PatternsScope.new(patterns)
+    @description.patterns.attributes["patterns_system"] = "zypper"
   end
 
   def inspect_with_tasksel
@@ -98,5 +99,6 @@ class PatternsInspector < Inspector
     end.uniq.sort_by(&:name)
 
     @description.patterns = PatternsScope.new(patterns)
+    @description.patterns.attributes["patterns_system"] = "tasksel"
   end
 end

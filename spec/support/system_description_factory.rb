@@ -459,6 +459,10 @@ module SystemDescriptionFactory
   EOF
   EXAMPLE_SCOPES["patterns"] = <<-EOF.chomp
     "patterns": {
+      "_attributes" :
+        {
+          "patterns_system": "zypper"
+        },
       "_elements": [
         {
           "name": "base",
@@ -469,6 +473,19 @@ module SystemDescriptionFactory
           "name": "Minimal",
           "version": "11",
           "release": "38.44.33"
+        }
+      ]
+    }
+  EOF
+  EXAMPLE_SCOPES["patterns_with_dpkg"] = <<-EOF.chomp
+    "patterns": {
+      "_attributes" :
+        {
+          "patterns_system": "tasksel"
+        },
+      "_elements": [
+        {
+          "name": "base"
         }
       ]
     }

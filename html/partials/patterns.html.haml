@@ -6,7 +6,7 @@
         :scope => "patterns",
         :title => "Patterns",
         :count => "#{patterns.length} #{Machinery.pluralize(patterns.length, "pattern")}"
-      - if @description.packages && @description.packages.package_system == "dpkg"
+      - if @description.patterns.patterns_system == "dpkg"
         .row
           .col-xs-1
           .col-xs-11
