@@ -135,9 +135,7 @@ describe Migrate9To10 do
         "patterns": {
           "_elements": [
             {
-              "name": "Minimal",
-              "version": "11",
-              "release": "38.47.37"
+              "name": "Minimal"
             }
           ]
         },
