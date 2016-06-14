@@ -14,6 +14,9 @@
       .row.scope_content.collapse.in
         .col-xs-1
         .col-xs-11
+          %p
+            %strong Patterns Manager:
+            = @description.patterns.patterns_system
           - if patterns.length == 0
             There are no patterns.
           - if patterns.length > 0
