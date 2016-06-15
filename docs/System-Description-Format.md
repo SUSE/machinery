@@ -891,3 +891,4 @@ version of Machinery.
   between files and directories.
   The subdirectory count is not available for migrated descriptions so the sum of both is
   called file_objects.
+* Add attribute in patterns scope to identify the patterns manager
