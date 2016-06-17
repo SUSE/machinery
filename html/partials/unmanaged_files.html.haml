@@ -20,16 +20,16 @@
                 %tr
                   %th Name
                   %th.medium Type
-                  - if unmanaged_files.has_metadata
+                  - if unmanaged_files.contains_metadata?
                     %th.medium Mode
                     %th.medium User
                     %th.medium Group
                     %th.medium Size
-                  - if unmanaged_files.any?(&:file_objects)
-                    %th.medium File Objects
-                  - else
-                    %th.medium Subdirectories
-                    %th.medium Files in Directory
+                    - if unmanaged_files.has_subdir_counts?
+                      %th.medium Subdirectories
+                      %th.medium Files in Directory
+                    - else
+                      %th.medium File Objects
               %tbody
                 - unmanaged_files.each do |file|
                   %tr
@@ -41,16 +41,13 @@
                         %span
                           = file.name
                     %td= file.type
-                    - if unmanaged_files.has_metadata
+                    - if unmanaged_files.contains_metadata?
                       %td= file.mode
                       %td= file.user
                       %td= file.group
                       %td= number_to_human_size(file.size)
-                      - if unmanaged_files.any?(&:file_objects)
-                        %td
-                          = file.file_objects if file.file_objects
-                      - else
-                        %td
-                          = file.dirs if file.dirs
-                        %td
-                          = file.files if file.files
+                    - if unmanaged_files.has_subdir_counts?
+                      %td= file.dirs
+                      %td= file.files
+                    - else
+                      %td= file.file_objects
