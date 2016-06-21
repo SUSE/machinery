@@ -7,20 +7,28 @@
       %tr
         %th Name
         %th.small Type
-        - if list.has_metadata
+        - if list.contains_metadata?
           %th.medium Mode
           %th.medium User
           %th.medium Group
           %th.medium Size
-          %th.medium Files in dir.
+          - if list.has_subdir_counts?
+            %th.medium Subdir.
+            %th.medium Files in dir.
+          - else
+            %th.medium File Objects
     %tbody
       - list.each do |file|
         %tr
           %td= file.name
           %td= file.type
-          - if list.has_metadata
+          - if list.contains_metadata?
             %td= file.mode
             %td= file.user
             %td= file.group
             %td= number_to_human_size(file.size)
-            %td= file.files
+            - if list.has_subdir_counts?
+              %td= file.dirs
+              %td= file.files
+            - else
+              %td= file.file_objects
