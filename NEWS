@@ -7,6 +7,7 @@
 * Introduce format version 10 to allow distinction between files and directories
   for meta data of unmanaged files.
   This distinction is only available for newly inspected descriptions.
+  Additionally, an attribute in the patterns scope was added to identify the patterns manager.
   https://github.com/SUSE/machinery/blob/master/docs/System-Description-Format.md#version-10
 
 ## Version 1.20.0 - Fri Apr 22 16:39:04 CEST 2016 - thardeck@suse.de
