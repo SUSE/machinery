@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.21.0 - Tue Jun 21 16:28:31 CEST 2016 - thardeck@suse.de
+
 * Add attribute in patterns scope to identify the patterns manager
 * Improve navigation in HTML view to connect "list", "show" and "compare"
   functionality
