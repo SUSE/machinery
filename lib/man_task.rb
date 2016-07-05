@@ -18,7 +18,7 @@
 class ManTask
   def self.compile_documentation
     docs = Inspector.all_scopes.map do |scope|
-      scope_doc = "* #{scope}\n\n"
+      scope_doc = "* #{scope.tr("_", "-")}\n\n"
       scope_doc += YAML.load_file(
         File.join(Machinery::ROOT, "plugins/#{scope}/#{scope}.yml")
       )[:description]
