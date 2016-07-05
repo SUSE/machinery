@@ -75,7 +75,7 @@ match against the condiditon, e.g. a JSON such as `"name": "apache"` matches
 It is possible to match the beginning of a string by adding `*` as a suffix. For
 example
 
-    /unmanaged_files/files/name=/etc/ssh/ssh_host_key*
+    /unmanaged_files/name=/etc/ssh/ssh_host_key*
 
 would match all files whose name starts with the given value, such as
 `/etc/ssh/ssh_host_key` and `/etc/ssh/ssh_host_key.pub`.
@@ -103,7 +103,7 @@ expressions.
 Filter definitions are only valid, if in the path there is an element, which is
 a list. The most top-level list is the one which is filtered. So for example
 
-    /unmanaged_files/files/name=/etc/ssh/ssh_host_key.pub
+    /unmanaged_files/name=/etc/ssh/ssh_host_key.pub
 
 filters all elements where the `name` attribute in the `files` array is equal to
 `/etc/ssh/ssh_host_key.pub`. The `files` attribute contains the most top-level
@@ -117,11 +117,11 @@ Match the apache package:
 
 Match all services which are not enabled:
 
-    /services/services/state!=enabled
+    /services/state!=enabled
 
 Match the home directory of user alfred in unmanaged files:
 
-    /unmanaged_files/files/name=/home/alfred/
+    /unmanaged_files/name=/home/alfred/
 
 Match the global cache directory in changed managed files:
 
@@ -129,7 +129,7 @@ Match the global cache directory in changed managed files:
 
 Match all deleted configuration files:
 
-    /changed_config_files/files/changes=deleted
+    /changed_config_files/changes=deleted
 
 
 ### Storing filter definitions
@@ -156,11 +156,11 @@ example would be:
 
 ```json
 "inspect": [
-  "/unmanaged_files/files/name=/home/alfred/",
-  "/unmanaged_files/files/name=/var/cache/"
+  "/unmanaged_files/name=/home/alfred/",
+  "/unmanaged_files/name=/var/cache/"
 ],
 "show": [
-  "/services/services/state=disabled"
+  "/services/state=disabled"
 ]
 ```
 
@@ -179,8 +179,8 @@ would be:
   "format_version": 2,
   "filters": {
     "inspect": [
-      "/unmanaged_files/files/name=/home/alfred/",
-      "/unmanaged_files/files/name=/var/cache/"
+      "/unmanaged_files/name=/home/alfred/",
+      "/unmanaged_files/name=/var/cache/"
     ]
   },
   "unmanaged_files": {
@@ -237,8 +237,8 @@ For example the user-wide filter
 
 ```json
 "inspect": [
-  "/unmanaged_files/files/name=/home/alfred/",
-  "/unmanaged_files/files/name=/var/cache/"
+  "/unmanaged_files/name=/home/alfred/",
+  "/unmanaged_files/name=/var/cache/"
 ]
 ```
 
@@ -246,7 +246,7 @@ and the description specific filter
 
 ```json
 "inspect": [
-  "-/unmanaged_files/files/name=/home/alfred/",
+  "-/unmanaged_files/name=/home/alfred/",
 ]
 ```
 
@@ -254,7 +254,7 @@ would result in the effective filter:
 
 ```json
 "inspect": [
-  "/unmanaged_files/files/name=/var/cache/"
+  "/unmanaged_files/name=/var/cache/"
 ]
 ```
 
@@ -285,7 +285,7 @@ argument: `--exclude=@FILENAME`.
 
 Filter `/var/cache` from unmanaged files on inspection of host `NAME`:
 
-    machinery --exclude=/unmanaged_files/files/name=/var/cache/ inspect NAME
+    machinery --exclude=/unmanaged_files/name=/var/cache/ inspect NAME
 
 The command omits the directory `/var/cache/` from the inspection of
 unmanaged files. To preserve the information, which filters have been applied
@@ -296,7 +296,7 @@ of the resulting description.
 
 Show all enabled services in description NAME:
 
-    machinery --exclude='/services/services/state!=enabled' show NAME
+    machinery --exclude='/services/state!=enabled' show NAME
 
 The filter removes all services which match the filter criterion from the
 output. In this case it is all services which are not enabled. So the result is
