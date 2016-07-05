@@ -208,7 +208,7 @@ runlevel. It uses the <code>chkconfig</code> command to obtain that information.
 The xinetd services that are also displayed by <code>chkconfig</code> are switched
 on/off by editing configuration files and are ignored in this context.</p>
 <ul>
-<li>changed_config_files</li>
+<li>changed-config-files</li>
 </ul>
 <p>Contains all configuration files which have been changed since they were
 installed.
@@ -217,14 +217,14 @@ package which has installed them. A configuration file change is reported
 if its content or its attributes like Linux permission bits or ownership
 have changed.</p>
 <ul>
-<li>changed_managed_files</li>
+<li>changed-managed-files</li>
 </ul>
 <p>Contains the names and contents of all non-configuration files which have
 been changed compared to the files in the package. A file change is reported
 if its content or its attributes like Linux permission bits or ownership
 have changed.</p>
 <ul>
-<li>unmanaged_files</li>
+<li>unmanaged-files</li>
 </ul>
 <p>Contains the names and contents of all files which are not part of any RPM
 package. The list of unmanaged files contains only plain files and
