@@ -125,7 +125,7 @@ Match the home directory of user alfred in unmanaged files:
 
 Match the global cache directory in changed managed files:
 
-    /changed_managed_files/file/name=/var/cache/
+    /changed_managed_files/name=/var/cache/
 
 Match all deleted configuration files:
 
