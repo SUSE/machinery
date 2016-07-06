@@ -802,6 +802,22 @@ module SystemDescriptionFactory
         {
           "name": "masked_runtime.service",
           "state": "masked-runtime"
+        },
+        {
+          "name": "indirect.service",
+          "state": "indirect"
+        },
+        {
+          "name": "generated.service",
+          "state": "generated"
+        },
+        {
+          "name": "transient.service",
+          "state": "transient"
+        },
+        {
+          "name": "bad.service",
+          "state": "bad"
         }
       ]
     }

@@ -31,7 +31,7 @@ describe "services model" do
   describe ServicesScope do
     describe "#length" do
       it "returns the number of services" do
-        expect(scope.length).to eq(10)
+        expect(scope.length).to eq(14)
       end
     end
 

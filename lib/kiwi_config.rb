@@ -345,11 +345,18 @@ EOF
           when "linked"
             # Don't do anything because linking doesn't mean enabling
             # nor disabling.
+          when "indirect"
+            # Don't do anything because indirect doesn't mean enabling
+            # nor disabling.
           when "enabled-runtime"
           when "linked-runtime"
           when "masked-runtime"
+          when "transient"
+          when "generated"
             # Don't do anything because these states are not supposed
             # to be permanent.
+          when "bad"
+            # Don't do anything because the unit file is broken
           else
             raise Machinery::Errors::ExportFailed.new(
               "The systemd unit state #{service.state} is unknown."
