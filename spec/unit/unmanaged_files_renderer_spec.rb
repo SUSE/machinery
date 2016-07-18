@@ -197,7 +197,7 @@ EOF
     Mode: 755
     Size: 11.7 KiB
     Files: 1
-    Subdirectories: 1
+    Directories: 1
       EOF
       expect(actual_output).to include(expected_output)
     end
