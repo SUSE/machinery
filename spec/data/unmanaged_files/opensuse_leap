@@ -11,7 +11,7 @@
     Mode: 755
     Size: 12.7 MiB
     Files: 542
-    Subdirectories: 0
+    Directories: 0
 
   * /boot/initrd.vmx (file)
     User/Group: root:root
@@ -43,7 +43,7 @@
     Mode: 755
     Size: 100.7 KiB
     Files: 15
-    Subdirectories: 1
+    Directories: 1
 
   * /etc/alternatives/openSUSE-default.xml (link)
     User/Group: root:root
@@ -214,28 +214,28 @@
     Mode: 755
     Size: 0 B
     Files: 2
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/getty.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/multi-user.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 8
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/network-online.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/network.service (link)
     User/Group: root:root
@@ -245,21 +245,21 @@
     Mode: 755
     Size: 0 B
     Files: 2
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/sysinit.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 2
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/system-update.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/udev/rules.d/70-persistent-net.rules (file)
     User/Group: root:root
@@ -286,14 +286,14 @@
     Mode: 755
     Size: 2.2 KiB
     Files: 3
-    Subdirectories: 4
+    Directories: 4
 
   * /home/vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
     Size: 389 B
     Files: 2
-    Subdirectories: 4
+    Directories: 4
 
   * /lib64/libdmraid-events-isw.so.1.0.0.rc16-3 (link)
     User/Group: root:root
@@ -303,7 +303,7 @@
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 1
+    Directories: 1
 
   * /mnt/unmanaged/remote-dir/ (remote_dir)
     User/Group: root:root
@@ -314,7 +314,7 @@
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 0
+    Directories: 0
 
   * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-file-with-' quote ' (file)
     User/Group: root:root
@@ -335,14 +335,14 @@
     Mode: 700
     Size: 408 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /srv/test/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 73.4 KiB
     Files: 4
-    Subdirectories: 0
+    Directories: 0
 
   * /usr/bin/crontab_link_target (file)
     User/Group: root:trusted
@@ -357,7 +357,7 @@
     Mode: 755
     Size: 150 B
     Files: 5
-    Subdirectories: 2
+    Directories: 2
 
   * /usr/sbin/userdel.local (file)
     User/Group: root:root
@@ -369,21 +369,21 @@
     Mode: 755
     Size: 45.7 KiB
     Files: 5
-    Subdirectories: 0
+    Directories: 0
 
   * /var/adm/netconfig/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 84 B
     Files: 2
-    Subdirectories: 2
+    Directories: 2
 
   * /var/cache/kiwi/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 0
+    Directories: 0
 
   * /var/cache/ldconfig/aux-cache (file)
     User/Group: root:root
@@ -395,14 +395,14 @@
     Mode: 755
     Size: 16.3 MiB
     Files: 17
-    Subdirectories: 5
+    Directories: 5
 
   * /var/cache/zypp/solv/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 12 MiB
     Files: 6
-    Subdirectories: 2
+    Directories: 2
 
   * /var/lib/nfs/.etab.lock (file)
     User/Group: root:root
@@ -424,7 +424,7 @@
     Mode: 700
     Size: 5 KiB
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /var/lib/systemd/entropy_count (file)
     User/Group: root:root
@@ -611,7 +611,7 @@
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 0
+    Directories: 0
 
   * /var/log/YaST2/mkinitrd.log (file)
     User/Group: root:root

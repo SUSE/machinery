@@ -11,7 +11,7 @@
     Mode: 755
     Size: 3.1 MiB
     Files: 512
-    Subdirectories: 0
+    Directories: 0
 
   * /boot/initrd.vmx (file)
     User/Group: root:root
@@ -43,7 +43,7 @@
     Mode: 755
     Size: 99.4 KiB
     Files: 15
-    Subdirectories: 1
+    Directories: 1
 
   * /etc/adjtime (file)
     User/Group: root:root
@@ -260,42 +260,42 @@
     Mode: 755
     Size: 0 B
     Files: 2
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/getty.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/graphical.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/multi-user.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 7
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/sockets.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/systemd/system/system-update.target.wants/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /etc/vagrant_box_build_time (file)
     User/Group: root:root
@@ -317,14 +317,14 @@
     Mode: 755
     Size: 2.2 KiB
     Files: 3
-    Subdirectories: 4
+    Directories: 4
 
   * /home/vagrant/ (dir)
     User/Group: vagrant:vagrant
     Mode: 755
     Size: 389 B
     Files: 2
-    Subdirectories: 4
+    Directories: 4
 
   * /lib/mkinitrd/boot/01-acpi.sh (link)
     User/Group: root:root
@@ -502,7 +502,7 @@
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 1
+    Directories: 1
 
   * /mnt/unmanaged/remote-dir/ (remote_dir)
     User/Group: root:root
@@ -513,7 +513,7 @@
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 0
+    Directories: 0
 
   * /opt/test-quote-char/test-dir-name-with-' quote-char '/unmanaged-file-with-' quote ' (file)
     User/Group: root:root
@@ -534,14 +534,14 @@
     Mode: 700
     Size: 808 B
     Files: 1
-    Subdirectories: 0
+    Directories: 0
 
   * /srv/test/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 73.4 KiB
     Files: 4
-    Subdirectories: 0
+    Directories: 0
 
   * /usr/bin/crontab_link_target (file)
     User/Group: root:trusted
@@ -553,7 +553,7 @@
     Mode: 755
     Size: 150 B
     Files: 5
-    Subdirectories: 2
+    Directories: 2
 
   * /usr/sbin/userdel.local (file)
     User/Group: root:root
@@ -565,21 +565,21 @@
     Mode: 755
     Size: 45.7 KiB
     Files: 5
-    Subdirectories: 0
+    Directories: 0
 
   * /var/adm/netconfig/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 84 B
     Files: 2
-    Subdirectories: 2
+    Directories: 2
 
   * /var/cache/kiwi/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 0
+    Directories: 0
 
   * /var/cache/ldconfig/aux-cache (file)
     User/Group: root:root
@@ -591,21 +591,21 @@
     Mode: 755
     Size: 10.7 MiB
     Files: 19
-    Subdirectories: 5
+    Directories: 5
 
   * /var/cache/zypp/solv/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 10.3 MiB
     Files: 4
-    Subdirectories: 2
+    Directories: 2
 
   * /var/lib/dhcpcd/ (dir)
     User/Group: root:root
     Mode: 755
     Size: 412 B
     Files: 2
-    Subdirectories: 0
+    Directories: 0
 
   * /var/lib/nfs/.etab.lock (file)
     User/Group: root:root
@@ -702,7 +702,7 @@
     Mode: 755
     Size: 0 B
     Files: 0
-    Subdirectories: 0
+    Directories: 0
 
   * /var/log/YaST2/mkinitrd.log (file)
     User/Group: root:root

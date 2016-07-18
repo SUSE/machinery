@@ -37,7 +37,7 @@ class UnmanagedFilesRenderer < Renderer
               puts "Size: #{number_to_human_size(p.size)}" if p.size
               if p.files && p.dirs
                 puts "Files: #{p.files}"
-                puts "Subdirectories: #{p.dirs}"
+                puts "Directories: #{p.dirs}"
               end
               if p.file_objects
                 puts "File Objects: #{p.file_objects}"
