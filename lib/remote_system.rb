@@ -145,6 +145,10 @@ class RemoteSystem < System
     end
   end
 
+  def check_retrieve_files_dependencies
+    LocalSystem.new.check_requirement("rsync", "--version")
+  end
+
   # Reads a file from the System. Returns nil if it does not exist.
   def read_file(file)
     run_command("cat", file, stdout: :capture, privileged: true)
