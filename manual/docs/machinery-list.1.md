@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-`machinery list` [Options] [NAME[,NAME2[,NAME3]]]
+`machinery list` [OPTIONS] [NAME[,NAME2[,NAME3]]]
 
 `machinery` help list
 

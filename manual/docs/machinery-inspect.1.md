@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-`machinery inspect` [Options] HOSTNAME
+`machinery inspect` [OPTIONS] HOSTNAME
 
 `machinery` help inspect
 

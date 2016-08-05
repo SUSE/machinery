@@ -2,9 +2,9 @@
 
 ## Synopsis
 
-`machinery inspect-container` [Options] IMAGENAME
+`machinery inspect-container` [OPTIONS] IMAGENAME
 
-`machinery inspect-container` [Options] IMAGEID
+`machinery inspect-container` [OPTIONS] IMAGEID
 
 `machinery` help inspect-container
 

@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-  `machinery man` [Options]
+  `machinery man` [OPTIONS]
 
 ## Options
 
