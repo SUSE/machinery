@@ -1,10 +1,10 @@
 site_name: Machinery Documentation
 pages:
 - Welcome: docs.md
-  - "General Overview": machinery_main_general.1.md
-  - Scopes: machinery_main_scopes.1.md
-  - "Use cases": machinery_main_usecases.1.md
-  - "Security Implications": machinery_main_security_implications.1.md
+- "General Overview": machinery_main_general.1.md
+- Scopes: machinery_main_scopes.1.md
+- "Use cases": machinery_main_usecases.1.md
+- "Security Implications": machinery_main_security_implications.1.md
 - Commands:
   - Analyze: machinery-analyze.1.md
   - Build: machinery-build.1.md
