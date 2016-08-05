@@ -1,14 +1,12 @@
+# serve — Serve System Descriptions Using a Web Server
 
-# serve — Serve System Descriptions Using A Web Server
-
-## SYNOPSIS
+## Synopsis
 
 `machinery serve` [-p PORT | --port=PORT] [--public]
 
 `machinery` help serve
 
-
-## DESCRIPTION
+## Description
 
 The `serve` command spawns a web server to view system descriptions as an HTML
 view.
@@ -20,8 +18,7 @@ Specific descriptions are available from http://127.0.0.1:7585/NAME, where NAME
 is the name of the system description. If no name is specified in the URL an
 overview of all descriptions is served.
 
-
-## OPTIONS
+## Options
 
   * `-p PORT`, `--port=PORT` (optional):
     Specify the port on which the web server will serve the HTML view: Default: 7585
@@ -33,8 +30,7 @@ overview of all descriptions is served.
     Specifying this option, lets the server listen on each configured IP address. By default
     the server will only listen on the localhost IP address 127.0.0.1
 
-
-## EXAMPLES
+## Examples
 
   * Start the server with default options:
 

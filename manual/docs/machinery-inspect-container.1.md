@@ -1,16 +1,14 @@
-
 # inspect-container — Inspect Container
 
-## SYNOPSIS
+## Synopsis
 
-`machinery inspect-container` [OPTIONS] IMAGENAME
+`machinery inspect-container` [Options] IMAGENAME
 
-`machinery inspect-container` [OPTIONS] IMAGEID
+`machinery inspect-container` [Options] IMAGEID
 
 `machinery` help inspect-container
 
-
-## DESCRIPTION
+## Description
 
 The `inspect-container` command inspects a container image. It creates and starts the container from the provided image before inspection
 and generates a system description from the gathered data. After the inspection the container will be killed and removed again.
@@ -25,27 +23,25 @@ The system data is structured into scopes, controlled by the
 Machinery will always inspect all specified scopes, and skip scopes which
 trigger errors.
 
-
-## ARGUMENTS
+## Arguments
 
   * `IMAGENAME / IMAGEID` (required):
-    The name or id of the image to be inspected. The provided name or id will also be
+    The name or ID of the image to be inspected. The provided name or ID will also be
     used as the name of the stored system description unless another name is
     provided with the `--name` option.
 
-
-## OPTIONS
+## Options
 
   * `-n NAME`, `--name=NAME` (optional):
     Store the system description under the specified name.
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Inspect image for specified scope.
-    See the [Scope section](#Scopes) for more information.
+    See the [Scope section](machinery_main_scopes.1/) for more information.
 
   * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Inspect image for all scopes except the specified scope.
-    See the [Scope section](#Scopes) for more information.
+    See the [Scope section](machinery_main_scopes.1/) for more information.
 
   * `-x`, `--extract-files` (optional):
     Extract changed configuration and unmanaged files from the inspected container.
@@ -79,10 +75,9 @@ trigger errors.
   * `--verbose` (optional):
     Display the filters which are used during inspection.
 
+## Prerequisites
 
-## PREREQUISITES
-
-  * Inspecting a container requires an image specified by the name or id.
+  * Inspecting a container requires an image specified by the name or ID.
 
   * The image to be inspected needs to have the following commands:
 
@@ -93,7 +88,7 @@ trigger errors.
     * `sed`
     * `find`
 
-## EXAMPLES
+## Examples
 
   * Inspect Docker container `myimage` and save system description under name 'MyContainer':
 

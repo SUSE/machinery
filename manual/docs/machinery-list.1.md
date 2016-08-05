@@ -1,22 +1,19 @@
-
 # list — List System Descriptions
 
-## SYNOPSIS
+## Synopsis
 
-`machinery list` [OPTIONS] [NAME[,NAME2[,NAME3]]]
+`machinery list` [Options] [NAME[,NAME2[,NAME3]]]
 
 `machinery` help list
 
-
-## DESCRIPTION
+## Description
 
 List the specified system descriptions if parameter name is given.
 List all available system descriptions in the internal database if no name parameter is given.
 The list is sorted alphabetically and contains a name and the
 scopes for each system.
 
-
-## OPTIONS
+## Options
 
   * `--verbose` (optional):
     Print additional information about the origin of scopes.
@@ -27,8 +24,7 @@ scopes for each system.
     Run a web server and open the list of system descriptions in HTML format in
     your web browser using the `xdg-open` command.
 
-
-## EXAMPLES
+## Examples
 
   * Lists the two specified system descriptions `a` and `b`:
 

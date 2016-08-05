@@ -1,50 +1,11 @@
 # Machinery — A Systems Management Toolkit for Linux
 
-# SYNOPSIS
+# Synopsis
 
 `machinery` SUBCOMMAND \[options\] <br>
 `machinery` help [SUBCOMMAND]
 
-
-# DESCRIPTION
-
-Machinery is a systems management toolkit for Linux. It supports configuration
-discovery, system validation, and service migration. Machinery is based on the
-idea of an universal system description. Machinery has a set of commands which
-work with this system description. These commands can be combined to form work
-flows. Machinery is targeted at the system administrator of the data center.
-
-
-# WORK FLOW EXAMPLES
-
-## Inspect a System and Show Results
-  - `machinery inspect --extract-files --name=NAME HOSTNAME`
-  - `machinery show NAME`
-
-## Inspect Two Systems and Compare Them
-  - `machinery inspect HOSTNAME1`
-  - `machinery inspect HOSTNAME2`
-  - `machinery compare HOSTNAME1 HOSTNAME2`
-
-## Fully Inspect a System and Export a Kiwi Description
-  - `machinery inspect --extract-files HOSTNAME`
-  - `machinery export-kiwi --kiwi-dir=~/kiwi HOSTNAME`
-
-## Fully Inspect a System and Export an AutoYaST Profile
-  - `machinery inspect --extract-files HOSTNAME`
-  - `machinery export-autoyast --autoyast-dir=~/autoyast HOSTNAME`
-
-## Fully Inspect a System and Deploy a Replicate to the Cloud
-  - `machinery inspect --extract-files HOSTNAME`
-  - `machinery deploy --cloud-config=~/openrc.sh HOSTNAME`
-
-## How to upgrade a SLES 11 SP3 system to SLES 12
-  - Machinery can help you to upgrade without affecting the original system.
-    For more details please read the Wiki Page: <br>
-    https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12
-
-
-# CONCEPTUAL OVERVIEW
+# Conceptual Overview
 
 Machinery's core concept is the complete representation of a system by a
 universal system description.
@@ -64,7 +25,7 @@ the system.
 System descriptions may be exported to other formats and can be used to
 migrate or replicate systems.
 
-Subcommands can be combined in different ways to accomodate higher-level work
+Subcommands can be combined in different ways to accommodate higher-level work
 flows and use cases.
 These are some implemented and planned use cases:
 
@@ -100,6 +61,19 @@ Machinery is implemented as a command line tool named `machinery`. The
 subcommands work with the same system description identified by an optional
 name which can be used by all subcommands.
 
+## System Description
+
+The System Description format and file structure is documented in the machinery
+wiki: [System Description Format](https://github.com/SUSE/machinery/wiki/System-Description-Format).
+
+Machinery validates descriptions on load. It checks that the JSON structure of
+the manifest file, which contains the primary and meta data of a description, is 
+correct and it adheres to the schema. Validation errors are reported as warnings.
+It also checks that the information about extracted files is consistent. Missing
+files or extra files without reference in the manifest are treated also as
+warnings. All other issues are errors which need to be fixed so that Machinery
+can use the description.
+To manually validate a description use the `machinery validate` command.
 
 ## Scopes
 
@@ -110,9 +84,19 @@ repositories, or changed configuration files.
 For example, if you are only interested in the installed packages, limit the
 scope to `packages`. This will output only the requested information.
 
-The the [scopes documentation](machinery_main_scopes.1) for a list of all supported scopes.
+See the [Scopes documentation](machinery_main_scopes.1) for a list of all supported scopes.
 
-# FILES AND DEVICES
+# Options for All Subcommands
+<!--- These are 'global' options of machinery -->
+
+  * `--version`:
+    Displays version of `machinery` tool. Exit when done.
+
+  * `--debug`:
+    Enable debug mode. Machinery writes additional information into the log
+    file which can be useful to track down problems.
+
+# Files and Devices
 
   * `~/.machinery/machinery.config`:
 
@@ -126,14 +110,12 @@ The the [scopes documentation](machinery_main_scopes.1) for a list of all suppor
 
     First network device is used when DHCP in built image is enabled.
 
-
-# ENVIRONMENT
+# Environment
 
   * `MACHINERY_LOG_FILE`:
 
-    Location of Machinery's log file (defaults to `~/.machinery/machinery.log`)
+    Location of Machinery's log file (defaults to `~/.machinery/machinery.log`).
 
-
-# COPYRIGHT
+# Copyright
 
 Copyright \(c) 2013-2016 [SUSE LLC](http://www.suse.com)

@@ -1,7 +1,6 @@
-
 # deploy — Deploy Image to OpenStack Cloud
 
-## SYNOPSIS
+## Synopsis
 
 `machinery deploy` NAME -c CONFIG_FILE | --cloud-config=CONFIG_FILE
    [-i IMAGE_DIR | --image-dir=IMAGE_DIR]
@@ -10,11 +9,10 @@
 
 `machinery` help [deploy]
 
-
-## DESCRIPTION
+## Description
 
 The `deploy` command builds and deploys an image to an OpenStack cloud.
-This command is particularly useful for testing, debugging, or for validation.
+This command is particularly useful for testing, debugging, or validation.
 
 
 > #### NOTE: Set Password for Unattended Work
@@ -30,14 +28,12 @@ This command is particularly useful for testing, debugging, or for validation.
 >
 >   export OS_PASSWORD=YOUR_PASSWORD
 
-
-## ARGUMENTS
+## Arguments
 
   * `NAME` (required):
     Name of the system description.
 
-
-## OPTIONS
+## Options
 
   * `-c CONFIG_FILE`, `--cloud-config=CONFIG_FILE` (required):
     Path to file where the cloud config (openrc.sh) is located.
@@ -53,16 +49,16 @@ This command is particularly useful for testing, debugging, or for validation.
     Allow to make "insecure" HTTPS requests, without checking the SSL
     certificate when uploading to the cloud.
 
-## PREREQUISITES
+## Prerequisites
 
  * The `deploy` command requires the packages `kiwi` for building the image
    and `python-glanceclient` for uploading the image to the cloud.
 
-## SUPPORTED ARCHITECTURES
+## Supported Architectures
 
 Machinery only supports deploying x86_64 images on x86_64 systems.
 
-## EXAMPLES
+## Examples
 
  * Build an image under the system description named `jeos`.
    Deploy it to the OpenStack cloud name `tux-cloud` by using the

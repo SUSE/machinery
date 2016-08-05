@@ -1,38 +1,34 @@
-
 # show — Show System Description
 
-## SYNOPSIS
+## Synopsis
 
 `machinery show` [-s SCOPE | --scope=SCOPE] [-e IGNORE-SCOPE | --ignore-scope=IGNORE-SCOPE] [--no-pager] [--show-diffs] [--html] NAME
 
 `machinery` help show
 
-
-## DESCRIPTION
+## Description
 
 The `show` command displays a stored system description.
 Scopes are supported and limit the output to the given scope.
 The hostname of the inspected system and the last modification
 in local time are shown in the title of each scope section.
 
-
-## ARGUMENTS
+## Arguments
 
   * `NAME` (required):
     Use specified system description.
 
-
-## OPTIONS
+## Options
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Limit output to the specified scope.
-    See the [Scope section](#Scopes) for more information.
+    See the [Scope section](machinery_main_scopes.1/) for more information.
     If displaying information related to a scope fails, `show` will print an error message what has failed.
     In case of an error, no content is displayed.
 
   * `-e IGNORE-SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Skip output of the specified scope.
-    See the [Scope section](#Scopes) for more information.
+    See the [Scope section](machinery_main_scopes.1/) for more information.
 
   * `--no-pager` (optional):
     Do not pipe output into a pager.
@@ -48,7 +44,7 @@ in local time are shown in the title of each scope section.
   * `--verbose` (optional):
     Display the filters which were applied before showing the system description.
 
-## EXAMPLES
+## Examples
 
   * Show the system description taken from the last inspection, saved as `earth`:
 

@@ -1,14 +1,12 @@
-
 # inspect — Inspect Running System
 
-## SYNOPSIS
+## Synopsis
 
-`machinery inspect` [OPTIONS] HOSTNAME
+`machinery inspect` [Options] HOSTNAME
 
 `machinery` help inspect
 
-
-## DESCRIPTION
+## Description
 
 The `inspect` command inspects a running system and generates a system
 description from the gathered data.
@@ -23,32 +21,30 @@ trigger errors.
 **Note**:
 Tasks on Debian-like systems are treated as patterns.
 
-
-## ARGUMENTS
+## Arguments
 
   * `HOSTNAME` (required):
     The host name of the system to be inspected. The host name will also be
     used as the name of the stored system description unless another name is
     provided with the `--name` option.
 
-
-## OPTIONS
+## Options
 
   * `-n NAME`, `--name=NAME` (optional):
     Store the system description under the specified name.
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Inspect system for specified scope.
-    See the [Scope section](machinery_main_scopes.1/index.html) for more information.
+    See the [Scope section](machinery_main_scopes.1/) for more information.
 
   * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Inspect system for all scopes except the specified scope.
-    See the [Scope section](machinery_main_scopes.1/index.html) for more information.
+    See the [Scope section](machinery_main_scopes.1/) for more information.
 
   * `-r USER`, `--remote-user=USER` (optional):
     Defines the user which is used to access the inspected system via SSH.
     This user needs to be allowed to run certain commands using sudo (see
-    PREREQUISITES for more information).
+    Prerequisites for more information).
     To change the default-user use `machinery config remote-user=USER`
 
   * `-p SSH-PORT`, `--ssh-port SSH-PORT` (optional):
@@ -91,15 +87,14 @@ Tasks on Debian-like systems are treated as patterns.
   * `--verbose` (optional):
     Display the filters which are used during inspection.
 
-
-## PREREQUISITES
+## Prerequisites
 
   * Inspecting a local system requires running `machinery` as root.
 
   * Inspecting a remote system requires passwordless SSH login as root on the
     inspected system.
     Use `ssh-agent` or asymmetric keys (you can transfer the current SSH key
-    via `ssh-copy-id` to the inspected host, e.g.: `ssh-copy-id root@HOSTNAME`)
+    via `ssh-copy-id` to the inspected host, e.g.: `ssh-copy-id root@HOSTNAME`).
 
   * The system to be inspected needs to have the following commands:
 
@@ -126,7 +121,7 @@ Tasks on Debian-like systems are treated as patterns.
 
     \# `passwd` machinery
 
-## EXAMPLES
+## Examples
 
   * Inspect remote system `myhost` and save system description under name
     'MySystem':
