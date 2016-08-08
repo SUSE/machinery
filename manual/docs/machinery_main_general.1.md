@@ -16,7 +16,7 @@ modifications.
 Machinery's subcommands work on the system description as the connecting
 element.
 System descriptions are obtained by inspecting systems, importing from other
-formats, manual creation or merging other descriptions.
+formats, manual creation or merging existing descriptions.
 Machinery can store and modify system descriptions to allow changes to
 described state of the system.
 System descriptions can be compared to find similarities and differences
@@ -84,7 +84,7 @@ repositories, or changed configuration files.
 For example, if you are only interested in the installed packages, limit the
 scope to `packages`. This will output only the requested information.
 
-See the [Scopes documentation](machinery_main_scopes.1) for a list of all supported scopes.
+See the [Scopes documentation](machinery_main_scopes.1/) for a list of all supported scopes.
 
 # Options for All Subcommands
 <!--- These are 'global' options of machinery -->
@@ -106,7 +106,7 @@ See the [Scopes documentation](machinery_main_scopes.1) for a list of all suppor
 
     Central log file, in the format date, time, process id, and log message.
 
-  * `eth0` (SLE11) and `lan0` (SLE12):
+  * `em1 (openSUSE 13.2 / openSUSE leap)`, `eth0` (SLE11) and `lan0` (SLE12):
 
     First network device is used when DHCP in built image is enabled.
 
