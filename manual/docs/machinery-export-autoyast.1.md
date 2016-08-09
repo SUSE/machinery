@@ -1,27 +1,23 @@
-
 # export-autoyast — Export System Description as AutoYasST profile
 
-## SYNOPSIS
+## Synopsis
 
 `machinery export-autoyast` -a | --autoyast-dir NAME
    --force
 
 `machinery` help export-autoyast
 
+## Description
 
-## DESCRIPTION
-
-The `export-autoyast` subcommand exports a stored system description as a AutoYaST
+The `export-autoyast` subcommand exports a stored system description as an AutoYaST
 profile.
 
-
-## ARGUMENTS
+## Arguments
 
   * `NAME` (required):
     Name of the system description.
 
-
-## OPTIONS
+## Options
 
   * `-a AUTOYAST_DIR`, `--autoyast-dir=AUTOYAST_DIR` (required):
     Write the AutoYaST profile to a subdirectory at the specified directory. The directory
@@ -30,8 +26,7 @@ profile.
   * `--force` (optional):
     Overwrite existing system description
 
-
-## SYSTEM REGISTRATION
+## System Registration
 
   * To register a SLES 12 system automatically with AutoYaST, it is required to
     edit the generated profile. The following example registers the system with
@@ -47,11 +42,9 @@ profile.
 </suse_register>
 ```
 
-  * More information can be found at the SUSE AutoYaST documentation.
-    https://www.suse.com/documentation/sles-12/singlehtml/book_autoyast/book_autoyast.html
+  * More information can be found at the [SUSE AutoYaST documentation](https://www.suse.com/documentation/sles-12/singlehtml/book_autoyast/book_autoyast.html).
 
-
-## EXAMPLES
+## Examples
 
  * Export the `myhost` system description to `/tmp/myhost-autoyast`:
 

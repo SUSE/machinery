@@ -1,19 +1,20 @@
-# SECURITY IMPLICATIONS
+# Security Implications
+
 This document describes security related issues administrators need to be aware of when using
 Machinery.
 
 ## Inspection
-Machinery inspects several parts of a system which are covered by Machinery's scopes. A list
-of the available scopes and information about what they do can be found
-[here](machinery_main_scopes.1/index.html).
 
-Users of Machinery who inspect systems need to be aware of the security implications in order
+Machinery inspects several parts of a system which are covered by Machinery's scopes.
+Information about scopes is listed [here](machinery_main_scopes.1/).
+
+Users of Machinery who inspect systems need to be aware of the security implications
 to take the right decisions on how to protect the retrieved data.
 
 ## Retrieval of Data
-Machinery transfers data from one end point to another via SSH (using public key authentication).
+Machinery transfers data from one end point to another via SSH (Secure Shell, using public key authentication).
 
-Depending on the scope, Machinery [collects information](machinery_main_scopes.1/index.html)
+Depending on the scope, Machinery [collects information](machinery_main_scopes.1/)
 about files on the system. Additionally, when the `--extract-files` option is given for the
 `inspect` command, not only the meta data about the files (e.g. permission bits, owner, group etc
 .) but also the file content is extracted. Machinery does not distinguish between sensitive
@@ -23,7 +24,7 @@ description has automatically access to **all** extracted files and contained se
 #### root/sudo Privileges
 An inspection can only be done, when the user on the inspected system is either root or has
 sudo privileges. Information about the required sudo configuration can be found
-[here](machinery-inspect.1/index.html#prerequisites).
+[here](machinery-inspect.1/#prerequisites).
 
 ## Storage of Data
 #### Access Restrictions
@@ -70,17 +71,16 @@ is specified, the default port which is configured in the machinery config file 
 
 ## Export of Data
 #### export-autoyast
-The `export-autoyast` command creates an AutoYaST profile for an automated installation. The result
-are also tar balls containing the extracted files from the system description. These files
+The `export-autoyast` command creates an AutoYaST profile for an automated installation. This will result
+in tar balls containing the extracted files from the system description. These files
 potentially contain sensitive data (e.g. passwords). This fact needs to be kept in mind, especially
 if these files are copied to a web server for an AutoYaST installation via HTTP.
 
 #### export-kiwi
-The program Kiwi allows you to build OS images what you can use for installation. Machinery gives
-you the opportunity to build a complete Kiwi configuration from a system description. This
-configuration can be used to build an image via Kiwi. The `export-kiwi` command creates a
-directory, where it stores the Kiwi configuration and the files of a system description. These
-files potentially contain sensitive data (e.g. passwords).
+The program **kiwi** allows you to build OS images for deployment. Machinery gives
+you the opportunity to export a KIWI description. This description can be used to build an image via Kiwi.
+The `export-kiwi` command creates a directory, where it stores the Kiwi configuration and the files
+of a system description. These files potentially contain sensitive data (e.g. passwords).
 
 #### build
 The created image potentially contains sensitive data (e.g. passwords) from extracted files.

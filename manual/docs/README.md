@@ -4,12 +4,10 @@ This guide provides answers to writing and style questions commonly arising when
 documentation.
 The following rules are intentionally kept concise. Refer to our [SUSE Styleguide][1] for more information.
 
-
 ## Audience
 
 Our main audience for the documentation are system administrators. Adjust tone, style, and
 technicality of the text based on the intended audience.
-
 
 ## Physical Structure
 
@@ -22,10 +20,8 @@ The documentation is written in Markdown and contains:
 
 * Scopes are described in the `documentation` attribute in `plugins/SCOPENAME/SCOPENAME.yml`
 
-
-**Tip:** To create a file for your subcommand, copy the `subcommand-template.1.md` template to
-`machinery-SUBCOMMAND.1.md` and edit the latter.
-
+**Tip:** To create a file for your subcommand, copy an existing one to
+`machinery-SUBCOMMAND.1.md` and edit the latter according to the following "Logical Structure".
 
 ## Logical Structure
 
@@ -37,18 +33,18 @@ The structure of each subcommand contains:
 
         ## SUBCOMMAND—Short Description
 
-* a section "SYNOPSIS"
+* a section "Synopsis"
 
   Contains the output of `machinery SUBCOMMAND --help` or `machinery help SUBCOMMAND`.
   Use square brackets for options which are optional.
 
-* a section "DESCRIPTION"
+* a section "Description"
 
   Summarize the purpose of the subcommand in a short, first paragraph. Leave an
   empty line, and then describe what the command does, what its output is, and
   which interaction may be needed.
 
-* a section "OPTIONS"
+* a section "Options"
 
   List all options. Use a separate list item for each option and wrap short and
   long option name in back ticks. State if the option is mandatory or optional
@@ -59,17 +55,17 @@ The structure of each subcommand contains:
 
   Capitalize any placeholders.
 
-* a section "PREREQUISITES"
+* a section "Prerequisites"
 
   List all the necessary topics, items, or other conditions that the user have
   to be fulfilled beforehand the subcommand can be executed.
 
-* a section "DEPENDENCIES"
+* a section "Dependencies"
 
   List only those dependencies which cannot be expressed as package dependencies.
   Package dependencies are automatically resolved when the `machinery` package is installed.
 
-* a section "EXAMPLES"
+* a section "Examples"
 
   Provide at least two meaningful examples of how to use the subcommand.
   Start with the most common or easy one and explain what it does. Include also a more unusual or difficult
@@ -78,7 +74,6 @@ The structure of each subcommand contains:
         * Short description:
 
           machinery SUBCOMMAND --opt1 ...
-
 
 ## Level of Detail
 
@@ -92,14 +87,12 @@ For example, it is unimportant whether a subcommand uses `rpm`, `zypper`, or any
 to retrieve a package list. In that case, it is enough to mention that Machinery gets this list
 somehow and focus on what it does with this information.
 
-
 ## Language
 
 For language and spelling rules, refer to our [SUSE Styleguide, section "Language"][1] which covers most of your
 questions already.
 
 If you are unsure about spelling, go to the [Merriam Webster][20] homepage or consult our [SUSE Terminology][3].
-
 
 ## Consistency Hints
 
@@ -117,7 +110,6 @@ If you are unsure about spelling, go to the [Merriam Webster][20] homepage or co
 * Write in full sentences, even in lists.
 
 * Capitalize placeholders, for example, `machinery show NAME`.
-
 
 [1]: http://doc.opensuse.org/products/opensuse/Styleguide/opensuse_documentation_styleguide_sd/#sec.language       "SUSE Styleguide: Language"
 [2]: http://doc.opensuse.org/products/opensuse/Styleguide/opensuse_documentation_styleguide_sd/#sec.capitalization "SUSE Styleguide: Capitalization and Title Style"

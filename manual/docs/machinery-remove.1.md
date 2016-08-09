@@ -1,20 +1,17 @@
-
 # remove — Remove System Descriptions
 
-## SYNOPSIS
+## Synopsis
 
 `machinery remove` [--all]
     [NAME[,NAME2[,NAME3]]]
 
 `machinery` help remove
 
-
-## DESCRIPTION
+## Description
 
 The `remove` command removes all specified system descriptions.
 
-
-## OPTIONS
+## Options
 
   * `--all` (optional):
     Remove all stored system descriptions.
@@ -22,14 +19,12 @@ The `remove` command removes all specified system descriptions.
   * `--verbose` (optional):
     Explain what is being done.
 
-
-## ARGUMENTS
+## Arguments
 
   * `NAME...` (required):
     Remove specified system descriptions.
 
-
-## EXAMPLES
+## Examples
 
   * Remove the system description stored as `earth`:
 

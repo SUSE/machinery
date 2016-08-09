@@ -1,27 +1,23 @@
-
 # export-kiwi — Export System Description as KIWI Image Description
 
-## SYNOPSIS
+## Synopsis
 
 `machinery export-kiwi` -k | --kiwi-dir NAME
    --force
 
 `machinery` help export-kiwi
 
-
-## DESCRIPTION
+## Description
 
 The `export-kiwi` subcommand exports a stored system description as a KIWI
 image description.
 
-
-## ARGUMENTS
+## Arguments
 
   * `NAME` (required):
     Name of the system description.
 
-
-## OPTIONS
+## Options
 
   * `-k KIWI_DIR`, `--kiwi-dir=KIWI_DIR` (required):
     Write the KIWI image description to a subdirectory at the specified directory. The directory
@@ -30,8 +26,7 @@ image description.
   * `--force` (optional):
     Overwrite existing system description
 
-
-## EXAMPLES
+## Examples
 
  * Export the `myhost` system description to `/tmp/myhost-kiwi`:
 

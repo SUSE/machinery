@@ -1,7 +1,6 @@
-
 # config — Configure Machinery
 
-## SYNOPSIS
+## Synopsis
 
 `machinery config`
 
@@ -11,8 +10,7 @@
 
 `machinery` help config
 
-
-## DESCRIPTION
+## Description
 
 The `config` command shows or changes machinery's configuration.
 
@@ -22,15 +20,14 @@ If key and value are specified this configuration entry is set accordingly.
 
 The configuration is stored in `~/.machinery/machinery.config`.
 
-## ARGUMENTS
+## Arguments
   * `KEY`:
     Name of the configuration entry.
 
   * `VALUE`:
     Value of the configuration entry.
 
-
-## EXAMPLES
+## Examples
 
   * Turn off hints:
 

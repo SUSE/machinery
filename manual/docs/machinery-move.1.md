@@ -1,28 +1,24 @@
-
 # move — Move System Description
 
-## SYNOPSIS
+## Synopsis
 
 `machinery move`
     FROM_NAME TO_NAME
 
 `machinery` help move
 
-
-## DESCRIPTION
+## Description
 
 The `move` command renames a stored system description from `FROM_NAME` to `TO_NAME`.
 
-
-## ARGUMENTS
+## Arguments
   * `FROM_NAME` (required):
     Current name of the system description.
 
   * `TO_NAME` (required):
     New name of the system description.
 
-
-## EXAMPLES
+## Examples
 
   * Rename the system description `earth` to `moon`:
 
