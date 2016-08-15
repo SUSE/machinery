@@ -23,26 +23,29 @@
 
           
               
-                  <li>Home
-                      <ul>
-                      
-                          <li class="">
-                              <a href="../machinery_main_general.1/">General</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_scopes.1/">Scopes</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_usecases.1/">Use cases</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_security_implications.1/">Security Implications</a>
-                          </li>
-                      
-                      </ul>
+                  <li class="">
+                      <a href="../machinery_main_general.1/">General Overview</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -88,7 +91,7 @@
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
@@ -132,12 +135,47 @@
       </div>
       <div class="content">
         <h1 id="machinery-documentation">Machinery Documentation</h1>
-<p>This is the documentation of Machinery.</p>
+<p>Welcome! The Machinary documentation is a reference aimed at system administrators.
+It will give you an overview of Machinery itself, its subcommands, and usage examples.</p>
+<h1 id="what-is-machinery">What is Machinery?</h1>
+<p>Machinery is a systems management toolkit for Linux. It supports configuration
+discovery, system validation, and service migration. Machinery is based on the
+idea of a universal system description. Machinery has a set of commands which
+work with this system description. These commands can be combined to form work 
+flows. Machinery is targeted at the system administrator of the data center.</p>
+<h1 id="work-flow-examples">Work Flow Examples</h1>
+<h2 id="inspect-a-system-and-show-results">Inspect a System and Show Results</h2>
 <ul>
-<li><a href="../machinery_main_general.1/">Overview</a></li>
-<li><a href="../machinery_main_scopes.1/">Scopes</a></li>
-<li><a href="../machinery_main_usecases.1/">Use cases</a></li>
+<li><code>machinery inspect --extract-files --name=NAME HOSTNAME</code></li>
+<li><code>machinery show NAME</code></li>
 </ul>
+<h2 id="inspect-two-systems-and-compare-them">Inspect Two Systems and Compare Them</h2>
+<ul>
+<li><code>machinery inspect HOSTNAME1</code></li>
+<li><code>machinery inspect HOSTNAME2</code></li>
+<li><code>machinery compare HOSTNAME1 HOSTNAME2</code></li>
+</ul>
+<h2 id="fully-inspect-a-system-and-export-a-kiwi-description">Fully Inspect a System and Export a Kiwi Description</h2>
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery export-kiwi --kiwi-dir=~/kiwi HOSTNAME</code></li>
+</ul>
+<h2 id="fully-inspect-a-system-and-export-an-autoyast-profile">Fully Inspect a System and Export an AutoYaST Profile</h2>
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery export-autoyast --autoyast-dir=~/autoyast HOSTNAME</code></li>
+</ul>
+<h2 id="fully-inspect-a-system-and-deploy-a-replicate-to-the-cloud">Fully Inspect a System and Deploy a Replicate to the Cloud</h2>
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery deploy --cloud-config=~/openrc.sh HOSTNAME</code></li>
+</ul>
+<h2 id="how-to-upgrade-a-sles-11-sp3-system-to-sles-12">How to upgrade a SLES 11 SP3 system to SLES 12</h2>
+<ul>
+<li>Machinery can help you to upgrade without affecting the original system.
+    For more details please read the Wiki Page: <a href="https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12">How to upgrade a SLES 11 SP3 system to SLES 12</a>.</li>
+</ul>
+<p>For a more detailed overview see <a href="../machinery_main_general.1/">General Overview</a>.</p>
       </div>
     </div>
   </body>

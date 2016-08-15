@@ -23,26 +23,29 @@
 
           
               
-                  <li>Home
-                      <ul>
-                      
-                          <li class="">
-                              <a href="../machinery_main_general.1/">General</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_scopes.1/">Scopes</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_usecases.1/">Use cases</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_security_implications.1/">Security Implications</a>
-                          </li>
-                      
-                      </ul>
+                  <li class="">
+                      <a href="../machinery_main_general.1/">General Overview</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -88,7 +91,7 @@
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
@@ -131,11 +134,11 @@
         </ul>
       </div>
       <div class="content">
-        <h1 id="serve-serve-system-descriptions-using-a-web-server">serve — Serve System Descriptions Using A Web Server</h1>
-<h2 id="synopsis">SYNOPSIS</h2>
+        <h1 id="serve-serve-system-descriptions-using-a-web-server">serve — Serve System Descriptions Using a Web Server</h1>
+<h2 id="synopsis">Synopsis</h2>
 <p><code>machinery serve</code> [-p PORT | --port=PORT] [--public]</p>
 <p><code>machinery</code> help serve</p>
-<h2 id="description">DESCRIPTION</h2>
+<h2 id="description">Description</h2>
 <p>The <code>serve</code> command spawns a web server to view system descriptions as an HTML
 view.</p>
 <p>By default the server is available from http://127.0.0.1:7585 but both the
@@ -143,7 +146,7 @@ IP address and the port can be configured using the according options.</p>
 <p>Specific descriptions are available from http://127.0.0.1:7585/NAME, where NAME
 is the name of the system description. If no name is specified in the URL an
 overview of all descriptions is served.</p>
-<h2 id="options">OPTIONS</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li>
 <p><code>-p PORT</code>, <code>--port=PORT</code> (optional):
@@ -157,7 +160,7 @@ chosen when <code>machinery</code> will be executed as <code>root</code> user.</
     the server will only listen on the localhost IP address 127.0.0.1</p>
 </li>
 </ul>
-<h2 id="examples">EXAMPLES</h2>
+<h2 id="examples">Examples</h2>
 <ul>
 <li>
 <p>Start the server with default options:</p>

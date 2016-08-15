@@ -23,26 +23,29 @@
 
           
               
-                  <li>Home
-                      <ul>
-                      
-                          <li class="">
-                              <a href="../machinery_main_general.1/">General</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_scopes.1/">Scopes</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_usecases.1/">Use cases</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_security_implications.1/">Security Implications</a>
-                          </li>
-                      
-                      </ul>
+                  <li class="">
+                      <a href="../machinery_main_general.1/">General Overview</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -88,7 +91,7 @@
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
@@ -132,11 +135,11 @@
       </div>
       <div class="content">
         <h1 id="upgrade-format-upgrade-system-description">upgrade-format — Upgrade System Description</h1>
-<h2 id="synopsis">SYNOPSIS</h2>
+<h2 id="synopsis">Synopsis</h2>
 <p><code>machinery upgrade-format</code> --all</p>
 <p><code>machinery upgrade-format</code> NAME</p>
 <p><code>machinery</code> help upgrade-format</p>
-<h2 id="description">DESCRIPTION</h2>
+<h2 id="description">Description</h2>
 <p>The <code>upgrade-format</code> command upgrades a system description to the latest format
 version.</p>
 <p>The <code>format</code> in this context is the structure of the internal system description
@@ -146,17 +149,17 @@ until it is upgraded. The current format version can be retrieved using
 <code>machinery --version</code>. The format version of a system description can be found
 in the <code>meta</code> section of the according <code>manifest.json</code> file.</p>
 <p>If the <code>--all</code> switch is given all local descriptions will be upgraded.</p>
-<h2 id="options">OPTIONS</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li><code>--all</code> (optional):
     Upgrade all stored system descriptions.</li>
 </ul>
-<h2 id="arguments">ARGUMENTS</h2>
+<h2 id="arguments">Arguments</h2>
 <ul>
 <li><code>NAME</code> (optional):
     Upgrade specified system description.</li>
 </ul>
-<h2 id="examples">EXAMPLES</h2>
+<h2 id="examples">Examples</h2>
 <ul>
 <li>
 <p>Upgrade the system description stored as <code>earth</code>:</p>

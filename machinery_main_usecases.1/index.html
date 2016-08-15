@@ -23,26 +23,29 @@
 
           
               
-                  <li>Home
-                      <ul>
-                      
-                          <li class="">
-                              <a href="../machinery_main_general.1/">General</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_scopes.1/">Scopes</a>
-                          </li>
-                      
-                          <li class="current">
-                              <a href="./">Use cases</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_security_implications.1/">Security Implications</a>
-                          </li>
-                      
-                      </ul>
+                  <li class="">
+                      <a href="../machinery_main_general.1/">General Overview</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
+                  </li>
+              
+
+          
+              
+                  <li class="current">
+                      <a href="./">Use cases</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -88,7 +91,7 @@
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
@@ -131,18 +134,7 @@
         </ul>
       </div>
       <div class="content">
-        <h2 id="system-description">System Description</h2>
-<p>The System Description format and file structure is documented in the machinery
-wiki: <a href="https://github.com/SUSE/machinery/wiki/System-Description-Format">https://github.com/SUSE/machinery/wiki/System-Description-Format</a></p>
-<p>Machinery validates descriptions on load. It checks that the JSON structure of
-the manifest file, which contains the primary and meta data of a description, is
-correct and it adheres to the schema. Validation errors are reported as warnings.
-It also checks that the information about extracted files is consistent. Missing
-files or extra files without reference in the manifest are treated also as
-warnings. All other issues are errors which need to be fixed so that Machinery
-can use the description</p>
-<p>To manually validate a description use the <code>machinery validate</code> command.</p>
-<h2 id="use-cases">Use Cases</h2>
+        <h1 id="use-cases">Use Cases</h1>
 <p>Some of the important use cases of Machinery are:</p>
 <ul>
 <li>Inspecting a System and Collecting Information</li>
@@ -161,21 +153,7 @@ can use the description</p>
 <p>An inspected system can be cloned. The inspection step returns a system
   description which is used as the basis for cloning physical or virtual
   instances. Machinery can build a system image from the description, which
-  can then for example be deployed to a cloud.</p>
-<h1 id="options-for-all-subcommands">OPTIONS FOR ALL SUBCOMMANDS</h1>
-<!--- These are 'global' options of machinery -->
-
-<ul>
-<li>
-<p><code>--version</code>:
-    Displays version of <code>machinery</code> tool. Exit when done.</p>
-</li>
-<li>
-<p><code>--debug</code>:
-    Enable debug mode. Machinery writes additional information into the log
-    file which can be useful to track down problems.</p>
-</li>
-</ul>
+  can then for example be deployed to a cloud environment.</p>
       </div>
     </div>
   </body>

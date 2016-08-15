@@ -23,26 +23,29 @@
 
           
               
-                  <li>Home
-                      <ul>
-                      
-                          <li class="">
-                              <a href="../machinery_main_general.1/">General</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_scopes.1/">Scopes</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_main_usecases.1/">Use cases</a>
-                          </li>
-                      
-                          <li class="">
-                              <a href="../machinery_security_implications.1/">Security Implications</a>
-                          </li>
-                      
-                      </ul>
+                  <li class="">
+                      <a href="../machinery_main_general.1/">General Overview</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -88,7 +91,7 @@
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect-docker.1/">Inspect Docker</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
@@ -132,10 +135,10 @@
       </div>
       <div class="content">
         <h1 id="inspect-inspect-running-system">inspect — Inspect Running System</h1>
-<h2 id="synopsis">SYNOPSIS</h2>
+<h2 id="synopsis">Synopsis</h2>
 <p><code>machinery inspect</code> [OPTIONS] HOSTNAME</p>
 <p><code>machinery</code> help inspect</p>
-<h2 id="description">DESCRIPTION</h2>
+<h2 id="description">Description</h2>
 <p>The <code>inspect</code> command inspects a running system and generates a system
 description from the gathered data.</p>
 <p>The system data is structured into scopes, controlled by the
@@ -145,14 +148,14 @@ Machinery will always inspect all specified scopes, and skip scopes which
 trigger errors.</p>
 <p><strong>Note</strong>:
 Tasks on Debian-like systems are treated as patterns.</p>
-<h2 id="arguments">ARGUMENTS</h2>
+<h2 id="arguments">Arguments</h2>
 <ul>
 <li><code>HOSTNAME</code> (required):
     The host name of the system to be inspected. The host name will also be
     used as the name of the stored system description unless another name is
     provided with the <code>--name</code> option.</li>
 </ul>
-<h2 id="options">OPTIONS</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li>
 <p><code>-n NAME</code>, <code>--name=NAME</code> (optional):
@@ -161,18 +164,18 @@ Tasks on Debian-like systems are treated as patterns.</p>
 <li>
 <p><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional):
     Inspect system for specified scope.
-    See the <a href="../machinery_main_scopes.1/index.html">Scope section</a> for more information.</p>
+    See the <a href="../machinery_main_scopes.1/">Scope section</a> for more information.</p>
 </li>
 <li>
 <p><code>-e SCOPE</code>, <code>--ignore-scope=IGNORE-SCOPE</code> (optional):
     Inspect system for all scopes except the specified scope.
-    See the <a href="../machinery_main_scopes.1/index.html">Scope section</a> for more information.</p>
+    See the <a href="../machinery_main_scopes.1/">Scope section</a> for more information.</p>
 </li>
 <li>
 <p><code>-r USER</code>, <code>--remote-user=USER</code> (optional):
     Defines the user which is used to access the inspected system via SSH.
     This user needs to be allowed to run certain commands using sudo (see
-    PREREQUISITES for more information).
+    Prerequisites for more information).
     To change the default-user use <code>machinery config remote-user=USER</code></p>
 </li>
 <li>
@@ -220,7 +223,7 @@ Tasks on Debian-like systems are treated as patterns.</p>
     Display the filters which are used during inspection.</p>
 </li>
 </ul>
-<h2 id="prerequisites">PREREQUISITES</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>
 <p>Inspecting a local system requires running <code>machinery</code> as root.</p>
@@ -229,7 +232,7 @@ Tasks on Debian-like systems are treated as patterns.</p>
 <p>Inspecting a remote system requires passwordless SSH login as root on the
     inspected system.
     Use <code>ssh-agent</code> or asymmetric keys (you can transfer the current SSH key
-    via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root@HOSTNAME</code>)</p>
+    via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root@HOSTNAME</code>).</p>
 </li>
 <li>
 <p>The system to be inspected needs to have the following commands:</p>
@@ -257,7 +260,7 @@ Tasks on Debian-like systems are treated as patterns.</p>
 <p># <code>passwd</code> machinery</p>
 </li>
 </ul>
-<h2 id="examples">EXAMPLES</h2>
+<h2 id="examples">Examples</h2>
 <ul>
 <li>
 <p>Inspect remote system <code>myhost</code> and save system description under name
