@@ -513,6 +513,33 @@ class Cli
     end
   end
 
+  desc "Export static HTML view of a system description"
+  long_desc <<-LONGDESC
+    Export system description as AutoYaST profile
+
+    The HTML view will be placed in a subdirectory at the given location by the 'html-dir'
+    option.
+  LONGDESC
+  arg "NAME"
+  command "export-html" do |c|
+    c.flag ["html-dir", :d], type: String, required: true,
+      desc: "Location where the HTML view will be stored", arg_name: "DIRECTORY"
+    c.switch :force, default_value: false, required: false, negatable: false,
+      desc: "Overwrite existing profile"
+
+    c.action do |_global_options, options, args|
+      name = shift_arg(args, "NAME")
+      description = SystemDescription.load(name, system_description_store)
+      exporter = StaticHtml.new(description)
+
+      task = ExportTask.new(exporter)
+      task.export(
+        File.expand_path(options["html-dir"]),
+        force: options[:force]
+      )
+    end
+  end
+
   def self.define_inspect_command_options(c)
     c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
       desc: "Store system description under the specified name"
@@ -834,7 +861,6 @@ class Cli
 
         Machinery::Ui.puts "# Inspection details\n" + details unless details.empty?
       end
-
       task = ShowTask.new
       opts = {
         show_diffs: options["show-diffs"],

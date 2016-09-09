@@ -116,6 +116,7 @@ require_relative "managed_files_database"
 require_relative "rpm_database"
 require_relative "dpkg_database"
 require_relative "tee_io"
+require_relative "static_html"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 

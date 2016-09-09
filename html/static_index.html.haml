@@ -1,0 +1,76 @@
+!!!
+%html
+  %head
+    %title
+      = description.name + " - Machinery System Description"
+    %meta{ :charset => 'utf-8' }
+    %link{ :href => "assets/machinery-base.css", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "assets/machinery.css", :rel => "stylesheet", :type => "text/css" }
+    %script{ :src => "assets/jquery-2.1.1.min.js" }
+    %script{ :src => "assets/transition.js" }
+    %script{ :src => "assets/collapse.js" }
+    %script{ :src => "assets/jquery.searcher.min.js" }
+    %script{ :src => "assets/machinery-base.js" }
+    %script{ :src => "assets/show/machinery.js" }
+    %script{ :src => "assets/bootstrap-tooltip.js" }
+    %script{ :src => "assets/bootstrap-popover.js" }
+    %script{ :src => "assets/bootstrap-modal.js" }
+
+  %body{ "data-description" => description.name }
+    - scopes = ["os", "packages", "patterns", "repositories", "users", "groups",
+       "services", "changed_config_files", "changed_managed_files", "unmanaged_files"]
+    .modal.fade#file-modal{ "tabindex" => "-1" }
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            %button.close{ "type" => "button", "data-dismiss" => "modal" }
+              &times;
+            %h4#file-modal-title
+          .modal-body
+            .spinner
+            %textarea#file-modal-file-content{ "readonly" => "true" }
+            #file-modal-error{ "style" => "display: none" }
+
+    #file_popover{ :style => "display: none" }
+      .header
+        %h3.name
+      .body
+        %textarea.content
+
+      #content_container
+
+        - scopes.each do |scope|
+          = render_scope scope
+
+        .hidden#inspection_details
+          - if description[:environment].system_type == "docker"
+            #container_type
+              .row
+                .col-xs-1
+                .col-xs-11
+                  %h3 Type of Inspected Container
+
+              .row
+                .col-xs-1
+                .col-xs-11
+                  %ul
+                    %li
+                      = description[:environment].system_type
+
+          #filters
+            .row
+              .col-xs-1
+              .col-xs-11
+                %h3 Filters used during Inspection
+
+            .row
+              .col-xs-1
+              .col-xs-11
+                - unless description.filter_definitions("inspect").empty?
+                  %ul
+                    - description.filter_definitions("inspect").each do |filter|
+                      %li.filter
+                        = filter
+
+                - else
+                  %p No filters were used.
