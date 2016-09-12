@@ -161,7 +161,7 @@ describe OsInspector do
       inspector.inspect(filter)
 
       expect(description.os.name).to eq "openSUSE Tumbleweed"
-      expect(description.os.version).to eq("20150421 (Tumbleweed)")
+      expect(description.os.version).to eq("20160909")
       expect(description.os.architecture).to eq "x86_64"
       expect(inspector.summary).to include("openSUSE Tumbleweed")
       expect(description.os).to be_a(OsOpenSuseTumbleweed)
