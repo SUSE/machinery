@@ -65,7 +65,7 @@ describe System do
 
       filelist = Dir.glob(test_dir + "/*")
 
-      local_system = LocalSystem.new()
+      local_system = LocalSystem.new
       md5sum = local_system.run_command(
         ["find", test_dir, "-type", "f"],
         ["xargs", "md5sum"],
@@ -109,7 +109,7 @@ describe System do
         FileUtils.touch(excluded_file_1)
         FileUtils.touch(excluded_file_2)
 
-        local_system = LocalSystem.new()
+        local_system = LocalSystem.new
         local_system.create_archive(test_dir, archive, [excluded_file_1, excluded_file_2])
 
         file_list = Tarball.new(archive).list
