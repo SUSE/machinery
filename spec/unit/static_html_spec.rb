@@ -21,9 +21,6 @@ describe StaticHtml do
   capture_machinery_output
   initialize_system_description_factory_store
 
-  let(:expected_profile) {
-    File.read(File.join(Machinery::ROOT, "spec/data/autoyast/simple.xml"))
-  }
   let(:description) {
     create_test_description(
       store_on_disk: true,
@@ -44,5 +41,21 @@ describe StaticHtml do
     )
   }
 
-  
+  describe "#initialize" do
+    it "initializes without error" do
+      expect { StaticHtml.new(description) }.not_to raise_error
+    end
+  end
+
+  describe "#write" do
+    it "renders an HTML report" do
+      static_html = StaticHtml.new(description)
+      Dir.mktmpdir do |tmp_dir|
+        static_html.write(tmp_dir)
+        index_file = File.join(tmp_dir, "index.html")
+        expect(File.readable?(index_file)).to be_truthy
+        expect(File.read(index_file)).to include "<html", "openSUSE"
+      end
+    end
+  end
 end

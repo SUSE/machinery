@@ -17,12 +17,33 @@
 
 class StaticHtml < Exporter
 
+  TEMPLATE_DIR = File.join(Machinery::ROOT, "html").freeze
+  PARTIAL_DIR = File.join(Machinery::ROOT, "html", "partials").freeze
+
+  include HamlHelpers
+
   def initialize(description)
     @description = description
-    Haml::Engine.new(File.read(File.join(Machinery::ROOT, "html/static_index.html.haml"))).render(Object.new, description: @description)
   end
 
-  def render_scope(partial)
-    Haml::Engine.new(File.read("_#{partial}.html.haml")).render
+  def haml(source, locals:)
+    Haml::Engine.new(source).render(binding, locals)
+  end
+
+  def write(directory)
+    FileUtils.mkdir_p(directory)
+    File.open(File.join(directory, "index.html"), "w") do |f|
+      f.puts Haml::Engine.new(static_index_path).render(self, description: @description)
+    end
+  end
+
+  private
+
+  def static_index_path
+    File.read(File.join(TEMPLATE_DIR, "static_index.html.haml"))
+  end
+
+  def partial_path(partial)
+    File.read(File.join(PARTIAL_DIR, "#{partial}.html.haml"))
   end
 end
