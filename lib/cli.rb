@@ -544,7 +544,7 @@ class Cli
     c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
       desc: "Store system description under the specified name"
     c.flag [:scope, :s], type: String, required: false,
-      desc: "Show specified scopes", arg_name: "SCOPE_LIST"
+      desc: "Inspect specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag "skip-files", required: false, negatable: false,
