@@ -43,18 +43,48 @@ describe StaticHtml do
 
   describe "#initialize" do
     it "initializes without error" do
-      expect { StaticHtml.new(description) }.not_to raise_error
+      expect { StaticHtml.new(description, '/tmp') }.not_to raise_error
     end
   end
 
   describe "#write" do
     it "renders an HTML report" do
-      static_html = StaticHtml.new(description)
       Dir.mktmpdir do |tmp_dir|
-        static_html.write(tmp_dir)
+        static_html = StaticHtml.new(description, tmp_dir)
+        static_html.write
         index_file = File.join(tmp_dir, "index.html")
         expect(File.readable?(index_file)).to be_truthy
         expect(File.read(index_file)).to include "<html", "openSUSE"
+      end
+    end
+  end
+
+  describe "#create_directory" do
+    it "raises an exception if dir exists and not forcing" do
+      Dir.mktmpdir do |tmp_dir|
+        static_html = StaticHtml.new(description, tmp_dir)
+        expect {
+          static_html.create_directory(false)
+        }.to raise_error(Machinery::Errors::ExportFailed)
+      end
+    end
+    it "removes directory and creates new one if forcing" do
+      Dir.mktmpdir do |tmp_dir|
+        static_html = StaticHtml.new(description, tmp_dir)
+        existing_file = File.join(tmp_dir, 'test')
+        FileUtils.touch(existing_file)
+        expect {
+          static_html.create_directory(true)
+        }.not_to raise_error
+        expect(File.readable?(existing_file)).to be_falsy
+      end
+    end
+    it "creates a new directory" do
+      Dir.mktmpdir do |tmp_dir|
+        static_html = StaticHtml.new(description, tmp_dir)
+        Dir.rmdir(tmp_dir)
+        static_html.create_directory(false)
+        expect(File.directory?(tmp_dir)).to be_truthy
       end
     end
   end

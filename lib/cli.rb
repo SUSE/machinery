@@ -530,13 +530,9 @@ class Cli
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
       description = SystemDescription.load(name, system_description_store)
-      exporter = StaticHtml.new(description)
-
-      task = ExportTask.new(exporter)
-      task.export(
-        File.expand_path(options["html-dir"]),
-        force: options[:force]
-      )
+      exporter = StaticHtml.new(description, options["html-dir"])
+      exporter.create_directory(options[:force])
+      exporter.write
     end
   end
 

@@ -22,28 +22,42 @@ class StaticHtml < Exporter
 
   include HamlHelpers
 
-  def initialize(description)
+  def initialize(description, directory)
     @description = description
+    @directory = directory
   end
 
   def haml(source, locals:)
     Haml::Engine.new(source).render(binding, locals)
   end
 
-  def write(directory)
-    FileUtils.mkdir_p(directory)
-    render_html(directory)
-    copy_assets(directory)
+  def write
+    render_html
+    copy_assets
+  end
+
+  def create_directory(force = false)
+    if File.exist?(@directory)
+      if force
+        FileUtils.rm_r(@directory)
+      else
+        raise Machinery::Errors::ExportFailed.new(
+          "The output directory '#{@directory}' already exists." \
+          " You can force overwriting it with the '--force' option."
+        )
+      end
+    end
+    FileUtils.mkdir_p(@directory)
   end
 
   private
 
-  def copy_assets(directory)
-    FileUtils.cp_r File.join(TEMPLATE_DIR, "assets"), directory
+  def copy_assets
+    FileUtils.cp_r File.join(TEMPLATE_DIR, "assets"), @directory
   end
 
-  def render_html(directory)
-    File.open(File.join(directory, "index.html"), "w") do |f|
+  def render_html
+    File.open(File.join(@directory, "index.html"), "w") do |f|
       f.puts Haml::Engine.new(static_index_path).render(self, description: @description)
     end
   end
