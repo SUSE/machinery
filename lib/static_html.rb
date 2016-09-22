@@ -32,12 +32,21 @@ class StaticHtml < Exporter
 
   def write(directory)
     FileUtils.mkdir_p(directory)
+    render_html(directory)
+    copy_assets(directory)
+  end
+
+  private
+
+  def copy_assets(directory)
+    FileUtils.cp_r File.join(TEMPLATE_DIR, "assets"), directory
+  end
+
+  def render_html(directory)
     File.open(File.join(directory, "index.html"), "w") do |f|
       f.puts Haml::Engine.new(static_index_path).render(self, description: @description)
     end
   end
-
-  private
 
   def static_index_path
     File.read(File.join(TEMPLATE_DIR, "static_index.html.haml"))
