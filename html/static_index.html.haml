@@ -37,6 +37,46 @@
       .body
         %textarea.content
 
+    .container-fluid
+      #nav-bar
+        .row.toolbar
+          %small.col-xs-1
+            %a#expand-all{ :href => "#", :style => "display: none" }
+              Expand all
+            %a#collapse-all{ :href => "#" }
+              Collapse all
+
+          .col-xs-11.nav-buttons
+            .col-xs-3
+              .filter-input
+                .input-group
+                  %input.form-control.col-md-8#filter{ :placeholder => "Type To Filter" }
+                  .input-group-btn
+                    %a.btn.btn-default.reset-filter{ :href => "#", :title => "Reset Filter" }
+                      %span Reset
+
+            .col-xs-5
+              %span.scope-navigation
+                %span.nav-bar-title
+                  Scopes:
+
+                - scopes.each do |scope|
+                  %a.btn.btn-default.btn-sm{ :href => "##{scope}", :title => scope_title(scope),
+                    "data-toggle"=>"popover", "data-content" => scope_help(scope),
+                    :class => nav_class(scope) }
+                    %span= scope_initials(scope)
+            .col-xs-2
+              %a.btn.btn-default.inspection_details{ :href => "#", "data-toggle" => "popover" }
+                inspection details
+            .col-xs-2
+              %small.pull-right
+                created by
+                %a{ :href => "http://machinery-project.org", :target => "_blank" }
+                  Machinery
+                %br
+                %a{ :href => "/site/docs/", :target => "_blank" }
+                  Machinery documentation
+
       #content_container
 
         - scopes.each do |scope|

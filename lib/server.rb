@@ -41,14 +41,6 @@ end
 class Server < Sinatra::Base
   module Helpers
     include HamlHelpers
-    def nav_class(scope)
-      if @description
-        return @description[scope] ? "" : "disabled"
-      elsif @description_a && @description_b
-        return @description_a[scope] && @description_b[scope] ? "" : "disabled"
-      end
-    end
-
     def safe_length(object, attribute)
       if collection = object.try(attribute)
         collection.length
