@@ -24,7 +24,9 @@ class StaticHtml < Exporter
   def initialize(description, directory)
     @description = description
     @directory = directory
+    @static_html = true
   end
+  attr_reader :description
 
   def haml(source, locals:)
     Haml::Engine.new(source).render(binding, locals)
@@ -62,7 +64,7 @@ class StaticHtml < Exporter
   end
 
   def static_index_path
-    File.read(File.join(TEMPLATE_DIR, "static_index.html.haml"))
+    File.read(File.join(TEMPLATE_DIR, "index.html.haml"))
   end
 
   def partial_path(partial)

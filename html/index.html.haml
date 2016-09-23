@@ -30,11 +30,12 @@
             .spinner
             %textarea#file-modal-file-content{ "readonly" => "true" }
             #file-modal-error{ "style" => "display: none" }
-          .modal-footer
-            %a.btn.btn-success#file-modal-download-link{ "target" => "_blank" }
-              Download
-            %button.btn.btn-primary{ "type" => "button", "data-dismiss" => "modal" }
-              Close
+          - unless @static_html
+            .modal-footer
+              %a.btn.btn-success#file-modal-download-link{ "target" => "_blank" }
+                Download
+              %button.btn.btn-primary{ "type" => "button", "data-dismiss" => "modal" }
+                Close
 
     #file_popover{ :style => "display: none" }
       .header
@@ -42,11 +43,11 @@
       .body
         %textarea.content
 
-    = render_partial "description_selector"
+    = render_partial "description_selector" unless @static_html
 
     .container-fluid
       #nav-bar
-        = render_partial "nav_bar"
+        = render_partial "nav_bar" unless @static_html
         .row.toolbar
           %small.col-xs-1
             %a#expand-all{ :href => "#", :style => "display: none" }
