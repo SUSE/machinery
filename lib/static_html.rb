@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Copyright (c) 2013-2016 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
@@ -14,7 +15,6 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-
 class StaticHtml < Exporter
 
   TEMPLATE_DIR = File.join(Machinery::ROOT, "html").freeze

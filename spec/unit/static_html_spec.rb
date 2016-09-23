@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Copyright (c) 2013-2016 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
@@ -43,7 +44,7 @@ describe StaticHtml do
 
   describe "#initialize" do
     it "initializes without error" do
-      expect { StaticHtml.new(description, '/tmp') }.not_to raise_error
+      expect { StaticHtml.new(description, "/tmp") }.not_to raise_error
     end
   end
 
@@ -71,7 +72,7 @@ describe StaticHtml do
     it "removes directory and creates new one if forcing" do
       Dir.mktmpdir do |tmp_dir|
         static_html = StaticHtml.new(description, tmp_dir)
-        existing_file = File.join(tmp_dir, 'test')
+        existing_file = File.join(tmp_dir, "test")
         FileUtils.touch(existing_file)
         expect {
           static_html.create_directory(true)
