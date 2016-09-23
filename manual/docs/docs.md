@@ -8,7 +8,7 @@ It will give you an overview of Machinery itself, its subcommands, and usage exa
 Machinery is a systems management toolkit for Linux. It supports configuration
 discovery, system validation, and service migration. Machinery is based on the
 idea of a universal system description. Machinery has a set of commands which
-work with this system description. These commands can be combined to form work 
+work with this system description. These commands can be combined to form work
 flows. Machinery is targeted at the system administrator of the data center.
 
 # Work Flow Examples
@@ -16,6 +16,10 @@ flows. Machinery is targeted at the system administrator of the data center.
 ## Inspect a System and Show Results
   - `machinery inspect --extract-files --name=NAME HOSTNAME`
   - `machinery show NAME`
+
+## Export System Description as HTML
+
+  - `machinery export-html --html-dir=tmp NAME`
 
 ## Inspect Two Systems and Compare Them
   - `machinery inspect HOSTNAME1`

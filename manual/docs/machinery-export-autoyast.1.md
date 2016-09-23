@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-`machinery export-autoyast` -a | --autoyast-dir NAME
+`machinery export-autoyast` -a | --autoyast-dir=DIRECTORY NAME
    --force
 
 `machinery` help export-autoyast
@@ -24,7 +24,7 @@ profile.
     will be created if it does not exist yet.
 
   * `--force` (optional):
-    Overwrite existing system description
+    Overwrite an existing output directory.
 
 ## System Registration
 

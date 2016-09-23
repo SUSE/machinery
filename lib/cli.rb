@@ -471,7 +471,7 @@ class Cli
     c.flag ["kiwi-dir", :k], type: String, required: true,
       desc: "Location where the description will be stored", arg_name: "DIRECTORY"
     c.switch :force, default_value: false, required: false, negatable: false,
-      desc: "Overwrite existing description"
+      desc: "Overwrite existing directory"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -498,7 +498,7 @@ class Cli
     c.flag ["autoyast-dir", :a], type: String, required: true,
       desc: "Location where the autoyast profile will be stored", arg_name: "DIRECTORY"
     c.switch :force, default_value: false, required: false, negatable: false,
-      desc: "Overwrite existing profile"
+      desc: "Overwrite existing directory"
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
@@ -513,11 +513,34 @@ class Cli
     end
   end
 
+  desc "Export static HTML view of a system description"
+  long_desc <<-LONGDESC
+    Export system description as HTML
+
+    The HTML view will be placed in a subdirectory at the given location by the 'html-dir'
+    option.
+  LONGDESC
+  arg "NAME"
+  command "export-html" do |c|
+    c.flag ["html-dir", :d], type: String, required: true,
+      desc: "Location where the HTML view will be stored", arg_name: "DIRECTORY"
+    c.switch :force, default_value: false, required: false, negatable: false,
+      desc: "Overwrite existing directory"
+
+    c.action do |_global_options, options, args|
+      name = shift_arg(args, "NAME")
+      description = SystemDescription.load(name, system_description_store)
+      exporter = StaticHtml.new(description, options["html-dir"])
+      exporter.create_directory(options[:force])
+      exporter.write
+    end
+  end
+
   def self.define_inspect_command_options(c)
     c.flag [:name, :n], type: String, required: false, arg_name: "NAME",
       desc: "Store system description under the specified name"
     c.flag [:scope, :s], type: String, required: false,
-      desc: "Show specified scopes", arg_name: "SCOPE_LIST"
+      desc: "Inspect specified scopes", arg_name: "SCOPE_LIST"
     c.flag ["ignore-scope", :e], type: String, required: false,
       desc: "Exclude specified scopes", arg_name: "SCOPE_LIST"
     c.flag "skip-files", required: false, negatable: false,
@@ -834,7 +857,6 @@ class Cli
 
         Machinery::Ui.puts "# Inspection details\n" + details unless details.empty?
       end
-
       task = ShowTask.new
       opts = {
         show_diffs: options["show-diffs"],

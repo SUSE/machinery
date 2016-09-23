@@ -103,6 +103,7 @@ require_relative "man_task"
 require_relative "comparison"
 require_relative "serve_html_task"
 require_relative "file_diff"
+require_relative "haml_helpers"
 require_relative "server"
 require_relative "html"
 require_relative "machinery_helper"
@@ -116,6 +117,7 @@ require_relative "managed_files_database"
 require_relative "rpm_database"
 require_relative "dpkg_database"
 require_relative "tee_io"
+require_relative "static_html"
 
 Dir[File.join(Machinery::ROOT, "plugins", "**", "*.rb")].each { |f| require(f) }
 
