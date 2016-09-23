@@ -1,4 +1,4 @@
-# export-autoyast — Export System Description as HTML
+# export-html — Export System Description as HTML
 
 ## Synopsis
 

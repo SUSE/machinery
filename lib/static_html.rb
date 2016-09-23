@@ -53,7 +53,7 @@ class StaticHtml < Exporter
   private
 
   def copy_assets
-    FileUtils.cp_r File.join(TEMPLATE_DIR, "assets"), @directory
+    FileUtils.cp_r(File.join(TEMPLATE_DIR, "assets"), @directory)
   end
 
   def render_html

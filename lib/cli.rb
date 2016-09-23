@@ -471,7 +471,7 @@ class Cli
     c.flag ["kiwi-dir", :k], type: String, required: true,
       desc: "Location where the description will be stored", arg_name: "DIRECTORY"
     c.switch :force, default_value: false, required: false, negatable: false,
-      desc: "Overwrite existing description"
+      desc: "Overwrite existing directory"
 
     c.action do |global_options,options,args|
       name = shift_arg(args, "NAME")
@@ -498,7 +498,7 @@ class Cli
     c.flag ["autoyast-dir", :a], type: String, required: true,
       desc: "Location where the autoyast profile will be stored", arg_name: "DIRECTORY"
     c.switch :force, default_value: false, required: false, negatable: false,
-      desc: "Overwrite existing profile"
+      desc: "Overwrite existing directory"
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")
@@ -515,7 +515,7 @@ class Cli
 
   desc "Export static HTML view of a system description"
   long_desc <<-LONGDESC
-    Export system description as AutoYaST profile
+    Export system description as HTML
 
     The HTML view will be placed in a subdirectory at the given location by the 'html-dir'
     option.
@@ -525,7 +525,7 @@ class Cli
     c.flag ["html-dir", :d], type: String, required: true,
       desc: "Location where the HTML view will be stored", arg_name: "DIRECTORY"
     c.switch :force, default_value: false, required: false, negatable: false,
-      desc: "Overwrite existing profile"
+      desc: "Overwrite existing directory"
 
     c.action do |_global_options, options, args|
       name = shift_arg(args, "NAME")

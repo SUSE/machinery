@@ -55,7 +55,7 @@ describe StaticHtml do
         static_html.write
         index_file = File.join(tmp_dir, "index.html")
         expect(File.readable?(index_file)).to be_truthy
-        expect(File.read(index_file)).to include "<html", "openSUSE"
+        expect(File.read(index_file)).to include("<html", "openSUSE")
       end
     end
   end
