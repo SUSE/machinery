@@ -14,6 +14,7 @@ pages:
   - Deploy: machinery-deploy.1.md
   - "Export AutoYaST": machinery-export-autoyast.1.md
   - "Export Kiwi": machinery-export-kiwi.1.md
+  - "Export HTML": machinery-export-html.1.md
   - Inspect: machinery-inspect.1.md
   - "Inspect Container": machinery-inspect-container.1.md
   - List: machinery-list.1.md
