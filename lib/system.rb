@@ -76,8 +76,9 @@ class System
     out = File.open(archive, "w")
     begin
       run_command(
-        "tar", "--create", "--gzip", "--null", "--files-from=-",
+        "tar", "--create", "--gzip",
         *exclude.flat_map { |f| ["--exclude", f]},
+        "--null", "--files-from=-",
         stdout: out,
         stdin: Array(file_list).join("\0"),
         privileged: true,
