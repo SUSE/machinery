@@ -28,8 +28,8 @@ class StaticHtml < Exporter
   end
   attr_reader :description
 
-  def haml(source, locals:)
-    Haml::Engine.new(source).render(binding, locals)
+  def haml(source, options = {})
+    Haml::Engine.new(source).render(binding, options.delete(:locals))
   end
 
   def write
