@@ -55,6 +55,7 @@ class StaticHtml < Exporter
 
   def copy_assets
     FileUtils.cp_r(File.join(TEMPLATE_DIR, "assets"), @directory)
+    FileUtils.rm_r(File.join(@directory, "assets", "compare"))
   end
 
   def render_html
