@@ -65,7 +65,8 @@ describe StaticHtml do
       expect(File.read(index_file)).not_to include(
         "modal-footer",
         "description-selector-label",
-        "open-description-selector"
+        "open-description-selector",
+        "file-download"
       )
     end
 

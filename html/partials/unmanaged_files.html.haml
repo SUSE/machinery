@@ -34,7 +34,7 @@
                 - unmanaged_files.each do |file|
                   %tr
                     %td
-                      - if file.on_disk?
+                      - if file.on_disk? && !@static_html
                         %a.file-download{ href: "#" }
                           = file.name
                       - else
