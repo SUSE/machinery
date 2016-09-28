@@ -63,6 +63,20 @@ describe StaticHtml do
         )
       end
     end
+
+    it "copies the assets over" do
+      Dir.mktmpdir do |tmp_dir|
+        StaticHtml.new(description, tmp_dir).write
+        expect(Dir.exist?(File.join(tmp_dir, "assets"))).to be(true)
+      end
+    end
+
+    it "does not copy the compare asset over" do
+      Dir.mktmpdir do |tmp_dir|
+        StaticHtml.new(description, tmp_dir).write
+        expect(Dir.exist?(File.join(tmp_dir, "assets", "compare"))).to be(false)
+      end
+    end
   end
 
   describe "#create_directory" do
