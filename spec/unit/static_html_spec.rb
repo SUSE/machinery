@@ -45,7 +45,8 @@ describe StaticHtml do
         "users_with_passwords",
         "groups",
         "services"
-      ]
+      ],
+      with_diffs: true
     )
   }
 
@@ -62,6 +63,7 @@ describe StaticHtml do
       index_file = File.join(@tmp_dir, "index.html")
       expect(File.readable?(index_file)).to be_truthy
       expect(File.read(index_file)).to include("<html", "openSUSE")
+      expect(File.read(index_file)).to include("diff-toggle")
       expect(File.read(index_file)).not_to include(
         "modal-footer",
         "description-selector-label",
