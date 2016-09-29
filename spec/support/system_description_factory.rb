@@ -61,6 +61,7 @@ module SystemDescriptionFactory
   # +modified+: Modified date of the system description scopes.
   # +hostname+: Hostname of the inspected host.
   # +add_scope_meta+: Add meta data for each scope if true.
+  # +with_diffs+: Add diffs for configured config files if true.
   # +filters+: Add filter information to the meta section
   # +format_version+: Define the format version for the system description
   def create_test_description(options = {})
@@ -71,6 +72,7 @@ module SystemDescriptionFactory
         extracted_scopes: [],
         modified: DateTime.now,
         hostname: "example.com",
+        with_diffs: false,
         add_scope_meta: true
     }.merge(options)
 
@@ -88,6 +90,30 @@ module SystemDescriptionFactory
       description = SystemDescription.from_hash(name, store, manifest.to_hash)
     else
       description = build_description(name, store, options)
+    end
+
+    if options[:with_diffs] && options[:extracted_scopes].include?("changed_config_files")
+      file = description.changed_config_files.find(&:file?)
+
+      File.write(
+        File.join(description.description_path, "changed_config_files", file.name),
+        "Other content\n"
+      )
+
+      diff_file_path = File.join(
+        description.description_path,
+        "analyze",
+        "changed_config_files_diffs",
+        File.dirname(file.name)
+      )
+
+      FileUtils.mkdir_p(diff_file_path)
+      crontab_diff = <<EOF
+-Stub data for /etc/cron tab.
+\\ No newline at end of file
++Other content
+EOF
+      File.write(File.join(diff_file_path, "#{File.basename(file.name)}.diff"), crontab_diff)
     end
 
     description.save if options[:store_on_disk]
