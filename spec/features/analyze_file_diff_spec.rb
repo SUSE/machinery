@@ -21,36 +21,14 @@ RSpec.describe "Analyze File Diff", type: :feature do
 
   let(:store) { system_description_factory_store }
   let(:description) {
-    description = create_test_description(
+    create_test_description(
       scopes:           ["changed_config_files"],
       name:             "name",
       store:            store,
       store_on_disk:    true,
-      extracted_scopes: ["changed_config_files"]
+      extracted_scopes: ["changed_config_files"],
+      with_diffs:       true
     )
-
-    file = description.changed_config_files.find(&:file?)
-
-    File.write(
-      File.join(description.description_path, "changed_config_files", file.name),
-      "Other content\n"
-    )
-
-    diff_file_path = File.join(
-      description.description_path,
-      "analyze",
-      "changed_config_files_diffs",
-      File.dirname(file.name)
-    )
-
-    FileUtils.mkdir_p(diff_file_path)
-    crontab_diff = <<EOF
--Stub data for /etc/cron tab.
-\\ No newline at end of file
-+Other content
-EOF
-    File.write(File.join(diff_file_path, "#{File.basename(file.name)}.diff"), crontab_diff)
-    description
   }
 
   context "when showing an analyzed system description" do

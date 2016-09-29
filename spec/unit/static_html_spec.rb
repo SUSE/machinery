@@ -22,13 +22,6 @@ describe StaticHtml do
   capture_machinery_output
   initialize_system_description_factory_store
 
-  around(:each) do |test|
-    Dir.mktmpdir do |tmp_dir|
-      @tmp_dir = tmp_dir
-      test.run
-    end
-  end
-
   let(:description) {
     create_test_description(
       store_on_disk: true,
@@ -45,7 +38,8 @@ describe StaticHtml do
         "users_with_passwords",
         "groups",
         "services"
-      ]
+      ],
+      with_diffs: true
     )
   }
 
@@ -55,13 +49,14 @@ describe StaticHtml do
     end
   end
 
-  describe "#write" do
+  describe "#write", :with_temp_dir do
     it "renders an HTML report" do
       static_html = StaticHtml.new(description, @tmp_dir)
       static_html.write
       index_file = File.join(@tmp_dir, "index.html")
       expect(File.readable?(index_file)).to be_truthy
       expect(File.read(index_file)).to include("<html", "openSUSE")
+      expect(File.read(index_file)).to include("diff-toggle")
       expect(File.read(index_file)).not_to include(
         "modal-footer",
         "description-selector-label",
@@ -81,7 +76,7 @@ describe StaticHtml do
     end
   end
 
-  describe "#create_directory" do
+  describe "#create_directory", :with_temp_dir do
     it "raises an exception if dir exists and not forcing" do
       static_html = StaticHtml.new(description, @tmp_dir)
       expect {

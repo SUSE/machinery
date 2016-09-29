@@ -310,6 +310,16 @@ class SystemDescription < Machinery::Object
     end
   end
 
+  # Enrich description with the config file diffs
+  def load_existing_diffs
+    diffs_dir = scope_file_store("analyze/changed_config_files_diffs").path
+    return unless changed_config_files && diffs_dir
+    changed_config_files.each do |file|
+      path = File.join(diffs_dir, file.name + ".diff")
+      file.diff = DiffWidget.new(File.read(path)).widget if File.exist?(path)
+    end
+  end
+
   private
 
   def parse_variable_assignment(string, variable)

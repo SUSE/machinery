@@ -129,60 +129,6 @@ class Server < Sinatra::Base
 
       value.to_s
     end
-
-    def diff_to_object(diff)
-      diff = Machinery.scrub(diff)
-      lines = diff.lines[2..-1]
-      diff_object = {
-        file: diff[/--- a(.*)/, 1],
-        additions: lines.select { |l| l.start_with?("+") }.length,
-        deletions: lines.select { |l| l.start_with?("-") }.length
-      }
-
-      original_line_number = 0
-      new_line_number = 0
-      diff_object[:lines] = lines.map do |line|
-        line = ERB::Util.html_escape(line.chomp).
-          gsub("\\", "&#92;").
-          gsub("\t", "&nbsp;" * 8)
-        case line
-        when /^@.*/
-          entry = {
-            type: "header",
-            content: line
-          }
-          original_line_number = line[/-(\d+)/, 1].to_i
-          new_line_number = line[/\+(\d+)/, 1].to_i
-        when /^ .*/, ""
-          entry = {
-            type: "common",
-            new_line_number: new_line_number,
-            original_line_number: original_line_number,
-            content: line[1..-1]
-          }
-          new_line_number += 1
-          original_line_number += 1
-        when /^\+.*/
-          entry = {
-            type: "addition",
-            new_line_number: new_line_number,
-            content: line[1..-1]
-          }
-          new_line_number += 1
-        when /^\-.*/
-          entry = {
-            type: "deletion",
-            original_line_number: original_line_number,
-            content: line[1..-1]
-          }
-          original_line_number += 1
-        end
-
-        entry
-      end
-
-      diff_object
-    end
   end
 
   helpers Helpers
@@ -316,15 +262,7 @@ class Server < Sinatra::Base
       @error = e
       haml File.read(File.join(Machinery::ROOT, "html/exception.html.haml"))
     else
-      diffs_dir = @description.scope_file_store("analyze/changed_config_files_diffs").path
-      if @description.changed_config_files && diffs_dir
-        # Enrich description with the config file diffs
-        @description.changed_config_files.each do |file|
-          path = File.join(diffs_dir, file.name + ".diff")
-          file.diff = diff_to_object(File.read(path)) if File.exist?(path)
-        end
-      end
-
+      @description.load_existing_diffs
       haml File.read(File.join(Machinery::ROOT, "html/index.html.haml"))
     end
   end

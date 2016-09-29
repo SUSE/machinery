@@ -97,26 +97,24 @@ describe System do
       FileUtils.rm_r(dir)
     end
 
-    it "excludes excluded files" do
-      Dir.mktmpdir("machinery_unittest") do |tmp_dir|
-        archive = File.join(tmp_dir, "/archive.tgz")
-        test_dir = File.join(tmp_dir, "/test")
-        included_file = File.join(test_dir, "included")
-        excluded_file_1 = File.join(test_dir, "excluded")
-        excluded_file_2 = File.join(test_dir, "excluded?with special:chars")
-        FileUtils.mkdir_p(test_dir)
-        FileUtils.touch(included_file)
-        FileUtils.touch(excluded_file_1)
-        FileUtils.touch(excluded_file_2)
+    it "excludes excluded files", :with_temp_dir do
+      archive = File.join(@tmp_dir, "/archive.tgz")
+      test_dir = File.join(@tmp_dir, "/test")
+      included_file = File.join(test_dir, "included")
+      excluded_file_1 = File.join(test_dir, "excluded")
+      excluded_file_2 = File.join(test_dir, "excluded?with special:chars")
+      FileUtils.mkdir_p(test_dir)
+      FileUtils.touch(included_file)
+      FileUtils.touch(excluded_file_1)
+      FileUtils.touch(excluded_file_2)
 
-        local_system = LocalSystem.new
-        local_system.create_archive(test_dir, archive, [excluded_file_1, excluded_file_2])
+      local_system = LocalSystem.new
+      local_system.create_archive(test_dir, archive, [excluded_file_1, excluded_file_2])
 
-        file_list = Tarball.new(archive).list
-        # paths in the tarball are relativ to "/", so we have to add it for the comparison
-        paths = file_list.map { |f| File.join("/", f[:path]) }
-        expect(paths).to match_array([test_dir, included_file])
-      end
+      file_list = Tarball.new(archive).list
+      # paths in the tarball are relativ to "/", so we have to add it for the comparison
+      paths = file_list.map { |f| File.join("/", f[:path]) }
+      expect(paths).to match_array([test_dir, included_file])
     end
 
     it "doesn't log the commands" do
@@ -131,17 +129,15 @@ describe System do
       system.create_archive([given_dummy_file], given_dummy_file("something.tgz"))
     end
 
-    it "logs the file list" do
-      Dir.mktmpdir("machinery_unittest") do |tmp_dir|
-        archive = File.join(tmp_dir, "/archive.tgz")
+    it "logs the file list", :with_temp_dir do
+      archive = File.join(@tmp_dir, "/archive.tgz")
 
-        system = System.new
-        allow(system).to receive(:run_command)
-        expect(Machinery.logger).to receive(:info).with(
-          "The following files are packaged in #{archive}: file1, file2"
-        )
-        system.create_archive(["file1", "file2"], archive)
-      end
+      system = System.new
+      allow(system).to receive(:run_command)
+      expect(Machinery.logger).to receive(:info).with(
+        "The following files are packaged in #{archive}: file1, file2"
+      )
+      system.create_archive(["file1", "file2"], archive)
     end
   end
 

@@ -47,8 +47,14 @@ RSpec.configure do |config|
     allow_any_instance_of(LocalSystem).to receive(:check_requirement)
     allow_any_instance_of(RemoteSystem).to receive(:check_requirement)
   end
-end
 
+  config.around(:example, with_temp_dir: true) do |example|
+    Dir.mktmpdir("machinery_unittest") do |tmp_dir|
+      @tmp_dir = tmp_dir
+      example.run
+    end
+  end
+end
 
 shared_context "machinery test directory" do
   include FakeFS::SpecHelpers

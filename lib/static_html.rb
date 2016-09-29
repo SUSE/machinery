@@ -33,6 +33,7 @@ class StaticHtml < Exporter
   end
 
   def write
+    @description.load_existing_diffs
     render_html
     copy_assets
   end
