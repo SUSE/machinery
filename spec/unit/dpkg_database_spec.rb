@@ -66,6 +66,47 @@ describe DpkgDatabase do
       expect(package_name).to eq("sudo")
       expect(package_version).to eq("1.8.9p5-1ubuntu1.1")
     end
+
+    it "can handle diversions" do
+      dpkg_file_output = <<-EOF
+diversion by branding-ubuntu from: /usr/share/gnome-mahjongg/themes/postmodern.svg
+diversion by branding-ubuntu to: /usr/share/gnome-mahjongg/themes/postmodern.svg.unbranded
+gnome-mahjongg, branding-ubuntu: /usr/share/gnome-mahjongg/themes/postmodern.svg
+EOF
+      dpkg_details_output = <<-EOF
+Package: gnome-mahjongg
+Status: install ok installed
+Priority: optional
+Section: games
+Installed-Size: 3700
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: amd64
+Version: 1:3.18.0-1
+Replaces: mahjongg (<< 1:3.7.2)
+Depends: libc6 (>= 2.4), libcairo2 (>= 1.2.4), libgdk-pixbuf2.0-0 (>= 2.22.0), libglib2.0-0 (>= 2.39.90), libgtk-3-0 (>= 3.13.2), librsvg2-2 (>= 2.32.0), dconf-gsettings-backend | gsettings-backend
+Recommends: yelp
+Breaks: mahjongg (<< 1:3.7.2)
+Description: classic Eastern tile game for GNOME
+ This is a solitaire (one player) version of the classic Eastern tile
+ game, Mahjongg.
+ .
+ You start with five levels of tiles which are stacked so some are
+ covered up by the tiles on top. The object of Mahjongg is to remove all
+ the tiles from the game, by finding matching pairs which look alike.
+Original-Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Homepage: https://wiki.gnome.org/Apps/Mahjongg
+EOF
+      expect(system).to receive(:run_command).with(
+        "dpkg", "-S", "/usr/share/gnome-mahjongg/themes/postmodern.svg", any_args
+      ).and_return(dpkg_file_output)
+      expect(system).to receive(:run_command).with(
+        "dpkg", "-s", "gnome-mahjongg", any_args
+      ).and_return(dpkg_details_output)
+      package_name, _package_version = subject.package_for_file_path(
+        "/usr/share/gnome-mahjongg/themes/postmodern.svg"
+      )
+      expect(package_name).to eq("gnome-mahjongg")
+    end
   end
 
   describe "#parse_changes_line" do
