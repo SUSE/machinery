@@ -3,6 +3,8 @@
 * Add remaining systemd service states in Kiwi export (gh#SUSE/machinery#2122)
 * Add export of system descriptions as HTML page. This provides an offline
   view of descrptions (gh#SUSE/machinery#2119)
+* Fix changed files inspections on dpkg systems in case of diversions
+  (gh#SUSE/machinery#2138)
 
 ## Version 1.21.0 - Tue Jun 21 16:28:31 CEST 2016 - thardeck@suse.de
 
