@@ -28,9 +28,16 @@ class DpkgDatabase < ManagedFilesDatabase
   end
 
   def package_for_file_path(file)
-    package_name = @system.run_command(
+    output = @system.run_command(
       "dpkg", "-S", file, stdout: :capture
-    ).lines.last.split(":").first.split(",").first
+    )
+
+    package_name = if output.lines == 1
+      output.split(":").first
+    else
+      extract_package_name_from_file_diversions(output)
+    end
+
     package_details = @system.run_command("dpkg", "-s", package_name, stdout: :capture)
     package_version = package_details.match(/^Version: (.*)$/)[1]
 
@@ -66,5 +73,11 @@ class DpkgDatabase < ManagedFilesDatabase
     @system.check_requirement("dpkg", "--version")
     @system.check_requirement("stat", "--version")
     @system.check_requirement("find", "--version")
+  end
+
+  private
+
+  def extract_package_name_from_file_diversions(output)
+    output.lines.last.split(":").first.split(",").first
   end
 end
