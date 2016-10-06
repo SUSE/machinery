@@ -144,6 +144,7 @@
   * systemd-vconsole-setup.service: static
   * udev.service: static
   * user@0.service: disabled
+  * user@1000.service: disabled
   * wicked.service: enabled
   * wickedd-auto4.service: enabled
   * wickedd-dhcp4.service: enabled
