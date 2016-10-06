@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.22.0 - Thu Oct 06 17:03:33 CEST 2016 - thardeck@suse.de
+
 * Add remaining systemd service states in Kiwi export (gh#SUSE/machinery#2122)
 * Add export of system descriptions as HTML page. This provides an offline
   view of descrptions (gh#SUSE/machinery#2119)
