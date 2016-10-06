@@ -87,6 +87,10 @@
                           </li>
                       
                           <li class="">
+                              <a href="../machinery-export-html.1/">Export HTML</a>
+                          </li>
+                      
+                          <li class="">
                               <a href="../machinery-inspect.1/">Inspect</a>
                           </li>
                       
@@ -143,25 +147,22 @@ architecture of the inspected system.</p>
 <ul>
 <li>packages</li>
 </ul>
-<p>Contains information on all installed RPM packages installed on the
+<p>Contains information on all installed packages installed on the
 inspected system.</p>
 <ul>
 <li>patterns</li>
 </ul>
 <p>Contains all patterns or tasks installed on the inspected system. A pattern is a
 collection of software packages, similar to the idea of tasks on Debian/Ubuntu-
-like systems.
-The meaning of software patterns depends on the package manager of the
-distribution. Therefore, the pattern scope on SUSE based systems uses the
-<code>zypper</code> command to obtain the information about installed pattern names, whereas
-on Debian based systems the <code>tasksel</code> tool is necessary to list installed tasks.</p>
+like systems. The meaning of software patterns depends on the package manager of the
+distribution.</p>
 <ul>
 <li>repositories</li>
 </ul>
 <p>Contains all information about software repositories configured on the
 inspected system. The information about repositories depends on the package
-manager of the distribution. Thus on SUSE-based systems the <code>zypper</code> command
-is used. Machinery collects the following information from each configured repository:</p>
+manager of the distribution. Machinery collects the following information
+from each configured repository:</p>
 <ul>
 <li>
 <p>The alias name of the repository.</p>
@@ -230,13 +231,13 @@ have changed.</p>
 <ul>
 <li>unmanaged-files</li>
 </ul>
-<p>Contains the names and contents of all files which are not part of any RPM
-package. The list of unmanaged files contains only plain files and
+<p>Contains the names and contents of all files which are not part of any package.
+The list of unmanaged files contains only plain files and
 directories. Special files like device nodes, named pipes and Unix domain
 sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/.snapshots/</code>,
 <code>/var/run</code> and special mounts like procfs and sysfs are ignored, too.
 If a directory is in this list, no file or directory below it belongs to a
-RPM package.</p>
+package.</p>
 <p>Meta data information of unmanaged files is only available if the files were
 extracted during inspection.</p>
 <p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from

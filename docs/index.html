@@ -87,6 +87,10 @@
                           </li>
                       
                           <li class="">
+                              <a href="../machinery-export-html.1/">Export HTML</a>
+                          </li>
+                      
+                          <li class="">
                               <a href="../machinery-inspect.1/">Inspect</a>
                           </li>
                       
@@ -141,13 +145,17 @@ It will give you an overview of Machinery itself, its subcommands, and usage exa
 <p>Machinery is a systems management toolkit for Linux. It supports configuration
 discovery, system validation, and service migration. Machinery is based on the
 idea of a universal system description. Machinery has a set of commands which
-work with this system description. These commands can be combined to form work 
+work with this system description. These commands can be combined to form work
 flows. Machinery is targeted at the system administrator of the data center.</p>
 <h1 id="work-flow-examples">Work Flow Examples</h1>
 <h2 id="inspect-a-system-and-show-results">Inspect a System and Show Results</h2>
 <ul>
 <li><code>machinery inspect --extract-files --name=NAME HOSTNAME</code></li>
 <li><code>machinery show NAME</code></li>
+</ul>
+<h2 id="export-system-description-as-html">Export System Description as HTML</h2>
+<ul>
+<li><code>machinery export-html --html-dir=tmp NAME</code></li>
 </ul>
 <h2 id="inspect-two-systems-and-compare-them">Inspect Two Systems and Compare Them</h2>
 <ul>
