@@ -100,7 +100,7 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
       expect(page).not_to have_content("Select a description to show its details.")
       expect(page).to have_link("description_b", href: /\/description_b/)
 
-      click_on("Close")
+      find_button("Close").trigger("click")
       expect(page).not_to have_content("Select a description from the list below")
     end
 
@@ -158,7 +158,7 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
       )
       expect(page).to have_link("description_c", href: /\/compare\/description_c\/description_b/)
 
-      click_on("Close")
+      find_button("Close").trigger("click")
       expect(page).not_to have_content("Select a description from the list below")
     end
 
@@ -173,7 +173,7 @@ RSpec.describe "Navigation Bar Buttons", type: :feature do
       )
 
       expect(page).to have_link("description_c", href: /\/compare\/name\/description_c/)
-      click_on("Close")
+      find_button("Close").trigger("click")
       expect(page).not_to have_content("Select a description from the list below")
     end
   end
