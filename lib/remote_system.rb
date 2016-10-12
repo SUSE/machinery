@@ -150,8 +150,12 @@ class RemoteSystem < System
   end
 
   # Reads a file from the System. Returns nil if it does not exist.
-  def read_file(file)
-    run_command("cat", file, stdout: :capture, privileged: true)
+  def read_file(file, options = {})
+    command_options = {
+      stdout: :capture,
+      privileged: options.fetch(:privileged, false)
+    }
+    run_command("cat", file, command_options)
   rescue Cheetah::ExecutionFailed => e
     if e.status.exitstatus == 1
       # File not found, return nil

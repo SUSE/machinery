@@ -138,7 +138,7 @@ You can install it by running `zypper install #{package}`.
   end
 
   # Reads a file from the System. Returns nil if it does not exist.
-  def read_file(file)
+  def read_file(file, options = {})
     File.read(file)
   rescue Errno::ENOENT
     # File not found, return nil
