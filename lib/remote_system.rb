@@ -87,7 +87,7 @@ class RemoteSystem < System
       cheetah_class = LoggedCheetah
     end
 
-    sudo = ["sudo", "-n"] if options[:privileged] && remote_user != "root"
+    sudo = ["sudo", "-n"] if options[:privileged] && sudo_required?
     cmds = [
       *build_command(:ssh), "#{remote_user}@#{host}", "-o", \
       "LogLevel=ERROR", sudo, "LANGUAGE=", "LC_ALL=#{locale}", *piped_args, options
@@ -109,10 +109,10 @@ class RemoteSystem < System
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     source = "#{remote_user}@#{host}:/"
-    if remote_user != "root"
-      rsync_path = "sudo -n rsync"
+    rsync_path = if sudo_required?
+      "sudo -n rsync"
     else
-      rsync_path = "rsync"
+      "rsync"
     end
 
     cmd = [
@@ -186,6 +186,9 @@ class RemoteSystem < System
 
   private
 
+  def sudo_required?
+    remote_user != "root"
+  end
 
   # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
