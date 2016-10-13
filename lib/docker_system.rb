@@ -54,7 +54,7 @@ class DockerSystem < System
   end
 
   # Reads a file from the System. Returns nil if it does not exist.
-  def read_file(file, options = {})
+  def read_file(file, _options = {})
     run_command("cat", file, stdout: :capture)
   rescue Cheetah::ExecutionFailed => e
     if e.status.exitstatus == 1
