@@ -41,6 +41,10 @@ class RemoteSystem < System
     false
   end
 
+  def connect
+    check_connection
+  end
+
   def run_command(*args)
     options = args.last.is_a?(Hash) ? args.pop : {}
 
@@ -98,20 +102,7 @@ class RemoteSystem < System
     end
   end
 
-  # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
-  # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
-  def connect
-    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
-      "#{remote_user}@#{host}", ":")
-  rescue Cheetah::ExecutionFailed
-    raise Machinery::Errors::SshConnectionFailed.new(
-      "Could not establish SSH connection to host '#{host}'. Please make sure that " \
-      "you can connect non-interactively as #{remote_user}, e.g. using ssh-agent.\n\n" \
-      "To copy your default ssh key to the machine run:\n" \
-      "ssh-copy-id #{remote_user}@#{host}"
-    )
   end
-
 
   # Retrieves files specified in filelist from the remote system and raises an
   # Machinery::Errors::RsyncFailed exception when it's not successful. Destination is
@@ -195,6 +186,20 @@ class RemoteSystem < System
 
   private
 
+
+  # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
+  # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
+  def check_connection
+    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+                      "#{remote_user}@#{host}", ":")
+  rescue Cheetah::ExecutionFailed
+    raise Machinery::Errors::SshConnectionFailed.new(
+      "Could not establish SSH connection to host '#{host}'. Please make sure that " \
+      "you can connect non-interactively as #{remote_user}, e.g. using ssh-agent.\n\n" \
+      "To copy your default ssh key to the machine run:\n" \
+      "ssh-copy-id #{remote_user}@#{host}"
+    )
+  end
   def build_command(name)
     raise Machinery::Errors::MachineryError.new("You must set one of these flags in " \
       "build_command: :ssh or :scp") unless [:ssh, :scp].include?(name)
