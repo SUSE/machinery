@@ -225,6 +225,20 @@ describe RemoteSystem do
     end
 
     describe "#read_file" do
+      it "retrieves files in unprivileged mode by default" do
+        expect(remote_system).to receive(:run_command).with(
+          "cat", "/foo", stdout: :capture, privileged: false
+        )
+        remote_system.read_file("/foo")
+      end
+
+      it "retrieves files with privileged mode" do
+        expect(remote_system).to receive(:run_command).with(
+          "cat", "/foo", stdout: :capture, privileged: true
+        )
+        remote_system.read_file("/foo", privileged: true)
+      end
+
       it "retrieves the content of the remote file" do
         expect(remote_system).to receive(:run_command).and_return("foo")
         expect(remote_system.read_file("/foo")).to eq("foo")

@@ -38,7 +38,7 @@ EOF
   describe "#inspect" do
     it "return an empty list when /etc/passwd is missing" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(nil)
-      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
 
       subject.inspect(filter)
       expect(description.users).to be_empty
@@ -47,7 +47,7 @@ EOF
 
     it "returns all attributes when /etc/shadow is present" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:read_file).with("/etc/shadow").and_return(shadow_content)
+      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(shadow_content)
 
       expected = UsersScope.new([
         User.new(
@@ -87,7 +87,7 @@ EOF
 
     it "it can deal with the NIS placeholder in /etc/passwd" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return("+::::::\n")
-      expect(system).to receive(:read_file).with("/etc/shadow").and_return("+::0:0:0::::\n")
+      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return("+::0:0:0::::\n")
 
       expected = UsersScope.new([
         User.new(
@@ -112,7 +112,7 @@ EOF
 
     it "returns all available attributes when /etc/shadow is missing" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
 
       expected = UsersScope.new([
         User.new(
@@ -143,7 +143,7 @@ EOF
 
     it "returns sorted data" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
 
       subject.inspect(filter)
       names = description.users.map(&:name)
@@ -153,7 +153,7 @@ EOF
     it "can deal with invalid utf-8 characters in /etc/passwd" do
       expect(system).to receive(:read_file).with("/etc/passwd").
         and_return("tux:x:100:100:invalid\255char:/home/tux:/bin/bash\n")
-      expect(system).to receive(:read_file).with("/etc/shadow").and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
 
       expected = UsersScope.new([
         User.new(

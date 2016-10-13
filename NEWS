@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Only use sudo for reading files when necessary (gh#SUSE/machinery#2077)
 
 ## Version 1.22.0 - Thu Oct 06 17:03:33 CEST 2016 - thardeck@suse.de
 
