@@ -203,6 +203,8 @@ class RemoteSystem < System
   rescue Cheetah::ExecutionFailed => e
     if e.stderr && e.stderr.include?("password is required")
       raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    elsif e.stderr && e.stderr.include?("you must have a tty to run sudo")
+      raise Machinery::Errors::SudoMissingTTY.new(host)
     else
       raise e
     end

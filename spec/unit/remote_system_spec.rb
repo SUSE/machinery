@@ -47,6 +47,22 @@ describe RemoteSystem do
           /sudo isn't configured on the inspected host/
         )
       end
+
+      it "raises an exception if sudo requires a tty" do
+        allow_any_instance_of(RemoteSystem).to receive(:check_connection)
+        expect(LoggedCheetah).to receive(:run).with(
+          "ssh", any_args
+        ).and_raise(
+          Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: sorry, you must have a tty to run sudo")
+        )
+
+        expect {
+          remote_system_with_sudo
+        }.to raise_error(
+          Machinery::Errors::SudoMissingTTY,
+          /Remove the RequireTTY settings from sudoers.conf/
+        )
+      end
     end
 
     context "when an ssh port is given" do
