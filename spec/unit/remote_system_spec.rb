@@ -34,8 +34,11 @@ describe RemoteSystem do
     end
 
     context "sudo is required" do
-      it "raises an exception if the user is not allowed to run sudo" do
+      before do
         allow_any_instance_of(RemoteSystem).to receive(:check_connection)
+      end
+
+      it "raises an exception if the user is not allowed to run sudo" do
         expect(LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
@@ -49,7 +52,6 @@ describe RemoteSystem do
       end
 
       it "raises an exception if sudo requires a tty" do
-        allow_any_instance_of(RemoteSystem).to receive(:check_connection)
         expect(LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(
