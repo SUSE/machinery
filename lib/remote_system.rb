@@ -43,6 +43,7 @@ class RemoteSystem < System
 
   def connect
     check_connection
+    check_sudo if sudo_required?
   end
 
   def run_command(*args)
@@ -94,14 +95,6 @@ class RemoteSystem < System
     ].compact.flatten
 
     cheetah_class.run(*cmds)
-  rescue Cheetah::ExecutionFailed => e
-    if e.stderr && e.stderr.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    else
-      raise e
-    end
-  end
-
   end
 
   # Retrieves files specified in filelist from the remote system and raises an
@@ -203,6 +196,18 @@ class RemoteSystem < System
       "ssh-copy-id #{remote_user}@#{host}"
     )
   end
+
+  def check_sudo
+    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+      "#{remote_user}@#{host}", "sudo", "id")
+  rescue Cheetah::ExecutionFailed => e
+    if e.stderr && e.stderr.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    else
+      raise e
+    end
+  end
+
   def build_command(name)
     raise Machinery::Errors::MachineryError.new("You must set one of these flags in " \
       "build_command: :ssh or :scp") unless [:ssh, :scp].include?(name)

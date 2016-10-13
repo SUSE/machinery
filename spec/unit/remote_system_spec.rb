@@ -19,6 +19,7 @@ require_relative "spec_helper"
 
 describe RemoteSystem do
   let(:remote_system) { RemoteSystem.new("remotehost", options) }
+  let(:remote_system_with_sudo) { RemoteSystem.new("remotehost", remote_user: "user") }
   let(:options) { {} }
 
   describe "#initialize" do
@@ -30,6 +31,22 @@ describe RemoteSystem do
       expect {
         remote_system
       }.to raise_error(Machinery::Errors::SshConnectionFailed, /SSH/)
+    end
+
+    context "sudo is required" do
+      it "raises an exception if the user is not allowed to run sudo" do
+        allow_any_instance_of(RemoteSystem).to receive(:check_connection)
+        expect(LoggedCheetah).to receive(:run).with(
+          "ssh", any_args
+        ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
+
+        expect {
+          remote_system_with_sudo
+        }.to raise_error(
+          Machinery::Errors::InsufficientPrivileges,
+          /sudo isn't configured on the inspected host/
+        )
+      end
     end
 
     context "when an ssh port is given" do
@@ -116,19 +133,6 @@ describe RemoteSystem do
           )
 
           remote_system.run_command("ls", "/tmp", privileged: true)
-        end
-
-        it "raises an exception if the user is not allowed to run sudo" do
-          expect(Cheetah).to receive(:run).with(
-            "ssh", any_args
-          ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
-
-          expect {
-            remote_system.run_command("ls", "/tmp", privileged: true)
-          }.to raise_error(
-            Machinery::Errors::InsufficientPrivileges,
-            /sudo isn't configured on the inspected host/
-          )
         end
       end
 
