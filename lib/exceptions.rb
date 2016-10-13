@@ -118,7 +118,7 @@ module Machinery
       end
 
       def to_s
-        "sudo isn't configured on the inspected host '#{@host}' for user '#{@remote_user}' to " \
+        "'sudo' isn't configured on the inspected host '#{@host}' for user '#{@remote_user}' to " \
         "give all required commands enough privileges. See 'PREREQUISITES' section in the " \
         "machinery documentation for a description on how to configure sudo on the inspected host."
       end
@@ -130,8 +130,8 @@ module Machinery
       end
 
       def to_s
-        "sudo isn't configured on the inspected host '#{@host}'." \
-        "Remove the RequireTTY settings from sudoers.conf"
+        "'sudo' isn't configured on the inspected host '#{@host}'." \
+        " Remove the RequireTTY settings from sudoers.conf."
       end
     end
 

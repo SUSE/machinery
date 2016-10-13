@@ -40,7 +40,7 @@ describe RemoteSystem do
 
       it "checks if sudo is available" do
         expect(LoggedCheetah).to receive(:run)
-        expect_any_instance_of(RemoteSystem).to receive(:check_requirement).with("sudo", "id")
+        expect_any_instance_of(RemoteSystem).to receive(:check_requirement).with("sudo", "-h")
         remote_system_with_sudo
       end
 
