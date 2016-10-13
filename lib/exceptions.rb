@@ -124,6 +124,17 @@ module Machinery
       end
     end
 
+    class SudoMissingTTY < MachineryError
+      def initialize(host)
+        @host = host
+      end
+
+      def to_s
+        "sudo isn't configured on the inspected host '#{@host}'." \
+        "Remove the RequireTTY settings from sudoers.conf"
+      end
+    end
+
     class MigrationError < MachineryError; end
 
     class InvalidFilter < MachineryError; end

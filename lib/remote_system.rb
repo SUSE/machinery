@@ -41,6 +41,11 @@ class RemoteSystem < System
     false
   end
 
+  def connect
+    check_connection
+    check_sudo if sudo_required?
+  end
+
   def run_command(*args)
     options = args.last.is_a?(Hash) ? args.pop : {}
 
@@ -83,45 +88,24 @@ class RemoteSystem < System
       cheetah_class = LoggedCheetah
     end
 
-    sudo = ["sudo", "-n"] if options[:privileged] && remote_user != "root"
+    sudo = ["sudo", "-n"] if options[:privileged] && sudo_required?
     cmds = [
       *build_command(:ssh), "#{remote_user}@#{host}", "-o", \
       "LogLevel=ERROR", sudo, "LANGUAGE=", "LC_ALL=#{locale}", *piped_args, options
     ].compact.flatten
 
     cheetah_class.run(*cmds)
-  rescue Cheetah::ExecutionFailed => e
-    if e.stderr && e.stderr.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    else
-      raise e
-    end
   end
-
-  # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
-  # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
-  def connect
-    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
-      "#{remote_user}@#{host}", ":")
-  rescue Cheetah::ExecutionFailed
-    raise Machinery::Errors::SshConnectionFailed.new(
-      "Could not establish SSH connection to host '#{host}'. Please make sure that " \
-      "you can connect non-interactively as #{remote_user}, e.g. using ssh-agent.\n\n" \
-      "To copy your default ssh key to the machine run:\n" \
-      "ssh-copy-id #{remote_user}@#{host}"
-    )
-  end
-
 
   # Retrieves files specified in filelist from the remote system and raises an
   # Machinery::Errors::RsyncFailed exception when it's not successful. Destination is
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     source = "#{remote_user}@#{host}:/"
-    if remote_user != "root"
-      rsync_path = "sudo -n rsync"
+    rsync_path = if sudo_required?
+      "sudo -n rsync"
     else
-      rsync_path = "rsync"
+      "rsync"
     end
 
     cmd = [
@@ -194,6 +178,38 @@ class RemoteSystem < System
   end
 
   private
+
+  def sudo_required?
+    remote_user != "root"
+  end
+
+  # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
+  # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
+  def check_connection
+    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+                      "#{remote_user}@#{host}", ":")
+  rescue Cheetah::ExecutionFailed
+    raise Machinery::Errors::SshConnectionFailed.new(
+      "Could not establish SSH connection to host '#{host}'. Please make sure that " \
+      "you can connect non-interactively as #{remote_user}, e.g. using ssh-agent.\n\n" \
+      "To copy your default ssh key to the machine run:\n" \
+      "ssh-copy-id #{remote_user}@#{host}"
+    )
+  end
+
+  def check_sudo
+    check_requirement("sudo", "id")
+    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+      "#{remote_user}@#{host}", "sudo", "id")
+  rescue Cheetah::ExecutionFailed => e
+    if e.stderr && e.stderr.include?("password is required")
+      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
+    elsif e.stderr && e.stderr.include?("you must have a tty to run sudo")
+      raise Machinery::Errors::SudoMissingTTY.new(host)
+    else
+      raise e
+    end
+  end
 
   def build_command(name)
     raise Machinery::Errors::MachineryError.new("You must set one of these flags in " \
