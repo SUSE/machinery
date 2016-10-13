@@ -38,6 +38,12 @@ describe RemoteSystem do
         allow_any_instance_of(RemoteSystem).to receive(:check_connection)
       end
 
+      it "checks if sudo is available" do
+        expect(LoggedCheetah).to receive(:run)
+        expect_any_instance_of(RemoteSystem).to receive(:check_requirement).with("sudo", "id")
+        remote_system_with_sudo
+      end
+
       it "raises an exception if the user is not allowed to run sudo" do
         expect(LoggedCheetah).to receive(:run).with(
           "ssh", any_args

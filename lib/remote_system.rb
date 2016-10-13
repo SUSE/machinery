@@ -198,6 +198,7 @@ class RemoteSystem < System
   end
 
   def check_sudo
+    check_requirement("sudo", "id")
     LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
       "#{remote_user}@#{host}", "sudo", "id")
   rescue Cheetah::ExecutionFailed => e
