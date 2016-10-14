@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.22.1 - Fri Oct 14 16:13:50 CEST 2016 - thardeck@suse.de
+
 * Only use sudo for reading files when necessary (gh#SUSE/machinery#2077)
 * Gracefully handle RequireTTY enabled sudo configs (gh#SUSE/machinery#2135)
 * Add rsync requirement check for remote system (gh#SUSE/machinery#2165)
