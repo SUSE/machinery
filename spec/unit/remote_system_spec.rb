@@ -53,11 +53,11 @@ describe RemoteSystem do
           remote_system_with_sudo
         }.to raise_error(
           Machinery::Errors::InsufficientPrivileges,
-          /sudo isn't configured on the inspected host/
+          /'sudo' isn't configured on the inspected host/
         )
       end
 
-      it "raises an exception if sudo requires a tty" do
+      it "raises an exception if a tty is required" do
         expect(LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(
