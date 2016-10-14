@@ -57,7 +57,7 @@ describe RemoteSystem do
         )
       end
 
-      it "raises an exception if sudo requires a tty" do
+      it "raises an exception if a tty is required" do
         expect(LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(
