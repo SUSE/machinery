@@ -2,6 +2,7 @@
 
 * Only use sudo for reading files when necessary (gh#SUSE/machinery#2077)
 * Gracefully handle RequireTTY enabled sudo configs (gh#SUSE/machinery#2135)
+* Add rsync requirement check for remote system (gh#SUSE/machinery#2165)
 
 ## Version 1.22.0 - Thu Oct 06 17:03:33 CEST 2016 - thardeck@suse.de
 
