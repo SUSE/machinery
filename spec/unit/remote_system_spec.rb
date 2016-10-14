@@ -53,7 +53,7 @@ describe RemoteSystem do
           remote_system_with_sudo
         }.to raise_error(
           Machinery::Errors::InsufficientPrivileges,
-          /sudo isn't configured on the inspected host/
+          /'sudo' isn't configured on the inspected host/
         )
       end
 
