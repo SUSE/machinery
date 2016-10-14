@@ -130,7 +130,7 @@ class RemoteSystem < System
   end
 
   def check_retrieve_files_dependencies
-    LocalSystem.new.check_requirement("rsync", "--version")
+    LocalSystem.validate_existence_of_command("rsync", "rsync")
     check_requirement("rsync", "--version")
   end
 

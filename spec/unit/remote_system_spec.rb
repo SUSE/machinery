@@ -187,13 +187,16 @@ describe RemoteSystem do
 
     describe "#check_retrieve_files_dependencies" do
       it "checks for the availabilty of rsync on the local system" do
-        expect_any_instance_of(LocalSystem).to receive(:check_requirement).with(
-          "rsync", "--version"
+        expect(LocalSystem).to receive(:validate_existence_of_command).with(
+          "rsync", "rsync"
         )
         remote_system.check_retrieve_files_dependencies
       end
 
       it "checks for the availabilty of rsync on the remote system" do
+        allow(LocalSystem).to receive(:validate_existence_of_command).with(
+          "rsync", "rsync"
+        )
         expect(remote_system).to receive(:check_requirement).with(
           "rsync", "--version"
         )
