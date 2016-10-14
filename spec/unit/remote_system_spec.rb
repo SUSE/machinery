@@ -192,6 +192,13 @@ describe RemoteSystem do
         )
         remote_system.check_retrieve_files_dependencies
       end
+
+      it "checks for the availabilty of rsync on the remote system" do
+        expect(remote_system).to receive(:check_requirement).with(
+          "rsync", "--version"
+        )
+        remote_system.check_retrieve_files_dependencies
+      end
     end
 
     describe "#retrieve_files" do
