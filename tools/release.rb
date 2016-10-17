@@ -105,7 +105,9 @@ class Release
     # make sure gh-pages is checked out
     Cheetah.run("git", "checkout", "gh-pages")
     Cheetah.run("git", "checkout", "-")
-    Cheetah.run("mkdocs", "gh-deploy", "-b", "gh-pages")
+    Dir.chdir(File.join(Machinery::ROOT, "manual")) do
+      Cheetah.run("mkdocs", "gh-deploy", "-b", "gh-pages")
+    end
   end
 
   def publish_gem
