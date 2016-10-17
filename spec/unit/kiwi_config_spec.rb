@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe KiwiConfig do
+describe Machinery::KiwiConfig do
   initialize_system_description_factory_store
   capture_machinery_output
 
@@ -68,7 +68,7 @@ describe KiwiConfig do
         and_return(OsUnknown.new)
       system_description_with_content.os.name = "something 99.1 (Repetition)"
       expect {
-        KiwiConfig.new(system_description_with_content)
+        Machinery::KiwiConfig.new(system_description_with_content)
       }.to raise_error(
          Machinery::Errors::ExportFailed,
          /something 99.1/
@@ -76,7 +76,7 @@ describe KiwiConfig do
     end
 
     it "generates kiwi config with content" do
-      config = KiwiConfig.new(system_description_with_content)
+      config = Machinery::KiwiConfig.new(system_description_with_content)
 
       expected_xml = <<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -149,7 +149,7 @@ EOT
       description["repositories"].each do |repository|
         repository.enabled = false
       end
-      expect { KiwiConfig.new(description) }.to raise_error(
+      expect { Machinery::KiwiConfig.new(description) }.to raise_error(
         Machinery::Errors::MissingRequirement,
         /The system description doesn't contain any enabled or network reachable repository/
       )
@@ -158,9 +158,11 @@ EOT
     it "raises an error if scope repositories is empty" do
       description = system_description_with_content
       description["repositories"] = []
-      expect { KiwiConfig.new(description) }.to raise_error(Machinery::Errors::MissingRequirement,
-        /^The scope 'repositories' of the system description doesn't contain a repository/
-      )
+      expect { Machinery::KiwiConfig.new(description) }.
+        to raise_error(
+          Machinery::Errors::MissingRequirement,
+          /^The scope 'repositories' of the system description doesn't contain a repository/
+        )
     end
 
     it "raises an error if no repository is reachable via network" do
@@ -168,14 +170,14 @@ EOT
       description["repositories"].each do |repository|
         repository.url = "cd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0"
       end
-      expect { KiwiConfig.new(description) }.to raise_error(
+      expect { Machinery::KiwiConfig.new(description) }.to raise_error(
         Machinery::Errors::MissingRequirement,
         /The system description doesn't contain any enabled or network reachable repository/
       )
     end
 
     it "escapes the repository aliases in the config.xml file" do
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
         create_test_description(
           scopes: ["os", "packages", "repositories"], name: name, store: store
         )
@@ -189,7 +191,7 @@ EOT
     end
 
     it "generates kiwi config with sysvinit services" do
-      config = KiwiConfig.new(system_description_with_sysvinit_services)
+      config = Machinery::KiwiConfig.new(system_description_with_sysvinit_services)
 
       expected_xml = <<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -235,7 +237,7 @@ EOT
     end
 
     it "generates kiwi config with systemd services" do
-      config = KiwiConfig.new(system_description_with_systemd_services)
+      config = Machinery::KiwiConfig.new(system_description_with_systemd_services)
 
       expect(config.sh).to include("systemctl enable sshd.service")
       expect(config.sh).to include("systemctl disable rsyncd.service")
@@ -249,7 +251,7 @@ EOT
 
     context "if an empty docker service scope is provided" do
       it "shows a warning" do
-        KiwiConfig.new(system_description_with_docker_services)
+        Machinery::KiwiConfig.new(system_description_with_docker_services)
 
         expect(captured_machinery_output).to match(/Warning:.*containers/i)
       end
@@ -258,13 +260,13 @@ EOT
     it "raises an error if the systemd service state is unknown" do
       system_description_with_systemd_services.services.first["state"] = "not_known"
       expect {
-        KiwiConfig.new(system_description_with_systemd_services)
+        Machinery::KiwiConfig.new(system_description_with_systemd_services)
       }.to raise_error(Machinery::Errors::ExportFailed, /not_known/)
     end
 
     it "sets the target distribution and bootloader for openSUSE 13.1" do
       expect(system_description_with_content.os.name).to include("openSUSE 13.1")
-      config = KiwiConfig.new(system_description_with_content)
+      config = Machinery::KiwiConfig.new(system_description_with_content)
 
       type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
       expect(type_node.attributes["boot"]).to eq("vmxboot/suse-13.1")
@@ -285,7 +287,7 @@ EOT
           type: "link",
           target: "/opt/test-quote-char/target-with-quote'-foo"
         )
-      config = KiwiConfig.new(system_description_with_modified_files)
+      config = Machinery::KiwiConfig.new(system_description_with_modified_files)
       config.write(export_dir)
       expect(config.sh).to include(
         "ln -s '/opt/test-quote-char/target-with-quote'\\''-foo' '/opt/test-quote-char/link'"
@@ -293,7 +295,7 @@ EOT
     end
 
     it "sets the target distribution and bootloader for SLES12" do
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
         create_test_description(
           scopes: ["os_sles12", "packages", "repositories"], name: name, store: store
         )
@@ -309,7 +311,7 @@ EOT
         scope = "changed_config_files"
         system_description_with_modified_files.scope_file_store(scope).remove
         expect {
-          KiwiConfig.new(system_description_with_modified_files)
+          Machinery::KiwiConfig.new(system_description_with_modified_files)
         }.to raise_error(Machinery::Errors::SystemDescriptionError,
           /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
       end
@@ -318,7 +320,7 @@ EOT
         scope = "changed_managed_files"
         system_description_with_modified_files.scope_file_store(scope).remove
         expect {
-          KiwiConfig.new(system_description_with_modified_files)
+          Machinery::KiwiConfig.new(system_description_with_modified_files)
         }.to raise_error(Machinery::Errors::SystemDescriptionError,
           /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
       end
@@ -327,14 +329,14 @@ EOT
         scope = "unmanaged_files"
         system_description_with_modified_files.scope_file_store(scope).remove
         expect {
-          KiwiConfig.new(system_description_with_modified_files)
+          Machinery::KiwiConfig.new(system_description_with_modified_files)
         }.to raise_error(Machinery::Errors::SystemDescriptionError,
           /#{Machinery::Ui.internal_scope_list_to_string(scope)}/)
       end
     end
 
     it "applies 'pre-process' config" do
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
         system_description_with_content,
         enable_ssh: true
       )
@@ -344,7 +346,7 @@ EOT
 
   describe "#write" do
     it "writes the config to the specified file" do
-      config = KiwiConfig.new(system_description_with_content)
+      config = Machinery::KiwiConfig.new(system_description_with_content)
 
       expect(File).to receive(:write).
         with(File.join(export_dir, "config.xml"),
@@ -360,7 +362,7 @@ EOT
     end
 
     it "applies 'pre-process' config" do
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
           system_description_with_content,
           enable_ssh: true
       )
@@ -370,7 +372,7 @@ EOT
     end
 
     it "applies 'post-process' config" do
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
           system_description_with_content,
           enable_dhcp: true
       )
@@ -383,7 +385,7 @@ EOT
       allow($stdout).to receive(:puts)
       network_config = File.join(export_dir, "/root/etc/sysconfig/network/ifcfg-eth0")
 
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
           system_description_with_sysvinit_services,
           enable_dhcp: true
       )
@@ -402,7 +404,7 @@ EOT
       network_config = File.join(export_dir, "/root/etc/sysconfig/network/ifcfg-lan0")
       system_description_with_content.os.name = "SUSE Linux Enterprise Server 12"
 
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
           system_description_with_content,
           enable_dhcp: true
       )
@@ -418,7 +420,7 @@ EOT
 
 
     it "uses the name of the description as image name" do
-      config = KiwiConfig.new(system_description_with_content)
+      config = Machinery::KiwiConfig.new(system_description_with_content)
 
       expect(File).to receive(:write).
         with(File.join(export_dir, "config.xml"),
@@ -433,7 +435,7 @@ EOT
       allow($stdout).to receive(:puts)
 
       readme = File.join(export_dir, "README.md")
-      config = KiwiConfig.new(
+      config = Machinery::KiwiConfig.new(
           system_description_with_content
       )
       config.write(export_dir)
@@ -446,7 +448,7 @@ EOT
     end
 
     describe "with extracted files" do
-      let(:config) { KiwiConfig.new(system_description_with_modified_files) }
+      let(:config) { Machinery::KiwiConfig.new(system_description_with_modified_files) }
       let(:manifest_path) { store.description_path(name) }
 
       it "restores the extracted changed-config-files" do
@@ -533,7 +535,7 @@ EOT
     end
 
     it "generates a script for merging the users and groups" do
-      config = KiwiConfig.new(system_description_with_content)
+      config = Machinery::KiwiConfig.new(system_description_with_content)
 
       config.write(export_dir)
 
@@ -549,7 +551,7 @@ EOT
     end
 
     it "calls kiwi helpers" do
-      config = KiwiConfig.new(system_description_with_content)
+      config = Machinery::KiwiConfig.new(system_description_with_content)
       config.write(given_directory)
 
       [
@@ -566,7 +568,7 @@ EOT
 
   describe "#export_name" do
     it "returns the export name" do
-      kiwi = KiwiConfig.new(system_description_with_content)
+      kiwi = Machinery::KiwiConfig.new(system_description_with_content)
 
       expect(kiwi.export_name).to eq("name-kiwi")
     end

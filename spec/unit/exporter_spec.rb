@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe Exporter do
+describe Machinery::Exporter do
   describe "#quote" do
     it "returns the quoted name" do
       expect(subject.quote("/bla/single-quote-file'-foo/")).to eq(

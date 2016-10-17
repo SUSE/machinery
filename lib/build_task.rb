@@ -25,7 +25,7 @@ class BuildTask
     tmp_image_dir = Dir.mktmpdir("machinery-image", "/tmp")
     img_extension = "qcow2"
 
-    config = KiwiConfig.new(system_description, options)
+    config = Machinery::KiwiConfig.new(system_description, options)
     config.write(tmp_config_dir)
 
     begin

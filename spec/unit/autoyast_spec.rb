@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe Autoyast do
+describe Machinery::Autoyast do
   capture_machinery_output
   initialize_system_description_factory_store
 
@@ -50,7 +50,7 @@ describe Autoyast do
         and_return(Rhel.new)
       description.os.name = "RHEL 99.1 (Repetition)"
       expect {
-        Autoyast.new(description)
+        Machinery::Autoyast.new(description)
       }.to raise_error(
         Machinery::Errors::ExportFailed, /RHEL 99.1/
       )
@@ -72,7 +72,7 @@ describe Autoyast do
           type: "link",
           target: "/opt/test-quote-char/target-with-quote'-foo"
         )
-      autoyast = Autoyast.new(description)
+      autoyast = Machinery::Autoyast.new(description)
 
       expect(autoyast.profile).to include(
         "ln -s '/opt/test-quote-char/target-with-quote'\\\''-foo' '/mnt/opt/test-quote-char/link'"
@@ -80,7 +80,7 @@ describe Autoyast do
     end
 
     it "creates the expected profile" do
-      autoyast = Autoyast.new(description)
+      autoyast = Machinery::Autoyast.new(description)
 
       expect(autoyast.profile).to eq(expected_profile)
     end
@@ -93,7 +93,7 @@ describe Autoyast do
       ].each do |scope|
         description[scope].extracted = false
       end
-      autoyast = Autoyast.new(description)
+      autoyast = Machinery::Autoyast.new(description)
 
       expect(autoyast.profile).not_to include("Enter URL to system description")
     end
@@ -102,7 +102,7 @@ describe Autoyast do
   describe "#write" do
     let(:ip) { "192.168.0.35" }
     before(:each) do
-      autoyast = Autoyast.new(description)
+      autoyast = Machinery::Autoyast.new(description)
       @output_dir = given_directory
       allow(autoyast).to receive(:outgoing_ip).and_return(ip)
       autoyast.write(@output_dir)
@@ -160,14 +160,14 @@ describe Autoyast do
 
   describe "#export_name" do
     it "returns the export name" do
-      autoyast = Autoyast.new(description)
+      autoyast = Machinery::Autoyast.new(description)
 
       expect(autoyast.export_name).to eq("description-autoyast")
     end
   end
 
   describe "#outgoing_ip" do
-    let(:autoyast) { Autoyast.new(description) }
+    let(:autoyast) { Machinery::Autoyast.new(description) }
     let(:ip_route) {
       "8.8.8.8 via 10.100.255.254 dev em1  src 10.100.2.35 \n    cache "
     }

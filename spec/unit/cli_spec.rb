@@ -562,7 +562,7 @@ describe Machinery::Cli do
     describe "#export_kiwi" do
       before(:each) do
         @kiwi_config = double
-        allow(KiwiConfig).to receive(:new).and_return(@kiwi_config)
+        allow(Machinery::KiwiConfig).to receive(:new).and_return(@kiwi_config)
       end
 
       it "triggers a KIWI export" do
@@ -585,7 +585,7 @@ describe Machinery::Cli do
     describe "#export_autoyast" do
       before(:each) do
         @autoyast = double
-        allow(Autoyast).to receive(:new).with(instance_of(SystemDescription)).
+        allow(Machinery::Autoyast).to receive(:new).with(instance_of(SystemDescription)).
           and_return(@autoyast)
       end
 

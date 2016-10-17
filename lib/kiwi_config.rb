@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class KiwiConfig < Exporter
+class Machinery::KiwiConfig < Machinery::Exporter
   attr_accessor :xml_text, :sh
   attr_accessor :name
 

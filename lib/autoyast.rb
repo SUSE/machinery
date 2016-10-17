@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Autoyast < Exporter
+class Machinery::Autoyast < Machinery::Exporter
   attr_accessor :name
 
   def initialize(description)
