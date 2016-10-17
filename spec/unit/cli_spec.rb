@@ -17,19 +17,19 @@
 
 require_relative "spec_helper"
 
-describe Cli do
+describe Machinery::Cli do
   capture_machinery_output
 
   before(:all) do
-    # Manually create the exclude option. It depends on the experimental_features option,
-    # but that is evaluated when the class is loaded, not when the test is run, so it can't be
-    # stubbed.
-    unless Cli.commands[:inspect].flags[:exclude]
-      Cli.commands[:inspect].flag :exclude, negatable: false,
+    # Manually create the exclude option. It depends on the
+    # experimental_features option, but that is evaluated when the class is
+    # loaded, not when the test is run, so it can't be stubbed.
+    unless Machinery::Cli.commands[:inspect].flags[:exclude]
+      Machinery::Cli.commands[:inspect].flag :exclude, negatable: false,
         desc: "Exclude elements matching the filter criteria"
     end
-    unless Cli.commands[:show].flags[:exclude]
-      Cli.commands[:show].flag :exclude, negatable: false,
+    unless Machinery::Cli.commands[:show].flags[:exclude]
+      Machinery::Cli.commands[:show].flag :exclude, negatable: false,
         desc: "Exclude elements matching the filter criteria"
     end
   end
@@ -99,14 +99,18 @@ describe Cli do
 
   describe ".check_container_name!" do
     it "raises error if image and name contains slashes" do
-      expect { Cli.check_container_name!("docker/foo", "docker/foo") }.to raise_error(
+      expect {
+        Machinery::Cli.check_container_name!("docker/foo", "docker/foo")
+      }.to raise_error(
         Machinery::Errors::InvalidCommandLine,
         /Error: System description name 'docker\/foo' is invalid\. By default Machinery uses the image name as description name if the parameter `--name` is not provided\.\nIf the image name contains a slash the `--name=NAME` parameter is mandatory. Valid characters are 'a-zA-Z0-9_:\.-'\./
       )
     end
 
     it "does not raise error if the name has no slashes" do
-      expect { Cli.check_container_name!("docker/foo", "docker_foo") }.not_to raise_error
+      expect {
+        Machinery::Cli.check_container_name!("docker/foo", "docker_foo")
+      }.not_to raise_error
     end
   end
 
@@ -115,7 +119,8 @@ describe Cli do
     let(:store) { system_description_factory_store }
 
     it "triggers the serve task" do
-      allow(Cli).to receive(:system_description_store).and_return(store)
+      allow(Machinery::Cli).
+        to receive(:system_description_store).and_return(store)
       expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
         store, port: 3000, public: false
       )
@@ -124,7 +129,8 @@ describe Cli do
     end
 
     it "checks if the --public option works" do
-      allow(Cli).to receive(:system_description_store).and_return(store)
+      allow(Machinery::Cli).
+        to receive(:system_description_store).and_return(store)
       expect_any_instance_of(ServeHtmlTask).to receive(:serve).with(
         store, port: 3000, public: true
       )
@@ -149,12 +155,14 @@ describe Cli do
 
     describe "#system_description_store" do
       it "returns the default store by default" do
-        expect(Cli.system_description_store.base_path).to eq(test_base_path)
+        expect(Machinery::Cli.system_description_store.base_path).
+          to eq(test_base_path)
       end
 
       it "uses the store specified by MACHINERY_DIR" do
         with_env("MACHINERY_DIR" => "/tmp/machinery") do
-          expect(Cli.system_description_store.base_path).to eq("/tmp/machinery")
+          expect(Machinery::Cli.system_description_store.base_path).
+            to eq("/tmp/machinery")
         end
       end
     end
@@ -175,8 +183,8 @@ describe Cli do
         ])
 
         expect(captured_machinery_output).
-          to include("Note: There are filters being applied during inspection. " \
-            "(Use `--verbose` option to show the filters)")
+          to include("Note: There are filters being applied during "\
+            "inspection. (Use `--verbose` option to show the filters)")
       end
 
       it "does not show a note unless any filters for the selected scopes are set" do
@@ -184,7 +192,8 @@ describe Cli do
           "inspect", "--exclude=/foo=bar", "description1", "--scope=os",
         ])
 
-        expect(captured_machinery_output).not_to include("Filters are applied during inspection.")
+        expect(captured_machinery_output).
+          not_to include("Filters are applied during inspection.")
       end
 
       it "uses the provided host name if specified at the end" do
@@ -301,12 +310,14 @@ describe Cli do
           ).
           and_return(description)
 
-        run_command(["inspect", "--ignore-scope=packages,repositories", example_host])
+        run_command(
+          ["inspect", "--ignore-scope=packages,repositories", example_host]
+        )
       end
 
       it "forwards the --skip-files option to the InspectTask as an unmanaged_files filter" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
-          _system, _name, _user, _scopes, filter, _options|
+        expect_any_instance_of(InspectTask).
+          to receive(:inspect_system) do |_instance, _store, _system, _name, _user, _scopes, filter, _options|
           expect(filter.element_filter_for("/unmanaged_files/name").matchers["="]).
             to include("/foo/bar", "/baz")
         end.and_return(description)
@@ -315,8 +326,8 @@ describe Cli do
       end
 
       it "forwards the global --exclude option to the InspectTask" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
-          _system, _name, _user, _scopes, filter, _options|
+        expect_any_instance_of(InspectTask).
+          to receive(:inspect_system) do |_instance, _store, _system, _name, _user, _scopes, filter, _options|
           expect(filter.element_filter_for("/unmanaged_files/files/name").matchers["="]).
             to include("/foo/bar")
         end.and_return(description)
@@ -329,8 +340,8 @@ describe Cli do
       end
 
       it "adheres to the --remote-user option" do
-        expect_any_instance_of(InspectTask).to receive(:inspect_system) do |_instance, _store,
-          system, _name, _user, _scopes, _filter, _options|
+        expect_any_instance_of(InspectTask).
+          to receive(:inspect_system) do | _instance, _store, system, _name, _user, _scopes, _filter, _options|
           expect(system.remote_user).to eq("foo")
         end.and_return(description)
 
@@ -348,7 +359,9 @@ describe Cli do
           ])
 
           expect(captured_machinery_output).
-            not_to include("The following filters are applied during inspection:")
+            not_to include(
+              "The following filters are applied during inspection:"
+            )
         end
 
         it "shows the filters when `--verbose` is provided" do
@@ -459,10 +472,16 @@ describe Cli do
     describe "#show" do
       it "triggers the show task for packages when scope packages is specified" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(ShowTask).to receive(:show).with(
-          description, ["packages"], an_instance_of(Filter), show_diffs: false, show_html: false,
-          ip: "127.0.0.1", port: anything
-        )
+        expect_any_instance_of(ShowTask).
+          to receive(:show).with(
+            description,
+            ["packages"],
+            an_instance_of(Filter),
+            show_diffs: false,
+            show_html:  false,
+            ip:         "127.0.0.1",
+            port:       anything
+          )
 
         run_command(["show", "description1", "--scope=packages", "--no-pager"])
       end
@@ -482,9 +501,14 @@ describe Cli do
         end
 
         it "shows the filters when `--verbose` is provided" do
-          run_command([
-            "show", "description1", "--exclude=/unmanaged_files/files/name=/foo", "--verbose",
-          ])
+          run_command(
+            [
+              "show",
+              "description1",
+              "--exclude=/unmanaged_files/files/name=/foo",
+              "--verbose",
+            ]
+          )
 
           expect(captured_machinery_output).
             to match(/  The following filters were applied before showing the description:/)
@@ -493,7 +517,10 @@ describe Cli do
         end
 
         it "shows the filters which are applied during inspection" do
-          description = SystemDescription.load("description1", SystemDescriptionStore.new)
+          description = SystemDescription.load(
+            "description1",
+            SystemDescriptionStore.new
+          )
           description.set_filter_definitions("inspect", ["/foo=bar"])
           description.save
 
@@ -515,7 +542,8 @@ describe Cli do
               "show", "description1", "--verbose"
             ])
 
-            expect(captured_machinery_output).to include("  Type of inspected container: docker")
+            expect(captured_machinery_output).
+              to include("  Type of inspected container: docker")
           end
         end
       end
@@ -548,7 +576,9 @@ describe Cli do
         expect_any_instance_of(ExportTask).to receive(:export).
           with("/tmp/export", force: true)
 
-        run_command(["export-kiwi", "description1", "--kiwi-dir=/tmp/export", "--force"])
+        run_command(
+          ["export-kiwi", "description1", "--kiwi-dir=/tmp/export", "--force"]
+        )
       end
     end
 
@@ -563,14 +593,23 @@ describe Cli do
         expect_any_instance_of(ExportTask).to receive(:export).
           with("/tmp/export", force: false)
 
-        run_command(["export-autoyast", "description1", "--autoyast-dir=/tmp/export"])
+        run_command(
+          ["export-autoyast", "description1", "--autoyast-dir=/tmp/export"]
+        )
       end
 
       it "forwards the force option" do
         expect_any_instance_of(ExportTask).to receive(:export).
           with("/tmp/export", force: true)
 
-        run_command(["export-autoyast", "description1", "--autoyast-dir=/tmp/export", "--force"])
+        run_command(
+          [
+            "export-autoyast",
+            "description1",
+            "--autoyast-dir=/tmp/export",
+            "--force"
+          ]
+        )
       end
     end
 
@@ -579,23 +618,28 @@ describe Cli do
         create_test_description(json: test_manifest)
 
         run_command(["analyze", "description1", "--operation=foo"])
-        expect(captured_machinery_stderr).to include("The operation 'foo' is not supported")
+        expect(captured_machinery_stderr).
+          to include("The operation 'foo' is not supported")
       end
 
       it "triggers the analyze task" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(AnalyzeConfigFileDiffsTask).to receive(:analyze).with(
-          description
-        )
+        expect_any_instance_of(AnalyzeConfigFileDiffsTask).
+          to receive(:analyze).with(
+            description
+          )
 
-        run_command(["analyze", "description1", "--operation=changed-config-files-diffs"])
+        run_command(
+          ["analyze", "description1", "--operation=changed-config-files-diffs"]
+        )
       end
 
       it "runs changed-config-files-diffs by default" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(AnalyzeConfigFileDiffsTask).to receive(:analyze).with(
-          description
-        )
+        expect_any_instance_of(AnalyzeConfigFileDiffsTask).
+          to receive(:analyze).with(
+            description
+          )
 
         run_command(["analyze", "description1"])
       end
@@ -612,7 +656,12 @@ describe Cli do
 
     it "triggers the remove task with --all option if given" do
       expect_any_instance_of(RemoveTask).to receive(:remove).
-        with(an_instance_of(SystemDescriptionStore), anything, verbose: false, all: true)
+        with(
+          an_instance_of(SystemDescriptionStore),
+          anything,
+          verbose: false,
+          all:     true
+        )
 
       run_command(["remove", "--all"])
     end
@@ -626,9 +675,10 @@ describe Cli do
     end
 
     it "triggers the list task with --html switch" do
-      expect_any_instance_of(ListTask).to receive(:list) do |_instance, _store, _description, options|
-        expect(options[:html]).to eq(true)
-      end
+      expect_any_instance_of(ListTask).
+        to receive(:list) do |_instance, _store, _description, options|
+          expect(options[:html]).to eq(true)
+        end
       run_command(["list", "--html"])
     end
   end
@@ -660,19 +710,34 @@ describe Cli do
   describe "#upgrade_format" do
     it "triggers the upgrade task for a specific description" do
       expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
-        with(an_instance_of(SystemDescriptionStore), "foo", all: false, force: false)
+        with(
+          an_instance_of(SystemDescriptionStore),
+          "foo",
+          all:   false,
+          force: false
+        )
       run_command(["upgrade-format", "foo"])
     end
 
     it "triggers the upgrade task for all descriptions" do
       expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
-        with(an_instance_of(SystemDescriptionStore), nil, all: true, force: false)
+        with(
+          an_instance_of(SystemDescriptionStore),
+          nil,
+          all:   true,
+          force: false
+        )
       run_command(["upgrade-format", "--all"])
     end
 
     it "triggers the upgrade task with force option" do
       expect_any_instance_of(UpgradeFormatTask).to receive(:upgrade).
-        with(an_instance_of(SystemDescriptionStore), "foo", all: false, force: true)
+        with(
+          an_instance_of(SystemDescriptionStore),
+          "foo",
+          all:   false,
+          force: true
+        )
       run_command(["upgrade-format", "--force", "foo"])
     end
   end
@@ -693,33 +758,36 @@ describe Cli do
 
   describe ".process_scope_option" do
     it "returns the scopes which are provided" do
-      expect(Cli.process_scope_option("os,packages", nil)).to eq(["os", "packages"])
+      expect(Machinery::Cli.process_scope_option("os,packages", nil)).
+        to eq(["os", "packages"])
     end
 
     it "returns sorted scope list" do
-      expect(Cli.process_scope_option("packages,users,os", nil)).to eq(
-        ["os", "packages", "users"]
-      )
+      expect(Machinery::Cli.process_scope_option("packages,users,os", nil)).
+        to eq(["os", "packages", "users"])
     end
 
     it "returns all scopes if no scopes are provided" do
-      expect(Cli.process_scope_option(nil,nil)).to eq(Inspector.all_scopes)
+      expect(Machinery::Cli.process_scope_option(nil, nil)).
+        to eq(Inspector.all_scopes)
     end
 
     it "returns all scopes except the excluded scope" do
       scope_list = Inspector.all_scopes
       scope_list.delete("os")
-      expect(Cli.process_scope_option(nil, "os")).to eq(scope_list)
+      expect(Machinery::Cli.process_scope_option(nil, "os")).to eq(scope_list)
     end
 
     it "raises an error if both scopes and excluded scopes are given" do
-      expect { Cli.process_scope_option("scope1", "scope2") }.to  raise_error(Machinery::Errors::InvalidCommandLine)
+      expect { Machinery::Cli.process_scope_option("scope1", "scope2") }.
+        to raise_error(Machinery::Errors::InvalidCommandLine)
     end
   end
 
   describe ".parse_scopes" do
     it "returns an array with existing scopes" do
-      expect(Cli.parse_scopes("os,changed-config-files")).to eq(["os", "changed_config_files"])
+      expect(Machinery::Cli.parse_scopes("os,changed-config-files")).
+        to eq(["os", "changed_config_files"])
     end
 
     context "if the old scope name config-files is used" do
@@ -727,33 +795,38 @@ describe Cli do
         expect(Machinery::Ui).to receive(:warn).with(
           "The scope name `config-files` is deprecated. The new name is `changed-config-files`."
         )
-        Cli.parse_scopes("config-files")
+        Machinery::Cli.parse_scopes("config-files")
       end
 
       it "does not raise" do
-        expect { Cli.parse_scopes("config-files") }.not_to raise_error
+        expect { Machinery::Cli.parse_scopes("config-files") }.
+          not_to raise_error
       end
 
       it "returns the scope name changed-config-files instead" do
-        expect(Cli.parse_scopes("config-files")).to eq(["changed_config_files"])
+        expect(Machinery::Cli.parse_scopes("config-files")).
+          to eq(["changed_config_files"])
       end
     end
 
     it "raises an error if the provided scope is unknown" do
       expect{
-        Cli.parse_scopes("unknown-scope")
+        Machinery::Cli.parse_scopes("unknown-scope")
       }.to raise_error(Machinery::Errors::UnknownScope, /unknown-scope/)
     end
 
     it "uses singular in the error message for one scope" do
       expect{
-        Cli.parse_scopes("unknown-scope")
-      }.to raise_error(Machinery::Errors::UnknownScope, /The following scope is not supported: unknown-scope./)
+        Machinery::Cli.parse_scopes("unknown-scope")
+      }.to raise_error(
+        Machinery::Errors::UnknownScope,
+        /The following scope is not supported: unknown-scope./
+      )
     end
 
     it "uses plural in the error message for more than one scope" do
       expect{
-        Cli.parse_scopes("unknown-scope,unknown-scope2")
+        Machinery::Cli.parse_scopes("unknown-scope,unknown-scope2")
       }.to raise_error(
         Machinery::Errors::UnknownScope,
         /The following scopes are not supported: unknown-scope, unknown-scope2./
@@ -762,7 +835,7 @@ describe Cli do
 
     it "raises an error if the scope contains illegal characters" do
       expect{
-        Cli.parse_scopes("fd df,u*n")
+        Machinery::Cli.parse_scopes("fd df,u*n")
       }.to raise_error(Machinery::Errors::UnknownScope,
         /The following scopes are not valid: 'fd df', 'u\*n'\./)
     end
@@ -777,7 +850,7 @@ describe Cli do
           begin
             raise(error.new)
           rescue => e
-            expect { Cli.handle_error(e) }.to raise_error(SystemExit)
+            expect { Machinery::Cli.handle_error(e) }.to raise_error(SystemExit)
           end
           expect(captured_machinery_stderr).to include(
             e.to_s, "Run '#{$0}", "--help' for more information."
@@ -805,9 +878,16 @@ Backtrace:
       allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
       begin
         # Actually raise the exception, so we have a backtrace
-        raise(Cheetah::ExecutionFailed.new(nil, nil, "This is STDOUT", "This is STDERR"))
+        raise(
+          Cheetah::ExecutionFailed.new(
+            nil,
+            nil,
+            "This is STDOUT",
+            "This is STDERR"
+          )
+        )
       rescue => e
-        expect { Cli.handle_error(e) } .to raise_error(SystemExit)
+        expect { Machinery::Cli.handle_error(e) } .to raise_error(SystemExit)
       end
       expect(captured_machinery_stderr).to include(expected_cheetah_out)
     end
@@ -818,7 +898,7 @@ Backtrace:
       begin
         raise
       rescue => e
-        expect { Cli.handle_error(e) }.to raise_error
+        expect { Machinery::Cli.handle_error(e) }.to raise_error
       end
 
       expect(captured_machinery_output).to include(
@@ -833,37 +913,38 @@ Backtrace:
       begin
         raise
       rescue => e
-        expect { Cli.handle_error(e) } .to raise_error
+        expect { Machinery::Cli.handle_error(e) } .to raise_error
       end
 
       expect(captured_machinery_output).to include(
         "Machinery experienced an unexpected error.\n" \
         "If this impacts your business please file a service request at " \
         "https://www.suse.com/mysupport\n" \
-        "so that we can assist you on this issue. An active support contract is required.\n"
+        "so that we can assist you on this issue. An active support "\
+        "contract is required.\n"
       )
     end
   end
 
   describe ".check_port_validity" do
     it "checks if a port is invalid below 2" do
-      expect { Cli.check_port_validity(1) }.to raise_error(
+      expect { Machinery::Cli.check_port_validity(1) }.to raise_error(
         Machinery::Errors::ServerPortError
       )
     end
 
     it "checks if a port is invalid above 65535" do
-      expect { Cli.check_port_validity(65536) }.to raise_error(
+      expect { Machinery::Cli.check_port_validity(65536) }.to raise_error(
         Machinery::Errors::ServerPortError
       )
     end
 
     it "checks if a port is valid between 2 and 65535" do
-      expect { Cli.check_port_validity(5000) }.to_not raise_error
+      expect { Machinery::Cli.check_port_validity(5000) }.to_not raise_error
     end
 
     it "checks if a port requires root privileges" do
-      expect { Cli.check_port_validity(1000) }.to raise_error(
+      expect { Machinery::Cli.check_port_validity(1000) }.to raise_error(
         Machinery::Errors::ServerPortError
       )
     end
@@ -872,7 +953,7 @@ Backtrace:
   private
 
   def run_command(*args)
-    Cli.run(*args)
+    Machinery::Cli.run(*args)
   rescue SystemExit
   end
 end
