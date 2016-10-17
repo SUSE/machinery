@@ -17,13 +17,13 @@
 
 require_relative "spec_helper"
 
-describe BuildTask do
+describe Machinery::BuildTask do
   initialize_system_description_factory_store
 
   let(:system_description) {
     create_test_description(scopes: ["os", "packages", "repositories"], store_on_disk: true)
   }
-  let(:build_task) { BuildTask.new }
+  let(:build_task) { Machinery::BuildTask.new }
   let(:output_path) { given_directory }
   let(:tmp_config_dir) { given_directory }
   let(:tmp_image_dir) { given_directory }

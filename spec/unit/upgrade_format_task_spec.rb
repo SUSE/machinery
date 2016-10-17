@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe UpgradeFormatTask do
+describe Machinery::UpgradeFormatTask do
   capture_machinery_output
   initialize_system_description_factory_store
 
@@ -46,7 +46,7 @@ describe UpgradeFormatTask do
         SystemDescription.load("description1", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
       allow(captured_machinery_output)
       expect(captured_machinery_output).to match(/upgraded/)
 
@@ -64,8 +64,8 @@ describe UpgradeFormatTask do
     end
 
     it "doesn't upgrade an up to date system description" do
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
       expect(captured_machinery_output).to include("No upgrade necessary")
     end
 
@@ -74,7 +74,7 @@ describe UpgradeFormatTask do
         SystemDescription.load("descriptions2", system_description_factory_store)
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
 
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       allow(captured_machinery_output)
       expect(captured_machinery_output).to include("Upgraded 2 system descriptions.")
 
@@ -91,8 +91,8 @@ Reading 'description1' ... Successfully upgraded from version 1 to #{SystemDescr
 Reading 'description2' ... No upgrade necessary.
 Upgraded 1 system description.
 EOF
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, "description2")
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description2")
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       expect(captured_machinery_output).to include(expected_output)
     end
 
@@ -106,7 +106,7 @@ Reading 'description1' ... Successfully upgraded from version 1 to #{SystemDescr
 Reading 'description2' ... Successfully upgraded from version 1 to #{SystemDescription::CURRENT_FORMAT_VERSION}.
 Upgraded 2 system descriptions.
 EOF
-      UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+      Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       expect(captured_machinery_output).to include(expected_output)
     end
 
@@ -116,7 +116,7 @@ EOF
       end)
 
       expect {
-        UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+        Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       }.to raise_error(
         Machinery::Errors::UpgradeFailed,
         /Upgrading description '.*' failed:\n.*\nUpgrading description '.*' failed:\n.*/i
@@ -129,7 +129,7 @@ EOF
       end)
       expect(Hint).to receive(:to_string).with(:upgrade_format_force, name: "description1")
       expect {
-        UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
+        Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
       }.to raise_error
     end
 
@@ -139,7 +139,7 @@ EOF
       end)
       expect(Hint).to receive(:to_string).with(:upgrade_format_force, name: "--all")
       expect {
-        UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
+        Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       }.to raise_error
     end
   end

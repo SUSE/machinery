@@ -18,10 +18,10 @@
 require_relative "spec_helper"
 
 
-describe ShowTask, "#show" do
+describe Machinery::ShowTask, "#show" do
   capture_machinery_output
 
-  let(:show_task) { ShowTask.new }
+  let(:show_task) { Machinery::ShowTask.new }
   let(:system_description) {
     SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
   }

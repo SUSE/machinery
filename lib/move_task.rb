@@ -16,7 +16,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class MoveTask
+class Machinery::MoveTask
   def move(store, from, to)
     store.move(from, to)
   end

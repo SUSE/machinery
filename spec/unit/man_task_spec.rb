@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ManTask do
+describe Machinery::ManTask do
   describe "#man" do
     context "on the console" do
       it "validates the availability of man by calling the 'validate_existence_of_package method'" do

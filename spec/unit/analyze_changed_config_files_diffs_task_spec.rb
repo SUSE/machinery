@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe AnalyzeConfigFileDiffsTask do
+describe Machinery::AnalyzeConfigFileDiffsTask do
   initialize_system_description_factory_store
 
   let(:store) { SystemDescriptionStore.new }
@@ -100,7 +100,7 @@ describe AnalyzeConfigFileDiffsTask do
     description
   }
   subject {
-    AnalyzeConfigFileDiffsTask.new
+    Machinery::AnalyzeConfigFileDiffsTask.new
   }
 
   let(:no_online_repo_description) {
@@ -205,7 +205,7 @@ describe AnalyzeConfigFileDiffsTask do
     end
 
     it "raises an error when the description is missing information" do
-      task = AnalyzeConfigFileDiffsTask.new
+      task = Machinery::AnalyzeConfigFileDiffsTask.new
       expect {
         task.analyze(SystemDescription.new("foo",
           SystemDescriptionMemoryStore.new))

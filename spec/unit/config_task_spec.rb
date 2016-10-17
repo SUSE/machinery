@@ -17,11 +17,11 @@
 
 require_relative "spec_helper"
 
-describe ConfigTask do
+describe Machinery::ConfigTask do
   capture_machinery_output
 
   include FakeFS::SpecHelpers
-  let(:config_task) { ConfigTask.new }
+  let(:config_task) { Machinery::ConfigTask.new }
   let(:key) { "hints" }
   let(:long_key) { "remote-user-configuration-change-long" }
 
@@ -63,7 +63,7 @@ describe ConfigTask do
       config = Machinery::Config.new
       config.entry(key, default: true, description: "configtext")
       config.entry(long_key, default: "root", description: "configtext")
-      @config_task = ConfigTask.new(config)
+      @config_task = Machinery::ConfigTask.new(config)
 
       @config_task.config
       expect(captured_machinery_output).to match(/#{key} {33}=/)
@@ -76,7 +76,7 @@ describe ConfigTask do
       before(:each) do
         config = Machinery::Config.new
         config.entry("configkey", default: true, description: "configtext")
-        @config_task = ConfigTask.new(config)
+        @config_task = Machinery::ConfigTask.new(config)
       end
 
       it "parses 'true'" do
@@ -106,7 +106,7 @@ describe ConfigTask do
       before(:each) do
         config = Machinery::Config.new
         config.entry("configkey", default: false, description: "configtext")
-        @config_task = ConfigTask.new(config)
+        @config_task = Machinery::ConfigTask.new(config)
       end
 
       it "parses 'true'" do
@@ -136,7 +136,7 @@ describe ConfigTask do
       before(:each) do
         config = Machinery::Config.new
         config.entry("configkey", default: "text", description: "configtext")
-        @config_task = ConfigTask.new(config)
+        @config_task = Machinery::ConfigTask.new(config)
       end
 
       it "parses string 'true'" do

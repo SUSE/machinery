@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe DeployTask do
+describe Machinery::DeployTask do
   include FakeFS::SpecHelpers
 
-  let(:deploy_task) { DeployTask.new }
+  let(:deploy_task) { Machinery::DeployTask.new }
   let(:system_description) {
     create_test_description(
       scopes: ["os", "repositories", "packages"], name: "test", store: SystemDescriptionStore.new
@@ -44,13 +44,13 @@ describe DeployTask do
 
   describe "#deploy" do
     it "runs a temporary build if no option image_dir is provided" do
-      expect_any_instance_of(BuildTask).to receive(:build)
+      expect_any_instance_of(Machinery::BuildTask).to receive(:build)
       expect(FileUtils).to receive(:rm_rf).with(tmp_image_dir)
       deploy_task.deploy(system_description, cloud_config_file)
     end
 
     it "does not build the image if the option image_dir is provided" do
-      expect_any_instance_of(BuildTask).not_to receive(:build)
+      expect_any_instance_of(Machinery::BuildTask).not_to receive(:build)
       expect(FileUtils).not_to receive(:rm_rf)
       deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)
     end

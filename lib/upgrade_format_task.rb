@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class UpgradeFormatTask
+class Machinery::UpgradeFormatTask
   def upgrade(store, name, options = {})
     if !options[:all] && !store.list.include?(name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(

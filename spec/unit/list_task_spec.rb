@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe ListTask do
+describe Machinery::ListTask do
   capture_machinery_output
   include FakeFS::SpecHelpers
-  let(:list_task) { ListTask.new }
+  let(:list_task) { Machinery::ListTask.new }
   let(:store) { SystemDescriptionStore.new }
   let(:name) { "foo" }
   let(:name2) { "bar" }

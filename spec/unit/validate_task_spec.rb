@@ -18,9 +18,9 @@
 require_relative "spec_helper"
 
 
-describe ValidateTask, "#validate" do
+describe Machinery::ValidateTask, "#validate" do
   capture_machinery_output
-  let(:validate_task) { ValidateTask.new }
+  let(:validate_task) { Machinery::ValidateTask.new }
   let(:store) { SystemDescriptionStore.new("spec/data/schema/") }
 
   it "raises an error when encountering faulty description" do

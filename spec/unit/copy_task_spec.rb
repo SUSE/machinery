@@ -17,8 +17,8 @@
 
 require_relative "spec_helper"
 
-describe CopyTask do
-  let(:copy_task) { CopyTask.new }
+describe Machinery::CopyTask do
+  let(:copy_task) { Machinery::CopyTask.new }
 
   describe "#copy" do
     it "copies the system description directory" do

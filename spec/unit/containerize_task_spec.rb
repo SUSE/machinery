@@ -17,12 +17,12 @@
 
 require_relative "spec_helper"
 
-describe ContainerizeTask do
+describe Machinery::ContainerizeTask do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
   let(:output_path) { given_directory }
-  let(:containerize_task) { ContainerizeTask.new }
+  let(:containerize_task) { Machinery::ContainerizeTask.new }
   let(:system_description) {
     create_test_description(json: <<-EOF)
       {
@@ -91,7 +91,7 @@ EOF
   end
 
   describe "#write_readme_file" do
-    subject { ContainerizeTask.new }
+    subject { Machinery::ContainerizeTask.new }
     it "writes the README file to output dir" do
       allow($stdout).to receive(:puts)
       subject.write_readme_file(output_path)

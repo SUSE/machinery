@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ListTask
+class Machinery::ListTask
   def list(store, system_descriptions, options = {})
     if options[:html]
       list_html(store, options)

@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 
-describe InspectTask, "#inspect_system" do
+describe Machinery::InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
   silence_machinery_output
 
@@ -76,7 +76,7 @@ describe InspectTask, "#inspect_system" do
     allow(inspect_task).to receive(:set_system_locale)
   end
 
-  let(:inspect_task) { InspectTask.new }
+  let(:inspect_task) { Machinery::InspectTask.new }
   let(:store) { SystemDescriptionStore.new }
   let(:description) { SystemDescription.new(name, store) }
   let(:name) { "name" }

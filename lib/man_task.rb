@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ManTask
+class Machinery::ManTask
   def self.compile_documentation
     docs = "# Scopes\n\n"
     docs += Inspector.all_scopes.map do |scope|

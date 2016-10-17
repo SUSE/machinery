@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 require_relative "spec_helper"
 
-describe CompareTask do
+describe Machinery::CompareTask do
   describe "#compare" do
     capture_machinery_output
 
@@ -81,7 +81,7 @@ describe CompareTask do
       end
     end
 
-    subject { CompareTask.new }
+    subject { Machinery::CompareTask.new }
 
     let(:description1) {
       create_test_description(json: <<-EOT, name: "name1")
@@ -341,7 +341,7 @@ Only in 'two':
   Architecture: x86_64
 
 EOT
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["os"])
 
       expect(output).to eq expected_output
@@ -368,7 +368,7 @@ EOT
         }
       EOT
 
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["os"])
 
       expect(output).to include("Compared descriptions are identical.")
@@ -432,7 +432,7 @@ Only in 'one':
   * kernel
 
 EOT
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["packages"])
 
       expect(output).to eq expected_output
@@ -503,7 +503,7 @@ In both with different attributes ('one' <> 'two'):
 
 EOT
 
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["packages"])
 
       expect(output).to eq expected_output

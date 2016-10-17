@@ -14,7 +14,7 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-class InspectTask
+class Machinery::InspectTask
   def inspect_system(store, system, name, current_user, scopes, filter, options = {})
     check_root(system, current_user)
 

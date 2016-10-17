@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class RemoveTask
+class Machinery::RemoveTask
   def remove(store, names, options = {})
     if options[:all]
       removed_descriptions = store.list

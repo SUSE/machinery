@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class DeployTask
+class Machinery::DeployTask
   def deploy(description, cloud_config, options = {})
     LocalSystem.validate_architecture("x86_64")
     LocalSystem.validate_existence_of_packages(["python-glanceclient", "kiwi", "kiwi-desc-vmxboot"])
@@ -37,7 +37,7 @@ class DeployTask
     else
       image_dir = Dir.mktmpdir("#{description.name}-image", "/tmp")
       is_temporary = true
-      task = BuildTask.new
+      task = Machinery::BuildTask.new
       task.build(description, image_dir)
     end
 

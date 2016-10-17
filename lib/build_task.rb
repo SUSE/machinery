@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class BuildTask
+class Machinery::BuildTask
   def build(system_description, output_path, options = {})
     LocalSystem.validate_architecture("x86_64")
     LocalSystem.validate_existence_of_packages(["kiwi", "kiwi-desc-vmxboot"])

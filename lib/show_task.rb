@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ShowTask
+class Machinery::ShowTask
   def show(description, scopes, filter, options = {})
     scopes = Inspector.sort_scopes(scopes)
     if options[:show_html]

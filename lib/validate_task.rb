@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ValidateTask
+class Machinery::ValidateTask
   def validate(store, name)
     SystemDescription.load!(name, store)
     Machinery::Ui.puts "Validation succeeded."
