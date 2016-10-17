@@ -21,8 +21,41 @@ describe Zypper do
   subject { Zypper.new }
 
   describe ".isolated" do
+    let(:tmp_path) { Dir.mktmpdir("machinery_zypper") }
+    let(:zypp_repo_path) { File.join(tmp_path, "/etc/zypp/repos.d/") }
+    let(:base_url) { "http://download.opensuse.org/distribution/leap/42.2/repo/oss/" }
+
+    before(:each) do
+      allow(LoggedCheetah).to receive(:run).with(
+        "sudo", "rm", "-rf", any_args
+      )
+      allow(LoggedCheetah).to receive(:run).with(
+        "rm", "-rf", any_args
+      )
+
+      allow(Dir).to receive(:mktmpdir).with("machinery_zypper").and_return(tmp_path)
+
+      FileUtils.mkdir_p(zypp_repo_path)
+      file_content = <<-EOF
+[repo-oss]
+name=openSUSE-leap/42.2-Oss
+enabled=1
+autorefresh=1
+baseurl=#{base_url}
+path=/
+type=yast2
+EOF
+      File.write(File.join(zypp_repo_path, "repo-oss.repo"), file_content)
+    end
+
+    after(:each) do
+      if tmp_path.start_with?("/tmp/", "/var/tmp/")
+        FileUtils.remove_dir(tmp_path)
+      end
+    end
+
     it "calls zypper in a chroot environment" do
-      Zypper.isolated do |zypper|
+      Zypper.isolated(arch: :x86_64) do |zypper|
         allow(LoggedCheetah).to receive(:run)
         expect(LoggedCheetah).to receive(:run) do |*args|
           expect(args).to include("--root")
@@ -30,6 +63,75 @@ describe Zypper do
         end
 
         zypper.refresh
+      end
+    end
+
+    context "during zypper refresh" do
+      context "with nfs repos" do
+        let(:base_url) { "nfs://download.opensuse.org/distribution/leap/42.2/repo/oss/" }
+
+        it "calls refresh with sudo" do
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            expect(LoggedCheetah).to receive(:run) do |*args|
+              expect(args).to include("sudo", "refresh")
+            end
+
+            zypper.refresh
+          end
+        end
+
+        it "cleans up with sudo" do
+          expect(LoggedCheetah).to receive(:run).with(
+            "sudo", "rm", "-rf", tmp_path
+          )
+
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            zypper.refresh
+          end
+        end
+      end
+
+      context "without nfs repos" do
+        it "calls refresh without sudo" do
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            expect(LoggedCheetah).to receive(:run) do |*args|
+              expect(args).not_to include("sudo")
+              expect(args).to include("refresh")
+            end
+
+            zypper.refresh
+          end
+        end
+
+        it "cleans up without sudo" do
+          expect(LoggedCheetah).to receive(:run).with(
+            "rm", "-rf", tmp_path
+          )
+
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            zypper.refresh
+          end
+        end
+      end
+    end
+
+    context "in case of non-default tmp directories" do
+      let(:tmp_path) { "/var/tmp/machinery_zypper/" }
+
+      it "raises before cleaning up" do
+        expect(LoggedCheetah).not_to receive(:run).with(
+          "sudo", "rm", "-rf", tmp_path
+        )
+        expect do
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            zypper.refresh
+          end
+        end.to raise_error
       end
     end
 

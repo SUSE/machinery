@@ -24,30 +24,41 @@
 class Zypper
   attr_accessor :zypper_options
   attr_accessor :zypp_config
+  attr_accessor :zypp_base
 
   class <<self
     def isolated(options = {}, &block)
-      Dir.mktmpdir("machinery_zypper") do |zypper_base|
-        zypper = Zypper.new
+      zypper = Zypper.new
+      zypper.zypp_base = Dir.mktmpdir("machinery_zypper")
 
-        zypper.zypper_options = [
-          "--non-interactive",
-          "--no-gpg-checks",
-          "--root", zypper_base
-        ]
+      zypper.zypper_options = [
+        "--non-interactive",
+        "--no-gpg-checks",
+        "--root", zypper.zypp_base
+      ]
 
-        if options[:arch]
-          zypper.zypp_config = create_zypp_config(zypper_base, options[:arch])
-        end
-
-        block.call(zypper)
+      if options[:arch]
+        zypper.zypp_config = create_zypp_config(zypper.zypp_base, options[:arch])
       end
+
+      block.call(zypper)
+    ensure
+      clean_up(zypper)
     end
 
     private
 
-    def create_zypp_config(base_path, arch)
-      zypp_dir = File.join(base_path, "/etc/zypp")
+    def clean_up(zypper)
+      unless zypper.zypp_base =~ /^\/tmp\/machinery_zypper/
+        raise("The zypper base directory is not inside of '/tmp'. Aborting...")
+      end
+      cmd = ["rm", "-rf", zypper.zypp_base]
+      cmd = cmd.insert(0, "sudo") if zypper.contains_nfs_repos?
+      LoggedCheetah.run(*cmd)
+    end
+
+    def create_zypp_config(zypp_base, arch)
+      zypp_dir = File.join(zypp_base, "/etc/zypp")
       zypp_config = File.join(zypp_dir, "zypp.conf")
 
       FileUtils.mkdir_p(zypp_dir)
@@ -70,7 +81,7 @@ class Zypper
   end
 
   def refresh
-    call_zypper "refresh"
+    call_zypper "refresh", sudo: contains_nfs_repos?
   end
 
   def download_package(package)
@@ -86,10 +97,20 @@ class Zypper
     [found[1].to_i, found[2].to_i, found[3].to_i] if found
   end
 
+  def contains_nfs_repos?
+    files = Dir.glob(File.join(@zypp_base, "etc/zypp/repos.d", "*"))
+    files.any? do |file|
+      File.readlines(file).any? { |line| line.start_with?("baseurl=nfs://") }
+    end
+  end
+
   private
 
   def call_zypper(*args)
+    sudo = args.last.delete(:sudo) if args.last.is_a?(Hash)
+
     cmd = ["zypper"]
+    cmd.unshift("sudo") if sudo
     cmd += @zypper_options if @zypper_options
     cmd += args
 
