@@ -144,7 +144,7 @@ describe Machinery::BuildTask do
       allow(Machinery::LocalSystem).to receive(:validate_architecture)
       allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
 
-      user = CurrentUser.new.username
+      user = Machinery::CurrentUser.new.username
 
       expect {
         build_task.build(system_description, "/test")

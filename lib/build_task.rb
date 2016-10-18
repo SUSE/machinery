@@ -31,7 +31,10 @@ class Machinery::BuildTask
     begin
       FileUtils.mkdir_p(output_path)
     rescue Errno::EACCES
-      raise Machinery::Errors::BuildDirectoryCreateError.new(output_path, CurrentUser.new.username)
+      raise Machinery::Errors::BuildDirectoryCreateError.new(
+        output_path,
+        Machinery::CurrentUser.new.username
+      )
     end
 
     if tmp_image_dir.start_with?("/tmp/") && tmp_config_dir.start_with?("/tmp/")

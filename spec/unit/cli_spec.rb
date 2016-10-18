@@ -67,7 +67,7 @@ describe Machinery::Cli do
           an_instance_of(Machinery::SystemDescriptionStore),
           system,
           "docker_image_foo",
-          an_instance_of(CurrentUser),
+          an_instance_of(Machinery::CurrentUser),
           Inspector.all_scopes,
           an_instance_of(Filter),
           {}
@@ -87,7 +87,7 @@ describe Machinery::Cli do
           an_instance_of(Machinery::SystemDescriptionStore),
           system,
           "docker_foo",
-          an_instance_of(CurrentUser),
+          an_instance_of(Machinery::CurrentUser),
           Inspector.all_scopes,
           an_instance_of(Filter),
           {}
@@ -202,7 +202,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
             {}
@@ -219,7 +219,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             name,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
             {}
@@ -235,7 +235,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
             {}
@@ -251,7 +251,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             ["packages", "repositories"],
             an_instance_of(Filter),
             {}
@@ -267,7 +267,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             ["packages"],
             an_instance_of(Filter),
             {}
@@ -283,7 +283,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
             an_instance_of(Filter),
             {}
@@ -303,7 +303,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
-            an_instance_of(CurrentUser),
+            an_instance_of(Machinery::CurrentUser),
             scope_list,
             an_instance_of(Filter),
             {}
@@ -394,7 +394,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
-              an_instance_of(CurrentUser),
+              an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
               {}
@@ -410,7 +410,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
-              an_instance_of(CurrentUser),
+              an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
               extract_changed_changed_config_files: true,
@@ -428,7 +428,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
-              an_instance_of(CurrentUser),
+              an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
               extract_changed_changed_config_files: true
@@ -444,7 +444,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
-              an_instance_of(CurrentUser),
+              an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
               an_instance_of(Filter),
               extract_unmanaged_files: true
