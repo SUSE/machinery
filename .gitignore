@@ -12,3 +12,6 @@ import_state.yaml
 
 .git_revision
 .byebug_history
+
+.bundle
+vendor
