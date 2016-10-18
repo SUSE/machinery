@@ -17,96 +17,96 @@
 
 require_relative "spec_helper"
 
-describe Filter do
+describe Machinery::Filter do
   capture_machinery_output
   describe ".parse_filter_definitions" do
     it "parses array of definitions" do
-      element_filter = Filter.parse_filter_definitions(["/foo=bar", "/baz=qux"])
+      element_filter = Machinery::Filter.parse_filter_definitions(["/foo=bar", "/baz=qux"])
       expect(element_filter.keys.length).to eq(2)
-      expect(element_filter["/foo"].matchers).to eq(Filter::OPERATOR_EQUALS => ["bar"])
-      expect(element_filter["/baz"].matchers).to eq(Filter::OPERATOR_EQUALS => ["qux"])
+      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => ["bar"])
+      expect(element_filter["/baz"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => ["qux"])
     end
 
     it "parses definition with multiple matcher" do
-      element_filter = Filter.parse_filter_definitions("/foo=bar,baz")
+      element_filter = Machinery::Filter.parse_filter_definitions("/foo=bar,baz")
       expect(element_filter.keys.length).to eq(1)
-      expect(element_filter["/foo"].matchers).to eq(Filter::OPERATOR_EQUALS => [["bar", "baz"]])
+      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"]])
     end
 
     it "raises error if filter is invalid" do
       expect {
-        Filter.parse_filter_definitions("abc")
+        Machinery::Filter.parse_filter_definitions("abc")
       }.to raise_error(Machinery::Errors::InvalidFilter, "Invalid filter: 'abc'")
     end
 
     it "raises error if filter is invalid and has whitespaces" do
       expect {
-        Filter.parse_filter_definitions("/ abc")
+        Machinery::Filter.parse_filter_definitions("/ abc")
       }.to raise_error(Machinery::Errors::InvalidFilter, "Invalid filter: '/ abc'")
     end
 
     it "parses definition with 'equals not' operator" do
-      element_filter = Filter.parse_filter_definitions("/foo!=bar,baz")
+      element_filter = Machinery::Filter.parse_filter_definitions("/foo!=bar,baz")
       expect(element_filter.keys.length).to eq(1)
-      expect(element_filter["/foo"].matchers).to eq(Filter::OPERATOR_EQUALS_NOT => [["bar", "baz"]])
+      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS_NOT => [["bar", "baz"]])
     end
 
     it "handles escaped commas" do
-      element_filter = Filter.parse_filter_definitions("/foo=bar,baz\\,qux")
+      element_filter = Machinery::Filter.parse_filter_definitions("/foo=bar,baz\\,qux")
       expect(element_filter.keys.length).to eq(1)
-      expect(element_filter["/foo"].matchers).to eq(Filter::OPERATOR_EQUALS => [["bar", "baz,qux"]])
+      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz,qux"]])
     end
 
     it "fails on unknown operators" do
       expect {
-        Filter.parse_filter_definitions("/foo<=bar")
+        Machinery::Filter.parse_filter_definitions("/foo<=bar")
       }.to raise_error(Machinery::Errors::InvalidFilter)
 
       expect {
-        Filter.parse_filter_definitions("/foo<!=bar")
+        Machinery::Filter.parse_filter_definitions("/foo<!=bar")
       }.to raise_error(Machinery::Errors::InvalidFilter)
     end
   end
 
   describe "#initialize" do
     it "creates Filter" do
-      filter = Filter.new
-      expect(filter).to be_a(Filter)
+      filter = Machinery::Filter.new
+      expect(filter).to be_a(Machinery::Filter)
     end
 
     it "parses the filter definition" do
-      filters = Filter.new("/unmanaged_files/name=/home/alfred").element_filters
+      filters = Machinery::Filter.new("/unmanaged_files/name=/home/alfred").element_filters
 
       expect(filters.keys.length).to eq(1)
       expect(filters["/unmanaged_files/name"].path).to eq("/unmanaged_files/name")
       expect(filters["/unmanaged_files/name"].matchers).
-        to eq(Filter::OPERATOR_EQUALS => ["/home/alfred"])
+        to eq(Machinery::Filter::OPERATOR_EQUALS => ["/home/alfred"])
     end
   end
 
   describe "#add_element_filter_from_definition" do
     it "adds definitions" do
-      filter = Filter.new("foo=bar,baz")
+      filter = Machinery::Filter.new("foo=bar,baz")
       filter.add_element_filter_from_definition("bar=baz")
 
       element_filters = filter.element_filters
-      expect(element_filters["foo"].matchers).to eq(Filter::OPERATOR_EQUALS => [["bar", "baz"]])
-      expect(element_filters["bar"].matchers).to eq(Filter::OPERATOR_EQUALS => ["baz"])
+      expect(element_filters["foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"]])
+      expect(element_filters["bar"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => ["baz"])
     end
 
     it "merges new definitions with existing element filter" do
-      filter = Filter.new("foo=bar,baz")
+      filter = Machinery::Filter.new("foo=bar,baz")
       filter.add_element_filter_from_definition("foo=qux")
 
       element_filters = filter.element_filters
       expect(element_filters["foo"].matchers).
-        to eq(Filter::OPERATOR_EQUALS => [["bar", "baz"], "qux"])
+        to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"], "qux"])
     end
   end
 
   describe "#to_array" do
     it "returns the element filter definitions as a string array" do
-      filter = Filter.new(["foo=bar,baz", "foo=qux", "scope=matcher", "equals!=not"])
+      filter = Machinery::Filter.new(["foo=bar,baz", "foo=qux", "scope=matcher", "equals!=not"])
       expect(filter.to_array).to eq([
                                       "foo=bar,baz", "foo=qux", "scope=matcher", "equals!=not"
       ])
@@ -115,7 +115,7 @@ describe Filter do
 
   describe "#filter_for" do
     it "returns the correct filter" do
-      filter = Filter.new([
+      filter = Machinery::Filter.new([
         "/unmanaged_files/name=/home/alfred",
         "/unmanaged_files/name=/var/cache",
         "/changed_managed_files/changes=md5,size"
@@ -124,17 +124,17 @@ describe Filter do
       element_filter = filter.element_filter_for("/unmanaged_files/name")
       expect(element_filter.path).to eq("/unmanaged_files/name")
       expect(element_filter.matchers).
-        to eq(Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
+        to eq(Machinery::Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
 
       element_filter = filter.element_filter_for("/changed_managed_files/changes")
       expect(element_filter.path).to eq("/changed_managed_files/changes")
-      expect(element_filter.matchers).to eq(Filter::OPERATOR_EQUALS => [["md5", "size"]])
+      expect(element_filter.matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["md5", "size"]])
     end
   end
 
   describe "#element_filters_for_scope" do
     it "returns the relevant element filters" do
-      filter = Filter.new([
+      filter = Machinery::Filter.new([
         "/groups/name=root",
         "/unmanaged_files/name=/home/alfred",
         "/unmanaged_files/name=/var/cache",
@@ -143,9 +143,9 @@ describe Filter do
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/name", Filter::OPERATOR_EQUALS,
+        Machinery::ElementFilter.new("/unmanaged_files/name", Machinery::Filter::OPERATOR_EQUALS,
           ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/changes", Filter::OPERATOR_EQUALS,
+        Machinery::ElementFilter.new("/unmanaged_files/changes", Machinery::Filter::OPERATOR_EQUALS,
           [["md5", "size"]])
       ]
       expect(filter.element_filters_for_scope("unmanaged_files")).to eq(expected)
@@ -154,7 +154,7 @@ describe Filter do
 
   describe "#set_element_filters_for_scope" do
     it "replaces existing element filters" do
-      filter = Filter.new([
+      filter = Machinery::Filter.new([
         "/groups/name=root",
         "/unmanaged_files/name=/foo",
         "/unmanaged_files/name=/bar",
@@ -163,9 +163,9 @@ describe Filter do
       ])
 
       expected = [
-        ElementFilter.new("/unmanaged_files/name", Filter::OPERATOR_EQUALS,
+        Machinery::ElementFilter.new("/unmanaged_files/name", Machinery::Filter::OPERATOR_EQUALS,
           ["/home/alfred", "/var/cache"]),
-        ElementFilter.new("/unmanaged_files/changes", Filter::OPERATOR_EQUALS,
+        Machinery::ElementFilter.new("/unmanaged_files/changes", Machinery::Filter::OPERATOR_EQUALS,
           [["md5", "size"]])
       ]
       filter.set_element_filters_for_scope("unmanaged_files", expected)
@@ -176,7 +176,7 @@ describe Filter do
 
   describe "#matches?" do
     let(:filter) {
-      Filter.new([
+      Machinery::Filter.new([
                    "/unmanaged_files/name=/home/alfred",
                    "/unmanaged_files/name=/var/cache",
                    "/changed_managed_files/changes=md5,size"
@@ -209,7 +209,7 @@ describe Filter do
     it "filters simple elements" do
       expect_file_scope_filter_change(
         "unmanaged_files",
-        Filter.new("/unmanaged_files/name=/etc/unmanaged-file"),
+        Machinery::Filter.new("/unmanaged_files/name=/etc/unmanaged-file"),
         [
           "/etc/unmanaged-file",
           "/etc/tarball with spaces/",
@@ -225,7 +225,7 @@ describe Filter do
     it "filters by array matches" do
       expect_file_scope_filter_change(
         "changed_managed_files",
-        Filter.new("/changed_managed_files/changes=md5,size"),
+        Machinery::Filter.new("/changed_managed_files/changes=md5,size"),
         [
           "/etc/cron.d",
           "/etc/deleted changed managed",
@@ -245,7 +245,7 @@ describe Filter do
     it "removes multiple items when a wildcard is used" do
       expect_file_scope_filter_change(
         "changed_managed_files",
-        Filter.new("/changed_managed_files/name=/etc/c*"),
+        Machinery::Filter.new("/changed_managed_files/name=/etc/c*"),
         [
           "/etc/cron.d",
           "/etc/deleted changed managed",
@@ -264,7 +264,7 @@ describe Filter do
       expect {
         expect_file_scope_filter_change(
           "changed_managed_files",
-          Filter.new(["/does/not/exist=/foo", "/changed_managed_files/name=/etc/c*"]),
+          Machinery::Filter.new(["/does/not/exist=/foo", "/changed_managed_files/name=/etc/c*"]),
           [
             "/etc/cron.d",
             "/etc/deleted changed managed",
@@ -284,7 +284,7 @@ describe Filter do
       expect {
         expect_file_scope_filter_change(
           "changed_managed_files",
-          Filter.new(["/changed_managed_files/name=element_a,element_b"]),
+          Machinery::Filter.new(["/changed_managed_files/name=element_a,element_b"]),
           [
             "/etc/deleted changed managed",
             "/etc/cron.d",
@@ -309,7 +309,7 @@ EOF
   end
 
   describe "#filter" do
-    specify { expect(Filter.new).to be_empty }
-    specify { expect(Filter.new("/foo=bar")).to_not be_empty }
+    specify { expect(Machinery::Filter.new).to be_empty }
+    specify { expect(Machinery::Filter.new("/foo=bar")).to_not be_empty }
   end
 end

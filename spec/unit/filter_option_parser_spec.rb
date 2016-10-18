@@ -17,15 +17,15 @@
 
 require_relative "spec_helper"
 
-describe FilterOptionParser do
+describe Machinery::FilterOptionParser do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
-  subject { FilterOptionParser }
+  subject { Machinery::FilterOptionParser }
 
   describe ".parse" do
     before(:each) do
-      allow(Filter).to receive(:from_default_definition).and_return(Filter.new)
+      allow(Machinery::Filter).to receive(:from_default_definition).and_return(Machinery::Filter.new)
     end
 
     context "with the global --exclude option" do

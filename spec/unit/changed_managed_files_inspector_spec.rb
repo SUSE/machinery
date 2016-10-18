@@ -113,7 +113,7 @@ describe ChangedManagedFilesInspector do
 
     context "with filters" do
       it "filters out the matching elements" do
-        filter = Filter.new("/changed_managed_files/files/name=/usr/*")
+        filter = Machinery::Filter.new("/changed_managed_files/files/name=/usr/*")
 
         subject.inspect(filter)
         expect(description["changed_managed_files"].map(&:name)).

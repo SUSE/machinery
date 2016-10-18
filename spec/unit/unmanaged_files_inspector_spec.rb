@@ -43,7 +43,7 @@ describe UnmanagedFilesInspector do
         expect(scope).to be_a(UnmanagedFilesScope)
       end
 
-      inspector.inspect(Filter.from_default_definition("inspect"))
+      inspector.inspect(Machinery::Filter.from_default_definition("inspect"))
     end
 
     context "when the --extract-metadata option is given" do
@@ -53,7 +53,7 @@ describe UnmanagedFilesInspector do
           expect(args).to eq("--extract-metadata")
         end
 
-        inspector.inspect(Filter.from_default_definition("inspect"), extract_metadata: true)
+        inspector.inspect(Machinery::Filter.from_default_definition("inspect"), extract_metadata: true)
       end
     end
   end

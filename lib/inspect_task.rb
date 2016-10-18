@@ -74,7 +74,7 @@ class Machinery::InspectTask
 
     failed_inspections = {}
 
-    effective_filter = Filter.new(description.filter_definitions("inspect"))
+    effective_filter = Machinery::Filter.new(description.filter_definitions("inspect"))
 
     scopes.each do |scope|
       inspector = Inspector.for(scope).new(system, description)

@@ -41,7 +41,7 @@ class UnmanagedFilesInspector < Inspector
     scope.scope_file_store = file_store_tmp
 
     file_filter = filter.element_filter_for("/unmanaged_files/name").dup if filter
-    file_filter ||= ElementFilter.new("/unmanaged_files/name")
+    file_filter ||= Machinery::ElementFilter.new("/unmanaged_files/name")
     file_filter.add_matchers("=", @description.store.base_path)
 
     # Add a recursive pendant to each ignored element

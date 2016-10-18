@@ -600,14 +600,14 @@ EOF
       expected = ["/foo=bar", "/foo=baz", "/scope=filter"]
 
       subject.set_filter_definitions("inspect",
-        Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]).to_array)
+        Machinery::Filter.new(["/foo=bar", "/foo=baz", "/scope=filter"]).to_array)
       filters = subject.to_hash["meta"]["filters"]["inspect"]
       expect(filters).to eq(expected)
     end
 
     it "only supports inspection filters" do
       expect {
-        subject.set_filter_definitions("show", Filter.new(["/foo=bar", "/scope=filter"]).to_array)
+        subject.set_filter_definitions("show", Machinery::Filter.new(["/foo=bar", "/scope=filter"]).to_array)
       }.to raise_error(/not supported/)
     end
   end

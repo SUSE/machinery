@@ -69,7 +69,7 @@ describe Machinery::Cli do
           "docker_image_foo",
           an_instance_of(Machinery::CurrentUser),
           Inspector.all_scopes,
-          an_instance_of(Filter),
+          an_instance_of(Machinery::Filter),
           {}
         )
 
@@ -89,7 +89,7 @@ describe Machinery::Cli do
           "docker_foo",
           an_instance_of(Machinery::CurrentUser),
           Inspector.all_scopes,
-          an_instance_of(Filter),
+          an_instance_of(Machinery::Filter),
           {}
         )
 
@@ -204,7 +204,7 @@ describe Machinery::Cli do
             example_host,
             an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
           ).
           and_return(description)
@@ -221,7 +221,7 @@ describe Machinery::Cli do
             name,
             an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
            ).
            and_return(description)
@@ -237,7 +237,7 @@ describe Machinery::Cli do
             example_host,
             an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
            ).
           and_return(description)
@@ -253,7 +253,7 @@ describe Machinery::Cli do
             example_host,
             an_instance_of(Machinery::CurrentUser),
             ["packages", "repositories"],
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
           ).
           and_return(description)
@@ -269,7 +269,7 @@ describe Machinery::Cli do
             example_host,
             an_instance_of(Machinery::CurrentUser),
             ["packages"],
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
           ).
           and_return(description)
@@ -285,7 +285,7 @@ describe Machinery::Cli do
             example_host,
             an_instance_of(Machinery::CurrentUser),
             Inspector.all_scopes,
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
           ).
           and_return(description)
@@ -305,7 +305,7 @@ describe Machinery::Cli do
             example_host,
             an_instance_of(Machinery::CurrentUser),
             scope_list,
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             {}
           ).
           and_return(description)
@@ -396,7 +396,7 @@ describe Machinery::Cli do
               example_host,
               an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
-              an_instance_of(Filter),
+              an_instance_of(Machinery::Filter),
               {}
             ).
             and_return(description)
@@ -412,7 +412,7 @@ describe Machinery::Cli do
               example_host,
               an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
-              an_instance_of(Filter),
+              an_instance_of(Machinery::Filter),
               extract_changed_changed_config_files: true,
               extract_unmanaged_files: true,
               extract_changed_managed_files: true
@@ -430,7 +430,7 @@ describe Machinery::Cli do
               example_host,
               an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
-              an_instance_of(Filter),
+              an_instance_of(Machinery::Filter),
               extract_changed_changed_config_files: true
             ).
             and_return(description)
@@ -446,7 +446,7 @@ describe Machinery::Cli do
               example_host,
               an_instance_of(Machinery::CurrentUser),
               Inspector.all_scopes,
-              an_instance_of(Filter),
+              an_instance_of(Machinery::Filter),
               extract_unmanaged_files: true
             ).
             and_return(description)
@@ -476,7 +476,7 @@ describe Machinery::Cli do
           to receive(:show).with(
             description,
             ["packages"],
-            an_instance_of(Filter),
+            an_instance_of(Machinery::Filter),
             show_diffs: false,
             show_html:  false,
             ip:         "127.0.0.1",

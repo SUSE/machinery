@@ -130,7 +130,7 @@ describe ChangedConfigFilesInspector do
 
       context "with filters" do
         it "filters out the matching elements" do
-          filter = Filter.new("/changed_config_files/files/name=/usr/*")
+          filter = Machinery::Filter.new("/changed_config_files/files/name=/usr/*")
           inspector.inspect(filter)
           expect(description.changed_config_files.map(&:name)).
             to_not include("/usr/share/man/man1/time.1.gz")

@@ -100,20 +100,20 @@ describe Machinery::InspectTask, "#inspect_system" do
     expect(inspect_task).to receive(:set_system_locale)
     expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
-    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
   end
 
   it "runs the proper inspector when a scope is given" do
     expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
-    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
     expect_any_instance_of(Machinery::SystemDescription).to receive(:save).at_least(:once).times
 
     inspect_task.inspect_system(store, system, name, current_user_non_root,
-      ["foo", "bar"], Filter.new)
+      ["foo", "bar"], Machinery::Filter.new)
   end
 
   it "creates a proper system description" do
@@ -123,7 +123,7 @@ describe Machinery::InspectTask, "#inspect_system" do
       name,
       current_user_non_root,
       ["foo"],
-      Filter.new
+      Machinery::Filter.new
     )
 
     expected = SimpleInspectTaskScope.new(
@@ -145,7 +145,7 @@ describe Machinery::InspectTask, "#inspect_system" do
 
       expect {
         inspect_task.inspect_system(store, system, name, current_user_non_root,
-          ["foo"], Filter.new)
+          ["foo"], Machinery::Filter.new)
       }.to raise_error(
         Machinery::Errors::InspectionFailed,
         /Errors while inspecting foo:\n -> This is an SSH error/
@@ -162,7 +162,7 @@ Inspecting foo...
       expect_any_instance_of(FooInspector).to receive(:inspect).and_raise(RuntimeError)
 
       expect {
-        inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+        inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
       }.to raise_error(RuntimeError)
     end
   end
@@ -177,7 +177,7 @@ Inspecting foo...
       it "raises an exception we don't run as root" do
         expect {
           inspect_task.inspect_system(store, local_system, name, current_user_non_root,
-            ["foo"], Filter.new)
+            ["foo"], Machinery::Filter.new)
         }.to raise_error(Machinery::Errors::MissingRequirement)
       end
 
@@ -186,7 +186,7 @@ Inspecting foo...
 
         expect {
           inspect_task.inspect_system(store, local_system, name, current_user_root,
-            ["foo"], Filter.new)
+            ["foo"], Machinery::Filter.new)
         }.not_to raise_error
       end
     end
@@ -201,7 +201,7 @@ Inspecting foo...
 
         expect {
           inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"],
-            Filter.new)
+            Machinery::Filter.new)
         }.not_to raise_error
       end
     end
@@ -227,7 +227,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("/foo=bar,baz")
+        Machinery::Filter.new("/foo=bar,baz")
       )
     end
 
@@ -238,7 +238,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("/foo=bar,baz")
+        Machinery::Filter.new("/foo=bar,baz")
       )
 
       expected = ["/foo=bar,baz"]
@@ -249,7 +249,7 @@ Inspecting foo...
       description = Machinery::SystemDescription.new(name, store)
       expect(Machinery::SystemDescription).to receive(:load).and_return(description)
 
-      description.set_filter_definitions("inspect", Filter.new(["/foo=bar", "/baz=qux"]).to_array)
+      description.set_filter_definitions("inspect", Machinery::Filter.new(["/foo=bar", "/baz=qux"]).to_array)
 
       description = inspect_task.inspect_system(
         store,
@@ -257,7 +257,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new(["/foo=baz", "/baz=somethingelse"])
+        Machinery::Filter.new(["/foo=baz", "/baz=somethingelse"])
       )
 
       expected = [
@@ -274,14 +274,14 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new(["/foo/files/name=baz", "/baz=somethingelse"])
+        Machinery::Filter.new(["/foo/files/name=baz", "/baz=somethingelse"])
       )
 
       expect(captured_machinery_output).to include("Found 2 elements.")
     end
 
     it "applies the filter to the generated system description" do
-      expect_any_instance_of(Filter).
+      expect_any_instance_of(Machinery::Filter).
         to receive(:apply!).with(an_instance_of(Machinery::SystemDescription))
 
       inspect_task.inspect_system(
@@ -290,7 +290,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new(["/foo/files/name=baz"])
+        Machinery::Filter.new(["/foo/files/name=baz"])
       )
     end
   end

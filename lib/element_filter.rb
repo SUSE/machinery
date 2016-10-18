@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ElementFilter
+class Machinery::ElementFilter
   attr_accessor :path, :matchers
 
   def initialize(path, operator = nil, matchers = nil)
@@ -34,7 +34,7 @@ class ElementFilter
   end
 
   def add_matchers(operator, matchers)
-    unless [Filter::OPERATOR_EQUALS, Filter::OPERATOR_EQUALS_NOT].include?(operator)
+    unless [Machinery::Filter::OPERATOR_EQUALS, Machinery::Filter::OPERATOR_EQUALS_NOT].include?(operator)
       raise Machinery::Errors::InvalidFilter.new("Wrong filter operator '#{operator}'")
     end
 
@@ -66,9 +66,9 @@ class ElementFilter
             value == matcher
           end
         end
-        if operator == Filter::OPERATOR_EQUALS
+        if operator == Machinery::Filter::OPERATOR_EQUALS
           return true if values_equal
-        elsif operator == Filter::OPERATOR_EQUALS_NOT
+        elsif operator == Machinery::Filter::OPERATOR_EQUALS_NOT
           return true unless values_equal
         end
       end

@@ -41,7 +41,7 @@ RSpec.describe "Inspection Details", type: :feature do
 
   context "when filters were applied at the time of inspection" do
     before(:each) do
-      description.set_filter_definitions("inspect", Filter.new(["/foo=bar"]).to_array)
+      description.set_filter_definitions("inspect", Machinery::Filter.new(["/foo=bar"]).to_array)
       description.save
     end
 
