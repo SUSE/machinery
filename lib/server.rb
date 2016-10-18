@@ -244,7 +244,7 @@ class Server < Sinatra::Base
     filename = File.join("/", params["splat"].first)
 
     begin
-      diff = FileDiff.diff(description1, description2, params[:scope], filename)
+      diff = Machinery::FileDiff.diff(description1, description2, params[:scope], filename)
     rescue Machinery::Errors::BinaryDiffError
       status 406
       return "binary file"

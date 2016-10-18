@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class FileDiff
+class Machinery::FileDiff
   def self.diff(description1, description2, scope, path)
     return nil if !description1.scope_extracted?(scope) || !description2.scope_extracted?(scope)
 
