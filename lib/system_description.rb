@@ -254,7 +254,7 @@ class Machinery::SystemDescription < Machinery::Object
   end
 
   def scope_file_store(store_name)
-    ScopeFileStore.new(description_path, store_name)
+    Machinery::ScopeFileStore.new(description_path, store_name)
   end
 
   def validate_file_data

@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class FileScope < Machinery::Array
+class Machinery::FileScope < Machinery::Array
   def compare_with(other)
     only_self, only_other, changed, common = super(other)
 

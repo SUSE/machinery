@@ -1,4 +1,4 @@
-module ScopeFileAccessFlat
+module Machinery::ScopeFileAccessFlat
   def retrieve_files_from_system(system, paths)
     system.retrieve_files(paths, scope_file_store.path)
   end

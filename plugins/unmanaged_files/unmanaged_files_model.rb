@@ -21,9 +21,9 @@ end
 class UnmanagedFileList < Machinery::Array
 end
 
-class UnmanagedFilesScope < FileScope
+class UnmanagedFilesScope < Machinery::FileScope
   include Machinery::Scope
-  include ScopeFileAccessArchive
+  include Machinery::ScopeFileAccessArchive
 
   has_attributes :extracted, :has_metadata
   has_elements class: UnmanagedFile

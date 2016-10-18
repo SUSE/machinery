@@ -18,7 +18,7 @@
 # The responsibility of the ScopeFileStore class is to represent a sub directory
 # of a system description which is used to hold files belonging to a specific
 # scope.
-class ScopeFileStore
+class Machinery::ScopeFileStore
   attr_accessor :base_path, :store_name
 
   def initialize(base_path, store_name)

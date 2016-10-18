@@ -36,9 +36,9 @@ class ConfigFileList < Machinery::Array
   end
 end
 
-class ChangedConfigFilesScope < FileScope
+class ChangedConfigFilesScope < Machinery::FileScope
   include Machinery::Scope
-  include ScopeFileAccessFlat
+  include Machinery::ScopeFileAccessFlat
 
   has_attributes :extracted
   has_elements class: ConfigFile

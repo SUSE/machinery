@@ -39,7 +39,10 @@ class FileValidator
       next unless scope_extracted?(scope)
 
       expected_files = expected_files(scope)
-      file_errors = validate_scope(ScopeFileStore.new(@base_path, scope.to_s), expected_files)
+      file_errors = validate_scope(
+        Machinery::ScopeFileStore.new(@base_path, scope.to_s),
+        expected_files
+      )
 
       errors << "Scope '#{scope}':\n" + file_errors.join("\n") unless file_errors.empty?
     end
@@ -58,7 +61,7 @@ class FileValidator
 
   def scope_extracted?(scope)
     if @format_version == 1
-      @json_hash[scope] && ScopeFileStore.new(@base_path, scope.to_s).path
+      @json_hash[scope] && Machinery::ScopeFileStore.new(@base_path, scope.to_s).path
     elsif @format_version < 6
       @json_hash[scope] && @json_hash[scope]["extracted"]
     else
@@ -92,7 +95,7 @@ class FileValidator
       end.map { |file| file["name"] }
     end
 
-    store_base_path = ScopeFileStore.new(@base_path, scope.to_s).path
+    store_base_path = Machinery::ScopeFileStore.new(@base_path, scope.to_s).path
     expected_files.map { |file| File.join(store_base_path, file) }
   end
 

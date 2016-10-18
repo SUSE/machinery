@@ -1,4 +1,4 @@
-module ScopeFileAccessArchive
+module Machinery::ScopeFileAccessArchive
   def retrieve_files_from_system_as_archive(system, files, excluded_files)
     archive_path = File.join(scope_file_store.path, "files.tgz")
     system.create_archive(files, archive_path, excluded_files)

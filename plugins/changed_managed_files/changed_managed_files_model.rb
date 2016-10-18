@@ -36,9 +36,9 @@ class ChangedManagedFileList < Machinery::Array
   end
 end
 
-class ChangedManagedFilesScope < FileScope
+class ChangedManagedFilesScope < Machinery::FileScope
   include Machinery::Scope
-  include ScopeFileAccessFlat
+  include Machinery::ScopeFileAccessFlat
 
   has_attributes :extracted
   has_elements class: ChangedManagedFile

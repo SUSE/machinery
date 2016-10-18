@@ -1,6 +1,6 @@
 require_relative "spec_helper"
 
-describe ScopeFileAccessArchive do
+describe Machinery::ScopeFileAccessArchive do
   initialize_system_description_factory_store
   let(:description) {
     create_test_description(
