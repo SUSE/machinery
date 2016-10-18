@@ -39,7 +39,7 @@ describe Machinery::DeployTask do
     allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
     allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages)
     allow(Dir).to receive(:mktmpdir).and_return(tmp_image_dir)
-    allow(JsonValidator).to receive(:new).and_return(double(validate: []))
+    allow(Machinery::JsonValidator).to receive(:new).and_return(double(validate: []))
     FakeFS::FileSystem.clone("spec/data/deploy/", "/")
     allow(system_description).to receive(:validate_build_compatibility).and_return(true)
   end

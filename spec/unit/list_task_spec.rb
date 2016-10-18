@@ -73,7 +73,7 @@ describe Machinery::ListTask do
 
   describe "#list" do
     before(:each) do
-      allow(JsonValidator).to receive(:new).and_return(double(validate: []))
+      allow(Machinery::JsonValidator).to receive(:new).and_return(double(validate: []))
     end
 
     context "when a system_description is specified" do

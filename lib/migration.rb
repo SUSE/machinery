@@ -68,8 +68,11 @@ class Migration
 
       hash = Manifest.load(description_name, store.manifest_path(description_name)).to_hash
 
-      errors = JsonValidator.new(hash).validate
-      errors += FileValidator.new(hash, store.description_path(description_name)).validate
+      errors = Machinery::JsonValidator.new(hash).validate
+      errors += Machinery::FileValidator.new(
+        hash,
+        store.description_path(description_name)
+      ).validate
       unless errors.empty?
         if options[:force]
           Machinery::Ui.warn("Warning: System Description validation errors:")

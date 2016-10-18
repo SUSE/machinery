@@ -17,8 +17,8 @@
 
 require_relative "spec_helper"
 
-describe JsonValidationErrorCleaner do
-  subject { JsonValidationErrorCleaner }
+describe Machinery::JsonValidationErrorCleaner do
+  subject { Machinery::JsonValidationErrorCleaner }
 
   describe ".cleanup_error" do
     describe "shows the correct position and reduces the clutter" do

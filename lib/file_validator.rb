@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class FileValidator
+class Machinery::FileValidator
   def initialize(json_hash, base_path)
     @json_hash = json_hash
     @base_path = base_path

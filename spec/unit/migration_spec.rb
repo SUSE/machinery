@@ -191,9 +191,9 @@ describe Migration do
     context "validation" do
 
       it "raises an error if validation fails when --force is not set" do
-        expect_any_instance_of(JsonValidator).to receive(:validate).
+        expect_any_instance_of(Machinery::JsonValidator).to receive(:validate).
           and_return(["json error"])
-        expect_any_instance_of(FileValidator).to receive(:validate).
+        expect_any_instance_of(Machinery::FileValidator).to receive(:validate).
           and_return(["file error"])
         expect {
           Migration.migrate_description(store, "v1_description")
@@ -206,9 +206,9 @@ Warning: System Description validation errors:
 json error, file error
 Saved backup to /tmp/given_filesystem/
 EOF
-        expect_any_instance_of(JsonValidator).to receive(:validate).
+        expect_any_instance_of(Machinery::JsonValidator).to receive(:validate).
           and_return(["json error"])
-        expect_any_instance_of(FileValidator).to receive(:validate).
+        expect_any_instance_of(Machinery::FileValidator).to receive(:validate).
           and_return(["file error"])
         expect {
           Migration.migrate_description(store, "v1_description", force: true)

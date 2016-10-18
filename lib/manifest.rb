@@ -43,7 +43,7 @@ class Manifest
   def validate
     return unless compatible_json?
 
-    errors = JsonValidator.new(@hash).validate
+    errors = Machinery::JsonValidator.new(@hash).validate
     unless errors.empty?
       Machinery::Ui.warn("Warning: System Description validation errors:")
       Machinery::Ui.warn(errors.join("\n"))
@@ -53,7 +53,7 @@ class Manifest
   def validate!
     return unless compatible_json?
 
-    errors = JsonValidator.new(@hash).validate
+    errors = Machinery::JsonValidator.new(@hash).validate
     unless errors.empty?
       raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
     end

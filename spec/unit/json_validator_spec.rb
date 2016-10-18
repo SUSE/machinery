@@ -17,12 +17,13 @@
 
 require_relative "spec_helper"
 
-describe JsonValidator do
+describe Machinery::JsonValidator do
   describe "#validate" do
     it "validates against the system description format version 1" do
-      expect_any_instance_of(JsonValidator).to receive(:global_schema).with(1).and_call_original
-      expect_any_instance_of(JsonValidator).to_not receive(:global_schema).with(2)
-      JsonValidator.new(JSON.parse(<<-EOT)).validate
+      expect_any_instance_of(Machinery::JsonValidator).
+        to receive(:global_schema).with(1).and_call_original
+      expect_any_instance_of(Machinery::JsonValidator).to_not receive(:global_schema).with(2)
+      Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
           {
             "meta": {
               "format_version": 1,
@@ -36,9 +37,10 @@ describe JsonValidator do
     end
 
     it "validates against the system description format version 2" do
-      expect_any_instance_of(JsonValidator).to_not receive(:global_schema).with(1)
-      expect_any_instance_of(JsonValidator).to receive(:global_schema).with(2).and_call_original
-      JsonValidator.new(JSON.parse(<<-EOT)).validate
+      expect_any_instance_of(Machinery::JsonValidator).to_not receive(:global_schema).with(1)
+      expect_any_instance_of(Machinery::JsonValidator).
+        to receive(:global_schema).with(2).and_call_original
+      Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
         {
           "meta": {
             "format_version": 2,
@@ -51,7 +53,7 @@ describe JsonValidator do
       EOT
     end
     it "complains about invalid global data in a description" do
-      errors = JsonValidator.new(JSON.parse(<<-EOT)).validate
+      errors = Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
         {
           "meta": {
             "format_version": 2,
@@ -66,7 +68,7 @@ describe JsonValidator do
 
   describe "#validate_scope" do
     it "complains about invalid scope data in a description" do
-      errors = JsonValidator.new(JSON.parse(<<-EOT)).validate
+      errors = Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
         {
           "os": {},
           "meta": {
@@ -83,7 +85,7 @@ describe JsonValidator do
 In scope changed_config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
 EOF
 
-      errors = JsonValidator.new(JSON.parse(<<-EOT)).validate
+      errors = Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
         {
           "changed_config_files": {
             "extracted": true,
@@ -112,7 +114,7 @@ EOF
     end
 
     it "does not raise an error when a changed-managed-file is 'replaced'" do
-      errors = JsonValidator.new(JSON.parse(<<-EOT)).validate
+      errors = Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
         {
           "changed_managed_files": {
             "extracted": true,
@@ -148,7 +150,7 @@ EOF
 In scope changed_config_files: The property #0 (_elements) did not contain a required property of 'package_version'.
 EOF
         expected.chomp!
-        errors = JsonValidator.new(
+        errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}missing_attribute.json"))
         ).validate
         expect(errors.first).to eq(expected)
@@ -159,7 +161,7 @@ EOF
 In scope changed_config_files: The property #0 (_elements/status) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
-        errors = JsonValidator.new(
+        errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}unknown_status.json"))
         ).validate
         expect(errors.first).to eq(expected)
@@ -170,7 +172,7 @@ EOF
 In scope changed_config_files: The property #0 (_elements/mode/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
-        errors = JsonValidator.new(
+        errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}pattern_mismatch.json"))
         ).validate
         expect(errors.first).to eq(expected)
@@ -181,7 +183,7 @@ EOF
 In scope changed_config_files: The property #0 (_elements/changes) of type Hash did not match any of the required schemas.
 EOF
         expected.chomp!
-        errors = JsonValidator.new(
+        errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}deleted_without_changes.json"))
         ).validate
         expect(errors.first).to eq(expected)
@@ -196,7 +198,7 @@ EOF
 In scope unmanaged_files: The property #0 (_elements) of type Hash did not match one or more of the required schemas.
 EOF
         expected.chomp!
-        errors = JsonValidator.new(
+        errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}extracted_unknown_type.json"))
         ).validate
         expect(errors.first).to include(expected)

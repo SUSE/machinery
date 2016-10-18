@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe FileValidator do
+describe Machinery::FileValidator do
   capture_machinery_output
   describe "#validate" do
     before(:each) do
@@ -29,7 +29,10 @@ describe FileValidator do
       it "throws error on invalid format v1 description" do
         manifest = Manifest.load("bad", @store_v1.manifest_path("bad"))
 
-        validator = FileValidator.new(manifest.to_hash, @store_v1.description_path("bad"))
+        validator = Machinery::FileValidator.new(
+          manifest.to_hash,
+          @store_v1.description_path("bad")
+        )
         errors = validator.validate
         expect(errors.join("\n")).to eq(<<EOT.chomp)
 Scope 'config_files':

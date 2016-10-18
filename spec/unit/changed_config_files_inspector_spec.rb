@@ -215,7 +215,7 @@ describe ChangedConfigFilesInspector do
           inspector.inspect(filter, extract_changed_changed_config_files: true)
 
           expect {
-            JsonValidator.new(description.to_hash).validate
+            Machinery::JsonValidator.new(description.to_hash).validate
           }.to_not raise_error
         end
 

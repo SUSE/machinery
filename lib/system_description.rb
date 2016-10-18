@@ -258,7 +258,7 @@ class Machinery::SystemDescription < Machinery::Object
   end
 
   def validate_file_data
-    errors = FileValidator.new(to_hash, description_path).validate
+    errors = Machinery::FileValidator.new(to_hash, description_path).validate
     unless errors.empty?
       Machinery::Ui.warn("Warning: File validation errors:")
       Machinery::Ui.warn("Error validating description '#{@name}'\n\n")
@@ -267,7 +267,7 @@ class Machinery::SystemDescription < Machinery::Object
   end
 
   def validate_file_data!
-    errors = FileValidator.new(to_hash, description_path).validate
+    errors = Machinery::FileValidator.new(to_hash, description_path).validate
     unless errors.empty?
       e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
       e.header = "Error validating description '#{@name}'"

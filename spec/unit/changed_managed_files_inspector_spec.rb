@@ -143,7 +143,7 @@ describe ChangedManagedFilesInspector do
 
       it "returns schema compliant data" do
         expect {
-          JsonValidator.new(description.to_hash).validate
+          Machinery::JsonValidator.new(description.to_hash).validate
         }.to_not raise_error
       end
 
