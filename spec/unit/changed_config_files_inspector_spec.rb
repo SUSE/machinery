@@ -56,7 +56,7 @@ describe ChangedConfigFilesInspector do
       before(:each) do
         allow(managed_files_database).to receive(:changed_files).and_return(
           [
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/config",
               status:          "changed",
@@ -64,7 +64,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/deleted_config",
               status:          "changed",
@@ -72,7 +72,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/linked_config",
               status:          "changed",
@@ -80,7 +80,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/config_directory",
               status:          "changed",
@@ -88,7 +88,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/usr/share/man/man1/time.1.gz",
               status:          "changed",
@@ -96,7 +96,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "man",
               package_version: "2"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "",
               name:            "/etc/other",
               status:          "changed",

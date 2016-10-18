@@ -41,7 +41,7 @@ describe ChangedManagedFilesInspector do
     before(:each) do
       allow(managed_files_database).to receive(:changed_files).and_return(
         [
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "c",
             name:            "/etc/config",
             status:          "changed",
@@ -49,7 +49,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/etc/file",
             status:          "changed",
@@ -57,7 +57,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/etc/dir",
             status:          "changed",
@@ -65,7 +65,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/etc/documentation",
             status:          "changed",
@@ -73,7 +73,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/usr/share/man/man1/time.1.gz",
             status:          "changed",

@@ -17,11 +17,11 @@
 
 require_relative "spec_helper"
 
-describe ManagedFilesDatabase do
-  describe ManagedFilesDatabase::ChangedFile do
+describe Machinery::ManagedFilesDatabase do
+  describe Machinery::ManagedFilesDatabase::ChangedFile do
     describe "config_file?" do
       it "returns true for configuration files" do
-        file = ManagedFilesDatabase::ChangedFile.new(
+        file = Machinery::ManagedFilesDatabase::ChangedFile.new(
           "c",
           name:    "/etc/foo",
           status:  "changed",
@@ -31,7 +31,7 @@ describe ManagedFilesDatabase do
       end
 
       it "returns false for non-configuration files" do
-        file = ManagedFilesDatabase::ChangedFile.new(
+        file = Machinery::ManagedFilesDatabase::ChangedFile.new(
           "",
           name:    "/etc/foo",
           status:  "changed",
@@ -48,7 +48,7 @@ describe ManagedFilesDatabase do
     File.read(File.join(Machinery::ROOT,
       "spec/data/rpm_managed_files_database/changed_files_sh_result"))
   }
-  subject { ManagedFilesDatabase.new(system) }
+  subject { Machinery::ManagedFilesDatabase.new(system) }
 
   describe "#changed_files" do
     before(:each) do
@@ -64,7 +64,7 @@ describe ManagedFilesDatabase do
     end
 
     it "returns the list of files" do
-      expected = ManagedFilesDatabase::ChangedFile.new(
+      expected = Machinery::ManagedFilesDatabase::ChangedFile.new(
         "",
         name:            "/etc/iscsi/iscsid.conf",
         status:          "changed",

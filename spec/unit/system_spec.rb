@@ -323,14 +323,14 @@ describe Machinery::System do
     it "returns an RpmDatabase object on an RPM system" do
       system = Machinery::System.new
       allow(system).to receive(:has_command?).with("rpm").and_return(true)
-      expect(system.managed_files_database).to be_a(RpmDatabase)
+      expect(system.managed_files_database).to be_a(Machinery::RpmDatabase)
     end
 
     it "returns a DpkgDatabase object on a Debian system" do
       system = Machinery::System.new
       allow(system).to receive(:has_command?).with("rpm").and_return(false)
       allow(system).to receive(:has_command?).with("dpkg").and_return(true)
-      expect(system.managed_files_database).to be_a(DpkgDatabase)
+      expect(system.managed_files_database).to be_a(Machinery::DpkgDatabase)
     end
 
     it "raises an error if neither rpm nor dpkg is on the system" do

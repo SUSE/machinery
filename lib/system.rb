@@ -141,9 +141,9 @@ class Machinery::System
     if @managed_files_database
       return @managed_files_database
     elsif has_command?("rpm")
-      @managed_files_database = RpmDatabase.new(self)
+      @managed_files_database = Machinery::RpmDatabase.new(self)
     elsif has_command?("dpkg")
-      @managed_files_database = DpkgDatabase.new(self)
+      @managed_files_database = Machinery::DpkgDatabase.new(self)
     else
       raise Machinery::Errors::MissingRequirement.new(
         "Need binary 'rpm' or 'dpkg' to be available on the inspected system."
