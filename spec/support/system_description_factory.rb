@@ -33,7 +33,7 @@ module SystemDescriptionFactory
         " before trying to access the factory store.")
     end
 
-    @store ||= SystemDescriptionStore.new(given_directory)
+    @store ||= Machinery::SystemDescriptionStore.new(given_directory)
   end
 
   # Generates a system description in the temporary description store from raw
@@ -50,7 +50,7 @@ module SystemDescriptionFactory
   #
   # Available options:
   # +name+: The name of the system description. Default: 'description'.
-  # +store+: The SystemDescriptionStore where the description should be stored.
+  # +store+: The Machinery::SystemDescriptionStore where the description should be stored.
   #   Default: The temporary factory description store.
   # +store_on_disk+: If true, the description will be stored in the temporary
   #   description store. If false, the description is only created in-memory.
@@ -81,13 +81,13 @@ module SystemDescriptionFactory
     if options[:store_on_disk] && !options[:store]
       store = system_description_factory_store
     else
-      store = options[:store] || SystemDescriptionMemoryStore.new
+      store = options[:store] || Machinery::SystemDescriptionMemoryStore.new
     end
 
     if options[:json]
       manifest = Manifest.new(name, options[:json])
       manifest.validate!
-      description = SystemDescription.from_hash(name, store, manifest.to_hash)
+      description = Machinery::SystemDescription.from_hash(name, store, manifest.to_hash)
     else
       description = build_description(name, store, options)
     end
@@ -132,7 +132,10 @@ EOF
 
     json_objects = []
     meta = {
-      format_version: options.fetch(:format_version, SystemDescription::CURRENT_FORMAT_VERSION)
+      format_version: options.fetch(
+        :format_version,
+        Machinery::SystemDescription::CURRENT_FORMAT_VERSION
+      )
     }
     meta[:filters] = options[:filter_definitions] if options[:filter_definitions]
 
@@ -162,7 +165,7 @@ EOF
     json = create_test_description_json(options)
     manifest = Manifest.new(name, json)
     manifest.validate!
-    description = SystemDescription.from_hash(name, store, manifest.to_hash)
+    description = Machinery::SystemDescription.from_hash(name, store, manifest.to_hash)
 
     options[:extracted_scopes].each do |extracted_scope|
       JSON.parse(finalize_json(EXAMPLE_SCOPES[extracted_scope])).each_key do |scope|

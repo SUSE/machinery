@@ -140,7 +140,7 @@ Common to both systems:
 
   def stub_comparison(scope, description1, description2, changed, common)
     comparison = Comparison.new
-    comparison.store = SystemDescriptionMemoryStore.new
+    comparison.store = Machinery::SystemDescriptionMemoryStore.new
     comparison.scope = scope
     comparison.name1 = "name1"
     comparison.name2 = "name2"
@@ -176,7 +176,7 @@ Common to both systems:
   describe "#render" do
     let(:renderer) { BarBazRenderer.new }
     let(:description) {
-      SystemDescription.new("foo", SystemDescriptionStore.new)
+      Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionStore.new)
     }
     let(:date) { "2014-02-07T14:04:45Z" }
     let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }

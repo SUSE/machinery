@@ -23,7 +23,7 @@ describe RepositoriesInspector do
     double
   }
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:filter) { nil }
   let(:inspector) { RepositoriesInspector.new(system, description) }

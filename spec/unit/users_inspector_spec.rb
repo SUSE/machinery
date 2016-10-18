@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe UsersInspector do
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:passwd_content) {<<EOF
 root:x:0:0:root:/root:/bin/bash

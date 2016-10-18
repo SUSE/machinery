@@ -77,8 +77,8 @@ describe Machinery::InspectTask, "#inspect_system" do
   end
 
   let(:inspect_task) { Machinery::InspectTask.new }
-  let(:store) { SystemDescriptionStore.new }
-  let(:description) { SystemDescription.new(name, store) }
+  let(:store) { Machinery::SystemDescriptionStore.new }
+  let(:description) { Machinery::SystemDescription.new(name, store) }
   let(:name) { "name" }
   let(:system) { Machinery::RemoteSystem.new("example.com") }
   let(:local_system) { Machinery::LocalSystem.new }
@@ -110,7 +110,7 @@ describe Machinery::InspectTask, "#inspect_system" do
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
-    expect_any_instance_of(SystemDescription).to receive(:save).at_least(:once).times
+    expect_any_instance_of(Machinery::SystemDescription).to receive(:save).at_least(:once).times
 
     inspect_task.inspect_system(store, system, name, current_user_non_root,
       ["foo", "bar"], Filter.new)
@@ -246,8 +246,8 @@ Inspecting foo...
     end
 
     it "only sets filters for scopes that were inspected" do
-      description = SystemDescription.new(name, store)
-      expect(SystemDescription).to receive(:load).and_return(description)
+      description = Machinery::SystemDescription.new(name, store)
+      expect(Machinery::SystemDescription).to receive(:load).and_return(description)
 
       description.set_filter_definitions("inspect", Filter.new(["/foo=bar", "/baz=qux"]).to_array)
 
@@ -281,7 +281,8 @@ Inspecting foo...
     end
 
     it "applies the filter to the generated system description" do
-      expect_any_instance_of(Filter).to receive(:apply!).with(an_instance_of(SystemDescription))
+      expect_any_instance_of(Filter).
+        to receive(:apply!).with(an_instance_of(Machinery::SystemDescription))
 
       inspect_task.inspect_system(
         store,

@@ -40,7 +40,7 @@ describe Machinery::BuildTask do
       with("machinery-config", "/tmp").and_return(tmp_config_dir)
     allow(Dir).to receive(:mktmpdir).
       with("machinery-image", "/tmp").and_return(tmp_image_dir)
-    allow_any_instance_of(SystemDescription).to receive(:validate_build_compatibility)
+    allow_any_instance_of(Machinery::SystemDescription).to receive(:validate_build_compatibility)
 
     FileUtils.touch(File.join(output_path, image_file))
   }

@@ -170,7 +170,7 @@ end
 
 desc "Create schema files for new format version"
 task :upgrade_schemas_for_new_format do |task, args|
-  old_format = SystemDescription::CURRENT_FORMAT_VERSION
+  old_format = Machinery::SystemDescription::CURRENT_FORMAT_VERSION
   new_format = old_format + 1
   FileUtils.cp(
     "schema/system-description-global.schema-v#{old_format}.json",

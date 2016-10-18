@@ -142,7 +142,7 @@ class Server < Sinatra::Base
   enable :sessions
 
   get "/descriptions/:id/files/:scope/*" do
-    description = SystemDescription.load(params[:id], settings.system_description_store)
+    description = Machinery::SystemDescription.load(params[:id], settings.system_description_store)
     filename = File.join("/", params["splat"].first)
 
     file = description[params[:scope]].find { |f| f.name == filename }
@@ -169,7 +169,7 @@ class Server < Sinatra::Base
     descriptions.each do |name|
       scopes = []
       begin
-        system_description = SystemDescription.load(
+        system_description = Machinery::SystemDescription.load(
           name, settings.system_description_store, skip_validation: true
         )
         @all_descriptions[name] = Hash.new
@@ -177,7 +177,7 @@ class Server < Sinatra::Base
         @all_descriptions[name]["host"] = system_description.host
         system_description.scopes.each do |scope|
           entry = Machinery::Ui.internal_scope_list_to_string(scope)
-          if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+          if Machinery::SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
             if system_description.scope_extracted?(scope)
               entry += " (extracted)"
             else
@@ -208,8 +208,12 @@ class Server < Sinatra::Base
   get "/compare/:a/:b" do
     all_descriptions
 
-    @description_a = SystemDescription.load(params[:a], settings.system_description_store)
-    @description_b = SystemDescription.load(params[:b], settings.system_description_store)
+    @description_a = Machinery::SystemDescription.load(
+      params[:a], settings.system_description_store
+    )
+    @description_b = Machinery::SystemDescription.load(
+      params[:b], settings.system_description_store
+    )
 
     @meta = {}
     @diff = {}
@@ -235,8 +239,8 @@ class Server < Sinatra::Base
   end
 
   get "/compare/:a/:b/files/:scope/*" do
-    description1 = SystemDescription.load(params[:a], settings.system_description_store)
-    description2 = SystemDescription.load(params[:b], settings.system_description_store)
+    description1 = Machinery::SystemDescription.load(params[:a], settings.system_description_store)
+    description2 = Machinery::SystemDescription.load(params[:b], settings.system_description_store)
     filename = File.join("/", params["splat"].first)
 
     begin
@@ -253,7 +257,9 @@ class Server < Sinatra::Base
     all_descriptions
 
     begin
-      @description = SystemDescription.load(params[:id], settings.system_description_store)
+      @description = Machinery::SystemDescription.load(
+        params[:id], settings.system_description_store
+      )
     rescue Machinery::Errors::SystemDescriptionNotFound => e
       session[:error] = e.to_s
       redirect "/"

@@ -22,7 +22,7 @@ describe Machinery::RemoveTask do
   include_context "machinery test directory"
 
   let(:remove_task) { Machinery::RemoveTask.new }
-  let(:store) { SystemDescriptionStore.new(test_base_path) }
+  let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
 
   describe "#remove" do
     it "removes the system description directory" do

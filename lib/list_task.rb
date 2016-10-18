@@ -29,7 +29,7 @@ class Machinery::ListTask
 
       descriptions.each do |name|
         begin
-          system_description = SystemDescription.load(name, store, skip_validation: true)
+          system_description = Machinery::SystemDescription.load(name, store, skip_validation: true)
         rescue Machinery::Errors::SystemDescriptionIncompatible => e
           show_error("#{e}\n", options)
           next
@@ -54,7 +54,7 @@ class Machinery::ListTask
 
           system_description.scopes.each do |scope|
             entry = Machinery::Ui.internal_scope_list_to_string(scope)
-            if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+            if Machinery::SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
               if system_description.scope_extracted?(scope)
                 entry += " (extracted)"
               else

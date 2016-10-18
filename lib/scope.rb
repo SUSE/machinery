@@ -92,7 +92,7 @@ module Machinery
     end
 
     def is_extractable?
-      SystemDescription::EXTRACTABLE_SCOPES.include?(self.scope_name)
+      Machinery::SystemDescription::EXTRACTABLE_SCOPES.include?(scope_name)
     end
   end
 end

@@ -21,7 +21,7 @@ describe Machinery::ListTask do
   capture_machinery_output
   include FakeFS::SpecHelpers
   let(:list_task) { Machinery::ListTask.new }
-  let(:store) { SystemDescriptionStore.new }
+  let(:store) { Machinery::SystemDescriptionStore.new }
   let(:name) { "foo" }
   let(:name2) { "bar" }
   let(:name3) { "description" }
@@ -57,7 +57,7 @@ describe Machinery::ListTask do
   }
   let(:system_description_with_newer_data_format) {
     create_test_description(json: <<-EOF, name: name, store: store)
-      { "meta": { "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION + 1} } }
+      { "meta": { "format_version": #{Machinery::SystemDescription::CURRENT_FORMAT_VERSION + 1} } }
     EOF
   }
   let(:system_description_with_old_data_format) {
@@ -226,7 +226,7 @@ foo
       end
 
       it "show the extracted state of extractable scopes" do
-        allow_any_instance_of(SystemDescription).to receive(:validate_file_data)
+        allow_any_instance_of(Machinery::SystemDescription).to receive(:validate_file_data)
 
         system_description_with_extracted_files.save
         expected_output = <<-EOF

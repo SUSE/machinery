@@ -21,7 +21,7 @@ require_relative "spec_helper"
 describe Machinery::ValidateTask, "#validate" do
   capture_machinery_output
   let(:validate_task) { Machinery::ValidateTask.new }
-  let(:store) { SystemDescriptionStore.new("spec/data/schema/") }
+  let(:store) { Machinery::SystemDescriptionStore.new("spec/data/schema/") }
 
   it "raises an error when encountering faulty description" do
     expected = <<EOF

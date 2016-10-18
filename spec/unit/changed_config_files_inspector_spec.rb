@@ -32,7 +32,7 @@ describe ChangedConfigFilesInspector do
     let(:name) { "systemname" }
     let(:store) { system_description_factory_store }
     let(:description) {
-      SystemDescription.new(name, store)
+      Machinery::SystemDescription.new(name, store)
     }
     let(:filter) { nil }
 

@@ -52,7 +52,7 @@ class Comparison
       raise "'which' has to be :one, :two or :common"
     end
 
-    SystemDescription.new(name, store, scope => data)
+    Machinery::SystemDescription.new(name, store, scope => data)
   end
 
   def as_json

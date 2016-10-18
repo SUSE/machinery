@@ -27,7 +27,12 @@ describe ChangedManagedFilesInspector do
       check_retrieve_files_dependencies: true
     )
   }
-  let(:description) { SystemDescription.new("foo", SystemDescriptionStore.new) }
+  let(:description) {
+    Machinery::SystemDescription.new(
+      "foo",
+      Machinery::SystemDescriptionStore.new
+    )
+  }
   let(:filter) { nil }
 
   subject { ChangedManagedFilesInspector.new(system, description) }

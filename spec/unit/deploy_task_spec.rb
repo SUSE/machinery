@@ -23,7 +23,9 @@ describe Machinery::DeployTask do
   let(:deploy_task) { Machinery::DeployTask.new }
   let(:system_description) {
     create_test_description(
-      scopes: ["os", "repositories", "packages"], name: "test", store: SystemDescriptionStore.new
+      scopes: ["os", "repositories", "packages"],
+      name:   "test",
+      store:  Machinery::SystemDescriptionStore.new
     )
   }
 

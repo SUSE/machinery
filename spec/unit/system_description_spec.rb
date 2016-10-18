@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe SystemDescription do
+describe Machinery::SystemDescription do
   initialize_system_description_factory_store
 
-  subject { SystemDescription.new("foo", SystemDescriptionMemoryStore.new) }
+  subject { Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionMemoryStore.new) }
 
   before(:all) do
     @name = "name"
@@ -34,14 +34,14 @@ describe SystemDescription do
         }
       },
       "meta": {
-        "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION}
+        "format_version": #{Machinery::SystemDescription::CURRENT_FORMAT_VERSION}
       }
     }
 EOF
   end
 
   it "returns empty JSON structure on .new" do
-    data = SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+    data = Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionMemoryStore.new)
     expect(JSON.parse(data.to_json).keys).to eq(["meta"])
   end
 
@@ -56,7 +56,7 @@ EOF
   end
 
   it "allows mixture of object and hash in json serialization" do
-    data = SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+    data = Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionMemoryStore.new)
     data.software = Machinery::Object.new
     data.software.packages = Hash.new
     data.software.packages["foo"] = "bar"
@@ -71,7 +71,7 @@ EOF
         extracted_scopes: ["unmanaged_files"]
       )
 
-      description = SystemDescription.load("extracted_description",
+      description = Machinery::SystemDescription.load("extracted_description",
         system_description_factory_store)
       expect(description.unmanaged_files.scope_file_store.path).to_not be(nil)
     end
@@ -85,7 +85,7 @@ EOF
     let(:system_description) {
       create_test_description(
         scopes: ["packages", "repositories"], modified: date, hostname: hostname,
-        name: name, store: SystemDescriptionStore.new
+        name: name, store: Machinery::SystemDescriptionStore.new
       )
     }
 
@@ -112,9 +112,9 @@ EOF
     it "raises SystemDescriptionError if json input does not start with a hash" do
       class SystemDescriptionFooConfig < Machinery::Object; end
       expect {
-        SystemDescription.from_hash(
+        Machinery::SystemDescription.from_hash(
           @name,
-          SystemDescriptionMemoryStore.new,
+          Machinery::SystemDescriptionMemoryStore.new,
           JSON.parse('[ "system-description-foo", "xxx" ]')
         )
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
@@ -122,9 +122,9 @@ EOF
 
     it "raises an SystemDescriptionIncompatibleError when attribute parsing fails" do
       expect {
-        SystemDescription.from_hash(
+        Machinery::SystemDescription.from_hash(
           @name,
-          SystemDescriptionMemoryStore.new,
+          Machinery::SystemDescriptionMemoryStore.new,
           JSON.parse(
 <<-EOF
 {
@@ -134,7 +134,7 @@ EOF
     }
   },
   "meta": {
-    "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION + 1}
+    "format_version": #{Machinery::SystemDescription::CURRENT_FORMAT_VERSION + 1}
   }
 }
 EOF
@@ -146,7 +146,7 @@ EOF
 
   describe "#compatible?" do
     it "returns true if the format_version is good" do
-      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
+      subject.format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION
       expect(subject.compatible?).to be(true)
     end
 
@@ -156,24 +156,24 @@ EOF
     end
 
     it "returns false if the format_version does not match the current format version" do
-      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
+      subject.format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION - 1
       expect(subject.compatible?).to be(false)
 
-      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION + 1
+      subject.format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION + 1
       expect(subject.compatible?).to be(false)
     end
   end
 
   describe "#validate_format_compatibility" do
     it "does not raise an exception if the description format is compatible" do
-      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION
+      subject.format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION
       expect {
         subject.validate_format_compatibility
       }.to_not raise_error
     end
 
     it "raises an exception if the description format is incompatible" do
-      subject.format_version = SystemDescription::CURRENT_FORMAT_VERSION - 1
+      subject.format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION - 1
       expect {
         subject.validate_format_compatibility
       }.to raise_error
@@ -185,14 +185,15 @@ EOF
       description = create_test_description(name: "name", json: <<-EOT)
         {
           "meta": {
-            "format_version": #{SystemDescription::CURRENT_FORMAT_VERSION}
+            "format_version": #{Machinery::SystemDescription::CURRENT_FORMAT_VERSION}
           }
         }
       EOT
 
       hash = description.to_hash
 
-      expect(hash["meta"]["format_version"]).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      expect(hash["meta"]["format_version"]).
+        to eq(Machinery::SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
     it "doesn't save version metadata for descriptions without format version" do
@@ -351,7 +352,7 @@ EOF
 
   describe "#description_path" do
     it "returns the correct path" do
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
       description = create_test_description(
         name: "foo",
         store: store,
@@ -364,34 +365,34 @@ EOF
 
   describe ".valid_name?" do
     it "returns true for a valid name" do
-      expect(SystemDescription.valid_name?("valid_name")).to be(true)
+      expect(Machinery::SystemDescription.valid_name?("valid_name")).to be(true)
     end
 
     it "returns false for hidden names" do
-      expect(SystemDescription.valid_name?(".invalid_name")).to be(false)
+      expect(Machinery::SystemDescription.valid_name?(".invalid_name")).to be(false)
     end
 
     it "returns false for names with special characters" do
-      expect(SystemDescription.valid_name?("invalid_$name")).to be(false)
+      expect(Machinery::SystemDescription.valid_name?("invalid_$name")).to be(false)
     end
   end
 
   describe ".validate_name" do
     it "accepts valid name" do
       expect {
-        SystemDescription.validate_name("valid_name")
+        Machinery::SystemDescription.validate_name("valid_name")
       }.to_not raise_error
     end
 
     it "rejects hidden names" do
       expect {
-        SystemDescription.validate_name(".invalid_name")
+        Machinery::SystemDescription.validate_name(".invalid_name")
       }.to raise_error Machinery::Errors::SystemDescriptionError
     end
 
     it "rejects names with special characters" do
       expect {
-        SystemDescription.validate_name("invalid_$name")
+        Machinery::SystemDescription.validate_name("invalid_$name")
       }.to raise_error Machinery::Errors::SystemDescriptionError
     end
   end
@@ -400,7 +401,7 @@ EOF
     include_context "machinery test directory"
 
     it "saves a SystemDescription" do
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       create_test_description(name: test_name, json: test_manifest, store: store).save
       descr_dir = store.description_path(test_name)
       manifest = store.manifest_path(test_name)
@@ -412,7 +413,7 @@ EOF
     end
 
     it "keeps permissions for existing files during save" do
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       create_test_description(name: test_name, json: test_manifest, store: store).save
 
       descr_dir = store.description_path(test_name)
@@ -539,47 +540,48 @@ EOF
 
     describe ".load" do
       it "loads a system description" do
-        expect(SystemDescription.load("description1", store)).to be_a(SystemDescription)
+        expect(Machinery::SystemDescription.load("description1", store)).
+          to be_a(Machinery::SystemDescription)
       end
 
       it "validates the description by default" do
         expect_any_instance_of(Manifest).to receive(:validate).and_call_original
-        expect_any_instance_of(SystemDescription).to receive(
+        expect_any_instance_of(Machinery::SystemDescription).to receive(
           :validate_file_data
         ).and_call_original
-        expect_any_instance_of(SystemDescription).to receive(
+        expect_any_instance_of(Machinery::SystemDescription).to receive(
           :validate_format_compatibility
         ).and_call_original
 
-        SystemDescription.load("description1", store)
+        Machinery::SystemDescription.load("description1", store)
       end
 
       it "skips data and file validation in case of the option skip_validation" do
         expect_any_instance_of(Manifest).not_to receive(:validate)
-        expect_any_instance_of(SystemDescription).not_to receive(
+        expect_any_instance_of(Machinery::SystemDescription).not_to receive(
           :validate_file_data
         )
-        expect_any_instance_of(SystemDescription).to receive(
+        expect_any_instance_of(Machinery::SystemDescription).to receive(
           :validate_format_compatibility
         ).and_call_original
 
-        SystemDescription.load("description1", store, skip_validation: true)
+        Machinery::SystemDescription.load("description1", store, skip_validation: true)
       end
 
       it "skips format version validation in case of the option skip_format_compatibility" do
         expect_any_instance_of(Manifest).to receive(:validate).and_call_original
-        expect_any_instance_of(SystemDescription).to receive(
+        expect_any_instance_of(Machinery::SystemDescription).to receive(
           :validate_file_data
         )
-        expect_any_instance_of(SystemDescription).not_to receive(
+        expect_any_instance_of(Machinery::SystemDescription).not_to receive(
           :validate_format_compatibility
         )
 
-        SystemDescription.load("description1", store, skip_format_compatibility: true)
+        Machinery::SystemDescription.load("description1", store, skip_format_compatibility: true)
       end
 
       it "reads the filter information" do
-        description = SystemDescription.load("description1", store)
+        description = Machinery::SystemDescription.load("description1", store)
 
         expected = [
           "/unmanaged_files/files/name=/opt*"
@@ -649,8 +651,8 @@ EOF
 
   describe "#has_file?" do
     let(:system_description) {
-      SystemDescription.load!("opensuse_leap-build",
-        SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap-build",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
     it "returns true when found" do

@@ -21,7 +21,10 @@ class Machinery::LocalSystem < Machinery::System
   class << self
     def os
       unless @@os
-        description = SystemDescription.new("localhost", SystemDescriptionMemoryStore.new)
+        description = Machinery::SystemDescription.new(
+          "localhost",
+          Machinery::SystemDescriptionMemoryStore.new
+        )
         inspector = OsInspector.new(Machinery::System.for("localhost"), description)
         inspector.inspect(nil)
         @@os = description.os

@@ -57,14 +57,14 @@ describe Machinery::Cli do
     before :each do
       allow_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
         and_return(create_test_description)
-      allow(SystemDescription).to receive(:delete)
+      allow(Machinery::SystemDescription).to receive(:delete)
       allow(Machinery::DockerSystem).to receive(:new).and_return(system)
     end
 
     it "calls the InspectTask" do
       expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
         with(
-          an_instance_of(SystemDescriptionStore),
+          an_instance_of(Machinery::SystemDescriptionStore),
           system,
           "docker_image_foo",
           an_instance_of(CurrentUser),
@@ -84,7 +84,7 @@ describe Machinery::Cli do
     it "continues if only the image contains slashes" do
       expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
         with(
-          an_instance_of(SystemDescriptionStore),
+          an_instance_of(Machinery::SystemDescriptionStore),
           system,
           "docker_foo",
           an_instance_of(CurrentUser),
@@ -144,11 +144,11 @@ describe Machinery::Cli do
 
     let(:example_host) { "myhost" }
     let(:description) {
-      SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+      Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionMemoryStore.new)
     }
 
     before(:each) do
-      allow_any_instance_of(SystemDescriptionStore).to receive(:default_path).
+      allow_any_instance_of(Machinery::SystemDescriptionStore).to receive(:default_path).
         and_return(test_base_path)
       create_machinery_dir
     end
@@ -173,7 +173,7 @@ describe Machinery::Cli do
       before :each do
         allow_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           and_return(description)
-        allow(SystemDescription).to receive(:delete)
+        allow(Machinery::SystemDescription).to receive(:delete)
         allow_any_instance_of(Machinery::RemoteSystem).to receive(:connect)
       end
 
@@ -199,7 +199,7 @@ describe Machinery::Cli do
       it "uses the provided host name if specified at the end" do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
@@ -216,7 +216,7 @@ describe Machinery::Cli do
         name = "test"
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             name,
             an_instance_of(CurrentUser),
@@ -232,7 +232,7 @@ describe Machinery::Cli do
       it "uses the host name if no --name is provided" do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
@@ -248,7 +248,7 @@ describe Machinery::Cli do
       it "only inspects the scopes provided" do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
@@ -264,7 +264,7 @@ describe Machinery::Cli do
       it "only inspects a scope once even if it was provided multiple times" do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
@@ -280,7 +280,7 @@ describe Machinery::Cli do
       it "inspects all scopes if no --scope is provided" do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
@@ -300,7 +300,7 @@ describe Machinery::Cli do
 
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
-            an_instance_of(SystemDescriptionStore),
+            an_instance_of(Machinery::SystemDescriptionStore),
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
@@ -391,7 +391,7 @@ describe Machinery::Cli do
         it "doesn't extract files when --extract-files is not specified" do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
-              an_instance_of(SystemDescriptionStore),
+              an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
@@ -407,7 +407,7 @@ describe Machinery::Cli do
         it "extracts changed config/managed files and umanaged files when --extract-files is specified" do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
-              an_instance_of(SystemDescriptionStore),
+              an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
@@ -425,7 +425,7 @@ describe Machinery::Cli do
         it "extracts only changed config files when --extract-changed-config-files is specified" do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
-              an_instance_of(SystemDescriptionStore),
+              an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
@@ -441,7 +441,7 @@ describe Machinery::Cli do
         it "extracts only umanaged files when --extract-unmanaged-files is specified" do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
-              an_instance_of(SystemDescriptionStore),
+              an_instance_of(Machinery::SystemDescriptionStore),
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
@@ -517,9 +517,9 @@ describe Machinery::Cli do
         end
 
         it "shows the filters which are applied during inspection" do
-          description = SystemDescription.load(
+          description = Machinery::SystemDescription.load(
             "description1",
-            SystemDescriptionStore.new
+            Machinery::SystemDescriptionStore.new
           )
           description.set_filter_definitions("inspect", ["/foo=bar"])
           description.save
@@ -552,8 +552,10 @@ describe Machinery::Cli do
     describe "#validate" do
       it "triggers a validation" do
         name = "description1"
-        expect_any_instance_of(Machinery::ValidateTask).to receive(:validate).with(
-          an_instance_of(SystemDescriptionStore), name)
+        expect_any_instance_of(Machinery::ValidateTask).
+          to receive(:validate).with(
+            an_instance_of(Machinery::SystemDescriptionStore), name
+          )
 
         run_command(["validate", "description1"])
       end
@@ -585,7 +587,7 @@ describe Machinery::Cli do
     describe "#export_autoyast" do
       before(:each) do
         @autoyast = double
-        allow(Machinery::Autoyast).to receive(:new).with(instance_of(SystemDescription)).
+        allow(Machinery::Autoyast).to receive(:new).with(instance_of(Machinery::SystemDescription)).
           and_return(@autoyast)
       end
 
@@ -649,7 +651,7 @@ describe Machinery::Cli do
   describe "#remove" do
     it "triggers the remove task" do
       expect_any_instance_of(Machinery::RemoveTask).to receive(:remove).
-        with(an_instance_of(SystemDescriptionStore), ["foo"], anything)
+        with(an_instance_of(Machinery::SystemDescriptionStore), ["foo"], anything)
 
       run_command(["remove", "foo"])
     end
@@ -657,7 +659,7 @@ describe Machinery::Cli do
     it "triggers the remove task with --all option if given" do
       expect_any_instance_of(Machinery::RemoveTask).to receive(:remove).
         with(
-          an_instance_of(SystemDescriptionStore),
+          an_instance_of(Machinery::SystemDescriptionStore),
           anything,
           verbose: false,
           all:     true
@@ -670,7 +672,7 @@ describe Machinery::Cli do
   describe "#list" do
     it "triggers the list task" do
       expect_any_instance_of(Machinery::ListTask).to receive(:list).
-        with(an_instance_of(SystemDescriptionStore), anything, anything)
+        with(an_instance_of(Machinery::SystemDescriptionStore), anything, anything)
       run_command(["list"])
     end
 
@@ -694,7 +696,7 @@ describe Machinery::Cli do
   describe "#copy" do
     it "triggers the copy task" do
       expect_any_instance_of(Machinery::CopyTask).to receive(:copy).
-        with(an_instance_of(SystemDescriptionStore), "foo", "bar")
+        with(an_instance_of(Machinery::SystemDescriptionStore), "foo", "bar")
       run_command(["copy", "foo", "bar"])
     end
   end
@@ -702,7 +704,7 @@ describe Machinery::Cli do
   describe "#move" do
     it "triggers the move task" do
       expect_any_instance_of(Machinery::MoveTask).to receive(:move).
-        with(an_instance_of(SystemDescriptionStore), "foo", "bar")
+        with(an_instance_of(Machinery::SystemDescriptionStore), "foo", "bar")
       run_command(["move", "foo", "bar"])
     end
   end
@@ -711,7 +713,7 @@ describe Machinery::Cli do
     it "triggers the upgrade task for a specific description" do
       expect_any_instance_of(Machinery::UpgradeFormatTask).to receive(:upgrade).
         with(
-          an_instance_of(SystemDescriptionStore),
+          an_instance_of(Machinery::SystemDescriptionStore),
           "foo",
           all:   false,
           force: false
@@ -722,7 +724,7 @@ describe Machinery::Cli do
     it "triggers the upgrade task for all descriptions" do
       expect_any_instance_of(Machinery::UpgradeFormatTask).to receive(:upgrade).
         with(
-          an_instance_of(SystemDescriptionStore),
+          an_instance_of(Machinery::SystemDescriptionStore),
           nil,
           all:   true,
           force: false
@@ -733,7 +735,7 @@ describe Machinery::Cli do
     it "triggers the upgrade task with force option" do
       expect_any_instance_of(Machinery::UpgradeFormatTask).to receive(:upgrade).
         with(
-          an_instance_of(SystemDescriptionStore),
+          an_instance_of(Machinery::SystemDescriptionStore),
           "foo",
           all:   false,
           force: true

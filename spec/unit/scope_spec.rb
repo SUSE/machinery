@@ -67,7 +67,7 @@ describe Machinery::Scope do
 
   describe "#is_extractable?" do
     before(:each) do
-      stub_const("SystemDescription::EXTRACTABLE_SCOPES", ["simple"])
+      stub_const("Machinery::SystemDescription::EXTRACTABLE_SCOPES", ["simple"])
     end
 
     example { expect(subject.is_extractable?).to be(true) }

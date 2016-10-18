@@ -17,35 +17,35 @@
 
 require_relative "spec_helper"
 
-describe SystemDescriptionStore do
+describe Machinery::SystemDescriptionStore do
   include_context "machinery test directory"
 
   describe "#initialize" do
     it "sets base_path to ~/.machinery if no parameter is provided" do
       default_path = File.join(ENV['HOME'], ".machinery")
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
       expect(store.base_path).to eq(default_path)
     end
 
     it "sets base_path if parameter is provided" do
       custom_path = "/var/cache/.machinery"
-      store = SystemDescriptionStore.new(custom_path)
+      store = Machinery::SystemDescriptionStore.new(custom_path)
       expect(store.base_path).to eq(custom_path)
     end
 
     it "creates the directory with correct permissions if it doesn't exist" do
       expect(Dir.exist?(File.join(ENV["HOME"], ".machinery"))).to be(false)
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
 
       expect(Dir.exist?(store.base_path)).to be(true)
       expect(File.stat(store.base_path).mode & 0777).to eq(0700)
     end
 
     it "keeps directory permissions if base dir already exists" do
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
       alfdir = store.base_path
       File.chmod(0755, alfdir)
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
 
       expect(Dir.exist?(store.base_path)).to be(true)
       expect(File.stat(store.base_path).mode & 0777).to eq(0755)
@@ -55,34 +55,35 @@ describe SystemDescriptionStore do
   describe "#load" do
     before(:each) do
       create_machinery_dir
-      @store = SystemDescriptionStore.new(test_base_path)
+      @store = Machinery::SystemDescriptionStore.new(test_base_path)
     end
 
     it "loads a SystemDescription" do
-      description = SystemDescription.load(test_name, @store)
+      description = Machinery::SystemDescription.load(test_name, @store)
 
       expect(description.to_json).to eq(test_manifest)
       expect(description.name).to eq(test_name)
     end
 
     it "validates that the system description format is compatible" do
-      expect_any_instance_of(SystemDescription).
+      expect_any_instance_of(Machinery::SystemDescription).
         to receive(:validate_format_compatibility)
 
-      SystemDescription.load(test_name, @store)
+      Machinery::SystemDescription.load(test_name, @store)
     end
 
     it "doesn't validate the description format when format_compatibility option is set to false" do
-      expect_any_instance_of(SystemDescription).to_not receive(:validate_format_compatibility)
+      expect_any_instance_of(Machinery::SystemDescription).
+        to_not receive(:validate_format_compatibility)
 
-      SystemDescription.load(test_name, @store, skip_format_compatibility: true)
+      Machinery::SystemDescription.load(test_name, @store, skip_format_compatibility: true)
     end
   end
 
   describe "#description_path" do
     it "returns correct path" do
       name = "test"
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect(store.description_path(name)).to eq(File.join(test_base_path, name))
     end
   end
@@ -90,7 +91,7 @@ describe SystemDescriptionStore do
   describe "#manifest_path" do
     it "returns correct path" do
       name = "test"
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect(store.manifest_path(name)).to eq(
         File.join(store.description_path(name), "manifest.json"))
     end
@@ -99,7 +100,7 @@ describe SystemDescriptionStore do
   describe "#html_path" do
     it "returns correct html path" do
       name = "test"
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect(store.html_path(name)).to eq(
         File.join(store.description_path(name), "index.html"))
     end
@@ -108,7 +109,7 @@ describe SystemDescriptionStore do
   describe "#list" do
     it "returns list of existing system descriptions" do
       create_machinery_dir
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect(store.list).to eq([test_name])
     end
 
@@ -119,12 +120,12 @@ describe SystemDescriptionStore do
       FileUtils.mkdir_p(File.join("/home/tux/.machinery", "_description"), mode: 0700)
       FileUtils.touch(File.join("/home/tux/.machinery/_description", "manifest.json"))
 
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect(store.list).to eq(["_description", test_name])
     end
 
     it "returns empty list if no system descriptions are available" do
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
       expect(store.list).to eq([])
     end
   end
@@ -132,7 +133,7 @@ describe SystemDescriptionStore do
   describe "#remove" do
     it "removes an existing SystemDescription" do
       create_machinery_dir
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect(store.list).to eq([test_name])
 
       store.remove(test_name)
@@ -140,7 +141,7 @@ describe SystemDescriptionStore do
     end
 
     it "raises an error if an empty name was provided" do
-      store = SystemDescriptionStore.new(test_base_path)
+      store = Machinery::SystemDescriptionStore.new(test_base_path)
       expect {
         store.remove("")
       }.to raise_error(RuntimeError, /description has no name specified/)
@@ -148,7 +149,7 @@ describe SystemDescriptionStore do
   end
 
   describe "#copy" do
-    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
     let(:new_name) { "description2" }
 
     before(:each) do
@@ -177,7 +178,7 @@ describe SystemDescriptionStore do
   end
 
   describe "#move" do
-    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
     let(:new_name) { "description2" }
 
     before(:each) do
@@ -208,7 +209,7 @@ describe SystemDescriptionStore do
   describe "#directory_for" do
     it "creates sub directory for system description" do
       path = "/tmp/test_dir"
-      store = SystemDescriptionStore.new(path)
+      store = Machinery::SystemDescriptionStore.new(path)
       name = "my_description"
 
       dir = store.directory_for(name)
@@ -220,7 +221,7 @@ describe SystemDescriptionStore do
   end
 
   describe "#backup" do
-    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
 
     before(:each) do
       create_machinery_dir
@@ -248,7 +249,7 @@ describe SystemDescriptionStore do
   end
 
   describe "#rename" do
-    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
     let(:new_name) { "description2" }
 
     before(:each) do
@@ -277,7 +278,7 @@ describe SystemDescriptionStore do
   end
 
   describe "#swap" do
-    let(:store) { SystemDescriptionStore.new(test_base_path) }
+    let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
     let(:test_name_2) { "description2" }
 
     before(:each) do
@@ -294,13 +295,13 @@ describe SystemDescriptionStore do
       expect(
         Dir.entries(File.join(test_base_path, test_name))
       ).to match_array([".", "..", "manifest.json"])
-      description = SystemDescription.load(test_name, store)
+      description = Machinery::SystemDescription.load(test_name, store)
       expect(description.scopes).to match_array(["packages"])
 
       expect(
         Dir.entries(File.join(test_base_path, test_name_2))
       ).to match_array([".", "..", "manifest.json"])
-      description = SystemDescription.load(test_name_2, store)
+      description = Machinery::SystemDescription.load(test_name_2, store)
       expect(description.scopes).to match_array(["packages", "patterns"])
 
       store.swap(test_name, test_name_2)
@@ -308,13 +309,13 @@ describe SystemDescriptionStore do
       expect(
         Dir.entries(File.join(test_base_path, test_name))
       ).to match_array([".", "..", "manifest.json"])
-      description = SystemDescription.load(test_name, store)
+      description = Machinery::SystemDescription.load(test_name, store)
       expect(description.scopes).to match_array(["packages", "patterns"])
 
       expect(
         Dir.entries(File.join(test_base_path, test_name_2))
       ).to match_array([".", "..", "manifest.json"])
-      description = SystemDescription.load(test_name_2, store)
+      description = Machinery::SystemDescription.load(test_name_2, store)
       expect(description.scopes).to match_array(["packages"])
     end
 

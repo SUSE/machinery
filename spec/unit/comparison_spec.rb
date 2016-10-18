@@ -131,21 +131,21 @@ describe Comparison do
 
         it "returns a description for :one" do
           description = result.as_description(:one)
-          expect(description).to be_a(SystemDescription)
+          expect(description).to be_a(Machinery::SystemDescription)
           expect(description.name).to eq("description1")
           expect(description.packages).to eq(expected_only_in1)
         end
 
         it "returns a description for :two" do
           description = result.as_description(:two)
-          expect(description).to be_a(SystemDescription)
+          expect(description).to be_a(Machinery::SystemDescription)
           expect(description.name).to eq("description2")
           expect(description.packages).to eq(expected_only_in2)
         end
 
         it "returns a description for :common" do
           description = result.as_description(:common)
-          expect(description).to be_a(SystemDescription)
+          expect(description).to be_a(Machinery::SystemDescription)
           expect(description.name).to eq("common")
           expect(description.packages).to eq(expected_common)
         end

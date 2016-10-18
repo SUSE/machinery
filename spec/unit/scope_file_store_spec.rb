@@ -30,7 +30,7 @@ describe ScopeFileStore do
     @store = ScopeFileStore.new(@base_path, @store_name)
   end
 
-  let(:store) { SystemDescriptionStore.new(test_base_path) }
+  let(:store) { Machinery::SystemDescriptionStore.new(test_base_path) }
   let(:file_store_name) { "foo" }
   let(:file_store_path) {
     File.join(store.description_path(test_name), file_store_name)

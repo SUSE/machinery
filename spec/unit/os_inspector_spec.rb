@@ -21,7 +21,7 @@ describe OsInspector do
   include FakeFS::SpecHelpers
 
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:system) { Machinery::LocalSystem.new }
   let(:filter) { nil }

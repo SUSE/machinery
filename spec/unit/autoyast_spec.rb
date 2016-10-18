@@ -46,7 +46,7 @@ describe Machinery::Autoyast do
 
   describe "#initialize" do
     it "raises exception when OS is not supported for exporting" do
-      allow_any_instance_of(SystemDescription).to receive(:os).
+      allow_any_instance_of(Machinery::SystemDescription).to receive(:os).
         and_return(Rhel.new)
       description.os.name = "RHEL 99.1 (Repetition)"
       expect {

@@ -64,7 +64,11 @@ Trying to start a web server for serving the documentation on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-    server = Html.run_server(SystemDescriptionStore.new, port: options[:port], ip: options[:ip]) do
+    server = Html.run_server(
+      Machinery::SystemDescriptionStore.new,
+      port: options[:port],
+      ip:   options[:ip]
+    ) do
       LoggedCheetah.run("xdg-open", url)
     end
 

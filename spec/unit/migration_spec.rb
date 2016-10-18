@@ -66,9 +66,9 @@ describe Migration do
       end
     )
 
-    stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 7)
+    stub_const("Machinery::SystemDescription::CURRENT_FORMAT_VERSION", 7)
     stub_const("Machinery::DEFAULT_CONFIG_DIR", store.base_path)
-    1.upto(SystemDescription::CURRENT_FORMAT_VERSION).each do |version|
+    1.upto(Machinery::SystemDescription::CURRENT_FORMAT_VERSION).each do |version|
       store_raw_description("v#{version}_description", <<-EOF)
         {
           "meta": {
@@ -105,8 +105,8 @@ describe Migration do
       expect_any_instance_of(Migrate2To3).to receive(:migrate)
 
       Migration.migrate_description(store, "v1_description")
-      description = SystemDescription.load("v1_description", store)
-      expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      description = Machinery::SystemDescription.load("v1_description", store)
+      expect(description.format_version).to eq(Machinery::SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
     it "only runs relevant migrations" do
@@ -114,8 +114,8 @@ describe Migration do
       expect_any_instance_of(Migrate2To3).to receive(:migrate)
 
       Migration.migrate_description(store, "v2_description")
-      description = SystemDescription.load("v2_description", store)
-      expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      description = Machinery::SystemDescription.load("v2_description", store)
+      expect(description.format_version).to eq(Machinery::SystemDescription::CURRENT_FORMAT_VERSION)
     end
 
     it "doesn't run migrations when there's nothing to do" do
@@ -127,8 +127,8 @@ describe Migration do
       expect_any_instance_of(Migrate6To7).to_not receive(:migrate)
 
       Migration.migrate_description(store, "v7_description")
-      description = SystemDescription.load("v7_description", store)
-      expect(description.format_version).to eq(SystemDescription::CURRENT_FORMAT_VERSION)
+      description = Machinery::SystemDescription.load("v7_description", store)
+      expect(description.format_version).to eq(Machinery::SystemDescription::CURRENT_FORMAT_VERSION)
       expect(captured_machinery_output).to include("No upgrade necessary")
     end
 
@@ -147,14 +147,15 @@ describe Migration do
     end
 
     it "refuses to run migrations without a migration_desc" do
-      stub_const("SystemDescription::CURRENT_FORMAT_VERSION", 8)
+      stub_const("Machinery::SystemDescription::CURRENT_FORMAT_VERSION", 8)
       expect {
         Migration.migrate_description(store, "v7_description")
       }.to raise_error(Machinery::Errors::MigrationError, /Invalid migration 'Migrate7To8'/)
     end
 
     it "deletes the backup if the migration failed" do
-      allow(SystemDescription).to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
+      allow(Machinery::SystemDescription).
+        to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
 
       expect {
         Migration.migrate_description(store, "v1_description")
@@ -172,9 +173,12 @@ describe Migration do
     end
 
     it "keeps the orginal description if the migration failed without --force option" do
-      manifest_hash = Manifest.load("v2_description", store.manifest_path("v2_description")).to_hash
+      manifest_hash = Manifest.load(
+        "v2_description", store.manifest_path("v2_description")
+      ).to_hash
 
-      allow(SystemDescription).to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
+      allow(Machinery::SystemDescription).
+        to receive(:load!).and_raise(Machinery::Errors::SystemDescriptionError)
 
       expect {
         Migration.migrate_description(store, "v2_description")

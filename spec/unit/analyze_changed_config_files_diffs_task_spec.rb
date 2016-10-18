@@ -20,7 +20,7 @@ require_relative "spec_helper"
 describe Machinery::AnalyzeConfigFileDiffsTask do
   initialize_system_description_factory_store
 
-  let(:store) { SystemDescriptionStore.new }
+  let(:store) { Machinery::SystemDescriptionStore.new }
   let(:description) {
     description = create_test_description(json: <<-EOF, store_on_disk: true)
       {
@@ -163,7 +163,7 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
     end
 
     it "raises if the analyzed system is not a SUSE os" do
-      allow_any_instance_of(SystemDescription).to receive(:os).
+      allow_any_instance_of(Machinery::SystemDescription).to receive(:os).
         and_return(OsUnknown.new)
       description.os.name = "Unknown OS"
       expect { subject.analyze(description) }.to raise_error(
@@ -207,8 +207,8 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
     it "raises an error when the description is missing information" do
       task = Machinery::AnalyzeConfigFileDiffsTask.new
       expect {
-        task.analyze(SystemDescription.new("foo",
-          SystemDescriptionMemoryStore.new))
+        task.analyze(Machinery::SystemDescription.new("foo",
+          Machinery::SystemDescriptionMemoryStore.new))
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end

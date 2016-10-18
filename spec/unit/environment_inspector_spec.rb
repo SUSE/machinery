@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe EnvironmentInspector do
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:system) {
     double(

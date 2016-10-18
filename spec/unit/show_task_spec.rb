@@ -23,7 +23,7 @@ describe Machinery::ShowTask, "#show" do
 
   let(:show_task) { Machinery::ShowTask.new }
   let(:system_description) {
-    SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+    Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionMemoryStore.new)
   }
   let(:description_with_packages) {
     create_test_description(scopes: ["empty_packages"])

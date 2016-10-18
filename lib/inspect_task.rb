@@ -58,9 +58,9 @@ class Machinery::InspectTask
 
   def build_description(store, name, system, scopes, filter, options)
     begin
-      description = SystemDescription.load(name, store)
+      description = Machinery::SystemDescription.load(name, store)
     rescue Machinery::Errors::SystemDescriptionNotFound
-      description = SystemDescription.new(name, store)
+      description = Machinery::SystemDescription.new(name, store)
     end
     timestring = Time.now.utc.iso8601
     host = if system.class == Machinery::LocalSystem

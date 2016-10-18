@@ -41,8 +41,9 @@ class Machinery::UpgradeFormatTask
 
         if migrated
           migrations_done += 1
-          Machinery::Ui.puts "Successfully upgraded from version" \
-            " #{hash["meta"]["format_version"]} to #{SystemDescription::CURRENT_FORMAT_VERSION}."
+          Machinery::Ui.puts "Successfully upgraded from version"\
+            " #{hash["meta"]["format_version"]}"\
+            " to #{Machinery::SystemDescription::CURRENT_FORMAT_VERSION}."
         end
       rescue StandardError => e
         errors.push("Upgrading description '#{description}' failed:\n#{e}")

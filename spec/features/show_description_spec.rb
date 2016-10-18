@@ -19,7 +19,7 @@ require_relative "feature_spec_helper"
 
 RSpec::Steps.steps "Showing a system description in HTML format", type: :feature do
   before(:all) do
-    Server.set :system_description_store, SystemDescriptionStore.new(
+    Server.set :system_description_store, Machinery::SystemDescriptionStore.new(
       File.join(Machinery::ROOT, "spec/data/descriptions/jeos/"))
   end
 

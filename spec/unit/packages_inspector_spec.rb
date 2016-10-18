@@ -19,7 +19,7 @@ require_relative "spec_helper"
 
 describe PackagesInspector, ".inspect" do
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:filter) { nil }
   let(:system) {

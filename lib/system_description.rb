@@ -25,7 +25,7 @@
 #
 # The sub directories storing the data for specific scopes are handled by the
 # ScopeFileStore class.
-class SystemDescription < Machinery::Object
+class Machinery::SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 10
   EXTRACTABLE_SCOPES = [
     "changed_managed_files",
@@ -89,9 +89,10 @@ class SystemDescription < Machinery::Object
     def from_hash(name, store, hash)
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
-        description = SystemDescription.new(name, store, hash)
+        description = Machinery::SystemDescription.new(name, store, hash)
       rescue NameError, TypeError, RuntimeError
-        if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
+        if json_format_version &&
+            json_format_version != Machinery::SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
         else
           raise Machinery::Errors::SystemDescriptionError.new(
@@ -146,7 +147,7 @@ class SystemDescription < Machinery::Object
 
   def compatible?
     !format_version.nil? &&
-      format_version == SystemDescription::CURRENT_FORMAT_VERSION
+      format_version == Machinery::SystemDescription::CURRENT_FORMAT_VERSION
   end
 
   def validate_format_compatibility
@@ -196,7 +197,7 @@ class SystemDescription < Machinery::Object
   end
 
   def save
-    SystemDescription.validate_name(name)
+    Machinery::SystemDescription.validate_name(name)
     @store.directory_for(name)
     path = @store.manifest_path(name)
     created = !File.exist?(path)

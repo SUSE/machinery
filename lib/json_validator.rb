@@ -57,7 +57,7 @@ class JsonValidator
     end
   end
 
-  def global_schema(format_version = SystemDescription::CURRENT_FORMAT_VERSION)
+  def global_schema(format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION)
     JSON.parse(File.read(File.join(
       Machinery::ROOT,
       "schema",
@@ -65,7 +65,7 @@ class JsonValidator
     )))
   end
 
-  def scope_schemas(format_version = SystemDescription::CURRENT_FORMAT_VERSION)
+  def scope_schemas(format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION)
     schema_path = File.join(
       Machinery::ROOT,
       "plugins",

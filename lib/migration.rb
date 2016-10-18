@@ -87,7 +87,7 @@ class Migration
         )
       end
 
-      if current_version == SystemDescription::CURRENT_FORMAT_VERSION
+      if current_version == Machinery::SystemDescription::CURRENT_FORMAT_VERSION
         Machinery::Ui.puts "No upgrade necessary."
         return false
       end
@@ -98,7 +98,7 @@ class Migration
         backup_description, store.manifest_path(backup_description)
       ).to_hash
 
-      (current_version..SystemDescription::CURRENT_FORMAT_VERSION-1).each do |version|
+      (current_version..Machinery::SystemDescription::CURRENT_FORMAT_VERSION - 1).each do |version|
         next_version = version + 1
         begin
           klass = Object.const_get("Migrate#{version}To#{next_version}")
@@ -125,7 +125,7 @@ class Migration
         Machinery::Ui.puts "Saved backup to #{backup_path}"
       else
         begin
-          SystemDescription.load!(backup_description, store)
+          Machinery::SystemDescription.load!(backup_description, store)
           store.remove(description_name)
           store.rename(backup_description, description_name)
         rescue Machinery::Errors::SystemDescriptionError

@@ -20,7 +20,12 @@ require_relative "spec_helper"
 describe UnmanagedFilesInspector do
   describe "runs helper" do
     let(:system) { double(arch: "x86_64", run_command: "/root/machinery-helper") }
-    let(:description) { SystemDescription.new("systemname", SystemDescriptionStore.new) }
+    let(:description) {
+      Machinery::SystemDescription.new(
+        "systemname",
+        Machinery::SystemDescriptionStore.new
+      ) 
+    }
     let(:inspector) { UnmanagedFilesInspector.new(system, description) }
 
     before(:each) do
