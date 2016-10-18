@@ -21,7 +21,7 @@ class FooScope < Machinery::Object
   include Machinery::Scope
 end
 
-class FooRenderer < Renderer
+class FooRenderer < Machinery::Ui::Renderer
   def content(description)
     puts description.foo.data
   end
@@ -41,7 +41,7 @@ class BarBazScope < Machinery::Object
   include Machinery::Scope
 end
 
-class BarBazRenderer < Renderer
+class BarBazRenderer < Machinery::Ui::Renderer
   def content(_description)
     heading("bar")
 
@@ -77,7 +77,7 @@ class BarBazRenderer < Renderer
   end
 end
 
-describe Renderer do
+describe Machinery::Ui::Renderer do
   let(:description1_without_data) {
     create_test_description(json: "{}", name: "name1")
   }
@@ -153,14 +153,14 @@ Common to both systems:
 
   describe ".for" do
     it "returns the requested Renderer" do
-      expect(Renderer.for("foo")).to be_a(FooRenderer)
-      expect(Renderer.for("bar_baz")).to be_a(BarBazRenderer)
+      expect(Machinery::Ui::Renderer.for("foo")).to be_a(FooRenderer)
+      expect(Machinery::Ui::Renderer.for("bar_baz")).to be_a(BarBazRenderer)
     end
   end
 
   describe ".all" do
     it "returns all loaded Renderers" do
-      renderers = Renderer.all
+      renderers = Machinery::Ui::Renderer.all
 
       expect(renderers.find{|i| i.is_a?(FooRenderer)}).to_not be_nil
       expect(renderers.find{|i| i.is_a?(BarBazRenderer)}).to_not be_nil
@@ -244,7 +244,7 @@ EOF
 
       expect {
         renderer.render(description)
-      }.to raise_error(Renderer::InvalidStructureError)
+      }.to raise_error(Machinery::Ui::Renderer::InvalidStructureError)
     end
 
     it "raises an exception when an item is created outside a list" do
@@ -254,7 +254,7 @@ EOF
 
       expect {
         renderer.render(description)
-      }.to raise_error(Renderer::InvalidStructureError)
+      }.to raise_error(Machinery::Ui::Renderer::InvalidStructureError)
     end
 
     it "renders a scope of a system description with a date and a hostname" do

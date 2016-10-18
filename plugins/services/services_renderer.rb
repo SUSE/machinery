@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ServicesRenderer < Renderer
+class ServicesRenderer < Machinery::Ui::Renderer
   def content(description)
     return unless description["services"]
 

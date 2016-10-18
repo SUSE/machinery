@@ -317,7 +317,7 @@ class Machinery::SystemDescription < Machinery::Object
     return unless changed_config_files && diffs_dir
     changed_config_files.each do |file|
       path = File.join(diffs_dir, file.name + ".diff")
-      file.diff = DiffWidget.new(File.read(path)).widget if File.exist?(path)
+      file.diff = Machinery::Ui::DiffWidget.new(File.read(path)).widget if File.exist?(path)
     end
   end
 

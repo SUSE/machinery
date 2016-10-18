@@ -48,7 +48,7 @@ class Machinery::InspectTask
     return unless scopes
 
     scopes.each do |scope|
-      renderer = Renderer.for(scope)
+      renderer = Machinery::Ui::Renderer.for(scope)
       next unless renderer
 
       output = renderer.render(description)

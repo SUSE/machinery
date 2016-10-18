@@ -33,7 +33,7 @@ describe Machinery::CompareTask do
       include Machinery::Scope
     end
 
-    class CompareTaskFooRenderer < Renderer
+    class CompareTaskFooRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_foo"].each do |e|
           puts e
@@ -45,7 +45,7 @@ describe Machinery::CompareTask do
       end
     end
 
-    class CompareTaskBarRenderer < Renderer
+    class CompareTaskBarRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_bar"].each do |e|
           puts e
@@ -57,7 +57,7 @@ describe Machinery::CompareTask do
       end
     end
 
-    class CompareTaskBazRenderer < Renderer
+    class CompareTaskBazRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_baz"].each do |e|
           puts e
@@ -69,7 +69,7 @@ describe Machinery::CompareTask do
       end
     end
 
-    class CompareTaskFoobarRenderer < Renderer
+    class CompareTaskFoobarRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_foobar"].each do |e|
           puts e
@@ -208,16 +208,16 @@ Compared descriptions are identical.
     }
 
     def setup_renderers
-      allow(Renderer).to receive(:for).
+      allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_foo").
         and_return(CompareTaskFooRenderer.new)
-      allow(Renderer).to receive(:for).
+      allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_bar").
         and_return(CompareTaskBarRenderer.new)
-      allow(Renderer).to receive(:for).
+      allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_baz").
         and_return(CompareTaskBazRenderer.new)
-      allow(Renderer).to receive(:for).
+      allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_foobar").
         and_return(CompareTaskFoobarRenderer.new)
     end

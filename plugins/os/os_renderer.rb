@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 #  This renderer prints the operating system
-class OsRenderer < Renderer
+class OsRenderer < Machinery::Ui::Renderer
   def content(description)
     return unless description.os
 

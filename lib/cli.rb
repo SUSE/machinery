@@ -54,13 +54,13 @@ module Machinery
           "typical workflow."
         if @config.hints
           Machinery::Ui.puts "These hints can be switched off by " \
-            "'#{Hint.program_name} config hints=off'."
+            "'#{Ui::Hint.program_name} config hints=off'."
         else
           Machinery::Ui.puts "These hints can be switched on by " \
-            "'#{Hint.program_name} config hints=on'."
+            "'#{Ui::Hint.program_name} config hints=on'."
         end
 
-        Hint.print(:get_started)
+        Ui::Hint.print(:get_started)
       end
       Machinery::Ui.close_pager
     end
@@ -99,7 +99,7 @@ module Machinery
         OptionParser::MissingArgument, OptionParser::AmbiguousOption
         Machinery::Ui.error e.to_s + "\n\n"
         command = ARGV & @commands.keys.map(&:to_s)
-        Machinery::Ui.error "Run '#{Hint.program_name} #{command.first} "\
+        Machinery::Ui.error "Run '#{Ui::Hint.program_name} #{command.first} "\
           "--help' for more information."
         exit 1
       when Machinery::Errors::MachineryError
@@ -167,7 +167,7 @@ module Machinery
           "parameter `--name` is not provided.\nIf the image name contains "\
           "a slash the `--name=NAME` parameter is mandatory. "\
           "Valid characters are 'a-zA-Z0-9_:.-'.\n\nFor example run:\n" \
-          "#{Hint.program_name} #{ARGV.join(" ")} "\
+          "#{Ui::Hint.program_name} #{ARGV.join(" ")} "\
           "--name='#{image.tr("/", "_")}'"
       end
     end
@@ -236,7 +236,7 @@ module Machinery
         # convert cli scope naming to internal one
         scope.tr!("-", "_")
 
-        if Inspector.all_scopes.include?(scope) && Renderer.for(scope)
+        if Inspector.all_scopes.include?(scope) && Ui::Renderer.for(scope)
           scopes << scope
         else
           unknown_scopes << scope
@@ -316,7 +316,7 @@ module Machinery
         when "changed-config-files-diffs"
           task = AnalyzeConfigFileDiffsTask.new
           task.analyze(description)
-          Hint.print(:show_analyze_data, name: name)
+          Ui::Hint.print(:show_analyze_data, name: name)
         else
           raise Machinery::Errors::InvalidCommandLine,
             "The operation '#{options[:operation]}' is not supported. " \
@@ -775,11 +775,11 @@ module Machinery
           inspect_options
         )
 
-        Hint.print(:show_data, name: name) if options[:show] == false
+        Ui::Hint.print(:show_data, name: name) if options[:show] == false
 
         if !options["extract-files"] ||
             Inspector.all_scopes.count != scope_list.count
-          Hint.print(:do_complete_inspection, name: name, host: host)
+          Ui::Hint.print(:do_complete_inspection, name: name, host: host)
         end
       end
     end
@@ -824,11 +824,11 @@ module Machinery
           system.stop
         end
 
-        Hint.print(:show_data, name: name) unless options[:show]
+        Ui::Hint.print(:show_data, name: name) unless options[:show]
 
         if !options["extract-files"] ||
             Inspector.all_scopes.count != scope_list.count
-          Hint.print(
+          Ui::Hint.print(
             :do_complete_inspection,
             name:             name,
             docker_container: image
@@ -1130,7 +1130,7 @@ module Machinery
 
         if key == "hints" && (value == "false" || value == "off")
           Machinery::Ui.puts "Hints can be switched on again by " \
-            "'#{Hint.program_name} config hints=on'."
+            "'#{Ui::Hint.program_name} config hints=on'."
         end
       end
     end

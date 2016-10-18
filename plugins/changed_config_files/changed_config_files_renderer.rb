@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ChangedConfigFilesRenderer < Renderer
+class ChangedConfigFilesRenderer < Machinery::Ui::Renderer
   def content(description)
     return unless description["changed_config_files"]
 
@@ -24,7 +24,7 @@ class ChangedConfigFilesRenderer < Renderer
     if !diffs_dir && @options[:show_diffs]
       raise Machinery::Errors::SystemDescriptionError.new(
         "Diffs can not be shown because they were not generated yet.\n" \
-        "You can generate them with `#{Hint.program_name} analyze" \
+        "You can generate them with `#{Machinery::Ui::Hint.program_name} analyze" \
         " --operation=changed-config-files-diffs #{description.name}`."
       )
     end

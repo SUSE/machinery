@@ -38,7 +38,7 @@ describe Machinery::ShowTask, "#show" do
   it "runs the proper renderer when a scope is given" do
     renderer = double
     expect(renderer).to receive(:render).and_return("bar")
-    expect(Renderer).to receive(:for).with("packages").and_return(renderer)
+    expect(Machinery::Ui::Renderer).to receive(:for).with("packages").and_return(renderer)
 
     show_task.show(system_description, ["packages"], Filter.new, no_pager: true)
   end

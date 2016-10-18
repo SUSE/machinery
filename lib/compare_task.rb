@@ -55,7 +55,7 @@ EOF
       if description1[scope] && description2[scope]
         comparison = Machinery::Comparison.compare_scope(description1, description2, scope)
 
-        output += Renderer.for(scope).render_comparison(comparison, options)
+        output += Machinery::Ui::Renderer.for(scope).render_comparison(comparison, options)
 
         if comparison.only_in1 || comparison.only_in2 || comparison.changed
           identical = false
@@ -64,7 +64,7 @@ EOF
         end
         common_scopes = true
       else
-        output += Renderer.for(scope).render_comparison_missing_scope(
+        output += Machinery::Ui::Renderer.for(scope).render_comparison_missing_scope(
           description1, description2
         )
         identical = false if description1[scope] || description2[scope]

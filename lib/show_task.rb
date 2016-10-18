@@ -57,7 +57,7 @@ EOF
   def show_console(description, scopes, options)
     missing_scopes = []
 
-    scopes.map { |s| Renderer.for(s) }.each do |renderer|
+    scopes.map { |s| Machinery::Ui::Renderer.for(s) }.each do |renderer|
       section = renderer.render(description, options)
       unless section.empty?
         Machinery::Ui.puts section

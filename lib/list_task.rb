@@ -39,8 +39,9 @@ class Machinery::ListTask
           )
           next
         rescue Machinery::Errors::SystemDescriptionValidationFailed
-          show_error("#{name}: This description is broken. Use " \
-            "`#{Hint.program_name} validate #{name}` to see the error message.", options)
+          show_error("#{name}: This description is broken. Use "\
+            "`#{Machinery::Ui::Hint.program_name} validate "\
+            "#{name}` to see the error message.", options)
           next
         rescue Machinery::Errors::SystemDescriptionError
           show_error("#{name}: This description is broken.", options)
@@ -83,7 +84,7 @@ class Machinery::ListTask
         end
       end
 
-      Hint.print(:upgrade_system_description) if has_incompatible_version
+      Machinery::Ui::Hint.print(:upgrade_system_description) if has_incompatible_version
     end
   end
 

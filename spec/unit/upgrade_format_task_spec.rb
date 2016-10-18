@@ -129,7 +129,8 @@ EOF
       stub_const("Migrate1To2", Class.new do
         def migrate; raise StandardError.new; end
       end)
-      expect(Hint).to receive(:to_string).with(:upgrade_format_force, name: "description1")
+      expect(Machinery::Ui::Hint).
+        to receive(:to_string).with(:upgrade_format_force, name: "description1")
       expect {
         Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
       }.to raise_error
@@ -139,7 +140,7 @@ EOF
       stub_const("Migrate1To2", Class.new do
         def migrate; raise StandardError.new; end
       end)
-      expect(Hint).to receive(:to_string).with(:upgrade_format_force, name: "--all")
+      expect(Machinery::Ui::Hint).to receive(:to_string).with(:upgrade_format_force, name: "--all")
       expect {
         Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
       }.to raise_error
