@@ -27,7 +27,7 @@ describe Machinery::FileValidator do
 
     describe "validating a format version 1 description" do
       it "throws error on invalid format v1 description" do
-        manifest = Manifest.load("bad", @store_v1.manifest_path("bad"))
+        manifest = Machinery::Manifest.load("bad", @store_v1.manifest_path("bad"))
 
         validator = Machinery::FileValidator.new(
           manifest.to_hash,

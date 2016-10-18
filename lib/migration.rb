@@ -66,7 +66,7 @@ class Machinery::Migration
     def migrate_description(store, description_name, options = {})
       load_migrations
 
-      hash = Manifest.load(description_name, store.manifest_path(description_name)).to_hash
+      hash = Machinery::Manifest.load(description_name, store.manifest_path(description_name)).to_hash
 
       errors = Machinery::JsonValidator.new(hash).validate
       errors += Machinery::FileValidator.new(
@@ -97,7 +97,7 @@ class Machinery::Migration
 
       backup_description = store.backup(description_name)
       backup_path = store.description_path(backup_description)
-      backup_hash = Manifest.load(
+      backup_hash = Machinery::Manifest.load(
         backup_description, store.manifest_path(backup_description)
       ).to_hash
 

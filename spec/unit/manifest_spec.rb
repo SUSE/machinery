@@ -17,13 +17,13 @@
 
 require_relative "spec_helper"
 
-describe "Manifest" do
+describe "Machinery::Manifest" do
   initialize_system_description_factory_store
 
   describe "#load" do
     it "raises Errors::SystemDescriptionNotFound if the manifest file doesn't exist" do
       expect {
-        Manifest.load("not_existing", "/does/not/exist")
+        Machinery::Manifest.load("not_existing", "/does/not/exist")
       }.to raise_error(Machinery::Errors::SystemDescriptionNotFound)
     end
 
@@ -44,7 +44,7 @@ unexpected token at '{
 EOF
       expected.chomp!
       expect {
-        Manifest.load("name", path)
+        Machinery::Manifest.load("name", path)
       }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
 
@@ -63,7 +63,7 @@ to locate issues like these.
 EOF
       expected.chomp!
       expect {
-        Manifest.load("name", path)
+        Machinery::Manifest.load("name", path)
       }.to raise_error(Machinery::Errors::SystemDescriptionError, expected)
     end
   end
@@ -71,7 +71,7 @@ EOF
   describe "#validate" do
     capture_machinery_output
     it "validates compatible descriptions" do
-      manifest = Manifest.new("name", <<-EOT)
+      manifest = Machinery::Manifest.new("name", <<-EOT)
         {
           "meta": {
             "format_version": 2,
@@ -85,7 +85,7 @@ EOF
     end
 
     it "shows a warning when validating compatible descriptions" do
-      manifest = Manifest.new("name", <<-EOT)
+      manifest = Machinery::Manifest.new("name", <<-EOT)
         {
           "meta": {
             "format_version": 2,
@@ -102,7 +102,7 @@ EOF
     end
 
     it "doesn't validate incompatible descriptions" do
-      manifest = Manifest.new("name", <<-EOT)
+      manifest = Machinery::Manifest.new("name", <<-EOT)
         {
           "meta": {
             "os": "invalid"
@@ -119,7 +119,7 @@ EOF
     end
 
     it "does not try to validate descriptions with unknown format versions" do
-      manifest = Manifest.new("name", <<-EOT)
+      manifest = Machinery::Manifest.new("name", <<-EOT)
         {
           "meta": {
             "format_version": 99999

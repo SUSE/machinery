@@ -85,7 +85,7 @@ module SystemDescriptionFactory
     end
 
     if options[:json]
-      manifest = Manifest.new(name, options[:json])
+      manifest = Machinery::Manifest.new(name, options[:json])
       manifest.validate!
       description = Machinery::SystemDescription.from_hash(name, store, manifest.to_hash)
     else
@@ -163,7 +163,7 @@ EOF
 
   def build_description(name, store, options)
     json = create_test_description_json(options)
-    manifest = Manifest.new(name, json)
+    manifest = Machinery::Manifest.new(name, json)
     manifest.validate!
     description = Machinery::SystemDescription.from_hash(name, store, manifest.to_hash)
 

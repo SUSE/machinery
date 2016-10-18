@@ -34,7 +34,7 @@ class Machinery::UpgradeFormatTask
 
     descriptions.each do |description|
       begin
-        hash = Manifest.load(description, store.manifest_path(description)).to_hash
+        hash = Machinery::Manifest.load(description, store.manifest_path(description)).to_hash
         Machinery.logger.info "Upgrading description '#{description}'"
         Machinery::Ui.print "Reading '#{description}' ... "
         migrated = Machinery::Migration.migrate_description(

@@ -43,7 +43,7 @@ class Machinery::SystemDescription < Machinery::Object
     #
     # If there are file validation errors the call fails with an exception
     def load!(name, store, options = {})
-      manifest = Manifest.load(name, store.manifest_path(name))
+      manifest = Machinery::Manifest.load(name, store.manifest_path(name))
       manifest.validate!
 
       description = from_hash(name, store, manifest.to_hash)
@@ -61,7 +61,7 @@ class Machinery::SystemDescription < Machinery::Object
     # If there are file validation errors these are put out as warnings but the
     # loading of the system description succeeds.
     def load(name, store, options = {})
-      manifest = Manifest.load(name, store.manifest_path(name))
+      manifest = Machinery::Manifest.load(name, store.manifest_path(name))
       manifest.validate unless options[:skip_validation]
 
       description = from_hash(name, store, manifest.to_hash)

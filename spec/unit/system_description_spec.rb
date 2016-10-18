@@ -545,7 +545,7 @@ EOF
       end
 
       it "validates the description by default" do
-        expect_any_instance_of(Manifest).to receive(:validate).and_call_original
+        expect_any_instance_of(Machinery::Manifest).to receive(:validate).and_call_original
         expect_any_instance_of(Machinery::SystemDescription).to receive(
           :validate_file_data
         ).and_call_original
@@ -557,7 +557,7 @@ EOF
       end
 
       it "skips data and file validation in case of the option skip_validation" do
-        expect_any_instance_of(Manifest).not_to receive(:validate)
+        expect_any_instance_of(Machinery::Manifest).not_to receive(:validate)
         expect_any_instance_of(Machinery::SystemDescription).not_to receive(
           :validate_file_data
         )
@@ -569,7 +569,7 @@ EOF
       end
 
       it "skips format version validation in case of the option skip_format_compatibility" do
-        expect_any_instance_of(Manifest).to receive(:validate).and_call_original
+        expect_any_instance_of(Machinery::Manifest).to receive(:validate).and_call_original
         expect_any_instance_of(Machinery::SystemDescription).to receive(
           :validate_file_data
         )

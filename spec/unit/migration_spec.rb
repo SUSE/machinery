@@ -133,7 +133,7 @@ describe Machinery::Migration do
     end
 
     it "makes the hash and path available as instance variables in the migrations" do
-      manifest = Manifest.load("v2_description", store.manifest_path("v2_description"))
+      manifest = Machinery::Manifest.load("v2_description", store.manifest_path("v2_description"))
       validate_environment = ->(hash, path) {
         expect(hash).to eq(manifest.to_hash)
         expect(path).to eq(store.description_path("v2_description.backup"))
@@ -176,7 +176,7 @@ describe Machinery::Migration do
     end
 
     it "keeps the orginal description if the migration failed without --force option" do
-      manifest_hash = Manifest.load(
+      manifest_hash = Machinery::Manifest.load(
         "v2_description", store.manifest_path("v2_description")
       ).to_hash
 
@@ -187,7 +187,7 @@ describe Machinery::Migration do
         Machinery::Migration.migrate_description(store, "v2_description")
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
       expect(manifest_hash).to eq(
-        Manifest.load("v2_description", store.manifest_path("v2_description")).to_hash
+        Machinery::Manifest.load("v2_description", store.manifest_path("v2_description")).to_hash
       )
     end
 

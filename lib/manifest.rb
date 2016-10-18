@@ -18,7 +18,7 @@
 # The Manifest class takes care of handling the JSON representation of system
 # descriptions. It loads and parses the JSON into a hash and validates it against
 # the current schema.
-class Manifest
+class Machinery::Manifest
   attr_accessor :name, :path, :json, :hash
 
   def self.load(name, path)
@@ -29,7 +29,7 @@ class Manifest
     end
 
     json = File.read(path)
-    Manifest.new(name, json, path)
+    Machinery::Manifest.new(name, json, path)
   end
 
   def initialize(name, json, path = nil)
