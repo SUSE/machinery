@@ -63,12 +63,12 @@ class Machinery::InspectTask
       description = SystemDescription.new(name, store)
     end
     timestring = Time.now.utc.iso8601
-    if system.class == LocalSystem
-      host = "localhost"
-    elsif system.class == DockerSystem
-      host = system.image
+    host = if system.class == Machinery::LocalSystem
+      "localhost"
+    elsif system.class == Machinery::DockerSystem
+      system.image
     else
-      host = system.host
+      system.host
     end
     set_system_locale(system, description)
 

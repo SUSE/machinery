@@ -40,7 +40,7 @@ class Machinery::ManTask
   end
 
   def man_system
-    LocalSystem.validate_existence_of_package("man")
+    Machinery::LocalSystem.validate_existence_of_package("man")
     system("man", File.join(Machinery::ROOT, "man/generated/machinery.1.gz"))
   end
 
@@ -53,7 +53,7 @@ class Machinery::ManTask
       return
     end
 
-    LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+    Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
     url = "http://#{options[:ip]}:#{options[:port]}/site/docs/index.html"
 

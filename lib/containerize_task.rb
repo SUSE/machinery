@@ -48,7 +48,7 @@ class Machinery::ContainerizeTask
   private
 
   def copy_workload_setup_files(description, workloads, services, path)
-    app = ContainerizedApp.new(description.name, workloads, services)
+    app = Machinery::ContainerizedApp.new(description.name, workloads, services)
     workloads.each do |workload, _|
       Dir[File.join(Machinery::ROOT, "workload_mapper", workload, "setup", "*.erb")].each do |file|
         setup_script = ERB.new(File.read(file))

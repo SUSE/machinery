@@ -58,7 +58,7 @@ describe Machinery::Cli do
       allow_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
         and_return(create_test_description)
       allow(SystemDescription).to receive(:delete)
-      allow(DockerSystem).to receive(:new).and_return(system)
+      allow(Machinery::DockerSystem).to receive(:new).and_return(system)
     end
 
     it "calls the InspectTask" do
@@ -174,7 +174,7 @@ describe Machinery::Cli do
         allow_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           and_return(description)
         allow(SystemDescription).to receive(:delete)
-        allow_any_instance_of(RemoteSystem).to receive(:connect)
+        allow_any_instance_of(Machinery::RemoteSystem).to receive(:connect)
       end
 
       it "shows a note if there are filters for the selected scopes" do
@@ -200,7 +200,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
@@ -217,7 +217,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             name,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
@@ -233,7 +233,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
@@ -249,7 +249,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             ["packages", "repositories"],
@@ -265,7 +265,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             ["packages"],
@@ -281,7 +281,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             Inspector.all_scopes,
@@ -301,7 +301,7 @@ describe Machinery::Cli do
         expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
           with(
             an_instance_of(SystemDescriptionStore),
-            an_instance_of(RemoteSystem),
+            an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(CurrentUser),
             scope_list,
@@ -392,7 +392,7 @@ describe Machinery::Cli do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              an_instance_of(RemoteSystem),
+              an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
@@ -408,7 +408,7 @@ describe Machinery::Cli do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              an_instance_of(RemoteSystem),
+              an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
@@ -426,7 +426,7 @@ describe Machinery::Cli do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              an_instance_of(RemoteSystem),
+              an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
@@ -442,7 +442,7 @@ describe Machinery::Cli do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(SystemDescriptionStore),
-              an_instance_of(RemoteSystem),
+              an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(CurrentUser),
               Inspector.all_scopes,
@@ -624,7 +624,7 @@ describe Machinery::Cli do
 
       it "triggers the analyze task" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(AnalyzeConfigFileDiffsTask).
+        expect_any_instance_of(Machinery::AnalyzeConfigFileDiffsTask).
           to receive(:analyze).with(
             description
           )
@@ -636,7 +636,7 @@ describe Machinery::Cli do
 
       it "runs changed-config-files-diffs by default" do
         description = create_test_description(json: test_manifest)
-        expect_any_instance_of(AnalyzeConfigFileDiffsTask).
+        expect_any_instance_of(Machinery::AnalyzeConfigFileDiffsTask).
           to receive(:analyze).with(
             description
           )
@@ -875,7 +875,7 @@ This is STDOUT
 Backtrace:
       EOT
 
-      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
+      allow(Machinery::LocalSystem).to receive(:os).and_return(OsSles12.new)
       begin
         # Actually raise the exception, so we have a backtrace
         raise(
@@ -893,7 +893,7 @@ Backtrace:
     end
 
     it "shows the usual bug report message for openSUSE" do
-      allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+      allow(Machinery::LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
 
       begin
         raise
@@ -908,7 +908,7 @@ Backtrace:
     end
 
     it "shows a special bug report message for SLES" do
-      allow(LocalSystem).to receive(:os).and_return(OsSles12.new)
+      allow(Machinery::LocalSystem).to receive(:os).and_return(OsSles12.new)
 
       begin
         raise

@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class RemoteSystem < System
+class Machinery::RemoteSystem < Machinery::System
   attr_reader :host, :remote_user, :ssh_port, :ssh_identity_file
 
   def type
@@ -130,7 +130,7 @@ class RemoteSystem < System
   end
 
   def check_retrieve_files_dependencies
-    LocalSystem.validate_existence_of_command("rsync", "rsync")
+    Machinery::LocalSystem.validate_existence_of_command("rsync", "rsync")
     check_requirement("rsync", "--version")
   end
 

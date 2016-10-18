@@ -21,7 +21,7 @@
 # It abstracts common inspection tasks that need to be run, like executing
 # commands or running "kiwi --describe". Different implementations, e.g. for
 # local or ssh-accessed systems are done in the according subclasses.
-class System
+class Machinery::System
   abstract_method :requires_root?
   abstract_method :run_command
   abstract_method :kiwi_describe
@@ -35,9 +35,9 @@ class System
 
   def self.for(host, opts = {})
     if host && host != "localhost"
-      RemoteSystem.new(host, opts)
+      Machinery::RemoteSystem.new(host, opts)
     else
-      LocalSystem.new
+      Machinery::LocalSystem.new
     end
   end
 

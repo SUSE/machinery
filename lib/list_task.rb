@@ -89,7 +89,7 @@ class Machinery::ListTask
 
   def list_html(store, options)
     begin
-      LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+      Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
       url = "http://#{options[:ip]}:#{options[:port]}/"
 

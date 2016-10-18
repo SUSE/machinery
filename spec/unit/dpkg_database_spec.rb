@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 describe DpkgDatabase do
-  let(:system) { LocalSystem.new }
+  let(:system) { Machinery::LocalSystem.new }
   let(:changed_files_result) {
     File.read(File.join(Machinery::ROOT, "spec/data/dpkg_managed_files_database/dpkg_--verify"))
   }

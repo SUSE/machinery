@@ -70,9 +70,9 @@ describe Machinery::InspectTask, "#inspect_system" do
   end
 
   before :each do
-    allow_any_instance_of(RemoteSystem).to receive(:connect)
-    allow_any_instance_of(DockerSystem).to receive(:validate_image_name)
-    allow_any_instance_of(DockerSystem).to receive(:create_container)
+    allow_any_instance_of(Machinery::RemoteSystem).to receive(:connect)
+    allow_any_instance_of(Machinery::DockerSystem).to receive(:validate_image_name)
+    allow_any_instance_of(Machinery::DockerSystem).to receive(:create_container)
     allow(inspect_task).to receive(:set_system_locale)
   end
 
@@ -80,9 +80,9 @@ describe Machinery::InspectTask, "#inspect_system" do
   let(:store) { SystemDescriptionStore.new }
   let(:description) { SystemDescription.new(name, store) }
   let(:name) { "name" }
-  let(:system) { RemoteSystem.new("example.com") }
-  let(:local_system) { LocalSystem.new }
-  let(:docker_system) { DockerSystem.new("foo") }
+  let(:system) { Machinery::RemoteSystem.new("example.com") }
+  let(:local_system) { Machinery::LocalSystem.new }
+  let(:docker_system) { Machinery::DockerSystem.new("foo") }
 
   let(:current_user_root) {
     current_user = double

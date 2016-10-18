@@ -17,20 +17,20 @@
 
 require_relative "spec_helper"
 
-describe System do
+describe Machinery::System do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
   describe ".for" do
     it "returns a LocalSystem when no hostname is given" do
-      expect(System.for(nil)).to be_a(LocalSystem)
+      expect(Machinery::System.for(nil)).to be_a(Machinery::LocalSystem)
     end
 
     it "returns a RemoteSystem when a hostname is given" do
-      allow_any_instance_of(RemoteSystem).to receive(:connect)
-      remote_system = System.for("somehost", remote_user: "machinery")
+      allow_any_instance_of(Machinery::RemoteSystem).to receive(:connect)
+      remote_system = Machinery::System.for("somehost", remote_user: "machinery")
 
-      expect(remote_system).to be_a(RemoteSystem)
+      expect(remote_system).to be_a(Machinery::RemoteSystem)
       expect(remote_system.host).to eql("somehost")
       expect(remote_system.remote_user).to eq("machinery")
     end
@@ -38,7 +38,7 @@ describe System do
 
   describe "#check_retrieve_files_dependencies" do
     it "checks for the availibilty of rsync" do
-      system = System.new
+      system = Machinery::System.new
       expect(system).to receive(:check_requirement).with("rsync", "--version")
       system.check_retrieve_files_dependencies
     end
@@ -46,7 +46,7 @@ describe System do
 
   describe "#check_create_archive_dependencies" do
     it "checks for the availibilty of tar and gzip" do
-      system = System.new
+      system = Machinery::System.new
       expect(system).to receive(:check_requirement).with("tar", "--version")
       expect(system).to receive(:check_requirement).with("gzip", "--version")
       system.check_create_archive_dependencies
@@ -65,7 +65,7 @@ describe System do
 
       filelist = Dir.glob(test_dir + "/*")
 
-      local_system = LocalSystem.new
+      local_system = Machinery::LocalSystem.new
       md5sum = local_system.run_command(
         ["find", test_dir, "-type", "f"],
         ["xargs", "md5sum"],
@@ -108,7 +108,7 @@ describe System do
       FileUtils.touch(excluded_file_1)
       FileUtils.touch(excluded_file_2)
 
-      local_system = LocalSystem.new
+      local_system = Machinery::LocalSystem.new
       local_system.create_archive(test_dir, archive, [excluded_file_1, excluded_file_2])
 
       file_list = Tarball.new(archive).list
@@ -118,7 +118,7 @@ describe System do
     end
 
     it "doesn't log the commands" do
-      system = System.new
+      system = Machinery::System.new
       expect(system).to receive(:run_command) do |*args|
         args.each do |arg|
           if arg.is_a?(Hash)
@@ -132,7 +132,7 @@ describe System do
     it "logs the file list", :with_temp_dir do
       archive = File.join(@tmp_dir, "/archive.tgz")
 
-      system = System.new
+      system = Machinery::System.new
       allow(system).to receive(:run_command)
       expect(Machinery.logger).to receive(:info).with(
         "The following files are packaged in #{archive}: file1, file2"
@@ -149,7 +149,7 @@ describe System do
         FileUtils.mkdir("/inspect_helpers")
         File.write("/inspect_helpers/foo", "ls /foo")
 
-        system = System.new
+        system = Machinery::System.new
         expect(system).to receive(:run_command).
           with("bash", "-c", "ls /foo", stdout: :capture)
 
@@ -162,7 +162,7 @@ describe System do
 
   describe "#run_script_with_progress" do
     it "calls the callback with the output" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       expect(system).to receive(:run_script) do |_script, options|
         options[:stdout].puts("output1")
         options[:stdout].puts("output2")
@@ -177,7 +177,7 @@ describe System do
     end
 
     it "passes options to run_script" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       expect(system).to receive(:run_script).with("script", hash_including(:privileged))
       system.run_script_with_progress("script", privileged: true)
     end
@@ -198,7 +198,7 @@ describe System do
 
   describe "#run_command_with_progress" do
     it "calls the callback with the output" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       expect(system).to receive(:run_command) do |_command, options|
         options[:stdout].puts("output1")
         options[:stdout].puts("output2")
@@ -213,7 +213,7 @@ describe System do
     end
 
     it "passes options to run_command" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       expect(system).to receive(:run_command).
         with("command", "parameter", hash_including(:privileged))
       system.run_command_with_progress("command", "parameter", privileged: true)
@@ -237,20 +237,20 @@ describe System do
 
   describe "#has_command" do
     it "returns true if the system has the command" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
 
       expect(system.has_command?("echo")).to be(true)
     end
 
     it "returns false if the system hasn't the command" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
 
       expect(system.has_command?("not_existing_command")).to be(false)
     end
   end
 
   describe "#check_requirement" do
-    let(:system) { System.new }
+    let(:system) { Machinery::System.new }
     let(:command) { "cat" }
 
     it "raises an error if the command fails/doesn't exists" do
@@ -310,7 +310,7 @@ describe System do
 
   describe "#arch" do
     it "returns the system's architecture" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       result = "x86_64"
 
       expect(system).to receive(:run_command).with(
@@ -321,20 +321,20 @@ describe System do
 
   describe "#managed_files_database" do
     it "returns an RpmDatabase object on an RPM system" do
-      system = System.new
+      system = Machinery::System.new
       allow(system).to receive(:has_command?).with("rpm").and_return(true)
       expect(system.managed_files_database).to be_a(RpmDatabase)
     end
 
     it "returns a DpkgDatabase object on a Debian system" do
-      system = System.new
+      system = Machinery::System.new
       allow(system).to receive(:has_command?).with("rpm").and_return(false)
       allow(system).to receive(:has_command?).with("dpkg").and_return(true)
       expect(system.managed_files_database).to be_a(DpkgDatabase)
     end
 
     it "raises an error if neither rpm nor dpkg is on the system" do
-      system = System.new
+      system = Machinery::System.new
       allow(system).to receive(:has_command?).with("rpm").and_return(false)
       allow(system).to receive(:has_command?).with("dpkg").and_return(false)
 

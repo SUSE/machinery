@@ -31,7 +31,9 @@ describe Machinery::BuildTask do
   let(:image_file) { system_description.name + ".x86_64-0.0.1.qcow2" }
 
   before(:each) {
-    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new(architecture: "x86_64"))
+    allow(Machinery::LocalSystem).to receive(:os).and_return(
+      OsOpenSuse13_1.new(architecture: "x86_64")
+    )
     allow(Cheetah).to receive(:run)
     allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
     allow(Dir).to receive(:mktmpdir).
@@ -101,7 +103,7 @@ describe Machinery::BuildTask do
     end
 
     it "throws an error if kiwi doesn't exist" do
-      allow(LocalSystem).to receive(:validate_existence_of_packages).and_raise(
+      allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages).and_raise(
         Machinery::Errors::MissingRequirement.new(["kiwi"])
       )
       expect{
@@ -139,7 +141,7 @@ describe Machinery::BuildTask do
     end
 
     it "shows an error when the current user does not have access to the image directory path" do
-      allow(LocalSystem).to receive(:validate_architecture)
+      allow(Machinery::LocalSystem).to receive(:validate_architecture)
       allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
 
       user = CurrentUser.new.username

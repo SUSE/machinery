@@ -21,14 +21,14 @@ describe Machinery::ManTask do
   describe "#man" do
     context "on the console" do
       it "validates the availability of man by calling the 'validate_existence_of_package method'" do
-        expect(LocalSystem).to receive(:validate_existence_of_package).with("man")
+        expect(Machinery::LocalSystem).to receive(:validate_existence_of_package).with("man")
         allow_any_instance_of(Kernel).to receive(:system).with("man", anything)
 
         subject.man({})
       end
 
       it "calls the machinery man page" do
-        allow(LocalSystem).to receive(:validate_existence_of_package).with("man")
+        allow(Machinery::LocalSystem).to receive(:validate_existence_of_package).with("man")
         expect(subject).to receive("system").
           with("man", anything)
 

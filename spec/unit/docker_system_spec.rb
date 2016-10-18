@@ -17,14 +17,14 @@
 
 require_relative "spec_helper"
 
-describe DockerSystem do
+describe Machinery::DockerSystem do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
   let(:false_container_id) { "0a0a0a0a0a0a" }
   let(:valid_container_id) { "076f46c1bef1" }
   let(:instance) { "12345" }
-  subject { DockerSystem.new(valid_container_id).tap(&:start) }
+  subject { Machinery::DockerSystem.new(valid_container_id).tap(&:start) }
 
   before(:each) do
     allow(LoggedCheetah).to receive(:run).with("docker", "inspect", false_container_id).and_raise
@@ -36,13 +36,13 @@ describe DockerSystem do
   describe "#initialize" do
     it "raises an error if image id is invalid" do
       expect {
-        DockerSystem.new(false_container_id)
+        Machinery::DockerSystem.new(false_container_id)
       }.to raise_error(Machinery::Errors::InspectionFailed)
     end
 
     it "does not raise an error if image id is valid" do
       expect {
-        DockerSystem.new(valid_container_id)
+        Machinery::DockerSystem.new(valid_container_id)
       }.not_to raise_error
     end
   end

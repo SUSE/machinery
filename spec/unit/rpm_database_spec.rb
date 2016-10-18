@@ -18,7 +18,7 @@
 require_relative "spec_helper"
 
 describe RpmDatabase do
-  let(:system) { LocalSystem.new }
+  let(:system) { Machinery::LocalSystem.new }
   let(:changed_files_sh_result) {
     File.read(File.join(Machinery::ROOT,
       "spec/data/rpm_managed_files_database/changed_files_sh_result"))

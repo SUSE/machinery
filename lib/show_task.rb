@@ -30,7 +30,7 @@ class Machinery::ShowTask
 
   def show_html(description, options)
     begin
-      LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+      Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
       url = "http://#{options[:ip]}:#{options[:port]}/#{CGI.escape(description.name)}"
 

@@ -33,9 +33,9 @@ describe Machinery::DeployTask do
 
   before(:each) do
     allow_any_instance_of(Kernel).to receive(:system)
-    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+    allow(Machinery::LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
     allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
-    allow(LocalSystem).to receive(:validate_existence_of_packages)
+    allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages)
     allow(Dir).to receive(:mktmpdir).and_return(tmp_image_dir)
     allow(JsonValidator).to receive(:new).and_return(double(validate: []))
     FakeFS::FileSystem.clone("spec/data/deploy/", "/")
@@ -80,7 +80,7 @@ describe Machinery::DeployTask do
     end
 
     it "checks if glance is missing" do
-      expect(LocalSystem).to receive(:validate_existence_of_packages) { |*s|
+      expect(Machinery::LocalSystem).to receive(:validate_existence_of_packages) { |*s|
         expect(s).to include(["python-glanceclient", "kiwi", "kiwi-desc-vmxboot"])
       }
       deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)

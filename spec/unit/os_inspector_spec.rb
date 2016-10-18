@@ -23,7 +23,7 @@ describe OsInspector do
   let(:description) {
     SystemDescription.new("systemname", SystemDescriptionStore.new)
   }
-  let(:system) { LocalSystem.new }
+  let(:system) { Machinery::LocalSystem.new }
   let(:filter) { nil }
   subject(:inspector) { OsInspector.new(system, description) }
 

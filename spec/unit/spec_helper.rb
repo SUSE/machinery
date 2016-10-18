@@ -44,8 +44,8 @@ RSpec.configure do |config|
   config.include(MachineryOutput)
 
   config.before(:each) do
-    allow_any_instance_of(LocalSystem).to receive(:check_requirement)
-    allow_any_instance_of(RemoteSystem).to receive(:check_requirement)
+    allow_any_instance_of(Machinery::LocalSystem).to receive(:check_requirement)
+    allow_any_instance_of(Machinery::RemoteSystem).to receive(:check_requirement)
   end
 
   config.around(:example, with_temp_dir: true) do |example|

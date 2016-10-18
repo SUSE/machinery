@@ -41,7 +41,7 @@ class OsInspector < Inspector
   end
 
   def inspect(_filter, _options = {})
-    @system.check_requirement("cat", "--version") if @system.is_a?(RemoteSystem)
+    @system.check_requirement("cat", "--version") if @system.is_a?(Machinery::RemoteSystem)
 
     os = get_os
     if os
