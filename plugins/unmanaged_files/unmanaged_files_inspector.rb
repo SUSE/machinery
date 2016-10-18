@@ -86,7 +86,7 @@ class UnmanagedFilesInspector < Inspector
       scope.delete_if { |f| filter.matches?(f.name) }
 
       if options[:do_extract]
-        mount_points = MountPoints.new(@system)
+        mount_points = Machinery::MountPoints.new(@system)
         excluded_trees = mount_points.remote + mount_points.special
 
         file_store_tmp.remove
