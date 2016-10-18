@@ -244,7 +244,7 @@ EOF
 
     describe "#changed_elements" do
       before(:each) {
-        files_comparison = Comparison.new
+        files_comparison = Machinery::Comparison.new
         files_comparison.common = UnmanagedFilesScope.new([], extracted: true)
         files_comparison.changed = [
           [
@@ -252,14 +252,14 @@ EOF
             UnmanagedFile.new(name: "/tmp/foo", size: 2, type: "file")
           ]
         ]
-        dirs_comparison = Comparison.new
+        dirs_comparison = Machinery::Comparison.new
         dirs_comparison.changed = [
           [
             UnmanagedFile.new(name: "/tmp/foo/", files: 1, type: "dir"),
             UnmanagedFile.new(name: "/tmp/foo/", files: 2, type: "dir")
           ]
         ]
-        other_comparison = Comparison.new
+        other_comparison = Machinery::Comparison.new
         other_comparison.changed = [
           [
             Machinery::Object.new(name: "/tmp/foo", foo: 1),

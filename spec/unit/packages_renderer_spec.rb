@@ -185,7 +185,7 @@ describe PackagesRenderer do
     }
 
     it "shows two 'only in x' and one 'in both but different' sections" do
-      comparison = Comparison.compare_scope(description1, description2, "packages")
+      comparison = Machinery::Comparison.compare_scope(description1, description2, "packages")
       output = PackagesRenderer.new.render_comparison(comparison)
 
       expected = <<EOF

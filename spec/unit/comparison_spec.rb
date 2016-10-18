@@ -17,16 +17,16 @@
 
 require_relative "spec_helper"
 
-describe Comparison do
+describe Machinery::Comparison do
   let(:description1) { create_test_description(name: "description1", scopes: ["packages"]) }
   let(:description2) { create_test_description(name: "description2", scopes: ["packages2"]) }
   let(:empty_description) { create_test_description(name: "empty") }
-  subject { Comparison }
+  subject { Machinery::Comparison }
 
   describe ".compare_scope" do
-    it "returns a Comparison" do
+    it "returns a Machinery::Comparison" do
       expect(subject.compare_scope(description1, description2, "packages")).
-        to be_a(Comparison)
+        to be_a(Machinery::Comparison)
     end
 
     it "returns nil for the mission scope when a description does not have the scope" do

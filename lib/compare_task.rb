@@ -53,7 +53,7 @@ EOF
     common_scopes = false
     scopes.each do |scope|
       if description1[scope] && description2[scope]
-        comparison = Comparison.compare_scope(description1, description2, scope)
+        comparison = Machinery::Comparison.compare_scope(description1, description2, scope)
 
         output += Renderer.for(scope).render_comparison(comparison, options)
 

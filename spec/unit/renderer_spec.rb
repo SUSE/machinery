@@ -139,7 +139,7 @@ Common to both systems:
   EOT
 
   def stub_comparison(scope, description1, description2, changed, common)
-    comparison = Comparison.new
+    comparison = Machinery::Comparison.new
     comparison.store = Machinery::SystemDescriptionMemoryStore.new
     comparison.scope = scope
     comparison.name1 = "name1"
@@ -292,7 +292,7 @@ EOF
       let(:options) { { show_all: false } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
           "foo"
@@ -303,7 +303,7 @@ EOF
       end
 
       it "renders error message when there is no scope data in at least one description" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_without_data,
           description2_with_data,
           "foo"
@@ -314,7 +314,7 @@ EOF
       end
 
       it "renders correct output when there is scope data in all descriptions" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
           "foo"
@@ -329,7 +329,7 @@ EOF
       let(:options) { { show_all: true } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
           "foo"
@@ -340,7 +340,7 @@ EOF
       end
 
       it "renders correct output when there is no scope data in the common description" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
           "foo"

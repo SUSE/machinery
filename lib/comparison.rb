@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Comparison
+class Machinery::Comparison
   attr_accessor :name1, :name2, :only_in1, :only_in2, :changed, :common, :store, :scope
 
   def self.compare_scope(description1, description2, scope)
