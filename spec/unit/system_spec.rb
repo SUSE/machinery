@@ -111,7 +111,7 @@ describe Machinery::System do
       local_system = Machinery::LocalSystem.new
       local_system.create_archive(test_dir, archive, [excluded_file_1, excluded_file_2])
 
-      file_list = Tarball.new(archive).list
+      file_list = Machinery::Tarball.new(archive).list
       # paths in the tarball are relativ to "/", so we have to add it for the comparison
       paths = file_list.map { |f| File.join("/", f[:path]) }
       expect(paths).to match_array([test_dir, included_file])
@@ -183,7 +183,7 @@ describe Machinery::System do
     end
 
     it "raises on errors" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       expect(system).to receive(:run_script).and_raise(
         Cheetah::ExecutionFailed.new(nil, 2, "", "script failed")
       )
@@ -220,7 +220,7 @@ describe Machinery::System do
     end
 
     it "raises on errors" do
-      system = LocalSystem.new
+      system = Machinery::LocalSystem.new
       expect(system).to receive(:run_command).with(
         "dpkg", "-V", hash_including(:privileged)
       ).and_raise(

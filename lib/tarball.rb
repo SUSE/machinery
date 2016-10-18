@@ -16,13 +16,13 @@
 # you may find current contact information at www.suse.com
 
 # Represents a tarball, possibly gzipped.
-class Tarball
+class Machinery::Tarball
   def initialize(file)
     @file = file
   end
 
   def list
-    output = LoggedCheetah.run("tar", "tvf", @file, "--quoting-style=literal", stdout: :capture)
+    output = Machinery::LoggedCheetah.run("tar", "tvf", @file, "--quoting-style=literal", stdout: :capture)
 
     output.lines.map do |line|
       mode, user_and_group, size, _date, _time, rest = line.split(" ", 6)

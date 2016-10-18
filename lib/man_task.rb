@@ -69,7 +69,7 @@ EOF
       port: options[:port],
       ip:   options[:ip]
     ) do
-      LoggedCheetah.run("xdg-open", url)
+      Machinery::LoggedCheetah.run("xdg-open", url)
     end
 
     server.join # Wait until the user cancelled the blocking webserver

@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class LoggedCheetah
+class Machinery::LoggedCheetah
   class << self
     def run(*args)
       command = args.select { |e| e.is_a?(String) }.join(" ")

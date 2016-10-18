@@ -453,7 +453,7 @@ EOF
 
       context "with no zypper installed" do
         before do
-          allow_any_instance_of(Zypper).to receive(:version).and_return(nil)
+          allow_any_instance_of(Machinery::Zypper).to receive(:version).and_return(nil)
         end
 
         it "raises an error" do
@@ -474,7 +474,7 @@ EOF
 
       context "with zypper version older than 1.11.4" do
         before do
-          allow_any_instance_of(Zypper).to receive(:version).and_return([0, 0, 0])
+          allow_any_instance_of(Machinery::Zypper).to receive(:version).and_return([0, 0, 0])
         end
 
         it "raises an error" do
@@ -502,7 +502,7 @@ EOF
 
       context "with a valid zypper version" do
         before do
-          allow_any_instance_of(Zypper).to receive(:version).and_return([1, 11, 14])
+          allow_any_instance_of(Machinery::Zypper).to receive(:version).and_return([1, 11, 14])
         end
 
         it "doesn't raise" do

@@ -85,7 +85,7 @@ class Machinery::RemoteSystem < Machinery::System
     if options[:disable_logging]
       cheetah_class = Cheetah
     else
-      cheetah_class = LoggedCheetah
+      cheetah_class = Machinery::LoggedCheetah
     end
 
     sudo = ["sudo", "-n"] if options[:privileged] && sudo_required?
@@ -120,7 +120,7 @@ class Machinery::RemoteSystem < Machinery::System
       stdin: filelist.join("\n")
     ]
     begin
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     rescue Cheetah::ExecutionFailed  => e
       raise Machinery::Errors::RsyncFailed.new(
       "Could not rsync files from host '#{host}'.\n" \
@@ -161,7 +161,7 @@ class Machinery::RemoteSystem < Machinery::System
     ]
 
     begin
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     rescue Cheetah::ExecutionFailed => e
       raise Machinery::Errors::InjectFileFailed.new(
         "Could not inject file '#{source}' to host '#{host}'.\nError: #{e}"
@@ -187,7 +187,7 @@ class Machinery::RemoteSystem < Machinery::System
   # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def check_connection
-    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+    Machinery::LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
                       "#{remote_user}@#{host}", ":")
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
@@ -200,7 +200,7 @@ class Machinery::RemoteSystem < Machinery::System
 
   def check_sudo
     check_requirement("sudo", "-h")
-    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+    Machinery::LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
       "#{remote_user}@#{host}", "sudo", "id")
   rescue Cheetah::ExecutionFailed => e
     if e.stderr && e.stderr.include?("password is required")

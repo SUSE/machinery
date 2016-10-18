@@ -157,7 +157,7 @@ class Machinery::SystemDescription < Machinery::Object
   end
 
   def validate_analysis_compatibility
-    Zypper.isolated(arch: os.architecture) do |zypper|
+    Machinery::Zypper.isolated(arch: os.architecture) do |zypper|
       major, minor, patch = zypper.version
       if major <= 1 && minor <= 11 && patch < 4
         raise Machinery::Errors::AnalysisFailed.new("Analyzing command requires zypper 1.11.4 " \

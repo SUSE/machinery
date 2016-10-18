@@ -17,8 +17,8 @@
 
 require_relative "spec_helper"
 
-describe Zypper do
-  subject { Zypper.new }
+describe Machinery::Zypper do
+  subject { Machinery::Zypper.new }
 
   describe ".isolated" do
     let(:tmp_path) { Dir.mktmpdir("machinery_zypper") }
@@ -55,9 +55,9 @@ EOF
     end
 
     it "calls zypper in a chroot environment" do
-      Zypper.isolated(arch: :x86_64) do |zypper|
-        allow(LoggedCheetah).to receive(:run)
-        expect(LoggedCheetah).to receive(:run) do |*args|
+      Machinery::Zypper.isolated(arch: :x86_64) do |zypper|
+        allow(Machinery::LoggedCheetah).to receive(:run)
+        expect(Machinery::LoggedCheetah).to receive(:run) do |*args|
           expect(args).to include("--root")
           expect(args).to include("refresh")
         end
@@ -138,15 +138,15 @@ EOF
     end
 
     it "sets architecture in config file" do
-      Zypper.isolated(arch: :ppc64le) do |zypper|
+      Machinery::Zypper.isolated(arch: :ppc64le) do |zypper|
         expect(File.readlines(zypper.zypp_config)).to include("arch=ppc64le")
       end
     end
 
     it "sets a ZYPP_CONF environment variable" do
-      Zypper.isolated(arch: :ppc64le) do |zypper|
-        allow(LoggedCheetah).to receive(:run)
-        expect(LoggedCheetah).to receive(:run) do |*args|
+      Machinery::Zypper.isolated(arch: :ppc64le) do |zypper|
+        allow(Machinery::LoggedCheetah).to receive(:run)
+        expect(Machinery::LoggedCheetah).to receive(:run) do |*args|
           expect(ENV.include?("ZYPP_CONF")).to be true
           expect(ENV.fetch("ZYPP_CONF")).to eq(zypper.zypp_config)
         end

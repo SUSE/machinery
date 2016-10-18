@@ -38,13 +38,13 @@ describe Machinery::LocalSystem do
     end
 
     it "logs commands by default" do
-      expect(LoggedCheetah).to receive(:run)
+      expect(Machinery::LoggedCheetah).to receive(:run)
 
       local_system.run_command("ls")
     end
 
     it "does not log commands when :disable_logging is set" do
-      expect(LoggedCheetah).to_not receive(:run)
+      expect(Machinery::LoggedCheetah).to_not receive(:run)
 
       local_system.run_command("ls", disable_logging: true)
     end

@@ -105,7 +105,7 @@ You can install it by running `zypper install #{package}`.
     if args.last.is_a?(Hash) && args.last[:disable_logging]
       cheetah_class = Cheetah
     else
-      cheetah_class = LoggedCheetah
+      cheetah_class = Machinery::LoggedCheetah
     end
 
     with_env(
@@ -121,7 +121,7 @@ You can install it by running `zypper install #{package}`.
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     begin
-      LoggedCheetah.run(
+      Machinery::LoggedCheetah.run(
         "rsync",
         "--chmod=go-rwx",
         "--files-from=-",

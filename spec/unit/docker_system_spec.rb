@@ -27,9 +27,9 @@ describe Machinery::DockerSystem do
   subject { Machinery::DockerSystem.new(valid_container_id).tap(&:start) }
 
   before(:each) do
-    allow(LoggedCheetah).to receive(:run).with("docker", "inspect", false_container_id).and_raise
-    allow(LoggedCheetah).to receive(:run).with("docker", "inspect", valid_container_id)
-    allow(LoggedCheetah).to receive(:run).with("docker", "run", any_args).and_return(instance)
+    allow(Machinery::LoggedCheetah).to receive(:run).with("docker", "inspect", false_container_id).and_raise
+    allow(Machinery::LoggedCheetah).to receive(:run).with("docker", "inspect", valid_container_id)
+    allow(Machinery::LoggedCheetah).to receive(:run).with("docker", "run", any_args).and_return(instance)
     allow(subject).to receive(:stop)
   end
 
@@ -49,7 +49,7 @@ describe Machinery::DockerSystem do
 
   describe "#run_command" do
     it "runs the command using docker exec" do
-      expect(LoggedCheetah).to receive(:run).with("docker", "exec", "--user=root", "-i", "12345",
+      expect(Machinery::LoggedCheetah).to receive(:run).with("docker", "exec", "--user=root", "-i", "12345",
         "bash -c python")
 
       subject.run_command("bash -c python")
@@ -58,7 +58,7 @@ describe Machinery::DockerSystem do
 
   describe "#inject_file" do
     it "injects the file using docker cp" do
-      expect(LoggedCheetah).to receive(:run).with("docker", "cp", "/tmp/foo", "12345:/tmp")
+      expect(Machinery::LoggedCheetah).to receive(:run).with("docker", "cp", "/tmp/foo", "12345:/tmp")
 
       subject.inject_file("/tmp/foo", "/tmp")
     end
@@ -66,9 +66,9 @@ describe Machinery::DockerSystem do
 
   describe "#retrieve_files" do
     it "extracts the files using docker cp" do
-      expect(LoggedCheetah).to receive(:run).with("docker", "cp", "12345:/tmp/foo", "/tmp/foo")
-      expect(LoggedCheetah).to receive(:run).with("docker", "cp", "12345:/tmp/bar", "/tmp/bar")
-      expect(LoggedCheetah).to receive(:run).with("chmod", any_args).twice
+      expect(Machinery::LoggedCheetah).to receive(:run).with("docker", "cp", "12345:/tmp/foo", "/tmp/foo")
+      expect(Machinery::LoggedCheetah).to receive(:run).with("docker", "cp", "12345:/tmp/bar", "/tmp/bar")
+      expect(Machinery::LoggedCheetah).to receive(:run).with("chmod", any_args).twice
 
       subject.retrieve_files(["/tmp/foo", "/tmp/bar"], "/")
     end

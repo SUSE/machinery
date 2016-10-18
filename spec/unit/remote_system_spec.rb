@@ -39,14 +39,14 @@ describe Machinery::RemoteSystem do
       end
 
       it "checks if sudo is available" do
-        expect(LoggedCheetah).to receive(:run)
+        expect(Machinery::LoggedCheetah).to receive(:run)
         expect_any_instance_of(Machinery::RemoteSystem).
           to receive(:check_requirement).with("sudo", "-h")
         remote_system_with_sudo
       end
 
       it "raises an exception if the user is not allowed to run sudo" do
-        expect(LoggedCheetah).to receive(:run).with(
+        expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
 
@@ -59,7 +59,7 @@ describe Machinery::RemoteSystem do
       end
 
       it "raises an exception if a tty is required" do
-        expect(LoggedCheetah).to receive(:run).with(
+        expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(
           Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: sorry, you must have a tty to run sudo")
@@ -129,13 +129,13 @@ describe Machinery::RemoteSystem do
       end
 
       it "logs commands by default" do
-        expect(LoggedCheetah).to receive(:run)
+        expect(Machinery::LoggedCheetah).to receive(:run)
 
         remote_system.run_command("ls")
       end
 
       it "does not log commands when :disable_logging is set" do
-        expect(LoggedCheetah).to_not receive(:run)
+        expect(Machinery::LoggedCheetah).to_not receive(:run)
         expect(Cheetah).to receive(:run)
 
         remote_system.run_command("ls", disable_logging: true)

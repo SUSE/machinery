@@ -114,7 +114,7 @@ class Machinery::AnalyzeConfigFileDiffsTask
   def with_repositories(description, &block)
     Machinery::Ui.puts "Setting up repository access..."
     arch = description.os.architecture
-    Zypper.isolated(arch: arch) do |zypper|
+    Machinery::Zypper.isolated(arch: arch) do |zypper|
       begin
         remote_repos = description.repositories.reject do |repo|
           repo.url.start_with?("cd://") || repo.url.start_with?("dvd://")

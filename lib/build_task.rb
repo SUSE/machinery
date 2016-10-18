@@ -40,7 +40,7 @@ class Machinery::BuildTask
 
       begin
         with_c_locale do
-          LoggedCheetah.run(
+          Machinery::LoggedCheetah.run(
             "sudo",
             tmp_script.path,
             stdout: $stdout,
@@ -68,7 +68,7 @@ class Machinery::BuildTask
 
           Machinery::Ui.warn "Cleaning up temporary files..."
           [tmp_config_dir, tmp_image_dir].each do |path|
-            LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exist?(path)
+            Machinery::LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exist?(path)
           end
         end
         raise
