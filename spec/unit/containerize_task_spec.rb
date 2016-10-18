@@ -59,17 +59,17 @@ describe Machinery::ContainerizeTask do
     }
 
     it "containerize a system description" do
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:save).with(workloads, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
     end
 
     it "shows detected workloads" do
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:save).with(workloads, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
       expected_output = <<-EOF.chomp
@@ -82,7 +82,7 @@ EOF
     end
 
     it "shows a hint when no workloads detected" do
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return({})
       containerize_task.containerize(system_description, output_path)
 

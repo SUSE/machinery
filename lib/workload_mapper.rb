@@ -14,7 +14,7 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-class WorkloadMapper
+class Machinery::WorkloadMapper
   def save(workloads, path)
     workloads.each do |workload, config|
       FileUtils.mkdir_p(File.join(path, workload))
@@ -75,7 +75,7 @@ class WorkloadMapper
     workloads = {}
 
     Dir["#{File.expand_path(workload_mapper_path)}/*"].each do |workload_dir|
-      mapper = WorkloadMapperDSL.new(system_description)
+      mapper = Machinery::WorkloadMapperDSL.new(system_description)
       workload = mapper.check_clue(File.read(File.join(workload_dir, "clue.rb")))
       workloads.merge!(workload.to_h)
     end

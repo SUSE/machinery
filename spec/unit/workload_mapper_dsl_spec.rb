@@ -17,9 +17,9 @@
 
 require_relative "spec_helper"
 
-describe WorkloadMapperDSL do
+describe Machinery::WorkloadMapperDSL do
   let(:system_description) { double }
-  subject { WorkloadMapperDSL.new(system_description) }
+  subject { Machinery::WorkloadMapperDSL.new(system_description) }
 
   describe "#identify" do
     context "when no service is specified" do
@@ -61,7 +61,7 @@ describe WorkloadMapperDSL do
 
   describe "#to_h" do
     it "returns an empty hash if service is nil" do
-      mapper = WorkloadMapperDSL.new(system_description)
+      mapper = Machinery::WorkloadMapperDSL.new(system_description)
       expect(mapper.to_h).to eq({})
     end
   end

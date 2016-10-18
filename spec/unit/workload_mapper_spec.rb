@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe WorkloadMapper do
+describe Machinery::WorkloadMapper do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
@@ -104,7 +104,7 @@ describe WorkloadMapper do
 
     it "extracts the related workload data" do
       allow_any_instance_of(UnmanagedFilesScope).to receive(:export_files_as_tarballs)
-      allow_any_instance_of(WorkloadMapper).to receive(
+      allow_any_instance_of(Machinery::WorkloadMapper).to receive(
         :copy_workload_changed_config_files
       ).and_return(true)
 

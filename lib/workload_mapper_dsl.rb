@@ -14,7 +14,7 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-class WorkloadMapperDSL
+class Machinery::WorkloadMapperDSL
   attr_reader :system, :name, :service, :parameters, :data
 
   def initialize(system)

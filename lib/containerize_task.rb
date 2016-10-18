@@ -19,7 +19,7 @@ class Machinery::ContainerizeTask
   def containerize(description, dir)
     output_path = File.join(dir, description.name)
 
-    mapper = WorkloadMapper.new
+    mapper = Machinery::WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
 
     if workloads.empty?
