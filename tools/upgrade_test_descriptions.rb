@@ -33,7 +33,7 @@ def upgrade_descriptions(path, descriptions = [])
     next unless File.exist?(File.join(path, description, "manifest.json"))
 
     puts File.join(path, description)
-    Migration.migrate_description(store, description, force: true)
+    Machinery::Migration.migrate_description(store, description, force: true)
 
     FileUtils.rm_rf(File.join(path, "#{description}.backup"))
   end

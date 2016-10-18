@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate5to6.rb")
 
-describe Migrate5To6 do
+describe Machinery::Migrate5To6 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -166,7 +166,7 @@ describe Migrate5To6 do
   let(:description_base) { system_description_factory_store.description_path("description") }
 
   before(:each) do
-    migration = Migrate5To6.new(description_hash, description_base)
+    migration = Machinery::Migrate5To6.new(description_hash, description_base)
     migration.migrate
   end
 

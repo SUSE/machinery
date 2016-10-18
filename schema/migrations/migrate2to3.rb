@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate2To3 < Migration
+class Machinery::Migrate2To3 < Machinery::Migration
   desc <<-EOT
     Schema version 3 stores the analyzed data under the directory
     "analyze" and config files diffs in the config_file_diffs

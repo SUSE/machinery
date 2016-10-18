@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate3To4 < Migration
+class Machinery::Migrate3To4 < Machinery::Migration
   desc <<-EOT
     Schema version 4 adds a "type" attribute to changed_managed_files and config_files
     in order to support other file types like links.

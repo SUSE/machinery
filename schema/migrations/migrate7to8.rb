@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate7To8 < Migration
+class Machinery::Migrate7To8 < Machinery::Migration
   desc <<-EOT
     Format version 8 renames the scope config-files to changed-config-files.
 

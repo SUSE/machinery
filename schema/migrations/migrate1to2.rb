@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate1To2 < Migration
+class Machinery::Migrate1To2 < Machinery::Migration
   desc <<-EOT
     Schema version 2 introduces an "extracted" flag for the config_files,
     changed_managed_files and unmanaged_files scope, indicating whether the

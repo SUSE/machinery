@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate3to4")
 
-describe Migrate3To4 do
+describe Machinery::Migrate3To4 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -109,7 +109,7 @@ describe Migrate3To4 do
       FileUtils.mkdir_p(File.join(description_base, "changed_managed_files", "empty"))
       FileUtils.touch(File.join(description_base, "changed_managed_files", "etc", "file"))
 
-      migration = Migrate3To4.new(description_hash, description_base)
+      migration = Machinery::Migrate3To4.new(description_hash, description_base)
       migration.migrate
     end
 
@@ -133,7 +133,7 @@ describe Migrate3To4 do
 
   describe "when the scopes were not extracted" do
     before(:each) do
-      migration = Migrate3To4.new(description_hash, description_base)
+      migration = Machinery::Migrate3To4.new(description_hash, description_base)
       migration.migrate
     end
 

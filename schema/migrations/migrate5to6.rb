@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate5To6 < Migration
+class Machinery::Migrate5To6 < Machinery::Migration
   desc <<-EOT
     Schema version 6 adds support for Ubuntu 14.04 systems.
     There are now three types of repositories: zypper, yum and apt

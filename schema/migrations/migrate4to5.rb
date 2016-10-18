@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate4To5 < Migration
+class Machinery::Migrate4To5 < Machinery::Migration
   desc <<-EOT
     Schema version 5 adds a "environment" scope which stores information about the inspected system.
   EOT

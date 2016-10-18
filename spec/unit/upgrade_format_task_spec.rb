@@ -30,7 +30,7 @@ describe Machinery::UpgradeFormatTask do
    EOF
   }
 
-  class Migrate0To1 < Migration
+  class Migrate0To1 < Machinery::Migration
     desc "Dummy migration migrating our dummy descriptions to version 1"
     def migrate; end
   end
@@ -113,7 +113,7 @@ EOF
     end
 
     it "handles failed upgrades and continues" do
-      stub_const("Migrate1To2", Class.new do
+      stub_const("Machinery::Migrate1To2", Class.new do
         def migrate; raise StandardError.new; end
       end)
 
@@ -126,7 +126,7 @@ EOF
     end
 
     it "shows hint if migration fails" do
-      stub_const("Migrate1To2", Class.new do
+      stub_const("Machinery::Migrate1To2", Class.new do
         def migrate; raise StandardError.new; end
       end)
       expect(Machinery::Ui::Hint).
@@ -137,7 +137,7 @@ EOF
     end
 
     it "shows hint if upgrade-format --all fails" do
-      stub_const("Migrate1To2", Class.new do
+      stub_const("Machinery::Migrate1To2", Class.new do
         def migrate; raise StandardError.new; end
       end)
       expect(Machinery::Ui::Hint).to receive(:to_string).with(:upgrade_format_force, name: "--all")

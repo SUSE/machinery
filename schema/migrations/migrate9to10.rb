@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate9To10 < Migration
+class Machinery::Migrate9To10 < Machinery::Migration
   desc <<-EOT
     Add meta data information regarding subdirectories to unmanaged files. The subdirectory
     count is not available for migrated descriptions so the sum of both is called file_objects.

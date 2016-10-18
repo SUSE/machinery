@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate1to2")
 
-describe Migrate1To2 do
+describe Machinery::Migrate1To2 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -100,7 +100,7 @@ describe Migrate1To2 do
   let(:description_base) { system_description_factory_store.description_path("description") }
 
   it "sets the extracted flag to false if the files weren't extracted" do
-    migration = Migrate1To2.new(description_hash, description_base)
+    migration = Machinery::Migrate1To2.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["config_files"]["extracted"]).to be(false)
@@ -117,7 +117,7 @@ describe Migrate1To2 do
       FileUtils.mkdir_p(File.join(description_base, scope))
     end
 
-    migration = Migrate1To2.new(description_hash, description_base)
+    migration = Machinery::Migrate1To2.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["config_files"]["extracted"]).to be(true)
@@ -130,7 +130,7 @@ describe Migrate1To2 do
     changed_managed_files = description_hash["changed_managed_files"]
     unmanaged_files = description_hash["unmanaged_files"]
 
-    migration = Migrate1To2.new(description_hash, description_base)
+    migration = Machinery::Migrate1To2.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["config_files"]["files"]).to match_array(config_files)
@@ -141,7 +141,7 @@ describe Migrate1To2 do
   it "makes sure that NIS group placeholders have a GID" do
     expect(description_hash["groups"].first.key?("gid")).to be(false)
 
-    migration = Migrate1To2.new(description_hash, description_base)
+    migration = Machinery::Migrate1To2.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["groups"].first.key?("gid")).to be(true)

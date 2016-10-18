@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate9to10")
 
-describe Migrate9To10 do
+describe Machinery::Migrate9To10 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -175,7 +175,7 @@ describe Migrate9To10 do
   let(:description_base) { system_description_factory_store.description_path("description") }
 
   it "renames the attribute 'files' of unmanaged dirs to 'file_objects'" do
-    migration = Migrate9To10.new(description_hash, description_base)
+    migration = Machinery::Migrate9To10.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["unmanaged_files"]["_elements"].first["file_objects"]).to eq(16)
@@ -184,20 +184,20 @@ describe Migrate9To10 do
 
   it "does not change unmanaged files without meta data" do
     original = Marshal.load(Marshal.dump(description_hash_without_meta_data))
-    migration = Migrate9To10.new(description_hash_without_meta_data, description_base)
+    migration = Machinery::Migrate9To10.new(description_hash_without_meta_data, description_base)
     migration.migrate
     expect(original).to eq(description_hash_without_meta_data)
   end
 
   it "adds the attribute patterns_system and sets it to zypper for rpm based systems" do
-    migration = Migrate9To10.new(description_hash_with_rpm, description_base)
+    migration = Machinery::Migrate9To10.new(description_hash_with_rpm, description_base)
     migration.migrate
 
     expect(description_hash_with_rpm["patterns"]["_attributes"]["patterns_system"]).to eq("zypper")
   end
 
   it "adds the attribute patterns_system and sets it to tasksel for dpkg based systems" do
-    migration = Migrate9To10.new(description_hash_with_dpkg, description_base)
+    migration = Machinery::Migrate9To10.new(description_hash_with_dpkg, description_base)
     migration.migrate
 
     expect(description_hash_with_dpkg["patterns"]["_attributes"]["patterns_system"]).to eq("tasksel")
@@ -205,7 +205,10 @@ describe Migrate9To10 do
 
   it "adds the attribute patterns_system and sets it to zypper for systems without package system" \
         "attribute" do
-    migration = Migrate9To10.new(description_hash_without_package_system, description_base)
+    migration = Machinery::Migrate9To10.new(
+      description_hash_without_package_system,
+      description_base
+    )
     migration.migrate
 
     expect(description_hash_without_package_system["patterns"]["_attributes"] \

@@ -43,7 +43,7 @@
 #
 # Simple example migration which adds a new attribute to the JSON:
 #
-#   class Migrate1To2 < Migration
+#   class Machinery::Migrate1To2 < Machinery::Migration
 #     desc <<-EOT
 #       Add 'foo' element to the system description root.
 #     EOT
@@ -53,7 +53,7 @@
 #       @hash["changed_config_files"]["extracted"] = is_extracted
 #     end
 #   end
-class Migration
+class Machinery::Migration
   MIGRATIONS_DIR= File.join(Machinery::ROOT, "schema/migrations")
 
   class << self
@@ -104,7 +104,7 @@ class Migration
       (current_version..Machinery::SystemDescription::CURRENT_FORMAT_VERSION - 1).each do |version|
         next_version = version + 1
         begin
-          klass = Object.const_get("Migrate#{version}To#{next_version}")
+          klass = Object.const_get("Machinery::Migrate#{version}To#{next_version}")
         rescue NameError
           return
         end

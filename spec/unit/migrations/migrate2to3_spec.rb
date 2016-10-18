@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate2to3")
 
-describe Migrate2To3 do
+describe Machinery::Migrate2To3 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -64,7 +64,7 @@ describe Migrate2To3 do
   it "moves config-file-diffs to analyze/config_file_diffs" do
     FileUtils.mkdir_p(File.join(description_base, "config-file-diffs", "etc"))
 
-    migration = Migrate2To3.new(description_hash, description_base)
+    migration = Machinery::Migrate2To3.new(description_hash, description_base)
     migration.migrate
 
     expect(
@@ -84,7 +84,7 @@ describe Migrate2To3 do
       "priority" => 99,
       "package_manager" => "zypp"
     }
-    migration = Migrate2To3.new(description_hash, description_base)
+    migration = Machinery::Migrate2To3.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["repositories"].first).to eq(expected_hash)
