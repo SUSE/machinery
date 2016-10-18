@@ -72,7 +72,7 @@ describe Machinery::ShowTask, "#show" do
     expect(Machinery::LocalSystem).
       to receive(:validate_existence_of_command).with("xdg-open", "xdg-utils")
     expect(Cheetah).to receive(:run).with("xdg-open", "http://0.0.0.0:3000/foo")
-    expect(Html).to receive(:run_server) do |_store, _options, &block|
+    expect(Machinery::Html).to receive(:run_server) do |_store, _options, &block|
       block.call
       double(join: nil)
     end

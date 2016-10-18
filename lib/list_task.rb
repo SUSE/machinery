@@ -100,7 +100,7 @@ Trying to start a web server for serving the descriptions on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-      server = Html.run_server(store, port: options[:port], ip: options[:ip]) do
+      server = Machinery::Html.run_server(store, port: options[:port], ip: options[:ip]) do
         Machinery::LoggedCheetah.run("xdg-open", url)
       end
 

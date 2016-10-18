@@ -46,7 +46,7 @@ describe Machinery::ManTask do
       end
 
       it "shows an error and exits if the documentation does not exist" do
-        expect(Html).to_not receive(:run_server)
+        expect(Machinery::Html).to_not receive(:run_server)
         expect(Machinery::Ui).to receive(:warn)
 
         subject.man(html: true)
@@ -54,7 +54,7 @@ describe Machinery::ManTask do
 
       it "opens the documentation in the browser if it exists" do
         FileUtils.mkdir_p(File.join(Machinery::ROOT, "manual", "site"))
-        expect(Html).to receive(:run_server).and_return(double(join: nil))
+        expect(Machinery::Html).to receive(:run_server).and_return(double(join: nil))
 
 
         subject.man(html: true)
