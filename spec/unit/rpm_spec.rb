@@ -17,9 +17,9 @@
 
 require_relative "spec_helper"
 
-describe Rpm do
+describe Machinery::Rpm do
   subject {
-    Rpm.new(
+    Machinery::Rpm.new(
       File.join(
         Machinery::ROOT, "spec/data/changed_config_files/minimal-config-file-1-0.x86_64.rpm"
       )

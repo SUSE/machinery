@@ -176,9 +176,9 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
         with("aaa_base-3.11.1").and_return("/some/path/aaa_base")
       expect_any_instance_of(Machinery::Zypper).to receive(:download_package).
         with("login-3.41").and_return("/some/path/login")
-      expect(Rpm).to receive(:new).with("/some/path/aaa_base").
+      expect(Machinery::Rpm).to receive(:new).with("/some/path/aaa_base").
         and_return(double(diff: "some aaa_base diff")).twice
-      expect(Rpm).to receive(:new).with("/some/path/login").
+      expect(Machinery::Rpm).to receive(:new).with("/some/path/login").
         and_return(double(diff: "some login diff"))
 
       subject.analyze(description)

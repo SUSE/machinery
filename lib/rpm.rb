@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 # Rpm represents an RPM package on the disk.
-class Rpm
+class Machinery::Rpm
   def initialize(path)
     @path = path
   end

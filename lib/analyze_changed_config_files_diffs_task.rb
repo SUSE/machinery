@@ -55,7 +55,7 @@ class Machinery::AnalyzeConfigFileDiffsTask
         end
 
         package.files.each do |file|
-          diff = Rpm.new(path).diff(file, File.join(extracted_files_path, file))
+          diff = Machinery::Rpm.new(path).diff(file, File.join(extracted_files_path, file))
 
           if !diff || diff.empty?
             Machinery::Ui.warn "Warning: Could not generate diff for #{file}."
