@@ -17,7 +17,7 @@
 
 class Machinery::ShowTask
   def show(description, scopes, filter, options = {})
-    scopes = Inspector.sort_scopes(scopes)
+    scopes = Machinery::Inspector.sort_scopes(scopes)
     if options[:show_html]
       show_html(description, options)
     else

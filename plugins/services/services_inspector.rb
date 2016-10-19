@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ServicesInspector < Inspector
+class ServicesInspector < Machinery::Inspector
   has_priority 70
 
   def initialize(system, description)

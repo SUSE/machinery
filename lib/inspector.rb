@@ -31,7 +31,7 @@
 # the description. It returns a brief summary string of the inspection.
 #
 # The description object can also be used to store files in the description.
-class Inspector
+class Machinery::Inspector
   abstract_method :inspect
   abstract_method :summary
 

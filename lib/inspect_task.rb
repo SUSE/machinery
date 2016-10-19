@@ -77,7 +77,7 @@ class Machinery::InspectTask
     effective_filter = Machinery::Filter.new(description.filter_definitions("inspect"))
 
     scopes.each do |scope|
-      inspector = Inspector.for(scope).new(system, description)
+      inspector = Machinery::Inspector.for(scope).new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
 
       element_filters = filter.element_filters_for_scope(scope)
@@ -105,7 +105,7 @@ class Machinery::InspectTask
   end
 
   def set_system_locale(system, description)
-    Inspector.for("environment").new(system, description).inspect
+    Machinery::Inspector.for("environment").new(system, description).inspect
     system.locale = description.environment.locale
   end
 end

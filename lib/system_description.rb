@@ -220,7 +220,7 @@ class Machinery::SystemDescription < Machinery::Object
   end
 
   def scopes
-    Inspector.sort_scopes(attributes.keys.map(&:to_s).sort)
+    Machinery::Inspector.sort_scopes(attributes.keys.map(&:to_s).sort)
   end
 
   def assert_scopes(*scopes)

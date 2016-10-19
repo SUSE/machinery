@@ -68,7 +68,7 @@ describe Machinery::Cli do
           system,
           "docker_image_foo",
           an_instance_of(Machinery::CurrentUser),
-          Inspector.all_scopes,
+          Machinery::Inspector.all_scopes,
           an_instance_of(Machinery::Filter),
           {}
         )
@@ -88,7 +88,7 @@ describe Machinery::Cli do
           system,
           "docker_foo",
           an_instance_of(Machinery::CurrentUser),
-          Inspector.all_scopes,
+          Machinery::Inspector.all_scopes,
           an_instance_of(Machinery::Filter),
           {}
         )
@@ -203,7 +203,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(Machinery::CurrentUser),
-            Inspector.all_scopes,
+            Machinery::Inspector.all_scopes,
             an_instance_of(Machinery::Filter),
             {}
           ).
@@ -220,7 +220,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::RemoteSystem),
             name,
             an_instance_of(Machinery::CurrentUser),
-            Inspector.all_scopes,
+            Machinery::Inspector.all_scopes,
             an_instance_of(Machinery::Filter),
             {}
            ).
@@ -236,7 +236,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(Machinery::CurrentUser),
-            Inspector.all_scopes,
+            Machinery::Inspector.all_scopes,
             an_instance_of(Machinery::Filter),
             {}
            ).
@@ -284,7 +284,7 @@ describe Machinery::Cli do
             an_instance_of(Machinery::RemoteSystem),
             example_host,
             an_instance_of(Machinery::CurrentUser),
-            Inspector.all_scopes,
+            Machinery::Inspector.all_scopes,
             an_instance_of(Machinery::Filter),
             {}
           ).
@@ -294,7 +294,7 @@ describe Machinery::Cli do
       end
 
       it "doesn't inspect the excluded scopes" do
-        scope_list = Inspector.all_scopes
+        scope_list = Machinery::Inspector.all_scopes
         scope_list.delete("packages")
         scope_list.delete("repositories")
 
@@ -395,7 +395,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(Machinery::CurrentUser),
-              Inspector.all_scopes,
+              Machinery::Inspector.all_scopes,
               an_instance_of(Machinery::Filter),
               {}
             ).
@@ -411,7 +411,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(Machinery::CurrentUser),
-              Inspector.all_scopes,
+              Machinery::Inspector.all_scopes,
               an_instance_of(Machinery::Filter),
               extract_changed_changed_config_files: true,
               extract_unmanaged_files: true,
@@ -429,7 +429,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(Machinery::CurrentUser),
-              Inspector.all_scopes,
+              Machinery::Inspector.all_scopes,
               an_instance_of(Machinery::Filter),
               extract_changed_changed_config_files: true
             ).
@@ -445,7 +445,7 @@ describe Machinery::Cli do
               an_instance_of(Machinery::RemoteSystem),
               example_host,
               an_instance_of(Machinery::CurrentUser),
-              Inspector.all_scopes,
+              Machinery::Inspector.all_scopes,
               an_instance_of(Machinery::Filter),
               extract_unmanaged_files: true
             ).
@@ -771,11 +771,11 @@ describe Machinery::Cli do
 
     it "returns all scopes if no scopes are provided" do
       expect(Machinery::Cli.process_scope_option(nil, nil)).
-        to eq(Inspector.all_scopes)
+        to eq(Machinery::Inspector.all_scopes)
     end
 
     it "returns all scopes except the excluded scope" do
-      scope_list = Inspector.all_scopes
+      scope_list = Machinery::Inspector.all_scopes
       scope_list.delete("os")
       expect(Machinery::Cli.process_scope_option(nil, "os")).to eq(scope_list)
     end

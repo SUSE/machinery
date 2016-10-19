@@ -31,7 +31,7 @@ describe Machinery::InspectTask, "#inspect_system" do
     has_property :files, class: SimpleInspectTaskList
   end
 
-  class FooInspector < Inspector
+  class FooInspector < Machinery::Inspector
     def initialize(_system, description)
       @description = description
     end
@@ -53,7 +53,7 @@ describe Machinery::InspectTask, "#inspect_system" do
     end
   end
 
-  class BarInspector < Inspector
+  class BarInspector < Machinery::Inspector
     def initialize(_system, description)
       @description = description
     end
@@ -98,13 +98,15 @@ describe Machinery::InspectTask, "#inspect_system" do
 
   it "gathers the system environment before running the actual inspection" do
     expect(inspect_task).to receive(:set_system_locale)
-    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+    expect(Machinery::Inspector).
+      to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
     inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
   end
 
   it "runs the proper inspector when a scope is given" do
-    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+    expect(Machinery::Inspector).
+      to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
 
     inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
   end
@@ -182,7 +184,7 @@ Inspecting foo...
       end
 
       it "doesn't raise an exception when we run as root" do
-        allow(Inspector).to receive(:all) { [] }
+        allow(Machinery::Inspector).to receive(:all) { [] }
 
         expect {
           inspect_task.inspect_system(store, local_system, name, current_user_root,
@@ -197,7 +199,7 @@ Inspecting foo...
       end
 
       it "doesn't raise an exception when we don't run as root" do
-        allow(Inspector).to receive(:all) { [] }
+        allow(Machinery::Inspector).to receive(:all) { [] }
 
         expect {
           inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"],
@@ -211,7 +213,7 @@ Inspecting foo...
     capture_machinery_output
 
     it "passes the filters to the inspectors" do
-      expect(Inspector).to receive(:for).at_least(:once).times.and_return(FooInspector)
+      expect(Machinery::Inspector).to receive(:for).at_least(:once).times.and_return(FooInspector)
 
       expect_any_instance_of(FooInspector).to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)

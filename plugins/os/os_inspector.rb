@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 #  Inspect name, version, and other attributes of the operating system
-class OsInspector < Inspector
+class OsInspector < Machinery::Inspector
   has_priority 10
 
   def strip_arch_from_name(name)

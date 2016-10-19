@@ -18,13 +18,13 @@
 require_relative "spec_helper"
 
 
-describe Inspector do
+describe Machinery::Inspector do
   before :each do
     stub_const("FooScope", Class.new do
       include Machinery::Scope
       def self.name; "FooScope"; end
     end)
-    stub_const("FooInspector", Class.new(Inspector) do
+    stub_const("FooInspector", Class.new(Machinery::Inspector) do
       def self.name; "FooInspector"; end
       has_priority 2000
     end)
@@ -33,7 +33,7 @@ describe Inspector do
       include Machinery::Scope
       def self.name; "BarBazScope"; end
     end)
-    stub_const("BarBazInspector", Class.new(Inspector) do
+    stub_const("BarBazInspector", Class.new(Machinery::Inspector) do
       def self.name; "BarBazInspector"; end
       has_priority 1500
     end)
@@ -42,7 +42,7 @@ describe Inspector do
       include Machinery::Scope
       def self.name; "BarracudaScope"; end
     end)
-    stub_const("BarracudaInspector", Class.new(Inspector) do
+    stub_const("BarracudaInspector", Class.new(Machinery::Inspector) do
       def self.name; "BarracudaInspector"; end
       has_priority 1700
     end)
@@ -50,27 +50,27 @@ describe Inspector do
 
   describe ".priority" do
     it "returns priority (default 1000)" do
-      expect(Inspector.priority).to eq(1000)
+      expect(Machinery::Inspector.priority).to eq(1000)
     end
   end
 
   describe ".has_priority" do
     it "sets a priority" do
-      Inspector.has_priority(10)
-      expect(Inspector.priority).to eq(10)
+      Machinery::Inspector.has_priority(10)
+      expect(Machinery::Inspector.priority).to eq(10)
     end
   end
 
   describe ".for" do
     it "returns the requested Inspector" do
-      expect(Inspector.for("foo")).to eq(FooInspector)
-      expect(Inspector.for("bar_baz")).to eq(BarBazInspector)
+      expect(Machinery::Inspector.for("foo")).to eq(FooInspector)
+      expect(Machinery::Inspector.for("bar_baz")).to eq(BarBazInspector)
     end
   end
 
   describe ".all" do
     it "returns all loaded Inspectors" do
-      inspectors = Inspector.all
+      inspectors = Machinery::Inspector.all
 
       expect(inspectors).to include(FooInspector)
       expect(inspectors).to include(BarracudaInspector)
@@ -80,13 +80,13 @@ describe Inspector do
 
   describe ".all_scopes" do
     it "returns all available scopes" do
-      all_scopes = Inspector.all_scopes
+      all_scopes = Machinery::Inspector.all_scopes
       expect(all_scopes).to include("foo")
       expect(all_scopes).to include("bar_baz")
     end
 
     it "returns all scopes sorted by priority" do
-      all_scopes = Inspector.all_scopes
+      all_scopes = Machinery::Inspector.all_scopes
       expect(all_scopes[-1]).to eq("foo")
       expect(all_scopes[-2]).to eq("barracuda")
       expect(all_scopes[-3]).to eq("bar_baz")
@@ -95,7 +95,8 @@ describe Inspector do
 
   describe ".sort_scopes" do
     it "sorts the three given scopes" do
-      expect(Inspector.sort_scopes(["users", "os", "patterns"])).to eq(["os", "patterns", "users"])
+      expect(Machinery::Inspector.sort_scopes(["users", "os", "patterns"])).
+        to eq(["os", "patterns", "users"])
     end
 
     it "sorts all scopes" do
@@ -109,7 +110,7 @@ describe Inspector do
         "services", "changed_config_files", "changed_managed_files", "unmanaged_files"
       ]
 
-      expect(Inspector.sort_scopes(unsorted_list)).to eq(expected_result)
+      expect(Machinery::Inspector.sort_scopes(unsorted_list)).to eq(expected_result)
     end
   end
 

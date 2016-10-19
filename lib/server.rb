@@ -218,7 +218,7 @@ class Server < Sinatra::Base
     @meta = {}
     @diff = {}
 
-    Inspector.all_scopes.each do |scope|
+    Machinery::Inspector.all_scopes.each do |scope|
       if @description_a[scope] && @description_b[scope]
         @diff[scope] = Machinery::Comparison.compare_scope(@description_a, @description_b, scope)
       elsif @description_a[scope] || @description_b[scope]

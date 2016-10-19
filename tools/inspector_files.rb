@@ -36,7 +36,7 @@ class ReferenceTestData
   end
 
   def write(destination)
-    Inspector.all_scopes.each do |inspector|
+    Machinery::Inspector.all_scopes.each do |inspector|
       output = Cheetah.run(
         @machinery, "show", "-s", inspector.tr("_", "-"),
         "referencetestdata", stdout: :capture
