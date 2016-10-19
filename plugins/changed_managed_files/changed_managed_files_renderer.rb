@@ -15,58 +15,62 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ChangedManagedFilesRenderer < Machinery::Ui::Renderer
-  def content(description)
-    return unless description["changed_managed_files"]
+module Machinery
+  class Ui
+    class ChangedManagedFilesRenderer < Machinery::Ui::Renderer
+      def content(description)
+        return unless description["changed_managed_files"]
 
-    if description["changed_managed_files"]
-      files, errors = description["changed_managed_files"].partition do |file|
-        file.status != "error"
-      end
-    end
-
-    list do
-      file_status = description["changed_managed_files"].extracted
-
-      if files.empty?
-        puts "There are no changed managed files."
-      elsif !file_status.nil?
-        puts "Files extracted: #{file_status ? "yes" : "no"}"
-      end
-
-      if files && !files.empty?
-        files.each do |p|
-          item "#{p.name} (#{p.changes.join(", ")})"
-        end
-      end
-    end
-
-    if errors && !errors.empty?
-      list("Errors") do
-        errors.each do |p|
-          item "#{p.name}: #{p.error_message}"
-        end
-      end
-    end
-  end
-
-  def display_name
-    "Changed Managed Files"
-  end
-
-  def compare_content_changed(changed_elements)
-    list do
-      changed_elements.each do |one, two|
-        changes = []
-        relevant_attributes = (one.attributes.keys & two.attributes.keys)
-
-        relevant_attributes.each do |attribute|
-          if one[attribute] != two[attribute]
-            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+        if description["changed_managed_files"]
+          files, errors = description["changed_managed_files"].partition do |file|
+            file.status != "error"
           end
         end
 
-        item "#{one.name} (#{changes.join(", ")})"
+        list do
+          file_status = description["changed_managed_files"].extracted
+
+          if files.empty?
+            puts "There are no changed managed files."
+          elsif !file_status.nil?
+            puts "Files extracted: #{file_status ? "yes" : "no"}"
+          end
+
+          if files && !files.empty?
+            files.each do |p|
+              item "#{p.name} (#{p.changes.join(", ")})"
+            end
+          end
+        end
+
+        if errors && !errors.empty?
+          list("Errors") do
+            errors.each do |p|
+              item "#{p.name}: #{p.error_message}"
+            end
+          end
+        end
+      end
+
+      def display_name
+        "Changed Managed Files"
+      end
+
+      def compare_content_changed(changed_elements)
+        list do
+          changed_elements.each do |one, two|
+            changes = []
+            relevant_attributes = (one.attributes.keys & two.attributes.keys)
+
+            relevant_attributes.each do |attribute|
+              if one[attribute] != two[attribute]
+                changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+              end
+            end
+
+            item "#{one.name} (#{changes.join(", ")})"
+          end
+        end
       end
     end
   end

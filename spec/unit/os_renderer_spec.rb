@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe OsRenderer do
+describe Machinery::Ui::OsRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
@@ -40,7 +40,7 @@ describe OsRenderer do
   Architecture: x86_64
 
 EOF
-      expect(OsRenderer.new.render(system_description)).to eq(expected_output)
+      expect(Machinery::Ui::OsRenderer.new.render(system_description)).to eq(expected_output)
     end
   end
 end

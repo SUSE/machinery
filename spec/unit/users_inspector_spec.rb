@@ -17,9 +17,12 @@
 
 require_relative "spec_helper"
 
-describe UsersInspector do
+describe Machinery::UsersInspector do
   let(:description) {
-    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
+    Machinery::SystemDescription.new(
+      "systemname",
+      Machinery::SystemDescriptionStore.new
+    )
   }
   let(:passwd_content) {<<EOF
 root:x:0:0:root:/root:/bin/bash
@@ -33,12 +36,15 @@ EOF
   }
   let(:system) { double }
   let(:filter) { nil }
-  subject { UsersInspector.new(system, description) }
+  subject { Machinery::UsersInspector.new(system, description) }
 
   describe "#inspect" do
     it "return an empty list when /etc/passwd is missing" do
       expect(system).to receive(:read_file).with("/etc/passwd").and_return(nil)
-      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
+      expect(system).to receive(:read_file).with(
+        "/etc/shadow",
+        privileged: true
+      ).and_return(nil)
 
       subject.inspect(filter)
       expect(description.users).to be_empty
@@ -46,38 +52,45 @@ EOF
     end
 
     it "returns all attributes when /etc/shadow is present" do
-      expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(shadow_content)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(
+        passwd_content
+      )
+      expect(system).to receive(:read_file).with(
+        "/etc/shadow",
+        privileged: true
+      ).and_return(shadow_content)
 
-      expected = UsersScope.new([
-        User.new(
-          name:               "lp",
-          password:           "x",
-          uid:                4,
-          gid:                7,
-          comment:            "Printing daemon",
-          home:               "/var/spool/lpd",
-          shell:              "/bin/false",
-          encrypted_password: "*",
-          last_changed_date:  16125,
-          min_days:           1,
-          max_days:           2,
-          warn_days:          3,
-          disable_days:       4,
-          disabled_date:      5
-        ),
-        User.new(
-          name:               "root",
-          password:           "x",
-          uid:                0,
-          gid:                0,
-          comment:            "root",
-          home:               "/root",
-          shell:              "/bin/bash",
-          encrypted_password: "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
-          last_changed_date:  16125
-        )
-      ])
+      expected = Machinery::UsersScope.new(
+        [
+          Machinery::User.new(
+            name:               "lp",
+            password:           "x",
+            uid:                4,
+            gid:                7,
+            comment:            "Printing daemon",
+            home:               "/var/spool/lpd",
+            shell:              "/bin/false",
+            encrypted_password: "*",
+            last_changed_date:  16125,
+            min_days:           1,
+            max_days:           2,
+            warn_days:          3,
+            disable_days:       4,
+            disabled_date:      5
+          ),
+          Machinery::User.new(
+            name:               "root",
+            password:           "x",
+            uid:                0,
+            gid:                0,
+            comment:            "root",
+            home:               "/root",
+            shell:              "/bin/bash",
+            encrypted_password: "$1$Qf2FvbHa$sQCyvYhJKsCqAoTcK21eN1",
+            last_changed_date:  16125
+          )
+        ]
+      )
 
       subject.inspect(filter)
 
@@ -86,24 +99,31 @@ EOF
     end
 
     it "it can deal with the NIS placeholder in /etc/passwd" do
-      expect(system).to receive(:read_file).with("/etc/passwd").and_return("+::::::\n")
-      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return("+::0:0:0::::\n")
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(
+        "+::::::\n"
+      )
+      expect(system).to receive(:read_file).with(
+        "/etc/shadow",
+        privileged: true
+      ).and_return("+::0:0:0::::\n")
 
-      expected = UsersScope.new([
-        User.new(
-          name:               "+",
-          password:           "",
-          uid:                nil,
-          gid:                nil,
-          comment:            "",
-          home:               "",
-          shell:              "",
-          encrypted_password: "",
-          last_changed_date:  0,
-          min_days:           0,
-          max_days:           0
-        )
-      ])
+      expected = Machinery::UsersScope.new(
+        [
+          Machinery::User.new(
+            name:               "+",
+            password:           "",
+            uid:                nil,
+            gid:                nil,
+            comment:            "",
+            home:               "",
+            shell:              "",
+            encrypted_password: "",
+            last_changed_date:  0,
+            min_days:           0,
+            max_days:           0
+          )
+        ]
+      )
 
       subject.inspect(filter)
 
@@ -111,29 +131,36 @@ EOF
     end
 
     it "returns all available attributes when /etc/shadow is missing" do
-      expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(
+        passwd_content
+      )
+      expect(system).to receive(:read_file).with(
+        "/etc/shadow",
+        privileged: true
+      ).and_return(nil)
 
-      expected = UsersScope.new([
-        User.new(
-          name:            "lp",
-          password:        "x",
-          uid:             4,
-          gid:             7,
-          comment:         "Printing daemon",
-          home:            "/var/spool/lpd",
-          shell:           "/bin/false"
-        ),
-        User.new(
-          name:            "root",
-          password:        "x",
-          uid:             0,
-          gid:             0,
-          comment:         "root",
-          home:            "/root",
-          shell:           "/bin/bash"
-        )
-      ])
+      expected = Machinery::UsersScope.new(
+        [
+          Machinery::User.new(
+            name:            "lp",
+            password:        "x",
+            uid:             4,
+            gid:             7,
+            comment:         "Printing daemon",
+            home:            "/var/spool/lpd",
+            shell:           "/bin/false"
+          ),
+          Machinery::User.new(
+            name:            "root",
+            password:        "x",
+            uid:             0,
+            gid:             0,
+            comment:         "root",
+            home:            "/root",
+            shell:           "/bin/bash"
+          )
+        ]
+      )
 
       subject.inspect(filter)
 
@@ -142,8 +169,13 @@ EOF
     end
 
     it "returns sorted data" do
-      expect(system).to receive(:read_file).with("/etc/passwd").and_return(passwd_content)
-      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
+      expect(system).to receive(:read_file).with("/etc/passwd").and_return(
+        passwd_content
+      )
+      expect(system).to receive(:read_file).with(
+        "/etc/shadow",
+        privileged: true
+      ).and_return(nil)
 
       subject.inspect(filter)
       names = description.users.map(&:name)
@@ -153,19 +185,24 @@ EOF
     it "can deal with invalid utf-8 characters in /etc/passwd" do
       expect(system).to receive(:read_file).with("/etc/passwd").
         and_return("tux:x:100:100:invalid\255char:/home/tux:/bin/bash\n")
-      expect(system).to receive(:read_file).with("/etc/shadow", privileged: true).and_return(nil)
+      expect(system).to receive(:read_file).with(
+        "/etc/shadow",
+        privileged: true
+      ).and_return(nil)
 
-      expected = UsersScope.new([
-        User.new(
-          name:     "tux",
-          password: "x",
-          uid:      100,
-          gid:      100,
-          comment:  "invalid�char",
-          home:     "/home/tux",
-          shell:    "/bin/bash"
-        )
-      ])
+      expected = Machinery::UsersScope.new(
+        [
+          Machinery::User.new(
+            name:     "tux",
+            password: "x",
+            uid:      100,
+            gid:      100,
+            comment:  "invalid�char",
+            home:     "/home/tux",
+            shell:    "/bin/bash"
+          )
+        ]
+      )
 
       subject.inspect(filter)
 

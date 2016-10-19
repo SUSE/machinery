@@ -110,7 +110,7 @@ class Machinery::Autoyast < Machinery::Exporter
   private
 
   def check_exported_os
-    unless @system_description.os.is_a?(OsSuse)
+    unless @system_description.os.is_a?(Machinery::OsSuse)
       raise Machinery::Errors::ExportFailed.new(
         "Export is not possible because the operating system " \
         "'#{@system_description.os.display_name}' is not supported."

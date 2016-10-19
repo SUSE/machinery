@@ -76,7 +76,7 @@ class Machinery::AnalyzeConfigFileDiffsTask
   private
 
   def check_os(description)
-    unless description.os.is_a?(OsSuse)
+    unless description.os.is_a?(Machinery::OsSuse)
       raise Machinery::Errors::AnalysisFailed.new(
         "Can not analyze the system description because its operating system" \
           " '#{description.os.display_name}' is not supported."
@@ -100,7 +100,7 @@ class Machinery::AnalyzeConfigFileDiffsTask
 
     files.inject({}) do |result, file|
         key = "#{file.package_name}-#{file.package_version}"
-        result[key] ||= Package.new(
+        result[key] ||= Machinery::Package.new(
           "name"    => file["package_name"],
           "version" => file["package_version"],
           "files"   => []

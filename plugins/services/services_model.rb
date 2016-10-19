@@ -15,47 +15,48 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+module Machinery
+  class Service < Machinery::Object
+    def enabled?
+      # systemd vs sysvinit
+      state == "enabled" || state == "on"
+    end
 
-class Service < Machinery::Object
-  def enabled?
-    # systemd vs sysvinit
-    state == "enabled" || state == "on"
-  end
-
-  def disabled?
-    # systemd vs sysvinit
-    state == "disabled" || state == "off"
-  end
-end
-
-class ServicesScope < Machinery::Array
-  include Machinery::Scope
-
-  has_attributes :init_system
-  has_elements class: Service
-
-  def compare_with(other)
-    if self.init_system != other.init_system
-      [self, other, nil, nil]
-    else
-      only_self = self - other
-      only_other = other - self
-      common = self & other
-      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
-      changed = nil if changed.empty?
-
-      [
-        service_list_to_scope(only_self),
-        service_list_to_scope(only_other),
-        changed,
-        service_list_to_scope(common)
-      ].map { |e| (e && !e.empty?) ? e : nil }
+    def disabled?
+      # systemd vs sysvinit
+      state == "disabled" || state == "off"
     end
   end
 
-  private
+  class ServicesScope < Machinery::Array
+    include Machinery::Scope
 
-  def service_list_to_scope(services)
-    self.class.new(services, init_system: init_system) unless services.elements.empty?
+    has_attributes :init_system
+    has_elements class: Service
+
+    def compare_with(other)
+      if init_system != other.init_system
+        [self, other, nil, nil]
+      else
+        only_self = self - other
+        only_other = other - self
+        common = self & other
+        changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+        changed = nil if changed.empty?
+
+        [
+          service_list_to_scope(only_self),
+          service_list_to_scope(only_other),
+          changed,
+          service_list_to_scope(common)
+        ].map { |e| (e && !e.empty?) ? e : nil }
+      end
+    end
+
+    private
+
+    def service_list_to_scope(services)
+      self.class.new(services, init_system: init_system) unless services.elements.empty?
+    end
   end
 end

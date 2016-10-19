@@ -24,7 +24,7 @@ describe "users model" do
     let(:scope) { description.users }
   end
 
-  specify { expect(description.users.first).to be_a(User) }
+  specify { expect(description.users.first).to be_a(Machinery::User) }
 
   describe "#compare_with" do
     it "does not consider last_changed_date changes" do

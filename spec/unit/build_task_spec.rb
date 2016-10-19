@@ -32,10 +32,10 @@ describe Machinery::BuildTask do
 
   before(:each) {
     allow(Machinery::LocalSystem).to receive(:os).and_return(
-      OsOpenSuse13_1.new(architecture: "x86_64")
+      Machinery::OsOpenSuse13_1.new(architecture: "x86_64")
     )
     allow(Cheetah).to receive(:run)
-    allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+    allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("x86_64")
     allow(Dir).to receive(:mktmpdir).
       with("machinery-config", "/tmp").and_return(tmp_config_dir)
     allow(Dir).to receive(:mktmpdir).
@@ -132,7 +132,7 @@ describe Machinery::BuildTask do
     end
 
     it "shows an error on non x86_64 architectures" do
-      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("i586")
 
       expect {
         build_task.build(system_description, output_path)
@@ -142,7 +142,7 @@ describe Machinery::BuildTask do
 
     it "shows an error when the current user does not have access to the image directory path" do
       allow(Machinery::LocalSystem).to receive(:validate_architecture)
-      allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+      allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("x86_64")
 
       user = Machinery::CurrentUser.new.username
 

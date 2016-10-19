@@ -35,8 +35,8 @@ describe Machinery::DeployTask do
 
   before(:each) do
     allow_any_instance_of(Kernel).to receive(:system)
-    allow(Machinery::LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
-    allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+    allow(Machinery::LocalSystem).to receive(:os).and_return(Machinery::OsOpenSuse13_1.new)
+    allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("x86_64")
     allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages)
     allow(Dir).to receive(:mktmpdir).and_return(tmp_image_dir)
     allow(Machinery::JsonValidator).to receive(:new).and_return(double(validate: []))
@@ -115,7 +115,7 @@ describe Machinery::DeployTask do
     end
 
     it "shows an error on non x86_64 architectures" do
-      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("i586")
       expect {
         deploy_task.deploy(system_description, cloud_config_file, image_dir: image_dir)
       }.to raise_error(Machinery::Errors::UnsupportedArchitecture,

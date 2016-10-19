@@ -37,9 +37,9 @@ describe Machinery::Comparison do
     context "result" do
       let(:result) { subject.compare_scope(description1, description2, "packages") }
       let(:expected_only_in1) {
-        PackagesScope.new(
+        Machinery::PackagesScope.new(
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "openSUSE-release-dvd",
               version: "13.1",
               release: "1.10",
@@ -52,9 +52,9 @@ describe Machinery::Comparison do
         )
       }
       let(:expected_only_in2) {
-        PackagesScope.new(
+        Machinery::PackagesScope.new(
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "kernel-desktop",
               version: "3.7.10",
               release: "1.0",
@@ -67,9 +67,9 @@ describe Machinery::Comparison do
         )
       }
       let(:expected_common) {
-        PackagesScope.new(
+        Machinery::PackagesScope.new(
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "autofs",
               version: "5.0.9",
               release: "3.6",
@@ -98,14 +98,14 @@ describe Machinery::Comparison do
       it "returns changed elements" do
         expected = [
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "bash",
               version: "4.2",
               release: "68.1.5",
               arch: "x86_64",
               vendor: "openSUSE",
               checksum: "533e40ba8a5551204b528c047e45c169"
-            ), RpmPackage.new(
+            ), Machinery::RpmPackage.new(
               name: "bash",
               version: "4.3",
               release: "68.1.5",

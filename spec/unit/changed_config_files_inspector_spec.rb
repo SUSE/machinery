@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ChangedConfigFilesInspector do
+describe Machinery::ChangedConfigFilesInspector do
   initialize_system_description_factory_store
 
   describe ".inspect" do
@@ -40,10 +40,10 @@ describe ChangedConfigFilesInspector do
       create_test_description(json: "{}", name: name, store: store).save
     end
 
-    subject { ChangedConfigFilesInspector.new(system, description) }
+    subject { Machinery::ChangedConfigFilesInspector.new(system, description) }
 
     describe "#inspect" do
-      let(:inspector) { ChangedConfigFilesInspector.new(system, description) }
+      let(:inspector) { Machinery::ChangedConfigFilesInspector.new(system, description) }
       let(:extractable_paths) {
         [
           "/etc/config",
@@ -159,7 +159,7 @@ describe ChangedConfigFilesInspector do
           expect(managed_files_database).to receive(:changed_files).and_return([])
 
           inspector.inspect(filter)
-          expected = ChangedConfigFilesScope.new(
+          expected = Machinery::ChangedConfigFilesScope.new(
             [],
             "extracted" => false
           )

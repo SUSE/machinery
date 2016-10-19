@@ -17,11 +17,11 @@
 
 require_relative "spec_helper"
 
-class FooScope < Machinery::Object
+class Machinery::FooScope < Machinery::Object
   include Machinery::Scope
 end
 
-class FooRenderer < Machinery::Ui::Renderer
+class Machinery::Ui::FooRenderer < Machinery::Ui::Renderer
   def content(description)
     puts description.foo.data
   end
@@ -37,11 +37,11 @@ class FooRenderer < Machinery::Ui::Renderer
   end
 end
 
-class BarBazScope < Machinery::Object
+class Machinery::BarBazScope < Machinery::Object
   include Machinery::Scope
 end
 
-class BarBazRenderer < Machinery::Ui::Renderer
+class Machinery::Ui::BarBazRenderer < Machinery::Ui::Renderer
   def content(_description)
     heading("bar")
 
@@ -153,8 +153,8 @@ Common to both systems:
 
   describe ".for" do
     it "returns the requested Renderer" do
-      expect(Machinery::Ui::Renderer.for("foo")).to be_a(FooRenderer)
-      expect(Machinery::Ui::Renderer.for("bar_baz")).to be_a(BarBazRenderer)
+      expect(Machinery::Ui::Renderer.for("foo")).to be_a(Machinery::Ui::FooRenderer)
+      expect(Machinery::Ui::Renderer.for("bar_baz")).to be_a(Machinery::Ui::BarBazRenderer)
     end
   end
 
@@ -162,19 +162,23 @@ Common to both systems:
     it "returns all loaded Renderers" do
       renderers = Machinery::Ui::Renderer.all
 
-      expect(renderers.find{|i| i.is_a?(FooRenderer)}).to_not be_nil
-      expect(renderers.find{|i| i.is_a?(BarBazRenderer)}).to_not be_nil
+      expect(
+        renderers.find { |i| i.is_a?(Machinery::Ui::FooRenderer) }
+      ).to_not be_nil
+      expect(
+        renderers.find { |i| i.is_a?(Machinery::Ui::BarBazRenderer) }
+      ).to_not be_nil
     end
   end
 
   describe "#scope" do
     it "returns the un-camelcased name" do
-      expect(BarBazRenderer.new.scope).to eql("bar_baz")
+      expect(Machinery::Ui::BarBazRenderer.new.scope).to eql("bar_baz")
     end
   end
 
   describe "#render" do
-    let(:renderer) { BarBazRenderer.new }
+    let(:renderer) { Machinery::Ui::BarBazRenderer.new }
     let(:description) {
       Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionStore.new)
     }
@@ -286,7 +290,7 @@ EOF
   end
 
   describe "#render_comparison" do
-    subject { FooRenderer.new }
+    subject { Machinery::Ui::FooRenderer.new }
 
     context "when not showing common properties" do
       let(:options) { { show_all: false } }

@@ -47,7 +47,7 @@ describe Machinery::Autoyast do
   describe "#initialize" do
     it "raises exception when OS is not supported for exporting" do
       allow_any_instance_of(Machinery::SystemDescription).to receive(:os).
-        and_return(Rhel.new)
+        and_return(Machinery::Rhel.new)
       description.os.name = "RHEL 99.1 (Repetition)"
       expect {
         Machinery::Autoyast.new(description)
@@ -60,7 +60,7 @@ describe Machinery::Autoyast do
   describe "#profile" do
     it "handles quotes in changed links" do
       description["changed_managed_files"] <<
-        ChangedManagedFile.new(
+        Machinery::ChangedManagedFile.new(
           name: "/opt/test-quote-char/link",
           package_name: "test-data-files",
           package_version: "1.0",

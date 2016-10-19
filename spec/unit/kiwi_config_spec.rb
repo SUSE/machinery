@@ -65,7 +65,7 @@ describe Machinery::KiwiConfig do
   describe "#initialize" do
     it "raises exception when OS is not supported for building" do
       allow_any_instance_of(Machinery::SystemDescription).to receive(:os).
-        and_return(OsUnknown.new)
+        and_return(Machinery::OsUnknown.new)
       system_description_with_content.os.name = "something 99.1 (Repetition)"
       expect {
         Machinery::KiwiConfig.new(system_description_with_content)
@@ -275,7 +275,7 @@ EOT
 
     it "handles quotes in changed links" do
       system_description_with_modified_files["changed_managed_files"] <<
-        ChangedManagedFile.new(
+        Machinery::ChangedManagedFile.new(
           name: "/opt/test-quote-char/link",
           package_name: "test-data-files",
           package_version: "1.0",

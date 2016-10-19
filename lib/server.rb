@@ -111,7 +111,8 @@ class Server < Sinatra::Base
         changed.push(
           id:       change[0][opts[:key]],
           change:   "(" + changes.join(", ") + ")",
-          diffable: change[0].is_a?(UnmanagedFile) && change[0].is_a?(UnmanagedFile) &&
+          diffable: change[0].is_a?(Machinery::UnmanagedFile) &&
+            change[0].is_a?(Machinery::UnmanagedFile) &&
             change[0].file? && change[1].file? &&
             @diff[scope].try(:common).try(:attributes).try(:[], "extracted")
         )

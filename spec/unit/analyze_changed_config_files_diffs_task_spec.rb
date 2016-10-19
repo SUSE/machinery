@@ -164,7 +164,7 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
 
     it "raises if the analyzed system is not a SUSE os" do
       allow_any_instance_of(Machinery::SystemDescription).to receive(:os).
-        and_return(OsUnknown.new)
+        and_return(Machinery::OsUnknown.new)
       description.os.name = "Unknown OS"
       expect { subject.analyze(description) }.to raise_error(
         Machinery::Errors::AnalysisFailed, /Can not analyze the system description/
@@ -215,7 +215,7 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
 
   describe "#inspection_list" do
     it "groups files by package" do
-      expected_group = Package.new(
+      expected_group = Machinery::Package.new(
         "name"    => "aaa_base",
         "version" => "3.11.1",
         "files"   => ["/etc/modprobe.d/unsupported-modules", "/etc/inittab"]

@@ -448,7 +448,8 @@ EOF
   describe "#validate_analysis_compatibility" do
     context "within a suse distro" do
       before do
-        allow_any_instance_of(OsOpenSuse13_1).to receive(:architecture).and_return("x86_64")
+        allow_any_instance_of(Machinery::OsOpenSuse13_1).
+          to receive(:architecture).and_return("x86_64")
       end
 
       context "with no zypper installed" do
@@ -497,7 +498,7 @@ EOF
 
     context "within an unkown distro" do
       before do
-        allow_any_instance_of(OsUnknown).to receive(:architecture).and_return("x86_64")
+        allow_any_instance_of(Machinery::OsUnknown).to receive(:architecture).and_return("x86_64")
       end
 
       context "with a valid zypper version" do

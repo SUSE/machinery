@@ -17,16 +17,20 @@
 
 require_relative "spec_helper"
 
-describe UnmanagedFilesInspector do
+describe Machinery::UnmanagedFilesInspector do
   describe "runs helper" do
-    let(:system) { double(arch: "x86_64", run_command: "/root/machinery-helper") }
+    let(:system) {
+      double(arch: "x86_64", run_command: "/root/machinery-helper")
+    }
     let(:description) {
       Machinery::SystemDescription.new(
         "systemname",
         Machinery::SystemDescriptionStore.new
-      ) 
+      )
     }
-    let(:inspector) { UnmanagedFilesInspector.new(system, description) }
+    let(:inspector) {
+      Machinery::UnmanagedFilesInspector.new(system, description)
+    }
 
     before(:each) do
       allow(system).to receive(:has_command?).and_return(true)
@@ -40,7 +44,7 @@ describe UnmanagedFilesInspector do
 
     it "inspects unamanged-files" do
       expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope|
-        expect(scope).to be_a(UnmanagedFilesScope)
+        expect(scope).to be_a(Machinery::UnmanagedFilesScope)
       end
 
       inspector.inspect(Machinery::Filter.from_default_definition("inspect"))
@@ -49,7 +53,7 @@ describe UnmanagedFilesInspector do
     context "when the --extract-metadata option is given" do
       it "inspects and extracts metadata for unmanaged-files" do
         expect_any_instance_of(MachineryHelper).to receive(:run_helper) do |_instance, scope, args|
-          expect(scope).to be_a(UnmanagedFilesScope)
+          expect(scope).to be_a(Machinery::UnmanagedFilesScope)
           expect(args).to eq("--extract-metadata")
         end
 

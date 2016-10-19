@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe EnvironmentInspector do
+describe Machinery::EnvironmentInspector do
   let(:description) {
     Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
@@ -36,7 +36,7 @@ describe EnvironmentInspector do
   let(:locale_list_with_utf8) {
     File.read(File.join(Machinery::ROOT, "spec/data/environment/locale_list_with_utf8"))
   }
-  subject { EnvironmentInspector.new(system, description) }
+  subject { Machinery::EnvironmentInspector.new(system, description) }
 
   describe "#inspect" do
     context "with a utf8 locale" do

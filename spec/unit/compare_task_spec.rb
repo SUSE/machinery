@@ -20,20 +20,20 @@ describe Machinery::CompareTask do
   describe "#compare" do
     capture_machinery_output
 
-    class CompareTaskFooScope < Machinery::Array
+    class Machinery::CompareTaskFooScope < Machinery::Array
       include Machinery::Scope
     end
-    class CompareTaskBarScope < Machinery::Array
+    class Machinery::CompareTaskBarScope < Machinery::Array
       include Machinery::Scope
     end
-    class CompareTaskBazScope < Machinery::Array
+    class Machinery::CompareTaskBazScope < Machinery::Array
       include Machinery::Scope
     end
-    class CompareTaskFoobarScope < Machinery::Array
+    class Machinery::CompareTaskFoobarScope < Machinery::Array
       include Machinery::Scope
     end
 
-    class CompareTaskFooRenderer < Machinery::Ui::Renderer
+    class Machinery::Ui::CompareTaskFooRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_foo"].each do |e|
           puts e
@@ -45,7 +45,7 @@ describe Machinery::CompareTask do
       end
     end
 
-    class CompareTaskBarRenderer < Machinery::Ui::Renderer
+    class Machinery::Ui::CompareTaskBarRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_bar"].each do |e|
           puts e
@@ -57,7 +57,7 @@ describe Machinery::CompareTask do
       end
     end
 
-    class CompareTaskBazRenderer < Machinery::Ui::Renderer
+    class Machinery::Ui::CompareTaskBazRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_baz"].each do |e|
           puts e
@@ -69,7 +69,7 @@ describe Machinery::CompareTask do
       end
     end
 
-    class CompareTaskFoobarRenderer < Machinery::Ui::Renderer
+    class Machinery::Ui::CompareTaskFoobarRenderer < Machinery::Ui::Renderer
       def content(description)
         description["compare_task_foobar"].each do |e|
           puts e
@@ -210,16 +210,16 @@ Compared descriptions are identical.
     def setup_renderers
       allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_foo").
-        and_return(CompareTaskFooRenderer.new)
+        and_return(Machinery::Ui::CompareTaskFooRenderer.new)
       allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_bar").
-        and_return(CompareTaskBarRenderer.new)
+        and_return(Machinery::Ui::CompareTaskBarRenderer.new)
       allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_baz").
-        and_return(CompareTaskBazRenderer.new)
+        and_return(Machinery::Ui::CompareTaskBazRenderer.new)
       allow(Machinery::Ui::Renderer).to receive(:for).
         with("compare_task_foobar").
-        and_return(CompareTaskFoobarRenderer.new)
+        and_return(Machinery::Ui::CompareTaskFoobarRenderer.new)
     end
 
     describe "when the descriptions are different" do

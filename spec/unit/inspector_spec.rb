@@ -20,30 +20,30 @@ require_relative "spec_helper"
 
 describe Machinery::Inspector do
   before :each do
-    stub_const("FooScope", Class.new do
+    stub_const("Machinery::FooScope", Class.new do
       include Machinery::Scope
-      def self.name; "FooScope"; end
+      def self.name; "Machinery::FooScope"; end
     end)
-    stub_const("FooInspector", Class.new(Machinery::Inspector) do
-      def self.name; "FooInspector"; end
+    stub_const("Machinery::FooInspector", Class.new(Machinery::Inspector) do
+      def self.name; "Machinery::FooInspector"; end
       has_priority 2000
     end)
 
-    stub_const("BarBazScope", Class.new do
+    stub_const("Machinery::BarBazScope", Class.new do
       include Machinery::Scope
-      def self.name; "BarBazScope"; end
+      def self.name; "Machinery::BarBazScope"; end
     end)
-    stub_const("BarBazInspector", Class.new(Machinery::Inspector) do
-      def self.name; "BarBazInspector"; end
+    stub_const("Machinery::BarBazInspector", Class.new(Machinery::Inspector) do
+      def self.name; "Machinery::BarBazInspector"; end
       has_priority 1500
     end)
 
-    stub_const("BarracudaScope", Class.new do
+    stub_const("Machinery::BarracudaScope", Class.new do
       include Machinery::Scope
-      def self.name; "BarracudaScope"; end
+      def self.name; "Machinery::BarracudaScope"; end
     end)
-    stub_const("BarracudaInspector", Class.new(Machinery::Inspector) do
-      def self.name; "BarracudaInspector"; end
+    stub_const("Machinery::BarracudaInspector", Class.new(Machinery::Inspector) do
+      def self.name; "Machinery::BarracudaInspector"; end
       has_priority 1700
     end)
   end
@@ -63,8 +63,8 @@ describe Machinery::Inspector do
 
   describe ".for" do
     it "returns the requested Inspector" do
-      expect(Machinery::Inspector.for("foo")).to eq(FooInspector)
-      expect(Machinery::Inspector.for("bar_baz")).to eq(BarBazInspector)
+      expect(Machinery::Inspector.for("foo")).to eq(Machinery::FooInspector)
+      expect(Machinery::Inspector.for("bar_baz")).to eq(Machinery::BarBazInspector)
     end
   end
 
@@ -72,9 +72,9 @@ describe Machinery::Inspector do
     it "returns all loaded Inspectors" do
       inspectors = Machinery::Inspector.all
 
-      expect(inspectors).to include(FooInspector)
-      expect(inspectors).to include(BarracudaInspector)
-      expect(inspectors).to include(BarBazInspector)
+      expect(inspectors).to include(Machinery::FooInspector)
+      expect(inspectors).to include(Machinery::BarracudaInspector)
+      expect(inspectors).to include(Machinery::BarBazInspector)
     end
   end
 
@@ -116,7 +116,7 @@ describe Machinery::Inspector do
 
   describe "#scope" do
     it "returns the un-camelcased name" do
-      expect(BarBazInspector.new.scope).to eql("bar_baz")
+      expect(Machinery::BarBazInspector.new.scope).to eql("bar_baz")
     end
   end
 end

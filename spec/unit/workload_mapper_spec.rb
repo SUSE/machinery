@@ -103,7 +103,7 @@ describe Machinery::WorkloadMapper do
     }
 
     it "extracts the related workload data" do
-      allow_any_instance_of(UnmanagedFilesScope).to receive(:export_files_as_tarballs)
+      allow_any_instance_of(Machinery::UnmanagedFilesScope).to receive(:export_files_as_tarballs)
       allow_any_instance_of(Machinery::WorkloadMapper).to receive(
         :copy_workload_changed_config_files
       ).and_return(true)

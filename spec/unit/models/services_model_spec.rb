@@ -20,15 +20,15 @@ require_relative "../spec_helper"
 describe "services model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["services"])
-    ServicesScope.from_json(JSON.parse(json)["services"])
+    Machinery::ServicesScope.from_json(JSON.parse(json)["services"])
   }
 
   it_behaves_like "Scope"
 
-  specify { expect(scope).to be_a(ServicesScope) }
-  specify { expect(scope.first).to be_a(Service) }
+  specify { expect(scope).to be_a(Machinery::ServicesScope) }
+  specify { expect(scope.first).to be_a(Machinery::Service) }
 
-  describe ServicesScope do
+  describe Machinery::ServicesScope do
     describe "#length" do
       it "returns the number of services" do
         expect(scope.length).to eq(14)
@@ -36,20 +36,20 @@ describe "services model" do
     end
 
     describe "#compare_with" do
-      let(:service_a) { Service.new(name: "a", state: "enabled") }
-      let(:service_b) { Service.new(name: "b", state: "enabled") }
-      let(:service_c) { Service.new(name: "c", state: "enabled") }
-      let(:service_d) { Service.new(name: "d", state: "enabled") }
-      let(:service_e) { Service.new(name: "e", state: "enabled") }
-      let(:service_f) { Service.new(name: "f", state: "enabled") }
+      let(:service_a) { Machinery::Service.new(name: "a", state: "enabled") }
+      let(:service_b) { Machinery::Service.new(name: "b", state: "enabled") }
+      let(:service_c) { Machinery::Service.new(name: "c", state: "enabled") }
+      let(:service_d) { Machinery::Service.new(name: "d", state: "enabled") }
+      let(:service_e) { Machinery::Service.new(name: "e", state: "enabled") }
+      let(:service_f) { Machinery::Service.new(name: "f", state: "enabled") }
 
       context "when init systems are the same" do
         it "returns correct result when service lists are equal" do
-          data_a = ServicesScope.new(
+          data_a = Machinery::ServicesScope.new(
             [service_a, service_b, service_c],
             init_system: "systemd"
           )
-          data_b = ServicesScope.new(
+          data_b = Machinery::ServicesScope.new(
             [service_a, service_b, service_c],
             init_system: "systemd"
           )
@@ -59,11 +59,11 @@ describe "services model" do
         end
 
         it "returns correct result when lists aren't equal and don't have common elements" do
-          data_a = ServicesScope.new(
+          data_a = Machinery::ServicesScope.new(
             [service_a, service_b, service_c],
             init_system: "systemd"
           )
-          data_b = ServicesScope.new(
+          data_b = Machinery::ServicesScope.new(
             [service_d, service_e, service_f],
             init_system: "systemd"
           )
@@ -74,42 +74,44 @@ describe "services model" do
         end
 
         it "returns correct result when service lists aren't equal but have common elements" do
-          data_a = ServicesScope.new(
+          data_a = Machinery::ServicesScope.new(
             [service_a, service_b, service_c, service_d],
             init_system: "systemd"
           )
-          data_b = ServicesScope.new(
+          data_b = Machinery::ServicesScope.new(
             [service_a, service_b, service_e, service_f],
             init_system: "systemd"
           )
 
           comparison = data_a.compare_with(data_b)
 
-          expect(comparison).to eq([
-            ServicesScope.new(
-              [service_c, service_d],
-              init_system: "systemd"
-            ),
-            ServicesScope.new(
-              [service_e, service_f],
-              init_system: "systemd"
-            ),
-            nil,
-            ServicesScope.new(
-              [service_a, service_b],
-              init_system: "systemd"
-            )
-          ])
+          expect(comparison).to eq(
+            [
+              Machinery::ServicesScope.new(
+                [service_c, service_d],
+                init_system: "systemd"
+              ),
+              Machinery::ServicesScope.new(
+                [service_e, service_f],
+                init_system: "systemd"
+              ),
+              nil,
+              Machinery::ServicesScope.new(
+                [service_a, service_b],
+                init_system: "systemd"
+              )
+            ]
+          )
         end
       end
 
       context "when init systems are different" do
         it "treats the data as completely different" do
-          data_a = ServicesScope.new(
+          data_a = Machinery::ServicesScope.new(
             [service_a, service_b, service_c],
             init_system: "sysvinit"
           )
-          data_b = ServicesScope.new(
+          data_b = Machinery::ServicesScope.new(
             [service_a, service_b, service_c],
             init_system: "systemd"
           )

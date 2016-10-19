@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe OsInspector do
+describe Machinery::OsInspector do
   include FakeFS::SpecHelpers
 
   let(:description) {
@@ -25,7 +25,7 @@ describe OsInspector do
   }
   let(:system) { Machinery::LocalSystem.new }
   let(:filter) { nil }
-  subject(:inspector) { OsInspector.new(system, description) }
+  subject(:inspector) { Machinery::OsInspector.new(system, description) }
 
   before(:each) do
     Dir.mkdir("/etc")
@@ -39,7 +39,7 @@ describe OsInspector do
       os = inspector.send(:get_os_from_os_release)
 
       expect(os).to eq(
-        OsOpenSuse13_1.new(
+        Machinery::OsOpenSuse13_1.new(
           name: "openSUSE 13.1 (Bottle)",
           version: "13.1 (Bottle)"
         )
@@ -52,7 +52,7 @@ describe OsInspector do
 
       os = inspector.send(:get_os_from_os_release)
 
-      expect(os).to be_an_instance_of(OsOpenSuseTumbleweed)
+      expect(os).to be_an_instance_of(Machinery::OsOpenSuseTumbleweed)
       expect(os.name).to eq("openSUSE Tumbleweed")
       expect(os.version).to match(/[0-9]{8}/)
     end
@@ -64,7 +64,7 @@ describe OsInspector do
       os = inspector.send(:get_os_from_os_release)
 
       expect(os).to eq(
-        OsUnknown.new(
+        Machinery::OsUnknown.new(
           name: "Red Hat Enterprise Linux Server 7.0 (Maipo)",
           version: "7.0 (Maipo)"
         )
@@ -115,7 +115,7 @@ describe OsInspector do
       inspector.inspect(filter)
 
       expect(description.os).to eq(
-        OsOpenSuse13_1.new(
+        Machinery::OsOpenSuse13_1.new(
           name: "openSUSE 13.1 (Bottle)",
           version: "13.1 (Bottle)",
           architecture: "x86_64"
@@ -164,7 +164,7 @@ describe OsInspector do
       expect(description.os.version).to eq("20160909")
       expect(description.os.architecture).to eq "x86_64"
       expect(inspector.summary).to include("openSUSE Tumbleweed")
-      expect(description.os).to be_a(OsOpenSuseTumbleweed)
+      expect(description.os).to be_a(Machinery::OsOpenSuseTumbleweed)
     end
 
     it "is able to recognize the openSUSE release Leap" do
@@ -179,7 +179,7 @@ describe OsInspector do
       expect(description.os.version).to eq("42.1")
       expect(description.os.architecture).to eq "x86_64"
       expect(inspector.summary).to include("openSUSE Leap")
-      expect(description.os).to be_a(OsOpenSuseLeap)
+      expect(description.os).to be_a(Machinery::OsOpenSuseLeap)
     end
 
     it "is able to recognize SLES11SP4" do
@@ -194,7 +194,7 @@ describe OsInspector do
       expect(description.os.version).to eq("11 SP4")
       expect(description.os.architecture).to eq "x86_64"
       expect(inspector.summary).to include("SUSE Linux Enterprise Server 11")
-      expect(description.os).to be_a(OsSles11)
+      expect(description.os).to be_a(Machinery::OsSles11)
     end
 
     it "returns data containing additional version information if available" do
@@ -248,7 +248,7 @@ describe OsInspector do
       inspector.inspect(filter)
 
       expect(description.os).to eq(
-        OsUnknown.new(
+        Machinery::OsUnknown.new(
           name: "Dummy",
           version: nil,
           architecture: "i586"

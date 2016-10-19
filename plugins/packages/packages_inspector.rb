@@ -15,72 +15,75 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class PackagesInspector < Machinery::Inspector
-  has_priority 20
-  def initialize(system, description)
-    @system = system
-    @description = description
-  end
-
-  def inspect(_filter, _options = {})
-    @system.check_requirement(["rpm", "dpkg"], "--version")
-
-    if @system.has_command?("rpm")
-      inspect_rpm
-    elsif @system.has_command?("dpkg")
-      @system.check_requirement("apt-cache", "--version")
-      inspect_dpkg
+module Machinery
+  class PackagesInspector < Machinery::Inspector
+    has_priority 20
+    def initialize(system, description)
+      @system = system
+      @description = description
     end
 
-    @description
-  end
+    def inspect(_filter, _options = {})
+      @system.check_requirement(["rpm", "dpkg"], "--version")
 
-  def summary
-    "Found #{Machinery.pluralize(@description.packages.length, "%d package")}."
-  end
+      if @system.has_command?("rpm")
+        inspect_rpm
+      elsif @system.has_command?("dpkg")
+        @system.check_requirement("apt-cache", "--version")
+        inspect_dpkg
+      end
 
-  private
+      @description
+    end
 
-  def inspect_rpm
-    packages = Machinery::Array.new
-    rpm_data = @system.run_command(
-      "rpm","-qa","--qf",
-      "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{SIGMD5}$",
-      :stdout=>:capture
-    )
-    # gpg-pubkeys are no real packages but listed by rpm in the regular
-    # package list
-    rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
-      name =~ /^gpg-pubkey$/
-    end.each do |name, version, release, arch, vendor, checksum|
-      packages << RpmPackage.new(
-        :name     => name,
-        :version  => version,
-        :release  => release,
-        :arch     => arch,
-        :vendor   => vendor,
-        :checksum => checksum
+    def summary
+      "Found #{Machinery.pluralize(@description.packages.length, "%d package")}."
+    end
+
+    private
+
+    def inspect_rpm
+      packages = Machinery::Array.new
+      rpm_data = @system.run_command(
+        "rpm",
+        "-qa",
+        "--qf",
+        "%{NAME}|%{VERSION}|%{RELEASE}|%{ARCH}|%{VENDOR}|%{SIGMD5}$",
+        stdout: :capture
+      )
+      # gpg-pubkeys are no real packages but listed by rpm in the regular
+      # package list
+      rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
+        name =~ /^gpg-pubkey$/
+      end.each do |name, version, release, arch, vendor, checksum|
+        packages << RpmPackage.new(
+          name:     name,
+          version:  version,
+          release:  release,
+          arch:     arch,
+          vendor:   vendor,
+          checksum: checksum
+        )
+      end
+
+      @description.packages = PackagesScope.new(
+        packages.sort_by(&:name),
+        package_system: "rpm"
       )
     end
 
-    @description.packages = PackagesScope.new(
-      packages.sort_by(&:name),
-      package_system: "rpm"
-    )
-  end
+    def inspect_dpkg
+      dpkg_data = @system.run_command(
+        "dpkg", "-l", stdout: :capture
+      )
 
-  def inspect_dpkg
-    dpkg_data = @system.run_command(
-      "dpkg", "-l", stdout: :capture
-    )
+      lines = dpkg_data.lines.reject { |line| !line.start_with?("ii ") }
 
-    lines = dpkg_data.lines.reject { |line| !line.start_with?("ii ") }
-
-    packages = lines.map do |line|
-      name, version, arch = line.split[1..3]
-      version_segments = version.split("-")
-      release = version_segments.pop if version_segments.length > 1
-      version = version_segments.join("-")
+      packages = lines.map do |line|
+        name, version, arch = line.split[1..3]
+        version_segments = version.split("-")
+        release = version_segments.pop if version_segments.length > 1
+        version = version_segments.join("-")
 
       DpkgPackage.new(
         name: name,
@@ -107,28 +110,25 @@ class PackagesInspector < Machinery::Inspector
           checksum = apt_cache_element[/MD5[Ss]um: (\w+)\n/, 1]
           vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
         end
-        package.checksum = checksum || ""
-        package.vendor = vendor || ""
-        package.release ||= ""
       end
+
+      @description.packages = PackagesScope.new(
+        packages.sort_by(&:name),
+        package_system: "dpkg"
+      )
     end
 
-    @description.packages = PackagesScope.new(
-      packages.sort_by(&:name),
-      package_system: "dpkg"
-    )
-  end
-
-  def run_apt_cache(packages_slice)
-    @system.run_command(
-      "apt-cache",
-      "show",
-      *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
-      stdout: :capture
-    )
-  rescue Cheetah::ExecutionFailed => e
-    # Older Debian systems do not support the version parameter for `apt-cache show`
-    raise unless e.stderr.include?("E: No packages found")
-    @system.run_command("apt-cache", "show", *packages_slice.map(&:name), stdout: :capture)
+    def run_apt_cache(packages_slice)
+      @system.run_command(
+        "apt-cache",
+        "show",
+        *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
+        stdout: :capture
+      )
+    rescue Cheetah::ExecutionFailed => e
+      # Older Debian systems do not support the version parameter for `apt-cache show`
+      raise unless e.stderr.include?("E: No packages found")
+      @system.run_command("apt-cache", "show", *packages_slice.map(&:name), stdout: :capture)
+    end
   end
 end

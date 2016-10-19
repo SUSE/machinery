@@ -17,18 +17,20 @@
 
 require_relative "spec_helper"
 
-describe ServicesInspector do
+describe Machinery::ServicesInspector do
   let(:system) { double }
   let(:description) {
     Machinery::SystemDescription.new(
       "systemname",
       Machinery::SystemDescriptionStore.new
     ).tap do |description|
-      description.environment = EnvironmentScope.new(system_type: "remote")
+      description.environment = Machinery::EnvironmentScope.new(
+        system_type: "remote"
+      )
     end
   }
   let(:filter) { nil }
-  subject(:inspector) { ServicesInspector.new(system, description) }
+  subject(:inspector) { Machinery::ServicesInspector.new(system, description) }
 
   let(:chkconfig_redhat_output) {
     <<-EOF
@@ -101,12 +103,12 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to eq(
-        ServicesScope.new(
+        Machinery::ServicesScope.new(
           [
-            Service.new(name: "alsasound.service",  state: "static"),
-            Service.new(name: "autofs.service",     state: "disabled"),
-            Service.new(name: "getty@tty1.service", state: "enabled"),
-            Service.new(name: "syslog.socket",      state: "enabled")
+            Machinery::Service.new(name: "alsasound.service",  state: "static"),
+            Machinery::Service.new(name: "autofs.service",     state: "disabled"),
+            Machinery::Service.new(name: "getty@tty1.service", state: "enabled"),
+            Machinery::Service.new(name: "syslog.socket",      state: "enabled")
           ],
           init_system: "systemd"
         )
@@ -124,19 +126,22 @@ EOF
         and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, nil))
 
       expect(inspector).to receive(:parse_suse_chkconfig).
-        and_return([
-          Service.new(name: "alsasound",   state: "on"),
-          Service.new(name: "autofs",      state: "off"),
-          Service.new(name: "boot.isapnp", state: "on")])
+        and_return(
+          [
+            Machinery::Service.new(name: "alsasound",   state: "on"),
+            Machinery::Service.new(name: "autofs",      state: "off"),
+            Machinery::Service.new(name: "boot.isapnp", state: "on")
+          ]
+        )
 
       inspector.inspect(filter)
 
       expect(description.services).to eq(
-        ServicesScope.new(
+        Machinery::ServicesScope.new(
           [
-            Service.new(name: "alsasound",   state: "on"),
-            Service.new(name: "autofs",      state: "off"),
-            Service.new(name: "boot.isapnp", state: "on"),
+            Machinery::Service.new(name: "alsasound",   state: "on"),
+            Machinery::Service.new(name: "autofs",      state: "off"),
+            Machinery::Service.new(name: "boot.isapnp", state: "on"),
           ],
           init_system: "sysvinit"
         )
@@ -210,16 +215,48 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to eq(
-        ServicesScope.new(
+        Machinery::ServicesScope.new(
           [
-            Service.new(name: "apparmor",       state: "disabled",      legacy_sysv: true),
-            Service.new(name: "console-setup",  state: "disabled",      legacy_sysv: true),
-            Service.new(name: "hostname",       state: "enabled",      legacy_sysv: false),
-            Service.new(name: "ntp",            state: "enabled",      legacy_sysv: true),
-            Service.new(name: "rsync",          state: "enabled",      legacy_sysv: true),
-            Service.new(name: "ssh",            state: "disabled",      legacy_sysv: true),
-            Service.new(name: "tty4",           state: "enabled",      legacy_sysv: false),
-            Service.new(name: "ufw",            state: "disabled",      legacy_sysv: false)
+            Machinery::Service.new(
+              name:        "apparmor",
+              state:       "disabled",
+              legacy_sysv: true
+            ),
+            Machinery::Service.new(
+              name:        "console-setup",
+              state:       "disabled",
+              legacy_sysv: true
+            ),
+            Machinery::Service.new(
+              name:        "hostname",
+              state:       "enabled",
+              legacy_sysv: false
+            ),
+            Machinery::Service.new(
+              name:        "ntp",
+              state:       "enabled",
+              legacy_sysv: true
+            ),
+            Machinery::Service.new(
+              name:        "rsync",
+              state:       "enabled",
+              legacy_sysv: true
+            ),
+            Machinery::Service.new(
+              name:        "ssh",
+              state:       "disabled",
+              legacy_sysv: true
+            ),
+            Machinery::Service.new(
+              name:        "tty4",
+              state:       "enabled",
+              legacy_sysv: false
+            ),
+            Machinery::Service.new(
+              name:        "ufw",
+              state:       "disabled",
+              legacy_sysv: false
+            )
           ], init_system: "upstart"
         )
       )
@@ -261,13 +298,13 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to match_array(
-        ServicesScope.new(
+        Machinery::ServicesScope.new(
           [
-            Service.new(name: "crond", state: "on", legacy_sysv: true),
-            Service.new(name: "dnsmasq", state: "off", legacy_sysv: true),
-            Service.new(name: "chargen-dgram", state: "off", legacy_sysv: true),
-            Service.new(name: "chargen-stream", state: "on", legacy_sysv: true),
-            Service.new(name: "eklogin", state: "off", legacy_sysv: true)
+            Machinery::Service.new(name: "crond", state: "on", legacy_sysv: true),
+            Machinery::Service.new(name: "dnsmasq", state: "off", legacy_sysv: true),
+            Machinery::Service.new(name: "chargen-dgram", state: "off", legacy_sysv: true),
+            Machinery::Service.new(name: "chargen-stream", state: "on", legacy_sysv: true),
+            Machinery::Service.new(name: "eklogin", state: "off", legacy_sysv: true)
           ],
           init_system: "upstart"
         )
@@ -291,13 +328,13 @@ EOF
       inspector.inspect(filter)
 
       expect(description.services).to match_array(
-        ServicesScope.new(
+        Machinery::ServicesScope.new(
           [
-            Service.new(name: "crond", state: "on"),
-            Service.new(name: "dnsmasq", state: "off"),
-            Service.new(name: "chargen-dgram", state: "off"),
-            Service.new(name: "chargen-stream", state: "on"),
-            Service.new(name: "eklogin", state: "off")
+            Machinery::Service.new(name: "crond", state: "on"),
+            Machinery::Service.new(name: "dnsmasq", state: "off"),
+            Machinery::Service.new(name: "chargen-dgram", state: "off"),
+            Machinery::Service.new(name: "chargen-stream", state: "on"),
+            Machinery::Service.new(name: "eklogin", state: "off")
           ],
           init_system: "sysvinit"
         )
@@ -329,11 +366,13 @@ EOF
         )
 
       services = inspector.send(:parse_suse_chkconfig)
-      expect(services).to match_array([
-        Service.new(name: "alsasound",   state: "on"),
-        Service.new(name: "boot.isapnp", state: "on"),
-        Service.new(name: "autofs",      state: "off")
-      ])
+      expect(services).to match_array(
+        [
+          Machinery::Service.new(name: "alsasound",   state: "on"),
+          Machinery::Service.new(name: "boot.isapnp", state: "on"),
+          Machinery::Service.new(name: "autofs",      state: "off")
+        ]
+      )
     end
 
     it "returns data about SysVinit services on sles11sp3 system with a remote user" do
@@ -351,11 +390,13 @@ EOF
         )
 
       services = inspector.send(:parse_suse_chkconfig)
-      expect(services).to match_array([
-        Service.new(name: "alsasound",   state: "on"),
-        Service.new(name: "boot.isapnp", state: "on"),
-        Service.new(name: "autofs",      state: "off")
-      ])
+      expect(services).to match_array(
+        [
+          Machinery::Service.new(name: "alsasound",   state: "on"),
+          Machinery::Service.new(name: "boot.isapnp", state: "on"),
+          Machinery::Service.new(name: "autofs",      state: "off")
+        ]
+      )
     end
   end
 
@@ -376,13 +417,15 @@ EOF
       and_return(chkconfig_redhat_output)
       services = inspector.send(:parse_redhat_chkconfig)
 
-      expect(services).to eq([
-        Service.new(name: "crond", state: "on"),
-        Service.new(name: "dnsmasq", state: "off"),
-        Service.new(name: "chargen-dgram", state: "off"),
-        Service.new(name: "chargen-stream", state: "on"),
-        Service.new(name: "eklogin", state: "off")
-      ])
+      expect(services).to eq(
+        [
+          Machinery::Service.new(name: "crond", state: "on"),
+          Machinery::Service.new(name: "dnsmasq", state: "off"),
+          Machinery::Service.new(name: "chargen-dgram", state: "off"),
+          Machinery::Service.new(name: "chargen-stream", state: "on"),
+          Machinery::Service.new(name: "eklogin", state: "off")
+        ]
+      )
     end
   end
 end

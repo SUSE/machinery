@@ -25,7 +25,10 @@ class Machinery::LocalSystem < Machinery::System
           "localhost",
           Machinery::SystemDescriptionMemoryStore.new
         )
-        inspector = OsInspector.new(Machinery::System.for("localhost"), description)
+        inspector = Machinery::OsInspector.new(
+          Machinery::System.for("localhost"),
+          description
+        )
         inspector.inspect(nil)
         @@os = description.os
       end

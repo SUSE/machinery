@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ChangedManagedFilesInspector do
+describe Machinery::ChangedManagedFilesInspector do
   let(:managed_files_database) { double }
 
   let(:system) {
@@ -35,7 +35,7 @@ describe ChangedManagedFilesInspector do
   }
   let(:filter) { nil }
 
-  subject { ChangedManagedFilesInspector.new(system, description) }
+  subject { Machinery::ChangedManagedFilesInspector.new(system, description) }
 
   describe "#inspect" do
     before(:each) do

@@ -18,17 +18,17 @@
 require_relative "spec_helper"
 
 describe Machinery::Scope do
-  class SimpleScope < Machinery::Object
+  class Machinery::SimpleScope < Machinery::Object
     include Machinery::Scope
   end
-  class MoreComplexScope < Machinery::Object
+  class Machinery::MoreComplexScope < Machinery::Object
     include Machinery::Scope
     hidden_scope
 
     has_property :foo, class: Machinery::Object
   end
 
-  subject { SimpleScope.new }
+  subject { Machinery::SimpleScope.new }
 
   it "provides accessors for timestamp and hostname to a simple scope" do
     mytime = Time.now.utc.iso8601
@@ -45,18 +45,18 @@ describe Machinery::Scope do
   end
 
   describe ".scope_name" do
-    example { expect(SimpleScope.scope_name).to eq("simple") }
-    example { expect(MoreComplexScope.scope_name).to eq("more_complex") }
+    example { expect(Machinery::SimpleScope.scope_name).to eq("simple") }
+    example { expect(Machinery::MoreComplexScope.scope_name).to eq("more_complex") }
   end
 
   describe "#scope_name" do
     example { expect(subject.scope_name).to eq("simple") }
-    example { expect(MoreComplexScope.new.scope_name).to eq("more_complex") }
+    example { expect(Machinery::MoreComplexScope.new.scope_name).to eq("more_complex") }
   end
 
   it "lists all scopes" do
-    expect(Machinery::Scope.all_scopes).to include(SimpleScope)
-    expect(Machinery::Scope.all_scopes).to include(MoreComplexScope)
+    expect(Machinery::Scope.all_scopes).to include(Machinery::SimpleScope)
+    expect(Machinery::Scope.all_scopes).to include(Machinery::MoreComplexScope)
   end
 
   it "lists only scopes" do
@@ -71,7 +71,7 @@ describe Machinery::Scope do
     end
 
     example { expect(subject.is_extractable?).to be(true) }
-    example { expect(MoreComplexScope.new.is_extractable?).to be(false) }
+    example { expect(Machinery::MoreComplexScope.new.is_extractable?).to be(false) }
   end
 
   describe "#for" do
@@ -79,13 +79,13 @@ describe Machinery::Scope do
 
     it "returns simple scope" do
       scope = Machinery::Scope.for("simple", {}, scope_file_store)
-      expect(scope).to be_a(SimpleScope)
+      expect(scope).to be_a(Machinery::SimpleScope)
       expect(scope.scope_file_store).to eq(scope_file_store)
     end
 
     it "returns complex scope" do
       scope = Machinery::Scope.for("more_complex", {}, scope_file_store)
-      expect(scope).to be_a(MoreComplexScope)
+      expect(scope).to be_a(Machinery::MoreComplexScope)
       expect(scope.scope_file_store).to eq(scope_file_store)
     end
 

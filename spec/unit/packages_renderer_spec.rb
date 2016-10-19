@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe PackagesRenderer do
+describe Machinery::Ui::PackagesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
       {
@@ -58,7 +58,7 @@ describe PackagesRenderer do
 
   describe "#render" do
     it "prints a package list when scope packages is requested" do
-      output = PackagesRenderer.new.render(system_description)
+      output = Machinery::Ui::PackagesRenderer.new.render(system_description)
 
       expect(output).to include("bash-4.2-1.0.x86_64 (openSUSE)")
       expect(output).to include("kernel-desktop-3.7.10-1.0.i586 (N/A)")
@@ -186,7 +186,7 @@ describe PackagesRenderer do
 
     it "shows two 'only in x' and one 'in both but different' sections" do
       comparison = Machinery::Comparison.compare_scope(description1, description2, "packages")
-      output = PackagesRenderer.new.render_comparison(comparison)
+      output = Machinery::Ui::PackagesRenderer.new.render_comparison(comparison)
 
       expected = <<EOF
 # Packages

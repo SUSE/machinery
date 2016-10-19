@@ -20,16 +20,16 @@ require_relative "../spec_helper"
 describe "packages model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["packages"])
-    PackagesScope.from_json(JSON.parse(json)["packages"])
+    Machinery::PackagesScope.from_json(JSON.parse(json)["packages"])
   }
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.first).to be_a(RpmPackage) }
+  specify { expect(scope.first).to be_a(Machinery::RpmPackage) }
 
 
   it "has correct scope name" do
-    expect(PackagesScope.new.scope_name).to eq("packages")
+    expect(Machinery::PackagesScope.new.scope_name).to eq("packages")
 
   end
 
@@ -170,7 +170,7 @@ describe "packages model" do
       expect(comparison[2].length).to eq(4)
       expect(comparison[2].first).to eq(
         [
-          RpmPackage.new(
+          Machinery::RpmPackage.new(
             name: "kernel-desktop",
             version: "3.7.10",
             release: "1.0",
@@ -178,7 +178,7 @@ describe "packages model" do
             vendor: "openSUSE",
             checksum: "4a87f6b9ceae5d40a411fe52d0f17050"
           ),
-          RpmPackage.new(
+          Machinery::RpmPackage.new(
             name: "kernel-desktop",
             version: "3.7.11",
             release: "1.0",

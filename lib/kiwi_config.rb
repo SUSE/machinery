@@ -200,7 +200,7 @@ EOF
   end
 
   def check_exported_os
-    unless @system_description.os.is_a?(OsSuse)
+    unless @system_description.os.is_a?(Machinery::OsSuse)
       raise Machinery::Errors::ExportFailed.new(
         "Export is not possible because the operating system " \
         "'#{@system_description.os.display_name}' is not supported."
@@ -377,7 +377,7 @@ EOF
   end
 
   def enable_dhcp(output_location)
-    if @system_description.os.is_a?(OsSles11)
+    if @system_description.os.is_a?(Machinery::OsSles11)
       write_dhcp_network_config(output_location, "eth0")
     else
       write_dhcp_network_config(output_location, "lan0")

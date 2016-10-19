@@ -15,26 +15,27 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
+module Machinery
+  class Group < Machinery::Object
+  end
 
-class Group < Machinery::Object
-end
+  class GroupsScope < Machinery::Array
+    include Machinery::Scope
 
-class GroupsScope < Machinery::Array
-  include Machinery::Scope
+    has_elements class: Group
 
-  has_elements class: Group
+    def compare_with(other)
+      only_self = self - other
+      only_other = other - self
+      common = self & other
+      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
 
-  def compare_with(other)
-    only_self = self - other
-    only_other = other - self
-    common = self & other
-    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
-
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
+      [
+        only_self,
+        only_other,
+        changed,
+        common
+      ].map { |e| (e && !e.empty?) ? e : nil }
+    end
   end
 end

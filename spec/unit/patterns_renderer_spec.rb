@@ -17,13 +17,13 @@
 
 require_relative "spec_helper"
 
-describe PatternsRenderer do
+describe Machinery::Ui::PatternsRenderer do
   describe "#render" do
     context "when showing an rpm-based system" do
       let(:system_description) { create_test_description(scopes: ["patterns"]) }
 
       it "prints a pattern list" do
-        output = PatternsRenderer.new.render(system_description)
+        output = Machinery::Ui::PatternsRenderer.new.render(system_description)
 
         expect(output).to include("base\n")
         expect(output).to include("Minimal\n")

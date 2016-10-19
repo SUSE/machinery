@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ChangedManagedFilesRenderer do
+describe Machinery::Ui::ChangedManagedFilesRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
@@ -64,7 +64,7 @@ describe ChangedManagedFilesRenderer do
 
   describe "#render" do
     before(:each) do
-      @output = ChangedManagedFilesRenderer.new.render(system_description)
+      @output = Machinery::Ui::ChangedManagedFilesRenderer.new.render(system_description)
     end
 
     it "prints a list of managed files" do

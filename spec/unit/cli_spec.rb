@@ -877,7 +877,7 @@ This is STDOUT
 Backtrace:
       EOT
 
-      allow(Machinery::LocalSystem).to receive(:os).and_return(OsSles12.new)
+      allow(Machinery::LocalSystem).to receive(:os).and_return(Machinery::OsSles12.new)
       begin
         # Actually raise the exception, so we have a backtrace
         raise(
@@ -895,7 +895,7 @@ Backtrace:
     end
 
     it "shows the usual bug report message for openSUSE" do
-      allow(Machinery::LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new)
+      allow(Machinery::LocalSystem).to receive(:os).and_return(Machinery::OsOpenSuse13_1.new)
 
       begin
         raise
@@ -910,7 +910,7 @@ Backtrace:
     end
 
     it "shows a special bug report message for SLES" do
-      allow(Machinery::LocalSystem).to receive(:os).and_return(OsSles12.new)
+      allow(Machinery::LocalSystem).to receive(:os).and_return(Machinery::OsSles12.new)
 
       begin
         raise

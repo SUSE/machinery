@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe PackagesInspector, ".inspect" do
+describe Machinery::PackagesInspector, ".inspect" do
   let(:description) {
     Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
@@ -29,7 +29,7 @@ describe PackagesInspector, ".inspect" do
       check_requirement: nil
     )
   }
-  let(:packages_inspector) { PackagesInspector.new(system, description) }
+  let(:packages_inspector) { Machinery::PackagesInspector.new(system, description) }
 
   context "rpm inspection" do
     let(:package_example) {
@@ -39,9 +39,9 @@ rpm|4.11.1|6.5.1|x86_64|openSUSE|7dfdd742a9b7d60c75bf4844d294716d$
 EOF
     }
     let(:expected_packages) {
-      PackagesScope.new(
+      Machinery::PackagesScope.new(
         [
-          RpmPackage.new(
+          Machinery::RpmPackage.new(
             name: "rpm",
             version: "4.11.1",
             release: "6.5.1",
@@ -49,7 +49,7 @@ EOF
             vendor: "openSUSE",
             checksum: "7dfdd742a9b7d60c75bf4844d294716d"
           ),
-          RpmPackage.new(
+          Machinery::RpmPackage.new(
             name: "zypper",
             version: "1.9.16",
             release: "22.2",
@@ -249,7 +249,7 @@ Tag: admin::power-management, hardware::power, hardware::power:acpi, role::app-d
 EOF
     }
     let(:expected_packages) {
-      PackagesScope.new(
+      Machinery::PackagesScope.new(
         [
         ],
         package_system: "dpkg"
@@ -273,9 +273,9 @@ EOF
     end
 
     it "inspects the packages" do
-      expected = PackagesScope.new(
+      expected = Machinery::PackagesScope.new(
         [
-          DpkgPackage.new(
+          Machinery::DpkgPackage.new(
             name: "accountsservice:amd64",
             version: "0:0.6.35-foo",
             release: "0ubuntu7.2",
@@ -283,7 +283,7 @@ EOF
             checksum: "",
             vendor: ""
           ),
-          DpkgPackage.new(
+          Machinery::DpkgPackage.new(
             name: "adduser",
             version: "3.113+nmu3ubuntu3",
             release: "",

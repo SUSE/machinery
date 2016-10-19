@@ -16,16 +16,20 @@
 # you may find current contact information at www.suse.com
 
 #  This renderer prints the operating system
-class OsRenderer < Machinery::Ui::Renderer
-  def content(description)
-    return unless description.os
+module Machinery
+  class Ui
+    class OsRenderer < Machinery::Ui::Renderer
+      def content(description)
+        return unless description.os
 
-    puts "Name: #{description.os.name}"
-    puts "Version: #{description.os.version}"
-    puts "Architecture: #{description.os.architecture}"
-  end
+        puts "Name: #{description.os.name}"
+        puts "Version: #{description.os.version}"
+        puts "Architecture: #{description.os.architecture}"
+      end
 
-  def display_name
-    "Operating System"
+      def display_name
+        "Operating System"
+      end
+    end
   end
 end

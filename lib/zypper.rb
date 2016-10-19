@@ -54,7 +54,7 @@ class Machinery::Zypper
       end
       cmd = ["rm", "-rf", zypper.zypp_base]
       cmd = cmd.insert(0, "sudo") if zypper.contains_mountable_repos?
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     end
 
     def create_zypp_config(zypp_base, arch)

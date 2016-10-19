@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ChangedConfigFilesRenderer do
+describe Machinery::Ui::ChangedConfigFilesRenderer do
   capture_machinery_output
   initialize_system_description_factory_store
 
@@ -80,7 +80,7 @@ describe ChangedConfigFilesRenderer do
     }
     EOF
   }
-  subject { ChangedConfigFilesRenderer.new }
+  subject { Machinery::Ui::ChangedConfigFilesRenderer.new }
 
   describe "#render" do
     it "prints a list of changed configuration files" do

@@ -15,57 +15,65 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class PackagesRenderer < Machinery::Ui::Renderer
-  def display_name
-    "Packages"
-  end
-
-  def content(description)
-    return unless description.packages
-
-    if description.packages.elements.empty?
-      puts "There are no packages."
-    end
-
-    na_note("package vendor") if description.packages.any? { |a| a[:vendor] == "" }
-
-    list do
-      description.packages.each do |p|
-        vendor = !p.vendor.empty? ? p.vendor : "N/A"
-        item [p.name, p.version, p.release].reject(&:empty?).join("-") + ".#{p.arch} (#{vendor})"
+module Machinery
+  class Ui
+    class PackagesRenderer < Machinery::Ui::Renderer
+      def display_name
+        "Packages"
       end
-    end
-  end
 
-  # In the comparison case we only want to show the package name, not all details like version,
-  # architecture etc.
-  def compare_content_only_in(description)
-    return if description.packages.empty?
+      def content(description)
+        return unless description.packages
 
-    list do
-      description.packages.each do |p|
-        item "#{p.name}"
-      end
-    end
-  end
-
-  def compare_content_changed(changed_elements)
-    list do
-      changed_elements.each do |one, two|
-        changes = []
-        relevant_attributes = ["version", "vendor", "arch"]
-        if one.version == two.version
-          relevant_attributes << "release"
-          relevant_attributes << "checksum" if one.release == two.release
+        if description.packages.elements.empty?
+          puts "There are no packages."
         end
 
-        relevant_attributes.each do |attribute|
-          if one[attribute] != two[attribute]
-            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+        na_note("package vendor") if description.packages.any? { |a| a[:vendor] == "" }
+
+        list do
+          description.packages.each do |p|
+            vendor = !p.vendor.empty? ? p.vendor : "N/A"
+            item [
+              p.name,
+              p.version,
+              p.release
+            ].reject(&:empty?).join("-") + ".#{p.arch} (#{vendor})"
           end
         end
+      end
 
-        item "#{one.name} (#{changes.join(", ")})"
+      # In the comparison case we only want to show the package name, not all details like version,
+      # architecture etc.
+      def compare_content_only_in(description)
+        return if description.packages.empty?
+
+        list do
+          description.packages.each do |p|
+            item p.name.to_s
+          end
+        end
+      end
+
+      def compare_content_changed(changed_elements)
+        list do
+          changed_elements.each do |one, two|
+            changes = []
+            relevant_attributes = ["version", "vendor", "arch"]
+            if one.version == two.version
+              relevant_attributes << "release"
+              relevant_attributes << "checksum" if one.release == two.release
+            end
+
+            relevant_attributes.each do |attribute|
+              if one[attribute] != two[attribute]
+                changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+              end
+            end
+
+            item "#{one.name} (#{changes.join(", ")})"
+          end
+        end
       end
     end
   end

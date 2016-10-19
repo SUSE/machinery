@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe GroupsInspector do
+describe Machinery::GroupsInspector do
   let(:description) {
     Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
@@ -30,31 +30,32 @@ describe GroupsInspector do
     EOF
   }
   let(:expected_groups) {
-    GroupsScope.new([
-      Group.new(
-        name: "+",
-        password: "",
-        gid: nil,
-        users: []
-      ),
-      Group.new(
-        name: "root",
-        password: "x",
-        gid: 0,
-        users: []
-      ),
-      Group.new(
-        name: "tftp",
-        password: "x",
-        gid: 493,
-        users: ["dnsmasq", "tftp"]
-      ),
-
-    ])
+    Machinery::GroupsScope.new(
+      [
+        Machinery::Group.new(
+          name: "+",
+          password: "",
+          gid: nil,
+          users: []
+        ),
+        Machinery::Group.new(
+          name: "root",
+          password: "x",
+          gid: 0,
+          users: []
+        ),
+        Machinery::Group.new(
+          name: "tftp",
+          password: "x",
+          gid: 493,
+          users: ["dnsmasq", "tftp"]
+        )
+      ]
+    )
   }
 
   let(:system) { double }
-  subject { GroupsInspector.new(system, description) }
+  subject { Machinery::GroupsInspector.new(system, description) }
 
   describe "#inspect" do
     it "return an empty list when /etc/group is missing" do

@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe RepositoriesInspector do
+describe Machinery::RepositoriesInspector do
   capture_machinery_output
   let(:system) {
     double
@@ -26,7 +26,7 @@ describe RepositoriesInspector do
     Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:filter) { nil }
-  let(:inspector) { RepositoriesInspector.new(system, description) }
+  let(:inspector) { Machinery::RepositoriesInspector.new(system, description) }
 
   describe "zypper repositories" do
     let(:zypper_output_xml) {
@@ -62,9 +62,9 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
       EOF
     }
     let(:expected_repo_list) {
-      RepositoriesScope.new(
+      Machinery::RepositoriesScope.new(
         [
-          ZyppRepository.new(
+          Machinery::ZyppRepository.new(
             alias: "nu_novell_com:SLES11-SP3-Pool",
             name: "SLES11-SP3-Pool",
             type: "rpm-md",
@@ -76,7 +76,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             username: "d4c0246d79334fa59a9ffe625fffef1d",
             password: "0a0918c876ef4a1d9c352e5c47421235"
           ),
-          ZyppRepository.new(
+          Machinery::ZyppRepository.new(
             alias: "SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Pool",
             name: "SLES12-Pool",
             type: "rpm-md",
@@ -88,7 +88,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             username: "SCC_d91435cca69a232114cf2e14aa830ad5",
             password: "2fdcb7499fd46842"
           ),
-          ZyppRepository.new(
+          Machinery::ZyppRepository.new(
             alias: "repo-oss",
             name: "openSUSE-Oss",
             type: "yast2",
@@ -98,7 +98,7 @@ Weird zypper warning message which shouldn't mess up the repository parsing.
             priority: 22,
             url: "http://download.opensuse.org/distribution/13.1/repo/oss/"
           ),
-          ZyppRepository.new(
+          Machinery::ZyppRepository.new(
             alias: "repo-update",
             name: "openSUSE-Update",
             type: "rpm-md",
@@ -208,7 +208,8 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details(system, zypper_empty_output_details)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([], repository_system: "zypp"))
+      expect(description.repositories).
+        to eq(Machinery::RepositoriesScope.new([], repository_system: "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -225,7 +226,8 @@ password=2fdcb7499fd46842
       setup_expectation_zypper_details_exit_6(system)
 
       inspector.inspect(filter)
-      expect(description.repositories).to eq(RepositoriesScope.new([], repository_system: "zypp"))
+      expect(description.repositories).
+        to eq(Machinery::RepositoriesScope.new([], repository_system: "zypp"))
       expect(inspector.summary).to include("Found 0 repositories")
     end
 
@@ -269,9 +271,9 @@ EOF
     }
 
     let(:expected_yum_repo_list) {
-      RepositoriesScope.new(
+      Machinery::RepositoriesScope.new(
         [
-          YumRepository.new(
+          Machinery::YumRepository.new(
             name: "CentOS-6Server - Base",
             url: [],
             mirrorlist: "http://mirrorlist.centos.org/?release=6Server&arch=x86_64&repo=os",
@@ -281,7 +283,7 @@ EOF
             gpgkey: ["http://mirror.centos.org/centos/RPM-GPG-KEY-centos4"],
             type: "rpm-md"
           ),
-          YumRepository.new(
+          Machinery::YumRepository.new(
             name: "added from: http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/",
             url: ["http://download.opensuse.org/repositories/Virtualization:/Appliances/RedHat_RHEL-6/"],
             mirrorlist: "",
@@ -354,39 +356,39 @@ EOF
     }
 
     let(:expected_apt_repo_list) {
-      RepositoriesScope.new(
+      Machinery::RepositoriesScope.new(
         [
-          AptRepository.new(
+          Machinery::AptRepository.new(
             type: "deb",
             url: "cdrom:[Debian GNU/Linux 7.9.0 _Wheezy_ - Official amd64 DVD Binary-1 20150905-14:38]/",
             distribution: "wheezy",
             components: ["contrib", "main"]
           ),
-          AptRepository.new(
+          Machinery::AptRepository.new(
             type: "deb",
             url: "http://us.archive.ubuntu.com/ubuntu/",
             distribution: "trusty-backports",
             components: ["main", "restricted", "universe", "multiverse"]
           ),
-          AptRepository.new(
+          Machinery::AptRepository.new(
             type: "deb",
             url: "http://security.ubuntu.com/ubuntu",
             distribution: "trusty-security",
             components: ["main"]
           ),
-          AptRepository.new(
+          Machinery::AptRepository.new(
             type: "deb-src",
             url: "http://repo-with-spaces-and-tabs.com/ubuntu",
             distribution: "trusty-security",
             components: ["component1", "component2"]
           ),
-          AptRepository.new(
+          Machinery::AptRepository.new(
             type: "deb",
             url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME/ubuntu",
             distribution: "trusty",
             components: ["main"]
           ),
-          AptRepository.new(
+          Machinery::AptRepository.new(
             type: "deb",
             url: "http://ppa.launchpad.net/LP-BENUTZER/PPA-NAME2/ubuntu",
             distribution: "trusty/binary-$(ARCH)/",

@@ -83,10 +83,11 @@ module Machinery
         end
 
         def for(scope)
-          class_name = "#{scope.split("_").map(&:capitalize).join}Renderer"
+          class_name = "Machinery::Ui::#{scope.split("_").map(&:capitalize).join}Renderer"
 
-          if Object.const_defined?(class_name)
+          begin
             Object.const_get(class_name).new
+          rescue NameError
           end
         end
       end
@@ -94,7 +95,7 @@ module Machinery
       def scope
         # Return the un-camelcased name of the inspector,
         # e.g. "foo_bar" for "FooBarInspector"
-        scope = self.class.name.match(/^(.*)Renderer$/)[1]
+        scope = self.class.name.match(/^Machinery::Ui::(.*)Renderer$/)[1]
         scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
       end
 

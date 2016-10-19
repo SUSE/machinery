@@ -60,7 +60,7 @@ describe MachineryHelper do
   end
 
   describe "#run_helper" do
-    let(:scope) { UnmanagedFilesScope.new }
+    let(:scope) { Machinery::UnmanagedFilesScope.new }
     let(:json) { <<-EOT
         {
           "files": [

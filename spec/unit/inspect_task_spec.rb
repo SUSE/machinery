@@ -22,23 +22,23 @@ describe Machinery::InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
   silence_machinery_output
 
-  class SimpleInspectTaskList < Machinery::Array
+  class Machinery::SimpleInspectTaskList < Machinery::Array
     has_elements class: Machinery::Object
   end
 
-  class SimpleInspectTaskScope < Machinery::Object
+  class Machinery::SimpleInspectTaskScope < Machinery::Object
     include Machinery::Scope
-    has_property :files, class: SimpleInspectTaskList
+    has_property :files, class: Machinery::SimpleInspectTaskList
   end
 
-  class FooInspector < Machinery::Inspector
+  class Machinery::FooInspector < Machinery::Inspector
     def initialize(_system, description)
       @description = description
     end
 
     def inspect(_filter, _options = nil)
-      result = SimpleInspectTaskScope.new(
-        files: SimpleInspectTaskList.new([
+      result = Machinery::SimpleInspectTaskScope.new(
+        files: Machinery::SimpleInspectTaskList.new([
           Machinery::Object.new(name: "foo"),
           Machinery::Object.new(name: "bar"),
           Machinery::Object.new(name: "baz"),
@@ -53,13 +53,13 @@ describe Machinery::InspectTask, "#inspect_system" do
     end
   end
 
-  class BarInspector < Machinery::Inspector
+  class Machinery::BarInspector < Machinery::Inspector
     def initialize(_system, description)
       @description = description
     end
 
     def inspect(_filter, _options = nil)
-      result = SimpleInspectTaskScope.new("bar" => "baz")
+      result = Machinery::SimpleInspectTaskScope.new("bar" => "baz")
 
       @description.bar = result
     end
@@ -99,14 +99,18 @@ describe Machinery::InspectTask, "#inspect_system" do
   it "gathers the system environment before running the actual inspection" do
     expect(inspect_task).to receive(:set_system_locale)
     expect(Machinery::Inspector).
-      to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+      to receive(:for).at_least(:once).times.with("foo").and_return(
+        Machinery::FooInspector
+      )
 
     inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
   end
 
   it "runs the proper inspector when a scope is given" do
     expect(Machinery::Inspector).
-      to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+      to receive(:for).at_least(:once).times.with("foo").and_return(
+        Machinery::FooInspector
+      )
 
     inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
   end
@@ -128,8 +132,8 @@ describe Machinery::InspectTask, "#inspect_system" do
       Machinery::Filter.new
     )
 
-    expected = SimpleInspectTaskScope.new(
-      files: SimpleInspectTaskList.new([
+    expected = Machinery::SimpleInspectTaskScope.new(
+      files: Machinery::SimpleInspectTaskList.new([
         Machinery::Object.new(name: "foo"),
         Machinery::Object.new(name: "bar"),
         Machinery::Object.new(name: "baz"),
@@ -142,7 +146,7 @@ describe Machinery::InspectTask, "#inspect_system" do
     capture_machinery_output
 
     it "raises Machinery::Errors::ScopeFailed on 'expected errors'" do
-      expect_any_instance_of(FooInspector).to receive(:inspect).
+      expect_any_instance_of(Machinery::FooInspector).to receive(:inspect).
         and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
@@ -161,7 +165,7 @@ Inspecting foo...
     end
 
     it "bubbles up 'unexpected errors'" do
-      expect_any_instance_of(FooInspector).to receive(:inspect).and_raise(RuntimeError)
+      expect_any_instance_of(Machinery::FooInspector).to receive(:inspect).and_raise(RuntimeError)
 
       expect {
         inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
@@ -213,14 +217,18 @@ Inspecting foo...
     capture_machinery_output
 
     it "passes the filters to the inspectors" do
-      expect(Machinery::Inspector).to receive(:for).at_least(:once).times.and_return(FooInspector)
+      expect(Machinery::Inspector).
+        to receive(:for).at_least(:once).times.and_return(Machinery::FooInspector)
 
-      expect_any_instance_of(FooInspector).to receive(:inspect) do |inspector, filter, _options|
+      expect_any_instance_of(Machinery::FooInspector).
+          to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)
         expect(filter.element_filters["/foo"].matchers).
           to eq("=" => [["bar", "baz"]])
 
-        inspector.description.foo = SimpleInspectTaskScope.new(files: SimpleInspectTaskList.new)
+        inspector.description.foo = Machinery::SimpleInspectTaskScope.new(
+          files: Machinery::SimpleInspectTaskList.new
+        )
       end
 
       inspect_task.inspect_system(

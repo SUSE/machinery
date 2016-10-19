@@ -15,84 +15,86 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class UsersInspector < Machinery::Inspector
-  has_priority 50
+module Machinery
+  class UsersInspector < Machinery::Inspector
+    has_priority 50
 
-  def initialize(system, description)
-    @system = system
-    @description = description
-  end
-
-  def inspect(_filter, _options = {})
-    passwd = @system.read_file("/etc/passwd")
-    shadow = @system.read_file("/etc/shadow", privileged: true)
-
-    users = passwd ? parse_users(passwd, shadow) : []
-
-    @description.users = UsersScope.new(users.sort_by(&:name))
-  end
-
-  def summary
-    "Found #{Machinery.pluralize(@description.users.size, "%d user")}."
-  end
-
-  private
-
-  def parse_users(passwd, shadow)
-    passwd = Machinery.scrub(passwd)
-    users = passwd.lines.map { |l| l.split(":").first }
-
-    users.map do |user|
-      attributes = passwd_attributes(passwd, user)
-      attributes.merge!(shadow_attributes(shadow, user)) if shadow
-
-      User.new(attributes)
+    def initialize(system, description)
+      @system = system
+      @description = description
     end
-  end
 
-  def passwd_attributes(passwd, user)
-    line = passwd.lines.find { |l| l.start_with?("#{user}:") }
-    user, passwd, uid, gid, comment, home, shell = line.split(":").map(&:chomp)
+    def inspect(_filter, _options = {})
+      passwd = @system.read_file("/etc/passwd")
+      shadow = @system.read_file("/etc/shadow", privileged: true)
 
-    # In case the inspected machine uses NIS, /etc/passwd will contain a
-    # placeholder entry like this:
-    #
-    #   +::::::
-    #
-    # We need to handle it correctly, which means setting non-string attributes
-    # to nil.
-    uid = Machinery::is_int?(uid) ? uid.to_i : nil
-    gid = Machinery::is_int?(gid) ? gid.to_i : nil
+      users = passwd ? parse_users(passwd, shadow) : []
 
-    {
-        name: user,
+      @description.users = UsersScope.new(users.sort_by(&:name))
+    end
+
+    def summary
+      "Found #{Machinery.pluralize(@description.users.size, "%d user")}."
+    end
+
+    private
+
+    def parse_users(passwd, shadow)
+      passwd = Machinery.scrub(passwd)
+      users = passwd.lines.map { |l| l.split(":").first }
+
+      users.map do |user|
+        attributes = passwd_attributes(passwd, user)
+        attributes.merge!(shadow_attributes(shadow, user)) if shadow
+
+        User.new(attributes)
+      end
+    end
+
+    def passwd_attributes(passwd, user)
+      line = passwd.lines.find { |l| l.start_with?("#{user}:") }
+      user, passwd, uid, gid, comment, home, shell = line.split(":").map(&:chomp)
+
+      # In case the inspected machine uses NIS, /etc/passwd will contain a
+      # placeholder entry like this:
+      #
+      #   +::::::
+      #
+      # We need to handle it correctly, which means setting non-string attributes
+      # to nil.
+      uid = Machinery.is_int?(uid) ? uid.to_i : nil
+      gid = Machinery.is_int?(gid) ? gid.to_i : nil
+
+      {
+        name:     user,
         password: passwd,
-        uid: uid,
-        gid: gid,
-        comment: comment,
-        home: home,
-        shell: shell
-    }
-  end
-
-  def shadow_attributes(shadow, user)
-    line = shadow.lines.find { |l| l.start_with?("#{user}:") }
-    if line
-      user, passwd, changed, min, max, warn, inactive, expire = line.split(":").map(&:chomp)
-
-      result = {
-        encrypted_password: passwd
+        uid:      uid,
+        gid:      gid,
+        comment:  comment,
+        home:     home,
+        shell:    shell
       }
-      result[:last_changed_date] = changed.to_i unless changed.empty?
-      result[:min_days] = min.to_i unless min.empty?
-      result[:max_days] = max.to_i unless max.empty?
-      result[:warn_days] = warn.to_i unless warn.empty?
-      result[:disable_days] = inactive.to_i unless inactive.empty?
-      result[:disabled_date] = expire.to_i unless expire.empty?
+    end
 
-      result
-    else
-      {}
+    def shadow_attributes(shadow, user)
+      line = shadow.lines.find { |l| l.start_with?("#{user}:") }
+      if line
+        user, passwd, changed, min, max, warn, inactive, expire = line.split(":").map(&:chomp)
+
+        result = {
+          encrypted_password: passwd
+        }
+        result[:last_changed_date] = changed.to_i unless changed.empty?
+        result[:min_days] = min.to_i unless min.empty?
+        result[:max_days] = max.to_i unless max.empty?
+        result[:warn_days] = warn.to_i unless warn.empty?
+        result[:disable_days] = inactive.to_i unless inactive.empty?
+        result[:disabled_date] = expire.to_i unless expire.empty?
+
+        result
+      else
+        {}
+      end
     end
   end
 end

@@ -15,31 +15,33 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ConfigFile < Machinery::SystemFile
-end
-
-class ConfigFileList < Machinery::Array
-  has_elements class: ConfigFile
-
-  def compare_with(other)
-    only_self = self - other
-    only_other = other - self
-    common = self & other
-    changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
-
-    [
-      only_self,
-      only_other,
-      changed,
-      common
-    ].map { |e| (e && !e.empty?) ? e : nil }
+module Machinery
+  class ConfigFile < Machinery::SystemFile
   end
-end
 
-class ChangedConfigFilesScope < Machinery::FileScope
-  include Machinery::Scope
-  include Machinery::ScopeFileAccessFlat
+  class ConfigFileList < Machinery::Array
+    has_elements class: ConfigFile
 
-  has_attributes :extracted
-  has_elements class: ConfigFile
+    def compare_with(other)
+      only_self = self - other
+      only_other = other - self
+      common = self & other
+      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+
+      [
+        only_self,
+        only_other,
+        changed,
+        common
+      ].map { |e| (e && !e.empty?) ? e : nil }
+    end
+  end
+
+  class ChangedConfigFilesScope < Machinery::FileScope
+    include Machinery::Scope
+    include Machinery::ScopeFileAccessFlat
+
+    has_attributes :extracted
+    has_elements class: ConfigFile
+  end
 end

@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe UnmanagedFilesRenderer do
+describe Machinery::Ui::UnmanagedFilesRenderer do
   let(:description_without_meta) {
     create_test_description(json: <<-EOF)
     {
@@ -161,7 +161,7 @@ describe UnmanagedFilesRenderer do
 
   describe "#render" do
     it "prints a list of files without meta data if non exists" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_without_meta)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_without_meta)
       expected_output = <<-EOF.chomp
   * /boot/backup_mbr (file)
   * /boot/message (file)
@@ -170,18 +170,18 @@ EOF
     end
 
     it "shows the extraction status" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_without_meta)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_without_meta)
       expect(actual_output).to include("Files extracted: no")
     end
 
     it "prints a link with meta data" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_link)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_link)
       expect(actual_output).to include("/usr/include/asm (link)")
       expect(actual_output).to include("User/Group: root:root")
     end
 
     it "prints a file with meta data" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_file)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_file)
       expect(actual_output).to include("/etc/modprobe.d/50-ipv6.conf (file)")
       expect(actual_output).to include("Mode: 644")
       expect(actual_output).to include("User/Group: root:root")
@@ -189,7 +189,7 @@ EOF
     end
 
     it "prints a dir with meta data" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_dir)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_dir)
       expected_output = <<-EOF
   Files extracted: yes
   * /etc/iscsi/ (dir)
@@ -203,7 +203,7 @@ EOF
     end
 
     it "prints a dir with legacy meta data" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_dir_legacy)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_dir_legacy)
       expected_output = <<-EOF
   Files extracted: yes
   * /etc/iscsi/ (dir)
@@ -216,7 +216,7 @@ EOF
     end
 
     it "prints a remote dir" do
-      actual_output = UnmanagedFilesRenderer.new.render(description_remote_dir)
+      actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(description_remote_dir)
       expected_output = <<EOF.chomp
   * /mnt/unmanaged/remote-dir/ (remote_dir)
 
@@ -231,12 +231,12 @@ EOF
 
       it "does not raises an error" do
         expect {
-          UnmanagedFilesRenderer.new.render(system_description)
+          Machinery::Ui::UnmanagedFilesRenderer.new.render(system_description)
         }.to_not raise_error
       end
 
       it "shows a message" do
-        actual_output = UnmanagedFilesRenderer.new.render(system_description)
+        actual_output = Machinery::Ui::UnmanagedFilesRenderer.new.render(system_description)
         expect(actual_output).not_to match(/Files extracted: (yes|no)/)
         expect(actual_output).to include("There are no unmanaged files.")
       end

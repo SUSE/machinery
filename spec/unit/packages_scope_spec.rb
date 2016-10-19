@@ -20,12 +20,12 @@ require_relative "spec_helper"
 # See os_scope_spec.rb for an explanation of the intention and scope of these
 # tests.
 
-describe PackagesScope do
+describe Machinery::PackagesScope do
 
   it "keeps values" do
-    packages_scope = PackagesScope.new
-    packages_scope << Package.new(name: "PACK1", version: "1.0")
-    packages_scope << Package.new(name: "PACK2", version: "2.1")
+    packages_scope = Machinery::PackagesScope.new
+    packages_scope << Machinery::Package.new(name: "PACK1", version: "1.0")
+    packages_scope << Machinery::Package.new(name: "PACK2", version: "2.1")
 
     expect(packages_scope.size).to eq(2)
     expect(packages_scope[0].name).to eq("PACK1")
@@ -36,7 +36,7 @@ describe PackagesScope do
 
   it "keeps meta data" do
     date = DateTime.now
-    packages_scope = PackagesScope.new
+    packages_scope = Machinery::PackagesScope.new
     packages_scope.set_metadata(date, "SOMEHOST")
 
     expect(packages_scope.meta.modified).to eq(date)
@@ -45,19 +45,19 @@ describe PackagesScope do
 
   describe "compares" do
     before(:each) do
-      @package1 = Package.new(name: "PACK1", version: "1.0")
-      @package2 = Package.new(name: "PACK2", version: "2.1")
-      @package3 = Package.new(name: "PACK3", version: "4.5.6")
-      @package4_1 = Package.new(name: "PACK4", version: "4.5.6")
-      @package4_2 = Package.new(name: "PACK4", version: "4.5.7")
+      @package1 = Machinery::Package.new(name: "PACK1", version: "1.0")
+      @package2 = Machinery::Package.new(name: "PACK2", version: "2.1")
+      @package3 = Machinery::Package.new(name: "PACK3", version: "4.5.6")
+      @package4_1 = Machinery::Package.new(name: "PACK4", version: "4.5.6")
+      @package4_2 = Machinery::Package.new(name: "PACK4", version: "4.5.7")
 
-      @packages_scope1 = PackagesScope.new
+      @packages_scope1 = Machinery::PackagesScope.new
       @packages_scope1 << @package1 << @package2 << @package4_1
 
-      @packages_scope2 = PackagesScope.new
+      @packages_scope2 = Machinery::PackagesScope.new
       @packages_scope2 << @package1 << @package2 << @package4_1
 
-      @packages_scope3 = PackagesScope.new
+      @packages_scope3 = Machinery::PackagesScope.new
       @packages_scope3 << @package1 << @package3 << @package4_2
     end
 

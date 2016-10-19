@@ -15,38 +15,42 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ServicesRenderer < Machinery::Ui::Renderer
-  def content(description)
-    return unless description["services"]
+module Machinery
+  class Ui
+    class ServicesRenderer < Machinery::Ui::Renderer
+      def content(description)
+        return unless description["services"]
 
-    if description["services"].elements.empty?
-      puts "There are no services."
-    end
-
-    list do
-      description["services"].each do |p|
-        item "#{p.name}: #{p.state}"
-      end
-    end
-  end
-
-  def display_name
-    "Services"
-  end
-
-  def compare_content_changed(changed_elements)
-    list do
-      changed_elements.each do |one, two|
-        changes = []
-        relevant_attributes = one.attributes.keys
-
-        relevant_attributes.each do |attribute|
-          if one[attribute] != two[attribute]
-            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
-          end
+        if description["services"].elements.empty?
+          puts "There are no services."
         end
 
-        item "#{one.name} (#{changes.join(", ")})"
+        list do
+          description["services"].each do |p|
+            item "#{p.name}: #{p.state}"
+          end
+        end
+      end
+
+      def display_name
+        "Services"
+      end
+
+      def compare_content_changed(changed_elements)
+        list do
+          changed_elements.each do |one, two|
+            changes = []
+            relevant_attributes = one.attributes.keys
+
+            relevant_attributes.each do |attribute|
+              if one[attribute] != two[attribute]
+                changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+              end
+            end
+
+            item "#{one.name} (#{changes.join(", ")})"
+          end
+        end
       end
     end
   end
