@@ -87,7 +87,7 @@ namespace :man_pages do
   desc 'Compile the documentation into HTML format'
   task :compile_documentation do
     puts "  Compiling documentation"
-    ManTask.compile_documentation
+    Machinery::ManTask.compile_documentation
   end
 end
 
