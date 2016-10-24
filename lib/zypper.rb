@@ -53,7 +53,7 @@ class Zypper
         raise("The zypper base directory is not inside of '/tmp'. Aborting...")
       end
       cmd = ["rm", "-rf", zypper.zypp_base]
-      cmd = cmd.insert(0, "sudo") if zypper.contains_nfs_repos?
+      cmd = cmd.insert(0, "sudo") if zypper.contains_mountable_repos?
       LoggedCheetah.run(*cmd)
     end
 
@@ -81,7 +81,7 @@ class Zypper
   end
 
   def refresh
-    call_zypper "refresh", sudo: contains_nfs_repos?
+    call_zypper "refresh", sudo: contains_mountable_repos?
   end
 
   def download_package(package)
@@ -97,10 +97,10 @@ class Zypper
     [found[1].to_i, found[2].to_i, found[3].to_i] if found
   end
 
-  def contains_nfs_repos?
+  def contains_mountable_repos?
     files = Dir.glob(File.join(@zypp_base, "etc/zypp/repos.d", "*"))
     files.any? do |file|
-      File.readlines(file).any? { |line| line.start_with?("baseurl=nfs://") }
+      File.readlines(file).any? { |line| line.start_with?("baseurl=nfs://", "baseurl=smb://") }
     end
   end
 

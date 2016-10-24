@@ -93,6 +93,32 @@ EOF
         end
       end
 
+      context "with smb repos" do
+        let(:base_url) { "smb://download.opensuse.org/distribution/leap/42.2/repo/oss/" }
+
+        it "calls refresh with sudo" do
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            expect(LoggedCheetah).to receive(:run) do |*args|
+              expect(args).to include("sudo", "refresh")
+            end
+
+            zypper.refresh
+          end
+        end
+
+        it "cleans up with sudo" do
+          expect(LoggedCheetah).to receive(:run).with(
+            "sudo", "rm", "-rf", tmp_path
+          )
+
+          Zypper.isolated(arch: :x86_64) do |zypper|
+            allow(LoggedCheetah).to receive(:run)
+            zypper.refresh
+          end
+        end
+      end
+
       context "without nfs repos" do
         it "calls refresh without sudo" do
           Zypper.isolated(arch: :x86_64) do |zypper|

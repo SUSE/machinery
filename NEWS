@@ -1,6 +1,6 @@
 # Machinery Release Notes
 
-* Fix analyze of changed-config-files when NFS repositories are
+* Fix analyze of changed-config-files when NFS or SMB repositories are
   used (gh#SUSE/machinery#2132)
 
 ## Version 1.22.1 - Fri Oct 14 16:13:50 CEST 2016 - thardeck@suse.de
