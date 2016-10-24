@@ -74,8 +74,8 @@ class Release
     prepare
     finalize_news_file
 
-    # Build gem and send everything to IBS
-    Rake::Task["osc:commit"].invoke
+    # Build gem, send everything to OBS and create submit request against Factory
+    Rake::Task["osc:sr"].invoke
 
     commit
   end
