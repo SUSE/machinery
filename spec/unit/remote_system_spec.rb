@@ -68,7 +68,7 @@ describe RemoteSystem do
           remote_system_with_sudo
         }.to raise_error(
           Machinery::Errors::SudoMissingTTY,
-          /Remove the RequireTTY settings from sudoers.conf/
+          /Remove the 'requiretty' settings from \/etc\/sudoers by running `visudo`\./
         )
       end
     end

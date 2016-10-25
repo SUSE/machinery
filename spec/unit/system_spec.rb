@@ -231,7 +231,7 @@ describe System do
       )
       expect { system.check_requirement(command) }.to raise_error(
         Machinery::Errors::MissingRequirement,
-        /Need binary '#{command}' to be available on the inspected system/
+        /Need the '#{command}' command to be available on the inspected system/
       )
     end
 
@@ -255,7 +255,7 @@ describe System do
 
         expect { system.check_requirement(commands) }.to raise_error(
           Machinery::Errors::MissingRequirement,
-          /Need binary '#{command1}' or '#{command2}' to be available on the inspected system/
+          /Need the '#{command1}' or '#{command2}' commands to be available on the inspected system/
         )
       end
 
