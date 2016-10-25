@@ -52,7 +52,8 @@ class System
       end
     end
     raise Machinery::Errors::MissingRequirement.new(
-      "Need binary '#{commands.join("' or '")}' to be available on the inspected system."
+      "Need the '#{commands.join("' or '")}' #{Machinery.pluralize(commands.length, "command")}" \
+        " to be available on the inspected system."
     )
   end
 
