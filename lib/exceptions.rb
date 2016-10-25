@@ -131,7 +131,7 @@ module Machinery
 
       def to_s
         "'sudo' isn't configured on the inspected host '#{@host}'." \
-        " Remove the RequireTTY settings from sudoers.conf."
+        " Remove the 'requiretty' settings from /etc/sudoers by running `visudo`."
       end
     end
 
