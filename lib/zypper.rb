@@ -100,7 +100,9 @@ class Zypper
   def contains_mountable_repos?
     files = Dir.glob(File.join(@zypp_base, "etc/zypp/repos.d", "*"))
     files.any? do |file|
-      File.readlines(file).any? { |line| line.start_with?("baseurl=nfs://", "baseurl=smb://") }
+      File.readlines(file).any? do |line|
+        line.start_with?("baseurl=nfs://", "baseurl=nfs4://", "baseurl=smb://", "baseurl=cifs://")
+      end
     end
   end
 
