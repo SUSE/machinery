@@ -72,8 +72,13 @@ describe Machinery::ElementFilter do
 
   describe "#matchers" do
     it "returns all matchers" do
-      filter = Machinery::ElementFilter.new(@path, Machinery::Filter::OPERATOR_EQUALS, [@matcher1, @matcher2])
-      expect(filter.matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
+      filter = Machinery::ElementFilter.new(
+        @path,
+        Machinery::Filter::OPERATOR_EQUALS,
+        [@matcher1, @matcher2]
+      )
+      expect(filter.matchers).
+        to eq(Machinery::Filter::OPERATOR_EQUALS => ["/home/alfred", "/var/cache"])
     end
   end
 
@@ -103,7 +108,11 @@ describe Machinery::ElementFilter do
       end
 
       it "returns true when one matcher matches" do
-        filter = Machinery::ElementFilter.new(@path, Machinery::Filter::OPERATOR_EQUALS, [@matcher1, @matcher2])
+        filter = Machinery::ElementFilter.new(
+          @path,
+          Machinery::Filter::OPERATOR_EQUALS,
+          [@matcher1, @matcher2]
+        )
         expect(filter.matches?("/home/alfred")).
           to be(true)
       end
@@ -118,7 +127,11 @@ describe Machinery::ElementFilter do
 
       describe "matches beginning of a value" do
         before(:each) do
-          @filter = Machinery::ElementFilter.new("path", Machinery::Filter::OPERATOR_EQUALS, "/home/alfred/*")
+          @filter = Machinery::ElementFilter.new(
+            "path",
+            Machinery::Filter::OPERATOR_EQUALS,
+            "/home/alfred/*"
+          )
         end
 
         it "returns false on shorter value" do
@@ -140,7 +153,11 @@ describe Machinery::ElementFilter do
 
       context "matching arrays" do
         before(:each) do
-          @filter = Machinery::ElementFilter.new("path", Machinery::Filter::OPERATOR_EQUALS, [["a", "b"]])
+          @filter = Machinery::ElementFilter.new(
+            "path",
+            Machinery::Filter::OPERATOR_EQUALS,
+            [["a", "b"]]
+          )
         end
 
         it "finds matches" do
@@ -165,26 +182,42 @@ describe Machinery::ElementFilter do
 
     context "with equals not operator" do
       it "returns false on matching value" do
-        filter = Machinery::ElementFilter.new(@path, Machinery::Filter::OPERATOR_EQUALS_NOT, [@matcher1])
+        filter = Machinery::ElementFilter.new(
+          @path,
+          Machinery::Filter::OPERATOR_EQUALS_NOT,
+          [@matcher1]
+        )
         expect(filter.matches?("/home/alfred")).
           to be(false)
       end
 
       it "returns true on non-matching value" do
-        filter = Machinery::ElementFilter.new(@path, Machinery::Filter::OPERATOR_EQUALS_NOT, @matcher1)
+        filter = Machinery::ElementFilter.new(
+          @path,
+          Machinery::Filter::OPERATOR_EQUALS_NOT,
+          @matcher1
+        )
         expect(filter.matches?("/home/berta")).
           to be(true)
       end
 
       it "returns true when one matcher doesn't match" do
-        filter = Machinery::ElementFilter.new(@path, Machinery::Filter::OPERATOR_EQUALS_NOT, [@matcher2, @matcher1])
+        filter = Machinery::ElementFilter.new(
+          @path,
+          Machinery::Filter::OPERATOR_EQUALS_NOT,
+          [@matcher2, @matcher1]
+        )
         expect(filter.matches?("/home/alfred")).
           to be(true)
       end
 
       describe "matches beginning of a value" do
         before(:each) do
-          @filter = Machinery::ElementFilter.new("path", Machinery::Filter::OPERATOR_EQUALS_NOT, "/home/alfred/*")
+          @filter = Machinery::ElementFilter.new(
+            "path",
+            Machinery::Filter::OPERATOR_EQUALS_NOT,
+            "/home/alfred/*"
+          )
         end
 
         it "returns true on shorter value" do
@@ -206,7 +239,11 @@ describe Machinery::ElementFilter do
 
       context "matching arrays" do
         before(:each) do
-          @filter = Machinery::ElementFilter.new("path", Machinery::Filter::OPERATOR_EQUALS_NOT, [["a", "b"]])
+          @filter = Machinery::ElementFilter.new(
+            "path",
+            Machinery::Filter::OPERATOR_EQUALS_NOT,
+            [["a", "b"]]
+          )
         end
 
         it "does not match equal arrays" do
@@ -222,7 +259,11 @@ describe Machinery::ElementFilter do
         end
 
         it "allows for filtering arrays with one element using a string filter" do
-          filter = Machinery::ElementFilter.new("path", Machinery::Filter::OPERATOR_EQUALS_NOT, ["a"])
+          filter = Machinery::ElementFilter.new(
+            "path",
+            Machinery::Filter::OPERATOR_EQUALS_NOT,
+            ["a"]
+          )
           expect(filter.matches?(Machinery::Array.new(["a"]))).to be(false)
           expect(filter.matches?(Machinery::Array.new(["a", "b"]))).to be(true)
         end
@@ -243,6 +284,7 @@ describe Machinery::ElementFilter do
 
   describe "=" do
     it "works for equal objects" do
+      # rubocop:disable Lint/UselessComparison
       expect(
         Machinery::ElementFilter.new("/foo", Machinery::Filter::OPERATOR_EQUALS, "bar") ==
           Machinery::ElementFilter.new("/foo", Machinery::Filter::OPERATOR_EQUALS, "bar")
@@ -251,6 +293,7 @@ describe Machinery::ElementFilter do
         Machinery::ElementFilter.new("/foo", Machinery::Filter::OPERATOR_EQUALS, ["bar", "baz"]) ==
           Machinery::ElementFilter.new("/foo", Machinery::Filter::OPERATOR_EQUALS, ["bar", "baz"])
       ).to be(true)
+      # rubocop:enable Lint/UselessComparison
     end
 
     it "works for different objects" do
@@ -271,7 +314,11 @@ describe Machinery::ElementFilter do
 
   describe "#dup" do
     it "creates a deep shallow copy" do
-      element_filter = Machinery::ElementFilter.new("/foo", Machinery::Filter::OPERATOR_EQUALS, "bar")
+      element_filter = Machinery::ElementFilter.new(
+        "/foo",
+        Machinery::Filter::OPERATOR_EQUALS,
+        "bar"
+      )
       dupped = element_filter.dup
 
       dupped.matchers.clear

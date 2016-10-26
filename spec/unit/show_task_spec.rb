@@ -49,7 +49,12 @@ describe Machinery::ShowTask, "#show" do
   end
 
   it "prints a note about the 'N/A' tag for user comments attribute" do
-    show_task.show(description_without_user_comment, ["users"], Machinery::Filter.new, no_pager: true)
+    show_task.show(
+      description_without_user_comment,
+      ["users"],
+      Machinery::Filter.new,
+      no_pager: true
+    )
     expect(captured_machinery_output).to include("missing user info, user ID or group ID")
   end
 
@@ -78,7 +83,12 @@ describe Machinery::ShowTask, "#show" do
     end
 
     show_task.show(
-      system_description, ["packages"], Machinery::Filter.new, show_html: true, ip: "0.0.0.0", port: 3000
+      system_description,
+      ["packages"],
+      Machinery::Filter.new,
+      show_html: true,
+      ip:        "0.0.0.0",
+      port:      3000
     )
   end
 

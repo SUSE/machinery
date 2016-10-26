@@ -111,10 +111,10 @@ module Machinery
           meta = system_description[scope].meta
 
           if meta
-              header += " [#{meta.hostname}]"
-              date = Time.parse(meta.modified).localtime
-              date_human = date.strftime "%Y-%m-%d %H:%M:%S"
-              header += " (#{date_human})"
+            header += " [#{meta.hostname}]"
+            date = Time.parse(meta.modified).localtime
+            date_human = date.strftime "%Y-%m-%d %H:%M:%S"
+            header += " (#{date_human})"
           end
 
           heading(header)

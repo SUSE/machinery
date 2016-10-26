@@ -66,7 +66,10 @@ class Machinery::Migration
     def migrate_description(store, description_name, options = {})
       load_migrations
 
-      hash = Machinery::Manifest.load(description_name, store.manifest_path(description_name)).to_hash
+      hash = Machinery::Manifest.load(
+        description_name,
+        store.manifest_path(description_name)
+      ).to_hash
 
       errors = Machinery::JsonValidator.new(hash).validate
       errors += Machinery::FileValidator.new(

@@ -30,7 +30,8 @@ describe Machinery::Filter do
     it "parses definition with multiple matcher" do
       element_filter = Machinery::Filter.parse_filter_definitions("/foo=bar,baz")
       expect(element_filter.keys.length).to eq(1)
-      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"]])
+      expect(element_filter["/foo"].matchers).
+        to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"]])
     end
 
     it "raises error if filter is invalid" do
@@ -48,13 +49,15 @@ describe Machinery::Filter do
     it "parses definition with 'equals not' operator" do
       element_filter = Machinery::Filter.parse_filter_definitions("/foo!=bar,baz")
       expect(element_filter.keys.length).to eq(1)
-      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS_NOT => [["bar", "baz"]])
+      expect(element_filter["/foo"].matchers).
+        to eq(Machinery::Filter::OPERATOR_EQUALS_NOT => [["bar", "baz"]])
     end
 
     it "handles escaped commas" do
       element_filter = Machinery::Filter.parse_filter_definitions("/foo=bar,baz\\,qux")
       expect(element_filter.keys.length).to eq(1)
-      expect(element_filter["/foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz,qux"]])
+      expect(element_filter["/foo"].matchers).
+        to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz,qux"]])
     end
 
     it "fails on unknown operators" do
@@ -90,8 +93,10 @@ describe Machinery::Filter do
       filter.add_element_filter_from_definition("bar=baz")
 
       element_filters = filter.element_filters
-      expect(element_filters["foo"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"]])
-      expect(element_filters["bar"].matchers).to eq(Machinery::Filter::OPERATOR_EQUALS => ["baz"])
+      expect(element_filters["foo"].matchers).
+        to eq(Machinery::Filter::OPERATOR_EQUALS => [["bar", "baz"]])
+      expect(element_filters["bar"].matchers).
+        to eq(Machinery::Filter::OPERATOR_EQUALS => ["baz"])
     end
 
     it "merges new definitions with existing element filter" do
@@ -115,11 +120,13 @@ describe Machinery::Filter do
 
   describe "#filter_for" do
     it "returns the correct filter" do
-      filter = Machinery::Filter.new([
-        "/unmanaged_files/name=/home/alfred",
-        "/unmanaged_files/name=/var/cache",
-        "/changed_managed_files/changes=md5,size"
-      ])
+      filter = Machinery::Filter.new(
+        [
+          "/unmanaged_files/name=/home/alfred",
+          "/unmanaged_files/name=/var/cache",
+          "/changed_managed_files/changes=md5,size"
+        ]
+      )
 
       element_filter = filter.element_filter_for("/unmanaged_files/name")
       expect(element_filter.path).to eq("/unmanaged_files/name")
@@ -134,13 +141,15 @@ describe Machinery::Filter do
 
   describe "#element_filters_for_scope" do
     it "returns the relevant element filters" do
-      filter = Machinery::Filter.new([
-        "/groups/name=root",
-        "/unmanaged_files/name=/home/alfred",
-        "/unmanaged_files/name=/var/cache",
-        "/unmanaged_files/changes=md5,size",
-        "/changed_managed_files/changes=md5,size"
-      ])
+      filter = Machinery::Filter.new(
+        [
+          "/groups/name=root",
+          "/unmanaged_files/name=/home/alfred",
+          "/unmanaged_files/name=/var/cache",
+          "/unmanaged_files/changes=md5,size",
+          "/changed_managed_files/changes=md5,size"
+        ]
+      )
 
       expected = [
         Machinery::ElementFilter.new("/unmanaged_files/name", Machinery::Filter::OPERATOR_EQUALS,
@@ -154,13 +163,15 @@ describe Machinery::Filter do
 
   describe "#set_element_filters_for_scope" do
     it "replaces existing element filters" do
-      filter = Machinery::Filter.new([
-        "/groups/name=root",
-        "/unmanaged_files/name=/foo",
-        "/unmanaged_files/name=/bar",
-        "/unmanaged_files/changes=foo",
-        "/changed_managed_files/changes=md5,size"
-      ])
+      filter = Machinery::Filter.new(
+        [
+          "/groups/name=root",
+          "/unmanaged_files/name=/foo",
+          "/unmanaged_files/name=/bar",
+          "/unmanaged_files/changes=foo",
+          "/changed_managed_files/changes=md5,size"
+        ]
+      )
 
       expected = [
         Machinery::ElementFilter.new("/unmanaged_files/name", Machinery::Filter::OPERATOR_EQUALS,

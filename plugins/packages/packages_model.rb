@@ -47,7 +47,7 @@ module Machinery
           package_list_to_scope(only_other),
           changed,
           package_list_to_scope(common)
-        ].map { |e| (e && !e.empty?) ? e : nil }
+        ].map { |e| e && !e.empty? ? e : nil }
       end
     end
 

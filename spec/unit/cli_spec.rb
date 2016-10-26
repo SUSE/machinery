@@ -316,21 +316,39 @@ describe Machinery::Cli do
       end
 
       it "forwards the --skip-files option to the InspectTask as an unmanaged_files filter" do
+        # rubocop:disable Style/SpaceAroundBlockParameters, Style/MultilineBlockLayout
         expect_any_instance_of(Machinery::InspectTask).
-          to receive(:inspect_system) do |_instance, _store, _system, _name, _user, _scopes, filter, _options|
+          to receive(:inspect_system) do |_instance,
+                                          _store,
+                                          _system,
+                                          _name,
+                                          _user,
+                                          _scopes,
+                                          filter,
+                                          _options|
           expect(filter.element_filter_for("/unmanaged_files/name").matchers["="]).
             to include("/foo/bar", "/baz")
         end.and_return(description)
+        # rubocop:enable Style/SpaceAroundBlockParameters, Style/MultilineBlockLayout
 
         run_command(["inspect", "--skip-files=/foo/bar,/baz", example_host])
       end
 
       it "forwards the global --exclude option to the InspectTask" do
+        # rubocop:disable Style/SpaceAroundBlockParameters, Style/MultilineBlockLayout
         expect_any_instance_of(Machinery::InspectTask).
-          to receive(:inspect_system) do |_instance, _store, _system, _name, _user, _scopes, filter, _options|
+          to receive(:inspect_system) do |_instance,
+                                          _store,
+                                          _system,
+                                          _name,
+                                          _user,
+                                          _scopes,
+                                          filter,
+                                          _options|
           expect(filter.element_filter_for("/unmanaged_files/files/name").matchers["="]).
             to include("/foo/bar")
         end.and_return(description)
+        # rubocop:enable Style/SpaceAroundBlockParameters, Style/MultilineBlockLayout
 
         run_command([
           "inspect",
@@ -340,10 +358,19 @@ describe Machinery::Cli do
       end
 
       it "adheres to the --remote-user option" do
+        # rubocop:disable Style/SpaceAroundBlockParameters, Style/MultilineBlockLayout
         expect_any_instance_of(Machinery::InspectTask).
-          to receive(:inspect_system) do |_instance, _store, system, _name, _user, _scopes, _filter, _options|
+          to receive(:inspect_system) do |_instance,
+                                          _store,
+                                          system,
+                                          _name,
+                                          _user,
+                                          _scopes,
+                                          _filter,
+                                          _options|
           expect(system.remote_user).to eq("foo")
         end.and_return(description)
+        # rubocop:enable Style/SpaceAroundBlockParameters, Style/MultilineBlockLayout
 
         run_command([
           "inspect",
@@ -404,7 +431,8 @@ describe Machinery::Cli do
           run_command(["inspect", example_host])
         end
 
-        it "extracts changed config/managed files and umanaged files when --extract-files is specified" do
+        it "extracts changed config/managed files and umanaged "\
+            "files when --extract-files is specified" do
           expect_any_instance_of(Machinery::InspectTask).to receive(:inspect_system).
             with(
               an_instance_of(Machinery::SystemDescriptionStore),
@@ -812,13 +840,13 @@ describe Machinery::Cli do
     end
 
     it "raises an error if the provided scope is unknown" do
-      expect{
+      expect {
         Machinery::Cli.parse_scopes("unknown-scope")
       }.to raise_error(Machinery::Errors::UnknownScope, /unknown-scope/)
     end
 
     it "uses singular in the error message for one scope" do
-      expect{
+      expect {
         Machinery::Cli.parse_scopes("unknown-scope")
       }.to raise_error(
         Machinery::Errors::UnknownScope,
@@ -827,7 +855,7 @@ describe Machinery::Cli do
     end
 
     it "uses plural in the error message for more than one scope" do
-      expect{
+      expect {
         Machinery::Cli.parse_scopes("unknown-scope,unknown-scope2")
       }.to raise_error(
         Machinery::Errors::UnknownScope,
@@ -836,7 +864,7 @@ describe Machinery::Cli do
     end
 
     it "raises an error if the scope contains illegal characters" do
-      expect{
+      expect {
         Machinery::Cli.parse_scopes("fd df,u*n")
       }.to raise_error(Machinery::Errors::UnknownScope,
         /The following scopes are not valid: 'fd df', 'u\*n'\./)

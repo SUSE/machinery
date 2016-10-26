@@ -54,6 +54,7 @@ describe Machinery::Os do
 
   describe "compares" do
     before(:each) do
+      # rubocop:disable Style/VariableNumber
       @os_scope1 = Machinery::Os.new
       @os_scope1.name = "OS1"
       @os_scope1.version = "x"
@@ -65,6 +66,7 @@ describe Machinery::Os do
       @os_scope3 = Machinery::Os.new
       @os_scope3.name = "OS2"
       @os_scope3.version = "y"
+      # rubocop:enable Style/VariableNumber
     end
 
     it "equal objects" do

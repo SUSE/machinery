@@ -34,7 +34,10 @@ class Machinery::ElementFilter
   end
 
   def add_matchers(operator, matchers)
-    unless [Machinery::Filter::OPERATOR_EQUALS, Machinery::Filter::OPERATOR_EQUALS_NOT].include?(operator)
+    unless [
+      Machinery::Filter::OPERATOR_EQUALS,
+      Machinery::Filter::OPERATOR_EQUALS_NOT
+    ].include?(operator)
       raise Machinery::Errors::InvalidFilter.new("Wrong filter operator '#{operator}'")
     end
 

@@ -146,7 +146,7 @@ EOF
     it "sets a ZYPP_CONF environment variable" do
       Machinery::Zypper.isolated(arch: :ppc64le) do |zypper|
         allow(Machinery::LoggedCheetah).to receive(:run)
-        expect(Machinery::LoggedCheetah).to receive(:run) do |*args|
+        expect(Machinery::LoggedCheetah).to receive(:run) do
           expect(ENV.include?("ZYPP_CONF")).to be true
           expect(ENV.fetch("ZYPP_CONF")).to eq(zypper.zypp_config)
         end

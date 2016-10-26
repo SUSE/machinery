@@ -45,6 +45,7 @@ describe Machinery::PackagesScope do
 
   describe "compares" do
     before(:each) do
+      # rubocop:disable Style/VariableNumber
       @package1 = Machinery::Package.new(name: "PACK1", version: "1.0")
       @package2 = Machinery::Package.new(name: "PACK2", version: "2.1")
       @package3 = Machinery::Package.new(name: "PACK3", version: "4.5.6")
@@ -59,6 +60,7 @@ describe Machinery::PackagesScope do
 
       @packages_scope3 = Machinery::PackagesScope.new
       @packages_scope3 << @package1 << @package3 << @package4_2
+      # rubocop:enable Style/VariableNumber
     end
 
     it "equal objects" do

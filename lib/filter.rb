@@ -47,15 +47,17 @@ module Machinery
   class Filter
     attr_accessor :element_filters
 
-    OPERATOR_EQUALS = "="
-    OPERATOR_EQUALS_NOT = "!="
+    OPERATOR_EQUALS = "=".freeze
+    OPERATOR_EQUALS_NOT = "!=".freeze
 
     def self.parse_filter_definitions(filter_definitions)
       element_filters = {}
       Array(filter_definitions).each do |definition|
         path, operator, matcher_definition = definition.scan(/([a-zA-Z_\/]+)(.*=)(.*)/)[0]
 
-        raise Machinery::Errors::InvalidFilter.new("Invalid filter: '#{definition}'") unless operator
+        raise Machinery::Errors::InvalidFilter.new(
+          "Invalid filter: '#{definition}'"
+        ) unless operator
         element_filters[path] ||= ElementFilter.new(path)
         if matcher_definition.index(",")
           matchers = matcher_definition.split(/(?<!\\),/)

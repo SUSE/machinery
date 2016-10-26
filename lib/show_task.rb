@@ -41,7 +41,11 @@ Trying to start a web server for serving the description on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-      server = Machinery::Html.run_server(description.store, port: options[:port], ip: options[:ip]) do
+      server = Machinery::Html.run_server(
+        description.store,
+        port: options[:port],
+        ip:   options[:ip]
+      ) do
         Machinery::LoggedCheetah.run("xdg-open", url)
       end
 

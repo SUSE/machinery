@@ -608,7 +608,10 @@ EOF
 
     it "only supports inspection filters" do
       expect {
-        subject.set_filter_definitions("show", Machinery::Filter.new(["/foo=bar", "/scope=filter"]).to_array)
+        subject.set_filter_definitions(
+          "show",
+          Machinery::Filter.new(["/foo=bar", "/scope=filter"]).to_array
+        )
       }.to raise_error(/not supported/)
     end
   end

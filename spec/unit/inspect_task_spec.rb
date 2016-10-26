@@ -103,7 +103,14 @@ describe Machinery::InspectTask, "#inspect_system" do
         Machinery::FooInspector
       )
 
-    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
+    inspect_task.inspect_system(
+      store,
+      system,
+      name,
+      current_user_non_root,
+      ["foo"],
+      Machinery::Filter.new
+    )
   end
 
   it "runs the proper inspector when a scope is given" do
@@ -112,7 +119,14 @@ describe Machinery::InspectTask, "#inspect_system" do
         Machinery::FooInspector
       )
 
-    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
+    inspect_task.inspect_system(
+      store,
+      system,
+      name,
+      current_user_non_root,
+      ["foo"],
+      Machinery::Filter.new
+    )
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
@@ -133,11 +147,13 @@ describe Machinery::InspectTask, "#inspect_system" do
     )
 
     expected = Machinery::SimpleInspectTaskScope.new(
-      files: Machinery::SimpleInspectTaskList.new([
-        Machinery::Object.new(name: "foo"),
-        Machinery::Object.new(name: "bar"),
-        Machinery::Object.new(name: "baz"),
-      ])
+      files: Machinery::SimpleInspectTaskList.new(
+        [
+          Machinery::Object.new(name: "foo"),
+          Machinery::Object.new(name: "bar"),
+          Machinery::Object.new(name: "baz"),
+        ]
+      )
     )
     expect(description.foo).to eql(expected)
   end
@@ -168,7 +184,14 @@ Inspecting foo...
       expect_any_instance_of(Machinery::FooInspector).to receive(:inspect).and_raise(RuntimeError)
 
       expect {
-        inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Machinery::Filter.new)
+        inspect_task.inspect_system(
+          store,
+          system,
+          name,
+          current_user_non_root,
+          ["foo"],
+          Machinery::Filter.new
+        )
       }.to raise_error(RuntimeError)
     end
   end
@@ -221,7 +244,7 @@ Inspecting foo...
         to receive(:for).at_least(:once).times.and_return(Machinery::FooInspector)
 
       expect_any_instance_of(Machinery::FooInspector).
-          to receive(:inspect) do |inspector, filter, _options|
+        to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)
         expect(filter.element_filters["/foo"].matchers).
           to eq("=" => [["bar", "baz"]])
@@ -259,7 +282,10 @@ Inspecting foo...
       description = Machinery::SystemDescription.new(name, store)
       expect(Machinery::SystemDescription).to receive(:load).and_return(description)
 
-      description.set_filter_definitions("inspect", Machinery::Filter.new(["/foo=bar", "/baz=qux"]).to_array)
+      description.set_filter_definitions(
+        "inspect",
+        Machinery::Filter.new(["/foo=bar", "/baz=qux"]).to_array
+      )
 
       description = inspect_task.inspect_system(
         store,

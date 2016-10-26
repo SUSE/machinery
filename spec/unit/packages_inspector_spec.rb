@@ -315,9 +315,9 @@ EOF
           "apt-cache", "show", "acpi", "acpi-support-base", any_args
         ).and_return(apt_cache_output_lenny)
 
-        expected = PackagesScope.new(
+        expected = Machinery::PackagesScope.new(
           [
-            DpkgPackage.new(
+            Machinery::DpkgPackage.new(
               name: "acpi",
               version: "1.1",
               release: "2",
@@ -325,7 +325,7 @@ EOF
               checksum: "4b6244862999c8eada941fed696e90b5",
               vendor: ""
             ),
-            DpkgPackage.new(
+            Machinery::DpkgPackage.new(
               name: "acpi-support-base",
               version: "0.109",
               release: "11",

@@ -29,7 +29,9 @@ class Machinery::DockerSystem < Machinery::System
   end
 
   def start
-    @container = Machinery::LoggedCheetah.run("docker", "run", "-id", @image, "bash", stdout: :capture).chomp
+    @container = Machinery::LoggedCheetah.run(
+      "docker", "run", "-id", @image, "bash", stdout: :capture
+    ).chomp
   rescue Cheetah::ExecutionFailed => e
     raise Machinery::Errors::MachineryError, "Container could not be started." \
       " The error message was:\n" + e.stderr
@@ -85,7 +87,9 @@ class Machinery::DockerSystem < Machinery::System
       destination_path = File.join(destination, file)
       FileUtils.mkdir_p(File.dirname(destination_path), mode: 0700)
 
-      Machinery::LoggedCheetah.run("docker", "cp", "#{@container}:#{file}", "#{destination_path}")
+      Machinery::LoggedCheetah.run(
+        "docker", "cp", "#{@container}:#{file}", destination_path.to_s
+      )
       Machinery::LoggedCheetah.run("chmod", "go-rwx", destination_path)
     end
   end

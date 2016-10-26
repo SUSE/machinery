@@ -80,7 +80,7 @@ module Machinery
           only_other,
           changed,
           common
-        ].map { |e| (e && !e.empty?) ? e : nil }
+        ].map { |e| e && !e.empty? ? e : nil }
       end
     end
   end

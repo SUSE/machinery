@@ -46,7 +46,11 @@ A specific description with the name NAME is accessible at:
 The web server can be closed with Ctrl+C.
 EOF
 
-    server = Machinery::Html.run_server(system_description_store, port: opts[:port], public: opts[:public])
+    server = Machinery::Html.run_server(
+      system_description_store,
+      port: opts[:port],
+      public: opts[:public]
+    )
 
     server.join
   end

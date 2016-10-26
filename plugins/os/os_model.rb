@@ -156,13 +156,17 @@ module Machinery
     end
   end
 
+  # rubocop:disable Style/ClassAndModuleCamelCase
   class OsOpenSuse13_1 < OsOpenSuse
+    # rubocop:enable Style/ClassAndModuleCamelCase
     def self.canonical_name
       "openSUSE 13.1 (Bottle)"
     end
   end
 
+  # rubocop:disable Style/ClassAndModuleCamelCase
   class OsOpenSuse13_2 < OsOpenSuse
+    # rubocop:enable Style/ClassAndModuleCamelCase
     def self.canonical_name
       "openSUSE 13.2 (Harlequin)"
     end

@@ -181,7 +181,7 @@ module Machinery
 
         # SCC
         rep.elements["url"].first.to_s.match(/(https:\/\/updates.suse.com\/SUSE\/)/)
-        scc_url = $1        
+        scc_url = $1
         cred_value = "SCCcredentials"
         if scc_url && credentials[cred_value]
           username = credentials[cred_value][:username]

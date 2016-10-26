@@ -57,7 +57,10 @@ describe Machinery::UnmanagedFilesInspector do
           expect(args).to eq("--extract-metadata")
         end
 
-        inspector.inspect(Machinery::Filter.from_default_definition("inspect"), extract_metadata: true)
+        inspector.inspect(
+          Machinery::Filter.from_default_definition("inspect"),
+          extract_metadata: true
+        )
       end
     end
   end

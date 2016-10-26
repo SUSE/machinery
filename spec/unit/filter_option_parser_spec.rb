@@ -25,7 +25,8 @@ describe Machinery::FilterOptionParser do
 
   describe ".parse" do
     before(:each) do
-      allow(Machinery::Filter).to receive(:from_default_definition).and_return(Machinery::Filter.new)
+      allow(Machinery::Filter).
+        to receive(:from_default_definition).and_return(Machinery::Filter.new)
     end
 
     context "with the global --exclude option" do

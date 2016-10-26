@@ -39,7 +39,11 @@ Trying to start a web server for serving the comparison result on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-    server = Machinery::Html.run_server(description1.store, port: options[:port], ip: options[:ip]) do
+    server = Machinery::Html.run_server(
+      description1.store,
+      port: options[:port],
+      ip:   options[:ip]
+    ) do
       Machinery::LoggedCheetah.run("xdg-open", url)
     end
 

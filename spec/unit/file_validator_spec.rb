@@ -21,8 +21,10 @@ describe Machinery::FileValidator do
   capture_machinery_output
   describe "#validate" do
     before(:each) do
+      # rubocop:disable Style/VariableNumber
       @store = Machinery::SystemDescriptionStore.new("spec/data/descriptions/validation")
       @store_v1 = Machinery::SystemDescriptionStore.new("spec/data/descriptions/validation/v1")
+      # rubocop:enable Style/VariableNumber
     end
 
     describe "validating a format version 1 description" do

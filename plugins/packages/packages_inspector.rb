@@ -53,7 +53,7 @@ module Machinery
       )
       # gpg-pubkeys are no real packages but listed by rpm in the regular
       # package list
-      rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *attrs|
+      rpm_data.scan(/(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\|(.*?)\$/).reject do |name, *_attrs|
         name =~ /^gpg-pubkey$/
       end.each do |name, version, release, arch, vendor, checksum|
         packages << RpmPackage.new(
@@ -85,37 +85,41 @@ module Machinery
         release = version_segments.pop if version_segments.length > 1
         version = version_segments.join("-")
 
-      DpkgPackage.new(
-        name: name,
-        version: version,
-        release: release,
-        arch: arch
-      )
-    end
-    packages.each_slice(100) do |packages_slice|
-      apt_cache_output = run_apt_cache(packages_slice)
-
-      apt_cache_elements = Hash[
-        *apt_cache_output.split("\n\n").flat_map do |element|
-          name = element[/Package: (.+)$/, 1]
-          [name, element]
-        end
-      ]
-
-      packages_slice.each do |package|
-        name = package.name.sub(/:[^:]+$/, "")
-        apt_cache_element = apt_cache_elements[name]
-        if apt_cache_element
-          package.arch = apt_cache_element[/Architecture: (\w+)\n/, 1]
-          checksum = apt_cache_element[/MD5[Ss]um: (\w+)\n/, 1]
-          vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
-        end
+        Machinery::DpkgPackage.new(
+          name: name,
+          version: version,
+          release: release,
+          arch: arch
+        )
       end
+      packages.each_slice(100) do |packages_slice|
+        apt_cache_output = run_apt_cache(packages_slice)
 
-      @description.packages = PackagesScope.new(
-        packages.sort_by(&:name),
-        package_system: "dpkg"
-      )
+        apt_cache_elements = Hash[
+          *apt_cache_output.split("\n\n").flat_map do |element|
+            name = element[/Package: (.+)$/, 1]
+            [name, element]
+          end
+        ]
+
+        packages_slice.each do |package|
+          name = package.name.sub(/:[^:]+$/, "")
+          apt_cache_element = apt_cache_elements[name]
+          if apt_cache_element
+            package.arch = apt_cache_element[/Architecture: (\w+)\n/, 1]
+            checksum = apt_cache_element[/MD5[Ss]um: (\w+)\n/, 1]
+            vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
+          end
+          package.checksum = checksum || ""
+          package.vendor = vendor || ""
+          package.release ||= ""
+        end
+
+        @description.packages = Machinery::PackagesScope.new(
+          packages.sort_by(&:name),
+          package_system: "dpkg"
+        )
+      end
     end
 
     def run_apt_cache(packages_slice)
