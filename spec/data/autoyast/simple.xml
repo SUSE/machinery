@@ -28,6 +28,10 @@
         <name>NCCRepo</name>
       </listentry>
       <listentry>
+        <media_url>https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom</media_url>
+        <name>SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool</name>
+      </listentry>
+      <listentry>
         <media_url>http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/</media_url>
         <name>Alias With Spaces</name>
       </listentry>
@@ -123,6 +127,7 @@ zypper -n mr --priority=2 'autorefresh_enabled_alias' --name='autorefresh_enable
 zypper -n ar --name='dvd_entry' --type='yast2' 'dvd:///?devices=/dev/disk/by-id/ata-Optiarc_DVD+_-RW_AD-7200S,/dev/sr0' 'dvd_entry_alias'
 zypper -n mr --priority=2 'dvd_entry_alias' --name='dvd_entry' --no-refresh
 zypper -n mr --priority=2 'NCCRepo' --name='NCC Repository' --refresh
+zypper -n mr --priority=99 'SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool' --name='SLES12-SP1-Pool' --no-refresh
 zypper -n mr --priority=1 'Alias With Spaces' --name='nodejs' --no-refresh
 rm -rf '/etc/deleted config'
 mkdir -p '/mnt/etc'

@@ -100,6 +100,9 @@ describe KiwiConfig do
   <repository alias="NCCRepo" type="yast2" priority="2">
     <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
   </repository>
+  <repository alias="SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool" type="rpm-md" priority="99" username="SCC_usernameusernameusernameusername" password="passwordpassword">
+    <source path="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom"/>
+  </repository>
   <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
@@ -206,6 +209,9 @@ EOT
   </repository>
   <repository alias="NCCRepo" type="yast2" priority="2">
     <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
+  </repository>
+  <repository alias="SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool" type="rpm-md" priority="99" username="SCC_usernameusernameusernameusername" password="passwordpassword">
+    <source path="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom"/>
   </repository>
   <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
