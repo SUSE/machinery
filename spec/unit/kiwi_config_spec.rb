@@ -97,8 +97,11 @@ describe KiwiConfig do
   <repository alias="nodejs_alias" type="rpm-md" priority="1">
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
-  <repository alias="NCCRepo" type="yast2" priority="2">
+  <repository alias="NCCRepo" type="yast2" priority="2" username="usernameusernameusernameusername" password="passwordpassword">
     <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
+  </repository>
+  <repository alias="SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool" type="rpm-md" priority="99" username="SCC_usernameusernameusernameusername" password="passwordpassword">
+    <source path="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom"/>
   </repository>
   <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
@@ -136,6 +139,9 @@ EOT
 
       # NCC repositories are not added to the system, just used for building
       expect(config.sh).not_to include("https://nu.novell.com/")
+
+      # SCC repositories are not added to the system, just used for building
+      expect(config.sh).not_to include("https://updates.suse.com/")
     end
 
     it "raises an error if no repository is activated" do
@@ -204,8 +210,11 @@ EOT
   <repository alias="nodejs_alias" type="rpm-md" priority="1">
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
   </repository>
-  <repository alias="NCCRepo" type="yast2" priority="2">
+  <repository alias="NCCRepo" type="yast2" priority="2" username="usernameusernameusernameusername" password="passwordpassword">
     <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
+  </repository>
+  <repository alias="SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool" type="rpm-md" priority="99" username="SCC_usernameusernameusernameusername" password="passwordpassword">
+    <source path="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom"/>
   </repository>
   <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
     <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>

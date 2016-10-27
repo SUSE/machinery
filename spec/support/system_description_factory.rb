@@ -654,7 +654,21 @@ EOF
           "enabled": true,
           "autorefresh": true,
           "gpgcheck": true,
-          "priority": 2
+          "priority": 2,
+          "username": "usernameusernameusernameusername",
+          "password": "passwordpassword"
+        },
+        {
+          "alias": "SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool",
+          "name": "SLES12-SP1-Pool",
+          "type": "rpm-md",
+          "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom",
+          "enabled": true,
+          "autorefresh": false,
+          "gpgcheck": true,
+          "priority": 99,
+          "username": "SCC_usernameusernameusernameusername",
+          "password": "passwordpassword"
         },
         {
           "alias": "Alias With Spaces",

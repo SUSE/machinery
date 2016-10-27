@@ -57,6 +57,10 @@ class KiwiConfig < Exporter
 
   private
 
+  def repos_with_credentials?(repo)
+    repo.username && repo.password
+  end
+
   def optional_bootstrap_packages
     [
       "glibc-locale",
@@ -293,7 +297,7 @@ EOF
           end
         end
 
-        next if repo.url =~ /^https:\/\/nu.novell.com|^https:\/\/update.suse.com/
+        next if repos_with_credentials?(repo)
 
         @sh << "zypper -n ar --name='#{repo.name}' "
         @sh << "--type='#{repo.type}' " if repo.type
