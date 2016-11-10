@@ -164,6 +164,7 @@ class System
     options[:stdout] = write_io
     options[:stderr] = error_io
 
+    Thread.abort_on_exception = true
     inspect_thread = Thread.new do
       if type == :script
         run_script(*command, options)
@@ -178,10 +179,8 @@ class System
       callback.call(chunk) if callback
     end
 
-    if error.include?("password is required")
-      raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)
-    end
-
     output
+  rescue
+    raise Machinery::Errors::CommandFailed.new(command.join(" "), error)
   end
 end
