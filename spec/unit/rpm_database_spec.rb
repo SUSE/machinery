@@ -60,6 +60,7 @@ describe RpmDatabase do
   end
 
   it "checks the requirements on the system" do
+    allow(subject).to receive(:managed_files_list).and_return("")
     expect(system).to receive(:check_requirement).with("rpm", "--version")
     expect(system).to receive(:check_requirement).with("stat", "--version")
     expect(system).to receive(:check_requirement).with("find", "--version")
