@@ -179,7 +179,8 @@ describe System do
     it "passes options to run_script" do
       system = LocalSystem.new
       expect(system).to receive(:run_script).with("script", hash_including(:privileged))
-      system.run_script("script", privileged: true)
+      system.run_script_with_progress("script", privileged: true)
+    end
 
     it "raises on errors" do
       system = LocalSystem.new
