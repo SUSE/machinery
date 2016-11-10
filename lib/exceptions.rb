@@ -124,6 +124,18 @@ module Machinery
       end
     end
 
+    class CommandFailed < MachineryError
+      def initialize(command, error)
+        @command = command
+        @error = error
+      end
+
+      def to_s
+        "The required call '#{@command}' does not seem to work as expected on the" \
+          " inspected system. This is the error message:\n#{@error}"
+      end
+    end
+
     class SudoMissingTTY < MachineryError
       def initialize(host)
         @host = host
