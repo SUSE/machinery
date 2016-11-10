@@ -108,7 +108,7 @@ class PackagesInspector < Inspector
         name = package.name.sub(/:[^:]+$/, "")
         apt_cache_element = apt_cache_elements[name]
         if apt_cache_element
-          checksum = apt_cache_element[/MD5sum: (\w+)\n/, 1]
+          checksum = apt_cache_element[/MD5[Ss]um: (\w+)\n/, 1]
           vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
         end
         package.checksum = checksum || ""
