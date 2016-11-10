@@ -99,7 +99,7 @@ class PackagesInspector < Inspector
 
       apt_cache_elements = Hash[
         *apt_cache_output.split("\n\n").flat_map do |element|
-          name = element[/Package: (\w+)$/, 1]
+          name = element[/Package: (.+)$/, 1]
           [name, element]
         end
       ]
