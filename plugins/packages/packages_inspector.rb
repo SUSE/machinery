@@ -97,8 +97,9 @@ class PackagesInspector < Inspector
           *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
           stdout: :capture
         )
-      rescue
+      rescue Cheetah::ExecutionFailed => e
         # Older Debian systems do not support the version parameter for `apt-cache show`
+        raise unless e.stderr.include?("E: No packages found")
         apt_cache_output = @system.run_command(
           "apt-cache",
           "show",

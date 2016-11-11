@@ -303,7 +303,14 @@ EOF
           .and_return(dpkg_output_lenny)
         expect(system).to receive(:run_command).with(
           "apt-cache", "show", "acpi=1.1-2", "acpi-support-base=0.109-11", any_args
-        ).and_raise(Cheetah::ExecutionFailed.new(nil, 2, "", "dpkg: unknown option -V"))
+        ).and_raise(
+          Cheetah::ExecutionFailed.new(
+            nil,
+            2,
+            "",
+            "W: Unable to locate package acpi=1.1-2\nE: No packages found"
+          )
+        )
         expect(system).to receive(:run_command).with(
           "apt-cache", "show", "acpi", "acpi-support-base", any_args
         ).and_return(apt_cache_output_lenny)
