@@ -28,7 +28,12 @@ module Machinery
     class MachineryError < StandardError; end
 
     class UnknownScope < MachineryError; end
-    class UnknownOs < MachineryError; end
+    class UnknownOs < MachineryError
+      def to_s
+        "Unable to determine the operating system. There does not seem to be an" \
+          " /etc/os-release file."
+      end
+    end
     class InvalidPager < MachineryError; end
     class InvalidCommandLine < MachineryError; end
 
