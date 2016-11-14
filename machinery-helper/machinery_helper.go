@@ -354,19 +354,24 @@ func printVersion() {
 
 func getUnmanagedFilesList(files []string, unmanagedFiles map[string]string, extractMetadataFlag *bool) []UnmanagedFile {
 	unmanagedFilesList := make([]UnmanagedFile, len(unmanagedFiles))
+	i := 0
 	for j := range files {
 		entry := UnmanagedFile{}
 		entry.Name = files[j]
 		entry.Type = unmanagedFiles[files[j]]
 
 		if *extractMetadataFlag {
-			amendPathAttributes(&entry, unmanagedFiles[files[j]])
+			if _, err := os.Stat(entry.Name); err == nil {
+				amendPathAttributes(&entry, unmanagedFiles[files[j]])
+			} else {
+				continue
+			}
 		}
 
 		unmanagedFilesList[i] = entry
 		i++
 	}
-	return unmanagedFilesList
+	return unmanagedFilesList[0:i]
 }
 
 // IgnoreList includes mounts and any other file type that will be ignored when
