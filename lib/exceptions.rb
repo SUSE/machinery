@@ -28,7 +28,12 @@ module Machinery
     class MachineryError < StandardError; end
 
     class UnknownScope < MachineryError; end
-    class UnknownOs < MachineryError; end
+    class UnknownOs < MachineryError
+      def to_s
+        "Unable to determine the operating system. There does not seem to be an" \
+          " /etc/os-release file."
+      end
+    end
     class InvalidPager < MachineryError; end
     class InvalidCommandLine < MachineryError; end
 
@@ -121,6 +126,18 @@ module Machinery
         "'sudo' isn't configured on the inspected host '#{@host}' for user '#{@remote_user}' to " \
         "give all required commands enough privileges. See 'PREREQUISITES' section in the " \
         "machinery documentation for a description on how to configure sudo on the inspected host."
+      end
+    end
+
+    class CommandFailed < MachineryError
+      def initialize(command, error)
+        @command = command
+        @error = error
+      end
+
+      def to_s
+        "The required call '#{@command}' does not seem to work as expected on the" \
+          " inspected system. This is the error message:\n#{@error}"
       end
     end
 

@@ -90,16 +90,11 @@ class PackagesInspector < Inspector
       )
     end
     packages.each_slice(100) do |packages_slice|
-      apt_cache_output = @system.run_command(
-        "apt-cache",
-        "show",
-        *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
-        stdout: :capture
-      )
+      apt_cache_output = run_apt_cache(packages_slice)
 
       apt_cache_elements = Hash[
         *apt_cache_output.split("\n\n").flat_map do |element|
-          name = element[/Package: (\w+)$/, 1]
+          name = element[/Package: (.+)$/, 1]
           [name, element]
         end
       ]
@@ -108,7 +103,8 @@ class PackagesInspector < Inspector
         name = package.name.sub(/:[^:]+$/, "")
         apt_cache_element = apt_cache_elements[name]
         if apt_cache_element
-          checksum = apt_cache_element[/MD5sum: (\w+)\n/, 1]
+          package.arch = apt_cache_element[/Architecture: (\w+)\n/, 1]
+          checksum = apt_cache_element[/MD5[Ss]um: (\w+)\n/, 1]
           vendor = apt_cache_element[/Origin: (\w+)\n/, 1]
         end
         package.checksum = checksum || ""
@@ -121,5 +117,18 @@ class PackagesInspector < Inspector
       packages.sort_by(&:name),
       package_system: "dpkg"
     )
+  end
+
+  def run_apt_cache(packages_slice)
+    @system.run_command(
+      "apt-cache",
+      "show",
+      *packages_slice.map { |p| "#{p.name}=#{[p.version, p.release].compact.join("-")}" },
+      stdout: :capture
+    )
+  rescue Cheetah::ExecutionFailed => e
+    # Older Debian systems do not support the version parameter for `apt-cache show`
+    raise unless e.stderr.include?("E: No packages found")
+    @system.run_command("apt-cache", "show", *packages_slice.map(&:name), stdout: :capture)
   end
 end

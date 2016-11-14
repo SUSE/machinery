@@ -259,7 +259,11 @@ describe OsInspector do
     it "throws exception when the operation system cannot be determined" do
       expect {
         inspector.inspect(filter)
-      }.to raise_error(Machinery::Errors::UnknownOs)
+      }.to raise_error(
+        Machinery::Errors::UnknownOs,
+        "Unable to determine the operating system. There does not seem to be an" \
+          " /etc/os-release file."
+      )
     end
   end
 end

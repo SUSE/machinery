@@ -179,7 +179,20 @@ describe System do
     it "passes options to run_script" do
       system = LocalSystem.new
       expect(system).to receive(:run_script).with("script", hash_including(:privileged))
-      system.run_script("script", privileged: true)
+      system.run_script_with_progress("script", privileged: true)
+    end
+
+    it "raises on errors" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_script).and_raise(
+        Cheetah::ExecutionFailed.new(nil, 2, "", "script failed")
+      )
+      expect {
+        system.run_script_with_progress("script", privileged: true)
+      }.to raise_error(
+        Machinery::Errors::CommandFailed,
+        /The required call 'script' does not seem to work as expected on the inspected system/
+      )
     end
   end
 
@@ -204,6 +217,21 @@ describe System do
       expect(system).to receive(:run_command).
         with("command", "parameter", hash_including(:privileged))
       system.run_command_with_progress("command", "parameter", privileged: true)
+    end
+
+    it "raises on errors" do
+      system = LocalSystem.new
+      expect(system).to receive(:run_command).with(
+        "dpkg", "-V", hash_including(:privileged)
+      ).and_raise(
+        Cheetah::ExecutionFailed.new(nil, 2, "", "dpkg: unknown option -V")
+      )
+      expect {
+        system.run_command_with_progress("dpkg", "-V", privileged: true)
+      }.to raise_error(
+        Machinery::Errors::CommandFailed,
+        /The required call 'dpkg -V' does not seem to work as expected on the inspected system/
+      )
     end
   end
 

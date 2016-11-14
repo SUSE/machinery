@@ -117,6 +117,18 @@ ii  adduser                                                3.113+nmu3ubuntu3    
 un  udev                                                   3.113+nmu3ubuntu3                all                              add and remove users and groups
 EOF
     }
+    let(:dpkg_output_lenny) {
+      <<EOF
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Cfg-files/Unpacked/Failed-cfg/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Hold/Reinst-required/X=both-problems (Status,Err: uppercase=bad)
+||/ Name                           Version                        Description
++++-==============================-==============================-============================================================================
+ii  acpi                           1.1-2                          displays information on ACPI devices
+ii  acpi-support-base              0.109-11                       scripts for handling base ACPI events such as the power button
+
+EOF
+    }
     let(:apt_cache_output) {
       <<EOF
 Package: accountsservice
@@ -189,6 +201,53 @@ Task: minimal
 EOF
     }
 
+    let(:apt_cache_output_lenny) {
+      <<EOF
+Package: acpi
+Priority: optional
+Section: utils
+Installed-Size: 92
+Maintainer: Debian Acpi Team <pkg-acpi-devel@lists.alioth.debian.org>
+Architecture: amd64
+Version: 1.1-2
+Depends: libc6 (>= 2.7-1)
+Filename: pool/main/a/acpi/acpi_1.1-2_amd64.deb
+Size: 14906
+MD5Sum: 4b6244862999c8eada941fed696e90b5
+SHA1: 9394b51e62b2c279ea2bcc1c7c42ebfa3ca9f86a
+SHA256: f9c81d00702609e98f2ca4c6eb2de68837adeaa53e7f9c8df1773fa5742b7b96
+Description: displays information on ACPI devices
+ Attempts to replicate the functionality of the 'old' apm command on
+ ACPI systems, including battery and thermal information. Does not support
+ ACPI suspending, only displays information about ACPI devices.
+Tag: admin::power-management, hardware::power, hardware::power:acpi, interface::commandline, role::program, scope::utility, use::viewing
+Task: laptop
+
+Package: acpi-support-base
+Priority: optional
+Section: admin
+Installed-Size: 88
+Maintainer: Bart Samwel <bart@samwel.tk>
+Architecture: all
+Source: acpi-support
+Version: 0.109-11
+Replaces: acpi-support (<< 0.109-1)
+Depends: acpid (>= 1.0.4), console-utilities
+Suggests: acpi-support
+Filename: pool/main/a/acpi-support/acpi-support-base_0.109-11_all.deb
+Size: 22496
+MD5Sum: 22b1b206b7ae9357b3f66f662d061e57
+SHA1: 5a4e13cd6442776758e2a5b6518a7eeddd8cc5e2
+SHA256: 9c5741ef039518eb78cdb5c7bc3e87d63b608027aa006e98491bc1fe2e26e74a
+Description: scripts for handling base ACPI events such as the power button
+ This package contains scripts to react to various base ACPI events
+ such as the power button. For more extensive ACPI support, including support
+ for suspend-to-RAM and for various laptop features, install the package
+ "acpi-support".
+Tag: admin::power-management, hardware::power, hardware::power:acpi, role::app-data, special::auto-inst-parts
+
+EOF
+    }
     let(:expected_packages) {
       PackagesScope.new(
         [
@@ -236,6 +295,49 @@ EOF
         package_system: "dpkg"
       )
       expect(subject.packages).to eq(expected)
+    end
+
+    context "on a Debian Lenny system" do
+      it "inspects the packages" do
+        allow(system).to receive(:run_command).with("dpkg", "-l", any_args)
+          .and_return(dpkg_output_lenny)
+        expect(system).to receive(:run_command).with(
+          "apt-cache", "show", "acpi=1.1-2", "acpi-support-base=0.109-11", any_args
+        ).and_raise(
+          Cheetah::ExecutionFailed.new(
+            nil,
+            2,
+            "",
+            "W: Unable to locate package acpi=1.1-2\nE: No packages found"
+          )
+        )
+        expect(system).to receive(:run_command).with(
+          "apt-cache", "show", "acpi", "acpi-support-base", any_args
+        ).and_return(apt_cache_output_lenny)
+
+        expected = PackagesScope.new(
+          [
+            DpkgPackage.new(
+              name: "acpi",
+              version: "1.1",
+              release: "2",
+              arch: "amd64",
+              checksum: "4b6244862999c8eada941fed696e90b5",
+              vendor: ""
+            ),
+            DpkgPackage.new(
+              name: "acpi-support-base",
+              version: "0.109",
+              release: "11",
+              arch: "all",
+              checksum: "22b1b206b7ae9357b3f66f662d061e57",
+              vendor: ""
+            )
+          ],
+          package_system: "dpkg"
+        )
+        expect(subject.packages).to eq(expected)
+      end
     end
   end
 end
