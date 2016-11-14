@@ -199,8 +199,8 @@ func getManagedFiles() (map[string]string, map[string]bool) {
 	return files, dirs
 }
 
-func assembleJSON(unmanagedFilesMap interface{}) string {
-	jsonMap := map[string]interface{}{"extracted": false, "files": unmanagedFilesMap}
+func assembleJSON(unmanagedFilesList interface{}) string {
+	jsonMap := map[string]interface{}{"extracted": false, "files": unmanagedFilesList}
 	json, _ := json.MarshalIndent(jsonMap, " ", "  ")
 	return string(json)
 }
@@ -352,6 +352,23 @@ func printVersion() {
 	os.Exit(0)
 }
 
+func getUnmanagedFilesList(files []string, unmanagedFiles map[string]string, extractMetadataFlag *bool) []UnmanagedFile {
+	unmanagedFilesList := make([]UnmanagedFile, len(unmanagedFiles))
+	for j := range files {
+		entry := UnmanagedFile{}
+		entry.Name = files[j]
+		entry.Type = unmanagedFiles[files[j]]
+
+		if *extractMetadataFlag {
+			amendPathAttributes(&entry, unmanagedFiles[files[j]])
+		}
+
+		unmanagedFilesList[i] = entry
+		i++
+	}
+	return unmanagedFilesList
+}
+
 // IgnoreList includes mounts and any other file type that will be ignored when
 // evaluating the unmanaged files in a system.
 var IgnoreList = map[string]bool{}
@@ -405,19 +422,8 @@ func main() {
 	}
 	sort.Strings(files)
 
-	unmanagedFilesMap := make([]UnmanagedFile, len(unmanagedFiles))
-	for j := range files {
-		entry := UnmanagedFile{}
-		entry.Name = files[j]
-		entry.Type = unmanagedFiles[files[j]]
+	unmanagedFilesList := getUnmanagedFilesList(files, unmanagedFiles, extractMetadataFlag)
 
-		if *extractMetadataFlag {
-			amendPathAttributes(&entry, unmanagedFiles[files[j]])
-		}
-
-		unmanagedFilesMap[j] = entry
-	}
-
-	json := assembleJSON(unmanagedFilesMap)
+	json := assembleJSON(unmanagedFilesList)
 	fmt.Println(json)
 }
