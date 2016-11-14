@@ -356,20 +356,21 @@ func getUnmanagedFilesList(files []string, unmanagedFiles map[string]string, ext
 	unmanagedFilesList := make([]UnmanagedFile, len(unmanagedFiles))
 	i := 0
 	for j := range files {
-		entry := UnmanagedFile{}
-		entry.Name = files[j]
-		entry.Type = unmanagedFiles[files[j]]
+		// only add accessible files
+		if _, err := os.Lstat(files[j]); err == nil || (os.IsNotExist(err) == false && os.IsPermission(err) == false && strings.Contains(err.Error(), "no such device") == false) {
+			entry := UnmanagedFile{}
+			entry.Name = files[j]
+			entry.Type = unmanagedFiles[files[j]]
 
-		if *extractMetadataFlag {
-			if _, err := os.Stat(entry.Name); err == nil {
+			if *extractMetadataFlag {
 				amendPathAttributes(&entry, unmanagedFiles[files[j]])
-			} else {
-				continue
 			}
-		}
 
-		unmanagedFilesList[i] = entry
-		i++
+			unmanagedFilesList[i] = entry
+			i++
+		} else {
+			fmt.Fprintln(os.Stderr, files[j], "was not accessible. Skipping.")
+		}
 	}
 	return unmanagedFilesList[0:i]
 }
