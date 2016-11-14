@@ -17,63 +17,69 @@
 
 require_relative "spec_helper"
 
-class Machinery::FooScope < Machinery::Object
-  include Machinery::Scope
-end
-
-class Machinery::Ui::FooRenderer < Machinery::Ui::Renderer
-  def content(description)
-    puts description.foo.data
+module Machinery
+  class FooScope < Machinery::Object
+    include Machinery::Scope
   end
 
-  def compare_content_changed(changed_elements)
-    changed_elements.each do |change|
-      puts "#{change.first} <> #{change.last}"
-    end
-  end
+  class Ui
+    class FooRenderer < Machinery::Ui::Renderer
+      def content(description)
+        puts description.foo.data
+      end
 
-  def display_name
-    "Foo"
-  end
-end
+      def compare_content_changed(changed_elements)
+        changed_elements.each do |change|
+          puts "#{change.first} <> #{change.last}"
+        end
+      end
 
-class Machinery::BarBazScope < Machinery::Object
-  include Machinery::Scope
-end
-
-class Machinery::Ui::BarBazRenderer < Machinery::Ui::Renderer
-  def content(_description)
-    heading("bar")
-
-    puts("new line")
-    list("My list") do
-      item("List Item 1")
-      item("List Item 2") do
-        puts("Item puts")
+      def display_name
+        "Foo"
       end
     end
-
-    list do
-      item("Item of a list with nil string")
-    end
-
-    list "" do
-      item("Item of a list with empty string")
-    end
-
-    list("Title", sublist: true) do
-      item("item of sublist with title")
-      item("item2 of sublist with title")
-    end
-
-    list(nil, sublist: true) do
-      item("item of sublist with nil")
-      item("item2 of sublist with nil")
-    end
   end
 
-  def display_name
-    "Bar baz"
+  class BarBazScope < Machinery::Object
+    include Machinery::Scope
+  end
+
+  class Ui
+    class BarBazRenderer < Machinery::Ui::Renderer
+      def content(_description)
+        heading("bar")
+
+        puts("new line")
+        list("My list") do
+          item("List Item 1")
+          item("List Item 2") do
+            puts("Item puts")
+          end
+        end
+
+        list do
+          item("Item of a list with nil string")
+        end
+
+        list "" do
+          item("Item of a list with empty string")
+        end
+
+        list("Title", sublist: true) do
+          item("item of sublist with title")
+          item("item2 of sublist with title")
+        end
+
+        list(nil, sublist: true) do
+          item("item of sublist with nil")
+          item("item2 of sublist with nil")
+        end
+      end
+
+      def display_name
+        "Bar baz"
+      end
+    end
   end
 end
 

@@ -17,55 +17,56 @@
 
 require_relative "spec_helper"
 
-
 describe Machinery::InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
   silence_machinery_output
 
-  class Machinery::SimpleInspectTaskList < Machinery::Array
-    has_elements class: Machinery::Object
-  end
-
-  class Machinery::SimpleInspectTaskScope < Machinery::Object
-    include Machinery::Scope
-    has_property :files, class: Machinery::SimpleInspectTaskList
-  end
-
-  class Machinery::FooInspector < Machinery::Inspector
-    def initialize(_system, description)
-      @description = description
+  module Machinery
+    class SimpleInspectTaskList < Machinery::Array
+      has_elements class: Machinery::Object
     end
 
-    def inspect(_filter, _options = nil)
-      result = Machinery::SimpleInspectTaskScope.new(
-        files: Machinery::SimpleInspectTaskList.new([
-          Machinery::Object.new(name: "foo"),
-          Machinery::Object.new(name: "bar"),
-          Machinery::Object.new(name: "baz"),
-        ])
-      )
-
-      @description.foo = result
+    class SimpleInspectTaskScope < Machinery::Object
+      include Machinery::Scope
+      has_property :files, class: Machinery::SimpleInspectTaskList
     end
 
-    def summary
-      "Found #{@description.foo.files.length} elements."
+    class FooInspector < Machinery::Inspector
+      def initialize(_system, description)
+        @description = description
+      end
+
+      def inspect(_filter, _options = nil)
+        result = Machinery::SimpleInspectTaskScope.new(
+          files: Machinery::SimpleInspectTaskList.new([
+                                                        Machinery::Object.new(name: "foo"),
+                                                        Machinery::Object.new(name: "bar"),
+                                                        Machinery::Object.new(name: "baz")
+                                                      ])
+        )
+
+        @description.foo = result
+      end
+
+      def summary
+        "Found #{@description.foo.files.length} elements."
+      end
     end
-  end
 
-  class Machinery::BarInspector < Machinery::Inspector
-    def initialize(_system, description)
-      @description = description
-    end
+    class BarInspector < Machinery::Inspector
+      def initialize(_system, description)
+        @description = description
+      end
 
-    def inspect(_filter, _options = nil)
-      result = Machinery::SimpleInspectTaskScope.new("bar" => "baz")
+      def inspect(_filter, _options = nil)
+        result = Machinery::SimpleInspectTaskScope.new("bar" => "baz")
 
-      @description.bar = result
-    end
+        @description.bar = result
+      end
 
-    def summary
-      "summary"
+      def summary
+        "summary"
+      end
     end
   end
 
@@ -98,8 +99,8 @@ describe Machinery::InspectTask, "#inspect_system" do
 
   it "gathers the system environment before running the actual inspection" do
     expect(inspect_task).to receive(:set_system_locale)
-    expect(Machinery::Inspector).
-      to receive(:for).at_least(:once).times.with("foo").and_return(
+    expect(Machinery::Inspector)
+      .to receive(:for).at_least(:once).times.with("foo").and_return(
         Machinery::FooInspector
       )
 
@@ -114,8 +115,8 @@ describe Machinery::InspectTask, "#inspect_system" do
   end
 
   it "runs the proper inspector when a scope is given" do
-    expect(Machinery::Inspector).
-      to receive(:for).at_least(:once).times.with("foo").and_return(
+    expect(Machinery::Inspector)
+      .to receive(:for).at_least(:once).times.with("foo").and_return(
         Machinery::FooInspector
       )
 
@@ -151,7 +152,7 @@ describe Machinery::InspectTask, "#inspect_system" do
         [
           Machinery::Object.new(name: "foo"),
           Machinery::Object.new(name: "bar"),
-          Machinery::Object.new(name: "baz"),
+          Machinery::Object.new(name: "baz")
         ]
       )
     )
@@ -162,8 +163,8 @@ describe Machinery::InspectTask, "#inspect_system" do
     capture_machinery_output
 
     it "raises Machinery::Errors::ScopeFailed on 'expected errors'" do
-      expect_any_instance_of(Machinery::FooInspector).to receive(:inspect).
-        and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
+      expect_any_instance_of(Machinery::FooInspector).to receive(:inspect)
+        .and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
         inspect_task.inspect_system(store, system, name, current_user_non_root,
@@ -240,14 +241,14 @@ Inspecting foo...
     capture_machinery_output
 
     it "passes the filters to the inspectors" do
-      expect(Machinery::Inspector).
-        to receive(:for).at_least(:once).times.and_return(Machinery::FooInspector)
+      expect(Machinery::Inspector)
+        .to receive(:for).at_least(:once).times.and_return(Machinery::FooInspector)
 
-      expect_any_instance_of(Machinery::FooInspector).
-        to receive(:inspect) do |inspector, filter, _options|
+      expect_any_instance_of(Machinery::FooInspector)
+        .to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)
-        expect(filter.element_filters["/foo"].matchers).
-          to eq("=" => [["bar", "baz"]])
+        expect(filter.element_filters["/foo"].matchers)
+          .to eq("=" => [["bar", "baz"]])
 
         inspector.description.foo = Machinery::SimpleInspectTaskScope.new(
           files: Machinery::SimpleInspectTaskList.new
@@ -317,8 +318,8 @@ Inspecting foo...
     end
 
     it "applies the filter to the generated system description" do
-      expect_any_instance_of(Machinery::Filter).
-        to receive(:apply!).with(an_instance_of(Machinery::SystemDescription))
+      expect_any_instance_of(Machinery::Filter)
+        .to receive(:apply!).with(an_instance_of(Machinery::SystemDescription))
 
       inspect_task.inspect_system(
         store,

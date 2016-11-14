@@ -21,7 +21,6 @@ describe Machinery::FileValidator do
   capture_machinery_output
   describe "#validate" do
     before(:each) do
-      # rubocop:disable Style/VariableNumber
       @store = Machinery::SystemDescriptionStore.new("spec/data/descriptions/validation")
       @store_v1 = Machinery::SystemDescriptionStore.new("spec/data/descriptions/validation/v1")
       # rubocop:enable Style/VariableNumber
@@ -71,7 +70,7 @@ Error validating description 'changed-config-files-bad'
 Scope 'changed_config_files':
   * File 'spec/data/descriptions/validation/changed-config-files-bad/changed_config_files/etc/postfix/main.cf' doesn't exist
 EOT
-          )
+                                  )
         end
       end
     end
@@ -99,7 +98,7 @@ Error validating description 'changed-managed-files-bad'
 Scope 'changed_managed_files':
   * File 'spec/data/descriptions/validation/changed-managed-files-bad/changed_managed_files/usr/share/bash/helpfiles/read' doesn't exist
 EOT
-          )
+                                  )
         end
       end
     end
@@ -153,7 +152,7 @@ Error validating description 'unmanaged-files-bad'
 Scope 'unmanaged_files':
   * File 'spec/data/descriptions/validation/unmanaged-files-bad/unmanaged_files/trees/root/.ssh.tgz' doesn't exist
 EOT
-          )
+                                  )
         end
       end
     end

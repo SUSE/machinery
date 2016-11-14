@@ -54,7 +54,6 @@ describe Machinery::Os do
 
   describe "compares" do
     before(:each) do
-      # rubocop:disable Style/VariableNumber
       @os_scope1 = Machinery::Os.new
       @os_scope1.name = "OS1"
       @os_scope1.version = "x"
