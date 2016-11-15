@@ -357,7 +357,7 @@ func getUnmanagedFilesList(files []string, unmanagedFiles map[string]string, ext
 	i := 0
 	for j := range files {
 		// only add accessible files
-		if _, err := os.Lstat(files[j]); err == nil || (os.IsNotExist(err) == false && os.IsPermission(err) == false && strings.Contains(err.Error(), "no such device") == false) {
+		if _, err := os.Lstat(files[j]); isAccessible(err) {
 			entry := UnmanagedFile{}
 			entry.Name = files[j]
 			entry.Type = unmanagedFiles[files[j]]
@@ -373,6 +373,13 @@ func getUnmanagedFilesList(files []string, unmanagedFiles map[string]string, ext
 		}
 	}
 	return unmanagedFilesList[0:i]
+}
+
+func isAccessible(err error) bool {
+	return err == nil ||
+		(os.IsNotExist(err) == false &&
+			os.IsPermission(err) == false &&
+			strings.Contains(err.Error(), "no such device") == false)
 }
 
 // IgnoreList includes mounts and any other file type that will be ignored when
