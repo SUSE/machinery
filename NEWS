@@ -1,6 +1,7 @@
 # Machinery Release Notes
 
-* Prevent machinery-helper from crashing when files are removed during inspection
+* Prevent machinery-helper from crashing when files are inaccessible during
+  inspection (bnc#1009774)
 * Fix analyze of changed-config-files when NFS or SMB repositories are
   used (gh#SUSE/machinery#2132)
 * Do not add repositories which require registration to built images (bnc#1004697)
