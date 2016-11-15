@@ -299,7 +299,7 @@ func dirInfo(path string) (size int64, fileCount int, dirCount int) {
 		if f.IsDir() {
 			dirCount++
 			fileCount--
-			if _, ok := IgnoreList[path + f.Name()]; !ok {
+			if _, ok := IgnoreList[path+f.Name()]; !ok {
 				subSize, subFiles, subDirs := dirInfo(path + f.Name() + "/")
 				size += subSize
 				fileCount += subFiles
