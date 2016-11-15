@@ -17,16 +17,16 @@
 
 require_relative "spec_helper"
 
-describe Comparison do
+describe Machinery::Comparison do
   let(:description1) { create_test_description(name: "description1", scopes: ["packages"]) }
   let(:description2) { create_test_description(name: "description2", scopes: ["packages2"]) }
   let(:empty_description) { create_test_description(name: "empty") }
-  subject { Comparison }
+  subject { Machinery::Comparison }
 
   describe ".compare_scope" do
-    it "returns a Comparison" do
+    it "returns a Machinery::Comparison" do
       expect(subject.compare_scope(description1, description2, "packages")).
-        to be_a(Comparison)
+        to be_a(Machinery::Comparison)
     end
 
     it "returns nil for the mission scope when a description does not have the scope" do
@@ -37,9 +37,9 @@ describe Comparison do
     context "result" do
       let(:result) { subject.compare_scope(description1, description2, "packages") }
       let(:expected_only_in1) {
-        PackagesScope.new(
+        Machinery::PackagesScope.new(
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "openSUSE-release-dvd",
               version: "13.1",
               release: "1.10",
@@ -52,9 +52,9 @@ describe Comparison do
         )
       }
       let(:expected_only_in2) {
-        PackagesScope.new(
+        Machinery::PackagesScope.new(
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "kernel-desktop",
               version: "3.7.10",
               release: "1.0",
@@ -67,9 +67,9 @@ describe Comparison do
         )
       }
       let(:expected_common) {
-        PackagesScope.new(
+        Machinery::PackagesScope.new(
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "autofs",
               version: "5.0.9",
               release: "3.6",
@@ -98,14 +98,14 @@ describe Comparison do
       it "returns changed elements" do
         expected = [
           [
-            RpmPackage.new(
+            Machinery::RpmPackage.new(
               name: "bash",
               version: "4.2",
               release: "68.1.5",
               arch: "x86_64",
               vendor: "openSUSE",
               checksum: "533e40ba8a5551204b528c047e45c169"
-            ), RpmPackage.new(
+            ), Machinery::RpmPackage.new(
               name: "bash",
               version: "4.3",
               release: "68.1.5",
@@ -131,21 +131,21 @@ describe Comparison do
 
         it "returns a description for :one" do
           description = result.as_description(:one)
-          expect(description).to be_a(SystemDescription)
+          expect(description).to be_a(Machinery::SystemDescription)
           expect(description.name).to eq("description1")
           expect(description.packages).to eq(expected_only_in1)
         end
 
         it "returns a description for :two" do
           description = result.as_description(:two)
-          expect(description).to be_a(SystemDescription)
+          expect(description).to be_a(Machinery::SystemDescription)
           expect(description.name).to eq("description2")
           expect(description.packages).to eq(expected_only_in2)
         end
 
         it "returns a description for :common" do
           description = result.as_description(:common)
-          expect(description).to be_a(SystemDescription)
+          expect(description).to be_a(Machinery::SystemDescription)
           expect(description.name).to eq("common")
           expect(description.packages).to eq(expected_common)
         end

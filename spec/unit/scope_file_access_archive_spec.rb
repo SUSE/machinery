@@ -1,6 +1,6 @@
 require_relative "spec_helper"
 
-describe ScopeFileAccessArchive do
+describe Machinery::ScopeFileAccessArchive do
   initialize_system_description_factory_store
   let(:description) {
     create_test_description(
@@ -35,8 +35,8 @@ describe ScopeFileAccessArchive do
 
   describe "#file_content" do
     let(:description) {
-      SystemDescription.load!("opensuse_leap-build",
-        SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap-build",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
     it "returns the file content of a file stored in the files.tgz tar ball" do
@@ -51,8 +51,8 @@ describe ScopeFileAccessArchive do
 
   describe "#has_file?" do
     let(:description) {
-      SystemDescription.load!("opensuse_leap-build",
-        SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap-build",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
     context "when the description keeps track of the file" do
@@ -86,8 +86,8 @@ describe ScopeFileAccessArchive do
 
   describe "#binary?" do
     let(:description) {
-      SystemDescription.load!("unmanaged-files-good",
-        SystemDescriptionStore.new("spec/data/descriptions/validation"))
+      Machinery::SystemDescription.load!("unmanaged-files-good",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/validation"))
     }
 
     it "returns false if a file is a text file" do

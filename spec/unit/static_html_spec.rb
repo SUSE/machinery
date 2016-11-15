@@ -18,7 +18,7 @@
 
 require_relative "spec_helper"
 
-describe StaticHtml do
+describe Machinery::StaticHtml do
   capture_machinery_output
   initialize_system_description_factory_store
 
@@ -45,13 +45,13 @@ describe StaticHtml do
 
   describe "#initialize" do
     it "initializes without error" do
-      expect { StaticHtml.new(description, "/tmp") }.not_to raise_error
+      expect { Machinery::StaticHtml.new(description, "/tmp") }.not_to raise_error
     end
   end
 
   describe "#write", :with_temp_dir do
     it "renders an HTML report" do
-      static_html = StaticHtml.new(description, @tmp_dir)
+      static_html = Machinery::StaticHtml.new(description, @tmp_dir)
       static_html.write
       index_file = File.join(@tmp_dir, "index.html")
       expect(File.readable?(index_file)).to be_truthy
@@ -66,26 +66,26 @@ describe StaticHtml do
     end
 
     it "copies the assets over" do
-      StaticHtml.new(description, @tmp_dir).write
+      Machinery::StaticHtml.new(description, @tmp_dir).write
       expect(Dir.exist?(File.join(@tmp_dir, "assets"))).to be(true)
     end
 
     it "does not copy the compare asset over" do
-      StaticHtml.new(description, @tmp_dir).write
+      Machinery::StaticHtml.new(description, @tmp_dir).write
       expect(Dir.exist?(File.join(@tmp_dir, "assets", "compare"))).to be(false)
     end
   end
 
   describe "#create_directory", :with_temp_dir do
     it "raises an exception if dir exists and not forcing" do
-      static_html = StaticHtml.new(description, @tmp_dir)
+      static_html = Machinery::StaticHtml.new(description, @tmp_dir)
       expect {
         static_html.create_directory(false)
       }.to raise_error(Machinery::Errors::ExportFailed)
     end
 
     it "removes directory and creates new one if forcing" do
-      static_html = StaticHtml.new(description, @tmp_dir)
+      static_html = Machinery::StaticHtml.new(description, @tmp_dir)
       existing_file = File.join(@tmp_dir, "test")
       FileUtils.touch(existing_file)
       expect {
@@ -95,7 +95,7 @@ describe StaticHtml do
     end
 
     it "creates a new directory" do
-      static_html = StaticHtml.new(description, @tmp_dir)
+      static_html = Machinery::StaticHtml.new(description, @tmp_dir)
       Dir.rmdir(@tmp_dir)
       static_html.create_directory(false)
       expect(File.directory?(@tmp_dir)).to be_truthy

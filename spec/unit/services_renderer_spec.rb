@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ServicesRenderer do
+describe Machinery::Ui::ServicesRenderer do
   let(:system_description_systemd) {
     create_test_description(json: <<-EOF)
       {
@@ -92,13 +92,13 @@ EOF
 
   describe "#render" do
     it "prints a list of systemd services" do
-      output = ServicesRenderer.new.render(system_description_systemd)
+      output = Machinery::Ui::ServicesRenderer.new.render(system_description_systemd)
 
       expect(output).to eq(expected_output_systemd)
     end
 
     it "prints a list of SysVinit services" do
-      output = ServicesRenderer.new.render(system_description_sysvinit)
+      output = Machinery::Ui::ServicesRenderer.new.render(system_description_sysvinit)
 
       expect(output).to eq(expected_output_sysvinit)
     end

@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class DpkgDatabase < ManagedFilesDatabase
+class Machinery::DpkgDatabase < Machinery::ManagedFilesDatabase
   def managed_files_list(&block)
     message = "The list of changed config and managed files is not complete on dpkg systems."\
      " The reason for this is missing verification data:" \

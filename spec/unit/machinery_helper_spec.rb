@@ -16,7 +16,7 @@ describe MachineryHelper do
   describe "#can_help?" do
     context "on the same architecture" do
       before(:each) do
-        allow(LocalSystem).to receive(:validate_architecture)
+        allow(Machinery::LocalSystem).to receive(:validate_architecture)
       end
 
       it "returns true if helper exists" do
@@ -60,7 +60,7 @@ describe MachineryHelper do
   end
 
   describe "#run_helper" do
-    let(:scope) { UnmanagedFilesScope.new }
+    let(:scope) { Machinery::UnmanagedFilesScope.new }
     let(:json) { <<-EOT
         {
           "files": [

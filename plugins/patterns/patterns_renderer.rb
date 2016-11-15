@@ -15,49 +15,53 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class PatternsRenderer < Renderer
-  def content(description)
-    return unless description.patterns
+module Machinery
+  class Ui
+    class PatternsRenderer < Machinery::Ui::Renderer
+      def content(description)
+        return unless description.patterns
 
-    if description.patterns.empty?
-      puts "There are no patterns or tasks."
-    end
-
-    if description.patterns.patterns_system == "tasksel"
-      puts "Note: Tasks on Debian-like systems are treated as patterns."
-    end
-
-    puts "Pattern Manager: #{description.patterns.patterns_system}" unless
-      description.patterns.empty?
-
-    list do
-      description.patterns.each do |p|
-        item "#{p.name}"
-      end
-    end
-  end
-
-  def display_name
-    "Patterns"
-  end
-
-  def compare_content_changed(changed_elements)
-    list do
-      changed_elements.each do |one, two|
-        changes = []
-        relevant_attributes = ["version"]
-
-        if one.version == two.version
-          relevant_attributes << "release"
+        if description.patterns.empty?
+          puts "There are no patterns or tasks."
         end
 
-        relevant_attributes.each do |attribute|
-          if one[attribute] != two[attribute]
-            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+        if description.patterns.patterns_system == "tasksel"
+          puts "Note: Tasks on Debian-like systems are treated as patterns."
+        end
+
+        puts "Pattern Manager: #{description.patterns.patterns_system}" unless
+          description.patterns.empty?
+
+        list do
+          description.patterns.each do |p|
+            item p.name.to_s
           end
         end
+      end
 
-        item "#{one.name} (#{changes.join(", ")})"
+      def display_name
+        "Patterns"
+      end
+
+      def compare_content_changed(changed_elements)
+        list do
+          changed_elements.each do |one, two|
+            changes = []
+            relevant_attributes = ["version"]
+
+            if one.version == two.version
+              relevant_attributes << "release"
+            end
+
+            relevant_attributes.each do |attribute|
+              if one[attribute] != two[attribute]
+                changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+              end
+            end
+
+            item "#{one.name} (#{changes.join(", ")})"
+          end
+        end
       end
     end
   end

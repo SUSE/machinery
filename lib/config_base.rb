@@ -19,7 +19,7 @@
 # The defaults for machinery's configuration are defined in
 # the file 'machinery_config.rb'.
 
-class ConfigBase
+class Machinery::ConfigBase
   attr_reader :file, :entries
 
   def initialize(file = default_config_file)

@@ -20,15 +20,15 @@ require_relative "../spec_helper"
 describe "changed_config_files model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["changed_config_files"])
-    ChangedConfigFilesScope.from_json(JSON.parse(json)["changed_config_files"])
+    Machinery::ChangedConfigFilesScope.from_json(JSON.parse(json)["changed_config_files"])
   }
 
   it_behaves_like "Scope"
   it_behaves_like "FileScope"
 
-  specify { expect(scope.first).to be_a(ConfigFile) }
+  specify { expect(scope.first).to be_a(Machinery::ConfigFile) }
 
   it "has correct scope name" do
-    expect(ChangedConfigFilesScope.new.scope_name).to eq("changed_config_files")
+    expect(Machinery::ChangedConfigFilesScope.new.scope_name).to eq("changed_config_files")
   end
 end

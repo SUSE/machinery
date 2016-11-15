@@ -72,7 +72,7 @@ module Machinery
       end
 
       def scope_name
-        scope = name.match(/^(.*)Scope$/)[1]
+        scope = name.match(/^Machinery::(.*)Scope$/)[1]
         scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
       end
     end
@@ -92,7 +92,7 @@ module Machinery
     end
 
     def is_extractable?
-      SystemDescription::EXTRACTABLE_SCOPES.include?(self.scope_name)
+      Machinery::SystemDescription::EXTRACTABLE_SCOPES.include?(scope_name)
     end
   end
 end

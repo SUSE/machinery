@@ -1,6 +1,6 @@
 require_relative "spec_helper"
 
-describe ScopeFileAccessFlat do
+describe Machinery::ScopeFileAccessFlat do
   initialize_system_description_factory_store
   let(:description) {
     create_test_description(
@@ -47,8 +47,8 @@ describe ScopeFileAccessFlat do
 
   describe "#file_content" do
     let(:description) {
-      SystemDescription.load!("opensuse_leap-build",
-        SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap-build",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
     it "returns the file content of a file stored in a directory" do
@@ -78,8 +78,8 @@ describe ScopeFileAccessFlat do
 
   describe "#binary?" do
     let(:description) {
-      SystemDescription.load!("changed-managed-files-good",
-        SystemDescriptionStore.new("spec/data/descriptions/validation"))
+      Machinery::SystemDescription.load!("changed-managed-files-good",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/validation"))
     }
 
     it "returns false if a file is a text file" do
@@ -121,8 +121,8 @@ describe ScopeFileAccessFlat do
 
   describe "#has_file?" do
     let(:description) {
-      SystemDescription.load!("opensuse_leap-build",
-        SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap-build",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
     }
 
     it "returns true" do

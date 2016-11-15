@@ -15,9 +15,9 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ShowTask
+class Machinery::ShowTask
   def show(description, scopes, filter, options = {})
-    scopes = Inspector.sort_scopes(scopes)
+    scopes = Machinery::Inspector.sort_scopes(scopes)
     if options[:show_html]
       show_html(description, options)
     else
@@ -30,7 +30,7 @@ class ShowTask
 
   def show_html(description, options)
     begin
-      LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+      Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
       url = "http://#{options[:ip]}:#{options[:port]}/#{CGI.escape(description.name)}"
 
@@ -41,8 +41,12 @@ Trying to start a web server for serving the description on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-      server = Html.run_server(description.store, port: options[:port], ip: options[:ip]) do
-        LoggedCheetah.run("xdg-open", url)
+      server = Machinery::Html.run_server(
+        description.store,
+        port: options[:port],
+        ip:   options[:ip]
+      ) do
+        Machinery::LoggedCheetah.run("xdg-open", url)
       end
 
       server.join # Wait until the user cancelled the blocking webserver
@@ -57,7 +61,7 @@ EOF
   def show_console(description, scopes, options)
     missing_scopes = []
 
-    scopes.map { |s| Renderer.for(s) }.each do |renderer|
+    scopes.map { |s| Machinery::Ui::Renderer.for(s) }.each do |renderer|
       section = renderer.render(description, options)
       unless section.empty?
         Machinery::Ui.puts section

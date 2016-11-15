@@ -15,45 +15,46 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-
-class Package < Machinery::Object
-end
-
-class RpmPackage < Package
-end
-
-class DpkgPackage < Package
-end
-
-class PackagesScope < Machinery::Array
-  include Machinery::Scope
-
-  has_attributes :package_system
-  has_elements class: DpkgPackage, if: { package_system: "dpkg" }
-  has_elements class: RpmPackage, if: { package_system: "rpm" }
-
-  def compare_with(other)
-    if self.package_system != other.package_system
-      [self, other, nil, nil]
-    else
-      only_self = self - other
-      only_other = other - self
-      common = self & other
-      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
-      changed = nil if changed.empty?
-
-      [
-        package_list_to_scope(only_self),
-        package_list_to_scope(only_other),
-        changed,
-        package_list_to_scope(common)
-      ].map { |e| (e && !e.empty?) ? e : nil }
-    end
+module Machinery
+  class Package < Machinery::Object
   end
 
-  private
+  class RpmPackage < Package
+  end
 
-  def package_list_to_scope(packages)
-    self.class.new(packages, package_system: package_system) unless packages.elements.empty?
+  class DpkgPackage < Package
+  end
+
+  class PackagesScope < Machinery::Array
+    include Machinery::Scope
+
+    has_attributes :package_system
+    has_elements class: DpkgPackage, if: { package_system: "dpkg" }
+    has_elements class: RpmPackage, if: { package_system: "rpm" }
+
+    def compare_with(other)
+      if package_system != other.package_system
+        [self, other, nil, nil]
+      else
+        only_self = self - other
+        only_other = other - self
+        common = self & other
+        changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :name)
+        changed = nil if changed.empty?
+
+        [
+          package_list_to_scope(only_self),
+          package_list_to_scope(only_other),
+          changed,
+          package_list_to_scope(common)
+        ].map { |e| e && !e.empty? ? e : nil }
+      end
+    end
+
+    private
+
+    def package_list_to_scope(packages)
+      self.class.new(packages, package_system: package_system) unless packages.elements.empty?
+    end
   end
 end

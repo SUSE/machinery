@@ -20,16 +20,16 @@ require_relative "../spec_helper"
 describe "changed_managed_files model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["changed_managed_files"])
-    ChangedManagedFilesScope.from_json(JSON.parse(json)["changed_managed_files"])
+    Machinery::ChangedManagedFilesScope.from_json(JSON.parse(json)["changed_managed_files"])
   }
 
   it_behaves_like "Scope"
   it_behaves_like "FileScope"
 
-  specify { expect(scope).to be_a(ChangedManagedFilesScope) }
-  specify { expect(scope.first).to be_a(ChangedManagedFile) }
+  specify { expect(scope).to be_a(Machinery::ChangedManagedFilesScope) }
+  specify { expect(scope.first).to be_a(Machinery::ChangedManagedFile) }
 
   it "has correct scope name" do
-    expect(ChangedManagedFilesScope.new.scope_name).to eq("changed_managed_files")
+    expect(Machinery::ChangedManagedFilesScope.new.scope_name).to eq("changed_managed_files")
   end
 end

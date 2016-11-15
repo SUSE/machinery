@@ -21,14 +21,14 @@
 # for running zypper in an isolated environment using 'Zypper.isolated'.
 # That way Machinery can safely add repositories and download packages without
 # polluting the host.
-class Zypper
+class Machinery::Zypper
   attr_accessor :zypper_options
   attr_accessor :zypp_config
   attr_accessor :zypp_base
 
   class <<self
     def isolated(options = {}, &block)
-      zypper = Zypper.new
+      zypper = Machinery::Zypper.new
       zypper.zypp_base = Dir.mktmpdir("machinery_zypper")
 
       zypper.zypper_options = [
@@ -54,7 +54,7 @@ class Zypper
       end
       cmd = ["rm", "-rf", zypper.zypp_base]
       cmd = cmd.insert(0, "sudo") if zypper.contains_mountable_repos?
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     end
 
     def create_zypp_config(zypp_base, arch)
@@ -117,7 +117,7 @@ class Zypper
     cmd += args
 
     with_env "ZYPP_CONF" => @zypp_config do
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     end
   end
 end

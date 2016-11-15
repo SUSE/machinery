@@ -17,9 +17,9 @@
 
 require_relative "spec_helper"
 
-describe RemoteSystem do
-  let(:remote_system) { RemoteSystem.new("remotehost", options) }
-  let(:remote_system_with_sudo) { RemoteSystem.new("remotehost", remote_user: "user") }
+describe Machinery::RemoteSystem do
+  let(:remote_system) { Machinery::RemoteSystem.new("remotehost", options) }
+  let(:remote_system_with_sudo) { Machinery::RemoteSystem.new("remotehost", remote_user: "user") }
   let(:options) { {} }
 
   describe "#initialize" do
@@ -35,17 +35,18 @@ describe RemoteSystem do
 
     context "sudo is required" do
       before do
-        allow_any_instance_of(RemoteSystem).to receive(:check_connection)
+        allow_any_instance_of(Machinery::RemoteSystem).to receive(:check_connection)
       end
 
       it "checks if sudo is available" do
-        expect(LoggedCheetah).to receive(:run)
-        expect_any_instance_of(RemoteSystem).to receive(:check_requirement).with("sudo", "-h")
+        expect(Machinery::LoggedCheetah).to receive(:run)
+        expect_any_instance_of(Machinery::RemoteSystem).
+          to receive(:check_requirement).with("sudo", "-h")
         remote_system_with_sudo
       end
 
       it "raises an exception if the user is not allowed to run sudo" do
-        expect(LoggedCheetah).to receive(:run).with(
+        expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
 
@@ -58,7 +59,7 @@ describe RemoteSystem do
       end
 
       it "raises an exception if a tty is required" do
-        expect(LoggedCheetah).to receive(:run).with(
+        expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(
           Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: sorry, you must have a tty to run sudo")
@@ -100,7 +101,7 @@ describe RemoteSystem do
 
   context "connecting to a remote system" do
     before(:each) do
-      allow_any_instance_of(RemoteSystem).to receive(:connect)
+      allow_any_instance_of(Machinery::RemoteSystem).to receive(:connect)
     end
 
     describe "#requires_root?" do
@@ -128,13 +129,13 @@ describe RemoteSystem do
       end
 
       it "logs commands by default" do
-        expect(LoggedCheetah).to receive(:run)
+        expect(Machinery::LoggedCheetah).to receive(:run)
 
         remote_system.run_command("ls")
       end
 
       it "does not log commands when :disable_logging is set" do
-        expect(LoggedCheetah).to_not receive(:run)
+        expect(Machinery::LoggedCheetah).to_not receive(:run)
         expect(Cheetah).to receive(:run)
 
         remote_system.run_command("ls", disable_logging: true)
@@ -187,14 +188,14 @@ describe RemoteSystem do
 
     describe "#check_retrieve_files_dependencies" do
       it "checks for the availabilty of rsync on the local system" do
-        expect(LocalSystem).to receive(:validate_existence_of_command).with(
+        expect(Machinery::LocalSystem).to receive(:validate_existence_of_command).with(
           "rsync", "rsync"
         )
         remote_system.check_retrieve_files_dependencies
       end
 
       it "checks for the availabilty of rsync on the remote system" do
-        allow(LocalSystem).to receive(:validate_existence_of_command).with(
+        allow(Machinery::LocalSystem).to receive(:validate_existence_of_command).with(
           "rsync", "rsync"
         )
         expect(remote_system).to receive(:check_requirement).with(

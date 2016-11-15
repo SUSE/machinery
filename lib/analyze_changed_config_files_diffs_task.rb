@@ -15,11 +15,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class AnalyzeConfigFileDiffsTask
+class Machinery::AnalyzeConfigFileDiffsTask
   def analyze(description)
     description.assert_scopes("os")
     check_os(description)
-    LocalSystem.validate_existence_of_packages(["zypper"])
+    Machinery::LocalSystem.validate_existence_of_packages(["zypper"])
     description.validate_analysis_compatibility
     description.assert_scopes(
       "repositories",
@@ -55,7 +55,7 @@ class AnalyzeConfigFileDiffsTask
         end
 
         package.files.each do |file|
-          diff = Rpm.new(path).diff(file, File.join(extracted_files_path, file))
+          diff = Machinery::Rpm.new(path).diff(file, File.join(extracted_files_path, file))
 
           if !diff || diff.empty?
             Machinery::Ui.warn "Warning: Could not generate diff for #{file}."
@@ -76,7 +76,7 @@ class AnalyzeConfigFileDiffsTask
   private
 
   def check_os(description)
-    unless description.os.is_a?(OsSuse)
+    unless description.os.is_a?(Machinery::OsSuse)
       raise Machinery::Errors::AnalysisFailed.new(
         "Can not analyze the system description because its operating system" \
           " '#{description.os.display_name}' is not supported."
@@ -100,7 +100,7 @@ class AnalyzeConfigFileDiffsTask
 
     files.inject({}) do |result, file|
         key = "#{file.package_name}-#{file.package_version}"
-        result[key] ||= Package.new(
+        result[key] ||= Machinery::Package.new(
           "name"    => file["package_name"],
           "version" => file["package_version"],
           "files"   => []
@@ -114,7 +114,7 @@ class AnalyzeConfigFileDiffsTask
   def with_repositories(description, &block)
     Machinery::Ui.puts "Setting up repository access..."
     arch = description.os.architecture
-    Zypper.isolated(arch: arch) do |zypper|
+    Machinery::Zypper.isolated(arch: arch) do |zypper|
       begin
         remote_repos = description.repositories.reject do |repo|
           repo.url.start_with?("cd://") || repo.url.start_with?("dvd://")

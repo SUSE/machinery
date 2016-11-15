@@ -25,7 +25,7 @@
 #
 # The sub directories storing the data for specific scopes are handled by the
 # ScopeFileStore class.
-class SystemDescription < Machinery::Object
+class Machinery::SystemDescription < Machinery::Object
   CURRENT_FORMAT_VERSION = 10
   EXTRACTABLE_SCOPES = [
     "changed_managed_files",
@@ -43,7 +43,7 @@ class SystemDescription < Machinery::Object
     #
     # If there are file validation errors the call fails with an exception
     def load!(name, store, options = {})
-      manifest = Manifest.load(name, store.manifest_path(name))
+      manifest = Machinery::Manifest.load(name, store.manifest_path(name))
       manifest.validate!
 
       description = from_hash(name, store, manifest.to_hash)
@@ -61,7 +61,7 @@ class SystemDescription < Machinery::Object
     # If there are file validation errors these are put out as warnings but the
     # loading of the system description succeeds.
     def load(name, store, options = {})
-      manifest = Manifest.load(name, store.manifest_path(name))
+      manifest = Machinery::Manifest.load(name, store.manifest_path(name))
       manifest.validate unless options[:skip_validation]
 
       description = from_hash(name, store, manifest.to_hash)
@@ -89,9 +89,10 @@ class SystemDescription < Machinery::Object
     def from_hash(name, store, hash)
       begin
         json_format_version = hash["meta"]["format_version"] if hash["meta"]
-        description = SystemDescription.new(name, store, hash)
+        description = Machinery::SystemDescription.new(name, store, hash)
       rescue NameError, TypeError, RuntimeError
-        if json_format_version && json_format_version != SystemDescription::CURRENT_FORMAT_VERSION
+        if json_format_version &&
+            json_format_version != Machinery::SystemDescription::CURRENT_FORMAT_VERSION
           raise Machinery::Errors::SystemDescriptionIncompatible.new(name, json_format_version)
         else
           raise Machinery::Errors::SystemDescriptionError.new(
@@ -146,7 +147,7 @@ class SystemDescription < Machinery::Object
 
   def compatible?
     !format_version.nil? &&
-      format_version == SystemDescription::CURRENT_FORMAT_VERSION
+      format_version == Machinery::SystemDescription::CURRENT_FORMAT_VERSION
   end
 
   def validate_format_compatibility
@@ -156,7 +157,7 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_analysis_compatibility
-    Zypper.isolated(arch: os.architecture) do |zypper|
+    Machinery::Zypper.isolated(arch: os.architecture) do |zypper|
       major, minor, patch = zypper.version
       if major <= 1 && minor <= 11 && patch < 4
         raise Machinery::Errors::AnalysisFailed.new("Analyzing command requires zypper 1.11.4 " \
@@ -196,7 +197,7 @@ class SystemDescription < Machinery::Object
   end
 
   def save
-    SystemDescription.validate_name(name)
+    Machinery::SystemDescription.validate_name(name)
     @store.directory_for(name)
     path = @store.manifest_path(name)
     created = !File.exist?(path)
@@ -219,7 +220,7 @@ class SystemDescription < Machinery::Object
   end
 
   def scopes
-    Inspector.sort_scopes(attributes.keys.map(&:to_s).sort)
+    Machinery::Inspector.sort_scopes(attributes.keys.map(&:to_s).sort)
   end
 
   def assert_scopes(*scopes)
@@ -253,11 +254,11 @@ class SystemDescription < Machinery::Object
   end
 
   def scope_file_store(store_name)
-    ScopeFileStore.new(description_path, store_name)
+    Machinery::ScopeFileStore.new(description_path, store_name)
   end
 
   def validate_file_data
-    errors = FileValidator.new(to_hash, description_path).validate
+    errors = Machinery::FileValidator.new(to_hash, description_path).validate
     unless errors.empty?
       Machinery::Ui.warn("Warning: File validation errors:")
       Machinery::Ui.warn("Error validating description '#{@name}'\n\n")
@@ -266,7 +267,7 @@ class SystemDescription < Machinery::Object
   end
 
   def validate_file_data!
-    errors = FileValidator.new(to_hash, description_path).validate
+    errors = Machinery::FileValidator.new(to_hash, description_path).validate
     unless errors.empty?
       e = Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
       e.header = "Error validating description '#{@name}'"
@@ -316,7 +317,7 @@ class SystemDescription < Machinery::Object
     return unless changed_config_files && diffs_dir
     changed_config_files.each do |file|
       path = File.join(diffs_dir, file.name + ".diff")
-      file.diff = DiffWidget.new(File.read(path)).widget if File.exist?(path)
+      file.diff = Machinery::Ui::DiffWidget.new(File.read(path)).widget if File.exist?(path)
     end
   end
 

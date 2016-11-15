@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class UpgradeFormatTask
+class Machinery::UpgradeFormatTask
   def upgrade(store, name, options = {})
     if !options[:all] && !store.list.include?(name)
       raise Machinery::Errors::SystemDescriptionNotFound.new(
@@ -34,15 +34,20 @@ class UpgradeFormatTask
 
     descriptions.each do |description|
       begin
-        hash = Manifest.load(description, store.manifest_path(description)).to_hash
+        hash = Machinery::Manifest.load(description, store.manifest_path(description)).to_hash
         Machinery.logger.info "Upgrading description '#{description}'"
         Machinery::Ui.print "Reading '#{description}' ... "
-        migrated = Migration.migrate_description(store, description, force: options[:force])
+        migrated = Machinery::Migration.migrate_description(
+          store,
+          description,
+          force: options[:force]
+        )
 
         if migrated
           migrations_done += 1
-          Machinery::Ui.puts "Successfully upgraded from version" \
-            " #{hash["meta"]["format_version"]} to #{SystemDescription::CURRENT_FORMAT_VERSION}."
+          Machinery::Ui.puts "Successfully upgraded from version"\
+            " #{hash["meta"]["format_version"]}"\
+            " to #{Machinery::SystemDescription::CURRENT_FORMAT_VERSION}."
         end
       rescue StandardError => e
         errors.push("Upgrading description '#{description}' failed:\n#{e}")
@@ -53,7 +58,7 @@ class UpgradeFormatTask
     unless errors.empty?
       Machinery.logger.error errors.join("\n")
       exception = Machinery::Errors::UpgradeFailed.new("\n" + errors.join("\n") +
-        Hint.to_string(:upgrade_format_force, name: name || "--all"))
+        Machinery::Ui::Hint.to_string(:upgrade_format_force, name: name || "--all"))
       raise exception
     end
 

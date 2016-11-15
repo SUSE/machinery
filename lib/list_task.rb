@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ListTask
+class Machinery::ListTask
   def list(store, system_descriptions, options = {})
     if options[:html]
       list_html(store, options)
@@ -29,7 +29,7 @@ class ListTask
 
       descriptions.each do |name|
         begin
-          system_description = SystemDescription.load(name, store, skip_validation: true)
+          system_description = Machinery::SystemDescription.load(name, store, skip_validation: true)
         rescue Machinery::Errors::SystemDescriptionIncompatible => e
           show_error("#{e}\n", options)
           next
@@ -39,8 +39,9 @@ class ListTask
           )
           next
         rescue Machinery::Errors::SystemDescriptionValidationFailed
-          show_error("#{name}: This description is broken. Use " \
-            "`#{Hint.program_name} validate #{name}` to see the error message.", options)
+          show_error("#{name}: This description is broken. Use "\
+            "`#{Machinery::Ui::Hint.program_name} validate "\
+            "#{name}` to see the error message.", options)
           next
         rescue Machinery::Errors::SystemDescriptionError
           show_error("#{name}: This description is broken.", options)
@@ -54,7 +55,7 @@ class ListTask
 
           system_description.scopes.each do |scope|
             entry = Machinery::Ui.internal_scope_list_to_string(scope)
-            if SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
+            if Machinery::SystemDescription::EXTRACTABLE_SCOPES.include?(scope)
               if system_description.scope_extracted?(scope)
                 entry += " (extracted)"
               else
@@ -83,13 +84,13 @@ class ListTask
         end
       end
 
-      Hint.print(:upgrade_system_description) if has_incompatible_version
+      Machinery::Ui::Hint.print(:upgrade_system_description) if has_incompatible_version
     end
   end
 
   def list_html(store, options)
     begin
-      LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+      Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
       url = "http://#{options[:ip]}:#{options[:port]}/"
 
@@ -100,8 +101,8 @@ Trying to start a web server for serving the descriptions on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-      server = Html.run_server(store, port: options[:port], ip: options[:ip]) do
-        LoggedCheetah.run("xdg-open", url)
+      server = Machinery::Html.run_server(store, port: options[:port], ip: options[:ip]) do
+        Machinery::LoggedCheetah.run("xdg-open", url)
       end
 
       server.join # Wait until the user cancelled the blocking webserver

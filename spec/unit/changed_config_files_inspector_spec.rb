@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ChangedConfigFilesInspector do
+describe Machinery::ChangedConfigFilesInspector do
   initialize_system_description_factory_store
 
   describe ".inspect" do
@@ -32,7 +32,7 @@ describe ChangedConfigFilesInspector do
     let(:name) { "systemname" }
     let(:store) { system_description_factory_store }
     let(:description) {
-      SystemDescription.new(name, store)
+      Machinery::SystemDescription.new(name, store)
     }
     let(:filter) { nil }
 
@@ -40,10 +40,10 @@ describe ChangedConfigFilesInspector do
       create_test_description(json: "{}", name: name, store: store).save
     end
 
-    subject { ChangedConfigFilesInspector.new(system, description) }
+    subject { Machinery::ChangedConfigFilesInspector.new(system, description) }
 
     describe "#inspect" do
-      let(:inspector) { ChangedConfigFilesInspector.new(system, description) }
+      let(:inspector) { Machinery::ChangedConfigFilesInspector.new(system, description) }
       let(:extractable_paths) {
         [
           "/etc/config",
@@ -56,7 +56,7 @@ describe ChangedConfigFilesInspector do
       before(:each) do
         allow(managed_files_database).to receive(:changed_files).and_return(
           [
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/config",
               status:          "changed",
@@ -64,7 +64,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/deleted_config",
               status:          "changed",
@@ -72,7 +72,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/linked_config",
               status:          "changed",
@@ -80,7 +80,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/etc/config_directory",
               status:          "changed",
@@ -88,7 +88,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "zypper",
               package_version: "1.6.311"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "c",
               name:            "/usr/share/man/man1/time.1.gz",
               status:          "changed",
@@ -96,7 +96,7 @@ describe ChangedConfigFilesInspector do
               package_name:    "man",
               package_version: "2"
             ),
-            RpmDatabase::ChangedFile.new(
+            Machinery::RpmDatabase::ChangedFile.new(
               "",
               name:            "/etc/other",
               status:          "changed",
@@ -130,7 +130,7 @@ describe ChangedConfigFilesInspector do
 
       context "with filters" do
         it "filters out the matching elements" do
-          filter = Filter.new("/changed_config_files/files/name=/usr/*")
+          filter = Machinery::Filter.new("/changed_config_files/files/name=/usr/*")
           inspector.inspect(filter)
           expect(description.changed_config_files.map(&:name)).
             to_not include("/usr/share/man/man1/time.1.gz")
@@ -159,7 +159,7 @@ describe ChangedConfigFilesInspector do
           expect(managed_files_database).to receive(:changed_files).and_return([])
 
           inspector.inspect(filter)
-          expected = ChangedConfigFilesScope.new(
+          expected = Machinery::ChangedConfigFilesScope.new(
             [],
             "extracted" => false
           )
@@ -215,7 +215,7 @@ describe ChangedConfigFilesInspector do
           inspector.inspect(filter, extract_changed_changed_config_files: true)
 
           expect {
-            JsonValidator.new(description.to_hash).validate
+            Machinery::JsonValidator.new(description.to_hash).validate
           }.to_not raise_error
         end
 

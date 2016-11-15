@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ChangedManagedFilesInspector do
+describe Machinery::ChangedManagedFilesInspector do
   let(:managed_files_database) { double }
 
   let(:system) {
@@ -27,16 +27,21 @@ describe ChangedManagedFilesInspector do
       check_retrieve_files_dependencies: true
     )
   }
-  let(:description) { SystemDescription.new("foo", SystemDescriptionStore.new) }
+  let(:description) {
+    Machinery::SystemDescription.new(
+      "foo",
+      Machinery::SystemDescriptionStore.new
+    )
+  }
   let(:filter) { nil }
 
-  subject { ChangedManagedFilesInspector.new(system, description) }
+  subject { Machinery::ChangedManagedFilesInspector.new(system, description) }
 
   describe "#inspect" do
     before(:each) do
       allow(managed_files_database).to receive(:changed_files).and_return(
         [
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "c",
             name:            "/etc/config",
             status:          "changed",
@@ -44,7 +49,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/etc/file",
             status:          "changed",
@@ -52,7 +57,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/etc/dir",
             status:          "changed",
@@ -60,7 +65,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/etc/documentation",
             status:          "changed",
@@ -68,7 +73,7 @@ describe ChangedManagedFilesInspector do
             package_name:    "zypper",
             package_version: "1.6.311"
           ),
-          RpmDatabase::ChangedFile.new(
+          Machinery::RpmDatabase::ChangedFile.new(
             "",
             name:            "/usr/share/man/man1/time.1.gz",
             status:          "changed",
@@ -108,7 +113,7 @@ describe ChangedManagedFilesInspector do
 
     context "with filters" do
       it "filters out the matching elements" do
-        filter = Filter.new("/changed_managed_files/files/name=/usr/*")
+        filter = Machinery::Filter.new("/changed_managed_files/files/name=/usr/*")
 
         subject.inspect(filter)
         expect(description["changed_managed_files"].map(&:name)).
@@ -138,7 +143,7 @@ describe ChangedManagedFilesInspector do
 
       it "returns schema compliant data" do
         expect {
-          JsonValidator.new(description.to_hash).validate
+          Machinery::JsonValidator.new(description.to_hash).validate
         }.to_not raise_error
       end
 

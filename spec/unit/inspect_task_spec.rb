@@ -17,72 +17,73 @@
 
 require_relative "spec_helper"
 
-
-describe InspectTask, "#inspect_system" do
+describe Machinery::InspectTask, "#inspect_system" do
   include FakeFS::SpecHelpers
   silence_machinery_output
 
-  class SimpleInspectTaskList < Machinery::Array
-    has_elements class: Machinery::Object
-  end
-
-  class SimpleInspectTaskScope < Machinery::Object
-    include Machinery::Scope
-    has_property :files, class: SimpleInspectTaskList
-  end
-
-  class FooInspector < Inspector
-    def initialize(_system, description)
-      @description = description
+  module Machinery
+    class SimpleInspectTaskList < Machinery::Array
+      has_elements class: Machinery::Object
     end
 
-    def inspect(_filter, _options = nil)
-      result = SimpleInspectTaskScope.new(
-        files: SimpleInspectTaskList.new([
-          Machinery::Object.new(name: "foo"),
-          Machinery::Object.new(name: "bar"),
-          Machinery::Object.new(name: "baz"),
-        ])
-      )
-
-      @description.foo = result
+    class SimpleInspectTaskScope < Machinery::Object
+      include Machinery::Scope
+      has_property :files, class: Machinery::SimpleInspectTaskList
     end
 
-    def summary
-      "Found #{@description.foo.files.length} elements."
+    class FooInspector < Machinery::Inspector
+      def initialize(_system, description)
+        @description = description
+      end
+
+      def inspect(_filter, _options = nil)
+        result = Machinery::SimpleInspectTaskScope.new(
+          files: Machinery::SimpleInspectTaskList.new([
+                                                        Machinery::Object.new(name: "foo"),
+                                                        Machinery::Object.new(name: "bar"),
+                                                        Machinery::Object.new(name: "baz")
+                                                      ])
+        )
+
+        @description.foo = result
+      end
+
+      def summary
+        "Found #{@description.foo.files.length} elements."
+      end
     end
-  end
 
-  class BarInspector < Inspector
-    def initialize(_system, description)
-      @description = description
-    end
+    class BarInspector < Machinery::Inspector
+      def initialize(_system, description)
+        @description = description
+      end
 
-    def inspect(_filter, _options = nil)
-      result = SimpleInspectTaskScope.new("bar" => "baz")
+      def inspect(_filter, _options = nil)
+        result = Machinery::SimpleInspectTaskScope.new("bar" => "baz")
 
-      @description.bar = result
-    end
+        @description.bar = result
+      end
 
-    def summary
-      "summary"
+      def summary
+        "summary"
+      end
     end
   end
 
   before :each do
-    allow_any_instance_of(RemoteSystem).to receive(:connect)
-    allow_any_instance_of(DockerSystem).to receive(:validate_image_name)
-    allow_any_instance_of(DockerSystem).to receive(:create_container)
+    allow_any_instance_of(Machinery::RemoteSystem).to receive(:connect)
+    allow_any_instance_of(Machinery::DockerSystem).to receive(:validate_image_name)
+    allow_any_instance_of(Machinery::DockerSystem).to receive(:create_container)
     allow(inspect_task).to receive(:set_system_locale)
   end
 
-  let(:inspect_task) { InspectTask.new }
-  let(:store) { SystemDescriptionStore.new }
-  let(:description) { SystemDescription.new(name, store) }
+  let(:inspect_task) { Machinery::InspectTask.new }
+  let(:store) { Machinery::SystemDescriptionStore.new }
+  let(:description) { Machinery::SystemDescription.new(name, store) }
   let(:name) { "name" }
-  let(:system) { RemoteSystem.new("example.com") }
-  let(:local_system) { LocalSystem.new }
-  let(:docker_system) { DockerSystem.new("foo") }
+  let(:system) { Machinery::RemoteSystem.new("example.com") }
+  let(:local_system) { Machinery::LocalSystem.new }
+  let(:docker_system) { Machinery::DockerSystem.new("foo") }
 
   let(:current_user_root) {
     current_user = double
@@ -98,22 +99,42 @@ describe InspectTask, "#inspect_system" do
 
   it "gathers the system environment before running the actual inspection" do
     expect(inspect_task).to receive(:set_system_locale)
-    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+    expect(Machinery::Inspector)
+      .to receive(:for).at_least(:once).times.with("foo").and_return(
+        Machinery::FooInspector
+      )
 
-    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+    inspect_task.inspect_system(
+      store,
+      system,
+      name,
+      current_user_non_root,
+      ["foo"],
+      Machinery::Filter.new
+    )
   end
 
   it "runs the proper inspector when a scope is given" do
-    expect(Inspector).to receive(:for).at_least(:once).times.with("foo").and_return(FooInspector)
+    expect(Machinery::Inspector)
+      .to receive(:for).at_least(:once).times.with("foo").and_return(
+        Machinery::FooInspector
+      )
 
-    inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+    inspect_task.inspect_system(
+      store,
+      system,
+      name,
+      current_user_non_root,
+      ["foo"],
+      Machinery::Filter.new
+    )
   end
 
   it "saves the inspection data after each inspection and not just at the end" do
-    expect_any_instance_of(SystemDescription).to receive(:save).at_least(:once).times
+    expect_any_instance_of(Machinery::SystemDescription).to receive(:save).at_least(:once).times
 
     inspect_task.inspect_system(store, system, name, current_user_non_root,
-      ["foo", "bar"], Filter.new)
+      ["foo", "bar"], Machinery::Filter.new)
   end
 
   it "creates a proper system description" do
@@ -123,15 +144,17 @@ describe InspectTask, "#inspect_system" do
       name,
       current_user_non_root,
       ["foo"],
-      Filter.new
+      Machinery::Filter.new
     )
 
-    expected = SimpleInspectTaskScope.new(
-      files: SimpleInspectTaskList.new([
-        Machinery::Object.new(name: "foo"),
-        Machinery::Object.new(name: "bar"),
-        Machinery::Object.new(name: "baz"),
-      ])
+    expected = Machinery::SimpleInspectTaskScope.new(
+      files: Machinery::SimpleInspectTaskList.new(
+        [
+          Machinery::Object.new(name: "foo"),
+          Machinery::Object.new(name: "bar"),
+          Machinery::Object.new(name: "baz")
+        ]
+      )
     )
     expect(description.foo).to eql(expected)
   end
@@ -140,12 +163,12 @@ describe InspectTask, "#inspect_system" do
     capture_machinery_output
 
     it "raises Machinery::Errors::ScopeFailed on 'expected errors'" do
-      expect_any_instance_of(FooInspector).to receive(:inspect).
-        and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
+      expect_any_instance_of(Machinery::FooInspector).to receive(:inspect)
+        .and_raise(Machinery::Errors::SshConnectionFailed, "This is an SSH error")
 
       expect {
         inspect_task.inspect_system(store, system, name, current_user_non_root,
-          ["foo"], Filter.new)
+          ["foo"], Machinery::Filter.new)
       }.to raise_error(
         Machinery::Errors::InspectionFailed,
         /Errors while inspecting foo:\n -> This is an SSH error/
@@ -159,10 +182,17 @@ Inspecting foo...
     end
 
     it "bubbles up 'unexpected errors'" do
-      expect_any_instance_of(FooInspector).to receive(:inspect).and_raise(RuntimeError)
+      expect_any_instance_of(Machinery::FooInspector).to receive(:inspect).and_raise(RuntimeError)
 
       expect {
-        inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"], Filter.new)
+        inspect_task.inspect_system(
+          store,
+          system,
+          name,
+          current_user_non_root,
+          ["foo"],
+          Machinery::Filter.new
+        )
       }.to raise_error(RuntimeError)
     end
   end
@@ -177,16 +207,16 @@ Inspecting foo...
       it "raises an exception we don't run as root" do
         expect {
           inspect_task.inspect_system(store, local_system, name, current_user_non_root,
-            ["foo"], Filter.new)
+            ["foo"], Machinery::Filter.new)
         }.to raise_error(Machinery::Errors::MissingRequirement)
       end
 
       it "doesn't raise an exception when we run as root" do
-        allow(Inspector).to receive(:all) { [] }
+        allow(Machinery::Inspector).to receive(:all) { [] }
 
         expect {
           inspect_task.inspect_system(store, local_system, name, current_user_root,
-            ["foo"], Filter.new)
+            ["foo"], Machinery::Filter.new)
         }.not_to raise_error
       end
     end
@@ -197,11 +227,11 @@ Inspecting foo...
       end
 
       it "doesn't raise an exception when we don't run as root" do
-        allow(Inspector).to receive(:all) { [] }
+        allow(Machinery::Inspector).to receive(:all) { [] }
 
         expect {
           inspect_task.inspect_system(store, system, name, current_user_non_root, ["foo"],
-            Filter.new)
+            Machinery::Filter.new)
         }.not_to raise_error
       end
     end
@@ -211,14 +241,18 @@ Inspecting foo...
     capture_machinery_output
 
     it "passes the filters to the inspectors" do
-      expect(Inspector).to receive(:for).at_least(:once).times.and_return(FooInspector)
+      expect(Machinery::Inspector)
+        .to receive(:for).at_least(:once).times.and_return(Machinery::FooInspector)
 
-      expect_any_instance_of(FooInspector).to receive(:inspect) do |inspector, filter, _options|
+      expect_any_instance_of(Machinery::FooInspector)
+        .to receive(:inspect) do |inspector, filter, _options|
         expect(filter.element_filters.length).to eq(1)
-        expect(filter.element_filters["/foo"].matchers).
-          to eq("=" => [["bar", "baz"]])
+        expect(filter.element_filters["/foo"].matchers)
+          .to eq("=" => [["bar", "baz"]])
 
-        inspector.description.foo = SimpleInspectTaskScope.new(files: SimpleInspectTaskList.new)
+        inspector.description.foo = Machinery::SimpleInspectTaskScope.new(
+          files: Machinery::SimpleInspectTaskList.new
+        )
       end
 
       inspect_task.inspect_system(
@@ -227,7 +261,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("/foo=bar,baz")
+        Machinery::Filter.new("/foo=bar,baz")
       )
     end
 
@@ -238,7 +272,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new("/foo=bar,baz")
+        Machinery::Filter.new("/foo=bar,baz")
       )
 
       expected = ["/foo=bar,baz"]
@@ -246,10 +280,13 @@ Inspecting foo...
     end
 
     it "only sets filters for scopes that were inspected" do
-      description = SystemDescription.new(name, store)
-      expect(SystemDescription).to receive(:load).and_return(description)
+      description = Machinery::SystemDescription.new(name, store)
+      expect(Machinery::SystemDescription).to receive(:load).and_return(description)
 
-      description.set_filter_definitions("inspect", Filter.new(["/foo=bar", "/baz=qux"]).to_array)
+      description.set_filter_definitions(
+        "inspect",
+        Machinery::Filter.new(["/foo=bar", "/baz=qux"]).to_array
+      )
 
       description = inspect_task.inspect_system(
         store,
@@ -257,7 +294,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new(["/foo=baz", "/baz=somethingelse"])
+        Machinery::Filter.new(["/foo=baz", "/baz=somethingelse"])
       )
 
       expected = [
@@ -274,14 +311,15 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new(["/foo/files/name=baz", "/baz=somethingelse"])
+        Machinery::Filter.new(["/foo/files/name=baz", "/baz=somethingelse"])
       )
 
       expect(captured_machinery_output).to include("Found 2 elements.")
     end
 
     it "applies the filter to the generated system description" do
-      expect_any_instance_of(Filter).to receive(:apply!).with(an_instance_of(SystemDescription))
+      expect_any_instance_of(Machinery::Filter)
+        .to receive(:apply!).with(an_instance_of(Machinery::SystemDescription))
 
       inspect_task.inspect_system(
         store,
@@ -289,7 +327,7 @@ Inspecting foo...
         name,
         current_user_non_root,
         ["foo"],
-        Filter.new(["/foo/files/name=baz"])
+        Machinery::Filter.new(["/foo/files/name=baz"])
       )
     end
   end

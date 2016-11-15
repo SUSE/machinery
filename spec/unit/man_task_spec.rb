@@ -17,18 +17,18 @@
 
 require_relative "spec_helper"
 
-describe ManTask do
+describe Machinery::ManTask do
   describe "#man" do
     context "on the console" do
       it "validates the availability of man by calling the 'validate_existence_of_package method'" do
-        expect(LocalSystem).to receive(:validate_existence_of_package).with("man")
+        expect(Machinery::LocalSystem).to receive(:validate_existence_of_package).with("man")
         allow_any_instance_of(Kernel).to receive(:system).with("man", anything)
 
         subject.man({})
       end
 
       it "calls the machinery man page" do
-        allow(LocalSystem).to receive(:validate_existence_of_package).with("man")
+        allow(Machinery::LocalSystem).to receive(:validate_existence_of_package).with("man")
         expect(subject).to receive("system").
           with("man", anything)
 
@@ -46,7 +46,7 @@ describe ManTask do
       end
 
       it "shows an error and exits if the documentation does not exist" do
-        expect(Html).to_not receive(:run_server)
+        expect(Machinery::Html).to_not receive(:run_server)
         expect(Machinery::Ui).to receive(:warn)
 
         subject.man(html: true)
@@ -54,7 +54,7 @@ describe ManTask do
 
       it "opens the documentation in the browser if it exists" do
         FileUtils.mkdir_p(File.join(Machinery::ROOT, "manual", "site"))
-        expect(Html).to receive(:run_server).and_return(double(join: nil))
+        expect(Machinery::Html).to receive(:run_server).and_return(double(join: nil))
 
 
         subject.man(html: true)

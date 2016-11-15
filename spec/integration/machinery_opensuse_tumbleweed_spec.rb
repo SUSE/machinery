@@ -111,7 +111,7 @@ describe "machinery@Tumbleweed" do
       )
     end
 
-    Inspector.all_scopes.map { |i| i.gsub("_", "-") }.each do |scope|
+    Machinery::Inspector.all_scopes.map { |i| i.tr("_", "-") }.each do |scope|
       describe "--scope=#{scope}" do
         it "inspects #{scope}" do
           measure("Inspect #{scope}") do

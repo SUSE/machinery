@@ -15,36 +15,38 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class EnvironmentInspector < Inspector
-  has_priority 5
+module Machinery
+  class EnvironmentInspector < Machinery::Inspector
+    has_priority 5
 
-  def initialize(system, description)
-    @system = system
-    @description = description
-  end
-
-  def inspect(_filter = nil, _options = {})
-    environment = EnvironmentScope.new
-
-    environment.locale = get_locale
-    environment.system_type = @system.type
-
-    @description.environment = environment
-  end
-
-  private
-
-  def get_locale
-    output = nil
-    begin
-      output = Machinery.scrub(@system.run_command("locale", "-a", stdout: :capture))
-    rescue
-      return "C"
+    def initialize(system, description)
+      @system = system
+      @description = description
     end
 
-    all_locales = output.split
-    locale = all_locales.find { |l| l.downcase.match(/en_us.utf.?8/) }
+    def inspect(_filter = nil, _options = {})
+      environment = EnvironmentScope.new
 
-    locale || "C"
+      environment.locale = get_locale
+      environment.system_type = @system.type
+
+      @description.environment = environment
+    end
+
+    private
+
+    def get_locale
+      output = nil
+      begin
+        output = Machinery.scrub(@system.run_command("locale", "-a", stdout: :capture))
+      rescue
+        return "C"
+      end
+
+      all_locales = output.split
+      locale = all_locales.find { |l| l.downcase.match(/en_us.utf.?8/) }
+
+      locale || "C"
+    end
   end
 end

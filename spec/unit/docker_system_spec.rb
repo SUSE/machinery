@@ -17,40 +17,50 @@
 
 require_relative "spec_helper"
 
-describe DockerSystem do
+describe Machinery::DockerSystem do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
   let(:false_container_id) { "0a0a0a0a0a0a" }
   let(:valid_container_id) { "076f46c1bef1" }
   let(:instance) { "12345" }
-  subject { DockerSystem.new(valid_container_id).tap(&:start) }
+  subject { Machinery::DockerSystem.new(valid_container_id).tap(&:start) }
 
   before(:each) do
-    allow(LoggedCheetah).to receive(:run).with("docker", "inspect", false_container_id).and_raise
-    allow(LoggedCheetah).to receive(:run).with("docker", "inspect", valid_container_id)
-    allow(LoggedCheetah).to receive(:run).with("docker", "run", any_args).and_return(instance)
+    allow(Machinery::LoggedCheetah).
+      to receive(:run).with("docker", "inspect", false_container_id).and_raise
+    allow(Machinery::LoggedCheetah).
+      to receive(:run).with("docker", "inspect", valid_container_id)
+    allow(Machinery::LoggedCheetah).
+      to receive(:run).with("docker", "run", any_args).and_return(instance)
     allow(subject).to receive(:stop)
   end
 
   describe "#initialize" do
     it "raises an error if image id is invalid" do
       expect {
-        DockerSystem.new(false_container_id)
+        Machinery::DockerSystem.new(false_container_id)
       }.to raise_error(Machinery::Errors::InspectionFailed)
     end
 
     it "does not raise an error if image id is valid" do
       expect {
-        DockerSystem.new(valid_container_id)
+        Machinery::DockerSystem.new(valid_container_id)
       }.not_to raise_error
     end
   end
 
   describe "#run_command" do
     it "runs the command using docker exec" do
-      expect(LoggedCheetah).to receive(:run).with("docker", "exec", "--user=root", "-i", "12345",
-        "bash -c python")
+      expect(Machinery::LoggedCheetah).
+        to receive(:run).with(
+          "docker",
+          "exec",
+          "--user=root",
+          "-i",
+          "12345",
+          "bash -c python"
+        )
 
       subject.run_command("bash -c python")
     end
@@ -58,7 +68,8 @@ describe DockerSystem do
 
   describe "#inject_file" do
     it "injects the file using docker cp" do
-      expect(LoggedCheetah).to receive(:run).with("docker", "cp", "/tmp/foo", "12345:/tmp")
+      expect(Machinery::LoggedCheetah).
+        to receive(:run).with("docker", "cp", "/tmp/foo", "12345:/tmp")
 
       subject.inject_file("/tmp/foo", "/tmp")
     end
@@ -66,9 +77,12 @@ describe DockerSystem do
 
   describe "#retrieve_files" do
     it "extracts the files using docker cp" do
-      expect(LoggedCheetah).to receive(:run).with("docker", "cp", "12345:/tmp/foo", "/tmp/foo")
-      expect(LoggedCheetah).to receive(:run).with("docker", "cp", "12345:/tmp/bar", "/tmp/bar")
-      expect(LoggedCheetah).to receive(:run).with("chmod", any_args).twice
+      expect(Machinery::LoggedCheetah).
+        to receive(:run).with("docker", "cp", "12345:/tmp/foo", "/tmp/foo")
+      expect(Machinery::LoggedCheetah).
+        to receive(:run).with("docker", "cp", "12345:/tmp/bar", "/tmp/bar")
+      expect(Machinery::LoggedCheetah).
+        to receive(:run).with("chmod", any_args).twice
 
       subject.retrieve_files(["/tmp/foo", "/tmp/bar"], "/")
     end

@@ -20,16 +20,16 @@ require_relative "../spec_helper"
 describe "unmanaged_files model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["unmanaged_files"])
-    UnmanagedFilesScope.from_json(JSON.parse(json)["unmanaged_files"])
+    Machinery::UnmanagedFilesScope.from_json(JSON.parse(json)["unmanaged_files"])
   }
 
   it_behaves_like "Scope"
   it_behaves_like "FileScope"
 
-  specify { expect(scope).to be_a(UnmanagedFilesScope) }
-  specify { expect(scope.first).to be_a(UnmanagedFile) }
+  specify { expect(scope).to be_a(Machinery::UnmanagedFilesScope) }
+  specify { expect(scope.first).to be_a(Machinery::UnmanagedFile) }
 
-  describe UnmanagedFilesScope do
+  describe Machinery::UnmanagedFilesScope do
     describe "#length" do
       it "returns the number of files" do
         expect(scope.length).to eq(3)
@@ -38,16 +38,16 @@ describe "unmanaged_files model" do
 
     describe "#compare_with" do
       it "shows a warning when comparing unextracted with extracted files" do
-        scope_a = UnmanagedFilesScope.new([], extracted: false)
-        scope_b = UnmanagedFilesScope.new([], extracted: true)
+        scope_a = Machinery::UnmanagedFilesScope.new([], extracted: false)
+        scope_b = Machinery::UnmanagedFilesScope.new([], extracted: true)
         expect(Machinery::Ui).to receive(:warn)
 
         scope_a.compare_with(scope_b)
       end
 
       it "doesn't show a warning when comparing extracted with extracted files" do
-        scope_a = UnmanagedFilesScope.new([], extracted: true)
-        scope_b = UnmanagedFilesScope.new([], extracted: true)
+        scope_a = Machinery::UnmanagedFilesScope.new([], extracted: true)
+        scope_b = Machinery::UnmanagedFilesScope.new([], extracted: true)
         expect(Machinery::Ui).to_not receive(:warn)
 
         scope_a.compare_with(scope_b)
@@ -56,9 +56,9 @@ describe "unmanaged_files model" do
 
     describe "check for attributes for rendering" do
       let(:extracted_unmanaged_files) {
-        UnmanagedFilesScope.new(
+        Machinery::UnmanagedFilesScope.new(
           [
-            UnmanagedFile.new(
+            Machinery::UnmanagedFile.new(
               name:    "/foo",
               type:    "file",
               mode:    "777",
@@ -72,9 +72,9 @@ describe "unmanaged_files model" do
         )
       }
       let(:unextracted_unmanaged_files) {
-        UnmanagedFilesScope.new(
+        Machinery::UnmanagedFilesScope.new(
           [
-            UnmanagedFile.new(
+            Machinery::UnmanagedFile.new(
               name: "/foo",
               type:    "file"
             )
@@ -83,9 +83,9 @@ describe "unmanaged_files model" do
         )
       }
       let(:extracted_unmanaged_files_file_objects) {
-        UnmanagedFilesScope.new(
+        Machinery::UnmanagedFilesScope.new(
           [
-            UnmanagedFile.new(
+            Machinery::UnmanagedFile.new(
               name:    "/foo",
               type:    "file",
               mode:    "777",
@@ -99,7 +99,7 @@ describe "unmanaged_files model" do
       }
       describe "#has_metadata?" do
         it "returns true if the attribute has_metadata is true" do
-          object = UnmanagedFilesScope.new([], has_metadata: true)
+          object = Machinery::UnmanagedFilesScope.new([], has_metadata: true)
           expect(object.contains_metadata?).to be(true)
         end
 
@@ -124,68 +124,81 @@ describe "unmanaged_files model" do
     end
   end
 
-  describe UnmanagedFilesScope do
+  describe Machinery::UnmanagedFilesScope do
     describe "#compare_with" do
       it "only compares common properties" do
-        scope = UnmanagedFilesScope.new([
-          UnmanagedFile.new(
-            name: "/foo",
-            b:    2
-          )
-        ])
-        scope_equal = UnmanagedFilesScope.new([
-          UnmanagedFile.new(
-            name: "/foo",
-            b:    2,
-            c:    3
-          )
-        ])
-        scope_changed = UnmanagedFilesScope.new([
-          UnmanagedFile.new(
-            name: "/foo",
-            b:    3
-          )
-        ])
-        scope_different = UnmanagedFilesScope.new([
-          UnmanagedFile.new(
-            name: "/bar",
-            b:    2
-          )
-        ])
+        scope = Machinery::UnmanagedFilesScope.new(
+          [
+            Machinery::UnmanagedFile.new(
+              name: "/foo",
+              b:    2
+            )
+          ]
+        )
+        scope_equal = Machinery::UnmanagedFilesScope.new(
+          [
+            Machinery::UnmanagedFile.new(
+              name: "/foo",
+              b:    2,
+              c:    3
+            )
+          ]
+        )
+        scope_changed = Machinery::UnmanagedFilesScope.new(
+          [
+            Machinery::UnmanagedFile.new(
+              name: "/foo",
+              b:    3
+            )
+          ]
+        )
+        scope_different = Machinery::UnmanagedFilesScope.new(
+          [
+            Machinery::UnmanagedFile.new(
+              name: "/bar",
+              b:    2
+            )
+          ]
+        )
 
         expect(scope.compare_with(scope_equal)).to eq([nil, nil, nil, scope])
-        expect(scope.compare_with(scope_different)).to eq([scope, scope_different, nil, nil])
-        expect(scope.compare_with(scope_changed)).to eq([
-          nil,
-          nil,
+        expect(scope.compare_with(scope_different)).to eq(
+          [scope, scope_different, nil, nil]
+        )
+        expect(scope.compare_with(scope_changed)).to eq(
           [
+            nil,
+            nil,
             [
-              UnmanagedFile.new(
-                name: "/foo",
-                b:    2
-              ),
-              UnmanagedFile.new(
-                name: "/foo",
-                b:    3
-              )
-            ]
-          ],
-          nil])
+              [
+                Machinery::UnmanagedFile.new(
+                  name: "/foo",
+                  b:    2
+                ),
+                Machinery::UnmanagedFile.new(
+                  name: "/foo",
+                  b:    3
+                )
+              ]
+            ],
+            nil
+          ]
+        )
       end
 
       it "keeps the common elements if there are common attributes" do
-        scope = UnmanagedFilesScope.new(
+        scope = Machinery::UnmanagedFilesScope.new(
           [
-            UnmanagedFile.new(
+            Machinery::UnmanagedFile.new(
               name: "/foo",
               b:    2
             )
           ],
           extracted: true
         )
-        scope_changed = UnmanagedFilesScope.new(
+        scope_changed = Machinery::UnmanagedFilesScope.new(
           [
-            UnmanagedFile.new(
+            Machinery::UnmanagedFile.new(
               name: "/foo",
               b:    3
             )
@@ -199,17 +212,17 @@ describe "unmanaged_files model" do
             nil,
             [
               [
-                UnmanagedFile.new(
+                Machinery::UnmanagedFile.new(
                   name: "/foo",
                   b:    2
                 ),
-                UnmanagedFile.new(
+                Machinery::UnmanagedFile.new(
                   name: "/foo",
                   b:    3
                 )
               ]
             ],
-            UnmanagedFilesScope.new([], extracted: true)
+            Machinery::UnmanagedFilesScope.new([], extracted: true)
           ]
         )
       end

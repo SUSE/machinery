@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate8to9")
 
-describe Migrate8To9 do
+describe Machinery::Migrate8To9 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -72,7 +72,7 @@ describe Migrate8To9 do
       "/unmanaged_files/name=/tmp",
       "/services/name=ModemManager.service"
     ]
-    migration = Migrate8To9.new(description_hash, description_base)
+    migration = Machinery::Migrate8To9.new(description_hash, description_base)
     migration.migrate
 
     expect(description_hash["meta"]["filters"]["inspect"]).to match_array(expected)

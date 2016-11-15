@@ -18,12 +18,12 @@
 require_relative "spec_helper"
 
 
-describe ShowTask, "#show" do
+describe Machinery::ShowTask, "#show" do
   capture_machinery_output
 
-  let(:show_task) { ShowTask.new }
+  let(:show_task) { Machinery::ShowTask.new }
   let(:system_description) {
-    SystemDescription.new("foo", SystemDescriptionMemoryStore.new)
+    Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionMemoryStore.new)
   }
   let(:description_with_packages) {
     create_test_description(scopes: ["empty_packages"])
@@ -38,24 +38,29 @@ describe ShowTask, "#show" do
   it "runs the proper renderer when a scope is given" do
     renderer = double
     expect(renderer).to receive(:render).and_return("bar")
-    expect(Renderer).to receive(:for).with("packages").and_return(renderer)
+    expect(Machinery::Ui::Renderer).to receive(:for).with("packages").and_return(renderer)
 
-    show_task.show(system_description, ["packages"], Filter.new, no_pager: true)
+    show_task.show(system_description, ["packages"], Machinery::Filter.new, no_pager: true)
   end
 
   it "prints a note about the 'N/A' tag for package vendor attribute" do
-    show_task.show(description_without_vendor, ["packages"], Filter.new, no_pager: true)
+    show_task.show(description_without_vendor, ["packages"], Machinery::Filter.new, no_pager: true)
     expect(captured_machinery_output).to include("missing package vendor")
   end
 
   it "prints a note about the 'N/A' tag for user comments attribute" do
-    show_task.show(description_without_user_comment, ["users"], Filter.new, no_pager: true)
+    show_task.show(
+      description_without_user_comment,
+      ["users"],
+      Machinery::Filter.new,
+      no_pager: true
+    )
     expect(captured_machinery_output).to include("missing user info, user ID or group ID")
   end
 
   it "prints scopes missing from the system description" do
     scope = "packages"
-    show_task.show(system_description, [scope], Filter.new, no_pager: true)
+    show_task.show(system_description, [scope], Machinery::Filter.new, no_pager: true)
 
     expect(captured_machinery_output).to include("requested scopes were not inspected")
     expect(captured_machinery_output).to include("packages")
@@ -63,21 +68,27 @@ describe ShowTask, "#show" do
 
   it "does not show a message about missing scopes if there are none" do
     scope = "packages"
-    show_task.show(description_with_packages, [scope], Filter.new, no_pager: true)
+    show_task.show(description_with_packages, [scope], Machinery::Filter.new, no_pager: true)
 
     expect(captured_machinery_output).to_not include("requested scopes were not inspected")
   end
 
   it "opens the system description in the web browser" do
-    expect(LocalSystem).to receive(:validate_existence_of_command).with("xdg-open", "xdg-utils")
+    expect(Machinery::LocalSystem).
+      to receive(:validate_existence_of_command).with("xdg-open", "xdg-utils")
     expect(Cheetah).to receive(:run).with("xdg-open", "http://0.0.0.0:3000/foo")
-    expect(Html).to receive(:run_server) do |_store, _options, &block|
+    expect(Machinery::Html).to receive(:run_server) do |_store, _options, &block|
       block.call
       double(join: nil)
     end
 
     show_task.show(
-      system_description, ["packages"], Filter.new, show_html: true, ip: "0.0.0.0", port: 3000
+      system_description,
+      ["packages"],
+      Machinery::Filter.new,
+      show_html: true,
+      ip:        "0.0.0.0",
+      port:      3000
     )
   end
 
@@ -85,6 +96,6 @@ describe ShowTask, "#show" do
     expected_scope_list = ["os", "packages", "users"]
 
     expect(show_task).to receive(:show_console).with(system_description, expected_scope_list, {})
-    show_task.show(system_description, ["packages", "users", "os"], Filter.new)
+    show_task.show(system_description, ["packages", "users", "os"], Machinery::Filter.new)
   end
 end

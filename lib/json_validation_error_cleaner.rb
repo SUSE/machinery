@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class JsonValidationErrorCleaner
+class Machinery::JsonValidationErrorCleaner
   class <<self
     def cleanup_error(message, scope)
       message = cleanup_json_path(message, scope)

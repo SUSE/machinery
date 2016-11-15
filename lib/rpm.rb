@@ -16,15 +16,15 @@
 # you may find current contact information at www.suse.com
 
 # Rpm represents an RPM package on the disk.
-class Rpm
+class Machinery::Rpm
   def initialize(path)
     @path = path
   end
 
   def diff(file, local_file)
     begin
-      cpio = LoggedCheetah.run("rpm2cpio", @path, stdout: :capture)
-      original_config = LoggedCheetah.run(
+      cpio = Machinery::LoggedCheetah.run("rpm2cpio", @path, stdout: :capture)
+      original_config = Machinery::LoggedCheetah.run(
         "cpio", "-iv", "--to-stdout", ".#{file}", stdin: cpio, stdout: :capture
       )
     rescue Cheetah::ExecutionFailed => e
@@ -33,7 +33,7 @@ class Rpm
     end
 
     begin
-      LoggedCheetah.run(
+      Machinery::LoggedCheetah.run(
         "diff", "-u", "--label", "#{File.join("a", file)}", "--from-file=-",
          "--label", "#{File.join("b", file)}", local_file,
         stdin: original_config,

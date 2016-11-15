@@ -15,10 +15,10 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ManTask
+class Machinery::ManTask
   def self.compile_documentation
     docs = "# Scopes\n\n"
-    docs += Inspector.all_scopes.map do |scope|
+    docs += Machinery::Inspector.all_scopes.map do |scope|
       scope_doc = "* #{scope.tr("_", "-")}\n\n"
       scope_doc += YAML.load_file(
         File.join(Machinery::ROOT, "plugins/#{scope}/#{scope}.yml")
@@ -40,7 +40,7 @@ class ManTask
   end
 
   def man_system
-    LocalSystem.validate_existence_of_package("man")
+    Machinery::LocalSystem.validate_existence_of_package("man")
     system("man", File.join(Machinery::ROOT, "man/generated/machinery.1.gz"))
   end
 
@@ -53,7 +53,7 @@ class ManTask
       return
     end
 
-    LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+    Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
     url = "http://#{options[:ip]}:#{options[:port]}/site/docs/index.html"
 
@@ -64,8 +64,12 @@ Trying to start a web server for serving the documentation on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-    server = Html.run_server(SystemDescriptionStore.new, port: options[:port], ip: options[:ip]) do
-      LoggedCheetah.run("xdg-open", url)
+    server = Machinery::Html.run_server(
+      Machinery::SystemDescriptionStore.new,
+      port: options[:port],
+      ip:   options[:ip]
+    ) do
+      Machinery::LoggedCheetah.run("xdg-open", url)
     end
 
     server.join # Wait until the user cancelled the blocking webserver

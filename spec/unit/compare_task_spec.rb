@@ -16,72 +16,76 @@
 # you may find current contact information at www.suse.com
 require_relative "spec_helper"
 
-describe CompareTask do
+describe Machinery::CompareTask do
   describe "#compare" do
     capture_machinery_output
 
-    class CompareTaskFooScope < Machinery::Array
-      include Machinery::Scope
-    end
-    class CompareTaskBarScope < Machinery::Array
-      include Machinery::Scope
-    end
-    class CompareTaskBazScope < Machinery::Array
-      include Machinery::Scope
-    end
-    class CompareTaskFoobarScope < Machinery::Array
-      include Machinery::Scope
-    end
+    module Machinery
+      class CompareTaskFooScope < Machinery::Array
+        include Machinery::Scope
+      end
+      class CompareTaskBarScope < Machinery::Array
+        include Machinery::Scope
+      end
+      class CompareTaskBazScope < Machinery::Array
+        include Machinery::Scope
+      end
+      class CompareTaskFoobarScope < Machinery::Array
+        include Machinery::Scope
+      end
 
-    class CompareTaskFooRenderer < Renderer
-      def content(description)
-        description["compare_task_foo"].each do |e|
-          puts e
+      class Ui
+        class CompareTaskFooRenderer < Machinery::Ui::Renderer
+          def content(description)
+            description["compare_task_foo"].each do |e|
+              puts e
+            end
+          end
+
+          def display_name
+            "Foo"
+          end
+        end
+
+        class CompareTaskBarRenderer < Machinery::Ui::Renderer
+          def content(description)
+            description["compare_task_bar"].each do |e|
+              puts e
+            end
+          end
+
+          def display_name
+            "Bar"
+          end
+        end
+
+        class CompareTaskBazRenderer < Machinery::Ui::Renderer
+          def content(description)
+            description["compare_task_baz"].each do |e|
+              puts e
+            end
+          end
+
+          def display_name
+            "Baz"
+          end
+        end
+
+        class CompareTaskFoobarRenderer < Machinery::Ui::Renderer
+          def content(description)
+            description["compare_task_foobar"].each do |e|
+              puts e
+            end
+          end
+
+          def display_name
+            "Foobar"
+          end
         end
       end
-
-      def display_name
-        "Foo"
-      end
     end
 
-    class CompareTaskBarRenderer < Renderer
-      def content(description)
-        description["compare_task_bar"].each do |e|
-          puts e
-        end
-      end
-
-      def display_name
-        "Bar"
-      end
-    end
-
-    class CompareTaskBazRenderer < Renderer
-      def content(description)
-        description["compare_task_baz"].each do |e|
-          puts e
-        end
-      end
-
-      def display_name
-        "Baz"
-      end
-    end
-
-    class CompareTaskFoobarRenderer < Renderer
-      def content(description)
-        description["compare_task_foobar"].each do |e|
-          puts e
-        end
-      end
-
-      def display_name
-        "Foobar"
-      end
-    end
-
-    subject { CompareTask.new }
+    subject { Machinery::CompareTask.new }
 
     let(:description1) {
       create_test_description(json: <<-EOT, name: "name1")
@@ -129,8 +133,7 @@ describe CompareTask do
       EOT
     }
 
-    let(:output_different) {
-      <<-EOT
+    let(:output_different) {      <<-EOT
 # Foo
 
 Only in 'name1':
@@ -158,8 +161,7 @@ Only in 'name2':
       EOT
     }
 
-    let(:output_same_show_all_true) {
-      <<-EOT
+    let(:output_same_show_all_true) {      <<-EOT
 Compared descriptions are identical.
 # Foo
 
@@ -178,8 +180,7 @@ Common to both systems:
 EOT
     }
 
-    let(:output_missing) {
-      <<-EOT
+    let(:output_missing) {      <<-EOT
 # Foo
   Unable to compare, no data in 'name3'
 
@@ -197,8 +198,7 @@ Only in 'name4':
       EOT
     }
 
-    let(:output_missing_same) {
-      <<-EOT
+    let(:output_missing_same) {      <<-EOT
 Compared descriptions are identical.
       EOT
     }
@@ -208,18 +208,18 @@ Compared descriptions are identical.
     }
 
     def setup_renderers
-      allow(Renderer).to receive(:for).
-        with("compare_task_foo").
-        and_return(CompareTaskFooRenderer.new)
-      allow(Renderer).to receive(:for).
-        with("compare_task_bar").
-        and_return(CompareTaskBarRenderer.new)
-      allow(Renderer).to receive(:for).
-        with("compare_task_baz").
-        and_return(CompareTaskBazRenderer.new)
-      allow(Renderer).to receive(:for).
-        with("compare_task_foobar").
-        and_return(CompareTaskFoobarRenderer.new)
+      allow(Machinery::Ui::Renderer).to receive(:for)
+        .with("compare_task_foo")
+        .and_return(Machinery::Ui::CompareTaskFooRenderer.new)
+      allow(Machinery::Ui::Renderer).to receive(:for)
+        .with("compare_task_bar")
+        .and_return(Machinery::Ui::CompareTaskBarRenderer.new)
+      allow(Machinery::Ui::Renderer).to receive(:for)
+        .with("compare_task_baz")
+        .and_return(Machinery::Ui::CompareTaskBazRenderer.new)
+      allow(Machinery::Ui::Renderer).to receive(:for)
+        .with("compare_task_foobar")
+        .and_return(Machinery::Ui::CompareTaskFoobarRenderer.new)
     end
 
     describe "when the descriptions are different" do
@@ -341,7 +341,7 @@ Only in 'two':
   Architecture: x86_64
 
 EOT
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["os"])
 
       expect(output).to eq expected_output
@@ -368,7 +368,7 @@ EOT
         }
       EOT
 
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["os"])
 
       expect(output).to include("Compared descriptions are identical.")
@@ -432,7 +432,7 @@ Only in 'one':
   * kernel
 
 EOT
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["packages"])
 
       expect(output).to eq expected_output
@@ -503,7 +503,7 @@ In both with different attributes ('one' <> 'two'):
 
 EOT
 
-      output = CompareTask.new.render_comparison(system_description1,
+      output = Machinery::CompareTask.new.render_comparison(system_description1,
         system_description2, ["packages"])
 
       expect(output).to eq expected_output

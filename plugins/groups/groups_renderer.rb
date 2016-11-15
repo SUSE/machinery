@@ -15,40 +15,44 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class GroupsRenderer < Renderer
-  def content(description)
-    return unless description.groups
+module Machinery
+  class Ui
+    class GroupsRenderer < Machinery::Ui::Renderer
+      def content(description)
+        return unless description.groups
 
-    na_note("group ID") if description.groups.any? { |a| a[:gid].nil? }
+        na_note("group ID") if description.groups.any? { |a| a[:gid].nil? }
 
-    list do
-      description.groups.each do |group|
-        gid = group.gid || "N/A"
-        details ="gid: #{gid}"
-        details += ", users: #{group.users.join(",")}" unless group.users.empty?
+        list do
+          description.groups.each do |group|
+            gid = group.gid || "N/A"
+            details = "gid: #{gid}"
+            details += ", users: #{group.users.join(",")}" unless group.users.empty?
 
-        item "#{group.name} (#{details})"
-      end
-    end
-  end
-
-  def display_name
-    "Groups"
-  end
-
-  def compare_content_changed(changed_elements)
-    list do
-      changed_elements.each do |one, two|
-        changes = []
-        relevant_attributes = one.attributes.keys
-
-        relevant_attributes.each do |attribute|
-          if one[attribute] != two[attribute]
-            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+            item "#{group.name} (#{details})"
           end
         end
+      end
 
-        item "#{one.name} (#{changes.join(", ")})"
+      def display_name
+        "Groups"
+      end
+
+      def compare_content_changed(changed_elements)
+        list do
+          changed_elements.each do |one, two|
+            changes = []
+            relevant_attributes = one.attributes.keys
+
+            relevant_attributes.each do |attribute|
+              if one[attribute] != two[attribute]
+                changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+              end
+            end
+
+            item "#{one.name} (#{changes.join(", ")})"
+          end
+        end
       end
     end
   end

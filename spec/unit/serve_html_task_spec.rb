@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ServeHtmlTask do
+describe Machinery::ServeHtmlTask do
   describe "#assemble_url" do
     context "when option public is not specified" do
       let(:opts) { { port: 5000, public: false } }

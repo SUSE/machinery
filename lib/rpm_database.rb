@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class RpmDatabase < ManagedFilesDatabase
+class Machinery::RpmDatabase < Machinery::ManagedFilesDatabase
   def managed_files_list(&block)
     @system.run_script_with_progress("changed_files.sh", &block)
   end

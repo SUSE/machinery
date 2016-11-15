@@ -15,70 +15,72 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ChangedManagedFilesInspector < Inspector
-  has_priority 90
+module Machinery
+  class ChangedManagedFilesInspector < Machinery::Inspector
+    has_priority 90
 
-  def initialize(system, description)
-    @system = system
-    @description = description
-  end
-
-  def inspect(filter, options = {})
-    system.check_retrieve_files_dependencies if options[:extract_changed_managed_files]
-
-    @system = system
-
-    scope = ChangedManagedFilesScope.new
-    file_store = @description.scope_file_store("changed_managed_files")
-    scope.scope_file_store = file_store
-
-    result = changed_files
-
-    if filter
-      file_filter = filter.element_filter_for("/changed_managed_files/files/name")
-      result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
+    def initialize(system, description)
+      @system = system
+      @description = description
     end
 
-    file_store.remove
-    if options[:extract_changed_managed_files]
-      file_store.create
+    def inspect(filter, options = {})
+      system.check_retrieve_files_dependencies if options[:extract_changed_managed_files]
 
-      existing_files = result.reject do |f|
-        f.changes.nil? ||
-        f.changes.include?("deleted") ||
-        f.link? ||
-        f.directory? ||
-        f.name == "/"
+      @system = system
+
+      scope = ChangedManagedFilesScope.new
+      file_store = @description.scope_file_store("changed_managed_files")
+      scope.scope_file_store = file_store
+
+      result = changed_files
+
+      if filter
+        file_filter = filter.element_filter_for("/changed_managed_files/files/name")
+        result.delete_if { |e| file_filter.matches?(e.name) } if file_filter
       end
 
-      scope.retrieve_files_from_system(@system, existing_files.map(&:name))
+      file_store.remove
+      if options[:extract_changed_managed_files]
+        file_store.create
+
+        existing_files = result.reject do |f|
+          f.changes.nil? ||
+            f.changes.include?("deleted") ||
+            f.link? ||
+            f.directory? ||
+            f.name == "/"
+        end
+
+        scope.retrieve_files_from_system(@system, existing_files.map(&:name))
+      end
+
+      scope.extracted = !!options[:extract_changed_managed_files]
+      scope += result.sort_by(&:name)
+
+      @description["changed_managed_files"] = scope
     end
 
-    scope.extracted = !!options[:extract_changed_managed_files]
-    scope += result.sort_by(&:name)
-
-    @description["changed_managed_files"] = scope
-  end
-
-  def summary
-    "#{@description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
-      Machinery.pluralize(
-        @description.changed_managed_files.count, "%d changed managed file"
-      ) + "."
-  end
-
-  private
-
-  def changed_files
-    count = 0
-    files = @system.managed_files_database.changed_files do |chunk|
-      count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
-      Machinery::Ui.progress(
-        " -> Found #{Machinery.pluralize(count, "%d changed managed file")}..."
-      )
+    def summary
+      "#{@description.changed_managed_files.extracted ? "Extracted" : "Found"} " +
+        Machinery.pluralize(
+          @description.changed_managed_files.count, "%d changed managed file"
+        ) + "."
     end
-    files.reject(&:config_file?).map do |file|
-      ChangedManagedFile.new(file.attributes)
+
+    private
+
+    def changed_files
+      count = 0
+      files = @system.managed_files_database.changed_files do |chunk|
+        count += chunk.lines.reject { |l| l.chomp.end_with?(":") || l.split(" ")[1] == "c" }.count
+        Machinery::Ui.progress(
+          " -> Found #{Machinery.pluralize(count, "%d changed managed file")}..."
+        )
+      end
+      files.reject(&:config_file?).map do |file|
+        ChangedManagedFile.new(file.attributes)
+      end
     end
   end
 end

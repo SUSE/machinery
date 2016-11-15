@@ -31,7 +31,7 @@
 # the description. It returns a brief summary string of the inspection.
 #
 # The description object can also be used to store files in the description.
-class Inspector
+class Machinery::Inspector
   abstract_method :inspect
   abstract_method :summary
 
@@ -51,7 +51,7 @@ class Inspector
     end
 
     def for(scope)
-      class_name = "#{scope.split("_").map(&:capitalize).join}Inspector"
+      class_name = "Machinery::#{scope.split("_").map(&:capitalize).join}Inspector"
 
       Object.const_get(class_name) if Object.const_defined?(class_name)
     end
@@ -83,7 +83,7 @@ class Inspector
     def scope
       # Return the un-camelcased name of the inspector,
       # e.g. "foo_bar" for "FooBarInspector"
-      scope = self.name.match(/^(.*)Inspector$/)[1]
+      scope = name.match(/^Machinery::(.*)Inspector$/)[1]
       scope.gsub(/([^A-Z])([A-Z])/, "\\1_\\2").downcase
     end
   end

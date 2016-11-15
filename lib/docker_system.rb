@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class DockerSystem < System
+class Machinery::DockerSystem < Machinery::System
   attr_accessor :image
 
   def type
@@ -29,19 +29,21 @@ class DockerSystem < System
   end
 
   def start
-    @container = LoggedCheetah.run("docker", "run", "-id", @image, "bash", stdout: :capture).chomp
+    @container = Machinery::LoggedCheetah.run(
+      "docker", "run", "-id", @image, "bash", stdout: :capture
+    ).chomp
   rescue Cheetah::ExecutionFailed => e
     raise Machinery::Errors::MachineryError, "Container could not be started." \
       " The error message was:\n" + e.stderr
   end
 
   def stop
-    LoggedCheetah.run("docker", "rm", "-f", @container) if @container
+    Machinery::LoggedCheetah.run("docker", "rm", "-f", @container) if @container
   end
 
   def run_command(*args)
     Machinery.logger.info("Running '#{args}'")
-    LoggedCheetah.run("docker", "exec", "--user=root", "-i", @container, *args)
+    Machinery::LoggedCheetah.run("docker", "exec", "--user=root", "-i", @container, *args)
   end
 
   def check_retrieve_files_dependencies
@@ -76,7 +78,7 @@ class DockerSystem < System
 
   # Copies a file to the system
   def inject_file(source, destination)
-    LoggedCheetah.run("docker", "cp", source, "#{@container}:#{destination}")
+    Machinery::LoggedCheetah.run("docker", "cp", source, "#{@container}:#{destination}")
   end
 
   # Retrieves files specified in file_list from the container
@@ -85,8 +87,10 @@ class DockerSystem < System
       destination_path = File.join(destination, file)
       FileUtils.mkdir_p(File.dirname(destination_path), mode: 0700)
 
-      LoggedCheetah.run("docker", "cp", "#{@container}:#{file}", "#{destination_path}")
-      LoggedCheetah.run("chmod", "go-rwx", destination_path)
+      Machinery::LoggedCheetah.run(
+        "docker", "cp", "#{@container}:#{file}", destination_path.to_s
+      )
+      Machinery::LoggedCheetah.run("chmod", "go-rwx", destination_path)
     end
   end
 
@@ -123,7 +127,7 @@ class DockerSystem < System
   private
 
   def validate_image_name(image)
-    LoggedCheetah.run("docker", "inspect", image)
+    Machinery::LoggedCheetah.run("docker", "inspect", image)
   rescue
     raise Machinery::Errors::InspectionFailed.new("Unknown docker image: '#{image}'")
   end

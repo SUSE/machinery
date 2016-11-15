@@ -32,10 +32,10 @@ require_relative "spec_helper"
 # implicitly in other tests where they are harder to diagnose. This helps
 # especially when refactoring the implementation of the scopes.
 
-describe Os do
+describe Machinery::Os do
 
   it "keeps values" do
-    os_scope = Os.new
+    os_scope = Machinery::Os.new
     os_scope.name = "OS NAME"
     os_scope.version = "x.y"
 
@@ -45,7 +45,7 @@ describe Os do
 
   it "keeps meta data" do
     date = DateTime.now
-    os_scope = Os.new
+    os_scope = Machinery::Os.new
     os_scope.set_metadata(date, "SOMEHOST")
 
     expect(os_scope.meta.modified).to eq(date)
@@ -54,17 +54,18 @@ describe Os do
 
   describe "compares" do
     before(:each) do
-      @os_scope1 = Os.new
+      @os_scope1 = Machinery::Os.new
       @os_scope1.name = "OS1"
       @os_scope1.version = "x"
 
-      @os_scope2 = Os.new
+      @os_scope2 = Machinery::Os.new
       @os_scope2.name = "OS1"
       @os_scope2.version = "x"
 
-      @os_scope3 = Os.new
+      @os_scope3 = Machinery::Os.new
       @os_scope3.name = "OS2"
       @os_scope3.version = "y"
+      # rubocop:enable Style/VariableNumber
     end
 
     it "equal objects" do

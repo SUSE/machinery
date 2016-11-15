@@ -17,12 +17,12 @@
 
 require_relative "spec_helper"
 
-describe ContainerizedApp do
+describe Machinery::ContainerizedApp do
   let(:name) { "my_app" }
   let(:services) { double }
   let(:workloads) { double }
 
-  subject { ContainerizedApp.new(name, workloads, services) }
+  subject { Machinery::ContainerizedApp.new(name, workloads, services) }
 
   describe "get_binding" do
     let(:binding) { subject.get_binding }

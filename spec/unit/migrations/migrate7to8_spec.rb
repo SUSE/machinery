@@ -18,7 +18,7 @@
 require_relative "../spec_helper"
 require File.join(Machinery::ROOT, "schema/migrations/migrate7to8")
 
-describe Migrate7To8 do
+describe Machinery::Migrate7To8 do
   initialize_system_description_factory_store
 
   let(:description_hash) {
@@ -58,7 +58,7 @@ describe Migrate7To8 do
   it "renames the config_files extraction directory to changed_config_files" do
     FileUtils.mkdir_p(File.join(description_base, "config_files"))
 
-    migration = Migrate7To8.new(description_hash, description_base)
+    migration = Machinery::Migrate7To8.new(description_hash, description_base)
     migration.migrate
 
     expect(File.directory?(File.join(description_base, "config_files"))).to be(false)
@@ -68,7 +68,7 @@ describe Migrate7To8 do
   it "renames the config_file_diffs to changed_config_files_diffs" do
     FileUtils.mkdir_p(File.join(description_base, "analyze", "config_file_diffs"))
 
-    migration = Migrate7To8.new(description_hash, description_base)
+    migration = Machinery::Migrate7To8.new(description_hash, description_base)
     migration.migrate
 
     expect(
@@ -81,7 +81,7 @@ describe Migrate7To8 do
 
   context "renames the config_files scope to changed_config_files" do
     before(:each) do
-      migration = Migrate7To8.new(description_hash, description_base)
+      migration = Machinery::Migrate7To8.new(description_hash, description_base)
       migration.migrate
     end
 

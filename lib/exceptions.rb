@@ -54,8 +54,9 @@ module Machinery
         if !@format_version
           "#{@name}: incompatible format version. Can not be upgraded."
         elsif @format_version < SystemDescription::CURRENT_FORMAT_VERSION
-          "#{@name}: format version #{@format_version}, needs to be upgraded. " \
-          "Try '#{Hint.program_name} upgrade-format #{name}' to upgrade it to the current version."
+          "#{@name}: format version #{@format_version}, needs to be upgraded. "\
+          "Try '#{Ui::Hint.program_name} upgrade-format #{name}'"\
+          " to upgrade it to the current version."
         else
           "#{@name}: format version #{@format_version}. " \
             "Please upgrade Machinery to the latest version."
@@ -81,7 +82,7 @@ module Machinery
           inspect_cmd = "inspect"
         end
 
-        cmd = "#{Hint.program_name} #{inspect_cmd} --extract-files " \
+        cmd = "#{Ui::Hint.program_name} #{inspect_cmd} --extract-files " \
           "--scope=#{formatted_scopes.delete(" ")}"
         cmd += " --name='#{@description.name}'" if hostname != @description.name
         cmd += " #{hostname}"

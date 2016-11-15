@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Migrate8To9 < Migration
+class Machinery::Migrate8To9 < Machinery::Migration
   desc <<-EOT
     Format version 9 fixes the filter paths for migrated descriptions.
   EOT

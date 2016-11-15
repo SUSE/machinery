@@ -17,8 +17,8 @@
 
 require_relative "spec_helper"
 
-describe MoveTask do
-  let(:move_task) { MoveTask.new }
+describe Machinery::MoveTask do
+  let(:move_task) { Machinery::MoveTask.new }
 
   describe "#move" do
     it "moves the system description directory" do

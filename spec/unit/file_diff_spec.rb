@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe FileDiff do
+describe Machinery::FileDiff do
   initialize_system_description_factory_store
 
-  subject { FileDiff }
+  subject { Machinery::FileDiff }
   let(:description1) {
     create_test_description(
       name: "description1",

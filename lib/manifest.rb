@@ -18,7 +18,7 @@
 # The Manifest class takes care of handling the JSON representation of system
 # descriptions. It loads and parses the JSON into a hash and validates it against
 # the current schema.
-class Manifest
+class Machinery::Manifest
   attr_accessor :name, :path, :json, :hash
 
   def self.load(name, path)
@@ -29,7 +29,7 @@ class Manifest
     end
 
     json = File.read(path)
-    Manifest.new(name, json, path)
+    Machinery::Manifest.new(name, json, path)
   end
 
   def initialize(name, json, path = nil)
@@ -43,7 +43,7 @@ class Manifest
   def validate
     return unless compatible_json?
 
-    errors = JsonValidator.new(@hash).validate
+    errors = Machinery::JsonValidator.new(@hash).validate
     unless errors.empty?
       Machinery::Ui.warn("Warning: System Description validation errors:")
       Machinery::Ui.warn(errors.join("\n"))
@@ -53,7 +53,7 @@ class Manifest
   def validate!
     return unless compatible_json?
 
-    errors = JsonValidator.new(@hash).validate
+    errors = Machinery::JsonValidator.new(@hash).validate
     unless errors.empty?
       raise Machinery::Errors::SystemDescriptionValidationFailed.new(errors)
     end
@@ -96,6 +96,6 @@ class Manifest
 
   def compatible_json?
     @hash && @hash["meta"] && @hash["meta"]["format_version"] &&
-      @hash["meta"]["format_version"] <= SystemDescription::CURRENT_FORMAT_VERSION
+      @hash["meta"]["format_version"] <= Machinery::SystemDescription::CURRENT_FORMAT_VERSION
   end
 end

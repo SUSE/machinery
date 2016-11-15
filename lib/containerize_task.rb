@@ -15,11 +15,11 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ContainerizeTask
+class Machinery::ContainerizeTask
   def containerize(description, dir)
     output_path = File.join(dir, description.name)
 
-    mapper = WorkloadMapper.new
+    mapper = Machinery::WorkloadMapper.new
     workloads = mapper.identify_workloads(description)
 
     if workloads.empty?
@@ -48,7 +48,7 @@ class ContainerizeTask
   private
 
   def copy_workload_setup_files(description, workloads, services, path)
-    app = ContainerizedApp.new(description.name, workloads, services)
+    app = Machinery::ContainerizedApp.new(description.name, workloads, services)
     workloads.each do |workload, _|
       Dir[File.join(Machinery::ROOT, "workload_mapper", workload, "setup", "*.erb")].each do |file|
         setup_script = ERB.new(File.read(file))

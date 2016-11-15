@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 # Represents the user under which Machinery is running.
-class CurrentUser
+class Machinery::CurrentUser
   def username
     ENV["USER"]
   end

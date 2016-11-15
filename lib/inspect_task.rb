@@ -14,7 +14,7 @@
 #
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
-class InspectTask
+class Machinery::InspectTask
   def inspect_system(store, system, name, current_user, scopes, filter, options = {})
     check_root(system, current_user)
 
@@ -48,7 +48,7 @@ class InspectTask
     return unless scopes
 
     scopes.each do |scope|
-      renderer = Renderer.for(scope)
+      renderer = Machinery::Ui::Renderer.for(scope)
       next unless renderer
 
       output = renderer.render(description)
@@ -58,26 +58,26 @@ class InspectTask
 
   def build_description(store, name, system, scopes, filter, options)
     begin
-      description = SystemDescription.load(name, store)
+      description = Machinery::SystemDescription.load(name, store)
     rescue Machinery::Errors::SystemDescriptionNotFound
-      description = SystemDescription.new(name, store)
+      description = Machinery::SystemDescription.new(name, store)
     end
     timestring = Time.now.utc.iso8601
-    if system.class == LocalSystem
-      host = "localhost"
-    elsif system.class == DockerSystem
-      host = system.image
+    host = if system.class == Machinery::LocalSystem
+      "localhost"
+    elsif system.class == Machinery::DockerSystem
+      system.image
     else
-      host = system.host
+      system.host
     end
     set_system_locale(system, description)
 
     failed_inspections = {}
 
-    effective_filter = Filter.new(description.filter_definitions("inspect"))
+    effective_filter = Machinery::Filter.new(description.filter_definitions("inspect"))
 
     scopes.each do |scope|
-      inspector = Inspector.for(scope).new(system, description)
+      inspector = Machinery::Inspector.for(scope).new(system, description)
       Machinery::Ui.puts "Inspecting #{Machinery::Ui.internal_scope_list_to_string(inspector.scope)}..."
 
       element_filters = filter.element_filters_for_scope(scope)
@@ -105,7 +105,7 @@ class InspectTask
   end
 
   def set_system_locale(system, description)
-    Inspector.for("environment").new(system, description).inspect
+    Machinery::Inspector.for("environment").new(system, description).inspect
     system.locale = description.environment.locale
   end
 end

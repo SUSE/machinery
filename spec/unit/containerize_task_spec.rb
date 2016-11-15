@@ -17,12 +17,12 @@
 
 require_relative "spec_helper"
 
-describe ContainerizeTask do
+describe Machinery::ContainerizeTask do
   include GivenFilesystemSpecHelpers
   use_given_filesystem
 
   let(:output_path) { given_directory }
-  let(:containerize_task) { ContainerizeTask.new }
+  let(:containerize_task) { Machinery::ContainerizeTask.new }
   let(:system_description) {
     create_test_description(json: <<-EOF)
       {
@@ -59,17 +59,17 @@ describe ContainerizeTask do
     }
 
     it "containerize a system description" do
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:save).with(workloads, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
     end
 
     it "shows detected workloads" do
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return(workloads)
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:save).with(workloads, File.join(output_path, system_description.name))
       containerize_task.containerize(system_description, output_path)
       expected_output = <<-EOF.chomp
@@ -82,7 +82,7 @@ EOF
     end
 
     it "shows a hint when no workloads detected" do
-      expect_any_instance_of(WorkloadMapper).
+      expect_any_instance_of(Machinery::WorkloadMapper).
         to receive(:identify_workloads).with(system_description).and_return({})
       containerize_task.containerize(system_description, output_path)
 
@@ -91,7 +91,7 @@ EOF
   end
 
   describe "#write_readme_file" do
-    subject { ContainerizeTask.new }
+    subject { Machinery::ContainerizeTask.new }
     it "writes the README file to output dir" do
       allow($stdout).to receive(:puts)
       subject.write_readme_file(output_path)

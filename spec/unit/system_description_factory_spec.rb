@@ -25,7 +25,7 @@ describe SystemDescriptionFactory do
     end
 
     it "takes a given store" do
-      store = SystemDescriptionStore.new
+      store = Machinery::SystemDescriptionStore.new
       description = create_test_description(store: store)
       expect(description.store).to be(store)
     end
@@ -42,7 +42,7 @@ describe SystemDescriptionFactory do
 
     it "uses transient store by default" do
       description = create_test_description
-      expect(description.store).to be_a(SystemDescriptionMemoryStore)
+      expect(description.store).to be_a(Machinery::SystemDescriptionMemoryStore)
     end
 
     it "creates minimal description from JSON" do

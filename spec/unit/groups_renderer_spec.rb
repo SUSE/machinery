@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe GroupsRenderer do
+describe Machinery::Ui::GroupsRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
@@ -41,7 +41,7 @@ describe GroupsRenderer do
 
   describe "show" do
     it "prints a repository list" do
-      output = GroupsRenderer.new.render(system_description)
+      output = Machinery::Ui::GroupsRenderer.new.render(system_description)
 
       expect(output).to include("root (gid: N/A)")
       expect(output).to include("tftp (gid: 7, users: dnsmasq,tftp)")

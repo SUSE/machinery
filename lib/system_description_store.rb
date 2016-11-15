@@ -21,7 +21,7 @@
 #
 # System descriptions are represented by sub directories of this top-level
 # directory. They are handled by the SystemDescription class.
-class SystemDescriptionStore
+class Machinery::SystemDescriptionStore
   attr_reader :base_path
 
   def default_path
@@ -58,7 +58,7 @@ class SystemDescriptionStore
 
   def remove(name)
     unless name.empty?
-      SystemDescription.validate_name(name)
+      Machinery::SystemDescription.validate_name(name)
       FileUtils.rm_rf(description_path(name))
     else
       raise "The system description has no name specified and thus can't be deleted."
@@ -66,8 +66,8 @@ class SystemDescriptionStore
   end
 
   def copy(from, to)
-    SystemDescription.validate_name(from)
-    SystemDescription.validate_name(to)
+    Machinery::SystemDescription.validate_name(from)
+    Machinery::SystemDescription.validate_name(to)
 
     validate_existence_of_description(from)
     validate_nonexistence_of_description(to)
@@ -76,8 +76,8 @@ class SystemDescriptionStore
   end
 
   def move(from, to)
-    SystemDescription.validate_name(from)
-    SystemDescription.validate_name(to)
+    Machinery::SystemDescription.validate_name(from)
+    Machinery::SystemDescription.validate_name(to)
 
     validate_existence_of_description(from)
     validate_nonexistence_of_description(to)
@@ -86,7 +86,7 @@ class SystemDescriptionStore
   end
 
   def backup(description_name)
-    SystemDescription.validate_name(description_name)
+    Machinery::SystemDescription.validate_name(description_name)
     validate_existence_of_description(description_name)
 
     backup_name = get_backup_name(description_name)
@@ -96,8 +96,8 @@ class SystemDescriptionStore
   end
 
   def rename(from, to)
-    SystemDescription.validate_name(from)
-    SystemDescription.validate_name(to)
+    Machinery::SystemDescription.validate_name(from)
+    Machinery::SystemDescription.validate_name(to)
 
     validate_existence_of_description(from)
     validate_nonexistence_of_description(to)

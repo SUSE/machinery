@@ -17,8 +17,8 @@
 
 require_relative "spec_helper"
 
-describe CurrentUser do
-  subject { CurrentUser.new }
+describe Machinery::CurrentUser do
+  subject { Machinery::CurrentUser.new }
 
   describe "#is_root?" do
     it "returns true if EUID of the current process is 0" do

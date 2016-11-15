@@ -16,7 +16,7 @@
 # you may find current contact information at www.suse.com
 
 # Interface class for exporter
-class Exporter
+class Machinery::Exporter
   attr_reader :system_description
 
   abstract_method :write

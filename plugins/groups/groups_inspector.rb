@@ -15,44 +15,46 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class GroupsInspector < Inspector
-  has_priority 60
+module Machinery
+  class GroupsInspector < Machinery::Inspector
+    has_priority 60
 
-  def initialize(system, description)
-    @system = system
-    @description = description
-  end
+    def initialize(system, description)
+      @system = system
+      @description = description
+    end
 
-  def inspect(_filter, _options = {})
-    group_content = @system.read_file("/etc/group")
+    def inspect(_filter, _options = {})
+      group_content = @system.read_file("/etc/group")
 
-    groups = group_content ? parse_groups(group_content) : []
+      groups = group_content ? parse_groups(group_content) : []
 
-    @description.groups = GroupsScope.new(groups.sort_by(&:name))
-  end
+      @description.groups = GroupsScope.new(groups.sort_by(&:name))
+    end
 
-  def summary
-    "Found #{Machinery.pluralize(@description.groups.size, "%d group")}."
-  end
+    def summary
+      "Found #{Machinery.pluralize(@description.groups.size, "%d group")}."
+    end
 
-  private
+    private
 
-  def parse_groups(content)
-    content.lines.map do |line|
-      # prevent split from ignoring the last entry if it is empty and there is no newline
-      line += "\n" if line.end_with?(":")
-      name, password, gid, users = line.split(":").map(&:chomp)
+    def parse_groups(content)
+      content.lines.map do |line|
+        # prevent split from ignoring the last entry if it is empty and there is no newline
+        line += "\n" if line.end_with?(":")
+        name, password, gid, users = line.split(":").map(&:chomp)
 
-      gid = Machinery::is_int?(gid) ? gid.to_i : nil
+        gid = Machinery.is_int?(gid) ? gid.to_i : nil
 
-      attrs = {
-        name: name,
-        password: password,
-        gid: gid,
-        users: users.split(",")
-      }
+        attrs = {
+          name: name,
+          password: password,
+          gid: gid,
+          users: users.split(",")
+        }
 
-      Group.new(attrs)
+        Group.new(attrs)
+      end
     end
   end
 end

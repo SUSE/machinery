@@ -15,8 +15,10 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class EnvironmentScope < Machinery::Object
-  include Machinery::Scope
+module Machinery
+  class EnvironmentScope < Machinery::Object
+    include Machinery::Scope
 
-  hidden_scope
+    hidden_scope
+  end
 end

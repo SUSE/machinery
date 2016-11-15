@@ -17,9 +17,9 @@
 
 require_relative "spec_helper"
 
-describe PatternsInspector do
+describe Machinery::PatternsInspector do
   let(:description) {
-    SystemDescription.new("systemname", SystemDescriptionStore.new)
+    Machinery::SystemDescription.new("systemname", Machinery::SystemDescriptionStore.new)
   }
   let(:filter) { nil }
 
@@ -61,7 +61,7 @@ u virt-host     Virtual Machine host
 EOF
   }
 
-  let(:patterns_inspector) { PatternsInspector.new(system, description) }
+  let(:patterns_inspector) { Machinery::PatternsInspector.new(system, description) }
   let(:system) {
     double(
       requires_root?: false,
@@ -85,7 +85,7 @@ EOF
 
         expect(description.patterns.size).to eql(2)
         expect(description.patterns.first).to eq(
-          Pattern.new(
+          Machinery::Pattern.new(
             name: "base",
             version: "13.1",
             release: "13.6.1"
@@ -99,7 +99,7 @@ EOF
         expect(system).to receive(:run_command).and_return("")
 
         patterns_inspector.inspect(filter)
-        expect(description.patterns).to eql(PatternsScope.new)
+        expect(description.patterns).to eql(Machinery::PatternsScope.new)
       end
 
       it "returns sorted data" do
@@ -149,7 +149,7 @@ EOF
 
         expect(description.patterns.size).to eql(5)
         expect(description.patterns.first).to eql(
-          Pattern.new(
+          Machinery::Pattern.new(
             name: "dns-server"
           )
         )
@@ -175,7 +175,7 @@ EOF
         "For a patterns (tasks) inspection please install the package tasksel " \
         "on the inspected system."
       )
-      expect(description.patterns).to eql(PatternsScope.new)
+      expect(description.patterns).to eql(Machinery::PatternsScope.new)
     end
 
     it "returns an empty array when no zypper or dpkg are installed and shows
@@ -187,7 +187,7 @@ EOF
       expect(patterns_inspector.summary).to eq(
         "Patterns or tasks are not supported on this system."
       )
-      expect(description.patterns).to eql(PatternsScope.new)
+      expect(description.patterns).to eql(Machinery::PatternsScope.new)
     end
   end
 end

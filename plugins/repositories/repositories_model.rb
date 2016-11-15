@@ -15,72 +15,73 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-
-class Repository < Machinery::Object
-  def external_medium?
-    url.start_with?("cd://") || url.start_with?("dvd://") || url.start_with?("iso://")
-  end
-end
-
-class ZyppRepository < Repository
-  class << self
-    def key
-      "alias"
-    end
-
-    def attributes
-      ["name", "url", "type", "enabled", "autorefresh", "gpgcheck", "priority", "gpgkey"]
+module Machinery
+  class Repository < Machinery::Object
+    def external_medium?
+      url.start_with?("cd://", "dvd://", "iso://")
     end
   end
-end
 
-class YumRepository < Repository
-  class << self
-    def key
-      "alias"
-    end
+  class ZyppRepository < Repository
+    class << self
+      def key
+        "alias"
+      end
 
-    def attributes
-      ["name", "url", "type", "enabled", "gpgcheck", "priority", "mirrorlist", "gpgkey"]
-    end
-  end
-end
-
-class AptRepository < Repository
-  class << self
-    def key
-      "url"
-    end
-
-    def attributes
-      ["url", "type", "distribution", "components"]
+      def attributes
+        ["name", "url", "type", "enabled", "autorefresh", "gpgcheck", "priority", "gpgkey"]
+      end
     end
   end
-end
 
-class RepositoriesScope < Machinery::Array
-  include Machinery::Scope
+  class YumRepository < Repository
+    class << self
+      def key
+        "alias"
+      end
 
-  has_attributes :repository_system
-  has_elements class: ZyppRepository, if: { repository_system: "zypp" }
-  has_elements class: YumRepository, if: { repository_system: "yum" }
-  has_elements class: AptRepository, if: { repository_system: "apt" }
+      def attributes
+        ["name", "url", "type", "enabled", "gpgcheck", "priority", "mirrorlist", "gpgkey"]
+      end
+    end
+  end
 
-  def compare_with(other)
-    if self.repository_system != other.repository_system
-      [self, other, nil, nil]
-    else
-      only_self = self - other
-      only_other = other - self
-      changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :alias)
-      common = self & other
+  class AptRepository < Repository
+    class << self
+      def key
+        "url"
+      end
 
-      [
-        only_self,
-        only_other,
-        changed,
-        common
-      ].map { |e| (e && !e.empty?) ? e : nil }
+      def attributes
+        ["url", "type", "distribution", "components"]
+      end
+    end
+  end
+
+  class RepositoriesScope < Machinery::Array
+    include Machinery::Scope
+
+    has_attributes :repository_system
+    has_elements class: ZyppRepository, if: { repository_system: "zypp" }
+    has_elements class: YumRepository, if: { repository_system: "yum" }
+    has_elements class: AptRepository, if: { repository_system: "apt" }
+
+    def compare_with(other)
+      if repository_system != other.repository_system
+        [self, other, nil, nil]
+      else
+        only_self = self - other
+        only_other = other - self
+        changed = Machinery::Scope.extract_changed_elements(only_self, only_other, :alias)
+        common = self & other
+
+        [
+          only_self,
+          only_other,
+          changed,
+          common
+        ].map { |e| e && !e.empty? ? e : nil }
+      end
     end
   end
 end

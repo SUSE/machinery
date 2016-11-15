@@ -17,67 +17,73 @@
 
 require_relative "spec_helper"
 
-class FooScope < Machinery::Object
-  include Machinery::Scope
-end
-
-class FooRenderer < Renderer
-  def content(description)
-    puts description.foo.data
+module Machinery
+  class FooScope < Machinery::Object
+    include Machinery::Scope
   end
 
-  def compare_content_changed(changed_elements)
-    changed_elements.each do |change|
-      puts "#{change.first} <> #{change.last}"
-    end
-  end
+  class Ui
+    class FooRenderer < Machinery::Ui::Renderer
+      def content(description)
+        puts description.foo.data
+      end
 
-  def display_name
-    "Foo"
-  end
-end
+      def compare_content_changed(changed_elements)
+        changed_elements.each do |change|
+          puts "#{change.first} <> #{change.last}"
+        end
+      end
 
-class BarBazScope < Machinery::Object
-  include Machinery::Scope
-end
-
-class BarBazRenderer < Renderer
-  def content(_description)
-    heading("bar")
-
-    puts("new line")
-    list("My list") do
-      item("List Item 1")
-      item("List Item 2") do
-        puts("Item puts")
+      def display_name
+        "Foo"
       end
     end
-
-    list do
-      item("Item of a list with nil string")
-    end
-
-    list "" do
-      item("Item of a list with empty string")
-    end
-
-    list("Title", sublist: true) do
-      item("item of sublist with title")
-      item("item2 of sublist with title")
-    end
-
-    list(nil, sublist: true) do
-      item("item of sublist with nil")
-      item("item2 of sublist with nil")
-    end
   end
 
-  def display_name
-    "Bar baz"
+  class BarBazScope < Machinery::Object
+    include Machinery::Scope
+  end
+
+  class Ui
+    class BarBazRenderer < Machinery::Ui::Renderer
+      def content(_description)
+        heading("bar")
+
+        puts("new line")
+        list("My list") do
+          item("List Item 1")
+          item("List Item 2") do
+            puts("Item puts")
+          end
+        end
+
+        list do
+          item("Item of a list with nil string")
+        end
+
+        list "" do
+          item("Item of a list with empty string")
+        end
+
+        list("Title", sublist: true) do
+          item("item of sublist with title")
+          item("item2 of sublist with title")
+        end
+
+        list(nil, sublist: true) do
+          item("item of sublist with nil")
+          item("item2 of sublist with nil")
+        end
+      end
+
+      def display_name
+        "Bar baz"
+      end
+    end
   end
 end
 
-describe Renderer do
+describe Machinery::Ui::Renderer do
   let(:description1_without_data) {
     create_test_description(json: "{}", name: "name1")
   }
@@ -139,8 +145,8 @@ Common to both systems:
   EOT
 
   def stub_comparison(scope, description1, description2, changed, common)
-    comparison = Comparison.new
-    comparison.store = SystemDescriptionMemoryStore.new
+    comparison = Machinery::Comparison.new
+    comparison.store = Machinery::SystemDescriptionMemoryStore.new
     comparison.scope = scope
     comparison.name1 = "name1"
     comparison.name2 = "name2"
@@ -153,30 +159,34 @@ Common to both systems:
 
   describe ".for" do
     it "returns the requested Renderer" do
-      expect(Renderer.for("foo")).to be_a(FooRenderer)
-      expect(Renderer.for("bar_baz")).to be_a(BarBazRenderer)
+      expect(Machinery::Ui::Renderer.for("foo")).to be_a(Machinery::Ui::FooRenderer)
+      expect(Machinery::Ui::Renderer.for("bar_baz")).to be_a(Machinery::Ui::BarBazRenderer)
     end
   end
 
   describe ".all" do
     it "returns all loaded Renderers" do
-      renderers = Renderer.all
+      renderers = Machinery::Ui::Renderer.all
 
-      expect(renderers.find{|i| i.is_a?(FooRenderer)}).to_not be_nil
-      expect(renderers.find{|i| i.is_a?(BarBazRenderer)}).to_not be_nil
+      expect(
+        renderers.find { |i| i.is_a?(Machinery::Ui::FooRenderer) }
+      ).to_not be_nil
+      expect(
+        renderers.find { |i| i.is_a?(Machinery::Ui::BarBazRenderer) }
+      ).to_not be_nil
     end
   end
 
   describe "#scope" do
     it "returns the un-camelcased name" do
-      expect(BarBazRenderer.new.scope).to eql("bar_baz")
+      expect(Machinery::Ui::BarBazRenderer.new.scope).to eql("bar_baz")
     end
   end
 
   describe "#render" do
-    let(:renderer) { BarBazRenderer.new }
+    let(:renderer) { Machinery::Ui::BarBazRenderer.new }
     let(:description) {
-      SystemDescription.new("foo", SystemDescriptionStore.new)
+      Machinery::SystemDescription.new("foo", Machinery::SystemDescriptionStore.new)
     }
     let(:date) { "2014-02-07T14:04:45Z" }
     let(:date_human) { Time.parse(date).localtime.strftime "%Y-%m-%d %H:%M:%S" }
@@ -244,7 +254,7 @@ EOF
 
       expect {
         renderer.render(description)
-      }.to raise_error(Renderer::InvalidStructureError)
+      }.to raise_error(Machinery::Ui::Renderer::InvalidStructureError)
     end
 
     it "raises an exception when an item is created outside a list" do
@@ -254,7 +264,7 @@ EOF
 
       expect {
         renderer.render(description)
-      }.to raise_error(Renderer::InvalidStructureError)
+      }.to raise_error(Machinery::Ui::Renderer::InvalidStructureError)
     end
 
     it "renders a scope of a system description with a date and a hostname" do
@@ -286,13 +296,13 @@ EOF
   end
 
   describe "#render_comparison" do
-    subject { FooRenderer.new }
+    subject { Machinery::Ui::FooRenderer.new }
 
     context "when not showing common properties" do
       let(:options) { { show_all: false } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
           "foo"
@@ -303,7 +313,7 @@ EOF
       end
 
       it "renders error message when there is no scope data in at least one description" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_without_data,
           description2_with_data,
           "foo"
@@ -314,7 +324,7 @@ EOF
       end
 
       it "renders correct output when there is scope data in all descriptions" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
           "foo"
@@ -329,7 +339,7 @@ EOF
       let(:options) { { show_all: true } }
 
       it "renders nothing when there is no scope data in all descriptions" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_without_data,
           description2_without_data,
           "foo"
@@ -340,7 +350,7 @@ EOF
       end
 
       it "renders correct output when there is no scope data in the common description" do
-        comparison = Comparison.compare_scope(
+        comparison = Machinery::Comparison.compare_scope(
           description1_with_data,
           description2_with_data,
           "foo"

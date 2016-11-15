@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class CompareTask
+class Machinery::CompareTask
   def compare(description1, description2, scopes, options = {})
     if options[:show_html]
       render_html_comparison(description1, description2, scopes, options)
@@ -27,7 +27,7 @@ class CompareTask
   end
 
   def render_html_comparison(description1, description2, scopes, options)
-    LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
+    Machinery::LocalSystem.validate_existence_of_command("xdg-open", "xdg-utils")
 
     url = "http://#{options[:ip]}:#{options[:port]}/compare/" \
       "#{CGI.escape(description1.name)}/#{CGI.escape(description2.name)}"
@@ -39,8 +39,12 @@ Trying to start a web server for serving the comparison result on #{url}.
 The server can be closed with Ctrl+C.
 EOF
 
-    server = Html.run_server(description1.store, port: options[:port], ip: options[:ip]) do
-      LoggedCheetah.run("xdg-open", url)
+    server = Machinery::Html.run_server(
+      description1.store,
+      port: options[:port],
+      ip:   options[:ip]
+    ) do
+      Machinery::LoggedCheetah.run("xdg-open", url)
     end
 
     server.join # Wait until the user cancelled the blocking webserver
@@ -53,9 +57,9 @@ EOF
     common_scopes = false
     scopes.each do |scope|
       if description1[scope] && description2[scope]
-        comparison = Comparison.compare_scope(description1, description2, scope)
+        comparison = Machinery::Comparison.compare_scope(description1, description2, scope)
 
-        output += Renderer.for(scope).render_comparison(comparison, options)
+        output += Machinery::Ui::Renderer.for(scope).render_comparison(comparison, options)
 
         if comparison.only_in1 || comparison.only_in2 || comparison.changed
           identical = false
@@ -64,7 +68,7 @@ EOF
         end
         common_scopes = true
       else
-        output += Renderer.for(scope).render_comparison_missing_scope(
+        output += Machinery::Ui::Renderer.for(scope).render_comparison_missing_scope(
           description1, description2
         )
         identical = false if description1[scope] || description2[scope]

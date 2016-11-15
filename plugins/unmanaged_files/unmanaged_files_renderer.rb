@@ -15,59 +15,63 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class UnmanagedFilesRenderer < Renderer
-  def content(description)
-    return unless description["unmanaged_files"]
+module Machinery
+  class Ui
+    class UnmanagedFilesRenderer < Machinery::Ui::Renderer
+      def content(description)
+        return unless description["unmanaged_files"]
 
-    list do
-      file_status = description["unmanaged_files"].extracted
+        list do
+          file_status = description["unmanaged_files"].extracted
 
-      if description["unmanaged_files"].elements.empty?
-        puts "There are no unmanaged files."
-      elsif !file_status.nil?
-        puts "Files extracted: #{file_status ? "yes" : "no"}"
-      end
+          if description["unmanaged_files"].elements.empty?
+            puts "There are no unmanaged files."
+          elsif !file_status.nil?
+            puts "Files extracted: #{file_status ? "yes" : "no"}"
+          end
 
-      if description["unmanaged_files"]
-        description["unmanaged_files"].each do |p|
-          if description["unmanaged_files"].contains_metadata?
-            item "#{p.name} (#{p.type})" do
-              puts "User/Group: #{p.user}:#{p.group}" if p.user || p.group
-              puts "Mode: #{p.mode}" if p.mode
-              puts "Size: #{number_to_human_size(p.size)}" if p.size
-              if p.files && p.dirs
-                puts "Files: #{p.files}"
-                puts "Directories: #{p.dirs}"
-              end
-              if p.file_objects
-                puts "File Objects: #{p.file_objects}"
+          if description["unmanaged_files"]
+            description["unmanaged_files"].each do |p|
+              if description["unmanaged_files"].contains_metadata?
+                item "#{p.name} (#{p.type})" do
+                  puts "User/Group: #{p.user}:#{p.group}" if p.user || p.group
+                  puts "Mode: #{p.mode}" if p.mode
+                  puts "Size: #{number_to_human_size(p.size)}" if p.size
+                  if p.files && p.dirs
+                    puts "Files: #{p.files}"
+                    puts "Directories: #{p.dirs}"
+                  end
+                  if p.file_objects
+                    puts "File Objects: #{p.file_objects}"
+                  end
+                end
+              else
+                item "#{p.name} (#{p.type})"
               end
             end
-          else
-            item "#{p.name} (#{p.type})"
           end
         end
       end
-    end
-  end
 
-  def display_name
-    "Unmanaged Files"
-  end
+      def display_name
+        "Unmanaged Files"
+      end
 
-  def compare_content_changed(changed_elements)
-    list do
-      changed_elements.each do |one, two|
-        changes = []
-        relevant_attributes = (one.attributes.keys & two.attributes.keys)
+      def compare_content_changed(changed_elements)
+        list do
+          changed_elements.each do |one, two|
+            changes = []
+            relevant_attributes = (one.attributes.keys & two.attributes.keys)
 
-        relevant_attributes.each do |attribute|
-          if one[attribute] != two[attribute]
-            changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+            relevant_attributes.each do |attribute|
+              if one[attribute] != two[attribute]
+                changes << "#{attribute}: #{one[attribute]} <> #{two[attribute]}"
+              end
+            end
+
+            item "#{one.name} (#{changes.join(", ")})"
           end
         end
-
-        item "#{one.name} (#{changes.join(", ")})"
       end
     end
   end

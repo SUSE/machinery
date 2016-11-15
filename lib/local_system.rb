@@ -15,14 +15,20 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class LocalSystem < System
+class Machinery::LocalSystem < Machinery::System
   @@os = nil
 
   class << self
     def os
       unless @@os
-        description = SystemDescription.new("localhost", SystemDescriptionMemoryStore.new)
-        inspector = OsInspector.new(System.for("localhost"), description)
+        description = Machinery::SystemDescription.new(
+          "localhost",
+          Machinery::SystemDescriptionMemoryStore.new
+        )
+        inspector = Machinery::OsInspector.new(
+          Machinery::System.for("localhost"),
+          description
+        )
         inspector.inspect(nil)
         @@os = description.os
       end
@@ -102,7 +108,7 @@ You can install it by running `zypper install #{package}`.
     if args.last.is_a?(Hash) && args.last[:disable_logging]
       cheetah_class = Cheetah
     else
-      cheetah_class = LoggedCheetah
+      cheetah_class = Machinery::LoggedCheetah
     end
 
     with_env(
@@ -118,7 +124,7 @@ You can install it by running `zypper install #{package}`.
   # the directory where to put the files.
   def retrieve_files(filelist, destination)
     begin
-      LoggedCheetah.run(
+      Machinery::LoggedCheetah.run(
         "rsync",
         "--chmod=go-rwx",
         "--files-from=-",

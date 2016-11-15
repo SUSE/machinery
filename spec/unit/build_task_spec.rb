@@ -17,13 +17,13 @@
 
 require_relative "spec_helper"
 
-describe BuildTask do
+describe Machinery::BuildTask do
   initialize_system_description_factory_store
 
   let(:system_description) {
     create_test_description(scopes: ["os", "packages", "repositories"], store_on_disk: true)
   }
-  let(:build_task) { BuildTask.new }
+  let(:build_task) { Machinery::BuildTask.new }
   let(:output_path) { given_directory }
   let(:tmp_config_dir) { given_directory }
   let(:tmp_image_dir) { given_directory }
@@ -31,14 +31,16 @@ describe BuildTask do
   let(:image_file) { system_description.name + ".x86_64-0.0.1.qcow2" }
 
   before(:each) {
-    allow(LocalSystem).to receive(:os).and_return(OsOpenSuse13_1.new(architecture: "x86_64"))
+    allow(Machinery::LocalSystem).to receive(:os).and_return(
+      Machinery::OsOpenSuse13_1.new(architecture: "x86_64")
+    )
     allow(Cheetah).to receive(:run)
-    allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+    allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("x86_64")
     allow(Dir).to receive(:mktmpdir).
       with("machinery-config", "/tmp").and_return(tmp_config_dir)
     allow(Dir).to receive(:mktmpdir).
       with("machinery-image", "/tmp").and_return(tmp_image_dir)
-    allow_any_instance_of(SystemDescription).to receive(:validate_build_compatibility)
+    allow_any_instance_of(Machinery::SystemDescription).to receive(:validate_build_compatibility)
 
     FileUtils.touch(File.join(output_path, image_file))
   }
@@ -101,7 +103,7 @@ describe BuildTask do
     end
 
     it "throws an error if kiwi doesn't exist" do
-      allow(LocalSystem).to receive(:validate_existence_of_packages).and_raise(
+      allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages).and_raise(
         Machinery::Errors::MissingRequirement.new(["kiwi"])
       )
       expect{
@@ -130,7 +132,7 @@ describe BuildTask do
     end
 
     it "shows an error on non x86_64 architectures" do
-      allow_any_instance_of(Os).to receive(:architecture).and_return("i586")
+      allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("i586")
 
       expect {
         build_task.build(system_description, output_path)
@@ -139,10 +141,10 @@ describe BuildTask do
     end
 
     it "shows an error when the current user does not have access to the image directory path" do
-      allow(LocalSystem).to receive(:validate_architecture)
-      allow_any_instance_of(Os).to receive(:architecture).and_return("x86_64")
+      allow(Machinery::LocalSystem).to receive(:validate_architecture)
+      allow_any_instance_of(Machinery::Os).to receive(:architecture).and_return("x86_64")
 
-      user = CurrentUser.new.username
+      user = Machinery::CurrentUser.new.username
 
       expect {
         build_task.build(system_description, "/test")

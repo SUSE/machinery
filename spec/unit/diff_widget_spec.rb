@@ -18,7 +18,7 @@
 
 require_relative "spec_helper"
 
-describe DiffWidget do
+describe Machinery::Ui::DiffWidget do
   let(:diff) { <<EOF }
 --- a/etc/postfix/TLS_LICENSE
 +++ b/etc/postfix/TLS_LICENSE
@@ -52,7 +52,7 @@ EOF
 
   describe "#widget" do
     it "generates the expected diff object" do
-      diff_object = DiffWidget.new(diff).widget
+      diff_object = Machinery::Ui::DiffWidget.new(diff).widget
 
       expected = {
         file: "/etc/postfix/TLS_LICENSE",
@@ -227,7 +227,7 @@ EOF
   +utf8
 EOF
       expect {
-        DiffWidget.new(utf8_diff).widget
+        Machinery::Ui::DiffWidget.new(utf8_diff).widget
       }.to_not raise_error
     end
   end

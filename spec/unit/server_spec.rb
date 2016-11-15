@@ -231,7 +231,7 @@ EOF
     include Server::Helpers
 
     describe "#human_attribute" do
-      let(:file) { UnmanagedFile.new(name: "/tmp/foo", size: 1234567) }
+      let(:file) { Machinery::UnmanagedFile.new(name: "/tmp/foo", size: 1234567) }
 
       it "renders file sizes properly" do
         expect(human_readable_attribute(file, "size")).to eq("1.2 MiB")
@@ -244,22 +244,22 @@ EOF
 
     describe "#changed_elements" do
       before(:each) {
-        files_comparison = Comparison.new
-        files_comparison.common = UnmanagedFilesScope.new([], extracted: true)
+        files_comparison = Machinery::Comparison.new
+        files_comparison.common = Machinery::UnmanagedFilesScope.new([], extracted: true)
         files_comparison.changed = [
           [
-            UnmanagedFile.new(name: "/tmp/foo", size: 1, type: "file"),
-            UnmanagedFile.new(name: "/tmp/foo", size: 2, type: "file")
+            Machinery::UnmanagedFile.new(name: "/tmp/foo", size: 1, type: "file"),
+            Machinery::UnmanagedFile.new(name: "/tmp/foo", size: 2, type: "file")
           ]
         ]
-        dirs_comparison = Comparison.new
+        dirs_comparison = Machinery::Comparison.new
         dirs_comparison.changed = [
           [
-            UnmanagedFile.new(name: "/tmp/foo/", files: 1, type: "dir"),
-            UnmanagedFile.new(name: "/tmp/foo/", files: 2, type: "dir")
+            Machinery::UnmanagedFile.new(name: "/tmp/foo/", files: 1, type: "dir"),
+            Machinery::UnmanagedFile.new(name: "/tmp/foo/", files: 2, type: "dir")
           ]
         ]
-        other_comparison = Comparison.new
+        other_comparison = Machinery::Comparison.new
         other_comparison.changed = [
           [
             Machinery::Object.new(name: "/tmp/foo", foo: 1),

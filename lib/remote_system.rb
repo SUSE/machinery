@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class RemoteSystem < System
+class Machinery::RemoteSystem < Machinery::System
   attr_reader :host, :remote_user, :ssh_port, :ssh_identity_file
 
   def type
@@ -85,7 +85,7 @@ class RemoteSystem < System
     if options[:disable_logging]
       cheetah_class = Cheetah
     else
-      cheetah_class = LoggedCheetah
+      cheetah_class = Machinery::LoggedCheetah
     end
 
     sudo = ["sudo", "-n"] if options[:privileged] && sudo_required?
@@ -120,7 +120,7 @@ class RemoteSystem < System
       stdin: filelist.join("\n")
     ]
     begin
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     rescue Cheetah::ExecutionFailed  => e
       raise Machinery::Errors::RsyncFailed.new(
       "Could not rsync files from host '#{host}'.\n" \
@@ -130,7 +130,7 @@ class RemoteSystem < System
   end
 
   def check_retrieve_files_dependencies
-    LocalSystem.validate_existence_of_command("rsync", "rsync")
+    Machinery::LocalSystem.validate_existence_of_command("rsync", "rsync")
     check_requirement("rsync", "--version")
   end
 
@@ -161,7 +161,7 @@ class RemoteSystem < System
     ]
 
     begin
-      LoggedCheetah.run(*cmd)
+      Machinery::LoggedCheetah.run(*cmd)
     rescue Cheetah::ExecutionFailed => e
       raise Machinery::Errors::InjectFileFailed.new(
         "Could not inject file '#{source}' to host '#{host}'.\nError: #{e}"
@@ -187,7 +187,7 @@ class RemoteSystem < System
   # Tries to run the noop-command(:) on the remote system as root (without a password or passphrase)
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def check_connection
-    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+    Machinery::LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
                       "#{remote_user}@#{host}", ":")
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
@@ -200,7 +200,7 @@ class RemoteSystem < System
 
   def check_sudo
     check_requirement("sudo", "-h")
-    LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
+    Machinery::LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
       "#{remote_user}@#{host}", "sudo", "id")
   rescue Cheetah::ExecutionFailed => e
     if e.stderr && e.stderr.include?("password is required")

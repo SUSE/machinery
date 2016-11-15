@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe AnalyzeConfigFileDiffsTask do
+describe Machinery::AnalyzeConfigFileDiffsTask do
   initialize_system_description_factory_store
 
-  let(:store) { SystemDescriptionStore.new }
+  let(:store) { Machinery::SystemDescriptionStore.new }
   let(:description) {
     description = create_test_description(json: <<-EOF, store_on_disk: true)
       {
@@ -100,7 +100,7 @@ describe AnalyzeConfigFileDiffsTask do
     description
   }
   subject {
-    AnalyzeConfigFileDiffsTask.new
+    Machinery::AnalyzeConfigFileDiffsTask.new
   }
 
   let(:no_online_repo_description) {
@@ -151,20 +151,20 @@ describe AnalyzeConfigFileDiffsTask do
   }
 
   before(:each) do
-    allow_any_instance_of(Zypper).to receive(:add_repo)
-    allow_any_instance_of(Zypper).to receive(:remove_repo)
-    allow_any_instance_of(Zypper).to receive(:refresh)
+    allow_any_instance_of(Machinery::Zypper).to receive(:add_repo)
+    allow_any_instance_of(Machinery::Zypper).to receive(:remove_repo)
+    allow_any_instance_of(Machinery::Zypper).to receive(:refresh)
   end
 
   describe "#analyze" do
     silence_machinery_output
     before(:each) do
-      allow(Zypper).to receive(:cleanup)
+      allow(Machinery::Zypper).to receive(:cleanup)
     end
 
     it "raises if the analyzed system is not a SUSE os" do
-      allow_any_instance_of(SystemDescription).to receive(:os).
-        and_return(OsUnknown.new)
+      allow_any_instance_of(Machinery::SystemDescription).to receive(:os).
+        and_return(Machinery::OsUnknown.new)
       description.os.name = "Unknown OS"
       expect { subject.analyze(description) }.to raise_error(
         Machinery::Errors::AnalysisFailed, /Can not analyze the system description/
@@ -172,13 +172,13 @@ describe AnalyzeConfigFileDiffsTask do
     end
 
     it "analyzes all files with changes" do
-      expect_any_instance_of(Zypper).to receive(:download_package).
+      expect_any_instance_of(Machinery::Zypper).to receive(:download_package).
         with("aaa_base-3.11.1").and_return("/some/path/aaa_base")
-      expect_any_instance_of(Zypper).to receive(:download_package).
+      expect_any_instance_of(Machinery::Zypper).to receive(:download_package).
         with("login-3.41").and_return("/some/path/login")
-      expect(Rpm).to receive(:new).with("/some/path/aaa_base").
+      expect(Machinery::Rpm).to receive(:new).with("/some/path/aaa_base").
         and_return(double(diff: "some aaa_base diff")).twice
-      expect(Rpm).to receive(:new).with("/some/path/login").
+      expect(Machinery::Rpm).to receive(:new).with("/some/path/login").
         and_return(double(diff: "some login diff"))
 
       subject.analyze(description)
@@ -194,9 +194,9 @@ describe AnalyzeConfigFileDiffsTask do
     end
 
     it "skips packages which couldn't be downloaded" do
-      expect_any_instance_of(Zypper).to receive(:download_package).
+      expect_any_instance_of(Machinery::Zypper).to receive(:download_package).
         with("aaa_base-3.11.1").and_return(nil)
-      expect_any_instance_of(Zypper).to receive(:download_package).
+      expect_any_instance_of(Machinery::Zypper).to receive(:download_package).
         with("login-3.41").and_return("")
       expect(Machinery::Ui).to receive(:warn).twice
       expect(subject).to_not receive(:generate_diff)
@@ -205,17 +205,17 @@ describe AnalyzeConfigFileDiffsTask do
     end
 
     it "raises an error when the description is missing information" do
-      task = AnalyzeConfigFileDiffsTask.new
+      task = Machinery::AnalyzeConfigFileDiffsTask.new
       expect {
-        task.analyze(SystemDescription.new("foo",
-          SystemDescriptionMemoryStore.new))
+        task.analyze(Machinery::SystemDescription.new("foo",
+          Machinery::SystemDescriptionMemoryStore.new))
       }.to raise_error(Machinery::Errors::SystemDescriptionError)
     end
   end
 
   describe "#inspection_list" do
     it "groups files by package" do
-      expected_group = Package.new(
+      expected_group = Machinery::Package.new(
         "name"    => "aaa_base",
         "version" => "3.11.1",
         "files"   => ["/etc/modprobe.d/unsupported-modules", "/etc/inittab"]

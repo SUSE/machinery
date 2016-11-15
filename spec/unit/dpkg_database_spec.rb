@@ -17,15 +17,15 @@
 
 require_relative "spec_helper"
 
-describe DpkgDatabase do
-  let(:system) { LocalSystem.new }
+describe Machinery::DpkgDatabase do
+  let(:system) { Machinery::LocalSystem.new }
   let(:changed_files_result) {
     File.read(File.join(Machinery::ROOT, "spec/data/dpkg_managed_files_database/dpkg_--verify"))
   }
   let(:dpkg_result) {
     File.read(File.join(Machinery::ROOT, "spec/data/dpkg_managed_files_database/dpkg_-s_sudo"))
   }
-  subject { DpkgDatabase.new(system) }
+  subject { Machinery::DpkgDatabase.new(system) }
 
   before(:each) do |test|
     unless test.metadata[:skip_before]

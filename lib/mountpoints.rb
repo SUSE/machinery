@@ -31,7 +31,7 @@
 #           local file systems with permanent data (e.g. ext3, btrfs, xfs)
 
 
-class MountPoints
+class Machinery::MountPoints
   attr_reader :mounts
   REMOTE_FILE_SYSTEMS = ["autofs", "cifs", "nfs", "nfs4"]
   SPECIAL_FILE_SYSTEMS = ["proc", "sysfs", "devtmpfs", "tmpfs", "fuse.gvfs-fuse-daemon"]

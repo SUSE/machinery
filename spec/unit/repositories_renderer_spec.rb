@@ -17,14 +17,14 @@
 
 require_relative "spec_helper"
 
-describe RepositoriesRenderer do
+describe Machinery::Ui::RepositoriesRenderer do
   let(:system_description) {
     create_test_description(scopes: ["repositories"])
   }
 
   describe "#content" do
     it "prints a repository list" do
-      output = RepositoriesRenderer.new.render(system_description)
+      output = Machinery::Ui::RepositoriesRenderer.new.render(system_description)
 
       expected_output = <<EOT
   * nodejs
@@ -87,7 +87,7 @@ EOT
     end
 
     it "prints an apt repository list" do
-      output = RepositoriesRenderer.new.render(
+      output = Machinery::Ui::RepositoriesRenderer.new.render(
         create_test_description(scopes: ["apt_repositories"])
       )
 
@@ -106,7 +106,7 @@ EOT
     end
 
     it "prints a yum repository list" do
-      output = RepositoriesRenderer.new.render(
+      output = Machinery::Ui::RepositoriesRenderer.new.render(
         create_test_description(scopes: ["yum_repositories"])
       )
 
@@ -127,7 +127,7 @@ EOT
       let(:system_description) { create_test_description(scopes: ["empty_repositories"]) }
 
       it "shows a message" do
-        output = RepositoriesRenderer.new.render(system_description)
+        output = Machinery::Ui::RepositoriesRenderer.new.render(system_description)
 
         expect(output).to include("There are no repositories.")
       end

@@ -72,7 +72,7 @@ describe Machinery::Ui do
       capture_machinery_output
 
       it "concatenates the output without adding \n" do
-        allow(LocalSystem).to receive(:validate_existence_of_package).
+        allow(Machinery::LocalSystem).to receive(:validate_existence_of_package).
           and_raise(Machinery::Errors::MissingRequirement)
         Machinery::Ui.print("Hello")
         Machinery::Ui.print(" ")

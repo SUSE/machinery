@@ -17,13 +17,13 @@
 
 require_relative "spec_helper"
 
-describe MountPoints do
+describe Machinery::MountPoints do
   subject {
-    system = System.new
+    system = Machinery::System.new
     allow(system).to receive(:read_file).with("/proc/mounts").
       and_return(File.open("spec/data/unmanaged_files/proc_mounts"))
 
-    MountPoints.new(system)
+    Machinery::MountPoints.new(system)
   }
 
   describe "#all" do

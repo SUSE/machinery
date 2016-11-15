@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe UsersRenderer do
+describe Machinery::Ui::UsersRenderer do
   let(:system_description) {
     create_test_description(json: <<-EOF)
     {
@@ -49,7 +49,7 @@ describe UsersRenderer do
 
   describe "show" do
     it "prints the user list" do
-      output = UsersRenderer.new.render(system_description)
+      output = Machinery::Ui::UsersRenderer.new.render(system_description)
 
       expect(output).to include("root (N/A, uid: N/A, gid: N/A, shell: /bin/bash)")
       expect(output).to include("lp (Printing daemon, uid: 4, gid: 7, shell: /bin/bash)")

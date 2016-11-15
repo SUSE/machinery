@@ -15,23 +15,26 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class BuildTask
+class Machinery::BuildTask
   def build(system_description, output_path, options = {})
-    LocalSystem.validate_architecture("x86_64")
-    LocalSystem.validate_existence_of_packages(["kiwi", "kiwi-desc-vmxboot"])
+    Machinery::LocalSystem.validate_architecture("x86_64")
+    Machinery::LocalSystem.validate_existence_of_packages(["kiwi", "kiwi-desc-vmxboot"])
     system_description.validate_build_compatibility
 
     tmp_config_dir = Dir.mktmpdir("machinery-config", "/tmp")
     tmp_image_dir = Dir.mktmpdir("machinery-image", "/tmp")
     img_extension = "qcow2"
 
-    config = KiwiConfig.new(system_description, options)
+    config = Machinery::KiwiConfig.new(system_description, options)
     config.write(tmp_config_dir)
 
     begin
       FileUtils.mkdir_p(output_path)
     rescue Errno::EACCES
-      raise Machinery::Errors::BuildDirectoryCreateError.new(output_path, CurrentUser.new.username)
+      raise Machinery::Errors::BuildDirectoryCreateError.new(
+        output_path,
+        Machinery::CurrentUser.new.username
+      )
     end
 
     if tmp_image_dir.start_with?("/tmp/") && tmp_config_dir.start_with?("/tmp/")
@@ -40,7 +43,7 @@ class BuildTask
 
       begin
         with_c_locale do
-          LoggedCheetah.run(
+          Machinery::LoggedCheetah.run(
             "sudo",
             tmp_script.path,
             stdout: $stdout,
@@ -68,7 +71,7 @@ class BuildTask
 
           Machinery::Ui.warn "Cleaning up temporary files..."
           [tmp_config_dir, tmp_image_dir].each do |path|
-            LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exist?(path)
+            Machinery::LoggedCheetah.run("sudo", "rm", "-r", path) if Dir.exist?(path)
           end
         end
         raise

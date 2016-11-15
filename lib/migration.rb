@@ -43,7 +43,7 @@
 #
 # Simple example migration which adds a new attribute to the JSON:
 #
-#   class Migrate1To2 < Migration
+#   class Machinery::Migrate1To2 < Machinery::Migration
 #     desc <<-EOT
 #       Add 'foo' element to the system description root.
 #     EOT
@@ -53,7 +53,7 @@
 #       @hash["changed_config_files"]["extracted"] = is_extracted
 #     end
 #   end
-class Migration
+class Machinery::Migration
   MIGRATIONS_DIR= File.join(Machinery::ROOT, "schema/migrations")
 
   class << self
@@ -66,10 +66,16 @@ class Migration
     def migrate_description(store, description_name, options = {})
       load_migrations
 
-      hash = Manifest.load(description_name, store.manifest_path(description_name)).to_hash
+      hash = Machinery::Manifest.load(
+        description_name,
+        store.manifest_path(description_name)
+      ).to_hash
 
-      errors = JsonValidator.new(hash).validate
-      errors += FileValidator.new(hash, store.description_path(description_name)).validate
+      errors = Machinery::JsonValidator.new(hash).validate
+      errors += Machinery::FileValidator.new(
+        hash,
+        store.description_path(description_name)
+      ).validate
       unless errors.empty?
         if options[:force]
           Machinery::Ui.warn("Warning: System Description validation errors:")
@@ -87,21 +93,21 @@ class Migration
         )
       end
 
-      if current_version == SystemDescription::CURRENT_FORMAT_VERSION
+      if current_version == Machinery::SystemDescription::CURRENT_FORMAT_VERSION
         Machinery::Ui.puts "No upgrade necessary."
         return false
       end
 
       backup_description = store.backup(description_name)
       backup_path = store.description_path(backup_description)
-      backup_hash = Manifest.load(
+      backup_hash = Machinery::Manifest.load(
         backup_description, store.manifest_path(backup_description)
       ).to_hash
 
-      (current_version..SystemDescription::CURRENT_FORMAT_VERSION-1).each do |version|
+      (current_version..Machinery::SystemDescription::CURRENT_FORMAT_VERSION - 1).each do |version|
         next_version = version + 1
         begin
-          klass = Object.const_get("Migrate#{version}To#{next_version}")
+          klass = Object.const_get("Machinery::Migrate#{version}To#{next_version}")
         rescue NameError
           return
         end
@@ -125,7 +131,7 @@ class Migration
         Machinery::Ui.puts "Saved backup to #{backup_path}"
       else
         begin
-          SystemDescription.load!(backup_description, store)
+          Machinery::SystemDescription.load!(backup_description, store)
           store.remove(description_name)
           store.rename(backup_description, description_name)
         rescue Machinery::Errors::SystemDescriptionError

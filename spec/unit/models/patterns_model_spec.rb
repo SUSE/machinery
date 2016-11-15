@@ -20,10 +20,10 @@ require_relative "../spec_helper"
 describe "patterns model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["patterns"])
-    PatternsScope.from_json(JSON.parse(json)["patterns"])
+    Machinery::PatternsScope.from_json(JSON.parse(json)["patterns"])
   }
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.first).to be_a(Pattern) }
+  specify { expect(scope.first).to be_a(Machinery::Pattern) }
 end

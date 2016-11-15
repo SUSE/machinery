@@ -21,7 +21,7 @@
 # a program and doesn't have to be persisted. Attempts to save the
 # description or related data will result in an exception.
 
-class SystemDescriptionMemoryStore
+class Machinery::SystemDescriptionMemoryStore
   def persistent?
     false
   end

@@ -20,12 +20,12 @@ require_relative "../spec_helper"
 describe "repositories model" do
   let(:scope) {
     json = create_test_description_json(scopes: ["repositories"])
-    RepositoriesScope.from_json(JSON.parse(json)["repositories"])
+    Machinery::RepositoriesScope.from_json(JSON.parse(json)["repositories"])
   }
 
   it_behaves_like "Scope"
 
-  specify { expect(scope.first).to be_a(ZyppRepository) }
+  specify { expect(scope.first).to be_a(Machinery::ZyppRepository) }
 
   describe "#compare_with" do
     context "with different repository systems" do
@@ -50,8 +50,8 @@ describe "repositories model" do
   end
 end
 
-describe Repository do
-  subject { Repository.new }
+describe Machinery::Repository do
+  subject { Machinery::Repository.new }
 
   describe "#external_medium?" do
     it "returns true in case of a cd" do

@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe Html do
+describe Machinery::Html do
   context ".run_server" do
     it "raises an exception when an IP and the `public` flag is provided" do
-      expect { Html.run_server(nil, ip: "127.0.0.1", port: 5000, public: true) }.to \
+      expect { Machinery::Html.run_server(nil, ip: "127.0.0.1", port: 5000, public: true) }.to \
         raise_error(RuntimeError)
     end
   end

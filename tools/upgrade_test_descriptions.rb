@@ -33,7 +33,7 @@ def upgrade_descriptions(path, descriptions = [])
     next unless File.exist?(File.join(path, description, "manifest.json"))
 
     puts File.join(path, description)
-    Migration.migrate_description(store, description, force: true)
+    Machinery::Migration.migrate_description(store, description, force: true)
 
     FileUtils.rm_rf(File.join(path, "#{description}.backup"))
   end
@@ -43,7 +43,7 @@ def update_json_format_version(dir_with_json_file_path)
   json_files = Dir.glob(File.join(dir_with_json_file_path, "*.json"))
   json_files.each do |json_file|
     json_hash = JSON.parse(File.read(json_file))
-    json_hash["meta"]["format_version"] = SystemDescription::CURRENT_FORMAT_VERSION
+    json_hash["meta"]["format_version"] = Machinery::SystemDescription::CURRENT_FORMAT_VERSION
     File.write(json_file, JSON.pretty_generate(json_hash))
   end
 end

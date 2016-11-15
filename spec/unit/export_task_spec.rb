@@ -17,7 +17,7 @@
 
 require_relative "spec_helper"
 
-describe ExportTask do
+describe Machinery::ExportTask do
   capture_machinery_output
   include FakeFS::SpecHelpers
 
@@ -30,7 +30,7 @@ describe ExportTask do
       )
     )
   }
-  subject { ExportTask.new(exporter) }
+  subject { Machinery::ExportTask.new(exporter) }
 
   let(:exporter_autoyast) {
     double(
@@ -44,7 +44,7 @@ describe ExportTask do
 
   before(:each) do
     FakeFS::FileSystem.clone(File.join(Machinery::ROOT, "export_helpers"))
-    allow(JsonValidator).to receive(:new).and_return(double(validate: []))
+    allow(Machinery::JsonValidator).to receive(:new).and_return(double(validate: []))
   end
 
   describe "#export" do
@@ -74,7 +74,7 @@ EOF
 
     it "raises a known error if files are not extracted" do
       expect {
-        ExportTask.new(exporter_autoyast).export("/foo", {})
+        Machinery::ExportTask.new(exporter_autoyast).export("/foo", {})
       }.to raise_error(
         Machinery::Errors::MissingExtractedFiles, /files weren't extracted during inspection/
       )

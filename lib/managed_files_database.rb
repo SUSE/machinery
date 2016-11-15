@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class ManagedFilesDatabase
+class Machinery::ManagedFilesDatabase
   class ChangedFile < Machinery::Object
     attr_accessor :type
 

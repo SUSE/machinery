@@ -17,10 +17,10 @@
 
 require_relative "spec_helper"
 
-describe Tarball do
+describe Machinery::Tarball do
   describe "#list" do
     it "returns a list of files in the tarball with attributes" do
-      tarball = Tarball.new(
+      tarball = Machinery::Tarball.new(
         File.join(Machinery::ROOT, "spec/data/tarball/tarball.tar.gz")
       )
 

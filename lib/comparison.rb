@@ -15,7 +15,7 @@
 # To contact SUSE about this file by physical or electronic mail,
 # you may find current contact information at www.suse.com
 
-class Comparison
+class Machinery::Comparison
   attr_accessor :name1, :name2, :only_in1, :only_in2, :changed, :common, :store, :scope
 
   def self.compare_scope(description1, description2, scope)
@@ -52,7 +52,7 @@ class Comparison
       raise "'which' has to be :one, :two or :common"
     end
 
-    SystemDescription.new(name, store, scope => data)
+    Machinery::SystemDescription.new(name, store, scope => data)
   end
 
   def as_json
