@@ -6,7 +6,7 @@
   used (gh#SUSE/machinery#2132)
 * Do not add repositories which require registration to built images (bnc#1004697)
 * Fix package inspection on older Debian systems
-* Fix extraction of information for Debian packages with a dash in the name
+* Fix extraction of information for Debian packages containing a dash in their name
 
 ## Version 1.22.1 - Fri Oct 14 16:13:50 CEST 2016 - thardeck@suse.de
 
