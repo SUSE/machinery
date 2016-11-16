@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.22.2 - Wed Nov 16 16:44:00 CET 2016 - thardeck@suse.de
+
 * Prevent machinery-helper from crashing when files are inaccessible during
   inspection (bnc#1009774)
 * Fix analyze of changed-config-files when NFS or SMB repositories are
