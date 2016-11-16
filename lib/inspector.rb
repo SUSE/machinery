@@ -51,9 +51,9 @@ class Machinery::Inspector
     end
 
     def for(scope)
-      class_name = "Machinery::#{scope.split("_").map(&:capitalize).join}Inspector"
+      class_name = "#{scope.split("_").map(&:capitalize).join}Inspector"
 
-      Object.const_get(class_name) if Object.const_defined?(class_name)
+      Machinery.const_get(class_name) if Machinery.const_defined?(class_name)
     end
 
     def all
