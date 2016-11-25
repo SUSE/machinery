@@ -1,9 +1,0 @@
-SHELL=/bin/sh
-PATH=/usr/bin:/usr/sbin:/sbin:/bin:/usr/lib/news/bin
-MAILTO=root
-#
-# check scripts in cron.hourly, cron.daily, cron.weekly, and cron.monthly
-#
--*/15 * * * *   root  test -x /usr/lib/cron/run-crons && /usr/lib/cron/run-crons >/dev/null 2>&1
-
--*/15 * * * *   root  echo changed_config_files_integration_test
