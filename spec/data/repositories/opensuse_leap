@@ -1,7 +1,7 @@
-# Repositories [192.168.121.39] (2015-11-05 17:42:00)
+# Repositories [192.168.121.84] (2016-11-25 16:17:34)
 
   * Main Repository (OSS)
-    URI: http://download.opensuse.org/distribution/leap/42.1/repo/oss/
+    URI: http://download.opensuse.org/distribution/leap/42.2/repo/oss/
     Alias: download.opensuse.org-oss
     Enabled: Yes
     Refresh: Yes

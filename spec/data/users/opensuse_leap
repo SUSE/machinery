@@ -1,7 +1,7 @@
 Note: 'N/A' represents a missing user info, user ID or group ID which could not
 be gathered during inspection.
 
-# Users [192.168.121.39] (2015-11-05 17:42:00)
+# Users [192.168.121.84] (2016-11-25 16:17:34)
 
   * + (N/A, uid: N/A, gid: N/A, shell: )
   * bin (bin, uid: 1, gid: 1, shell: /bin/bash)
@@ -12,14 +12,16 @@ be gathered during inspection.
   * machinery (N/A, uid: 1001, gid: 100, shell: /bin/bash)
   * mail (Mailer daemon, uid: 8, gid: 12, shell: /bin/false)
   * man (Manual pages viewer, uid: 13, gid: 62, shell: /bin/bash)
-  * messagebus (User for D-Bus, uid: 499, gid: 497, shell: /bin/false)
+  * messagebus (User for D-Bus, uid: 499, gid: 499, shell: /bin/false)
   * news (News system, uid: 9, gid: 13, shell: /bin/bash)
   * nobody (nobody, uid: 65534, gid: 65533, shell: /bin/bash)
-  * polkitd (User for polkitd, uid: 495, gid: 495, shell: /sbin/nologin)
+  * polkitd (User for polkitd, uid: 492, gid: 492, shell: /sbin/nologin)
   * root (root, uid: 0, gid: 0, shell: /bin/bash)
-  * rpc (user for rpcbind, uid: 498, gid: 65534, shell: /sbin/nologin)
-  * sshd (SSH daemon, uid: 497, gid: 496, shell: /bin/false)
-  * statd (NFS statd daemon, uid: 496, gid: 65534, shell: /sbin/nologin)
+  * rpc (user for rpcbind, uid: 494, gid: 65534, shell: /sbin/nologin)
+  * sshd (SSH daemon, uid: 495, gid: 493, shell: /bin/false)
+  * statd (NFS statd daemon, uid: 493, gid: 65534, shell: /sbin/nologin)
+  * systemd-bus-proxy (systemd Bus Proxy, uid: 496, gid: 496, shell: /sbin/nologin)
+  * systemd-timesync (systemd Time Synchronization, uid: 497, gid: 497, shell: /sbin/nologin)
   * uucp (Unix-to-Unix CoPy system, uid: 10, gid: 14, shell: /bin/bash)
   * vagrant (N/A, uid: 1000, gid: 1000, shell: /bin/bash)
   * wwwrun (WWW daemon apache, uid: 30, gid: 8, shell: /bin/false)
