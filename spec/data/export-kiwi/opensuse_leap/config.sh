@@ -4,7 +4,7 @@ baseMount
 suseSetupProduct
 suseImportBuildKey
 suseConfig
-zypper -n ar --name='Main Repository (OSS)' --type='yast2' --refresh 'http://download.opensuse.org/distribution/leap/42.1/repo/oss/' 'download.opensuse.org-oss'
+zypper -n ar --name='Main Repository (OSS)' --type='yast2' --refresh 'http://download.opensuse.org/distribution/leap/42.2/repo/oss/' 'download.opensuse.org-oss'
 zypper -n mr --priority=99 'Main Repository (OSS)'
 systemctl enable autofs.service
 systemctl disable blk-availability.service

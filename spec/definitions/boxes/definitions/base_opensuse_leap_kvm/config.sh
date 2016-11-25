@@ -81,7 +81,7 @@ rm /etc/cron.daily/*
 #======================================
 # Repositories
 #--------------------------------------
-zypper --non-interactive --gpg-auto-import-keys addrepo --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/leap/42.1/repo/oss/ download.opensuse.org-oss
+zypper --non-interactive --gpg-auto-import-keys addrepo --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/leap/42.2/repo/oss/ download.opensuse.org-oss
 zypper --non-interactive refresh
 
 #======================================

@@ -26,7 +26,7 @@
                 <volume name="var/tmp"/>
             </systemdisk>
         </type>
-        <version>1.42.1</version>
+        <version>1.42.2</version>
         <packagemanager>zypper</packagemanager>
         <locale>en_US</locale>
         <keytable>us.map.gz</keytable>
@@ -41,10 +41,10 @@
         <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant"/>
     </users>
     <repository type="yast2">
-      <source path="obs://leap/42.1/repo/oss"/>
+      <source path="obs://leap/42.2/repo/oss"/>
     </repository>
     <repository type="rpm-md">
-      <source path="http://download.opensuse.org/update/leap/42.1/oss/"/>
+      <source path="http://download.opensuse.org/update/leap/42.2/oss/"/>
     </repository>
     <packages type="image">
         <namedCollection name="base"/>

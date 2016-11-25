@@ -5,7 +5,7 @@
   },
   "os": {
     "name": "openSUSE Leap",
-    "version": "42.1",
+    "version": "42.2",
     "architecture": "x86_64"
   },
   "packages": {
@@ -1780,7 +1780,7 @@
         "alias": "download.opensuse.org-oss",
         "name": "Main Repository (OSS)",
         "type": "yast2",
-        "url": "http://download.opensuse.org/distribution/leap/42.1/repo/oss/",
+        "url": "http://download.opensuse.org/distribution/leap/42.2/repo/oss/",
         "enabled": true,
         "autorefresh": true,
         "gpgcheck": true,

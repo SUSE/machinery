@@ -172,7 +172,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     machinery_leap.vm.provision "machinery_rpm",
       api: "https://api.opensuse.org",
       project: "systemsmanagement:machinery",
-      package: "openSUSE_Leap_42.1"
+      package: "openSUSE_Leap_42.2"
   end
 
 

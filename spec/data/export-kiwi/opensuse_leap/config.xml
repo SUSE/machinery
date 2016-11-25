@@ -14,7 +14,7 @@
     <user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root"/>
   </users>
   <repository alias="download.opensuse.org-oss" type="yast2" priority="99">
-    <source path="http://download.opensuse.org/distribution/leap/42.1/repo/oss/"/>
+    <source path="http://download.opensuse.org/distribution/leap/42.2/repo/oss/"/>
   </repository>
   <packages type="bootstrap">
     <package name="filesystem"/>
