@@ -1,14 +1,21 @@
 # Changed Configuration Files [192.168.121.32] (2015-11-19 17:08:46)
 
   Files extracted: yes
-  * /etc/crontab (cronie-1.4.11, md5)
+  * /etc/crontab (cronie-1.4.11, size, md5)
     Diff:
     --- a/etc/crontab
     +++ b/etc/crontab
-    @@ -6,3 +6,4 @@
-     #
-     -*/15 * * * *   root  test -x /usr/lib/cron/run-crons && /usr/lib/cron/run-crons >/dev/null 2>&1
-     
+    @@ -1,8 +1 @@
+    -SHELL=/bin/sh
+    -PATH=/usr/bin:/usr/sbin:/sbin:/bin:/usr/lib/news/bin
+    -MAILTO=root
+    -#
+    -# check scripts in cron.hourly, cron.daily, cron.weekly, and cron.monthly
+    -#
+    --*/15 * * * *   root  test -x /usr/lib/cron/run-crons && /usr/lib/cron/run-crons >/dev/null 2>&1
+    -
     +-*/15 * * * *   root  echo changed_config_files_integration_test
 
-
+  * /etc/postfix/LICENSE (postfix-2.11.8, deleted)
+  * /etc/postfix/TLS_LICENSE (postfix-2.11.8, mode, user, group)
+  * /etc/postfix/generic (postfix-2.11.8, link_path)
