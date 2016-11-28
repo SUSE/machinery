@@ -47,8 +47,8 @@ describe Machinery::ScopeFileAccessFlat do
 
   describe "#file_content" do
     let(:description) {
-      Machinery::SystemDescription.load!("opensuse_leap-build",
-        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/jeos"))
     }
 
     it "returns the file content of a file stored in a directory" do
@@ -121,8 +121,8 @@ describe Machinery::ScopeFileAccessFlat do
 
   describe "#has_file?" do
     let(:description) {
-      Machinery::SystemDescription.load!("opensuse_leap-build",
-        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/jeos"))
     }
 
     it "returns true" do

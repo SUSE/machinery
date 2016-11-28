@@ -18,7 +18,7 @@
 shared_examples "build" do |distribution|
   describe "build" do
     before(:each) do
-      @system_description_file = "spec/data/descriptions/#{distribution}-build/manifest.json"
+      @system_description_file = "spec/data/descriptions/jeos/#{distribution}/manifest.json"
       @system_description_dir = File.dirname(@system_description_file)
       @system_description = create_test_description(json: File.read(@system_description_file))
     end
@@ -34,8 +34,8 @@ shared_examples "build" do |distribution|
       measure("Build image") do
         expect(
           @machinery.run_command(
-            "machinery build #{distribution}-build --image-dir=/home/vagrant/build_image -d -s > " \
-            "/tmp/#{distribution}-build.log", as: "vagrant"
+            "machinery build #{distribution} --image-dir=/home/vagrant/build_image -d -s > " \
+            "/tmp/#{distribution}.log", as: "vagrant"
           )
         ).to succeed.with_or_without_stderr
       end
