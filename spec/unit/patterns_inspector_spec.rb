@@ -117,7 +117,7 @@ EOF
           and_raise(
             Cheetah::ExecutionFailed.new(
               nil,
-              nil,
+              7,
               "System management is locked by the application with pid 5480 (zypper).",
               nil
             )
