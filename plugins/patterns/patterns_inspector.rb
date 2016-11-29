@@ -60,11 +60,16 @@ module Machinery
         xml = @system.run_command("zypper", "--non-interactive", "-xq", "--no-refresh", "patterns",
           "-i", stdout: :capture)
       rescue Cheetah::ExecutionFailed => e
-        if e.status == 7  # ZYPPER_EXIT_ZYPP_LOCKED
+        # Zypper is locked
+        if e.status.exitstatus == 7 # ZYPPER_EXIT_ZYPP_LOCKED
           Machinery.logger.error(e.stdout)
           raise Machinery::Errors::ZypperFailed.new(
             "Zypper is locked."
           )
+        # Repositories are updated or gpg keys are expiring
+        elsif e.status.exitstatus == 106 # ZYPPER_EXIT_INF_REPOS_SKIPPED
+          Machinery.logger.error(e.stdout)
+          xml = e.stdout
         else
           raise
         end

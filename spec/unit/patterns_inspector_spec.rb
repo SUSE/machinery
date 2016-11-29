@@ -117,13 +117,65 @@ EOF
           and_raise(
             Cheetah::ExecutionFailed.new(
               nil,
-              7,
+              OpenStruct.new(exitstatus: 7),
               "System management is locked by the application with pid 5480 (zypper).",
               nil
             )
           )
         expect { patterns_inspector.inspect(filter) }.to raise_error(
           Machinery::Errors::ZypperFailed, /Zypper is locked./)
+      end
+
+      it "parses the the pattern besides repo issues" do
+        stdout = <<-EOF
+<?xml version='1.0'?>
+<stream>
+<prompt id="14">
+<text>
+New repository or package signing key received:
+
+  Repository:       SLE-12-SLP
+  Key Name:         SuSE Package Signing Key &lt;build&gt;
+  Key Fingerprint:  E1243BD2 39D846DB BA9EDDC1 70AF9E81 22C66E76
+  Key Created:      Dunn 31. Jan 2013 16:06:03 UTC
+  Key Expires:      Maan 30. Jan 2017 16:06:03 UTC (expires in 62 days)
+  Rpm Name:         gpg-pubkey-d8e8fca2-c0f896fd
+
+
+Do you want to reject the key, trust temporarily, or trust always?</text>
+<option default="1" value="r" desc="Don&apos;t trust the key."/>
+<option value="t" desc="Trust the key temporarily."/>
+<option value="a" desc="Trust the key and import it into trusted keyring."/>
+</prompt>
+<message type="error">Error building the cache:
+[SLE-12-SLP|http://dist.suse.de/install/SLP/SLE-12-SP2-Server-GM/x86_64/DVD1/] Valid metadata not found at specified URL
+</message>
+<message type="warning">Skipping repository &apos;SLE-12-SLP&apos; because of the above error.</message>
+<message type="error">Some of the repositories have not been refreshed because of an error.</message>
+<pattern-list>
+<pattern name="Minimal" version="12" release="72.1" epoch="0" arch="x86_64" vendor="SUSE LLC &lt;https://www.suse.com/&gt;" summary="Minimal System (Appliances)" repo="@System" installed="true" uservisible="true"><description>This is the minimal SUSE Linux Enterprise runtime system. It is really a minimal system, you can login and a shell will be started, that&apos;s all. It is intended as base for Appliances. Support for this minimal pattern is only possible as part of an OEM agreement or after upgrading the system to the Server Base pattern</description></pattern>
+</pattern-list>
+</stream>
+EOF
+        expect(system).to receive(:run_command).
+          with("zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i",
+            stdout: :capture).
+          and_raise(
+            Cheetah::ExecutionFailed.new(
+              nil,
+              OpenStruct.new(exitstatus: 106),
+              stdout,
+              nil
+            )
+          )
+        patterns_inspector.inspect(filter)
+        expect(description.patterns.first).to eq(
+          Machinery::Pattern.new(
+            name: "Minimal",
+            version: "12",
+            release: "72.1"
+          )
+        )
       end
 
       it "returns patterns_system zypper" do
