@@ -1,6 +1,6 @@
-  * /etc/YaST2/licenses/ (dir)
+  * /boot/grub2/i386-pc/ (dir)
     User/Group: root:root
     Mode: 755
-    Size: 100.7 KiB
-    Files: 15
-    Directories: 1
+    Size: 12.8 MiB
+    Files: 542
+    Directories: 0

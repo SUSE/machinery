@@ -5,6 +5,10 @@ usr
 
 /tmp/opensuse_leap-kiwi/root/etc:
 crontab
+postfix
+
+/tmp/opensuse_leap-kiwi/root/etc/postfix:
+TLS_LICENSE
 
 /tmp/opensuse_leap-kiwi/root/tmp:
 merge_users_and_groups.pl
@@ -16,19 +20,25 @@ files.tgz
 trees
 
 /tmp/opensuse_leap-kiwi/root/tmp/unmanaged_files/trees:
-etc
+usr
 
-/tmp/opensuse_leap-kiwi/root/tmp/unmanaged_files/trees/etc:
-unmanaged-tree.tgz
+/tmp/opensuse_leap-kiwi/root/tmp/unmanaged_files/trees/usr:
+local
+
+/tmp/opensuse_leap-kiwi/root/tmp/unmanaged_files/trees/usr/local:
+magicapp.tgz
 
 /tmp/opensuse_leap-kiwi/root/usr:
 share
 
 /tmp/opensuse_leap-kiwi/root/usr/share:
-bash
+doc
 
-/tmp/opensuse_leap-kiwi/root/usr/share/bash:
-helpfiles
+/tmp/opensuse_leap-kiwi/root/usr/share/doc:
+packages
 
-/tmp/opensuse_leap-kiwi/root/usr/share/bash/helpfiles:
-read
+/tmp/opensuse_leap-kiwi/root/usr/share/doc/packages:
+rsync
+
+/tmp/opensuse_leap-kiwi/root/usr/share/doc/packages/rsync:
+README

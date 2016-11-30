@@ -1,20 +1,16 @@
-# Services [192.168.121.39] (2015-11-05 17:42:00)
+# Services [192.168.121.247] (2016-11-25 16:42:15)
 
   * after-local.service: static
   * auth-rpcgss-module.service: static
   * autofs.service: enabled
-  * autovt@.service: disabled
+  * autovt@.service: enabled
   * blk-availability.service: disabled
-  * cgroup.service: masked
-  * cleanup.service: static
-  * clock.service: masked
   * console-getty.service: disabled
-  * console-shell.service: static
+  * console-shell.service: disabled
   * container-getty@.service: static
   * cron.service: enabled
-  * crypto-early.service: masked
-  * crypto.service: masked
   * dbus-org.freedesktop.hostname1.service: static
+  * dbus-org.freedesktop.import1.service: static
   * dbus-org.freedesktop.locale1.service: static
   * dbus-org.freedesktop.login1.service: static
   * dbus-org.freedesktop.machine1.service: static
@@ -26,9 +22,8 @@
   * dbus.service: static
   * dbus.socket: static
   * debug-shell.service: disabled
-  * device-mapper.service: masked
-  * dm-event.service: enabled
-  * dm-event.socket: enabled
+  * dm-event.service: disabled
+  * dm-event.socket: disabled
   * dmraid-activation.service: disabled
   * dracut-cmdline.service: static
   * dracut-initqueue.service: static
@@ -38,8 +33,6 @@
   * dracut-pre-trigger.service: static
   * dracut-pre-udev.service: static
   * dracut-shutdown.service: static
-  * earlysyslog.service: masked
-  * earlyxdm.service: masked
   * emergency.service: static
   * fstrim.service: static
   * getty@tty1.service: enabled
@@ -49,13 +42,9 @@
   * initrd-parse-etc.service: static
   * initrd-switch-root.service: static
   * initrd-udevadm-cleanup-db.service: static
-  * kbd.service: masked
   * klogd.service: disabled
   * kmod-static-nodes.service: static
-  * ldconfig.service: masked
-  * loadmodules.service: masked
-  * localfs.service: static
-  * localnet.service: masked
+  * ldconfig.service: static
   * lvm2-lvmetad.service: disabled
   * lvm2-lvmetad.socket: enabled
   * lvm2-monitor.service: disabled
@@ -70,13 +59,10 @@
   * nfs.service: disabled
   * nfsserver.service: enabled
   * polkit.service: static
-  * proc.service: masked
   * purge-kernels.service: enabled
   * quotaon.service: static
-  * random.service: static
   * rc-local.service: static
   * rescue.service: static
-  * rootfsck.service: static
   * rpc-gssd.service: static
   * rpc-statd-notify.service: static
   * rpc-statd.service: static
@@ -85,50 +71,54 @@
   * rpcbind.socket: enabled
   * rsyncd.service: disabled
   * serial-getty@.service: disabled
-  * single.service: masked
+  * shadow.service: static
   * sshd.service: enabled
-  * startpreload.service: masked
-  * stoppreload.service: masked
-  * swap.service: masked
-  * sysctl.service: static
   * syslog.socket: static
   * systemd-ask-password-console.service: static
   * systemd-ask-password-wall.service: static
   * systemd-backlight@.service: static
   * systemd-binfmt.service: static
+  * systemd-bootchart.service: disabled
+  * systemd-bus-proxyd.service: static
+  * systemd-bus-proxyd.socket: static
+  * systemd-exit.service: static
   * systemd-firstboot.service: static
   * systemd-fsck-root.service: static
   * systemd-fsck@.service: static
   * systemd-halt.service: static
+  * systemd-hibernate-resume@.service: static
   * systemd-hibernate.service: static
   * systemd-hostnamed.service: static
+  * systemd-hwdb-update.service: static
   * systemd-hybrid-sleep.service: static
+  * systemd-importd.service: static
   * systemd-initctl.service: static
   * systemd-initctl.socket: static
+  * systemd-journal-catalog-update.service: static
   * systemd-journal-flush.service: static
+  * systemd-journald-audit.socket: static
+  * systemd-journald-dev-log.socket: static
   * systemd-journald.service: static
   * systemd-journald.socket: static
   * systemd-kexec.service: static
   * systemd-localed.service: static
   * systemd-logind.service: static
+  * systemd-machine-id-commit.service: static
   * systemd-machined.service: static
   * systemd-modules-load.service: static
   * systemd-nspawn@.service: disabled
   * systemd-poweroff.service: static
   * systemd-quotacheck.service: static
   * systemd-random-seed.service: static
-  * systemd-readahead-collect.service: enabled
-  * systemd-readahead-done.service: static
-  * systemd-readahead-drop.service: enabled
-  * systemd-readahead-replay.service: enabled
   * systemd-reboot.service: static
   * systemd-remount-fs.service: static
-  * systemd-rfkill@.service: static
-  * systemd-shutdownd.service: static
-  * systemd-shutdownd.socket: static
+  * systemd-rfkill.service: static
+  * systemd-rfkill.socket: static
   * systemd-suspend.service: static
   * systemd-sysctl.service: static
+  * systemd-sysusers.service: static
   * systemd-timedated.service: static
+  * systemd-timesyncd.service: disabled
   * systemd-tmpfiles-clean.service: static
   * systemd-tmpfiles-setup-dev.service: static
   * systemd-tmpfiles-setup.service: static
@@ -138,18 +128,19 @@
   * systemd-udevd-control.socket: static
   * systemd-udevd-kernel.socket: static
   * systemd-udevd.service: static
+  * systemd-update-done.service: static
   * systemd-update-utmp-runlevel.service: static
   * systemd-update-utmp.service: static
   * systemd-user-sessions.service: static
   * systemd-vconsole-setup.service: static
-  * udev.service: static
-  * user@0.service: disabled
-  * user@1000.service: disabled
+  * user@0.service: static
+  * user@1000.service: static
   * wicked.service: enabled
   * wickedd-auto4.service: enabled
   * wickedd-dhcp4.service: enabled
   * wickedd-dhcp6.service: enabled
   * wickedd-nanny.service: enabled
-  * wickedd.service: static
+  * wickedd-pppd@.service: static
+  * wickedd.service: indirect
 
 

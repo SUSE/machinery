@@ -35,8 +35,8 @@ describe Machinery::ScopeFileAccessArchive do
 
   describe "#file_content" do
     let(:description) {
-      Machinery::SystemDescription.load!("opensuse_leap-build",
-        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/jeos"))
     }
 
     it "returns the file content of a file stored in the files.tgz tar ball" do
@@ -51,8 +51,8 @@ describe Machinery::ScopeFileAccessArchive do
 
   describe "#has_file?" do
     let(:description) {
-      Machinery::SystemDescription.load!("opensuse_leap-build",
-        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/jeos"))
     }
 
     context "when the description keeps track of the file" do

@@ -59,8 +59,8 @@ UseDNS no
 #======================================
 # Repositories
 #--------------------------------------
-zypper -n --gpg-auto-import-keys ar --type=yast2 --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/leap/42.1/repo/oss/ download.opensuse.org-oss
-zypper -n --gpg-auto-import-keys ar --refresh --name "Main Update Repository" http://download.opensuse.org/update/leap/42.1/oss/ download.opensuse.org-update
+zypper -n --gpg-auto-import-keys ar --type=yast2 --refresh --name "Main Repository (OSS)" http://download.opensuse.org/distribution/leap/42.2/repo/oss/ download.opensuse.org-oss
+zypper -n --gpg-auto-import-keys ar --refresh --name "Main Update Repository" http://download.opensuse.org/update/leap/42.2/oss/ download.opensuse.org-update
 zypper -n --gpg-auto-import-keys refresh
 
 #======================================

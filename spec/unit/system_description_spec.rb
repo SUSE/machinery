@@ -655,8 +655,8 @@ EOF
 
   describe "#has_file?" do
     let(:system_description) {
-      Machinery::SystemDescription.load!("opensuse_leap-build",
-        Machinery::SystemDescriptionStore.new("spec/data/descriptions"))
+      Machinery::SystemDescription.load!("opensuse_leap",
+        Machinery::SystemDescriptionStore.new("spec/data/descriptions/jeos"))
     }
 
     it "returns true when found" do
