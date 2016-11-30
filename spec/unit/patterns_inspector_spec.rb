@@ -126,8 +126,9 @@ EOF
           Machinery::Errors::ZypperFailed, /Zypper is locked./)
       end
 
-      it "parses the the pattern besides repo issues" do
-        stdout = <<-EOF
+      context "with zypper exit status 106" do
+        let(:stdout) {
+          <<-EOF
 <?xml version='1.0'?>
 <stream>
 <prompt id="14">
@@ -157,25 +158,36 @@ Do you want to reject the key, trust temporarily, or trust always?</text>
 </pattern-list>
 </stream>
 EOF
-        expect(system).to receive(:run_command).
-          with("zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i",
-            stdout: :capture).
-          and_raise(
-            Cheetah::ExecutionFailed.new(
-              nil,
-              OpenStruct.new(exitstatus: 106),
-              stdout,
-              nil
+        }
+
+        it "parses the the pattern" do
+          expect(system).to receive(:run_command).with(
+            "zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture
+          ).and_raise(
+            Cheetah::ExecutionFailed.new(nil, OpenStruct.new(exitstatus: 106), stdout, nil)
+          )
+          patterns_inspector.inspect(filter)
+          expect(description.patterns.first).to eq(
+            Machinery::Pattern.new(
+              name: "Minimal",
+              version: "12",
+              release: "72.1"
             )
           )
-        patterns_inspector.inspect(filter)
-        expect(description.patterns.first).to eq(
-          Machinery::Pattern.new(
-            name: "Minimal",
-            version: "12",
-            release: "72.1"
+        end
+
+        it "logs the zypper error" do
+          expect(system).to receive(:run_command).with(
+            "zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture
+          ).and_raise(
+            Cheetah::ExecutionFailed.new(nil, OpenStruct.new(exitstatus: 106), stdout, nil)
           )
-        )
+
+          expect(Machinery.logger).to receive(:error).with(
+            "Zypper returns exit code 106 during patterns inspection with the message:\n#{stdout}"
+          )
+          patterns_inspector.inspect(filter)
+        end
       end
 
       it "returns patterns_system zypper" do

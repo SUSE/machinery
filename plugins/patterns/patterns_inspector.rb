@@ -68,7 +68,10 @@ module Machinery
           )
         # Repositories are updated or gpg keys are expiring
         elsif e.status.exitstatus == 106 # ZYPPER_EXIT_INF_REPOS_SKIPPED
-          Machinery.logger.error(e.stdout)
+          Machinery.logger.error(
+            "Zypper returns exit code #{e.status.exitstatus} during patterns inspection with" \
+              " the message:\n#{e.stdout}"
+          )
           xml = e.stdout
         else
           raise
