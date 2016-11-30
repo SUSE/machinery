@@ -184,7 +184,7 @@ EOF
           )
 
           expect(Machinery.logger).to receive(:error).with(
-            "Zypper returns exit code 106 during patterns inspection with the message:\n#{stdout}"
+            "Zypper returned exit code 106 during patterns inspection with the message:\n#{stdout}"
           )
           patterns_inspector.inspect(filter)
         end
