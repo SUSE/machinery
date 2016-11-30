@@ -24,7 +24,7 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
   end
 
   it "shows the comparison" do
-    visit("/compare/opensuse131/opensuse132")
+    visit("/compare/opensuse131/opensuse_leap")
 
     within("#packages_container") do
       find("tr", text: "DirectFB 1.6.3 4.1.3")
@@ -45,7 +45,7 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
   it "expands a collapsed scope if both is clicked" do
     # Note: this reload is a workaround for some poltergeist/phantomjs issue with scrolling to
     # anchors
-    visit("/compare/opensuse131/opensuse132")
+    visit("/compare/opensuse131/opensuse_leap")
 
     within(".scope-navigation") do
       find_link("G").click
@@ -66,7 +66,7 @@ RSpec::Steps.steps "Comparing two system descriptions in HTML format", type: :fe
   it "expands a collapsed scope if `changed` is clicked" do
     # Note: this reload is a workaround for some poltergeist/phantomjs issue with scrolling to
     # anchors
-    visit("/compare/opensuse131/opensuse132")
+    visit("/compare/opensuse131/opensuse_leap")
 
     within(".scope-navigation") do
       find_link("G").click
