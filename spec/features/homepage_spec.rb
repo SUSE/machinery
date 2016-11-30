@@ -29,7 +29,7 @@ RSpec::Steps.steps "Showing the home/list page", type: :feature do
   end
 
   it "filters the results" do
-    expect(page.all(".description-filterable tbody tr").size).to eq(3)
+    expect(page.all(".description-filterable tbody tr").size).to eq(2)
 
     fill_in "descriptions-filter", with: "leap"
 
@@ -37,6 +37,6 @@ RSpec::Steps.steps "Showing the home/list page", type: :feature do
 
     click_link("Reset")
 
-    expect(page.all(".description-filterable tbody tr").size).to eq(3)
+    expect(page.all(".description-filterable tbody tr").size).to eq(2)
   end
 end
