@@ -117,7 +117,7 @@ EOF
           and_raise(
             Cheetah::ExecutionFailed.new(
               nil,
-              OpenStruct.new(exitstatus: 7),
+              double(exitstatus: 7),
               "System management is locked by the application with pid 5480 (zypper).",
               nil
             )
@@ -164,7 +164,7 @@ EOF
           expect(system).to receive(:run_command).with(
             "zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture
           ).and_raise(
-            Cheetah::ExecutionFailed.new(nil, OpenStruct.new(exitstatus: 106), stdout, nil)
+            Cheetah::ExecutionFailed.new(nil, double(exitstatus: 106), stdout, nil)
           )
           patterns_inspector.inspect(filter)
           expect(description.patterns.first).to eq(
@@ -180,7 +180,7 @@ EOF
           expect(system).to receive(:run_command).with(
             "zypper", "--non-interactive", "-xq", "--no-refresh", "patterns", "-i", stdout: :capture
           ).and_raise(
-            Cheetah::ExecutionFailed.new(nil, OpenStruct.new(exitstatus: 106), stdout, nil)
+            Cheetah::ExecutionFailed.new(nil, double(exitstatus: 106), stdout, nil)
           )
 
           expect(Machinery.logger).to receive(:error).with(
