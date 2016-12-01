@@ -154,9 +154,9 @@ password=2fdcb7499fd46842
 
     def setup_expectation_zypper_details_exit_6(system)
       # zypper exits with 6 (ZYPPER_EXIT_NO_REPOS) when there are no repos
-      status = double
-      allow(status).to receive(:exitstatus).and_return(6)
-      zypper_exception = Cheetah::ExecutionFailed.new("zypper", status, "", "")
+      zypper_exception = Cheetah::ExecutionFailed.new(
+        "zypper", double(exitstatus: 6), "", ""
+      )
       expect(system).to receive(:run_command).with(
         "zypper",
         "--non-interactive",

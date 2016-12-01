@@ -185,7 +185,9 @@ describe Machinery::System do
     it "raises on errors" do
       system = Machinery::LocalSystem.new
       expect(system).to receive(:run_script).and_raise(
-        Cheetah::ExecutionFailed.new(nil, 2, "", "script failed")
+        Cheetah::ExecutionFailed.new(
+          nil, double(exitstatus: 2), "", "script failed"
+        )
       )
       expect {
         system.run_script_with_progress("script", privileged: true)
@@ -224,7 +226,9 @@ describe Machinery::System do
       expect(system).to receive(:run_command).with(
         "dpkg", "-V", hash_including(:privileged)
       ).and_raise(
-        Cheetah::ExecutionFailed.new(nil, 2, "", "dpkg: unknown option -V")
+        Cheetah::ExecutionFailed.new(
+          nil, double(exitstatus: 2), "", "dpkg: unknown option -V"
+        )
       )
       expect {
         system.run_command_with_progress("dpkg", "-V", privileged: true)
