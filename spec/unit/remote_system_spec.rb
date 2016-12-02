@@ -48,7 +48,11 @@ describe Machinery::RemoteSystem do
       it "raises an exception if the user is not allowed to run sudo" do
         expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
-        ).and_raise(Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: a password is required"))
+        ).and_raise(
+          Cheetah::ExecutionFailed.new(
+            nil, double(exitstatus: 1), "", "sudo: a password is required"
+          )
+        )
 
         expect {
           remote_system_with_sudo
@@ -62,7 +66,9 @@ describe Machinery::RemoteSystem do
         expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
         ).and_raise(
-          Cheetah::ExecutionFailed.new(nil, 1, "", "sudo: sorry, you must have a tty to run sudo")
+          Cheetah::ExecutionFailed.new(
+            nil, double(exitstatus: 1), "", "sudo: sorry, you must have a tty to run sudo"
+          )
         )
 
         expect {
@@ -285,8 +291,11 @@ describe Machinery::RemoteSystem do
 
       it "returns nil when the file does not exist" do
         status = double(exitstatus: 1)
-        expect(remote_system).to receive(:run_command).
-          and_raise(Cheetah::ExecutionFailed.new(nil, status, nil, nil))
+        expect(remote_system).to receive(:run_command).and_raise(
+          Cheetah::ExecutionFailed.new(
+            nil, status, nil, nil
+          )
+        )
 
         expect(remote_system.read_file("/foo")).to be_nil
       end

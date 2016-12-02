@@ -306,7 +306,7 @@ EOF
         ).and_raise(
           Cheetah::ExecutionFailed.new(
             nil,
-            2,
+            double(exitstatus: 2),
             "",
             "W: Unable to locate package acpi=1.1-2\nE: No packages found"
           )
