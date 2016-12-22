@@ -1,6 +1,9 @@
 # Machinery Release Notes
 
 
+* Fix resetting of scroll bar after clicking on button "inspection details"
+  (gh#SUSE/machinery#1901)
+
 ## Version 1.22.2 - Wed Nov 16 16:44:00 CET 2016 - thardeck@suse.de
 
 * Prevent machinery-helper from crashing when files are inaccessible during
