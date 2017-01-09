@@ -202,13 +202,6 @@ describe HelperBuilder do
       it "returns true" do
         expect(subject.build_machinery_helper).to be(true)
       end
-
-      it "shows a building message on stdout" do
-        expect(subject).to receive(:puts).with(
-          "Building machinery-helper binaries"
-        )
-        subject.build_machinery_helper
-      end
     end
 
     context "if build fails" do
