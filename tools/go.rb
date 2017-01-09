@@ -35,9 +35,12 @@ class Go
 
   def build
     if archs.count == 1
-      system("go build -o machinery-helper-#{archs.first}")
+      arch = archs.first
+      puts("Building machinery-helper for architecture #{arch}.")
+      system("go build -o machinery-helper-#{arch}")
     else
       archs.each do |arch|
+        puts("Building machinery-helper for architecture #{arch}.")
         system(
           "env GOOS=linux #{compile_options(arch)} go build -o machinery-helper-#{arch}"
         )
