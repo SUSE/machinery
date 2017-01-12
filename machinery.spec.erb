@@ -1,7 +1,7 @@
 #
 # spec file for package machinery
 #
-# Copyright (c) 2013-2016 SUSE LLC
+# Copyright (c) 2013-2017 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -43,7 +43,6 @@ BuildRequires:  go
 %endif
 BuildRequires:  ruby-macros >= 5
 BuildRequires:  fdupes
-%if %suse_version > 1310
 %define rb_build_versions %{rb_default_ruby}
 BuildRequires:  %{rubydevel}
 BuildRequires:  %{rubygem gem2rpm}
@@ -55,14 +54,6 @@ BuildRequires:  %{rubygem <%= require[:name] %> <%= require[:operator] %> <%= re
 %else
 <% build_requires.each do |require| -%>
 Requires:  %{rubygem <%= require[:name] %> <%= require[:operator] %> <%= require[:version] %>}
-<% end -%>
-%endif
-%else
-BuildRequires:  ruby-devel
-BuildRequires:  rubygem(gem2rpm)
-BuildRequires:  rubygem(bundler)
-<% build_requires.each do |require| -%>
-BuildRequires:  rubygem(<%= require[:name] %>) <%= require[:operator] %> <%= require[:version] %>
 <% end -%>
 %endif
 # Disable autogenerating "Requires:" headers for bundled gems.
@@ -108,13 +99,7 @@ pushd %{buildroot}%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}
 cat > Gemfile <<EOT
 <% @dependencies.each do |dependency| -%>
 <% dependency.requirement.requirements.map do |operator, version| -%>
-<% if dependency.name == "json" -%>
-%if %suse_version <= 1310
 gem "<%= dependency.name %>", "<%= operator %> <%= version %>"
-%endif
-<% else -%>
-gem "<%= dependency.name %>", "<%= operator %> <%= version %>"
-<% end -%>
 <% end -%>
 <% end -%>
 EOT
@@ -164,9 +149,7 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 %{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_full_name}.gem
 %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/
 
-%if %suse_version > 1310
 %{_libdir}/ruby/gems/%{rb_ver}/extensions/
-%endif
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_full_name}.gemspec
 %{_mandir}/man1/*.1.gz
 %doc COPYING NEWS
