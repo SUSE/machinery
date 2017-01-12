@@ -12,7 +12,7 @@ Pennyworth is set up as described in its [README](https://github.com/SUSE/pennyw
 
 After setting up Pennyworth the vms need to be built by running `<pennyworth-git-tree/bin/pennyworth build-base --definitions-dir=<machinery-git-tree>/spec/definitions/`.
 
-This step takes quite some time since the openSUSE 13.1 DVD is downloaded and vms are installed.
+This step takes quite some time since packages are downloaded and VMs are installed.
 
 ### Machinery
 
@@ -31,12 +31,12 @@ apiurl = https://api.opensuse.org
 [https://api.opensuse.org]
 user = <obs-username>
 pass = <obs-password>
-trusted_prj=openSUSE:13.1
+trusted_prj=openSUSE:Leap:42.2
 ```
 
-If osc was already used before the only important part is the addition of `openSUSE:13.1` to `trusted_prj`. Each time osc builds packages against an unknown repository it asks if it should trust this project.
+If osc was already used before the only important part is the addition of `openSUSE:Leap:42.2` to `trusted_prj`. Each time osc builds packages against an unknown repository it asks if it should trust this project.
 
-Since this question can't be confirmed in the build script `openSUSE:13.1` needs to be added manually if the repository wasn't used before. The separation char for `trusted_prj` is a space.
+Since this question can't be confirmed in the build script `openSUSE:Leap:42.2` needs to be added manually if the repository wasn't used before. The separation char for `trusted_prj` is a space.
 
 The configuration can be tested by running `rake rpm:build` in the git tree.
 

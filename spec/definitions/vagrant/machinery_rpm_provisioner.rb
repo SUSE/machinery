@@ -26,7 +26,7 @@ module MachineryRpm
   #     machinery_131.vm.provision "machinery_rpm"
   #   end
   #
-  # By default it the RPM is built for openSUSE 13.1 with the configuration from
+  # By default it the RPM is built with the configuration from
   # https://build.opensuse.org/project/show/systemsmanagement:machinery/machinery
   #
   # This can be overriden when provisioning a VM:

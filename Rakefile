@@ -67,7 +67,7 @@ Packaging.configuration do |conf|
   conf.obs_project = "systemsmanagement:machinery"
   conf.obs_sr_project = "openSUSE:Factory"
   conf.package_name = "machinery"
-  conf.obs_target = "openSUSE_Leap_42.1"
+  conf.obs_target = "openSUSE_Leap_42.2"
   conf.version = Machinery::VERSION
 
   #lets ignore license check for now

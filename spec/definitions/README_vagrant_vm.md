@@ -7,12 +7,12 @@ tests.
 
 By default the following VMs are defined:
 
-## opensuse131
+## opensuse_leap
 
 **Description**
 This VM is the inspected system in our integration tests.
 
-  **Based on box:** base_opensuse13.1_kvm<br>
+  **Based on box:** base_opensuse_leap_kvm<br>
   **Vagrant provider used:** libvirt<br>
   **User credentials:**<br>
     *User:* root, *Password:* vagrant<br>
@@ -29,12 +29,12 @@ This VM is the inspected system in our integration tests.
 * unpack unmanaged-files.tgz in `/`
 
 
-## machinery131
+## machinery_leap
 
 **Description**
   This VM is the inspecting system on which machinery is run.
 
-  **Based on box:** machinery_opensuse13.1_kvm<br>
+  **Based on box:** machinery_opensuse_leap_kvm<br>
   **Vagrant provider used:** libvirt<br>
   **User credentials:**<br>
     *User:* root, *Password:* vagrant<br>
