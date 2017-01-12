@@ -66,7 +66,6 @@ const VERSION = "#{git_revision}"
   def build_machinery_helper
     FileUtils.rm_f(Dir.glob(File.join(@helper_dir, "machinery-helper*")))
     Dir.chdir(@helper_dir) do
-      puts("Building machinery-helper binaries")
       if @go.build
         true
       else

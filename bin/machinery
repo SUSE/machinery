@@ -23,7 +23,7 @@ begin
   if Dir.exist?(File.join(Machinery::ROOT, ".git"))
     begin
       Dir.chdir(File.join(Machinery::ROOT, "machinery-helper")) do
-        Cheetah.run("rake", "build")
+        Cheetah.run("rake", "build", stdout: STDOUT, stderr: STDERR)
       end
     rescue
       STDERR.puts(
