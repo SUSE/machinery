@@ -37,37 +37,6 @@ def add_test_user(base)
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.define :opensuse131 do |opensuse131|
-    opensuse131.vm.box = "base_opensuse13.1_kvm"
-
-    opensuse131.vm.provider :libvirt do |domain|
-      domain.memory = 1024
-      domain.cpus = 1
-      domain.nested = false
-      domain.volume_cache = 'none'
-    end
-
-    inject_rpm_test_data(opensuse131)
-    add_test_user(opensuse131)
-  end
-
-  config.vm.define :machinery_openSUSE_13_1 do |machinery_131|
-    machinery_131.vm.box = "machinery_opensuse13.1_kvm"
-    machinery_131.vm.network :private_network, network_name: "default"
-
-    machinery_131.vm.provider :libvirt do |domain|
-      domain.memory = 1024
-      domain.cpus = 1
-      domain.nested = false
-      domain.volume_cache = 'none'
-    end
-
-    machinery_131.vm.provision "machinery_rpm",
-      api: "https://api.opensuse.org",
-      project: "systemsmanagement:machinery",
-      package: "openSUSE_13.1"
-  end
-
   config.vm.define :opensuse_tumbleweed do |opensuse_tumbleweed|
     opensuse_tumbleweed.vm.box = "base_opensuse_tumbleweed_kvm"
 
