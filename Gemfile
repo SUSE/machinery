@@ -27,7 +27,7 @@ group :test do
   gem "fakefs", ">= 0.6.7"
   gem "given_filesystem", ">= 0.1.1"
   gem "ruby-libvirt"
-  gem "codeclimate-test-reporter"
+  gem "codeclimate-test-reporter", ">= 1.0.0"
   gem "rspec_junit_formatter"
   gem "byebug"
   gem "rack-test"
