@@ -94,7 +94,16 @@ class Machinery::RemoteSystem < Machinery::System
       "LogLevel=ERROR", sudo, "LANGUAGE=", "LC_ALL=#{locale}", *piped_args, options
     ].compact.flatten
 
-    cheetah_class.run(*cmds)
+    begin
+      cheetah_class.run(*cmds)
+    rescue Cheetah::ExecutionFailed => e
+      ssh_error_regex = /Connection refused|Connection reset by peer|Broken pipe|Network is unreachable/
+      if e.stderr && e.stderr =~ ssh_error_regex
+        raise Machinery::Errors::SshConnectionDisrupted.new("\nSSH ERROR: #{e.stderr}")
+      else
+        raise
+      end
+    end
   end
 
   # Retrieves files specified in filelist from the remote system and raises an

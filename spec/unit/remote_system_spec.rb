@@ -117,6 +117,18 @@ describe Machinery::RemoteSystem do
     end
 
     describe "#run_command" do
+      context "when ssh connection is disrupted" do
+        ["Connection refused", "Broken pipe", "Connection reset by peer", "Network is unreachable"].each do |error|
+          it "raises an error" do
+            expect(Cheetah).to receive(:run).with(
+              "ssh", any_args
+            ).and_raise(Cheetah::ExecutionFailed.new(nil, nil, nil, error))
+
+            expect { remote_system.run_command("test") }.to raise_error(Machinery::Errors::SshConnectionDisrupted, /#{error}/)
+          end
+        end
+      end
+
       it "executes commands via ssh" do
         expect(Cheetah).to receive(:run).with(
           "ssh", any_args, "ls", "/tmp", {}

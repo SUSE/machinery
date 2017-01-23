@@ -170,6 +170,7 @@ module Machinery
     class BinaryDiffError < MachineryError; end
 
     class SshConnectionFailed < MachineryError; end
+    class SshConnectionDisrupted < MachineryError; end
     class RsyncFailed < MachineryError; end
     class OpenInBrowserFailed < MachineryError; end
     class ZypperFailed < MachineryError; end

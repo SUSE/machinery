@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Error handling for disrupted ssh connection while inspecting
+  (gh#SUSE/machinery#2090)
 
 * Fix resetting of scroll bar after clicking on button "inspection details"
   (gh#SUSE/machinery#1901)
