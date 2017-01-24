@@ -317,6 +317,30 @@ Warning: Filter '/changed_managed_files/name=element_a,element_b' tries to match
 EOF
       expect(captured_machinery_output).to include(expected_output)
     end
+
+    it "raises error when given wrong path" do
+      expect {
+        expect_file_scope_filter_change(
+          "changed_managed_files",
+          Machinery::Filter.new(["/changed_managed_files/files/name=element_a,element_b"]),
+          [
+            "/etc/deleted changed managed",
+            "/etc/cron.d",
+            "/etc/cron.daily/cleanup",
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
+          ],
+          [
+            "/etc/deleted changed managed",
+            "/etc/cron.d",
+            "/etc/cron.daily/cleanup",
+            "/etc/cron.daily/logrotate",
+            "/usr/bin/replaced_by_link"
+          ]
+        )
+      }.to raise_error(Machinery::Errors::WrongFilterPath,
+          /Error: Check if the path: '\/changed_managed_files\/files\/name' is correct/)
+    end
   end
 
   describe "#filter" do

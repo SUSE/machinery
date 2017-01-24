@@ -151,7 +151,13 @@ module Machinery
         container = nil
         steps.each do |step|
           break unless pointer
-          pointer = pointer[step]
+          begin
+            pointer = pointer[step]
+          rescue TypeError
+            raise Machinery::Errors::WrongFilterPath.new(
+              "Error: Check if the path: '#{path}' is correct."
+            )
+          end
           container ||= pointer if pointer.is_a?(Machinery::Array)
         end
 

@@ -172,6 +172,7 @@ module Machinery
     class SshConnectionFailed < MachineryError; end
     class SshConnectionDisrupted < MachineryError; end
     class RsyncFailed < MachineryError; end
+    class WrongFilterPath < MachineryError; end
     class OpenInBrowserFailed < MachineryError; end
     class ZypperFailed < MachineryError; end
     class UnknownConfig < MachineryError; end
