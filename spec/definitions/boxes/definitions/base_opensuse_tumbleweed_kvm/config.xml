@@ -61,6 +61,7 @@
         <package name="cronie"/>
         <package name="nfs-kernel-server"/>
         <package name="autofs"/>
+        <package name="sysconfig"/>
     </packages>
     <packages type="bootstrap">
         <package name="udev"/>
