@@ -1,5 +1,6 @@
 # Machinery RPM Changelog
 
+* add support for HAML gems >= 5.0 (bnc#1043785)
 
 ## Version 1.22.2 - Wed Nov 16 16:44:00 CET 2016 - thardeck@suse.de
 
