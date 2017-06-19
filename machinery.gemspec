@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.add_dependency "haml", ">= 4.0"
   s.add_dependency "kramdown", "~> 1.3"
   s.add_dependency "tilt", "~> 2.0"
-  s.add_dependency "sinatra", "~> 1.4"
+  s.add_dependency "sinatra", ">= 1.4"
   s.add_dependency "mimemagic", "~> 0.3"
   s.add_dependency "diffy", "~> 3.0"
 
