@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+
+## Version 1.22.3 - Tue Jun 20 10:56:18 CEST 2017 - thardeck@suse.de
+
 * Gracefully handle incorrect filter pathes in the experimental filtering function
   (gh#SUSE/machinery#2189)
 * Error handling for disrupted ssh connection while inspecting

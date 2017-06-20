@@ -1,5 +1,9 @@
 # Machinery RPM Changelog
 
+
+## Version 1.22.3 - Tue Jun 20 10:56:18 CEST 2017 - thardeck@suse.de
+
+* update to version 1.22.3
 * add support for HAML gems >= 5.0 (bnc#1043785)
 * add support for Sinatra gems >= 2.0
 
