@@ -1,6 +1,8 @@
 # Machinery Release Notes
 
 
+* Support inspection of ppc64 systems (bnc#1052877)
+
 ## Version 1.22.3 - Tue Jun 20 10:56:18 CEST 2017 - thardeck@suse.de
 
 * Gracefully handle incorrect filter pathes in the experimental filtering function

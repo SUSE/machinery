@@ -51,27 +51,27 @@ describe Go do
       it "returns arm, x86_64, i686 and ppc64le" do
         allow(subject).to receive(:version).and_return(1.6)
         expect(subject.archs).to match_array(
-          ["x86_64", "i686", "ppc64le", "armv6l", "armv7l", "aarch64"]
+          ["x86_64", "i686", "ppc64le", "ppc64", "armv6l", "armv7l", "aarch64"]
         )
       end
     end
 
     context "for go-s390x 1.6 (machinery build)" do
-      it "returns arm, x86_64, i686, ppc64le and s390x" do
+      it "returns arm, x86_64, i686, ppc64le, ppc64 and s390x" do
         allow(subject).to receive(:version).and_return(1.6)
         allow(subject).to receive(:suse_package_includes_s390?).and_return(true)
 
         expect(subject.archs).to match_array(
-          ["x86_64", "i686", "ppc64le", "s390x", "armv6l", "armv7l", "aarch64"]
+          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv6l", "armv7l", "aarch64"]
         )
       end
     end
 
     context "for go 1.7 and newer" do
-      it "returns arm, x86_64, i686, ppc64le and s390x" do
+      it "returns arm, x86_64, i686, ppc64le, ppc64 and s390x" do
         allow(subject).to receive(:version).and_return(1.7)
         expect(subject.archs).to match_array(
-          ["x86_64", "i686", "ppc64le", "s390x", "armv6l", "armv7l", "aarch64"]
+          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv6l", "armv7l", "aarch64"]
         )
       end
     end
