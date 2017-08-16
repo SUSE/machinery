@@ -43,7 +43,7 @@ describe "machinery@Tumbleweed" do
       "services" =>
         [
           /\* sshd.service: enabled$/,
-          /\* rc-local.service: static$/,
+          /\* wickedd-pppd@.service: static$/,
           /\* debug-shell.service: disabled$/
         ],
       "os" =>
