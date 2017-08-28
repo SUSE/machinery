@@ -17,6 +17,6 @@
 
 module Machinery
 
-  VERSION = "1.22.3"
+  VERSION = "1.23.0"
 
 end

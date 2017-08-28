@@ -1,6 +1,8 @@
 # Machinery Release Notes
 
 
+## Version 1.23.0 - Mon Aug 28 14:59:52 CEST 2017 - thardeck@suse.de
+
 * Support inspection of ppc64 systems (bnc#1052877)
 
 ## Version 1.22.3 - Tue Jun 20 10:56:18 CEST 2017 - thardeck@suse.de
