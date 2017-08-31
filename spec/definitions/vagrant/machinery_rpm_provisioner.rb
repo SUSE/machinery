@@ -101,7 +101,7 @@ module MachineryRpm
     def install
       machine.ui.detail("Installing Machinery...")
 
-      cmd = "zypper --no-gpg-checks --non-interactive in /tmp/#{@rpm}"
+      cmd = "zypper --non-interactive in /tmp/#{@rpm}"
       machine.communicate.execute(cmd, sudo: true)
     end
   end
