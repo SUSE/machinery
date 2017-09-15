@@ -29,7 +29,7 @@ Machinery runs on most Linux distributions. Install it by following one of these
 * via the one click installer on [Machinery's homepage](http://machinery-project.org) (for openSUSE systems)
 * [on the command line](https://github.com/SUSE/machinery/wiki/Installation-on-SUSE-Distributions) with zypper on all SUSE distributions
 * [as a Ruby gem](https://github.com/SUSE/machinery/wiki/Installation-on-Other-Distributions) on all distributions which have the gem tool
-* [from sources](https://github.com/SUSE/machinery/wiki/Installation-From-Sources)
+* [from sources](#development)
 
 ## Usage
 
@@ -50,8 +50,10 @@ For more information about the commands, see
 
 ## Development
 
-The following steps are only recommended if you want to work on the Machinery
-codebase or test the latest development changes.
+The following steps are only recommended if you want to build Machinery from
+sources, work on the codebase or test the latest development changes. For other
+distributions than SUSE look also
+[here](https://github.com/SUSE/machinery/wiki/Installation-on-Other-Distributions).
 
   1. **Install Git**
 
