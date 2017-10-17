@@ -76,7 +76,6 @@
         <package name="libvirt-devel"/>
         <package name="expect"/>
         <package name="patch"/>
-        <package name="db45-utils"/>
         <package name="db-utils"/>
         <package name="man"/>
         <package name="curl"/>
