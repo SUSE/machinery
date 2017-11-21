@@ -54,6 +54,7 @@ module MachineryRpm
     def provision
       build
       upload
+      prepare
       install
     end
 
@@ -96,6 +97,13 @@ module MachineryRpm
       machine.ui.detail("Uploading Machinery RPM...")
 
       machine.communicate.upload(File.join(MACHINERY_ROOT, "package", @rpm), "/tmp/#{@rpm}")
+    end
+
+    def prepare
+      machine.ui.detail("Preparing zypp environment...")
+
+      cmd = 'echo -e "gpgcheck=1\npkg_gpgcheck=0" >> /etc/zypp/zypp.conf'
+      machine.communicate.execute(cmd, sudo: true)
     end
 
     def install
