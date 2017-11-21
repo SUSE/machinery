@@ -19,9 +19,9 @@ shared_examples "inspect and build" do |bases|
   bases.each do |base|
     describe "rebuild inspected system", slow: true do
       before(:all) do
-        @subject_system = start_system(box: base, username: "machinery", password: "linux")
+        @subject_system = start_system(box: base, username: "machinery", password: "zkaenzyx")
         prepare_machinery_for_host(
-          @machinery, @subject_system.ip, username: "machinery", password: "linux"
+          @machinery, @subject_system.ip, username: "machinery", password: "zkaenzyx"
         )
 
         # Enabled experimental features so that the --exclude option can be used
@@ -67,7 +67,7 @@ shared_examples "inspect and build" do |bases|
           @machinery.extract_file image, "/tmp"
 
           @test_system = start_system(
-            image: local_image, skip_ssh_setup: true, username: "machinery", password: "linux"
+            image: local_image, skip_ssh_setup: true, username: "machinery", password: "zkaenzyx"
           )
 
           # Run 'ls' via ssh in the built system to verify its booted and accessible.
