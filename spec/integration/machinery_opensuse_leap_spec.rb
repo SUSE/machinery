@@ -38,7 +38,7 @@ describe "machinery@leap" do
   describe "inspect ubuntu_1404", matrix: "pending" do
     base = "ubuntu_1404"
     username = "machinery"
-    password = "linux"
+    password = "zkaenzyx"
 
     let(:inspect_options) {
       "--remote-user=#{username}" if username != "root"

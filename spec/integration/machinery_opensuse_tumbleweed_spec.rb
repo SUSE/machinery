@@ -104,10 +104,10 @@ describe "machinery@Tumbleweed" do
   describe "inspect openSUSE Tumbleweed system", matrix: "pending" do
     before(:all) do
       @subject_system = start_system(
-        box: "opensuse_tumbleweed", username: "machinery", password: "linux"
+        box: "opensuse_tumbleweed", username: "machinery", password: "zkaenzyx"
       )
       prepare_machinery_for_host(
-        @machinery, @subject_system.ip, username: "machinery", password: "linux"
+        @machinery, @subject_system.ip, username: "machinery", password: "zkaenzyx"
       )
     end
 

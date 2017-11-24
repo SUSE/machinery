@@ -104,7 +104,7 @@ describe Go do
           "env GOOS=linux GOARCH=amd64 go build -o machinery-helper-x86_64"
         )
         expect(subject).to receive(:system).with(
-          "env GOOS=linux GOARCH=386 go build -o machinery-helper-i686"
+          "env GOOS=linux GOARCH=386 GO386=387 go build -o machinery-helper-i686"
         )
         expect(subject).to receive(:system).with(
           "env GOOS=linux GOARCH=ppc64le go build -o machinery-helper-ppc64le"
@@ -120,14 +120,14 @@ describe Go do
         )
         expect($stdout).to receive(:puts).with("Building machinery-helper for architecture i686.")
         allow(subject).to receive(:system).with(
-          "env GOOS=linux GOARCH=386 go build -o machinery-helper-i686"
+          "env GOOS=linux GOARCH=386 GO386=387 go build -o machinery-helper-i686"
         )
         subject.build
       end
 
-      it "compiles arm with the appropriate compiler options" do
+      it "compiles arm and i686 with the appropriate compiler options" do
         expect(subject).to receive(:archs).and_return(
-          ["armv6l", "armv7l", "aarch64"]
+          ["armv6l", "armv7l", "aarch64", "i686"]
         ).at_least(:once)
         expect(subject).to receive(:system).with(
           "env GOOS=linux GOARCH=arm GOARM=6 go build -o machinery-helper-armv6l"
@@ -137,6 +137,9 @@ describe Go do
         )
         expect(subject).to receive(:system).with(
           "env GOOS=linux GOARCH=arm64 go build -o machinery-helper-aarch64"
+        )
+        expect(subject).to receive(:system).with(
+          "env GOOS=linux GOARCH=386 GO386=387 go build -o machinery-helper-i686"
         )
         subject.build
       end

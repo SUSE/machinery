@@ -77,6 +77,7 @@ class Go
     when "x86_64"
       "amd64"
     when "i686"
+      additional_options = " GO386=387"
       "386"
     when "aarch64"
       "arm64"
