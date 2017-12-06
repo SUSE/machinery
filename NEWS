@@ -1,5 +1,7 @@
 # Machinery Release Notes
 
+* Allow inspection of old 32-bit systems even when their architecture is
+  reported as i586 or i386
 
 ## Version 1.23.1 - Fri Nov 24 17:33:39 CET 2017 - thardeck@suse.de
 
