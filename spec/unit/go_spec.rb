@@ -51,7 +51,7 @@ describe Go do
       it "returns arm, x86_64, i686 and ppc64le" do
         allow(subject).to receive(:version).and_return(1.6)
         expect(subject.archs).to match_array(
-          ["x86_64", "i686", "ppc64le", "ppc64", "armv6l", "armv7l", "aarch64"]
+          ["x86_64", "i686", "ppc64le", "ppc64", "armv7l", "aarch64"]
         )
       end
     end
@@ -62,7 +62,7 @@ describe Go do
         allow(subject).to receive(:suse_package_includes_s390?).and_return(true)
 
         expect(subject.archs).to match_array(
-          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv6l", "armv7l", "aarch64"]
+          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
         )
       end
     end
@@ -71,7 +71,7 @@ describe Go do
       it "returns arm, x86_64, i686, ppc64le, ppc64 and s390x" do
         allow(subject).to receive(:version).and_return(1.7)
         expect(subject.archs).to match_array(
-          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv6l", "armv7l", "aarch64"]
+          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
         )
       end
     end
@@ -127,13 +127,10 @@ describe Go do
 
       it "compiles arm and i686 with the appropriate compiler options" do
         expect(subject).to receive(:archs).and_return(
-          ["armv6l", "armv7l", "aarch64", "i686"]
+          ["armv7l", "aarch64", "i686"]
         ).at_least(:once)
         expect(subject).to receive(:system).with(
-          "env GOOS=linux GOARCH=arm GOARM=6 go build -o machinery-helper-armv6l"
-        )
-        expect(subject).to receive(:system).with(
-          "env GOOS=linux GOARCH=arm GOARM=7 go build -o machinery-helper-armv7l"
+          "env GOOS=linux GOARCH=arm GOARM=6 go build -o machinery-helper-armv7l"
         )
         expect(subject).to receive(:system).with(
           "env GOOS=linux GOARCH=arm64 go build -o machinery-helper-aarch64"
