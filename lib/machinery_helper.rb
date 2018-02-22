@@ -34,7 +34,9 @@ class MachineryHelper
   end
 
   def local_helper_path
-    File.join(local_helpers_path, "machinery-helper-#{@system.arch}")
+    File.join(
+      local_helpers_path, "machinery-helper-#{compatible_helper_arch(@system.arch)}"
+    )
   end
 
   def remote_helper_path
@@ -85,5 +87,17 @@ class MachineryHelper
     options = args.last.is_a?(Hash) ? args.pop : {}
     options[:privileged] = true
     @system.run_command(remote_helper_path, subcommand, *args, options)
+  end
+
+  private
+
+  def compatible_helper_arch(system_arch)
+    if ["i586", "i386"].include?(system_arch)
+      "i686"
+    elsif system_arch == "armv6l"
+      "armv7l"
+    else
+      system_arch
+    end
   end
 end

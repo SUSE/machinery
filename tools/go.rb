@@ -25,11 +25,11 @@ class Go
     when version <= 1.4
       ["i686", "x86_64"].include?(local_arch) ? [local_arch] : []
     when version == 1.6 && suse_package_includes_s390?
-      ["i686", "x86_64", "ppc64le", "ppc64", "s390x", "armv6l", "armv7l", "aarch64"]
+      ["i686", "x86_64", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
     when version <= 1.6
-      ["i686", "x86_64", "ppc64le", "ppc64", "armv6l", "armv7l", "aarch64"]
+      ["i686", "x86_64", "ppc64le", "ppc64", "armv7l", "aarch64"]
     when version >= 1.7
-      ["i686", "x86_64", "ppc64le", "ppc64", "s390x", "armv6l", "armv7l", "aarch64"]
+      ["i686", "x86_64", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
     end
   end
 
@@ -81,11 +81,8 @@ class Go
       "386"
     when "aarch64"
       "arm64"
-    when "armv6l"
-      additional_options = " GOARM=6"
-      "arm"
     when "armv7l"
-      additional_options = " GOARM=7"
+      additional_options = " GOARM=6"
       "arm"
     else
       arch

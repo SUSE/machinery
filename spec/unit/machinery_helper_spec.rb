@@ -43,6 +43,40 @@ describe MachineryHelper do
     end
   end
 
+  describe "#local_helper_path" do
+    it "returns the machinery-helper path for supported system archs" do
+      expect(subject.local_helper_path).to eq(
+        File.join(Machinery::ROOT, "machinery-helper", "machinery-helper-#{dummy_system.arch}")
+      )
+    end
+
+    context "in case of old compatible architectures" do
+      it "returns the i686 binary for i586 systems" do
+        expect(dummy_system).to receive(:arch).and_return("i586")
+
+        expect(subject.local_helper_path).to eq(
+          File.join(Machinery::ROOT, "machinery-helper", "machinery-helper-i686")
+        )
+      end
+
+      it "returns the i686 binary for i386 systems" do
+        expect(dummy_system).to receive(:arch).and_return("i386")
+
+        expect(subject.local_helper_path).to eq(
+          File.join(Machinery::ROOT, "machinery-helper", "machinery-helper-i686")
+        )
+      end
+
+      it "returns the armv7l binary for armv6l systems" do
+        expect(dummy_system).to receive(:arch).and_return("armv6l")
+
+        expect(subject.local_helper_path).to eq(
+          File.join(Machinery::ROOT, "machinery-helper", "machinery-helper-armv7l")
+        )
+      end
+    end
+  end
+
   describe "#inject_helper" do
     it "injects the helper using System#inject_file" do
       expect(dummy_system).to receive(:inject_file)
