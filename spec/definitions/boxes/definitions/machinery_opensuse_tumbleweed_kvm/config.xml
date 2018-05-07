@@ -40,7 +40,7 @@
     <users group="vagrant">
         <user name="vagrant" password="vagrant" pwdformat="plain" home="/home/vagrant"/>
     </users>
-    <repository type="yast2" alias="Main Repository" imageinclude="true">
+    <repository type="rpm-md" alias="Main Repository" imageinclude="true">
         <source path="http://download.opensuse.org/tumbleweed/repo/oss/"/>
     </repository>
     <packages type="image">
