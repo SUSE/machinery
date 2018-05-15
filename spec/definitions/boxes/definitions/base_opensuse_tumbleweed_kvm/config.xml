@@ -12,19 +12,6 @@
       <type image="vmx" filesystem="btrfs" boot="vmxboot/suse-tumbleweed" format="vagrant" bootloader="grub2"  kernelcmdline="root=/dev/vda1 disk=/dev/vda nomodeset LOCAL_BOOT=yes net.ifnames=0" bootpartition="false">
             <vagrantconfig provider="libvirt" virtualsize="16"/>
             <size unit="G">15</size>
-            <systemdisk name="btrfs">
-                <volume name="home"/>
-                <volume name="tmp"/>
-                <volume name="opt"/>
-                <volume name="srv"/>
-                <volume name="var/crash"/>
-                <volume name="var/spool"/>
-                <volume name="boot/grub2/i386-pc"/>
-                <volume name="usr/local"/>
-                <volume name="var/log"/>
-                <volume name="var/opt"/>
-                <volume name="var/tmp"/>
-            </systemdisk>
         </type>
         <version>1.13.2</version>
         <packagemanager>zypper</packagemanager>
