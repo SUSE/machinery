@@ -38,7 +38,7 @@ describe "machinery@Tumbleweed" do
           /Enabled: Yes$/,
           /Refresh: Yes$/,
           /Priority: 99$/,
-          /Type: yast2$/
+          /Type: rpm-md$/
         ],
       "services" =>
         [
