@@ -89,6 +89,5 @@ one particular case would be ok, just don't do it.
 
 # Additional Information
 
-If you have any question, feel free to ask on the [Machinery mailing
-list](http://lists.suse.com/mailman/listinfo/machinery). We'll do our best to
-provide a timely and accurate answer.
+If you have any question, feel free to open an issue on our
+[GitHub page](https://github.com/SUSE/machinery/issues).

@@ -3,7 +3,7 @@
 <image schemaversion="6.1" name="Machinery-openSUSE-Tumbleweed">
     <description type="system">
         <author>Machinery-Team</author>
-        <contact>machinery@lists.suse.com</contact>
+        <contact></contact>
         <specification>
             Machinery openSUSE Tumbleweed box
         </specification>
