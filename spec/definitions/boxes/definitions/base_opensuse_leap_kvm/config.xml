@@ -3,7 +3,7 @@
 <image schemaversion="6.1" name="Base-openSUSE-Leap">
     <description type="system">
         <author>Machinery-Team</author>
-        <contact>machinery@lists.suse.com</contact>
+        <contact></contact>
         <specification>
             Base openSUSE Leap box
         </specification>

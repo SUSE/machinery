@@ -2,8 +2,7 @@
 
 This directory contains documentation targeted at developers and contributors of
 Machinery. Together with the source code you should have everything you need to
-know to work on Machinery. If this is not the case please let us know at
-machinery@lists.suse.com.
+know to work on Machinery.
 
 Documentation for users of Machinery is provided as part of the tool in the
 [documentation](http://machinery-project.org/docs) and in the

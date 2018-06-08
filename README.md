@@ -100,9 +100,5 @@ distributions than SUSE look also
 
 ## Contact
 
-You can subscribe to our
-[mailing list](http://lists.suse.com/mailman/listinfo/machinery)
-([archive](http://lists.suse.com/pipermail/machinery/)) if you would like to
-discuss using or contributing to Machinery. If you have any questions or
-feedback please feel free to
-[send them to the mailing list](mailto:machinery@lists.suse.com) as well.
+If you have any question, feel free to open an issue on our
+[GitHub page](https://github.com/SUSE/machinery/issues).

@@ -82,9 +82,7 @@ implemented, so it's clear when things are done and released.
 There is a team at SUSE which is working on Machinery. We try to do as much as
 possible in the open. All code goes through the
 [public patch review workflow](https://github.com/SUSE/machinery/pulls)
-into the [public repository](http://github.com/SUSE/machinery). We have a
-[public mailing list](machinery@lists.suse.com) to discuss everything
-Machinery.
+into the [public repository](http://github.com/SUSE/machinery).
 
 That said, we do use the privilege of sitting together in the same office and
 sometimes there are things we can't discuss publicly. But we try hard to not let
