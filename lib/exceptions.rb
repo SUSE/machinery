@@ -153,6 +153,19 @@ module Machinery
       end
     end
 
+    # An error for inspecting a remote system as a non-root user
+    class SudoPasswordRequired < MachineryError
+      def initialize(host)
+        @host = host
+      end
+
+      def to_s
+        "`sudo` can be used only on #{@host}, when no password is required." \
+        " Make sure that you have the following line in `etc/sudoers` on the remote host:\n" \
+        " machinery ALL=(ALL) NOPASSWD: ALL"
+      end
+    end
+
     class MigrationError < MachineryError; end
 
     class InvalidFilter < MachineryError; end

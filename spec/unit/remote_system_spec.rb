@@ -78,6 +78,23 @@ describe Machinery::RemoteSystem do
           /Remove the 'requiretty' settings from \/etc\/sudoers by running `visudo`\./
         )
       end
+
+      it "raises an exception if user has no password-less sudo rights" do
+        expect(Machinery::LoggedCheetah).to receive(:run).with(
+          "ssh", any_args
+        ).and_raise(
+          Cheetah::ExecutionFailed.new(
+            nil, double(exitstatus: 1), "", "sudo: no tty present and no askpass program specified"
+          )
+        )
+
+        expect {
+          remote_system_with_sudo
+        }.to raise_error(
+          Machinery::Errors::SudoPasswordRequired,
+          /Make sure that you have the following line in/
+        )
+      end
     end
 
     context "when an ssh port is given" do
