@@ -197,7 +197,7 @@ class Machinery::RemoteSystem < Machinery::System
   # and raises an Machinery::Errors::SshConnectionFailed exception when it's not successful.
   def check_connection
     Machinery::LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
-                      "#{remote_user}@#{host}", ":")
+      "#{remote_user}@#{host}", "LC_ALL=#{locale}", ":")
   rescue Cheetah::ExecutionFailed
     raise Machinery::Errors::SshConnectionFailed.new(
       "Could not establish SSH connection to host '#{host}'. Please make sure that " \
@@ -210,7 +210,7 @@ class Machinery::RemoteSystem < Machinery::System
   def check_sudo
     check_requirement("sudo", "-h")
     Machinery::LoggedCheetah.run(*build_command(:ssh), "-q", "-o", "BatchMode=yes",
-      "#{remote_user}@#{host}", "sudo", "id")
+      "#{remote_user}@#{host}", "LC_ALL=#{locale}", "sudo", "id")
   rescue Cheetah::ExecutionFailed => e
     if e.stderr && e.stderr.include?("password is required")
       raise Machinery::Errors::InsufficientPrivileges.new(remote_user, host)

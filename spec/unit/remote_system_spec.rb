@@ -45,6 +45,13 @@ describe Machinery::RemoteSystem do
         remote_system_with_sudo
       end
 
+      it "sets LC_ALL=C to ensure that error messages are as expected" do
+        expect(Machinery::LoggedCheetah).to receive(:run) do |*args|
+          expect(args).to include("LC_ALL=C")
+        end
+        remote_system_with_sudo
+      end
+
       it "raises an exception if the user is not allowed to run sudo" do
         expect(Machinery::LoggedCheetah).to receive(:run).with(
           "ssh", any_args
