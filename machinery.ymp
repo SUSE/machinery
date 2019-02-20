@@ -1,47 +1,5 @@
 <metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">
 
-  <!-- openSUSE Leap 42.1 -->
-  <group distversion="openSUSE Leap 42.1">
-    <repositories>
-      <repository recommended="false">
-        <name>openSUSE Leap 42.1</name>
-        <summary>Test setup for openSUSE Leap 42.1</summary>
-        <description></description>
-        <url>http://download.opensuse.org/distribution/leap/42.1/repo/oss/</url>
-      </repository>
-    </repositories>
-    <software>
-      <item>
-        <name>machinery</name>
-        <summary>Systems management toolkit</summary>
-        <description>Machinery is a systems management toolkit for Linux. It supports configuration
-discovery, system validation, and service migration. It's based on the idea of a
-universal system description.</description>
-      </item>
-    </software>
-  </group>
-
-  <!-- openSUSE Leap 42.2 -->
-  <group distversion="openSUSE Leap 42.2">
-    <repositories>
-      <repository recommended="false">
-        <name>openSUSE Leap 42.2</name>
-        <summary>Test setup for openSUSE Leap 42.2</summary>
-        <description></description>
-        <url>http://download.opensuse.org/distribution/leap/42.2/repo/oss/</url>
-      </repository>
-    </repositories>
-    <software>
-      <item>
-        <name>machinery</name>
-        <summary>Systems management toolkit</summary>
-        <description>Machinery is a systems management toolkit for Linux. It supports configuration
-discovery, system validation, and service migration. It's based on the idea of a
-universal system description.</description>
-      </item>
-    </software>
-  </group>
-
   <!-- openSUSE Tumbleweed -->
   <!-- There is no way to have a section which matches all Tumbleweed version. That's why we use a generic section for Tumbleweed.
        See: https://bugzilla.suse.com/show_bug.cgi?id=948370 -->
