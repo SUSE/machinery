@@ -140,8 +140,10 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/COPYING
 ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 
 # Convert duplicate files to symlinks
-
-%fdupes -s %{buildroot}
+# create symlinks for man pages
+%fdupes -s %{buildroot}/%{_mandir}
+# create hardlinks for the rest
+%fdupes %{buildroot}/%{_prefix}
 
 %files
 %defattr(-,root,root,-)
