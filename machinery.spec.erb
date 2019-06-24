@@ -152,7 +152,12 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 %{_libdir}/ruby/gems/%{rb_ver}/extensions/
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_full_name}.gemspec
 %{_mandir}/man1/*.1.gz
+%if 0%{?suse_version} < 1500
 %doc COPYING NEWS
+%else
+%license COPYING
+%doc NEWS
+%endif
 
 %files doc
 %defattr(-,root,root,-)
