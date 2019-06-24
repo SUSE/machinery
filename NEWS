@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Fix machinery helper go version parsing (bsc#1125785)
 * Allow inspection of old 32-bit systems even when their architecture is
   reported as i586 or i386
 
