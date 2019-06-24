@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2016 SUSE LLC
+# Copyright (c) 2013-2019 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -25,7 +25,7 @@ describe Go do
 
     context "for go 1.4 or older" do
       before(:each) do
-        allow(subject).to receive(:version).and_return(1.4)
+        allow(subject).to receive(:version).and_return("1.4")
       end
 
       context "if arch is an x86 one" do
@@ -41,7 +41,7 @@ describe Go do
       end
 
       it "returns empty list if local arch is not an x86 one" do
-        allow(subject).to receive(:version).and_return(1.4)
+        allow(subject).to receive(:version).and_return("1.4")
         allow(subject).to receive(:local_arch).and_return("s390x")
         expect(subject.archs).to eq([])
       end
@@ -49,7 +49,7 @@ describe Go do
 
     context "for go 1.5 and 1.6 upstream" do
       it "returns arm, x86_64, i686 and ppc64le" do
-        allow(subject).to receive(:version).and_return(1.6)
+        allow(subject).to receive(:version).and_return("1.6")
         expect(subject.archs).to match_array(
           ["x86_64", "i686", "ppc64le", "ppc64", "armv7l", "aarch64"]
         )
@@ -58,7 +58,7 @@ describe Go do
 
     context "for go-s390x 1.6 (machinery build)" do
       it "returns arm, x86_64, i686, ppc64le, ppc64 and s390x" do
-        allow(subject).to receive(:version).and_return(1.6)
+        allow(subject).to receive(:version).and_return("1.6")
         allow(subject).to receive(:suse_package_includes_s390?).and_return(true)
 
         expect(subject.archs).to match_array(
@@ -69,7 +69,16 @@ describe Go do
 
     context "for go 1.7 and newer" do
       it "returns arm, x86_64, i686, ppc64le, ppc64 and s390x" do
-        allow(subject).to receive(:version).and_return(1.7)
+        allow(subject).to receive(:version).and_return("1.7")
+        expect(subject.archs).to match_array(
+          ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
+        )
+      end
+    end
+
+    context "for go 1.11" do
+      it "returns arm, x86_64, i686, ppc64le, ppc64, aarch64 and s390x" do
+        allow(subject).to receive(:run_go_version).and_return("go version go1.11.10 linux/amd64")
         expect(subject.archs).to match_array(
           ["x86_64", "i686", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
         )

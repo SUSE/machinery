@@ -1,6 +1,6 @@
 # encoding:utf-8
 
-# Copyright (c) 2013-2016 SUSE LLC
+# Copyright (c) 2013-2019 SUSE LLC
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of version 3 of the GNU General Public License as
@@ -22,13 +22,13 @@
 class Go
   def archs
     @archs ||= case
-    when version <= 1.4
+    when Gem::Version.new(version) <= Gem::Version.new("1.4")
       ["i686", "x86_64"].include?(local_arch) ? [local_arch] : []
-    when version == 1.6 && suse_package_includes_s390?
+    when Gem::Version.new(version) == Gem::Version.new("1.6") && suse_package_includes_s390?
       ["i686", "x86_64", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
-    when version <= 1.6
+    when Gem::Version.new(version) <= Gem::Version.new("1.6")
       ["i686", "x86_64", "ppc64le", "ppc64", "armv7l", "aarch64"]
-    when version >= 1.7
+    when Gem::Version.new(version) >= Gem::Version.new("1.7")
       ["i686", "x86_64", "ppc64le", "ppc64", "s390x", "armv7l", "aarch64"]
     end
   end
@@ -63,7 +63,7 @@ class Go
   private
 
   def version
-    @version ||= run_go_version[/go(\d+.\d)/, 1].to_f
+    @version ||= run_go_version[/go(\d+.\d+)/, 1]
   end
 
   def suse_package_includes_s390?
