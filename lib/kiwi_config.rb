@@ -233,8 +233,6 @@ EOF
         xml.type(
           image: "vmx",
           filesystem: "ext3",
-          installiso: "true",
-          boot: @system_description.os.kiwi_boot,
           format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
         )
       end

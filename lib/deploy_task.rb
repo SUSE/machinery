@@ -21,7 +21,6 @@ class Machinery::DeployTask
     Machinery::LocalSystem.validate_existence_of_packages(
       ["python-glanceclient", "kiwi", "kiwi-desc-vmxboot"]
     )
-    description.validate_build_compatibility
 
     unless File.exist?(cloud_config)
       raise(Machinery::Errors::DeployFailed,

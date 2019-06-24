@@ -40,7 +40,6 @@ describe Machinery::BuildTask do
       with("machinery-config", "/tmp").and_return(tmp_config_dir)
     allow(Dir).to receive(:mktmpdir).
       with("machinery-image", "/tmp").and_return(tmp_image_dir)
-    allow_any_instance_of(Machinery::SystemDescription).to receive(:validate_build_compatibility)
 
     FileUtils.touch(File.join(output_path, image_file))
   }
@@ -52,8 +51,8 @@ describe Machinery::BuildTask do
     end
 
     it "calls the kiwi wrapper script with sudo to build the image" do
-      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
-      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "python3-kiwi")
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-image-vmx-requires")
       expect(Cheetah).to receive(:run) { |*cmd_array|
         expect(cmd_array).to include("sudo")
         expect(cmd_array.index{ |s|
@@ -65,8 +64,8 @@ describe Machinery::BuildTask do
     end
 
     it "handles execution errors gracefully" do
-      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi")
-      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-desc-vmxboot")
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "python3-kiwi")
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "kiwi-image-vmx-requires")
       expect(Cheetah).to receive(:run) { |*cmd_array|
         expect(cmd_array).to include("sudo")
         expect(cmd_array.index { |s|
