@@ -7,3 +7,9 @@ addFilter("statically-linked-binary")
 
 # machinery-helper consists the build path
 addFilter("file-contains-buildroot")
+
+# .git_revision should be part of the rpm to allow tracking the version
+addFilter("hidden-file-or-dir")
+
+# machinery-helper is statically compiled with go, no need for fPIE
+addFilter("position-independent-executable-suggested")
