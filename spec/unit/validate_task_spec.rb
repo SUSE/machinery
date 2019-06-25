@@ -24,9 +24,9 @@ describe Machinery::ValidateTask, "#validate" do
   let(:store) { Machinery::SystemDescriptionStore.new("spec/data/schema/") }
 
   it "raises an error when encountering faulty description" do
-    expected = <<EOF
-In scope packages: The property.* of type .* did not match any of the required schemas
-EOF
+    expected = <<~REGEX
+      In scope packages: The property.* of type .* did not match any of the required schemas
+    REGEX
     expected.chomp!
     expect {
       validate_task.validate(store, "faulty_description")
