@@ -133,7 +133,7 @@ EOF
         to receive(:to_string).with(:upgrade_format_force, name: "description1")
       expect {
         Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, "description1")
-      }.to raise_error
+      }.to raise_error(TypeError)
     end
 
     it "shows hint if upgrade-format --all fails" do
@@ -143,7 +143,7 @@ EOF
       expect(Machinery::Ui::Hint).to receive(:to_string).with(:upgrade_format_force, name: "--all")
       expect {
         Machinery::UpgradeFormatTask.new.upgrade(system_description_factory_store, nil, all: true)
-      }.to raise_error
+      }.to raise_error(TypeError)
     end
   end
 end

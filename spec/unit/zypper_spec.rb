@@ -133,7 +133,7 @@ EOF
             allow(Machinery::LoggedCheetah).to receive(:run)
             zypper.refresh
           end
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
 

@@ -255,7 +255,7 @@ describe Machinery::Array do
       expect(array.bar).to be_nil
       expect {
         array.baz
-      }.to raise_error
+      }.to raise_error(NoMethodError)
 
       array.foo = "foo"
       array.bar = "bar"
