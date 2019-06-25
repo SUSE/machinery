@@ -95,23 +95,6 @@ module Machinery
     def self.canonical_name
       "SUSE OS"
     end
-
-    def kiwi_bootloader
-      "grub2"
-    end
-
-    def kiwi_boot
-      os_version = version.match(/(\d+)+\.?(\d+)?/)
-      os_id = case name
-              when /SUSE Linux Enterprise Server/
-                "SLES#{os_version[1]}"
-              when /SUSE Linux Enterprise Desktop/
-                "SLED#{os_version[1]}"
-              when /openSUSE/
-                "#{os_version[1]}.#{os_version[2]}"
-      end
-      "vmxboot/suse-#{os_id}"
-    end
   end
 
   class OsSles11 < OsSuse
@@ -127,10 +110,6 @@ module Machinery
       version =~ /11 (.*)/
       sp = $1
       "#{name} #{sp} (#{architecture})"
-    end
-
-    def kiwi_bootloader
-      "grub"
     end
   end
 
@@ -180,10 +159,6 @@ module Machinery
     def self.canonical_name
       "openSUSE Tumbleweed"
     end
-
-    def kiwi_boot
-      "vmxboot/suse-tumbleweed"
-    end
   end
 
   class OsOpenSuseLeap < OsSuse
@@ -193,10 +168,6 @@ module Machinery
 
     def self.canonical_name
       "openSUSE Leap"
-    end
-
-    def kiwi_boot
-      "vmxboot/suse-leap42.1"
     end
   end
 
