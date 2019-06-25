@@ -25,13 +25,12 @@ describe Machinery::ValidateTask, "#validate" do
 
   it "raises an error when encountering faulty description" do
     expected = <<EOF
-In scope packages: The property #0 (_elements/checksum/_attributes/package_system) of type Hash did not match any of the required schemas.
-
+In scope packages: The property.* of type .* did not match any of the required schemas
 EOF
     expected.chomp!
     expect {
       validate_task.validate(store, "faulty_description")
-    }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed, expected)
+    }.to raise_error(Machinery::Errors::SystemDescriptionValidationFailed, /#{expected}/)
   end
 
   it "prints a message in case of successful validation" do

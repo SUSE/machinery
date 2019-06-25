@@ -96,9 +96,9 @@ EOF
       manifest.validate
       expected_output = <<-EOF.chomp
 Warning: System Description validation errors:
-The property '#/meta/os' of type String did not match the following type:
+The property '#/meta/os' of type [Ss]tring did not match the following type:
 EOF
-      expect(captured_machinery_output).to include(expected_output)
+      expect(captured_machinery_output).to match(/#{expected_output}/)
     end
 
     it "doesn't validate incompatible descriptions" do

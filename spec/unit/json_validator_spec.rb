@@ -82,7 +82,7 @@ describe Machinery::JsonValidator do
 
     it "raises an error when encountering invalid enum values" do
       expected = <<EOF
-In scope changed_config_files: The property #0 (files/changes) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 \\(files.*\\) of type .* did not match any of the required schemas
 EOF
 
       errors = Machinery::JsonValidator.new(JSON.parse(<<-EOT)).validate
@@ -110,7 +110,7 @@ EOF
         }
       EOT
 
-      expect(errors.first).to eq(expected.chomp)
+      expect(errors.first).to match(/#{expected.chomp}/)
     end
 
     it "does not raise an error when a changed-managed-file is 'replaced'" do
@@ -158,35 +158,35 @@ EOF
 
       it "raises in case of an unknown status" do
         expected = <<EOF
-In scope changed_config_files: The property #0 (_elements/status) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 \\(_elements.*\\) of type .* did not match any of the required schemas
 EOF
         expected.chomp!
         errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}unknown_status.json"))
         ).validate
-        expect(errors.first).to eq(expected)
+        expect(errors.first).to match(/#{expected}/)
       end
 
       it "raises in case of a pattern mismatch" do
         expected = <<EOF
-In scope changed_config_files: The property #0 (_elements/mode/changes) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 \\(_elements.*\\) of type .* did not match any of the required schemas
 EOF
         expected.chomp!
         errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}pattern_mismatch.json"))
         ).validate
-        expect(errors.first).to eq(expected)
+        expect(errors.first).to match(/#{expected}/)
       end
 
       it "raises for a deleted file in case of an empty changes array" do
         expected = <<EOF
-In scope changed_config_files: The property #0 (_elements/changes) of type Hash did not match any of the required schemas.
+In scope changed_config_files: The property #0 \\(_elements.*\\) of type .* did not match any of the required schemas
 EOF
         expected.chomp!
         errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}deleted_without_changes.json"))
         ).validate
-        expect(errors.first).to eq(expected)
+        expect(errors.first).to match(/#{expected}/)
       end
     end
 
@@ -195,13 +195,13 @@ EOF
 
       it "raises for extracted in case of unknown type" do
         expected = <<EOF
-In scope unmanaged_files: The property #0 (_elements) of type Hash did not match one or more of the required schemas.
+In scope unmanaged_files: The property #0 \\(_elements\\) of type .* did not match one or more of the required schemas
 EOF
         expected.chomp!
         errors = Machinery::JsonValidator.new(
           JSON.parse(File.read("#{path}extracted_unknown_type.json"))
         ).validate
-        expect(errors.first).to include(expected)
+        expect(errors.first).to match(/#{expected}/)
       end
     end
   end
