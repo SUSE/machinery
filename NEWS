@@ -1,5 +1,8 @@
 # Machinery Release Notes
 
+* Allow newer json-schema releases then 2.2.5. Newer versions slow down parsing
+  of manifests but newer Ruby versions have issues with old json schema releases.
+  The performance issue is known upstream: (gh#ruby-json-schema/json-schema#261)
 * Fix machinery helper go version parsing (bsc#1125785)
 * Allow inspection of old 32-bit systems even when their architecture is
   reported as i586 or i386
