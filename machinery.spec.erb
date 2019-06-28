@@ -140,8 +140,13 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/COPYING
 ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 
 # Convert duplicate files to symlinks
+# create symlinks for man pages
+%fdupes -s %{buildroot}/%{_mandir}
+# create hardlinks for the rest
+%fdupes %{buildroot}/%{_prefix}
 
-%fdupes -s %{buildroot}
+# Cleanup obsolete files
+rm %{buildroot}%{_libdir}/ruby/gems/%{rb_ver}/extensions/*/%{rb_ver}/%{mod_full_name}/gem.build_complete
 
 %files
 %defattr(-,root,root,-)
@@ -152,7 +157,12 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 %{_libdir}/ruby/gems/%{rb_ver}/extensions/
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_full_name}.gemspec
 %{_mandir}/man1/*.1.gz
+%if 0%{?suse_version} < 1500
 %doc COPYING NEWS
+%else
+%license COPYING
+%doc NEWS
+%endif
 
 %files doc
 %defattr(-,root,root,-)
