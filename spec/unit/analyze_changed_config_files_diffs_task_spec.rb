@@ -160,6 +160,12 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
     silence_machinery_output
     before(:each) do
       allow(Machinery::Zypper).to receive(:cleanup)
+      allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages).with(
+        ["zypper"]
+      )
+      allow_any_instance_of(Machinery::SystemDescription).to receive(
+        :validate_analysis_compatibility
+      )
     end
 
     it "raises if the analyzed system is not a SUSE os" do
@@ -214,6 +220,15 @@ describe Machinery::AnalyzeConfigFileDiffsTask do
   end
 
   describe "#inspection_list" do
+    before(:each) do
+      allow(Machinery::LocalSystem).to receive(:validate_existence_of_packages).with(
+        ["zypper"]
+      )
+      allow_any_instance_of(Machinery::SystemDescription).to receive(
+        :validate_analysis_compatibility
+      )
+    end
+
     it "groups files by package" do
       expected_group = Machinery::Package.new(
         "name"    => "aaa_base",
