@@ -126,7 +126,7 @@ describe Machinery::Comparison do
         it "raises an error on unknown description" do
           expect {
             result.as_description(:foo)
-          }.to raise_error
+          }.to raise_error(RuntimeError)
         end
 
         it "returns a description for :one" do

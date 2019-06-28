@@ -176,7 +176,7 @@ EOF
       subject.format_version = Machinery::SystemDescription::CURRENT_FORMAT_VERSION - 1
       expect {
         subject.validate_format_compatibility
-      }.to raise_error
+      }.to raise_error(Machinery::Errors::SystemDescriptionIncompatible)
     end
   end
 
@@ -469,7 +469,7 @@ EOF
           description = create_test_description(name: "name", json: json)
           expect {
             description.validate_analysis_compatibility
-          }.to raise_error
+          }.to raise_error(NoMethodError)
         end
       end
 
@@ -490,7 +490,7 @@ EOF
           description = create_test_description(name: "name", json: json)
           expect {
             description.validate_analysis_compatibility
-          }.to raise_error
+          }.to raise_error(Machinery::Errors::AnalysisFailed)
         end
       end
 
