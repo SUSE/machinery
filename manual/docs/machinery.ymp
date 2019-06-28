@@ -1,13 +1,34 @@
 <metapackage xmlns:os="http://opensuse.org/Standards/One_Click_Install" xmlns="http://opensuse.org/Standards/One_Click_Install">
 
-  <!-- openSUSE Leap 42.3 -->
-  <group distversion="openSUSE Leap 42.3">
+  <!-- openSUSE Leap 15.1 -->
+  <group distversion="openSUSE Leap 15.1">
     <repositories>
       <repository recommended="false">
-        <name>openSUSE Leap 42.3</name>
-        <summary>Test setup for openSUSE Leap 42.3</summary>
+        <name>openSUSE Leap 15.1</name>
+        <summary>Test setup for openSUSE Leap 15.1</summary>
         <description></description>
-        <url>http://download.opensuse.org/distribution/leap/42.3/repo/oss/</url>
+        <url>http://download.opensuse.org/distribution/leap/15.1/repo/oss/</url>
+      </repository>
+    </repositories>
+    <software>
+      <item>
+        <name>machinery</name>
+        <summary>Systems management toolkit</summary>
+        <description>Machinery is a systems management toolkit for Linux. It supports configuration
+discovery, system validation, and service migration. It's based on the idea of a
+universal system description.</description>
+      </item>
+    </software>
+  </group>
+
+  <!-- openSUSE Leap 15.0 -->
+  <group distversion="openSUSE Leap 15.0">
+    <repositories>
+      <repository recommended="false">
+        <name>openSUSE Leap 15.0</name>
+        <summary>Test setup for openSUSE Leap 15.0</summary>
+        <description></description>
+        <url>http://download.opensuse.org/distribution/leap/15.0/repo/oss/</url>
       </repository>
     </repositories>
     <software>
