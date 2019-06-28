@@ -140,6 +140,7 @@ EOF
     end
 
     it "doesn't raise an error if the package exists" do
+      expect(Cheetah).to receive(:run).with("rpm", "-q", "bash")
       expect { Machinery::LocalSystem.validate_existence_of_package("bash") }.not_to raise_error
     end
 
