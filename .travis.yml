@@ -2,7 +2,7 @@ branches:
   only:
   - master
 language: ruby
-rvm: 2.3
-script: bundle exec rspec spec/unit
+dist: xenial
 before_install:
   sudo apt-get install -y libvirt-dev rpm2cpio
+script: bundle exec rake test
