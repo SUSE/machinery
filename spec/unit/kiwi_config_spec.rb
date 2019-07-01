@@ -89,7 +89,7 @@ describe Machinery::KiwiConfig do
   <preferences>
     <packagemanager>zypper</packagemanager>
     <version>0.0.1</version>
-    <type image="vmx" filesystem="ext3" installiso="true" boot="vmxboot/suse-13.1" format="qcow2" bootloader="grub2"/>
+    <type image="vmx" filesystem="ext3" format="qcow2"/>
   </preferences>
   <users group="root">
     <user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root"/>
@@ -190,52 +190,6 @@ EOT
       expect(config.sh).to include("Alias With Spaces")
     end
 
-    it "generates kiwi config with sysvinit services" do
-      config = Machinery::KiwiConfig.new(system_description_with_sysvinit_services)
-
-      expected_xml = <<EOT
-<?xml version="1.0" encoding="UTF-8"?>
-<image schemaversion="5.8" name="name">
-  <description type="system">
-    <author>Machinery</author>
-    <contact></contact>
-    <specification>Description of system 'name' exported by Machinery</specification>
-  </description>
-  <preferences>
-    <packagemanager>zypper</packagemanager>
-    <version>0.0.1</version>
-    <type image="vmx" filesystem="ext3" installiso="true" boot="vmxboot/suse-SLES11" format="qcow2" bootloader="grub"/>
-  </preferences>
-  <users group="root">
-    <user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root"/>
-  </users>
-  <repository alias="nodejs_alias" type="rpm-md" priority="1">
-    <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
-  </repository>
-  <repository alias="NCCRepo" type="yast2" priority="2" username="usernameusernameusernameusername" password="passwordpassword">
-    <source path="https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64?credentials=NCCcredentials"/>
-  </repository>
-  <repository alias="SUSE_Linux_Enterprise_Server_12_SP1_x86_64:SLES12-SP1-Pool" type="rpm-md" priority="99" username="SCC_usernameusernameusernameusername" password="passwordpassword">
-    <source path="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?randomrandomrandomrandomrandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandorandomrandomrandomrandomrandom"/>
-  </repository>
-  <repository alias="Alias-With-Spaces" type="rpm-md" priority="1">
-    <source path="http://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_13.1/"/>
-  </repository>
-  <packages type="bootstrap">
-    <package name="filesystem"/>
-  </packages>
-  <packages type="image">
-    <package name="bash"/>
-    <package name="autofs"/>
-  </packages>
-</image>
-EOT
-      expect(config.xml_text).to eq(expected_xml)
-
-      expect(config.sh).to include("chkconfig sshd on\n")
-      expect(config.sh).to include("chkconfig rsyncd off\n")
-    end
-
     it "generates kiwi config with systemd services" do
       config = Machinery::KiwiConfig.new(system_description_with_systemd_services)
 
@@ -264,15 +218,6 @@ EOT
       }.to raise_error(Machinery::Errors::ExportFailed, /not_known/)
     end
 
-    it "sets the target distribution and bootloader for openSUSE 13.1" do
-      expect(system_description_with_content.os.name).to include("openSUSE 13.1")
-      config = Machinery::KiwiConfig.new(system_description_with_content)
-
-      type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
-      expect(type_node.attributes["boot"]).to eq("vmxboot/suse-13.1")
-      expect(type_node.attributes["bootloader"]).to eq("grub2")
-    end
-
     it "handles quotes in changed links" do
       system_description_with_modified_files["changed_managed_files"] <<
         Machinery::ChangedManagedFile.new(
@@ -292,18 +237,6 @@ EOT
       expect(config.sh).to include(
         "ln -s '/opt/test-quote-char/target-with-quote'\\''-foo' '/opt/test-quote-char/link'"
       )
-    end
-
-    it "sets the target distribution and bootloader for SLES12" do
-      config = Machinery::KiwiConfig.new(
-        create_test_description(
-          scopes: ["os_sles12", "packages", "repositories"], name: name, store: store
-        )
-      )
-
-      type_node = REXML::Document.new(config.xml_text).get_elements("/image/preferences/type").first
-      expect(type_node.attributes["boot"]).to eq("vmxboot/suse-SLES12")
-      expect(type_node.attributes["bootloader"]).to eq("grub2")
     end
 
     context "if files were not extracted" do
@@ -379,24 +312,6 @@ EOT
 
       expect(config).to receive(:enable_dhcp)
       config.write(export_dir)
-    end
-
-    it "enables dhcp on SLES11 with the enable_dhcp option" do
-      allow($stdout).to receive(:puts)
-      network_config = File.join(export_dir, "/root/etc/sysconfig/network/ifcfg-eth0")
-
-      config = Machinery::KiwiConfig.new(
-          system_description_with_sysvinit_services,
-          enable_dhcp: true
-      )
-      config.write(export_dir)
-
-      expect(
-        File.exist?(File.join(export_dir, "/root/etc/udev/rules.d/70-persistent-net.rules"))
-      ).to be(false)
-      expect(File.exist?(network_config)).to be(true)
-
-      expect(File.read(network_config)).to include("BOOTPROTO='dhcp'")
     end
 
     it "enables dhcp on SLES12 with the enable_dhcp option" do

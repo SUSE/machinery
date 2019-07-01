@@ -41,7 +41,6 @@ describe Machinery::DeployTask do
     allow(Dir).to receive(:mktmpdir).and_return(tmp_image_dir)
     allow(Machinery::JsonValidator).to receive(:new).and_return(double(validate: []))
     FakeFS::FileSystem.clone("spec/data/deploy/", "/")
-    allow(system_description).to receive(:validate_build_compatibility).and_return(true)
   end
 
   describe "#deploy" do

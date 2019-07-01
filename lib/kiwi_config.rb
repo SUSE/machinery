@@ -233,9 +233,7 @@ EOF
         xml.type(
           image: "vmx",
           filesystem: "ext3",
-          installiso: "true",
-          boot: @system_description.os.kiwi_boot,
-          format: "qcow2", bootloader: @system_description.os.kiwi_bootloader
+          format: "qcow2"
         )
       end
 
@@ -377,12 +375,8 @@ EOF
   end
 
   def enable_dhcp(output_location)
-    if @system_description.os.is_a?(Machinery::OsSles11)
-      write_dhcp_network_config(output_location, "eth0")
-    else
-      write_dhcp_network_config(output_location, "lan0")
-      write_persistent_net_rules(output_location)
-    end
+    write_dhcp_network_config(output_location, "lan0")
+    write_persistent_net_rules(output_location)
     puts "DHCP in built image will be enabled for the first device"
   end
 

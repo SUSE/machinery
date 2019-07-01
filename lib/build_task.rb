@@ -18,8 +18,9 @@
 class Machinery::BuildTask
   def build(system_description, output_path, options = {})
     Machinery::LocalSystem.validate_architecture("x86_64")
-    Machinery::LocalSystem.validate_existence_of_packages(["kiwi", "kiwi-desc-vmxboot"])
-    system_description.validate_build_compatibility
+    Machinery::LocalSystem.validate_existence_of_packages(
+      ["python3-kiwi", "kiwi-image-vmx-requires"]
+    )
 
     tmp_config_dir = Dir.mktmpdir("machinery-config", "/tmp")
     tmp_image_dir = Dir.mktmpdir("machinery-image", "/tmp")
@@ -110,7 +111,8 @@ class Machinery::BuildTask
 
   def kiwi_wrapper(tmp_config_dir, tmp_image_dir, output_path, image_extension)
     script = "#!/bin/bash\n"
-    script << "/usr/sbin/kiwi --build '#{tmp_config_dir}' --destdir '#{tmp_image_dir}' --logfile '#{tmp_image_dir}/kiwi-terminal-output.log'\n"
+    script << "/usr/bin/kiwi-ng --logfile='#{tmp_image_dir}/kiwi-terminal-output.log' system"
+    script << " build --description='#{tmp_config_dir}' --target-dir='#{tmp_image_dir}'\n"
     script << "if [ $? -eq 0 ]; then\n"
     script << "  mv '#{tmp_image_dir}/'*.#{image_extension} '#{output_path}'\n"
     script << "  rm -rf '#{tmp_image_dir}'\n"

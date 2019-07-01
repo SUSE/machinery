@@ -1,5 +1,6 @@
 # Machinery Release Notes
 
+* Switch image building support from legacy Kiwi to Kiwi Next Generation
 * Allow newer json-schema releases then 2.2.5. Newer versions slow down parsing
   of manifests but newer Ruby versions have issues with old json schema releases.
   The performance issue is known upstream: (gh#ruby-json-schema/json-schema#261)

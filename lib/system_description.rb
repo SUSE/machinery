@@ -166,15 +166,6 @@ class Machinery::SystemDescription < Machinery::Object
     end
   end
 
-  def validate_build_compatibility
-    kiwi_template_path = "/usr/share/kiwi/image/#{os.kiwi_boot}"
-    unless Dir.exist?(kiwi_template_path)
-      raise Machinery::Errors::BuildFailed.new("The execution of the build script failed. " \
-        "Building of operating system '#{os.display_name}' can't be accomplished because the " \
-        "kiwi template file in `#{kiwi_template_path}` does not exist.")
-    end
-  end
-
   def to_hash
     meta = {}
     meta["format_version"] = self.format_version if self.format_version
