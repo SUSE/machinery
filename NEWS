@@ -4,6 +4,7 @@
   of manifests but newer Ruby versions have issues with old json schema releases.
   The performance issue is known upstream: (gh#ruby-json-schema/json-schema#261)
 * Fix machinery helper go version parsing (bsc#1125785)
+* Improve parsing of SSH exceptions (gh#SUSE/machinery#2257)
 * Allow inspection of old 32-bit systems even when their architecture is
   reported as i586 or i386
 
