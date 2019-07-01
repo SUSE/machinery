@@ -34,7 +34,7 @@ group :test do
   gem "prawn"
   gem "prawn-table"
   gem "rspec-steps"
-  gem "capybara"
+  gem "capybara", "~> 2.18.0"
   gem "poltergeist"
   gem "phantomjs"
 end
