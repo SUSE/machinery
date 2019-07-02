@@ -145,9 +145,6 @@ ln -s %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_full_name}/NEWS
 # create hardlinks for the rest
 %fdupes %{buildroot}/%{_prefix}
 
-# Cleanup obsolete files
-rm %{buildroot}%{_libdir}/ruby/gems/%{rb_ver}/extensions/*/%{rb_ver}/%{mod_full_name}/gem.build_complete
-
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{binary_name}
