@@ -1,7 +1,5 @@
 # Machinery
 
-[![Code Climate](https://codeclimate.com/github/SUSE/machinery/badges/gpa.svg)](https://codeclimate.com/github/SUSE/machinery)
-[![Test Coverage](https://codeclimate.com/github/SUSE/machinery/badges/coverage.svg)](https://codeclimate.com/github/SUSE/machinery/coverage)
 [![Gem Version](https://badge.fury.io/rb/machinery-tool.svg)](http://badge.fury.io/rb/machinery-tool)
 
 Machinery is a systems management toolkit for Linux. It supports configuration
