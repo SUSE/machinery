@@ -17,35 +17,35 @@
           
               
                   <li class="">
-                      <a href="../docs/">Welcome</a>
+                      <a href="docs/">Welcome</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="../machinery_main_general.1/">General Overview</a>
+                      <a href="machinery_main_general.1/">General Overview</a>
                   </li>
               
 
           
               
                   <li class="current">
-                      <a href="./">Scopes</a>
+                      <a href="machinery_main_scopes.1/">Scopes</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="../machinery_main_usecases.1/">Use cases</a>
+                      <a href="machinery_main_usecases.1/">Use cases</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
+                      <a href="machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -55,79 +55,79 @@
                       <ul>
                       
                           <li class="">
-                              <a href="../machinery-analyze.1/">Analyze</a>
+                              <a href="machinery-analyze.1/">Analyze</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-build.1/">Build</a>
+                              <a href="machinery-build.1/">Build</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-compare.1/">Compare</a>
+                              <a href="machinery-compare.1/">Compare</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-config.1/">Config</a>
+                              <a href="machinery-config.1/">Config</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-copy.1/">Copy</a>
+                              <a href="machinery-copy.1/">Copy</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-deploy.1/">Deploy</a>
+                              <a href="machinery-deploy.1/">Deploy</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
+                              <a href="machinery-export-autoyast.1/">Export AutoYaST</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-export-kiwi.1/">Export Kiwi</a>
+                              <a href="machinery-export-kiwi.1/">Export Kiwi</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-export-html.1/">Export HTML</a>
+                              <a href="machinery-export-html.1/">Export HTML</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect.1/">Inspect</a>
+                              <a href="machinery-inspect.1/">Inspect</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
+                              <a href="machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-list.1/">List</a>
+                              <a href="machinery-list.1/">List</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-man.1/">Man</a>
+                              <a href="machinery-man.1/">Man</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-move.1/">Move</a>
+                              <a href="machinery-move.1/">Move</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-remove.1/">Remove</a>
+                              <a href="machinery-remove.1/">Remove</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-serve.1/">Serve</a>
+                              <a href="machinery-serve.1/">Serve</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-show.1/">Show</a>
+                              <a href="machinery-show.1/">Show</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-upgrade-format.1/">Upgrade Format</a>
+                              <a href="machinery-upgrade-format.1/">Upgrade Format</a>
                           </li>
                       
                           <li class="">
-                              <a href="../machinery-validate.1/">Validate</a>
+                              <a href="machinery-validate.1/">Validate</a>
                           </li>
                       
                       </ul>
@@ -138,111 +138,7 @@
         </ul>
       </div>
       <div class="content">
-        <h1 id="scopes">Scopes</h1>
-<ul>
-<li>os</li>
-</ul>
-<p>Contains information about the operating system, name, version, and
-architecture of the inspected system.</p>
-<ul>
-<li>packages</li>
-</ul>
-<p>Contains information on all installed packages installed on the
-inspected system.</p>
-<ul>
-<li>patterns</li>
-</ul>
-<p>Contains all patterns or tasks installed on the inspected system. A pattern is a
-collection of software packages, similar to the idea of tasks on Debian/Ubuntu-
-like systems. The meaning of software patterns depends on the package manager of the
-distribution.</p>
-<ul>
-<li>repositories</li>
-</ul>
-<p>Contains all information about software repositories configured on the
-inspected system. The information about repositories depends on the package
-manager of the distribution. Machinery collects the following information
-from each configured repository:</p>
-<ul>
-<li>
-<p>The alias name of the repository.</p>
-</li>
-<li>
-<p>The repository type, rpm-md and YaST types that are used on SUSE systems.</p>
-</li>
-<li>
-<p>The path to the repository. This could be a local path, a remote location,
-  a device, or a file.</p>
-</li>
-<li>
-<p>A boolean flag that indicates if this repository is in use or not.</p>
-</li>
-<li>
-<p>A boolean flag that indicates if this repository should update the locally
-  stored metadata files with metadata files from the origin automatically or
-  not.</p>
-</li>
-<li>
-<p>A boolean flag that indicates if packages which would be installed from
-  this repository should be checked by their gpg key or not.</p>
-</li>
-<li>
-<p>A numeric value for a priority. The priority of a repository is compared
-  to the priorities of all other activated repositories. Values can
-  range from 1 (highest) to 99 (lowest, default).</p>
-</li>
-<li>
-<p>users</p>
-</li>
-</ul>
-<p>Contains information about the system users including user and group ids,
-login information, such as password hashes and - if available - additional
-password properties.</p>
-<ul>
-<li>groups</li>
-</ul>
-<p>Contains information about the system groups such as group attributes and the
-list of group members.</p>
-<ul>
-<li>services</li>
-</ul>
-<p>Services are applications running in the background doing continuous work
-or waiting for requests to do work.
-The scope determines which services are configured to be started in which
-runlevel. It uses the <code>chkconfig</code> command to obtain that information.
-The xinetd services that are also displayed by <code>chkconfig</code> are switched
-on/off by editing configuration files and are ignored in this context.</p>
-<ul>
-<li>changed-config-files</li>
-</ul>
-<p>Contains all configuration files which have been changed since they were
-installed.
-Changed configuration files are all those files which are marked as such in the
-package which has installed them. A configuration file change is reported
-if its content or its attributes like Linux permission bits or ownership
-have changed.</p>
-<ul>
-<li>changed-managed-files</li>
-</ul>
-<p>Contains the names and contents of all non-configuration files which have
-been changed compared to the files in the package. A file change is reported
-if its content or its attributes like Linux permission bits or ownership
-have changed.</p>
-<ul>
-<li>unmanaged-files</li>
-</ul>
-<p>Contains the names and contents of all files which are not part of any package.
-The list of unmanaged files contains only plain files and
-directories. Special files like device nodes, named pipes and Unix domain
-sockets are ignored. The directories <code>/tmp</code>,  <code>/var/tmp</code>, <code>/.snapshots/</code>,
-<code>/var/run</code> and special mounts like procfs and sysfs are ignored, too.
-If a directory is in this list, no file or directory below it belongs to a
-package.</p>
-<p>Meta data information of unmanaged files is only available if the files were
-extracted during inspection.</p>
-<p>Using the <code>--extract-unmanaged-files</code> option, the files are transferred from
-the system and stored in the system description. Depending on the content of
-the inspected system, the amount of data stored may be huge.</p>
+        
       </div>
     </div>
   </body>
