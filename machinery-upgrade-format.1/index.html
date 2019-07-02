@@ -17,35 +17,35 @@
           
               
                   <li class="">
-                      <a href="docs/">Welcome</a>
+                      <a href="../docs/">Welcome</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_general.1/">General Overview</a>
+                      <a href="../machinery_main_general.1/">General Overview</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_scopes.1/">Scopes</a>
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_usecases.1/">Use cases</a>
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_security_implications.1/">Security Implications</a>
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -55,79 +55,79 @@
                       <ul>
                       
                           <li class="">
-                              <a href="machinery-analyze.1/">Analyze</a>
+                              <a href="../machinery-analyze.1/">Analyze</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-build.1/">Build</a>
+                              <a href="../machinery-build.1/">Build</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-compare.1/">Compare</a>
+                              <a href="../machinery-compare.1/">Compare</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-config.1/">Config</a>
+                              <a href="../machinery-config.1/">Config</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-copy.1/">Copy</a>
+                              <a href="../machinery-copy.1/">Copy</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-deploy.1/">Deploy</a>
+                              <a href="../machinery-deploy.1/">Deploy</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-autoyast.1/">Export AutoYaST</a>
+                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-kiwi.1/">Export Kiwi</a>
+                              <a href="../machinery-export-kiwi.1/">Export Kiwi</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-html.1/">Export HTML</a>
+                              <a href="../machinery-export-html.1/">Export HTML</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-inspect.1/">Inspect</a>
+                              <a href="../machinery-inspect.1/">Inspect</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-inspect-container.1/">Inspect Container</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-list.1/">List</a>
+                              <a href="../machinery-list.1/">List</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-man.1/">Man</a>
+                              <a href="../machinery-man.1/">Man</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-move.1/">Move</a>
+                              <a href="../machinery-move.1/">Move</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-remove.1/">Remove</a>
+                              <a href="../machinery-remove.1/">Remove</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-serve.1/">Serve</a>
+                              <a href="../machinery-serve.1/">Serve</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-show.1/">Show</a>
+                              <a href="../machinery-show.1/">Show</a>
                           </li>
                       
                           <li class="current">
-                              <a href="machinery-upgrade-format.1/">Upgrade Format</a>
+                              <a href="./">Upgrade Format</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-validate.1/">Validate</a>
+                              <a href="../machinery-validate.1/">Validate</a>
                           </li>
                       
                       </ul>
@@ -138,7 +138,42 @@
         </ul>
       </div>
       <div class="content">
-        
+        <h1 id="upgrade-format-upgrade-system-description">upgrade-format — Upgrade System Description</h1>
+<h2 id="synopsis">Synopsis</h2>
+<p><code>machinery upgrade-format</code> --all</p>
+<p><code>machinery upgrade-format</code> NAME</p>
+<p><code>machinery</code> help upgrade-format</p>
+<h2 id="description">Description</h2>
+<p>The <code>upgrade-format</code> command upgrades a system description to the latest format
+version.</p>
+<p>The <code>format</code> in this context is the structure of the internal system description
+data. If the format version of a system description does not match the current
+<code>machinery</code> format version, <code>machinery</code> is no longer able to work with the data
+until it is upgraded. The current format version can be retrieved using
+<code>machinery --version</code>. The format version of a system description can be found
+in the <code>meta</code> section of the according <code>manifest.json</code> file.</p>
+<p>If the <code>--all</code> switch is given all local descriptions will be upgraded.</p>
+<h2 id="options">Options</h2>
+<ul>
+<li><code>--all</code> (optional):
+    Upgrade all stored system descriptions.</li>
+</ul>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>NAME</code> (optional):
+    Upgrade specified system description.</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<ul>
+<li>
+<p>Upgrade the system description stored as <code>earth</code>:</p>
+<p>$ <code>machinery</code> upgrade-format earth</p>
+</li>
+<li>
+<p>Upgrade all stored system descriptions:</p>
+<p>$ <code>machinery</code> upgrade-format --all</p>
+</li>
+</ul>
       </div>
     </div>
   </body>

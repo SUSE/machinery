@@ -1,123 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/docs/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery_main_general.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery_main_scopes.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery_main_usecases.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery_main_security_implications.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    
+
+    
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-analyze.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-build.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-compare.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-config.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-copy.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-deploy.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-export-autoyast.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-export-kiwi.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-export-html.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-inspect.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-inspect-container.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-list.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-man.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-move.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-remove.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-serve.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-show.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-upgrade-format.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
     <url>
-     <loc>None</loc>
-     <lastmod>2019-07-02</lastmod>
+     <loc>/machinery-validate.1/</loc>
+     <lastmod>2017-11-24</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    
+
 </urlset>

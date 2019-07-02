@@ -17,35 +17,35 @@
           
               
                   <li class="">
-                      <a href="docs/">Welcome</a>
+                      <a href="../docs/">Welcome</a>
                   </li>
               
 
           
               
                   <li class="current">
-                      <a href="machinery_main_general.1/">General Overview</a>
+                      <a href="./">General Overview</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_scopes.1/">Scopes</a>
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_usecases.1/">Use cases</a>
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_security_implications.1/">Security Implications</a>
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -55,79 +55,79 @@
                       <ul>
                       
                           <li class="">
-                              <a href="machinery-analyze.1/">Analyze</a>
+                              <a href="../machinery-analyze.1/">Analyze</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-build.1/">Build</a>
+                              <a href="../machinery-build.1/">Build</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-compare.1/">Compare</a>
+                              <a href="../machinery-compare.1/">Compare</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-config.1/">Config</a>
+                              <a href="../machinery-config.1/">Config</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-copy.1/">Copy</a>
+                              <a href="../machinery-copy.1/">Copy</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-deploy.1/">Deploy</a>
+                              <a href="../machinery-deploy.1/">Deploy</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-autoyast.1/">Export AutoYaST</a>
+                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-kiwi.1/">Export Kiwi</a>
+                              <a href="../machinery-export-kiwi.1/">Export Kiwi</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-html.1/">Export HTML</a>
+                              <a href="../machinery-export-html.1/">Export HTML</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-inspect.1/">Inspect</a>
+                              <a href="../machinery-inspect.1/">Inspect</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-inspect-container.1/">Inspect Container</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-list.1/">List</a>
+                              <a href="../machinery-list.1/">List</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-man.1/">Man</a>
+                              <a href="../machinery-man.1/">Man</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-move.1/">Move</a>
+                              <a href="../machinery-move.1/">Move</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-remove.1/">Remove</a>
+                              <a href="../machinery-remove.1/">Remove</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-serve.1/">Serve</a>
+                              <a href="../machinery-serve.1/">Serve</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-show.1/">Show</a>
+                              <a href="../machinery-show.1/">Show</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-upgrade-format.1/">Upgrade Format</a>
+                              <a href="../machinery-upgrade-format.1/">Upgrade Format</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-validate.1/">Validate</a>
+                              <a href="../machinery-validate.1/">Validate</a>
                           </li>
                       
                       </ul>
@@ -138,7 +138,115 @@
         </ul>
       </div>
       <div class="content">
-        
+        <h1 id="machinery-a-systems-management-toolkit-for-linux">Machinery — A Systems Management Toolkit for Linux</h1>
+<h1 id="synopsis">Synopsis</h1>
+<p><code>machinery</code> SUBCOMMAND [options] <br>
+<code>machinery</code> help [SUBCOMMAND]</p>
+<h1 id="conceptual-overview">Conceptual Overview</h1>
+<p>Machinery's core concept is the complete representation of a system by a
+universal system description.
+System descriptions are managed independently of the described
+systems which allows for system state conservation and offline preparation of
+modifications.</p>
+<p>Machinery's subcommands work on the system description as the connecting
+element.
+System descriptions are obtained by inspecting systems, importing from other
+formats, manual creation or merging existing descriptions.
+Machinery can store and modify system descriptions to allow changes to
+described state of the system.
+System descriptions can be compared to find similarities and differences
+between them or analyzed to deepen the knowledge about particular aspects of
+the system.
+System descriptions may be exported to other formats and can be used to
+migrate or replicate systems.</p>
+<p>Subcommands can be combined in different ways to accommodate higher-level work
+flows and use cases.
+These are some implemented and planned use cases:</p>
+<p>Migrate a physical system to a virtual environment:</p>
+<ul>
+<li>Inspect a system to obtain a system description</li>
+<li>Export the system description to a Kiwi configuration</li>
+<li>Build a cloud image from the configuration</li>
+<li>Deploy the image to the cloud</li>
+</ul>
+<p>Migrate a system while changing the configuration:</p>
+<ul>
+<li>Inspect a system to obtain a system description</li>
+<li>Modify the system description</li>
+<li>Build image for deployment</li>
+</ul>
+<p>Using Machinery as an extension from other formats:</p>
+<ul>
+<li>Import AutoYaST profile as system description</li>
+<li>Build image for deployment</li>
+</ul>
+<p>Machinery provides an extensible set of tools which can be combined to create
+higher-level work flows.
+It is designed for environments which focus on automation, integration
+of diverse tools and accountable management.
+Machinery integrates with existing configuration management solutions to
+address use cases currently not covered by them.</p>
+<h2 id="the-machinery-command">The machinery Command</h2>
+<p>Machinery is implemented as a command line tool named <code>machinery</code>. The
+<code>machinery</code> command has several subcommands for specific tasks. All
+subcommands work with the same system description identified by an optional
+name which can be used by all subcommands.</p>
+<h2 id="system-description">System Description</h2>
+<p>The System Description format and file structure is documented in the machinery
+wiki: <a href="https://github.com/SUSE/machinery/wiki/System-Description-Format">System Description Format</a>.</p>
+<p>Machinery validates descriptions on load. It checks that the JSON structure of
+the manifest file, which contains the primary and meta data of a description, is 
+correct and it adheres to the schema. Validation errors are reported as warnings.
+It also checks that the information about extracted files is consistent. Missing
+files or extra files without reference in the manifest are treated also as
+warnings. All other issues are errors which need to be fixed so that Machinery
+can use the description.
+To manually validate a description use the <code>machinery validate</code> command.</p>
+<h2 id="scopes">Scopes</h2>
+<p>The system description is structured into "scopes". A scope covers a specific
+part of the configuration of the inspected system such as installed packages,
+repositories, or changed configuration files.</p>
+<p>For example, if you are only interested in the installed packages, limit the
+scope to <code>packages</code>. This will output only the requested information.</p>
+<p>See the <a href="../machinery_main_scopes.1/">Scopes documentation</a> for a list of all supported scopes.</p>
+<h1 id="options-for-all-subcommands">Options for All Subcommands</h1>
+<!--- These are 'global' options of machinery -->
+
+<ul>
+<li>
+<p><code>--version</code>:
+    Displays version of <code>machinery</code> tool. Exit when done.</p>
+</li>
+<li>
+<p><code>--debug</code>:
+    Enable debug mode. Machinery writes additional information into the log
+    file which can be useful to track down problems.</p>
+</li>
+</ul>
+<h1 id="files-and-devices">Files and Devices</h1>
+<ul>
+<li>
+<p><code>~/.machinery/machinery.config</code>:</p>
+<p>Configuration file.</p>
+</li>
+<li>
+<p><code>~/.machinery/machinery.log</code>:</p>
+<p>Central log file, in the format date, time, process id, and log message.</p>
+</li>
+<li>
+<p><code>em1 (openSUSE 13.2 / openSUSE leap)</code>, <code>eth0</code> (SLE11) and <code>lan0</code> (SLE12):</p>
+<p>First network device is used when DHCP in built image is enabled.</p>
+</li>
+</ul>
+<h1 id="environment">Environment</h1>
+<ul>
+<li>
+<p><code>MACHINERY_LOG_FILE</code>:</p>
+<p>Location of Machinery's log file (defaults to <code>~/.machinery/machinery.log</code>).</p>
+</li>
+</ul>
+<h1 id="copyright">Copyright</h1>
+<p>Copyright (c) 2013-2016 <a href="http://www.suse.com">SUSE LLC</a></p>
       </div>
     </div>
   </body>

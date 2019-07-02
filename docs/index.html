@@ -17,35 +17,35 @@
           
               
                   <li class="current">
-                      <a href="docs/">Welcome</a>
+                      <a href="./">Welcome</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_general.1/">General Overview</a>
+                      <a href="../machinery_main_general.1/">General Overview</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_scopes.1/">Scopes</a>
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_usecases.1/">Use cases</a>
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
                   </li>
               
 
           
               
                   <li class="">
-                      <a href="machinery_main_security_implications.1/">Security Implications</a>
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
                   </li>
               
 
@@ -55,79 +55,79 @@
                       <ul>
                       
                           <li class="">
-                              <a href="machinery-analyze.1/">Analyze</a>
+                              <a href="../machinery-analyze.1/">Analyze</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-build.1/">Build</a>
+                              <a href="../machinery-build.1/">Build</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-compare.1/">Compare</a>
+                              <a href="../machinery-compare.1/">Compare</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-config.1/">Config</a>
+                              <a href="../machinery-config.1/">Config</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-copy.1/">Copy</a>
+                              <a href="../machinery-copy.1/">Copy</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-deploy.1/">Deploy</a>
+                              <a href="../machinery-deploy.1/">Deploy</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-autoyast.1/">Export AutoYaST</a>
+                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-kiwi.1/">Export Kiwi</a>
+                              <a href="../machinery-export-kiwi.1/">Export Kiwi</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-export-html.1/">Export HTML</a>
+                              <a href="../machinery-export-html.1/">Export HTML</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-inspect.1/">Inspect</a>
+                              <a href="../machinery-inspect.1/">Inspect</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-inspect-container.1/">Inspect Container</a>
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-list.1/">List</a>
+                              <a href="../machinery-list.1/">List</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-man.1/">Man</a>
+                              <a href="../machinery-man.1/">Man</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-move.1/">Move</a>
+                              <a href="../machinery-move.1/">Move</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-remove.1/">Remove</a>
+                              <a href="../machinery-remove.1/">Remove</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-serve.1/">Serve</a>
+                              <a href="../machinery-serve.1/">Serve</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-show.1/">Show</a>
+                              <a href="../machinery-show.1/">Show</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-upgrade-format.1/">Upgrade Format</a>
+                              <a href="../machinery-upgrade-format.1/">Upgrade Format</a>
                           </li>
                       
                           <li class="">
-                              <a href="machinery-validate.1/">Validate</a>
+                              <a href="../machinery-validate.1/">Validate</a>
                           </li>
                       
                       </ul>
@@ -138,7 +138,52 @@
         </ul>
       </div>
       <div class="content">
-        
+        <h1 id="machinery-documentation">Machinery Documentation</h1>
+<p>Welcome! The Machinary documentation is a reference aimed at system administrators.
+It will give you an overview of Machinery itself, its subcommands, and usage examples.</p>
+<h1 id="what-is-machinery">What is Machinery?</h1>
+<p>Machinery is a systems management toolkit for Linux. It supports configuration
+discovery, system validation, and service migration. Machinery is based on the
+idea of a universal system description. Machinery has a set of commands which
+work with this system description. These commands can be combined to form work
+flows. Machinery is targeted at the system administrator of the data center.</p>
+<h1 id="work-flow-examples">Work Flow Examples</h1>
+<h2 id="inspect-a-system-and-show-results">Inspect a System and Show Results</h2>
+<ul>
+<li><code>machinery inspect --extract-files --name=NAME HOSTNAME</code></li>
+<li><code>machinery show NAME</code></li>
+</ul>
+<h2 id="export-system-description-as-html">Export System Description as HTML</h2>
+<ul>
+<li><code>machinery export-html --html-dir=tmp NAME</code></li>
+</ul>
+<h2 id="inspect-two-systems-and-compare-them">Inspect Two Systems and Compare Them</h2>
+<ul>
+<li><code>machinery inspect HOSTNAME1</code></li>
+<li><code>machinery inspect HOSTNAME2</code></li>
+<li><code>machinery compare HOSTNAME1 HOSTNAME2</code></li>
+</ul>
+<h2 id="fully-inspect-a-system-and-export-a-kiwi-description">Fully Inspect a System and Export a Kiwi Description</h2>
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery export-kiwi --kiwi-dir=~/kiwi HOSTNAME</code></li>
+</ul>
+<h2 id="fully-inspect-a-system-and-export-an-autoyast-profile">Fully Inspect a System and Export an AutoYaST Profile</h2>
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery export-autoyast --autoyast-dir=~/autoyast HOSTNAME</code></li>
+</ul>
+<h2 id="fully-inspect-a-system-and-deploy-a-replicate-to-the-cloud">Fully Inspect a System and Deploy a Replicate to the Cloud</h2>
+<ul>
+<li><code>machinery inspect --extract-files HOSTNAME</code></li>
+<li><code>machinery deploy --cloud-config=~/openrc.sh HOSTNAME</code></li>
+</ul>
+<h2 id="how-to-upgrade-a-sles-11-sp3-system-to-sles-12">How to upgrade a SLES 11 SP3 system to SLES 12</h2>
+<ul>
+<li>Machinery can help you to upgrade without affecting the original system.
+    For more details please read the Wiki Page: <a href="https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12">How to upgrade a SLES 11 SP3 system to SLES 12</a>.</li>
+</ul>
+<p>For a more detailed overview see <a href="../machinery_main_general.1/">General Overview</a>.</p>
       </div>
     </div>
   </body>
