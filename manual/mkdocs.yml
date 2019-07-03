@@ -1,32 +1,46 @@
 site_name: Machinery Documentation
-pages:
-- Welcome: docs.md
-- "General Overview": machinery_main_general.1.md
-- Scopes: machinery_main_scopes.1.md
-- "Use cases": machinery_main_usecases.1.md
-- "Security Implications": machinery_main_security_implications.1.md
+nav:
+- Welcome: docs/index.md
+- "General Overview": docs/machinery_main_general.1.md
+- Scopes: docs/machinery_main_scopes.1.md
+- "Use cases": docs/machinery_main_usecases.1.md
+- "Security Implications": docs/machinery_main_security_implications.1.md
 - Commands:
-  - Analyze: machinery-analyze.1.md
-  - Build: machinery-build.1.md
-  - Compare: machinery-compare.1.md
-  - Config: machinery-config.1.md
-  - Copy: machinery-copy.1.md
-  - Deploy: machinery-deploy.1.md
-  - "Export AutoYaST": machinery-export-autoyast.1.md
-  - "Export Kiwi": machinery-export-kiwi.1.md
-  - "Export HTML": machinery-export-html.1.md
-  - Inspect: machinery-inspect.1.md
-  - "Inspect Container": machinery-inspect-container.1.md
-  - List: machinery-list.1.md
-  - Man: machinery-man.1.md
-  - Move: machinery-move.1.md
-  - Remove: machinery-remove.1.md
-  - Serve: machinery-serve.1.md
-  - Show: machinery-show.1.md
-  - "Upgrade Format": machinery-upgrade-format.1.md
-  - Validate: machinery-validate.1.md
+  - Analyze: docs/machinery-analyze.1.md
+  - Build: docs/machinery-build.1.md
+  - Compare: docs/machinery-compare.1.md
+  - Config: docs/machinery-config.1.md
+  - Copy: docs/machinery-copy.1.md
+  - Deploy: docs/machinery-deploy.1.md
+  - "Export AutoYaST": docs/machinery-export-autoyast.1.md
+  - "Export Kiwi": docs/machinery-export-kiwi.1.md
+  - "Export HTML": docs/machinery-export-html.1.md
+  - Inspect: docs/machinery-inspect.1.md
+  - "Inspect Container": docs/machinery-inspect-container.1.md
+  - List: docs/machinery-list.1.md
+  - Man: docs/machinery-man.1.md
+  - Move: docs/machinery-move.1.md
+  - Remove: docs/machinery-remove.1.md
+  - Serve: docs/machinery-serve.1.md
+  - Show: docs/machinery-show.1.md
+  - "Upgrade Format": docs/machinery-upgrade-format.1.md
+  - Validate: docs/machinery-validate.1.md
 theme:
-  name: mkdocs
+  name: null
   custom_dir: custom_theme
 extra_templates:
 - 'index.html'
+extra_css:
+- 'custom.css'
+- 'css/bootstrap.min.css'
+- 'css/custom.css'
+- 'css/fixed-positioning.css'
+extra_javascript:
+- 'js/bootstrap.min.js'
+- 'js/custom.js'
+- 'js/jquery.js'
+- 'js/jquery.nicescroll.min.js'
+- 'js/jquery.pageslide.min.js'
+- 'js/parallaxImg.js'
+- 'js/skrollr.min.js'
+strict: true

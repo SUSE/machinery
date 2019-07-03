@@ -35,11 +35,11 @@ Tasks on Debian-like systems are treated as patterns.
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Inspect system for specified scope.
-    See the [Scope section](machinery_main_scopes.1/) for more information.
+    See the [Scope section](machinery_main_scopes.1.md) for more information.
 
   * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Inspect system for all scopes except the specified scope.
-    See the [Scope section](machinery_main_scopes.1/) for more information.
+    See the [Scope section](machinery_main_scopes.1.md) for more information.
 
   * `-r USER`, `--remote-user=USER` (optional):
     Defines the user which is used to access the inspected system via SSH.

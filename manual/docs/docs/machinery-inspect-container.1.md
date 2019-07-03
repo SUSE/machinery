@@ -37,11 +37,11 @@ trigger errors.
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Inspect image for specified scope.
-    See the [Scope section](machinery_main_scopes.1/) for more information.
+    See the [Scope section](machinery_main_scopes.1.md) for more information.
 
   * `-e SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Inspect image for all scopes except the specified scope.
-    See the [Scope section](machinery_main_scopes.1/) for more information.
+    See the [Scope section](machinery_main_scopes.1.md) for more information.
 
   * `-x`, `--extract-files` (optional):
     Extract changed configuration and unmanaged files from the inspected container.

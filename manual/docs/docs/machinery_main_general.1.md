@@ -84,7 +84,7 @@ repositories, or changed configuration files.
 For example, if you are only interested in the installed packages, limit the
 scope to `packages`. This will output only the requested information.
 
-See the [Scopes documentation](machinery_main_scopes.1/) for a list of all supported scopes.
+See the [Scopes documentation](machinery_main_scopes.1.md) for a list of all supported scopes.
 
 # Options for All Subcommands
 <!--- These are 'global' options of machinery -->

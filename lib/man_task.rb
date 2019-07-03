@@ -25,7 +25,7 @@ class Machinery::ManTask
       )[:description]
       scope_doc + "\n"
     end.join
-    File.write("manual/docs/machinery_main_scopes.1.md", docs)
+    File.write("manual/docs/docs/machinery_main_scopes.1.md", docs)
     Dir.chdir(File.join(Machinery::ROOT, "manual")) do
       Cheetah.run("mkdocs", "build")
     end

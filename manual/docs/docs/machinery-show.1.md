@@ -22,13 +22,13 @@ in local time are shown in the title of each scope section.
 
   * `-s SCOPE`, `--scope=SCOPE` (optional):
     Limit output to the specified scope.
-    See the [Scope section](machinery_main_scopes.1/) for more information.
+    See the [Scope section](machinery_main_scopes.1.md) for more information.
     If displaying information related to a scope fails, `show` will print an error message what has failed.
     In case of an error, no content is displayed.
 
   * `-e IGNORE-SCOPE`, `--ignore-scope=IGNORE-SCOPE` (optional):
     Skip output of the specified scope.
-    See the [Scope section](machinery_main_scopes.1/) for more information.
+    See the [Scope section](machinery_main_scopes.1.md) for more information.
 
   * `--no-pager` (optional):
     Do not pipe output into a pager.

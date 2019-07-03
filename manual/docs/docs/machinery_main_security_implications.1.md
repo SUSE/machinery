@@ -6,7 +6,7 @@ Machinery.
 ## Inspection
 
 Machinery inspects several parts of a system which are covered by Machinery's scopes.
-Information about scopes is listed [here](machinery_main_scopes.1/).
+Information about scopes is listed [here](machinery_main_scopes.1.md).
 
 Users of Machinery who inspect systems need to be aware of the security implications
 to take the right decisions on how to protect the retrieved data.
@@ -14,7 +14,7 @@ to take the right decisions on how to protect the retrieved data.
 ## Retrieval of Data
 Machinery transfers data from one end point to another via SSH (Secure Shell, using public key authentication).
 
-Depending on the scope, Machinery [collects information](machinery_main_scopes.1/)
+Depending on the scope, Machinery [collects information](machinery_main_scopes.1.md)
 about files on the system. Additionally, when the `--extract-files` option is given for the
 `inspect` command, not only the meta data about the files (e.g. permission bits, owner, group etc
 .) but also the file content is extracted. Machinery does not distinguish between sensitive
@@ -24,7 +24,7 @@ description has automatically access to **all** extracted files and contained se
 #### root/sudo Privileges
 An inspection can only be done, when the user on the inspected system is either root or has
 sudo privileges. Information about the required sudo configuration can be found
-[here](machinery-inspect.1/#prerequisites).
+[here](machinery-inspect.1.md#prerequisites).
 
 ## Storage of Data
 #### Access Restrictions

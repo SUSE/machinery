@@ -42,4 +42,4 @@ flows. Machinery is targeted at the system administrator of the data center.
   - Machinery can help you to upgrade without affecting the original system.
     For more details please read the Wiki Page: [How to upgrade a SLES 11 SP3 system to SLES 12](https://github.com/SUSE/machinery/wiki/How-to-upgrade-a-SLES-11-SP3-system-to-SLES-12).
 
-For a more detailed overview see [General Overview](machinery_main_general.1/).
+For a more detailed overview see [General Overview](machinery_main_general.1.md).
