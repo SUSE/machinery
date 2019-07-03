@@ -40,7 +40,8 @@ ol.man-decor {width:100%}
 ol.man-decor li.tl {text-align:left}
 ol.man-decor li.tc {text-align:center;letter-spacing:4px}
 ol.man-decor li.tr {text-align:right;float:right}
-
+tr th {text-decoration:underline;padding-left:20pt;}
+td {padding-left:20pt;}
 
 body {
   background: #bcb7a5;
@@ -785,4 +786,19 @@ font-size: 16px;
 }
 .embed-responsive-4by3 {
   padding-bottom: 75%;
+}
+
+.mp {
+  width: 980px;
+  margin: auto;
+}
+
+.nav {
+  float: right;
+  width: 250px;
+}
+
+.content {
+  float: left;
+  width: 670px;
 }

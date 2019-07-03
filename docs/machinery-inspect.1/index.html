@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <link href="../../css/custom.css" rel="stylesheet">
+  </head>
+  <body id="manpage">
+    <div id="back">
+      <a href="../..">
+        <img src="../../img/hand3.png" class="hand3"/>
+        <div class="goback">Go back to the web site</div>
+      </a>
+    </div>
+    <div class="mp">
+      <div class="nav">
+        <ul>
+          
+              
+                  <li class="">
+                      <a href="../">Welcome</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_general.1/">General Overview</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_scopes.1/">Scopes</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_usecases.1/">Use cases</a>
+                  </li>
+              
+
+          
+              
+                  <li class="">
+                      <a href="../machinery_main_security_implications.1/">Security Implications</a>
+                  </li>
+              
+
+          
+              
+                  <li>Commands
+                      <ul>
+                      
+                          <li class="">
+                              <a href="../machinery-analyze.1/">Analyze</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-build.1/">Build</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-compare.1/">Compare</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-config.1/">Config</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-copy.1/">Copy</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-deploy.1/">Deploy</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-export-autoyast.1/">Export AutoYaST</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-export-kiwi.1/">Export Kiwi</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-export-html.1/">Export HTML</a>
+                          </li>
+                      
+                          <li class="current">
+                              <a href="./">Inspect</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-inspect-container.1/">Inspect Container</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-list.1/">List</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-man.1/">Man</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-move.1/">Move</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-remove.1/">Remove</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-serve.1/">Serve</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-show.1/">Show</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-upgrade-format.1/">Upgrade Format</a>
+                          </li>
+                      
+                          <li class="">
+                              <a href="../machinery-validate.1/">Validate</a>
+                          </li>
+                      
+                      </ul>
+                  </li>
+              
+
+          
+        </ul>
+      </div>
+      <div class="content">
+        <h1 id="inspect-inspect-running-system">inspect — Inspect Running System</h1>
+<h2 id="synopsis">Synopsis</h2>
+<p><code>machinery inspect</code> [OPTIONS] HOSTNAME</p>
+<p><code>machinery</code> help inspect</p>
+<h2 id="description">Description</h2>
+<p>The <code>inspect</code> command inspects a running system and generates a system
+description from the gathered data.</p>
+<p>The system data is structured into scopes, controlled by the
+<code>--scope</code> option.</p>
+<p><strong>Note</strong>:
+Machinery will always inspect all specified scopes, and skip scopes which
+trigger errors.</p>
+<p><strong>Note</strong>:
+Tasks on Debian-like systems are treated as patterns.</p>
+<h2 id="arguments">Arguments</h2>
+<ul>
+<li><code>HOSTNAME</code> (required):
+    The host name of the system to be inspected. The host name will also be
+    used as the name of the stored system description unless another name is
+    provided with the <code>--name</code> option.</li>
+</ul>
+<h2 id="options">Options</h2>
+<ul>
+<li>
+<p><code>-n NAME</code>, <code>--name=NAME</code> (optional):
+    Store the system description under the specified name.</p>
+</li>
+<li>
+<p><code>-s SCOPE</code>, <code>--scope=SCOPE</code> (optional):
+    Inspect system for specified scope.
+    See the <a href="../machinery_main_scopes.1/">Scope section</a> for more information.</p>
+</li>
+<li>
+<p><code>-e SCOPE</code>, <code>--ignore-scope=IGNORE-SCOPE</code> (optional):
+    Inspect system for all scopes except the specified scope.
+    See the <a href="../machinery_main_scopes.1/">Scope section</a> for more information.</p>
+</li>
+<li>
+<p><code>-r USER</code>, <code>--remote-user=USER</code> (optional):
+    Defines the user which is used to access the inspected system via SSH.
+    This user needs to be allowed to run certain commands using sudo (see
+    Prerequisites for more information).
+    To change the default-user use <code>machinery config remote-user=USER</code></p>
+</li>
+<li>
+<p><code>-p SSH-PORT</code>, <code>--ssh-port SSH-PORT</code> (optional):
+    Specifies the SSH port of the remote SSH server.</p>
+</li>
+<li>
+<p><code>-i SSH-IDENTITY-FILE</code>, <code>--ssh-identity-file SSH-IDENTITY-FILE</code> (optional):
+    Specifies the SSH private key what should be used to authenticate with the
+    remote SSH server. Keys with a passphrase are not allowed here. Use the ssh-agent
+    instead.</p>
+</li>
+<li>
+<p><code>-x</code>, <code>--extract-files</code> (optional):
+    Extract changed configuration and unmanaged files from the inspected system.
+    Shortcut for the combination of <code>--extract-changed-config-files</code>,
+    <code>--extract-unmanaged-files</code>, and <code>--extract-changed-managed-files</code></p>
+</li>
+<li>
+<p><code>--extract-changed-config-files</code> (optional):
+    Extract changed configuration files from the inspected system.</p>
+</li>
+<li>
+<p><code>--extract-unmanaged-files</code> (optional):
+    Extract unmanaged files from the inspected system.</p>
+</li>
+<li>
+<p><code>--extract-changed-managed-files</code> (optional):
+    Extract changed managed files from inspected system.</p>
+</li>
+<li>
+<p><code>--skip-files</code> (optional):
+    Do not consider given files or directories during inspection. Either provide
+    one file or directory name or a list of names separated by commas. You can
+    also point to a file which contains a list of files to filter (one per line)
+    by adding an '@' before the path, e.g.</p>
+<p>$ <code>machinery</code> inspect --skip-files=@/path/to/filter_file myhost</p>
+<p>If a filename contains a comma it needs to be escaped, e.g.</p>
+<p>$ <code>machinery</code> inspect --skip-files=/file\,with_comma myhost</p>
+<p><strong>Note</strong>: File or directory names are not expanded, e.g. '../path' is taken
+  literally and not expanded.</p>
+</li>
+<li>
+<p><code>--verbose</code> (optional):
+    Display the filters which are used during inspection.</p>
+</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>
+<p>Inspecting a local system requires running <code>machinery</code> as root.</p>
+</li>
+<li>
+<p>Inspecting a remote system requires passwordless SSH login as root on the
+    inspected system.
+    Use <code>ssh-agent</code> or asymmetric keys (you can transfer the current SSH key
+    via <code>ssh-copy-id</code> to the inspected host, e.g.: <code>ssh-copy-id root@HOSTNAME</code>).</p>
+</li>
+<li>
+<p>The system to be inspected needs to have the following commands:</p>
+<ul>
+<li><code>rpm</code> or <code>dpkg</code></li>
+<li><code>zypper</code>, <code>yum</code>, or <code>apt-cache</code></li>
+<li><code>rsync</code></li>
+<li><code>chkconfig</code>, <code>initctl</code>, or <code>systemctl</code></li>
+<li><code>cat</code></li>
+<li><code>sed</code></li>
+<li><code>find</code></li>
+<li><code>tar</code></li>
+</ul>
+</li>
+<li>
+<p>When inspecting as non-root the user needs passwordless sudo rights.
+    The following entry in the sudoers file would allow the user <code>machinery</code>
+    to run sudo without password input:</p>
+<p>machinery ALL=(ALL) NOPASSWD: ALL</p>
+</li>
+<li>
+<p>To add a remote <code>machinery</code> user run as root:</p>
+<p># <code>useradd</code> -m machinery -c "remote user for machinery"</p>
+<p>To configure a password for the new user run:</p>
+<p># <code>passwd</code> machinery</p>
+</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<ul>
+<li>
+<p>Inspect remote system <code>myhost</code> and save system description under name
+    'MySystem':</p>
+<p>$ <code>machinery</code> inspect --name=MySystem myhost</p>
+</li>
+<li>
+<p>Inspect the installed packages of your local system and save system description
+    under the name 'localhost' (you need to become root):</p>
+<p># <code>machinery</code> inspect --scope="packages" localhost</p>
+</li>
+<li>
+<p>Extracts changed managed files and saves them in the same way as changed
+    configuration files are saved:</p>
+<p>$ <code>machinery</code> inspect --scope=changed-managed-files --extract-files myhost</p>
+</li>
+<li>
+<p>To inspect the remote system <code>myhost</code> with the user <code>machinery</code>:</p>
+<p>$ <code>machinery</code> inspect --remote-user machinery myhost</p>
+</li>
+</ul>
+      </div>
+    </div>
+  </body>
+</html>
