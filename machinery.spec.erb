@@ -25,12 +25,11 @@ Release:        0
 %define mod_branch -%{version}
 %define mod_weight 1
 
-%if %suse_version > 1320
-# openSUSE Factory
+# Bundle gems for SUSE Linux Enterprise only because there they are not available
+# outside of the build repos
+%if 0%{?is_opensuse}
 %define bundlegems 0
 %else
-# SLES12, openSUSE Leap
-# LEAP has the suse_Version 1315
 %define bundlegems 1
 %endif
 
