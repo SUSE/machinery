@@ -27,10 +27,10 @@ Release:        0
 
 # Bundle gems for SUSE Linux Enterprise only because there they are not available
 # outside of the build repos
-%if 0%{?is_opensuse}
-%define bundlegems 0
-%else
+%if !0%{?is_opensuse} || 0%{?is_backports}
 %define bundlegems 1
+%else
+%define bundlegems 0
 %endif
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
