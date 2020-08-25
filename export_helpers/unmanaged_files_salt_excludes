@@ -1,0 +1,17 @@
+boot/*
+etc/fstab
+etc/group*
+etc/passwd*
+etc/salt
+etc/shadow*
+etc/sysconfig/network/*
+etc/group*
+etc/udev/rules.d/70-persistent-net.rules
+lib/mkinitrd
+usr/lib/sysimage/rpm
+var/adm/backup
+var/log/*
+var/cache/salt
+var/lib/hardware
+var/lib/rpm/*
+var/lib/wicked/*
