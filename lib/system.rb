@@ -74,7 +74,7 @@ class Machinery::System
       "The following files are packaged in #{archive}: " + Array(file_list).join(", ")
     )
     created = !File.exist?(archive)
-    out = File.open(archive, "w")
+    out = File.open(archive, "wb")
     begin
       run_command(
         "tar", "--create", "--gzip",
