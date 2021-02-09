@@ -616,6 +616,44 @@ module Machinery
       end
     end
 
+    desc "Export system description as Salt states"
+    long_desc <<-LONGDESC
+      Export system description as Salt states.
+
+      The Salt states will be placed in a subdirectory at the given location
+      by the 'salt-dir' option.
+    LONGDESC
+    arg "NAME"
+    command "export-salt" do |c|
+      c.flag ["salt-dir", :k],
+        type:     String,
+        required: true,
+        desc:     "Location where the Salt states will be stored",
+        arg_name: "DIRECTORY"
+      c.flag ["export-name", :f],
+        type:     String,
+        required: false,
+        desc:     "Name of the directory where the Salt states will be " \
+                  "stored. By default it is the name of the description.",
+        arg_name: "DIRECTORY"
+      c.switch :force,
+        default_value: false,
+        required:      false,
+        negatable:     false,
+        desc:          "Overwrite existing directory"
+
+      c.action do |_global_options, options, args|
+        name = shift_arg(args, "NAME")
+        description = SystemDescription.load(name, system_description_store)
+        exporter = SaltStates.new(description, options: options)
+        task = ExportTask.new(exporter)
+        task.export(
+          File.expand_path(options["salt-dir"]),
+          force: options[:force]
+        )
+      end
+    end
+
     def self.define_inspect_command_options(c)
       c.flag [:name, :n],
         type:     String,
