@@ -36,11 +36,12 @@ class Go
     if archs.count == 1
       single_arch = archs.first
       puts("Building machinery-helper for architecture #{single_arch}.")
-      system("go build -o machinery-helper-#{single_arch}")
+      system("env CGO_ENABLED=0 go build -o machinery-helper-#{single_arch}")
     else
       archs.each do |arch|
         puts("Building machinery-helper for architecture #{arch}.")
-        system("env GOOS=linux #{compile_options(arch)} go build -o machinery-helper-#{arch}")
+        system("env CGO_ENABLED=0 GOOS=linux #{compile_options(arch)} " \
+               "go build -o machinery-helper-#{arch}")
       end
     end
   end
