@@ -635,7 +635,25 @@ module Machinery
         required: false,
         desc:     "Name of the directory where the Salt states will be " \
                   "stored. By default it is the name of the description.",
-        arg_name: "DIRECTORY"
+        arg_name: "NAME"
+      c.switch ["skip-uid"],
+        default_value: false,
+        required:      false,
+        negatable:     false,
+        desc:          "Do not migrate UIDs for users to avoid potential " \
+                       "UID conflicts. Let source machine re-allocate them"
+      c.switch ["skip-gid"],
+        default_value: false,
+        required:      false,
+        negatable:     false,
+        desc:          "Do not migrate GIDs for groups to avoid potential " \
+                       "GID conflicts. Let source machine re-allocate them"
+      c.switch ["skip-package-version"],
+        default_value: false,
+        required:      false,
+        negatable:     false,
+        desc:          "Do not migrate package version. This is useful in " \
+                       "situations where migration to a higher OS version."
       c.switch :force,
         default_value: false,
         required:      false,
@@ -645,7 +663,7 @@ module Machinery
       c.action do |_global_options, options, args|
         name = shift_arg(args, "NAME")
         description = SystemDescription.load(name, system_description_store)
-        exporter = SaltStates.new(description, options: options)
+        exporter = SaltStates.new(description, options)
         task = ExportTask.new(exporter)
         task.export(
           File.expand_path(options["salt-dir"]),
