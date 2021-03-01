@@ -23,6 +23,7 @@ module Machinery
   SALT_INIT_SLS = %(include:
   - .groups
   - .users
+  - .group_members
   - .unmanaged_files
   - .packages
   - .managed_files
@@ -31,18 +32,17 @@ module Machinery
   class SaltStates < Machinery::Exporter
     attr_accessor :name
 
-    def initialize(system_description, options = {})
+    def initialize(system_description, options)
       @name = "salt"
       @system_description = system_description
       @options = options
+      @group_id_to_name_mapping = {}
 
       @system_description.assert_scopes(
-        "repositories",
         "packages",
         "os"
       )
       check_existance_of_extracted_files
-      check_repositories
     end
 
     def write(output_location)
@@ -71,7 +71,7 @@ module Machinery
       # the export directory (config dir) name. Therefore, it's best to just
       # hash the name. The hash will keep it unique.
       hexname = Digest::SHA256.hexdigest @system_description.name
-      @options.fetch("export-name", hexname)
+      @options["export-name"] || hexname
     end
 
     private
@@ -95,24 +95,19 @@ module Machinery
       end
     end
 
-    def check_repositories
-      if @system_description.repositories.empty?
-        raise Machinery::Errors::MissingRequirement,
-              "The scope 'repositories' of the system description doesn't " \
-              "contain a repository. " \
-              "Please make sure that there is at least one accessible " \
-              "repository with all the required packages."
-      end
-    end
-
     def add_group(name, gid)
-      <<~SALT
+      @group_id_to_name_mapping[gid] = name
+      salt_group = <<~SALT
         add-group-#{name}:
           group.present:
             - name: #{name}
-            - gid: #{gid}
-
       SALT
+
+      if @options["skip-gid"]
+        salt_group + "\n"
+      else
+        salt_group + "    - gid: #{gid}\n\n"
+      end
     end
 
     # TODO(gyee): we have multiple issues to resolve:
@@ -197,13 +192,15 @@ module Machinery
     end
 
     def add_user(user, groups)
-      user = <<~SALT
+      # NOTE: use group name if possible as GID may get reallocated
+      gid = @group_id_to_name_mapping.fetch(user.gid, user.gid)
+
+      salt_user = <<~SALT
         add-user-#{user.name}:
           user.present:
             - fullname: #{user.comment}
             - name: #{user.name}
-            - uid: #{user.uid}
-            - gid: #{user.gid}
+            - gid: #{gid}
             - home: #{user.home}
             - shell: #{user.shell}
             - password: '#{user.encrypted_password}'
@@ -214,10 +211,11 @@ module Machinery
             - inactdays: #{user.disable_days}
             - expire: #{user.disable_date}
       SALT
-      if groups.empty?
-        user
+
+      if @options["skip-uid"]
+        salt_user + "\n"
       else
-        user + groups.map { |group| "    - #{group}" }.join("\n")
+        salt_user + "    - uid: #{user.uid}\n\n"
       end
     end
 
@@ -262,6 +260,7 @@ module Machinery
           archive.extracted:
             - name: /
             - source: salt://#{export_name}/#{filepath}
+            - enforce_toplevel: false
         #{options}
       SALT
     end
@@ -384,13 +383,17 @@ module Machinery
     end
 
     def add_package(package)
-      <<~SALT
+      salt_package = <<~SALT
         install-package-#{package.name}:
           pkg.installed:
             - name: #{package.name}
-            - version: '#{package.version}'
-
       SALT
+
+      if @options["skip-package-version"]
+        salt_package + "\n"
+      else
+        salt_package + "    - version: '#{package.version}'\n\n"
+      end
     end
 
     def add_pattern(pattern)
