@@ -654,6 +654,11 @@ module Machinery
         negatable:     false,
         desc:          "Do not migrate package version. This is useful in " \
                        "situations where migration to a higher OS version."
+      c.flag ["package-map-file"],
+        type:     String,
+        required: false,
+        desc:     "Location of the package mapping YAML file.",
+        arg_name: "PACKAGE_MAP"
       c.switch :force,
         default_value: false,
         required:      false,

@@ -37,12 +37,15 @@ module Machinery
       @system_description = system_description
       @options = options
       @group_id_to_name_mapping = {}
+      @package_map = \
+          options.include?("package-map") ? options["package-map"] : nil
 
       @system_description.assert_scopes(
         "packages",
         "os"
       )
       check_existance_of_extracted_files
+      load_package_map
     end
 
     def write(output_location)
@@ -92,6 +95,12 @@ module Machinery
       unless missing_scopes.empty?
         raise Machinery::Errors::MissingExtractedFiles,
               @system_description, missing_scopes
+      end
+    end
+
+    def load_package_map
+      if @options["package-map-file"]
+        @package_map = YAML.load_file(@options["package-map-file"])
       end
     end
 
@@ -382,52 +391,82 @@ module Machinery
       managed_files_sls
     end
 
-    def add_package(package)
+    def add_package(name, version, pattern)
+      package_or_pattern = pattern ? "patern" : "package"
       salt_package = <<~SALT
-        install-package-#{package.name}:
+        install-#{package_or_pattern}-#{name}:
           pkg.installed:
-            - name: #{package.name}
+            - name: #{name}
       SALT
 
-      if @options["skip-package-version"]
+      if pattern
+        salt_package += "    - includes: [pattern]\n"
+      end
+
+      if @options["skip-package-version"] or version.nil?
         salt_package + "\n"
       else
-        salt_package + "    - version: '#{package.version}'\n\n"
+        salt_package + "    - version: '#{version}'\n\n"
       end
     end
 
-    def add_pattern(pattern)
-      <<~SALT
-        install-pattern-#{pattern.name}:
-          pkg.installed:
-            - name: pattern:#{pattern.name}
-            - version: '#{pattern.version}'
-            - includes: [pattern]
+    def package_pattern_match?(package_mapping, pattern)
+      pattern == package_mapping.fetch('pattern', false)
+    end
 
-      SALT
+    def package_version_match?(package_mapping, version)
+      !package_mapping.include?("version") or (
+      package_mapping["version"] == version)
+    end
+
+    def package_has_mapping?(name, version, pattern)
+      if @package_map&.include?(name)
+        if @package_map[name]&.is_a?(Hash)
+          (package_pattern_match?(@package_map[name], pattern) &&
+           package_version_match?(@package_map[name], version))
+        else
+          !pattern
+        end
+      else
+        false
+      end
+    end
+
+    def map_package(name, version, pattern)
+      if package_has_mapping?(name, version, pattern)
+        if @package_map[name].is_a?(Hash) && 
+            @package_map[name].include?("packages")
+          packages = []
+          @package_map[name]["packages"].each do |package|
+            packages.append([package["name"], package.fetch("version", nil),
+                             package.fetch("pattern", false)])
+          end
+          packages
+        else
+          # package maps to nothing. This means the package will not be
+          # migrated.
+          []
+        end
+      else
+        [[name, version, pattern]]
+      end
     end
 
     def package_states
-      uniq_packages = []
-      packages_sls = ""
+      packages = []
       @system_description&.packages&.each do |package|
-        # FIXME(gyee): seem like a bug in inspection that it has duplicate
-        # entries for packages in manifest.json.
-        next if uniq_packages.include? package.name
-
-        uniq_packages.push(package.name)
-        packages_sls += add_package(package)
+        packages += map_package(package.name, package.version, false)
       end
-      uniq_patterns = []
-      @system_description&.patterns&.each do |pattern|
-        # FIXME(gyee): seem like a bug in inspection that it has duplicate
-        # entries for packages in manifest.json.
-        next if uniq_patterns.include? pattern.name
-
-        uniq_patterns.push(pattern.name)
-        packages_sls += add_pattern(pattern)
+      @system_description&.patterns&.each do |package|
+        packages += map_package(package.name, package.version, true)
       end
-      packages_sls
+
+      packages = packages.uniq
+      salt_package_states = ""
+      packages.each do |package|
+        salt_package_states += add_package(package[0], package[1], package[2])
+      end
+      salt_package_states
     end
 
     def add_repo(repo)

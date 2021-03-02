@@ -1,0 +1,37 @@
+# One-to-one package map. Source package version match is optional. If
+# specified, the version must match the source package version for the mapping
+# to take effect. If source package version is absent, that means it will
+# match any version. Likewise, target package version is optional.
+# When specified, it will map to a specific target package version. Otherwise,
+# it will map to the latest version.
+<source package name>:
+  version: <source package version match>
+  packages:
+    - name: <target package name>
+      version: <target package version>
+
+# Map a source pattern package.
+<source pattern package name>
+  version: <source pattern package version match>
+  pattern: yes
+  packages:
+    - name: <target pattern package name>
+      version: <target pattern package version>
+      pattern: yes
+
+# One-to-many map. A source package can map to multiple packages and/or
+# patterns. 
+<source package name>:
+  version: <source package version match>
+  packages:
+    - name: <target pattern package name>
+      version: <target pattern package version>
+      pattern: yes
+    - name: <target package name>
+      version: <target pacakge version>
+
+# A package without mapping means there are no target packages to map there.
+# Therefore, it will be excluded from migration.
+<source package name>:
+  version: <source package version match>
+
